@@ -1,0 +1,18 @@
+{
+    "name": "鱿鱼视频",
+    "short_name": "鱿鱼视频",
+    "start_url": ".",
+    "display": "fullscreen",
+    "background_color": "#150721",
+    "theme_color": "#150721",
+    "description": "成人的世界不只成人，让鱿鱼视频带你体验新的成人世界",
+    "orientation": "Any",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/ic_launcher-121.png",
+            "sizes": "121x121",
+            "type": "image/png"
+        }
+    ]
+}

@@ -1,0 +1,92 @@
+/*
+ * @Author: Tom
+ * @Date: 2021-12-27 16:56:56
+ * @LastEditTime: 2021-12-27 17:00:56
+ * @LastEditors: Tom
+ * @Description: 
+ * @FilePath: /flutter2021/lib/components/common/pagetitlebar.dart
+ */
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:youyutv/theme/default.dart';
+import 'package:youyutv/utils/networkImage.dart';
+
+// ignore: must_be_immutable
+class PageTitleBar extends StatefulWidget {
+  PageTitleBar({Key key, this.title, this.rightWidget, this.height})
+      : super(key: key);
+  String title;
+  Widget rightWidget;
+  double height;
+  @override
+  _PageTitleBarState createState() => _PageTitleBarState();
+}
+
+class _PageTitleBarState extends State<PageTitleBar> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+            alignment: Alignment.center,
+            width: ScreenUtil().screenWidth,
+            height: widget.height ?? DefaultStyle.navbarHegiht,
+            child: Container(
+              alignment: Alignment.center,
+              width: ScreenUtil().screenWidth * 0.8,
+              child: Text(
+                widget.title != null ? widget.title : '二级列表页',
+                style: DefaultStyle.white18bold,
+              ),
+            )),
+        Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            top: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: DefaultStyle.pagePadding,
+                      vertical: ScreenUtil().setWidth(5)),
+                  child: InkWell(
+                    onTap: () {
+                      context.pop();
+                    },
+                    borderRadius:
+                        BorderRadius.circular(ScreenUtil().setWidth(20)),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: ScreenUtil().setWidth(40),
+                      height: ScreenUtil().setWidth(40),
+                      child: Image.asset(
+                        'assets/pengke/backarrow.png',
+                        width: ScreenUtil().setWidth(20),
+                        height: ScreenUtil().setWidth(20),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: DefaultStyle.pagePadding),
+                  child: widget.rightWidget != null
+                      ? widget.rightWidget
+                      : Container(),
+                )
+              ],
+            ))
+      ],
+    );
+  }
+}

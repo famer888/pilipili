@@ -1,0 +1,212 @@
+import 'dart:async';
+import "package:universal_html/html.dart" as html;
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:youyutv/global.dart';
+import 'package:youyutv/pages/home.dart';
+import 'package:youyutv/theme/default.dart';
+import 'package:youyutv/utils/api.dart';
+import 'package:youyutv/utils/common.dart';
+
+class Welcome extends StatefulWidget {
+  Welcome({Key key}) : super(key: key);
+  @override
+  _WelcomeState createState() => _WelcomeState();
+}
+
+class _WelcomeState extends State<Welcome> {
+  Map yyads;
+  int curTime = 6;
+  Timer _timer;
+  int currenIndex = 0;
+  toHome() async {
+    currenIndex = 1;
+    setState(() {});
+  }
+
+  Future<void> sendCodeInvitation(value) async {
+    if (value.text == null) return;
+    List cliptextList = value.text.split(":").toList();
+    if (cliptextList.length > 1) {
+      if (cliptextList[0] == 'sq_aff') {
+        if (cliptextList[1] != '') {
+          // toInvitation(affCode: cliptextList[1]);
+        }
+      }
+    }
+  }
+
+  void getClipboardText() {
+    if (kIsWeb) {
+      Uri u = Uri.parse(html.window.location.href);
+      String aff = u.queryParameters['sq_aff'];
+      if (aff != null) {
+        // toInvitation(affCode: aff);
+      }
+    } else {
+      Clipboard.getData(Clipboard.kTextPlain).then((value) {
+        if (value != null) {
+          sendCodeInvitation(value);
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dynamic ads = AppGlobal.appBox.get('ads');
+    if (ads != null) {
+      setState(() {
+        yyads = ads;
+      });
+    }
+    adsCountDown();
+    CommonUtils.checkline(onFailed: () {
+      if (yyads == null) {
+        toHome();
+      }
+      BotToast.showText(
+          text: '无法连接服务器，请检查手机网络设置',
+          textStyle: TextStyle(
+              fontSize: ScreenUtil().setWidth(15), color: Colors.white),
+          align: Alignment(0, 0),
+          duration: new Duration(seconds: 5));
+    }, onSuccess: () {
+      getClipboardText();
+      if (yyads == null) {
+        toHome();
+      }
+    });
+  }
+
+  void adsCountDown() {
+    if (yyads == null) return;
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      if (curTime <= 0) {
+        _timer.cancel();
+        toHome();
+        return;
+      }
+      setState(() {
+        curTime--;
+      });
+    });
+  }
+
+  DateTime lastPopTime;
+  @override
+  Widget build(BuildContext context) {
+    AppGlobal.appContext = context;
+    return WillPopScope(
+        onWillPop: () async {
+          // 点击返回键的操作
+          if (lastPopTime == null ||
+              DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
+            lastPopTime = DateTime.now();
+            BotToast.showText(text: '再按一下退出鱿鱼～', align: Alignment(0, 0));
+          } else {
+            lastPopTime = DateTime.now();
+            // 退出app
+            await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          }
+          return;
+        },
+        child: Scaffold(
+          body: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus &&
+                  currentFocus.focusedChild != null) {
+                FocusManager.instance.primaryFocus.unfocus();
+              }
+            },
+            behavior: HitTestBehavior.translucent,
+            child: IndexedStack(
+              index: currenIndex,
+              children: [
+                yyads != null
+                    ? Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (yyads['url'] == '' || yyads['url'] == null)
+                                return;
+                              CommonUtils.launchURL(yyads['url']);
+                            },
+                            child: Image.memory(
+                              yyads['image'],
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            ),
+                          ),
+                          Positioned(
+                            top: (kIsWeb ? 0 : ScreenUtil().statusBarHeight) +
+                                ScreenUtil().setWidth(10),
+                            right: ScreenUtil().setWidth(15),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: ScreenUtil().setWidth(5),
+                                  horizontal: ScreenUtil().setWidth(15)),
+                              height: ScreenUtil().setWidth(35),
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(0, 0, 0, .5),
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(35)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '$curTime',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.none,
+                                      fontSize: ScreenUtil().setSp(15),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                          colors: [
+                            Color(0xfffbe7ef),
+                            Color(0xffddf4fc),
+                            Color(0xfffbe7ef),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        )),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Container(
+                              //   width: ScreenUtil().screenWidth / 3,
+                              //   child: Image.asset(
+                              //     'assets/images/loading.gif',
+                              //     fit: BoxFit.fitWidth,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: ScreenUtil().setWidth(15),
+                              // ),
+                              Text('正在检测线路,请稍后～',
+                                  style: DefaultStyle.black15bold)
+                            ],
+                          ),
+                        ),
+                      ),
+                currenIndex != 1 ? Container() : Home()
+              ],
+            ),
+          ),
+        ));
+  }
+}
