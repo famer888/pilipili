@@ -46,9 +46,9 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
       child: Image.asset(
-        mode == RefreshStatus.refreshing
-            ? 'assets/pengke/downrefresh.gif'
-            : 'assets/pengke/downrefresh.png',
+     mode == RefreshStatus.refreshing
+            ? 'assets/images/downrefresh.gif'
+            : 'assets/images/downrefresh.png',
         height: ScreenUtil().setWidth(50),
         fit: BoxFit.fitHeight,
       ),
