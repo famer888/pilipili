@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/components/widget/h_scroll_widget.dart';
+import 'package:pilipili/components/widget/three_v_column.dart';
 import 'package:pilipili/components/widget/v4_widget.dart';
+import 'package:pilipili/components/widget/v_onebig.dart';
+import 'package:pilipili/components/widget/v_scroll_widget.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 
@@ -25,14 +30,13 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
           id: element['id'],
           moreButton: element['more_button'] == 1,
           morePageType: element['more_page_show_type'],
-          changeButton: element['change_button'] == 1,
           limit: element['max_num'],
           showField: element['show_field'],
           element: element,
         );
         break;
-      default:
-        yyElement = V4Column(
+      case 2:
+        yyElement = VscrollWidget(
           data: elementValue,
           contentType: element['content_type'],
           title: element['title'] == null || element['title'] == ''
@@ -41,15 +45,60 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
           id: element['id'],
           moreButton: element['more_button'] == 1,
           morePageType: element['more_page_show_type'],
-          changeButton: element['change_button'] == 1,
-          limit: element['max_num'],
           showField: element['show_field'],
           element: element,
         );
-      // yyElement = Text(
-      //   '当前模块不可见,或下载最新版本',
-      //   style: DefaultStyle.red13,
-      // );
+        break;
+      case 3:
+        yyElement = VoneBig(
+          data: elementValue,
+          contentType: element['content_type'],
+          title: element['title'] == null || element['title'] == ''
+              ? null
+              : element['title'],
+          id: element['id'],
+          moreButton: element['more_button'] == 1,
+          morePageType: element['more_page_show_type'],
+          showField: element['show_field'],
+          element: element,
+        );
+        break;
+      case 4:
+        yyElement = ThreeVColumn(
+          data: elementValue,
+          contentType: element['content_type'],
+          title: element['title'] == null || element['title'] == ''
+              ? null
+              : element['title'],
+          id: element['id'],
+          moreButton: element['more_button'] == 1,
+          morePageType: element['more_page_show_type'],
+          showField: element['show_field'],
+          element: element,
+        );
+        break;
+      case 5:
+        yyElement = HscrollWidget(
+          data: elementValue,
+          contentType: element['content_type'],
+          title: element['title'] == null || element['title'] == ''
+              ? null
+              : element['title'],
+          id: element['id'],
+          moreButton: element['more_button'] == 1,
+          morePageType: element['more_page_show_type'],
+          showField: element['show_field'],
+          element: element,
+        );
+        break;
+      default:
+        yyElement = Padding(
+          padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+          child: Text(
+            '当前模块不可见,或下载最新版本',
+            style: DefaultStyle.red13,
+          ),
+        );
     }
 
     if (element['value'] == null || element['value'].length == 0) {

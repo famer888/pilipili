@@ -137,7 +137,7 @@ class _pilipiliState extends State<pilipili> {
         // home: Welcome(),
         // navigatorObservers: [BotToastNavigatorObserver()],
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+        theme: ThemeData(scaffoldBackgroundColor: Color(0xfffff4f9)),
       ),
     );
   }

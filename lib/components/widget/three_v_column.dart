@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pilipili/components/card/hcard.dart';
+import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
-import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
-class V4Column extends StatefulWidget {
-  V4Column(
+class ThreeVColumn extends StatefulWidget {
+  ThreeVColumn(
       {Key key,
       this.data,
       this.title,
@@ -31,18 +29,17 @@ class V4Column extends StatefulWidget {
   final dynamic id;
   final dynamic element;
   @override
-  _V4ColumnState createState() => _V4ColumnState();
+  _ThreeVColumnState createState() => _ThreeVColumnState();
 }
 
-class _V4ColumnState extends State<V4Column> {
+class _ThreeVColumnState extends State<ThreeVColumn> {
   List<dynamic> dataList;
   int page = 1;
-  bool isAll = false;
   bool loading = false;
+  bool isAll = false;
   @override
   void initState() {
     dataList = widget.data;
-    setState(() {});
     super.initState();
   }
 
@@ -60,11 +57,13 @@ class _V4ColumnState extends State<V4Column> {
           dataList = res['data']['value'];
         }
         isAll = res['data']['value'].length < widget.limit;
-        loading = false;
-        setState(() {});
       } else {
         CommonUtils.showText(res.msg);
       }
+    }).whenComplete(() {
+      setState(() {
+        loading = false;
+      });
     });
   }
 
@@ -77,33 +76,30 @@ class _V4ColumnState extends State<V4Column> {
       child: Column(
         children: [
           widget.title != null
-              ? WidgetTitleBar(
-                  title: widget.title,
-                )
+              ? WidgetTitleBar(title: widget.title)
               : Container(),
-          loading
-              ? PageStatus.loading(mounted)
-              : Wrap(
-                  spacing: ScreenUtil().setWidth(7),
-                  runSpacing: ScreenUtil().setWidth(10),
-                  alignment: WrapAlignment.spaceBetween,
-                  children: dataList
-                      .asMap()
-                      .keys
-                      .map((e) => Hcard(
-                            isSubtitle: true,
-                            page: ((page * widget.element['max_num']) /
-                                    AppGlobal.smallVideoLimit)
-                                .ceil(),
-                            tagIconType: dataList[e]['isfree'],
-                            contentType: widget.contentType,
-                            cardData: dataList[e],
-                            showField: widget.showField,
-                            width: ScreenUtil().setWidth(167),
-                            thumbUrl: CommonUtils.getThumb(dataList[e]),
-                          ))
-                      .toList(),
-                ),
+          Wrap(
+            spacing: ScreenUtil().setWidth(8),
+            runSpacing: ScreenUtil().setWidth(16),
+            alignment: WrapAlignment.spaceBetween,
+            children: dataList
+                .asMap()
+                .keys
+                .map((e) => Vcard(
+                      isSubtitle: true,
+                      page: ((page * widget.element['max_num']) /
+                              AppGlobal.smallVideoLimit)
+                          .ceil(),
+                      id: dataList[e]['id'],
+                      contentType: widget.contentType,
+                      cardData: dataList[e],
+                      width: ScreenUtil().setWidth(109),
+                      thumbUrl: CommonUtils.getThumb(dataList[e]),
+                      tagIconType: dataList[e]['isfree'],
+                      showField: widget.showField,
+                    ))
+                .toList(),
+          ),
         ],
       ),
     );
