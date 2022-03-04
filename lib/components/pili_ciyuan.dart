@@ -57,9 +57,9 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
       emitName: 'pili_ciyuan',
       navitems: navitems,
       onNavIndexChanged: (index) {
-        setState(() {
-          currentIndex = index;
-        });
+        // setState(() {
+        //   currentIndex = index;
+        // });
       },
       pages: navitems
           .asMap()

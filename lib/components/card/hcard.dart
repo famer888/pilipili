@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/index.dart';
 
 // ignore: must_be_immutable
-class Vcard extends StatefulWidget {
-  Vcard(
+class Hcard extends StatefulWidget {
+  Hcard(
       {Key key,
       this.width,
       this.thumbUrl,
@@ -38,10 +40,10 @@ class Vcard extends StatefulWidget {
   final bool isSearch;
   final bool isSubtitle;
   @override
-  _VcardState createState() => _VcardState();
+  _HcardState createState() => _HcardState();
 }
 
-class _VcardState extends State<Vcard> with CardMixin<Vcard> {
+class _HcardState extends State<Hcard> with CardMixin<Hcard> {
   // String thumb = CommonUtils.getRandomThumb();
   int progress = 0;
   int currentImg = 1;
@@ -70,7 +72,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
 
   @override
   Widget build(BuildContext context) {
-    double thumbHeight = widget.width / 140 * 194;
+    double thumbHeight = widget.width / 167 * 100;
     String desc = getCardDesc(widget);
     return callDetail(
         cardData: widget.cardData,
@@ -129,20 +131,16 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         widget.showField.indexOf('title') != -1
-                            ? Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: ScreenUtil().setWidth(5)),
-                                child: Text(
-                                  widget.isSubtitle
-                                      ? (widget.cardData['second_title'] ??
-                                          widget.cardData['title'])
-                                      : widget.cardData['title'],
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Color(0xff646464),
-                                      fontSize: ScreenUtil().setSp(14)),
-                                ),
+                            ? Text(
+                                widget.isSubtitle
+                                    ? (widget.cardData['second_title'] ??
+                                        widget.cardData['title'])
+                                    : widget.cardData['title'],
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontSize: ScreenUtil().setSp(14)),
                               )
                             : Container(),
                       ],

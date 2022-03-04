@@ -28,12 +28,13 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   bool isAll = false;
   int limit = 10;
   bool networkErr = false;
+  bool isShow=false;
   ConstructModel cm_data;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (pageStatus == 0 && widget.isShow) {
+    if (pageStatus == 0) {
       setState(() {
         pageStatus = 1;
       });
