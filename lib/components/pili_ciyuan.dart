@@ -8,8 +8,8 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:youyutv/components/common/scrollnav.dart';
-import 'package:youyutv/model/element.dart';
+import 'package:pilipili/components/common/scrollnav.dart';
+import 'package:pilipili/model/element.dart';
 
 class PiliCiyuan extends StatefulWidget {
   PiliCiyuan({Key key, this.isShow = false}) : super(key: key);

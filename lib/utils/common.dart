@@ -14,12 +14,12 @@ import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/model/systemnotice.dart';
-import 'package:youyutv/store/homeConfig.dart';
-import 'package:youyutv/utils/http.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/model/systemnotice.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/utils/http.dart';
 import 'package:convert/convert.dart';
-import 'package:youyutv/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtil.dart';
 import 'package:universal_html/html.dart' as html;
 
 class CommonUtils {

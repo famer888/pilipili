@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/pages/home.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/api.dart';
-import 'package:youyutv/utils/common.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/pages/home.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
 
 class Welcome extends StatefulWidget {
   Welcome({Key key}) : super(key: key);
@@ -19,7 +19,7 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
   Map yyads;
-  int curTime = 6;
+  int curTime = 0;
   Timer _timer;
   int currenIndex = 0;
   toHome() async {

@@ -8,14 +8,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:provider/provider.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/routers.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/routers.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:youyutv/store/homeConfig.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/crypto.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/crypto.dart';
 
 void main() async {
   // 初始化数据库，必须放在最前面
@@ -71,7 +71,7 @@ void main() async {
   AppGlobal.appinfo = {
     "oauth_id": AppGlobal.appBox.get('oauth_id') ??
         '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}',
-    "bundleId": "com.pwa.youyutv",
+    "bundleId": "com.pwa.pilipili",
     "version": "2.0.0",
     "oauth_type": CommonUtils.isAndroidWeb() ? "a-web" : "web",
     "language": 'zh',
@@ -104,19 +104,19 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => HomeConfig()),
     ],
-    child: YouyuTv(),
+    child: pilipili(),
   ));
 }
 
 final _router = AppGlobal.appRouter = Routes.init();
 
-class YouyuTv extends StatefulWidget {
-  YouyuTv({Key key}) : super(key: key);
+class pilipili extends StatefulWidget {
+  pilipili({Key key}) : super(key: key);
   @override
-  _YouyuTvState createState() => _YouyuTvState();
+  _pilipiliState createState() => _pilipiliState();
 }
 
-class _YouyuTvState extends State<YouyuTv> {
+class _pilipiliState extends State<pilipili> {
   @override
   void initState() {
     super.initState();

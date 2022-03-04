@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:youyutv/utils/common.dart';
+import 'package:pilipili/utils/common.dart';
 
 class PlatformAwareAssetImage extends StatefulWidget {
   PlatformAwareAssetImage(

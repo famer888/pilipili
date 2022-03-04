@@ -8,6 +8,8 @@ class DefaultStyle {
   static double get bottomnavbarHegiht => ScreenUtil().setWidth(64);
   // 页面通用边距
   static double get pagePadding => ScreenUtil().setWidth(12.5);
+  // 主题色
+  static Color themeColor = Color(0xffFF84A9);
   // 字体样式
   static TextStyle zhuti10 = TextStyle(
       color: Color(0xffff5b8c),
