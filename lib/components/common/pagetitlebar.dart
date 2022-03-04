@@ -59,7 +59,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
+                Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: DefaultStyle.pagePadding,
                       vertical: ScreenUtil().setWidth(5)),
@@ -71,8 +71,8 @@ class _PageTitleBarState extends State<PageTitleBar> {
                         BorderRadius.circular(ScreenUtil().setWidth(20)),
                     child: Container(
                       alignment: Alignment.center,
-                      width: ScreenUtil().setWidth(40),
-                      height: ScreenUtil().setWidth(40),
+                      // width: ScreenUtil().setWidth(40),
+                      // height: ScreenUtil().setWidth(40),
                       child: Image.asset(
                         'assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(20),
