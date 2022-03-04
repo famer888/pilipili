@@ -5,6 +5,7 @@ import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
@@ -104,6 +105,35 @@ class _V4ColumnState extends State<V4Column> {
                           ))
                       .toList(),
                 ),
+          GestureDetector(
+            child: Container(
+              width: ScreenUtil().setWidth(240),
+              height: ScreenUtil().setWidth(39),
+              margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(ScreenUtil().setWidth(50)),
+                  gradient: LinearGradient(colors: [
+                    Color(0xffff8b8b),
+                    Color(0xffff7696),
+                    Color(0xffff7299),
+                  ])),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '查看更多',
+                    style: DefaultStyle.white14,
+                  ),
+                  Image.asset(
+                    'assets/images/icon_more.png',
+                    height: ScreenUtil().setWidth(8),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

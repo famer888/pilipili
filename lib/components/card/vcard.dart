@@ -129,20 +129,16 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         widget.showField.indexOf('title') != -1
-                            ? Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: ScreenUtil().setWidth(5)),
-                                child: Text(
-                                  widget.isSubtitle
-                                      ? (widget.cardData['second_title'] ??
-                                          widget.cardData['title'])
-                                      : widget.cardData['title'],
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Color(0xff646464),
-                                      fontSize: ScreenUtil().setSp(14)),
-                                ),
+                            ? Text(
+                                widget.isSubtitle
+                                    ? (widget.cardData['second_title'] ??
+                                        widget.cardData['title'])
+                                    : widget.cardData['title'],
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontSize: ScreenUtil().setSp(14)),
                               )
                             : Container(),
                       ],

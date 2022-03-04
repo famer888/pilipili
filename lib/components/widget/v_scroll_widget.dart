@@ -59,22 +59,59 @@ class _VscrollWidgetState extends State<VscrollWidget> {
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: DefaultStyle.pagePadding),
               child: Row(
-                children: widget.data
-                    .asMap()
-                    .keys
-                    .map((e) => Vcard(
-                          tagIconType: widget.data[e]['isfree'],
-                          width: ScreenUtil().setWidth(145),
-                          id: widget.data[e]['id'],
-                          contentType: widget.contentType,
-                          cardData: widget.data[e],
-                          page: ((e + 1) / AppGlobal.smallVideoLimit).ceil(),
-                          cardMargin:
-                              EdgeInsets.only(right: ScreenUtil().setWidth(10)),
-                          thumbUrl: CommonUtils.getThumb(widget.data[e]),
-                          showField: widget.showField,
-                        ))
-                    .toList(),
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: widget.data
+                        .asMap()
+                        .keys
+                        .map((e) => Vcard(
+                              tagIconType: widget.data[e]['isfree'],
+                              width: ScreenUtil().setWidth(145),
+                              id: widget.data[e]['id'],
+                              contentType: widget.contentType,
+                              cardData: widget.data[e],
+                              page:
+                                  ((e + 1) / AppGlobal.smallVideoLimit).ceil(),
+                              cardMargin: EdgeInsets.only(
+                                  right: ScreenUtil().setWidth(10)),
+                              thumbUrl: CommonUtils.getThumb(widget.data[e]),
+                              showField: widget.showField,
+                            ))
+                        .toList(),
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      width: ScreenUtil().setWidth(70),
+                      height: ScreenUtil().setWidth(39),
+                      margin: EdgeInsets.only(
+                          right: ScreenUtil().setWidth(16),
+                          bottom: ScreenUtil().setWidth(48)),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().setWidth(50)),
+                          gradient: LinearGradient(colors: [
+                            Color(0xffff8b8b),
+                            Color(0xffff7696),
+                            Color(0xffff7299),
+                          ])),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '更多',
+                            style: DefaultStyle.white14,
+                          ),
+                          Image.asset(
+                            'assets/images/icon_more.png',
+                            height: ScreenUtil().setWidth(8),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           )

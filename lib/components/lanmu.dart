@@ -28,7 +28,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   bool isAll = false;
   int limit = 10;
   bool networkErr = false;
-  bool isShow=false;
+  bool isShow = false;
   ConstructModel cm_data;
   @override
   void initState() {
@@ -177,6 +177,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                       // }
                                     },
                                     child: Container(
+                                      alignment: Alignment.topCenter,
                                       child: Image.asset(
                                         'assets/images/demo_bg.png',
                                         fit: BoxFit.fitWidth,
@@ -250,7 +251,12 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                   (e) =>
                                       getElement(element: cm_data.elements[e]),
                                 )
-                                .toList()))
+                                .toList())),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: ScreenUtil().setWidth(30),
+                      ),
+                    )
                   ],
                 ));
   }

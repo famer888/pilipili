@@ -158,7 +158,7 @@ class AwareNetworkImage extends StatefulWidget {
       this.clipBehavior = Clip.hardEdge,
       this.filterQuality = FilterQuality.none,
       this.alignment = Alignment.center,
-      this.background = const Color(0xff28242e)})
+      this.background = const Color(0xffFFDFE9)})
       : super(key: key);
   final dynamic url;
   final BoxFit fit;
@@ -287,8 +287,8 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
         children: [
           _url == null
               ? Center(
-                  child: PlatformAwareAssetImage(
-                    url: 'assets/images/logo.png',
+                  child: Image.asset(
+                    'assets/images/logo.png',
                     width: widget.width / 3,
                     fit: BoxFit.fitWidth,
                   ),
@@ -308,9 +308,10 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
                         filterQuality: widget.filterQuality,
                       )
                     : Container())
-                : AnimatedOpacity(
+                : AnimatedContainer(
                     curve: Curves.easeIn,
-                    opacity: isShow ? 1 : 0,
+                    width: isShow ? widget.width : 0,
+                    height: isShow ? widget.height : 0,
                     child: isShow
                         ? Image.memory(
                             widget.isVideoThumb ? widget.url : _url,
@@ -319,7 +320,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
                             filterQuality: widget.filterQuality,
                           )
                         : Container(),
-                    duration: Duration(milliseconds: 100)),
+                    duration: Duration(milliseconds: 300)),
           )
         ],
       ),
