@@ -89,7 +89,7 @@ class _ScrollnavState extends State<Scrollnav> {
                 children: [
                   Container(
                     alignment: AlignmentDirectional.center,
-                    color: Colors.transparent,
+                    color: Color.fromRGBO(130, 26, 70, 0.44),
                     width: ScreenUtil().screenWidth,
                     height: DefaultStyle.navbarHegiht,
                     padding: EdgeInsets.symmetric(
@@ -115,58 +115,77 @@ class _ScrollnavState extends State<Scrollnav> {
                                           duration: Duration(milliseconds: 200),
                                           curve: Curves.easeInOut);
                                     },
-                                    child: Container(
-                                      key: keys[index],
-                                      // height: DefaultStyle.navbarHegiht,
-                                      padding: EdgeInsets.only(
-                                          right: ScreenUtil().setWidth(5)),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Opacity(
-                                            opacity:
-                                                selectedIndex == index ? 1 : 0,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: ScreenUtil()
-                                                      .setWidth(3.5)),
-                                              child: Image.asset(
-                                                'assets/pengke/nav_icon_left.png',
-                                                fit: BoxFit.fitHeight,
-                                                height:
-                                                    ScreenUtil().setWidth(23.3),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    ScreenUtil().setWidth(3)),
-                                            child: Text(
-                                              widget.navitems[index].name,
-                                              style: selectedIndex == index
-                                                  ? DefaultStyle.white20bold
-                                                  : DefaultStyle.gray18,
-                                            ),
-                                          ),
-                                          Opacity(
-                                              opacity: selectedIndex == index
-                                                  ? 1
-                                                  : 0,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil()
-                                                        .setWidth(3.5)),
-                                                child: Image.asset(
-                                                  'assets/pengke/nav_icon_right.png',
-                                                  fit: BoxFit.fitHeight,
-                                                  height: ScreenUtil()
-                                                      .setWidth(23.3),
+                                    behavior: HitTestBehavior.translucent,
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                            top: 0,
+                                            bottom: 0,
+                                            right: 0,
+                                            left: 0,
+                                            child: selectedIndex == index
+                                                ? Container(
+                                                    decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                          Color.fromRGBO(255, 0,
+                                                              107, 0.33),
+                                                          Color.fromRGBO(
+                                                              255, 0, 122, 0.0)
+                                                        ],
+                                                            begin: Alignment
+                                                                .bottomCenter,
+                                                            end: Alignment
+                                                                .topCenter)),
+                                                    child: Column(
+                                                      children: [],
+                                                    ),
+                                                  )
+                                                : Container()),
+                                        Container(
+                                          key: keys[index],
+                                          // height: DefaultStyle.navbarHegiht,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setWidth(13)),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: ScreenUtil()
+                                                        .setWidth(3)),
+                                                child: Text(
+                                                  widget.navitems[index].name,
+                                                  style: TextStyle(
+                                                      color:
+                                                          selectedIndex == index
+                                                              ? Colors.white
+                                                              : Color.fromRGBO(
+                                                                  255,
+                                                                  255,
+                                                                  255,
+                                                                  0.8),
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(
+                                                              selectedIndex ==
+                                                                      index
+                                                                  ? 18
+                                                                  : 16),
+                                                      fontWeight:
+                                                          selectedIndex ==
+                                                                  index
+                                                              ? FontWeight.bold
+                                                              : FontWeight
+                                                                  .normal),
                                                 ),
-                                              )),
-                                        ],
-                                      ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ))
                               .toList(),
@@ -177,34 +196,12 @@ class _ScrollnavState extends State<Scrollnav> {
                                 onTap: () {
                                   // 打开搜索
                                   // context.push('/${Routes.search}');
-                                  showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return StatefulBuilder(builder:
-                                            (context, setBottomSheetState) {
-                                          return Stack(
-                                            children: [
-                                              Positioned(
-                                                  child: ClipRRect(
-                                                child: Image.asset(
-                                                  'assets/pengke/search_bg.png',
-                                                  fit: BoxFit.fitWidth,
-                                                  width:
-                                                      ScreenUtil().screenWidth,
-                                                ),
-                                              )),
-                                            ],
-                                          );
-                                        });
-                                      });
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
                                       left: ScreenUtil().setWidth(6)),
                                   child: Image.asset(
-                                    'assets/pengke/icon_search.png',
+                                    'assets/images/icon_search.png',
                                     width: ScreenUtil().setWidth(20.5),
                                     height: ScreenUtil().setWidth(20.5),
                                   ),

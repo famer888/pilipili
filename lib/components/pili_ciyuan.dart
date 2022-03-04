@@ -8,7 +8,8 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:youyutv/theme/default.dart';
+import 'package:youyutv/components/common/scrollnav.dart';
+import 'package:youyutv/model/element.dart';
 
 class PiliCiyuan extends StatefulWidget {
   PiliCiyuan({Key key, this.isShow = false}) : super(key: key);
@@ -18,14 +19,61 @@ class PiliCiyuan extends StatefulWidget {
 }
 
 class _PiliCiyuanState extends State<PiliCiyuan> {
+  List<LinkModel> navitems;
+  int currentIndex = 0;
+  List navs = [
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    },
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    },
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    },
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    },
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    },
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    },
+    {
+      "id": 0,
+      "link_url": 'manhua',
+      "name": '漫画',
+    }
+  ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    navitems = navs.asMap().keys.map((e) {
+      return LinkModel.fromJson(navs[e]);
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Container(
-      child: Text(
-        'Pili次元',
-        style: DefaultStyle.black18bold,
-      ),
+        child: Scrollnav(
+      emitName: 'video_nav',
+      navitems: navitems,
+      pages: navs.asMap().keys.map((e) => Container()).toList(),
     ));
   }
 }

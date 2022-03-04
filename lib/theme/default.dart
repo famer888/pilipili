@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DefaultStyle {
   // 栏目顶部导航高度
-  static double get navbarHegiht => ScreenUtil().setWidth(42);
+  static double get navbarHegiht => ScreenUtil().setWidth(55);
   // 底部导航高度
   static double get bottomnavbarHegiht => ScreenUtil().setWidth(64);
   // 页面通用边距
