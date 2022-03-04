@@ -9,7 +9,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
+import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/model/element.dart';
+import 'package:pilipili/utils/pageviewmixin.dart';
+
+import '../utils/api.dart';
 
 class PiliCiyuan extends StatefulWidget {
   PiliCiyuan({Key key, this.isShow = false}) : super(key: key);
@@ -21,59 +25,54 @@ class PiliCiyuan extends StatefulWidget {
 class _PiliCiyuanState extends State<PiliCiyuan> {
   List<LinkModel> navitems;
   int currentIndex = 0;
-  List navs = [
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    },
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    },
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    },
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    },
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    },
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    },
-    {
-      "id": 0,
-      "link_url": 'manhua',
-      "name": '漫画',
-    }
-  ];
+  List pages = [];
+  bool initPage = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    navitems = navs.asMap().keys.map((e) {
-      return LinkModel.fromJson(navs[e]);
-    }).toList();
+    if (widget.isShow && !initPage) {
+      initPage = true;
+      getPageData();
+    }
+  }
+
+  void getPageData() async {
+    ElementModel data = await getFisrtTopNavConfig();
+    if (data == null) {
+      // netWorkErr = true;
+      setState(() {});
+      return;
+    }
+    setState(() {
+      navitems = data.value.asMap().keys.map((e) {
+        return LinkModel.fromJson(data.value[e]);
+      }).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scrollnav(
-      emitName: 'video_nav',
+    return Scrollnav(
+      emitName: 'pili_ciyuan',
       navitems: navitems,
-      pages: navs.asMap().keys.map((e) => Container()).toList(),
-    ));
+      onNavIndexChanged: (index) {
+        setState(() {
+          currentIndex = index;
+        });
+      },
+      pages: navitems
+          .asMap()
+          .keys
+          .map((e) => PageViewMixin(
+              child: navitems[e].redirectType == 3
+                  ? Lanmu(
+                      isShow: currentIndex == e,
+                      id: int.parse(navitems[e].linkUrl),
+                      parentName: 'jingxuan',
+                      index: e)
+                  : Container()))
+          .toList(),
+    );
   }
 }
