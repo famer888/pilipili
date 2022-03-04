@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youyutv/mixin/cardMixin.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/networkImage.dart';
-import 'package:youyutv/utils/index.dart';
+import 'package:pilipili/mixin/cardMixin.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/index.dart';
 
 // ignore: must_be_immutable
 class Vcard extends StatefulWidget {

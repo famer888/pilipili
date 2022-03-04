@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:youyutv/components/card/vcard.dart';
-import 'package:youyutv/components/common/widgetitlebar.dart';
-import 'package:youyutv/components/page_status.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/api.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/networkImage.dart';
+import 'package:pilipili/components/card/vcard.dart';
+import 'package:pilipili/components/common/widgetitlebar.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class V4Column extends StatefulWidget {
   V4Column(

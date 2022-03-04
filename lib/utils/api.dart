@@ -1,8 +1,8 @@
 //获取精选顶部导航
 import 'package:dio/dio.dart';
-import 'package:youyutv/model/construct.dart';
-import 'package:youyutv/model/element.dart';
-import 'package:youyutv/utils/common.dart';
+import 'package:pilipili/model/construct.dart';
+import 'package:pilipili/model/element.dart';
+import 'package:pilipili/utils/common.dart';
 
 import 'http.dart';
 
