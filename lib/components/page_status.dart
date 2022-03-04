@@ -1,8 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/networkImage.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class PageStatus {
   //全屏式loding

@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:universal_html/html.dart' as html;
-import 'package:youyutv/global.dart';
-import 'package:youyutv/routers.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/crypto.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/crypto.dart';
 import 'package:http_parser/http_parser.dart';
 
 // 是否因token失效跳转到登录页

@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:youyutv/model/homedata.dart';
-import 'package:youyutv/model/systemnotice.dart';
-import 'package:youyutv/utils/common.dart';
+import 'package:pilipili/model/homedata.dart';
+import 'package:pilipili/model/systemnotice.dart';
+import 'package:pilipili/utils/common.dart';
 
 class GetConfig {
   static String imagePath;

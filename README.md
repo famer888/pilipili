@@ -1,4 +1,4 @@
-# youyutv
+# pilipili
 
 # 项目须知
 1. flutter版本2.5.3，使用fvm确保自己的版本OK

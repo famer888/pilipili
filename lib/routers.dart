@@ -1,14 +1,21 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/pages/welcome.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/index.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/pages/welcome.dart';
+import 'package:pilipili/components/xianmian.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/index.dart';
 
 class Routes {
+  static String xianmian = 'xianmian';
   static List<GoRoute> getDetailRoutes() {
-    return [];
+    return [
+      GoRoute(
+        path: xianmian,
+        builder: (context, state) => Xianmian(),
+      ),
+    ];
   }
 
   static GoRouter init() {

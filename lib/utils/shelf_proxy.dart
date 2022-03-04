@@ -10,7 +10,7 @@ import 'package:pedantic/pedantic.dart';
 import 'package:shelf/shelf.dart';
 
 import 'package:shelf/shelf_io.dart' as shelf_io;
-import 'package:youyutv/utils/crypto.dart';
+import 'package:pilipili/utils/crypto.dart';
 import 'package:shelf_static/shelf_static.dart';
 
 /// A handler that proxies requests to [url].

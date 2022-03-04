@@ -10,16 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/networkImage.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
-  PageTitleBar({Key key, this.title, this.rightWidget, this.height})
+  PageTitleBar(
+      {Key key, this.title, this.rightWidget, this.height, this.paddingTop = 0})
       : super(key: key);
   String title;
   Widget rightWidget;
   double height;
+  double paddingTop;
   @override
   _PageTitleBarState createState() => _PageTitleBarState();
 }
@@ -36,11 +38,13 @@ class _PageTitleBarState extends State<PageTitleBar> {
       alignment: Alignment.center,
       children: [
         Container(
+            padding: EdgeInsets.only(top: widget.paddingTop),
+            color: DefaultStyle.themeColor,
             alignment: Alignment.center,
             width: ScreenUtil().screenWidth,
-            height: widget.height ?? DefaultStyle.navbarHegiht,
             child: Container(
               alignment: Alignment.center,
+              height: widget.height ?? DefaultStyle.navbarHegiht,
               width: ScreenUtil().screenWidth * 0.8,
               child: Text(
                 widget.title != null ? widget.title : '二级列表页',
@@ -51,7 +55,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
             left: 0,
             right: 0,
             bottom: 0,
-            top: 0,
+            top: widget.paddingTop,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -70,7 +74,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
                       width: ScreenUtil().setWidth(40),
                       height: ScreenUtil().setWidth(40),
                       child: Image.asset(
-                        'assets/pengke/backarrow.png',
+                        'assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(20),
                         height: ScreenUtil().setWidth(20),
                       ),

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youyutv/model/element.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/index.dart';
+import 'package:pilipili/model/element.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/index.dart';
 
 class Scrollnav extends StatefulWidget {
   Scrollnav(

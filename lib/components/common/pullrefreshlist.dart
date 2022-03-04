@@ -5,8 +5,8 @@ import 'package:flutter/material.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/networkImage.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class GifHeader extends RefreshIndicator {
   GifHeader()

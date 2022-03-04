@@ -8,10 +8,10 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:youyutv/components/common/scrollnav.dart';
-import 'package:youyutv/components/lanmu.dart';
-import 'package:youyutv/model/element.dart';
-import 'package:youyutv/utils/pageviewmixin.dart';
+import 'package:pilipili/components/common/scrollnav.dart';
+import 'package:pilipili/components/lanmu.dart';
+import 'package:pilipili/model/element.dart';
+import 'package:pilipili/utils/pageviewmixin.dart';
 
 import '../utils/api.dart';
 

@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/http.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/http.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:youyutv/utils/networkImage.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class UpdateModel {
   static void showAnnouncementDialog(BackButtonBehavior backButtonBehavior,
