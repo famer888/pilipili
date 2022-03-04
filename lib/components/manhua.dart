@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:youyutv/theme/default.dart';
+import 'package:pilipili/theme/default.dart';
 
 class Manhua extends StatefulWidget {
   Manhua({Key key, this.isShow = false}) : super(key: key);

@@ -9,12 +9,12 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/utils/crypto.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/utils/crypto.dart';
 import 'package:hive/hive.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/index.dart';
-import 'package:youyutv/utils/logUtil.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/logUtil.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Dio dio = Dio();

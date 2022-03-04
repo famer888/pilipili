@@ -1,8 +1,8 @@
 // 一级权限
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:youyutv/store/homeConfig.dart';
-import 'package:youyutv/utils/common.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/utils/common.dart';
 
 const RESOURCE_TYPE_LONG_VIDEO = 1; // 长视频
 const RESOURCE_TYPE_SHORT_VIDEO = 2; // 短视频

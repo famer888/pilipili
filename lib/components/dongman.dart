@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:youyutv/model/element.dart';
-import 'package:youyutv/theme/default.dart';
+import 'package:pilipili/model/element.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pilipili/routers.dart';
 
 class Dongman extends StatefulWidget {
   Dongman({Key key, this.isShow}) : super(key: key);
@@ -32,9 +34,14 @@ class _DongmanState extends State<Dongman> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Container(
-      child: Text(
-        '动漫',
-        style: DefaultStyle.black18bold,
+      child: GestureDetector(
+        onTap: () {
+          context.push("/${Routes.xianmian}");
+        },
+        child: Text(
+          '动漫',
+          style: DefaultStyle.black18bold,
+        ),
       ),
     ));
   }

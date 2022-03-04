@@ -7,17 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:youyutv/components/dongman.dart';
-import 'package:youyutv/components/manhua.dart';
-import 'package:youyutv/components/page_status.dart';
-import 'package:youyutv/components/pili_ciyuan.dart';
-import 'package:youyutv/components/updateModel.dart';
-import 'package:youyutv/components/wode.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/model/homedata.dart';
-import 'package:youyutv/store/homeConfig.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/common.dart';
+import 'package:pilipili/components/dongman.dart';
+import 'package:pilipili/components/manhua.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/pili_ciyuan.dart';
+import 'package:pilipili/components/updateModel.dart';
+import 'package:pilipili/components/wode.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/model/homedata.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:hive/hive.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -36,23 +36,23 @@ class _HomeState extends State<Home> {
   List navBarItem = [
     {
       "title": "pili次元",
-      "activeIcon": "",
-      "icon": "",
+      "activeIcon": "assets/images/bottomTab/pili_active.png",
+      "icon": "assets/images/bottomTab/pili.png",
     },
     {
       "title": "动漫",
-      "activeIcon": "",
-      "icon": "",
+      "activeIcon": "assets/images/bottomTab/cartoon_active.png",
+      "icon": "assets/images/bottomTab/cartoon.png",
     },
     {
       "title": "漫画",
-      "activeIcon": "",
-      "icon": "",
+      "activeIcon": "assets/images/bottomTab/comics_active.png",
+      "icon": "assets/images/bottomTab/comics.png",
     },
     {
       "title": "我的",
-      "activeIcon": "",
-      "icon": "",
+      "activeIcon": "assets/images/bottomTab/user_active.png",
+      "icon": "assets/images/bottomTab/user.png",
     },
   ];
   int selectedKey = 0;
@@ -400,7 +400,14 @@ class _HomeState extends State<Home> {
                           left: 0,
                           bottom: 0,
                           child: Container(
-                            color:Colors.black,
+                            decoration:
+                                BoxDecoration(color: Colors.white, boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromRGBO(255, 91, 140, 0.4),
+                                  offset: Offset(5, 6),
+                                  blurRadius: 10,
+                                  spreadRadius: 5)
+                            ]),
                             child: Stack(
                               children: [
                                 Container(
@@ -428,24 +435,23 @@ class _HomeState extends State<Home> {
                                               child: Column(
                                                 children: [
                                                   !loading
-                                                      ?Container()
-                                                      // Image.asset(
-                                                      //     selectedKey == key
-                                                      //         ? navBarItem[key]
-                                                      //             ['activeIcon']
-                                                      //         : navBarItem[key]
-                                                      //             ['icon'],
-                                                      //     width: ScreenUtil()
-                                                      //         .setWidth(30),
-                                                      //     height: ScreenUtil()
-                                                      //         .setWidth(30),
-                                                      //     fit: BoxFit.fitWidth)
+                                                      ? Image.asset(
+                                                          selectedKey == key
+                                                              ? navBarItem[key]
+                                                                  ['activeIcon']
+                                                              : navBarItem[key]
+                                                                  ['icon'],
+                                                          width: ScreenUtil()
+                                                              .setWidth(30),
+                                                          height: ScreenUtil()
+                                                              .setWidth(30),
+                                                          fit: BoxFit.fitWidth)
                                                       : Container(),
                                                   Text(
                                                     navBarItem[key]['title'],
                                                     style: selectedKey == key
                                                         ? DefaultStyle.zhuti12
-                                                        : DefaultStyle.lgray10,
+                                                        : DefaultStyle.lgray12,
                                                   )
                                                 ],
                                                 mainAxisAlignment:

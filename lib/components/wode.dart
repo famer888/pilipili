@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:youyutv/components/common/pullrefreshlist.dart';
-import 'package:youyutv/components/page_status.dart';
-import 'package:youyutv/global.dart';
-import 'package:youyutv/model/homedata.dart';
-import 'package:youyutv/routers.dart';
-import 'package:youyutv/store/homeConfig.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/index.dart';
-import 'package:youyutv/utils/networkImage.dart';
+import 'package:pilipili/components/common/pullrefreshlist.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/model/homedata.dart';
+import 'package:pilipili/routers.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class Wode extends StatefulWidget {
   Wode({Key key, this.isShow = false}) : super(key: key);

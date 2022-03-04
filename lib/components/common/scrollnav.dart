@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youyutv/model/element.dart';
-import 'package:youyutv/theme/default.dart';
-import 'package:youyutv/utils/index.dart';
+import 'package:pilipili/model/element.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/index.dart';
 
 class Scrollnav extends StatefulWidget {
   Scrollnav(
@@ -83,145 +83,154 @@ class _ScrollnavState extends State<Scrollnav> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: (widget.navitems != null && widget.pages != null)
-            ? Column(
-                children: [
-                  Container(
-                    alignment: AlignmentDirectional.center,
-                    color: Colors.transparent,
-                    width: ScreenUtil().screenWidth,
-                    height: DefaultStyle.navbarHegiht,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: DefaultStyle.pagePadding),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            child: ListView(
-                          cacheExtent: ScreenUtil().screenHeight * 5,
-                          physics: ClampingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          controller: _controller,
-                          children: widget.navitems
-                              .asMap()
-                              .keys
-                              .map<Widget>((index) => GestureDetector(
-                                    onTap: () {
-                                      if (selectedIndex == index) {
-                                        widget.onBackTop(index);
-                                      }
-                                      _pageController.animateToPage(index,
-                                          duration: Duration(milliseconds: 200),
-                                          curve: Curves.easeInOut);
-                                    },
-                                    child: Container(
+    return (widget.navitems != null && widget.pages != null)
+        ? Stack(
+            children: [
+              PageView(
+                controller: _pageController,
+                children: widget.pages,
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                alignment: AlignmentDirectional.center,
+                color: Color.fromRGBO(130, 26, 70, 0.44),
+                width: ScreenUtil().screenWidth,
+                height: DefaultStyle.navbarHegiht +
+                    MediaQuery.of(context).padding.top,
+                padding: EdgeInsets.only(
+                    left: DefaultStyle.pagePadding,
+                    right: DefaultStyle.pagePadding,
+                    top: MediaQuery.of(context).padding.top),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: ListView(
+                      cacheExtent: ScreenUtil().screenHeight * 5,
+                      physics: ClampingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      controller: _controller,
+                      children: widget.navitems
+                          .asMap()
+                          .keys
+                          .map<Widget>((index) => GestureDetector(
+                                onTap: () {
+                                  if (selectedIndex == index) {
+                                    widget.onBackTop(index);
+                                  }
+                                  _pageController.animateToPage(index,
+                                      duration: Duration(milliseconds: 200),
+                                      curve: Curves.easeInOut);
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                        top: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        child: selectedIndex == index
+                                            ? Container(
+                                                padding: EdgeInsets.only(
+                                                    top: ScreenUtil()
+                                                        .setWidth(13)),
+                                                decoration: BoxDecoration(
+                                                    gradient: RadialGradient(
+                                                        colors: [
+                                                      Color.fromRGBO(
+                                                          255, 0, 107, 0.33),
+                                                      Color.fromRGBO(
+                                                          255, 0, 122, 0.0)
+                                                    ],
+                                                        radius: 0.8,
+                                                        center: Alignment
+                                                            .bottomCenter)),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/icon_love.png',
+                                                      width: ScreenUtil()
+                                                          .setWidth(6.5),
+                                                    ),
+                                                    Container(
+                                                      color: Color(0xffFFDCE9),
+                                                      height: ScreenUtil()
+                                                          .setWidth(1),
+                                                      width: ScreenUtil()
+                                                          .setWidth(37),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Container()),
+                                    Container(
                                       key: keys[index],
                                       // height: DefaultStyle.navbarHegiht,
-                                      padding: EdgeInsets.only(
-                                          right: ScreenUtil().setWidth(5)),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              ScreenUtil().setWidth(13)),
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Opacity(
-                                            opacity:
-                                                selectedIndex == index ? 1 : 0,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: ScreenUtil()
-                                                      .setWidth(3.5)),
-                                              child: Image.asset(
-                                                'assets/pengke/nav_icon_left.png',
-                                                fit: BoxFit.fitHeight,
-                                                height:
-                                                    ScreenUtil().setWidth(23.3),
-                                              ),
-                                            ),
-                                          ),
                                           Container(
+                                            alignment: Alignment.center,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal:
                                                     ScreenUtil().setWidth(3)),
                                             child: Text(
                                               widget.navitems[index].name,
-                                              style: selectedIndex == index
-                                                  ? DefaultStyle.white20bold
-                                                  : DefaultStyle.gray18,
+                                              style: TextStyle(
+                                                  color: selectedIndex == index
+                                                      ? Colors.white
+                                                      : Color.fromRGBO(
+                                                          255, 255, 255, 0.8),
+                                                  fontSize: ScreenUtil().setSp(
+                                                      selectedIndex == index
+                                                          ? 18
+                                                          : 16),
+                                                  fontWeight:
+                                                      selectedIndex == index
+                                                          ? FontWeight.bold
+                                                          : FontWeight.normal),
                                             ),
                                           ),
-                                          Opacity(
-                                              opacity: selectedIndex == index
-                                                  ? 1
-                                                  : 0,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil()
-                                                        .setWidth(3.5)),
-                                                child: Image.asset(
-                                                  'assets/pengke/nav_icon_right.png',
-                                                  fit: BoxFit.fitHeight,
-                                                  height: ScreenUtil()
-                                                      .setWidth(23.3),
-                                                ),
-                                              )),
                                         ],
                                       ),
-                                    ),
-                                  ))
-                              .toList(),
-                        )),
-                        widget.hideClose
-                            ? Container()
-                            : GestureDetector(
-                                onTap: () {
-                                  // 打开搜索
-                                  // context.push('/${Routes.search}');
-                                  showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return StatefulBuilder(builder:
-                                            (context, setBottomSheetState) {
-                                          return Stack(
-                                            children: [
-                                              Positioned(
-                                                  child: ClipRRect(
-                                                child: Image.asset(
-                                                  'assets/pengke/search_bg.png',
-                                                  fit: BoxFit.fitWidth,
-                                                  width:
-                                                      ScreenUtil().screenWidth,
-                                                ),
-                                              )),
-                                            ],
-                                          );
-                                        });
-                                      });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: ScreenUtil().setWidth(6)),
-                                  child: Image.asset(
-                                    'assets/pengke/icon_search.png',
-                                    width: ScreenUtil().setWidth(20.5),
-                                    height: ScreenUtil().setWidth(20.5),
-                                  ),
-                                ))
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(6)),
-                    child: PageView(
-                      controller: _pageController,
-                      children: widget.pages,
-                    ),
-                  ))
-                ],
-              )
-            : Container());
+                                    )
+                                  ],
+                                ),
+                              ))
+                          .toList(),
+                    )),
+                    widget.hideClose
+                        ? Container()
+                        : GestureDetector(
+                            onTap: () {
+                              // 打开搜索
+                              // context.push('/${Routes.search}');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: ScreenUtil().setWidth(6)),
+                              child: Image.asset(
+                                'assets/images/icon_search.png',
+                                width: ScreenUtil().setWidth(20.5),
+                                height: ScreenUtil().setWidth(20.5),
+                              ),
+                            ))
+                  ],
+                ),
+              ))
+            ],
+          )
+        : Container();
   }
 }

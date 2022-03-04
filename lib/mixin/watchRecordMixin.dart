@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:youyutv/utils/common.dart';
-import 'package:youyutv/utils/index.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/index.dart';
 
 mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
   Timer watchRcordTimer;
