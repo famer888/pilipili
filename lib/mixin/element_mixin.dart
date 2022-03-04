@@ -78,7 +78,7 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
         );
         break;
       case 5:
-        yyElement = V4Column(
+        yyElement = HscrollWidget(
           data: elementValue,
           contentType: element['content_type'],
           title: element['title'] == null || element['title'] == ''
