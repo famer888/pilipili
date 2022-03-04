@@ -46,7 +46,7 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
       child: Image.asset(
-     mode == RefreshStatus.refreshing
+        mode == RefreshStatus.refreshing
             ? 'assets/pengke/downrefresh.gif'
             : 'assets/pengke/downrefresh.png',
         height: ScreenUtil().setWidth(50),
@@ -136,7 +136,30 @@ class _PullRefreshListState extends State<PullRefreshList> {
       body: SmartRefresher(
         enablePullDown: widget.onRefresh != null,
         enablePullUp: widget.onLoading != null,
-        header: GifHeader(),
+        header: CustomHeader(
+          builder: (BuildContext context, RefreshStatus mode) {
+            Widget body;
+            if (mode == RefreshStatus.idle) {
+              body = Text("再拉一点");
+            } else if (mode == RefreshStatus.refreshing) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == RefreshStatus.failed) {
+              body = Text("加载失败，点击重新加载");
+            } else if (mode == RefreshStatus.canRefresh) {
+              body = Text("松手加载更多数据");
+            } else if (mode == RefreshStatus.completed) {
+              body = Text("数据加载成功");
+            }  else {
+              body = Text("老兄，我已经在海底了，再拉跟你急了");
+            }
+            return Container(
+              height: 55.0,
+              child: DefaultTextStyle(
+                  style: TextStyle(color: Colors.black),
+                  child: Center(child: body)),
+            );
+          },
+        ),
         footer: CustomFooter(
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
@@ -154,7 +177,7 @@ class _PullRefreshListState extends State<PullRefreshList> {
             return Container(
               height: 55.0,
               child: DefaultTextStyle(
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   child: Center(child: body)),
             );
           },

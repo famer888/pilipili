@@ -36,15 +36,11 @@ class AppGlobal {
   static Box appBox;
   static Box imageCacheBox;
   static Box imageAssetBox;
-  static Box videoWatchRecordBox;
-  static Box manhuaWatchRecordBox;
-  static Box bookWatchRecordBox;
-  static Box smallVideoWatchRecordBox;
+  static bool apInit = false;
   static List helpList = [];
   static int isSetPassword = 0;
   static int vipLevel = 0;
   static BuildContext appContext;
-  static bool apInit = false;
   static bool routerReplace = false;
   static bool videoPageIsActive = true;
   static Map<String, dynamic> currentDetailRouteExtra;
