@@ -103,7 +103,7 @@ class PlatformAwareNetworkImage extends StatefulWidget {
       this.filterQuality = FilterQuality.none,
       this.alignment = Alignment.center,
       this.nothumb = false,
-      this.background = const Color(0xff28242e)})
+      this.background = const Color(0xffFFDFE9)})
       : super(key: key);
   final dynamic url;
   final BoxFit fit;
@@ -158,7 +158,7 @@ class AwareNetworkImage extends StatefulWidget {
       this.clipBehavior = Clip.hardEdge,
       this.filterQuality = FilterQuality.none,
       this.alignment = Alignment.center,
-      this.background = const Color(0xffFFDFE9)})
+      this.background})
       : super(key: key);
   final dynamic url;
   final BoxFit fit;
@@ -289,7 +289,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
               ? Center(
                   child: Image.asset(
                     'assets/images/logo.png',
-                    width: widget.width / 3,
+                    width: widget.width * 0.7,
                     fit: BoxFit.fitWidth,
                   ),
                 )
@@ -299,28 +299,31 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
             right: 0,
             bottom: 0,
             left: 0,
-            child: !isAnimated
-                ? (isShow
-                    ? Image.memory(
-                        widget.isVideoThumb ? widget.url : _url,
-                        alignment: widget.alignment,
-                        fit: widget.fit,
-                        filterQuality: widget.filterQuality,
-                      )
-                    : Container())
-                : AnimatedContainer(
-                    curve: Curves.easeIn,
-                    width: isShow ? widget.width : 0,
-                    height: isShow ? widget.height : 0,
-                    child: isShow
-                        ? Image.memory(
-                            widget.isVideoThumb ? widget.url : _url,
-                            fit: widget.fit,
-                            alignment: widget.alignment,
-                            filterQuality: widget.filterQuality,
-                          )
-                        : Container(),
-                    duration: Duration(milliseconds: 300)),
+            child: Container(
+              alignment: Alignment.center,
+              child: !isAnimated || widget.noVisibilityDetector
+                  ? (isShow
+                      ? Image.memory(
+                          widget.isVideoThumb ? widget.url : _url,
+                          alignment: widget.alignment,
+                          fit: widget.fit,
+                          filterQuality: widget.filterQuality,
+                        )
+                      : Container())
+                  : AnimatedContainer(
+                      curve: Curves.easeIn,
+                      width: isShow ? widget.width : 0,
+                      height: isShow ? widget.height : 0,
+                      child: isShow
+                          ? Image.memory(
+                              widget.isVideoThumb ? widget.url : _url,
+                              fit: widget.fit,
+                              alignment: widget.alignment,
+                              filterQuality: widget.filterQuality,
+                            )
+                          : Container(),
+                      duration: Duration(milliseconds: 200)),
+            ),
           )
         ],
       ),
