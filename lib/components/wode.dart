@@ -42,16 +42,39 @@ class _WodeState extends State<Wode> {
     if (widget.isShow && pageStatus == 0) {}
   }
 
+  List MenuList = [
+    {'name': "观看记录", 'icon': "record"},
+    {'name': "我购买的", 'icon': "buy"},
+    {'name': "我的收藏", 'icon': "collect"},
+    {'name': "我的下载", 'icon': "download"},
+    {'name': "在线客服", 'icon': "customer"},
+    {'name': "联系官方", 'icon': "official"},
+    {'name': "邀请好友", 'icon': "invite"},
+    {'name': "应用推荐", 'icon': "app_recommen"},
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [_header(), _cardList()],
+      children: [
+        header(),
+        cardList(),
+        SizedBox(
+          height: ScreenUtil().setHeight(22),
+        ),
+        setHandleList()
+      ],
     );
   }
 
-  Widget _cardList() {
+  Widget cardList() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
+      margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
+      padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(14)),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.0, color: Color(0xFFFFDCE6)),
+        ),
+      ),
       child: Flex(
         direction: Axis.horizontal,
         children: <Widget>[
@@ -60,7 +83,7 @@ class _WodeState extends State<Wode> {
             children: <Widget>[
               Image.asset(
                 "assets/images/wode/vip_bg.png",
-                width: ScreenUtil().setHeight(158),
+                width: ScreenUtil().setHeight(156),
                 fit: BoxFit.fill,
               ),
               Positioned(
@@ -203,10 +226,55 @@ class _WodeState extends State<Wode> {
     );
   }
 
-  Widget _header() {
+  Widget setHandleList() {
+    Member members = Provider.of<HomeConfig>(context, listen: false).member;
+    List<Widget> tempList = [];
+    for (var item in MenuList) {
+      tempList.add(
+        new GestureDetector(
+          onTap: () {
+            if (item['router'] != null) {
+              context.push(item['router']);
+            }
+          },
+          child: Container(
+            width: ScreenUtil().screenWidth / 4,
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/wode/${item['icon']}.png',
+                  fit: BoxFit.fitWidth,
+                  width: ScreenUtil().setWidth(25),
+                  // height: ScreenUtil().setWidth(45),
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(2),
+                ),
+                Text(
+                  item['name'],
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Color(0xff6D6D6D),
+                    fontSize: ScreenUtil().setSp(12),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return Wrap(
+      spacing: ScreenUtil().setWidth(0),
+      runSpacing: ScreenUtil().setWidth(25),
+      children: tempList,
+    );
+  }
+
+  Widget header() {
     return Container(
       padding: EdgeInsets.only(
-          top: ScreenUtil().setWidth(10),
+          top: MediaQuery.of(context).padding.top,
           left: ScreenUtil().setWidth(18),
           right: ScreenUtil().setWidth(16),
           bottom: ScreenUtil().setWidth(18)),
