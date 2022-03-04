@@ -10,75 +10,75 @@ class DefaultStyle {
   static double get pagePadding => ScreenUtil().setWidth(12.5);
   // 字体样式
   static TextStyle zhuti10 = TextStyle(
-      color: Color(0xff62f7ff),
+      color: Color(0xffff5b8c),
       fontSize: ScreenUtil().setSp(10),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti12 = TextStyle(
-      color: Color(0xff62f7ff),
+      color: Color(0xffff5b8c),
       fontSize: ScreenUtil().setSp(12),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti13 = TextStyle(
-      color: Color(0xff62f7ff),
+      color: Color(0xffff5b8c),
       fontSize: ScreenUtil().setSp(13),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti14 = TextStyle(
-      color: Color(0xff62f7ff),
+      color: Color(0xffff5b8c),
       fontSize: ScreenUtil().setSp(14),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti15 = TextStyle(
-      color: Color(0xff62f7ff),
+      color: Color(0xffff5b8c),
       fontSize: ScreenUtil().setSp(15),
       height: 1.5,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti16bolb = TextStyle(
-      color: Color(0xff62f7ff),
+      color: Color(0xffff5b8c),
       fontWeight: FontWeight.bold,
       fontSize: ScreenUtil().setSp(16),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle lgray10 = TextStyle(
-      color: Color(0xffd7d7d7),
+      color: Color(0xff979797),
       fontSize: ScreenUtil().setSp(10),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle lgray11 = TextStyle(
-      color: Color(0xffd7d7d7),
+      color: Color(0xff979797),
       fontSize: ScreenUtil().setSp(11),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle lgray12 = TextStyle(
-      color: Color(0xffd7d7d7),
+      color: Color(0xff979797),
       fontSize: ScreenUtil().setSp(12),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle lgray13 = TextStyle(
-      color: Color(0xffd7d7d7),
+      color: Color(0xff979797),
       fontSize: ScreenUtil().setSp(13),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle lgray14 = TextStyle(
-      color: Color(0xffd7d7d7),
+      color: Color(0xff979797),
       fontSize: ScreenUtil().setSp(14),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle lgray16bolb = TextStyle(
-      color: Color(0xffd7d7d7),
+      color: Color(0xff979797),
       fontWeight: FontWeight.bold,
       fontSize: ScreenUtil().setSp(16),
       overflow: TextOverflow.ellipsis,
