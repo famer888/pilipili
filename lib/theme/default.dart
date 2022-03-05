@@ -12,38 +12,38 @@ class DefaultStyle {
   static Color themeColor = Color(0xffFF84A9);
   // 字体样式
   static TextStyle zhuti10 = TextStyle(
-      color: Color(0xffff5b8c),
+      color: Color(0xffFF84A9),
       fontSize: ScreenUtil().setSp(10),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti12 = TextStyle(
-      color: Color(0xffff5b8c),
+      color: Color(0xffFF84A9),
       fontSize: ScreenUtil().setSp(12),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti13 = TextStyle(
-      color: Color(0xffff5b8c),
+      color: Color(0xffFF84A9),
       fontSize: ScreenUtil().setSp(13),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti14 = TextStyle(
-      color: Color(0xffff5b8c),
+      color: Color(0xffFF84A9),
       fontSize: ScreenUtil().setSp(14),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti15 = TextStyle(
-      color: Color(0xffff5b8c),
+      color: Color(0xffFF84A9),
       fontSize: ScreenUtil().setSp(15),
       height: 1.5,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle zhuti16bolb = TextStyle(
-      color: Color(0xffff5b8c),
+      color: Color(0xffFF84A9),
       fontWeight: FontWeight.bold,
       fontSize: ScreenUtil().setSp(16),
       overflow: TextOverflow.ellipsis,

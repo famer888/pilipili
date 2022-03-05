@@ -25,6 +25,13 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   AppGlobal.imageCacheBox = await Hive.openBox('HiveBox_ImageCache'); //图片缓存
   AppGlobal.imageAssetBox = await Hive.openBox('HiveBox_ImageAsset'); //UI图片缓存
+  AppGlobal.videoWatchRecordBox =
+      await Hive.openBox('HiveBox_VideoWatchRecord');
+  AppGlobal.manhuaWatchRecordBox =
+      await Hive.openBox('HiveBox_ManhuaWatchRecord');
+  AppGlobal.bookWatchRecordBox = await Hive.openBox('HiveBox_BookWatchRecord');
+  AppGlobal.smallVideoWatchRecordBox =
+      await Hive.openBox('HiveBox_smallVideoWatchRecord');
   // 注册图片加载线程
   DefaultDelegate<dynamic, dynamic> fooDelegate =
       DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
@@ -44,7 +51,7 @@ void main() async {
 
   // 禁用图片缓存
   PaintingBinding.instance.imageCache.maximumSize = 0;
-	PaintingBinding.instance.imageCache.maximumSizeBytes = 0;
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 0;
 
   // 搭建m3u8代理服务器
   // if (!kIsWeb) {
