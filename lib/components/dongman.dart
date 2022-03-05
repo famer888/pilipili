@@ -4,6 +4,7 @@ import 'package:pilipili/model/element.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/common.dart';
 
 class Dongman extends StatefulWidget {
   Dongman({Key key, this.isShow}) : super(key: key);
@@ -36,7 +37,8 @@ class _DongmanState extends State<Dongman> {
         child: Container(
       child: GestureDetector(
         onTap: () {
-          context.push("/${Routes.xianmian}");
+          // context.push("/${Routes.seconedPage}");
+          context.push(CommonUtils.getRealHash('seconedPage/网黄'));
         },
         child: Text(
           '动漫',

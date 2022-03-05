@@ -8,17 +8,9 @@ import 'package:pilipili/theme/default.dart';
 class WidgetTitleBar extends StatefulWidget {
   WidgetTitleBar(
       {Key key,
-      this.title,
-      this.hasMore = false,
-      this.moreOnTap,
-      this.contentType,
-      this.morePageType})
+      this.title})
       : super(key: key);
   String title;
-  bool hasMore;
-  int contentType;
-  Function moreOnTap;
-  int morePageType;
   @override
   _WidgetTitleBarState createState() => _WidgetTitleBarState();
 }
@@ -31,61 +23,30 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          child: Row(
-            children: [
-              Expanded(
-                  child: Text(
-                widget.title,
-                style: DefaultStyle.white18bold,
-              )),
-              // widget.hasMore
-              //     ? GestureDetector(
-              //         onTap: () {
-              //           if (widget.morePageType > 2) {
-              //             context.push(
-              //                 '/updateList/${widget.contentType}/${widget.morePageType}');
-              //           } else {
-              //             if (widget.moreOnTap != null) {
-              //               widget.moreOnTap();
-              //             }
-              //           }
-              //         },
-              //         behavior: HitTestBehavior.translucent,
-              //         child: Padding(
-              //           padding: EdgeInsets.symmetric(
-              //               vertical: ScreenUtil().setWidth(8)),
-              //           child: Row(
-              //             children: [
-              //               Container(
-              //                 padding: EdgeInsets.only(
-              //                     left: ScreenUtil().setWidth(10)),
-              //                 child: Text(
-              //                   '更多',
-              //                   style: DefaultStyle.gray12,
-              //                 ),
-              //               ),
-              //               Container(
-              //                 padding: EdgeInsets.only(
-              //                     left: ScreenUtil().setWidth(6.5)),
-              //                 child: Image.asset(
-              //                   'assets/pengke/icon_more.png',
-              //                   width: ScreenUtil().setWidth(12),
-              //                   height: ScreenUtil().setWidth(12),
-              //                 ),
-              //               )
-              //             ],
-              //           ),
-              //         ),
-              //       )
-              //     : Container()
-            ],
+    return Padding(
+      padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(16)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/icon_love_red.png',
+            width: ScreenUtil().setWidth(6),
+            height: ScreenUtil().setWidth(6),
           ),
-        ),
-      ],
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(8)),
+            child: Text(
+              widget.title,
+              style: DefaultStyle.black18bold,
+            ),
+          ),
+          Image.asset(
+            'assets/images/icon_love_red.png',
+            width: ScreenUtil().setWidth(6),
+            height: ScreenUtil().setWidth(6),
+          ),
+        ],
+      ),
     );
   }
 }

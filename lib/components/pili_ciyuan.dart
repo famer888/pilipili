@@ -53,26 +53,28 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollnav(
-      emitName: 'pili_ciyuan',
-      navitems: navitems,
-      onNavIndexChanged: (index) {
-        setState(() {
-          currentIndex = index;
-        });
-      },
-      pages: navitems
-          .asMap()
-          .keys
-          .map((e) => PageViewMixin(
-              child: navitems[e].redirectType == 3
-                  ? Lanmu(
-                      isShow: currentIndex == e,
-                      id: int.parse(navitems[e].linkUrl),
-                      parentName: 'jingxuan',
-                      index: e)
-                  : Container()))
-          .toList(),
-    );
+    return navitems == null
+        ? Container()
+        : Scrollnav(
+            emitName: 'pili_ciyuan',
+            navitems: navitems,
+            onNavIndexChanged: (index) {
+              // setState(() {
+              //   currentIndex = index;
+              // });
+            },
+            pages: navitems
+                .asMap()
+                .keys
+                .map((e) => PageViewMixin(
+                    child: navitems[e].redirectType == 3
+                        ? Lanmu(
+                            isShow: currentIndex == e,
+                            id: int.parse(navitems[e].linkUrl),
+                            parentName: 'jingxuan',
+                            index: e)
+                        : Container()))
+                .toList(),
+          );
   }
 }

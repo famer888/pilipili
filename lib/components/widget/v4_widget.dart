@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pilipili/components/card/vcard.dart';
+import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/networkImage.dart';
 
 class V4Column extends StatefulWidget {
   V4Column(
@@ -20,7 +18,6 @@ class V4Column extends StatefulWidget {
       this.morePageType,
       this.contentType,
       this.showField,
-      this.changeButton,
       this.limit,
       this.id,
       this.element})
@@ -31,7 +28,6 @@ class V4Column extends StatefulWidget {
   final int morePageType;
   final String showField;
   final int contentType;
-  final bool changeButton;
   final int limit;
   final dynamic id;
   final dynamic element;
@@ -83,25 +79,19 @@ class _V4ColumnState extends State<V4Column> {
         children: [
           widget.title != null
               ? WidgetTitleBar(
-                  morePageType: widget.morePageType,
                   title: widget.title,
-                  contentType: widget.contentType,
-                  hasMore: widget.moreButton,
-                  moreOnTap: () {
-                    context.push(
-                        '/list/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
-                  })
+                )
               : Container(),
           loading
               ? PageStatus.loading(mounted)
               : Wrap(
                   spacing: ScreenUtil().setWidth(7),
-                  runSpacing: ScreenUtil().setWidth(16),
+                  runSpacing: ScreenUtil().setWidth(10),
                   alignment: WrapAlignment.spaceBetween,
                   children: dataList
                       .asMap()
                       .keys
-                      .map((e) => Vcard(
+                      .map((e) => Hcard(
                             isSubtitle: true,
                             page: ((page * widget.element['max_num']) /
                                     AppGlobal.smallVideoLimit)
@@ -110,33 +100,40 @@ class _V4ColumnState extends State<V4Column> {
                             contentType: widget.contentType,
                             cardData: dataList[e],
                             showField: widget.showField,
-                            width: ScreenUtil().setWidth(171),
+                            width: ScreenUtil().setWidth(167),
                             thumbUrl: CommonUtils.getThumb(dataList[e]),
                           ))
                       .toList(),
                 ),
-          widget.changeButton
-              ? InkWell(
-                  onTap: changeElement,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              right: ScreenUtil().setWidth(8.5)),
-                          child: PlatformAwareAssetImage(
-                              url: 'assets/images/change-icon.png',
-                              width: ScreenUtil().setWidth(20),
-                              height: ScreenUtil().setWidth(20)),
-                        ),
-                        Text('换一下', style: DefaultStyle.gray13)
-                      ],
-                    ),
+          GestureDetector(
+            child: Container(
+              width: ScreenUtil().setWidth(240),
+              height: ScreenUtil().setWidth(39),
+              margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(ScreenUtil().setWidth(50)),
+                  gradient: LinearGradient(colors: [
+                    Color(0xffff8b8b),
+                    Color(0xffff7696),
+                    Color(0xffff7299),
+                  ])),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '查看更多',
+                    style: DefaultStyle.white14,
                   ),
-                )
-              : Container()
+                  Image.asset(
+                    'assets/images/icon_more.png',
+                    height: ScreenUtil().setWidth(8),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
