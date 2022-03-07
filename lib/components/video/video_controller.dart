@@ -301,7 +301,7 @@ class _VideoControllerState extends State<VideoController>
                     !widget.videoController.value.isInitialized
                 ? Center(
                     child: Container(
-                      width: setVideoWidth(60),
+                      width: ScreenUtil().setWidth(60),
                       child: Image.asset(
                         'assets/pengke/loading.gif',
                         fit: BoxFit.fitWidth,
@@ -340,7 +340,7 @@ class _VideoControllerState extends State<VideoController>
                               },
                               child: Image.asset(
                                 'assets/pengke/video/${widget.videoController.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
-                                width: setVideoWidth(50),
+                                width: ScreenUtil().setWidth(50),
                                 fit: BoxFit.fitWidth,
                               ),
                             )
@@ -355,7 +355,7 @@ class _VideoControllerState extends State<VideoController>
                 bottom: 0,
                 right: 0,
                 child: Container(
-                  height: setVideoWidth(38),
+                  height: ScreenUtil().setWidth(38),
                   width: double.infinity,
                   decoration: bytes != null
                       ? BoxDecoration(
@@ -363,7 +363,7 @@ class _VideoControllerState extends State<VideoController>
                               image: MemoryImage(bytes), fit: BoxFit.fill))
                       : null,
                   padding: EdgeInsets.symmetric(
-                    horizontal: setVideoWidth(13),
+                    horizontal: ScreenUtil().setWidth(13),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -379,7 +379,7 @@ class _VideoControllerState extends State<VideoController>
                         child: PlatformAwareAssetImage(
                           url:
                               'assets/images/volume-icon${widget.videoController.value.volume > 0 ? '-on' : ''}.png',
-                          width: setVideoWidth(15),
+                          width: ScreenUtil().setWidth(15),
                           fit: BoxFit.fitWidth,
                         ),
                       )
@@ -390,7 +390,7 @@ class _VideoControllerState extends State<VideoController>
                 top: null,
                 bottom: showControl && !isLock && !widget.isPreview
                     ? 0
-                    : setVideoWidth(-44),
+                    : ScreenUtil().setWidth(-44),
                 opacity: showControl && !isLock && !widget.isPreview ? 1 : 0,
                 child: widget.videoController == null ||
                         !widget.videoController.value.isInitialized ||
@@ -398,7 +398,7 @@ class _VideoControllerState extends State<VideoController>
                     ? Container()
                     : Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: setVideoWidth(5)),
+                            EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(5)),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                           colors: [Colors.black26, Colors.black45],
@@ -423,13 +423,13 @@ class _VideoControllerState extends State<VideoController>
                                 },
                                 child: Container(
                                   margin:
-                                      EdgeInsets.only(right: setVideoWidth(15)),
+                                      EdgeInsets.only(right: ScreenUtil().setWidth(15)),
                                   child: Icon(
                                     widget.videoController.value.isPlaying
                                         ? Icons.pause
                                         : Icons.play_arrow,
-                                    color: Color(0xff62f7ff),
-                                    size: setVideoWidth(22),
+                                    color: Color(0xffff84a9),
+                                    size: ScreenUtil().setWidth(22),
                                   ),
                                 ),
                               ),
@@ -440,17 +440,17 @@ class _VideoControllerState extends State<VideoController>
                               Expanded(
                                   child: SliderTheme(
                                       data: SliderTheme.of(context).copyWith(
-                                          trackHeight: setVideoWidth(2),
+                                          trackHeight: ScreenUtil().setWidth(2),
                                           inactiveTrackColor: Colors.white24,
-                                          activeTrackColor: Color(0xff62f7ff),
+                                          activeTrackColor: Color(0xffff84a9),
                                           overlayColor: Colors.white54,
                                           thumbShape: RoundSliderThumbShape(
                                               enabledThumbRadius:
-                                                  setVideoWidth(5)),
+                                                  ScreenUtil().setWidth(5)),
                                           overlayShape: RoundSliderOverlayShape(
-                                            overlayRadius: setVideoWidth(9),
+                                            overlayRadius: ScreenUtil().setWidth(9),
                                           ),
-                                          thumbColor: Color(0xff62f7ff)),
+                                          thumbColor: Color(0xffff84a9)),
                                       child: Slider(
                                           value: videoValue > videoMaxTime
                                               ? videoMaxTime
@@ -504,13 +504,13 @@ class _VideoControllerState extends State<VideoController>
                                 },
                                 child: Container(
                                   margin:
-                                      EdgeInsets.only(left: setVideoWidth(15)),
+                                      EdgeInsets.only(left: ScreenUtil().setWidth(15)),
                                   child: Icon(
                                     widget.videoController.value.volume > 0
                                         ? Icons.volume_up
                                         : Icons.volume_off,
-                                    color: Color(0xff62f7ff),
-                                    size: setVideoWidth(22),
+                                    color: Color(0xffff84a9),
+                                    size: ScreenUtil().setWidth(22),
                                   ),
                                 ),
                               )
@@ -520,7 +520,7 @@ class _VideoControllerState extends State<VideoController>
                       )),
         animatedBox(
             right: null,
-            left: showControl ? 0 : setVideoWidth(-100),
+            left: showControl ? 0 : ScreenUtil().setWidth(-100),
             child: widget.videoController != null &&
                     widget.videoController.value.isInitialized &&
                     !widget.isPreview
@@ -535,8 +535,8 @@ class _VideoControllerState extends State<VideoController>
                         behavior: HitTestBehavior.translucent,
                         child: Icon(
                           isLock ? Icons.lock : Icons.lock_open,
-                          color: Color(0xff62f7ff),
-                          size: setVideoWidth(30),
+                          color: Color(0xffff84a9),
+                          size: ScreenUtil().setWidth(30),
                         ),
                       ),
                     ),
@@ -550,10 +550,10 @@ class _VideoControllerState extends State<VideoController>
                       decoration: BoxDecoration(
                           color: Colors.black87,
                           borderRadius:
-                              BorderRadius.circular(setVideoWidth(10))),
+                              BorderRadius.circular(ScreenUtil().setWidth(10))),
                       padding: EdgeInsets.symmetric(
-                          horizontal: setVideoWidth(15),
-                          vertical: setVideoWidth(10)),
+                          horizontal: ScreenUtil().setWidth(15),
+                          vertical: ScreenUtil().setWidth(10)),
                       child: Text(getTimeStr(videoValue),
                           style: TextStyle(
                               color: Colors.white,
@@ -565,7 +565,7 @@ class _VideoControllerState extends State<VideoController>
         animatedBox(
             top: showControl && !isLock || widget.isPreview
                 ? 0
-                : setVideoWidth(-44),
+                : ScreenUtil().setWidth(-44),
             bottom: null,
             opacity: showControl && !isLock ? 1 : 0,
             child: widget.isCardAuto
@@ -578,13 +578,13 @@ class _VideoControllerState extends State<VideoController>
                         ? GestureDetector(
                             onTap: changeFull,
                             child: Container(
-                              margin: EdgeInsets.only(left: setVideoWidth(15)),
+                              margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
                               child: Icon(
                                 widget.isFull
                                     ? Icons.fullscreen_exit
                                     : Icons.fullscreen,
-                                color: Color(0xff62f7ff),
-                                size: setVideoWidth(22),
+                                color: Color(0xffff84a9),
+                                size: ScreenUtil().setWidth(22),
                               ),
                             ),
                           )
@@ -615,16 +615,16 @@ class _VideoControllerState extends State<VideoController>
                           initVideo();
                         },
                         child: Container(
-                          margin: EdgeInsets.only(top: setVideoWidth(22)),
-                          height: setVideoWidth(32),
-                          width: setVideoWidth(118.5),
+                          margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
+                          height: ScreenUtil().setWidth(32),
+                          width: ScreenUtil().setWidth(118.5),
                           decoration: BoxDecoration(
                               border: Border.all(
                                   width: ScreenUtil().setWidth(0.5),
                                   color: Colors.white),
                               color: Color.fromRGBO(247, 222, 185, 0.5),
                               borderRadius:
-                                  BorderRadius.circular(setVideoWidth(16))),
+                                  BorderRadius.circular(ScreenUtil().setWidth(16))),
                           child: Center(
                             child: Text(
                               '重新加载',

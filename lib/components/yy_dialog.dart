@@ -103,16 +103,18 @@ class YyShowDialog {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Center(
-                            child: Text(
-                              title,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xff646464),
-                                  fontSize: ScreenUtil().setSp(24),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                          title == null
+                              ? Container()
+                              : Center(
+                                  child: Text(
+                                    title,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Color(0xff646464),
+                                        fontSize: ScreenUtil().setSp(24),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                           Container(
                               margin: new EdgeInsets.only(
                                   top: ScreenUtil().setWidth(26)),
@@ -153,7 +155,11 @@ class YyShowDialog {
                                             child: Center(
                                               child: Text(
                                                 cancelText,
-                                                style: DefaultStyle.zhuti14,
+                                                style: TextStyle(
+                                                    color: Color(0xffff84a9),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14)),
                                               ),
                                             ),
                                           ),
@@ -197,7 +203,11 @@ class YyShowDialog {
                                             child: Center(
                                               child: Text(
                                                 btnText,
-                                                style: DefaultStyle.white14,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14)),
                                               ),
                                             ),
                                           ),
