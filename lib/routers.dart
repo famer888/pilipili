@@ -27,13 +27,22 @@ class Routes {
         builder: (context, state) => Xianmian(),
       ),
       GoRoute(
-        path: seconedPage,
-        builder: (context, state) => SeconedPage(
-          title: state.params == null || state.params['title'] == null
-              ? null
-              : state.params['title'],
-        ),
-      ),
+          path: seconedPage,
+          builder: (context, state) => SeconedPage(
+                title: state.params == null || state.params['title'] == null
+                    ? null
+                    : state.params['title'],
+              ),
+          routes: [
+            GoRoute(
+              path: seconedPageDetail,
+              builder: (context, state) => SeconedPageDetail(
+                title: state.params == null || state.params['title'] == null
+                    ? null
+                    : state.params['title'],
+              ),
+            ),
+          ]),
       GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
         path: videoDetail,

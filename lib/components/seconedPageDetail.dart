@@ -23,10 +23,18 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   ScrollController _scrollController = ScrollController();
   bool isShow = false;
   List _tabs = ["最新", "推荐", "随机"];
+  int currentTab = 0;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index.toDouble() == _tabController.animation.value) {
+        setState(() {
+          currentTab = _tabController.index;
+        });
+      }
+    });
     _scrollController.addListener(() {
       if (_scrollController.offset >= ScreenUtil().setWidth(140) &&
           isShow == false) {
@@ -100,12 +108,28 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                 ScreenUtil().statusBarHeight,
                             fit: BoxFit.cover,
                           ),
+                          Positioned(
+                              top: 0,
+                              right: 0,
+                              left: 0,
+                              bottom: 0,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: ScreenUtil().setWidth(60)),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  widget.title,
+                                  style: DefaultStyle.white15bold,
+                                ),
+                              )),
                         ],
                       ),
                     ),
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(ScreenUtil().setWidth(12)),
+                      preferredSize: Size.fromHeight(ScreenUtil().setWidth(32)),
                       child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setWidth(7)),
                         alignment: Alignment.centerLeft,
                         decoration:
                             BoxDecoration(color: Colors.white, boxShadow: [
@@ -125,10 +149,32 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                           controller: _tabController,
                           isScrollable: true,
                           tabs: _tabs
+                              .asMap()
+                              .keys
                               .map((e) => Container(
-                                    color: Colors.green,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: ScreenUtil().setWidth(10)),
                                     child: Column(
-                                      children: [Text(e)],
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Opacity(
+                                          opacity: e == currentTab ? 1 : 0,
+                                          child: Image.asset(
+                                            "assets/images/icon_love_red2.png",
+                                            width: ScreenUtil().setWidth(6),
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                        Text(
+                                          _tabs[e],
+                                          style: TextStyle(
+                                              color: e == currentTab
+                                                  ? Color(0xffff5b8c)
+                                                  : Color(0xffc2c2c2),
+                                              fontSize: ScreenUtil().setSp(15)),
+                                        )
+                                      ],
                                     ),
                                   ))
                               .toList(),
@@ -141,19 +187,23 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               body: TabBarView(
                 controller: _tabController,
                 children: _tabs
-                    .map((e) => GridView(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: ScreenUtil().setWidth(12),
-                            crossAxisSpacing: ScreenUtil().setWidth(12),
-                            childAspectRatio: 1.8,
+                    .map((e) => Padding(
+                          padding: EdgeInsets.all(DefaultStyle.pagePadding),
+                          child: GridView(
+                            padding: EdgeInsets.all(0),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: ScreenUtil().setWidth(12),
+                              crossAxisSpacing: ScreenUtil().setWidth(12),
+                              childAspectRatio: 1.8,
+                            ),
+                            children: [111, 1, 1, 1, 1, 1, 1, 1, 1]
+                                .map((e) => Container(
+                                      color: Colors.red,
+                                    ))
+                                .toList(),
                           ),
-                          children: [111, 1, 1, 1, 1, 1, 1, 1, 1]
-                              .map((e) => Container(
-                                    color: Colors.red,
-                                  ))
-                              .toList(),
                         ))
                     .toList(),
               )),
