@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
@@ -104,6 +106,50 @@ class _V4ColumnState extends State<V4Column> {
                           ))
                       .toList(),
                 ),
+          GestureDetector(
+            onTap: (){
+                      YyShowDialog.showdialog(context,
+              title: '提示', btnText: '升级VIP', cancelText: '取消', callBack: () {
+            // context.push('/${Routes.vip}');
+          }, content: (setDialogState) {
+            return DefaultTextStyle(
+                style: DefaultStyle.black14,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('升级VIP才能约炮哦。平台官方认证美女，裸聊预约皆有保障，让你约到称心如意的妹子!'),
+                  ],
+                ));
+          });
+            },
+            child: Container(
+              width: ScreenUtil().setWidth(240),
+              height: ScreenUtil().setWidth(39),
+              margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(ScreenUtil().setWidth(50)),
+                  gradient: LinearGradient(colors: [
+                    Color(0xffff8b8b),
+                    Color(0xffff7696),
+                    Color(0xffff7299),
+                  ])),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '查看更多',
+                    style: DefaultStyle.white14,
+                  ),
+                  Image.asset(
+                    'assets/images/icon_more.png',
+                    height: ScreenUtil().setWidth(8),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

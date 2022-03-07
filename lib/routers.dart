@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/pili/search.dart';
+import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
@@ -15,6 +17,9 @@ class Routes {
   static String seconedPage = 'seconedPage/:title'; // 网黄、cos、时间表等二级页面
   static String seconedPageDetail =
       'seconedPageDetail/:title'; // 网黄、cos、时间表等二级页面详情
+  static String search = 'search'; // 网黄、cos、时间表等二级页面
+  static String videoDetail = 'videoDetail/:id'; //长视频详情页
+
   static List<GoRoute> getDetailRoutes() {
     return [
       GoRoute(
@@ -22,22 +27,23 @@ class Routes {
         builder: (context, state) => Xianmian(),
       ),
       GoRoute(
-          path: seconedPage,
-          builder: (context, state) => SeconedPage(
-                title: state.params == null || state.params['title'] == null
-                    ? null
-                    : state.params['title'],
-              ),
-          routes: [
-            GoRoute(
-              path: seconedPageDetail,
-              builder: (context, state) => SeconedPageDetail(
-                title: state.params == null || state.params['title'] == null
-                    ? null
-                    : state.params['title'],
-              ),
-            ),
-          ]),
+        path: seconedPage,
+        builder: (context, state) => SeconedPage(
+          title: state.params == null || state.params['title'] == null
+              ? null
+              : state.params['title'],
+        ),
+      ),
+      GoRoute(path: search, builder: (context, state) => SearchPage()),
+      GoRoute(
+        path: videoDetail,
+        builder: (context, state) {
+          return VideoDetail(
+              id: state.params == null || state.params['id'] == null
+                  ? null
+                  : int.parse(state.params['id'].toString()));
+        },
+      ),
     ];
   }
 

@@ -179,6 +179,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                       // }
                                     },
                                     child: Container(
+                                      alignment: Alignment.topCenter,
                                       child: Image.asset(
                                         'assets/images/demo_bg.png',
                                         fit: BoxFit.fitWidth,
@@ -262,7 +263,12 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                   (e) =>
                                       getElement(element: cm_data.elements[e]),
                                 )
-                                .toList()))
+                                .toList())),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: ScreenUtil().setWidth(30),
+                      ),
+                    )
                   ],
                 ));
   }

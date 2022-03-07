@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
 import 'package:pilipili/components/manhua.dart';
@@ -140,29 +141,29 @@ class _HomeState extends State<Home> {
   }
 
   void fetchBeforeEnterApp() async {
-    // await getHomeConfig(context).then((res) {
-    //   if (res?.data?.ads == null || res?.data?.ads?.imgUrl == null) {
-    //     AppGlobal.appBox.delete('ads');
-    //   } else {
-    //     dynamic ads = AppGlobal.appBox.get('ads');
-    //     if (ads == null ||
-    //         ads['oimg'] == null ||
-    //         ads['oimg'] != res?.data?.ads?.imgUrl) {
-    //       Timer(Duration(minutes: 1), () {
-    //         CommonUtils.getRealImage(
-    //             url: res?.data?.ads?.imgUrl,
-    //             setUrl: (urllink) {
-    //               AppGlobal.appBox.put('ads', {
-    //                 'oimg': res?.data?.ads?.imgUrl,
-    //                 'image': urllink,
-    //                 'url': res.data.ads.url
-    //               });
-    //               CommonUtils.debugPrint('广告加载完成');
-    //             });
-    //       });
-    //     }
-    //   }
-    // });
+    await getHomeConfig(context).then((res) {
+      if (res?.data?.ads == null || res?.data?.ads?.imgUrl == null) {
+        AppGlobal.appBox.delete('ads');
+      } else {
+        dynamic ads = AppGlobal.appBox.get('ads');
+        if (ads == null ||
+            ads['oimg'] == null ||
+            ads['oimg'] != res?.data?.ads?.imgUrl) {
+          Timer(Duration(minutes: 1), () {
+            CommonUtils.getRealImage(
+                url: res?.data?.ads?.imgUrl,
+                setUrl: (urllink) {
+                  AppGlobal.appBox.put('ads', {
+                    'oimg': res?.data?.ads?.imgUrl,
+                    'image': urllink,
+                    'url': res.data.ads.url
+                  });
+                  CommonUtils.debugPrint('广告加载完成');
+                });
+          });
+        }
+      }
+    });
     initDialog();
     loading = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {

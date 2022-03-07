@@ -36,11 +36,15 @@ class AppGlobal {
   static Box appBox;
   static Box imageCacheBox;
   static Box imageAssetBox;
-  static bool apInit = false;
+  static Box videoWatchRecordBox;
+  static Box manhuaWatchRecordBox;
+  static Box bookWatchRecordBox;
+  static Box smallVideoWatchRecordBox;
   static List helpList = [];
   static int isSetPassword = 0;
   static int vipLevel = 0;
   static BuildContext appContext;
+  static bool apInit = false;
   static bool routerReplace = false;
   static bool videoPageIsActive = true;
   static Map<String, dynamic> currentDetailRouteExtra;
@@ -52,6 +56,7 @@ class AppGlobal {
   static DateTime firstVisitTime;
   static List<LinkModel> navList = [];
   static dynamic currenClickData;
-  static int initVipTab=0;
+  static int initVipTab = 0;
   static int decryptProcessLimit = 20;
+  static bool shouApp=false;
 }
