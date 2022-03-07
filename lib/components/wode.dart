@@ -274,10 +274,10 @@ class _WodeState extends State<Wode> {
   Widget header() {
     return Container(
       padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top,
+          top: MediaQuery.of(context).padding.top + ScreenUtil().setHeight(10),
           left: ScreenUtil().setWidth(18),
           right: ScreenUtil().setWidth(16),
-          bottom: ScreenUtil().setWidth(18)),
+          bottom: ScreenUtil().setHeight(18)),
       // height: ScreenUtil().setHeight(120),
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -396,25 +396,30 @@ class _WodeState extends State<Wode> {
                 ),
                 Column(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "注册登陆",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: ScreenUtil().setSp(12),
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/${Routes.login}');
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "注册登陆",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil().setSp(12),
+                            ),
                           ),
-                        ),
-                        Center(
-                          child: Icon(
-                            Icons.chevron_right,
-                            color: Colors.white,
-                            size: ScreenUtil().setSp(15),
-                          ),
-                        )
-                      ],
+                          Center(
+                            child: Icon(
+                              Icons.chevron_right,
+                              color: Colors.white,
+                              size: ScreenUtil().setSp(15),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: ScreenUtil().setHeight(28),

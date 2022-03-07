@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/pili/search.dart';
 import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/pages/login/index.dart';
+import 'package:pilipili/pages/login/register.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/seconedPage.dart';
@@ -16,6 +18,8 @@ class Routes {
   static String seconedPage = 'seconedPage/:title'; // 网黄、cos、时间表等二级页面
   static String search = 'search'; // 网黄、cos、时间表等二级页面
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
+  static String login = 'login'; //登陆页面
+  static String register = 'register'; //注册找回密码
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -40,6 +44,14 @@ class Routes {
                   ? null
                   : int.parse(state.params['id'].toString()));
         },
+      ),
+      GoRoute(
+        path: login,
+        builder: (context, state) => LoginPage(),
+      ),
+      GoRoute(
+        path: register,
+        builder: (context, state) => Register(),
       ),
     ];
   }

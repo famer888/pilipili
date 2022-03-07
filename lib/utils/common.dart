@@ -148,7 +148,8 @@ class CommonUtils {
 
   static Map<String, int> retryCountMap = {};
   static List<List> tasks = [];
-  static List<bool> wdsRuningStatuses = List.generate(AppGlobal.decryptProcessLimit, (index) => false);
+  static List<bool> wdsRuningStatuses =
+      List.generate(AppGlobal.decryptProcessLimit, (index) => false);
   static void getRealImage(
       {dynamic url,
       dynamic imgUrl,
