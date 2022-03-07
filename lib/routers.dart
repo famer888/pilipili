@@ -5,6 +5,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/seconedPage.dart';
+import 'package:pilipili/components/seconedPageDetail.dart';
 
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
@@ -12,6 +13,8 @@ import 'package:pilipili/utils/index.dart';
 class Routes {
   static String xianmian = 'xianmian'; //home页限免页面
   static String seconedPage = 'seconedPage/:title'; // 网黄、cos、时间表等二级页面
+  static String seconedPageDetail =
+      'seconedPageDetail/:title'; // 网黄、cos、时间表等二级页面详情
   static List<GoRoute> getDetailRoutes() {
     return [
       GoRoute(
@@ -19,13 +22,22 @@ class Routes {
         builder: (context, state) => Xianmian(),
       ),
       GoRoute(
-        path: seconedPage,
-        builder: (context, state) => SeconedPage(
-          title: state.params == null || state.params['title'] == null
-              ? null
-              : state.params['title'],
-        ),
-      ),
+          path: seconedPage,
+          builder: (context, state) => SeconedPage(
+                title: state.params == null || state.params['title'] == null
+                    ? null
+                    : state.params['title'],
+              ),
+          routes: [
+            GoRoute(
+              path: seconedPageDetail,
+              builder: (context, state) => SeconedPageDetail(
+                title: state.params == null || state.params['title'] == null
+                    ? null
+                    : state.params['title'],
+              ),
+            ),
+          ]),
     ];
   }
 
