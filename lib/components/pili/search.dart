@@ -158,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                 padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(16),
                     vertical: ScreenUtil().setWidth(8)),
-                margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(6)),
+                margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(16)),
                 height: ScreenUtil().setWidth(280),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -180,7 +180,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text(
+                    Text(
                       '搜索记录',
                       style: TextStyle(
                           color: Color(0xff6D6D6D),
@@ -269,6 +269,13 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class UnitPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  int currentIndex = 0;
+  List tabList = [
+    {'title': '视频'},
+    {'title': '短视频'},
+    {'title': '动漫'},
+    {'title': '动画'}
+  ];
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -277,9 +284,83 @@ class UnitPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
     final String info = 'shrinkOffset:${shrinkOffset.toStringAsFixed(1)}'
         '\noverlapsContent:$overlapsContent';
     return Container(
-      alignment: Alignment.center,
+      color: Color(0xfffff4f9),
+      alignment: Alignment.bottomCenter,
       height: ScreenUtil().setWidth(50),
-      color: Colors.red,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            height: ScreenUtil().setWidth(12),
+            decoration: BoxDecoration(
+              color: Color(0xffff84a9),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(ScreenUtil().setWidth(12)),
+                  topRight: Radius.circular(ScreenUtil().setWidth(12))),
+            ),
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: ScreenUtil().setWidth(2),
+                  left: ScreenUtil().setWidth(2),
+                  right: ScreenUtil().setWidth(2)),
+              decoration: BoxDecoration(
+                color: Color(0xfffff4f9),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(ScreenUtil().setWidth(8)),
+                    topRight: Radius.circular(ScreenUtil().setWidth(8))),
+              ),
+            ),
+          ),
+          Positioned(
+              left: 0,
+              right: 0,
+              top: ScreenUtil().setWidth(-34),
+              child: Container(
+                height: ScreenUtil().setWidth(36),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: ScreenUtil().setWidth(4),
+                  children: tabList.asMap().keys.map((e) {
+                    return GestureDetector(
+                      onTap: () {
+                        currentIndex = e;
+                      },
+                      child: Stack(
+                        children: [
+                          Positioned(
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Image.asset(
+                                'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
+                                fit: BoxFit.fill,
+                              )),
+                          Container(
+                            width: ScreenUtil().setWidth(79),
+                            height: ScreenUtil().setWidth(36),
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(
+                              right:  ScreenUtil().setWidth(3)
+                            ),
+                            child: Text(
+                              tabList[e]['title'],
+                              style: TextStyle(
+                                  color: currentIndex != e
+                                      ? Colors.white
+                                      : Color(0xff6d6567),
+                                  fontSize: ScreenUtil().setSp(16),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ))
+        ],
+      ),
     );
   }
 

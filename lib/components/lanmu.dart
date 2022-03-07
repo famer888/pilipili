@@ -8,6 +8,8 @@ import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pilipili/routers.dart';
 
 class Lanmu extends StatefulWidget {
   Lanmu({Key key, this.data, this.id, this.isShow, this.parentName, this.index})
@@ -82,6 +84,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                 ? PageStatus.loading(mounted)
                 : Container()
             : PullRefreshList(
+                offset:
+                    DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
                 onRefresh: () {
                   page = 1;
                   getPageData();
@@ -216,23 +220,33 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                   'assets/images/btn_bg.png',
                                                   fit: BoxFit.fill,
                                                 )),
-                                            Container(
-                                              width: ScreenUtil().setWidth(79),
-                                              height: ScreenUtil().setWidth(51),
-                                              padding: EdgeInsets.only(
-                                                  right:
-                                                      ScreenUtil().setWidth(3),
-                                                  bottom:
-                                                      ScreenUtil().setWidth(3)),
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                tabList[e],
-                                                style: TextStyle(
-                                                    color: Color(0xffc8003c),
-                                                    fontSize:
-                                                        ScreenUtil().setSp(16),
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (tabList[e] == '限免') {
+                                                  context.push(
+                                                      "/${Routes.xianmian}");
+                                                }
+                                              },
+                                              child: Container(
+                                                width:
+                                                    ScreenUtil().setWidth(79),
+                                                height:
+                                                    ScreenUtil().setWidth(51),
+                                                padding: EdgeInsets.only(
+                                                    right: ScreenUtil()
+                                                        .setWidth(3),
+                                                    bottom: ScreenUtil()
+                                                        .setWidth(3)),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  tabList[e],
+                                                  style: TextStyle(
+                                                      color: Color(0xffc8003c),
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(16),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
                                             )
                                           ],
