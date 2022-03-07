@@ -84,163 +84,135 @@ class YyShowDialog {
             btnText = changeBtnText();
           }
           return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Stack(
-              children: [
-                Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Image.asset(
-                      'assets/pengke/dialog_bg.png',
-                      fit: BoxFit.fill,
-                    )),
-                Container(
-                  width: ScreenUtil().setWidth(300),
-                  padding: new EdgeInsets.only(
-                      left: ScreenUtil().setWidth(24.5),
-                      right: ScreenUtil().setWidth(24.5),
-                      top: ScreenUtil().setWidth(25),
-                      bottom: ScreenUtil().setWidth(33.5)),
-                  child: Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Center(
-                              child: Text(
-                                title,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color(0xffffffff),
-                                    fontSize: ScreenUtil().setSp(24),
-                                    fontWeight: FontWeight.bold),
-                              ),
+              backgroundColor: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xffFFF4F9),
+                    borderRadius:
+                        BorderRadius.circular(ScreenUtil().setWidth(10))),
+                width: ScreenUtil().setWidth(300),
+                padding: new EdgeInsets.only(
+                    left: ScreenUtil().setWidth(24.5),
+                    right: ScreenUtil().setWidth(24.5),
+                    top: ScreenUtil().setWidth(25),
+                    bottom: ScreenUtil().setWidth(33.5)),
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              title,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xff646464),
+                                  fontSize: ScreenUtil().setSp(24),
+                                  fontWeight: FontWeight.bold),
                             ),
-                            Container(
-                                margin: new EdgeInsets.only(
-                                    top: ScreenUtil().setWidth(26)),
-                                child: content(setDialogState)),
-                            Row(
-                              children: [
-                                cancelText != null
-                                    ? Expanded(
-                                        child: Center(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            if (cancelBack != null) {
-                                              cancelBack();
-                                            }
+                          ),
+                          Container(
+                              margin: new EdgeInsets.only(
+                                  top: ScreenUtil().setWidth(26)),
+                              child: content(setDialogState)),
+                          Row(
+                            children: [
+                              cancelText != null
+                                  ? Expanded(
+                                      child: Center(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (cancelBack != null) {
+                                            cancelBack();
+                                          }
+                                          context.pop();
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              left: ScreenUtil().setWidth(5),
+                                              right: ScreenUtil().setWidth(5),
+                                              top: ScreenUtil().setWidth(40)),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        ScreenUtil()
+                                                            .setWidth(18)),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xffFFCCDB),
+                                                    Color(0xffFFE4E4)
+                                                  ],
+                                                  end: Alignment.topCenter,
+                                                  begin: Alignment.bottomCenter,
+                                                )),
+                                            width: ScreenUtil().setWidth(120),
+                                            height: ScreenUtil().setWidth(36),
+                                            child: Center(
+                                              child: Text(
+                                                cancelText,
+                                                style: DefaultStyle.zhuti14,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ))
+                                  : Container(),
+                              btnText != null
+                                  ? Expanded(
+                                      child: Center(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (callBack == null) {
                                             context.pop();
-                                          },
+                                          } else {
+                                            context.pop();
+                                            callBack();
+                                          }
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              left: ScreenUtil().setWidth(5),
+                                              right: ScreenUtil().setWidth(5),
+                                              top: ScreenUtil().setWidth(40)),
                                           child: Container(
-                                            margin: EdgeInsets.only(
-                                                left: ScreenUtil().setWidth(5),
-                                                right: ScreenUtil().setWidth(5),
-                                                top: ScreenUtil().setWidth(40)),
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                    child: Image.asset(
-                                                  'assets/pengke/video/video_duan_btn.png',
-                                                  fit: BoxFit.fill,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        ScreenUtil()
+                                                            .setWidth(18)),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xffFF84A9),
+                                                    Color(0xffFF9E9E)
+                                                  ],
+                                                  end: Alignment.topCenter,
+                                                  begin: Alignment.bottomCenter,
                                                 )),
-                                                Container(
-                                                  width: ScreenUtil()
-                                                      .setWidth(163.5),
-                                                  height:
-                                                      ScreenUtil().setWidth(32),
-                                                  child: Center(
-                                                    child: Text(
-                                                      cancelText,
-                                                      style:
-                                                          DefaultStyle.zhuti13,
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
+                                            width: ScreenUtil().setWidth(120),
+                                            height: ScreenUtil().setWidth(36),
+                                            child: Center(
+                                              child: Text(
+                                                btnText,
+                                                style: DefaultStyle.white14,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ))
-                                    : Container(),
-                                btnText != null
-                                    ? Expanded(
-                                        child: Center(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            if (callBack == null) {
-                                              context.pop();
-                                            } else {
-                                              context.pop();
-                                              callBack();
-                                            }
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                left: ScreenUtil().setWidth(5),
-                                                right: ScreenUtil().setWidth(5),
-                                                top: ScreenUtil().setWidth(40)),
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  top: 0,
-                                                  left: 0,
-                                                  right: 0,
-                                                  bottom: 0,
-                                                    child: Image.asset(
-                                                  'assets/pengke/video/video_duan_btn.png',
-                                                  fit: BoxFit.fill,
-                                                )),
-                                                Container(
-                                                  width: ScreenUtil()
-                                                      .setWidth(163.5),
-                                                  height:
-                                                      ScreenUtil().setWidth(32),
-                                                  child: Center(
-                                                    child: Text(
-                                                      btnText,
-                                                      style:
-                                                          DefaultStyle.zhuti13,
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ))
-                                    : Container()
-                              ],
-                            )
-                          ],
-                        ),
+                                      ),
+                                    ))
+                                  : Container()
+                            ],
+                          )
+                        ],
                       ),
-                      Positioned(
-                        top: ScreenUtil().setWidth(-103.5),
-                        left: 0,
-                        right: 0,
-                        child: prohibitClose
-                            ? Container()
-                            : Center(
-                                child: GestureDetector(
-                                    onTap: () => context.pop(),
-                                    child: PlatformAwareAssetImage(
-                                        url: 'assets/images/yuepao/close.png',
-                                        width: ScreenUtil().setWidth(43.5),
-                                        height: ScreenUtil().setWidth(43.5),
-                                        fit: BoxFit.fitHeight)),
-                              ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
+                    ),
+                  ],
+                ),
+              ));
         });
       },
     ).then((value) {

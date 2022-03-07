@@ -92,13 +92,25 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
         );
         break;
       default:
-        yyElement = Padding(
-          padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
-          child: Text(
-            '当前模块不可见,或下载最新版本',
-            style: DefaultStyle.red13,
-          ),
+        yyElement = HscrollWidget(
+          data: elementValue,
+          contentType: element['content_type'],
+          title: element['title'] == null || element['title'] == ''
+              ? null
+              : element['title'],
+          id: element['id'],
+          moreButton: element['more_button'] == 1,
+          morePageType: element['more_page_show_type'],
+          showField: element['show_field'],
+          element: element,
         );
+      // yyElement = Padding(
+      //   padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+      //   child: Text(
+      //     '当前模块不可见,或下载最新版本',
+      //     style: DefaultStyle.red13,
+      //   ),
+      // );
     }
 
     if (element['value'] == null || element['value'].length == 0) {

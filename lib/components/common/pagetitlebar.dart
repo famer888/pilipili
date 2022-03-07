@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
-import 'package:pilipili/utils/networkImage.dart';
 
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
