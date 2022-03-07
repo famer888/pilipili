@@ -82,6 +82,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                 ? PageStatus.loading(mounted)
                 : Container()
             : PullRefreshList(
+                offset:
+                    DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
                 onRefresh: () {
                   page = 1;
                   getPageData();

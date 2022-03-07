@@ -131,24 +131,39 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   }
 
   Widget _btnItem({String icon, String name, Color color}) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(
-          'assets/pengke/video/$icon.png',
-          width: ScreenUtil().setWidth(25),
-          fit: BoxFit.fitWidth,
-        ),
-        SizedBox(
-          width: ScreenUtil().setWidth(7),
-        ),
-        Text(
-          name,
-          style: TextStyle(
-              color: color != null ? color : Color(0xffd7d7d7),
-              fontSize: ScreenUtil().setSp(14)),
-        )
-      ],
+    return Container(
+      width: ScreenUtil().setWidth(40),
+      height: ScreenUtil().setWidth(40),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(8)),
+          color: color == null ? Colors.white : Color(0XFFFF84A9),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 5.0,
+              blurStyle: BlurStyle.outer,
+              color: Color.fromRGBO(255, 91, 140, 0.2),
+              offset: Offset(0, ScreenUtil().setWidth(3)),
+            )
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/detail/$icon.png',
+            width: ScreenUtil().setWidth(10),
+            fit: BoxFit.fitWidth,
+          ),
+          SizedBox(
+            height: ScreenUtil().setWidth(3),
+          ),
+          Text(
+            name,
+            style: TextStyle(
+                color: color == null ? Color(0xffFF84A9) : Colors.white,
+                fontSize: ScreenUtil().setSp(12)),
+          )
+        ],
+      ),
     );
   }
 
@@ -374,47 +389,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               MainAxisSize.min,
                                                           children: [
                                                             GestureDetector(
-                                                              onTap: () {
-                                                                userFavorites(
-                                                                        type: 1,
-                                                                        id: videoInfo
-                                                                            .id)
-                                                                    .then(
-                                                                        (res) {
-                                                                  if (res !=
-                                                                          null &&
-                                                                      res.status !=
-                                                                          0) {
-                                                                    isFavorites =
-                                                                        !isFavorites;
-                                                                    setState(
-                                                                        () {});
-                                                                  } else {
-                                                                    CommonUtils
-                                                                        .showText(
-                                                                            res.msg);
-                                                                  }
-                                                                });
-                                                              },
-                                                              child: _btnItem(
-                                                                  icon: isFavorites
-                                                                      ? 'icon_like'
-                                                                      : 'icon_unlike',
-                                                                  name: isFavorites
-                                                                      ? '已收藏'
-                                                                      : '收藏',
-                                                                  color: isFavorites
-                                                                      ? Color(
-                                                                          0xff62f7ff)
-                                                                      : null),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          20),
-                                                            ),
-                                                            GestureDetector(
                                                               onTap: () async {
                                                                 if (kIsWeb) {
                                                                   CommonUtils
@@ -526,6 +500,45 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
+                                                                userFavorites(
+                                                                        type: 1,
+                                                                        id: videoInfo
+                                                                            .id)
+                                                                    .then(
+                                                                        (res) {
+                                                                  if (res !=
+                                                                          null &&
+                                                                      res.status !=
+                                                                          0) {
+                                                                    isFavorites =
+                                                                        !isFavorites;
+                                                                    setState(
+                                                                        () {});
+                                                                  } else {
+                                                                    CommonUtils
+                                                                        .showText(
+                                                                            res.msg);
+                                                                  }
+                                                                });
+                                                              },
+                                                              child: _btnItem(
+                                                                  icon: isFavorites
+                                                                      ? 'icon_unlike'
+                                                                      : 'icon_like',
+                                                                  name: '1.2w',
+                                                                  color: isFavorites
+                                                                      ? Color(
+                                                                          0xffFF84A9)
+                                                                      : null),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          20),
+                                                            ),
+                                                            GestureDetector(
+                                                              onTap: () {
                                                                 var config = Provider.of<
                                                                             HomeConfig>(
                                                                         context,
@@ -599,8 +612,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   .asMap()
                                                                   .keys
                                                                   .map((e) {
-                                                                print(
-                                                                    '************************$tags');
                                                                 return Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
@@ -644,6 +655,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 ),
                                               ],
                                             ),
+                                          ),
+                                          SizedBox(
+                                            height: ScreenUtil().setWidth(11),
                                           ),
                                           WidgetTitleBar(
                                             title: '为您推荐',
@@ -749,126 +763,102 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         );
                                                       }),
                                             )),
-                                            Stack(
-                                              children: [
-                                                Positioned(
-                                                  top: 0,
-                                                  right: 0,
-                                                  left: 0,
-                                                  child: Image.asset(
-                                                    'assets/pengke/video/fot_bg.png',
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: ScreenUtil()
-                                                          .setWidth(12),
-                                                      horizontal: DefaultStyle
-                                                          .pagePadding),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      if (Privilege.isAllowed(
-                                                          context,
-                                                          videoInfo.category ==
-                                                                  '1'
-                                                              ? RESOURCE_TYPE_CARTOON_VIDEO
-                                                              : RESOURCE_TYPE_LONG_VIDEO,
-                                                          PRIVILEGE_TYPE_COMMENT)) {
-                                                        InputDialog.show(
-                                                                context,
-                                                                '请输入您的影评～')
-                                                            .then((value) {
-                                                          if (value != null &&
-                                                              value != '') {
-                                                            publishComment(
-                                                                    contentId:
-                                                                        widget
-                                                                            .id,
-                                                                    contentType:
-                                                                        1,
-                                                                    reply:
-                                                                        value)
-                                                                .then((res) {
-                                                              if (res['status'] !=
-                                                                  0) {
-                                                                CommonUtils
-                                                                    .showText(
-                                                                        '影评发布成功,请刷新查看～');
-                                                              } else {
-                                                                CommonUtils
-                                                                    .showText(res[
-                                                                        'msg']);
-                                                              }
-                                                            });
+                                            Container(
+                                              color: Colors.white,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical:
+                                                      ScreenUtil().setWidth(9),
+                                                  horizontal:
+                                                      DefaultStyle.pagePadding),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  if (Privilege.isAllowed(
+                                                      context,
+                                                      videoInfo.category == '1'
+                                                          ? RESOURCE_TYPE_CARTOON_VIDEO
+                                                          : RESOURCE_TYPE_LONG_VIDEO,
+                                                      PRIVILEGE_TYPE_COMMENT)) {
+                                                    InputDialog.show(
+                                                            context, '请输入您的影评～')
+                                                        .then((value) {
+                                                      if (value != null &&
+                                                          value != '') {
+                                                        publishComment(
+                                                                contentId:
+                                                                    widget.id,
+                                                                contentType: 1,
+                                                                reply: value)
+                                                            .then((res) {
+                                                          if (res['status'] !=
+                                                              0) {
+                                                            CommonUtils.showText(
+                                                                '影评发布成功,请刷新查看～');
                                                           } else {
                                                             CommonUtils
                                                                 .showText(
-                                                                    '请输入您的影评');
+                                                                    res['msg']);
                                                           }
                                                         });
                                                       } else {
-                                                        YyShowDialog.showdialog(
-                                                            context,
-                                                            title: '提示',
-                                                            btnText: '升级VIP',
-                                                            cancelText: '取消',
-                                                            callBack: () {
-                                                          // context.push(
-                                                          //     '/${Routes.vip}');
-                                                        }, content:
-                                                                (setDialogState) {
-                                                          return DefaultTextStyle(
-                                                              style:
-                                                                  DefaultStyle
-                                                                      .white14,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                      '升级VIP即可发布影评哦～'),
-                                                                ],
-                                                              ));
-                                                        });
+                                                        CommonUtils.showText(
+                                                            '请输入您的影评');
                                                       }
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          16)),
-                                                      height: ScreenUtil()
-                                                          .setWidth(36),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            Privilege.isAllowed(
-                                                                    context,
-                                                                    videoInfo.category ==
-                                                                            '1'
-                                                                        ? RESOURCE_TYPE_CARTOON_VIDEO
-                                                                        : RESOURCE_TYPE_LONG_VIDEO,
-                                                                    PRIVILEGE_TYPE_COMMENT)
-                                                                ? '能不能火就靠你啦～'
-                                                                : '升级VIP即可发布影评哦～',
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xff999999),
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            14)),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
+                                                    });
+                                                  } else {
+                                                    YyShowDialog.showdialog(
+                                                        context,
+                                                        title: '提示',
+                                                        btnText: '升级VIP',
+                                                        cancelText: '取消',
+                                                        callBack: () {
+                                                      // context.push(
+                                                      //     '/${Routes.vip}');
+                                                    }, content:
+                                                            (setDialogState) {
+                                                      return DefaultTextStyle(
+                                                          style: DefaultStyle
+                                                              .white14,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                  '升级VIP即可发布影评哦～'),
+                                                            ],
+                                                          ));
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: ScreenUtil()
+                                                          .setWidth(16)),
+                                                  height:
+                                                      ScreenUtil().setWidth(36),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        Privilege.isAllowed(
+                                                                context,
+                                                                videoInfo.category ==
+                                                                        '1'
+                                                                    ? RESOURCE_TYPE_CARTOON_VIDEO
+                                                                    : RESOURCE_TYPE_LONG_VIDEO,
+                                                                PRIVILEGE_TYPE_COMMENT)
+                                                            ? '能不能火就靠你啦～'
+                                                            : '升级VIP即可发布影评哦～',
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xff979797),
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(14)),
+                                                      )
+                                                    ],
                                                   ),
-                                                )
-                                              ],
+                                                ),
+                                              ),
                                             )
                                           ],
                                         ),
@@ -929,7 +919,7 @@ class _ConmentItemState extends State<ConmentItem> {
                             reply: value)
                         .then((res) {
                       if (res['status'] != 0) {
-                        CommonUtils.showText('影评发布成功,请刷新查看～');
+                        CommonUtils.showText('��评发布成功,请刷新查看～');
                       } else {
                         CommonUtils.showText(res['msg']);
                       }
@@ -979,29 +969,35 @@ class _ConmentItemState extends State<ConmentItem> {
                     children: [
                       Container(
                         height: ScreenUtil().setWidth(35),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Row(
                           children: [
                             Text(
                               widget.data['userInfo']['nickname'],
-                              style: DefaultStyle.white12,
+                              style: TextStyle(
+                                  color: Color(0xff646464),
+                                  fontSize: ScreenUtil().setSp(14),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: ScreenUtil().setWidth(8),
                             ),
                             Text(
                               getCreateTime(),
-                              style: DefaultStyle.gray11,
+                              style: TextStyle(
+                                  color: Color(0xffC2C2C2),
+                                  fontSize: ScreenUtil().setSp(12)),
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(13)),
+                        padding:
+                            EdgeInsets.only(bottom: ScreenUtil().setWidth(13)),
                         child: Text(
                           widget.data['reply'],
                           style: TextStyle(
-                              color: Color(0xffd7d7d7),
-                              fontSize: ScreenUtil().setSp(13)),
+                              color: Color(0xff646464),
+                              fontSize: ScreenUtil().setSp(12)),
                         ),
                       ),
                       widget.children == null || widget.children.length == 0
