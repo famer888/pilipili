@@ -134,9 +134,10 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                             ? Text(
                                 widget.isSubtitle
                                     ? (widget.cardData['second_title'] ??
-                                        widget.cardData['title'])
-                                    : widget.cardData['title'],
-                                maxLines: 2,
+                                        widget.cardData['title'] ??
+                                        '')
+                                    : widget.cardData['title' ?? ""],
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Color(0xff646464),

@@ -11,6 +11,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/logUtil.dart';
 
 // ignore: must_be_immutable
 class MorePage extends StatefulWidget {
@@ -58,6 +59,7 @@ class _MorePageState extends State<MorePage>
           CommonUtils.showText('数据结构出现错误');
           return;
         }
+        // LogUtil.d('数据-----${res['data']}');
         contentType = res['data']['content_type'];
         loading = false;
         isAll = res['data']['value'].length < limit;
@@ -104,6 +106,8 @@ class _MorePageState extends State<MorePage>
                           await getPageData();
                         },
                         child: GridView(
+                          padding:
+                              EdgeInsets.only(top: DefaultStyle.pagePadding),
                           cacheExtent: ScreenUtil().screenHeight * 5,
                           padding: EdgeInsets.only(
                               top: ScreenUtil().setWidth(16),
