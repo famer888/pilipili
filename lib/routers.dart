@@ -6,6 +6,9 @@ import 'package:pilipili/components/comics/comics_detail.dart';
 import 'package:pilipili/components/pili/search.dart';
 import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/pages/login/index.dart';
+// import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
@@ -25,9 +28,13 @@ class Routes {
   static String activityList = 'activityList'; // 精彩活动列表
   static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
+  static String login = 'login'; //登陆页面
+  static String register = 'register/:type'; //注册找回密码
+  static String setup = 'setup'; //设置
+
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
-    static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
+  static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
   static String localSmallVideoDetail = 'localSmallVideoDetail/:id'; //小视频本地详情页
   static String localComicsDetatl = 'localComicsDetatl'; //漫画本地详情页
   static String localComicsReader = 'localComicsReader'; //漫画本地阅读器
@@ -77,6 +84,16 @@ class Routes {
                   : int.parse(state.params['id'].toString()));
         },
       ),
+      GoRoute(path: login, builder: (context, state) => LoginPage(), routes: [
+        GoRoute(
+          path: register,
+          builder: (context, state) => Register(
+              type: state.params == null || state.params['type'] == null
+                  ? null
+                  : int.parse(state.params['type'].toString())),
+        ),
+      ]),
+      GoRoute(path: setup, builder: (context, state) => SetupPage()),
       GoRoute(
           path: comicsdetail,
           builder: (context, state) {
