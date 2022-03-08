@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/comics/comicReader.dart';
+import 'package:pilipili/components/comics/comics_detail.dart';
 import 'package:pilipili/components/pili/search.dart';
 import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
@@ -23,7 +25,12 @@ class Routes {
   static String activityList = 'activityList'; // 精彩活动列表
   static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
-
+  static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
+  static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
+    static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
+  static String localSmallVideoDetail = 'localSmallVideoDetail/:id'; //小视频本地详情页
+  static String localComicsDetatl = 'localComicsDetatl'; //漫画本地详情页
+  static String localComicsReader = 'localComicsReader'; //漫画本地阅读器
   static List<GoRoute> getDetailRoutes() {
     return [
       GoRoute(
@@ -70,6 +77,39 @@ class Routes {
                   : int.parse(state.params['id'].toString()));
         },
       ),
+      GoRoute(
+          path: comicsdetail,
+          builder: (context, state) {
+            return ComicsDetatl(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id'].toString()));
+          },
+          routes: [
+            GoRoute(
+              path: comicReader,
+              builder: (context, state) {
+                final args = AppGlobal.currentReaderRouteExtra;
+                return ComicReader(
+                  id: args == null || args['id'] == null
+                      ? null
+                      : int.parse(args['id'].toString()),
+                  episode: args == null || args['episode'] == null
+                      ? null
+                      : int.parse(args['episode'].toString()),
+                  allEpisode: args == null || args['allEpisode'] == null
+                      ? null
+                      : int.parse(args['allEpisode'].toString()),
+                  title: args == null || args['title'] == null
+                      ? null
+                      : args['title'],
+                  type: args == null || args['type'] == null
+                      ? null
+                      : int.parse(args['type'].toString()),
+                );
+              },
+            ),
+          ]),
     ];
   }
 
