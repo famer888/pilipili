@@ -10,22 +10,12 @@ import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
+import 'dart:ui' as ui;
 
 mixin VideoMinxin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-  }
-
-  double setVideoWidth(value) {
-    double sW = MediaQuery.of(context).size.width;
-    double sH = MediaQuery.of(context).size.height;
-    // if (sW > sH) {
-    //   return ScreenUtil().setWidth(value * (sH / sW));
-    // } else {
-    //   return ScreenUtil().setWidth(value);
-    // }
-       return ScreenUtil().setWidth(value);
   }
 
   bool isHorizontal() {
@@ -58,7 +48,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
 
   Widget head({bool noBack = false, Widget rightWidget}) {
     return Container(
-      height: setVideoWidth(44),
+      height: ScreenUtil().setWidth(44),
       width: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -82,9 +72,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                       context.pop();
                     },
                     child: Image.asset(
-                      'assets/pengke/backarrow.png',
-                      width: setVideoWidth(22),
-                      fit: BoxFit.fitWidth,
+                      'assets/images/backarrow.png',
+                      width: ScreenUtil().setWidth(12),
                     ),
                   ),
             rightWidget != null ? rightWidget : Container()
@@ -106,29 +95,32 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
           return StatefulBuilder(builder: (context, setBottomSheetState) {
             return Stack(
               children: [
-                Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Image.asset(
-                      'assets/pengke/bottomsheet_bg.png',
-                      fit: BoxFit.fill,
-                    )),
                 Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: Color(0xfffff4f9),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(ScreenUtil().setWidth(12)),
+                        topRight: Radius.circular(ScreenUtil().setWidth(12)),
+                      )),
                   width: double.infinity,
-                  height: setVideoWidth(221) +
+                  height: ScreenUtil().setWidth(348) +
                       (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(15)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        height: ScreenUtil().setWidth(64),
                         width: double.infinity,
-                        padding: EdgeInsets.only(
-                            top: setVideoWidth(24.5),
-                            bottom: setVideoWidth(19.5)),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                end: Alignment.bottomCenter,
+                                begin: Alignment.topCenter,
+                                colors: [
+                              Color(0XFFFF89AC),
+                              Color(0XFFFF5B8C),
+                              Color(0XFFFA437A),
+                            ])),
                         child: Center(
                           child: Text(
                             '购买视频',
@@ -137,199 +129,271 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                         ),
                       ),
                       Expanded(
-                          child: Column(
-                        children: [
-                          Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  '${data.discountCoins}G',
-                                  style: TextStyle(
-                                      color: Color(0XFF62f7ff),
-                                      fontSize: ScreenUtil().setSp(24),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                data.coins == data.discountCoins
-                                    ? Container()
-                                    : Text(
-                                        '${data.coins}G',
-                                        style: TextStyle(
-                                            color: Color(0XFF6a6a6a),
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                            fontSize: ScreenUtil().setSp(14)),
-                                      ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: setVideoWidth(30)),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('购买视频',
-                                    style: TextStyle(
-                                        color: Color(0xffd7d7d7),
-                                        fontSize: ScreenUtil().setSp(14),
-                                        decoration: TextDecoration.none)),
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        left: setVideoWidth(20)),
-                                    child: Text(data.title,
-                                        style: TextStyle(
-                                            color: Color(0xffd7d7d7),
-                                            fontSize: ScreenUtil().setSp(14),
-                                            overflow: TextOverflow.ellipsis,
-                                            decoration: TextDecoration.none)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          isVip
-                              ? GestureDetector(
-                                  onTap: () {
-                                    if (isInsufficient) {
-                                      context.pop();
-                                      // context.push('/${Routes.coinRecharge}');
-                                    } else {
-                                      buyFunction();
-                                    }
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                          top: 0,
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0,
-                                          child: Image.asset(
-                                            'assets/pengke/video/video_chang_btn.png',
-                                            fit: BoxFit.fill,
-                                          )),
-                                      Container(
-                                        width: double.infinity,
-                                        height: setVideoWidth(34),
-                                        child: Center(
-                                          child: Text(
-                                            isInsufficient
-                                                ? 'GOLD不足，前往充值'
-                                                : '立即购买',
-                                            style: DefaultStyle.zhuti12,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : Row(
-                                  children: [
-                                    Expanded(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        context.pop();
-                                        // context.push('/${Routes.vip}');
-                                      },
-                                      child: Stack(
-                                        clipBehavior: Clip.none,
+                          child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setWidth(24),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: ScreenUtil().setWidth(24)),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Image.asset(
+                                        'assets/images/detail/video_buy_bg.png',
+                                        fit: BoxFit.fill,
+                                      )),
+                                  Container(
+                                    height: ScreenUtil().setWidth(100),
+                                    width: double.infinity,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Stack(
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right:
+                                                    ScreenUtil().setWidth(24)),
+                                            child: Image.asset(
+                                              'assets/images/detail/video_buy_coin.png',
+                                              width: ScreenUtil().setWidth(64),
+                                            ),
+                                          ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Positioned(
-                                                  top: 0,
-                                                  bottom: 0,
-                                                  left: 0,
-                                                  right: 0,
-                                                  child: Image.asset(
-                                                    'assets/pengke/video/video_duan_btn.png',
-                                                    fit: BoxFit.fill,
-                                                  )),
-                                              Container(
-                                                width: double.infinity,
-                                                height: setVideoWidth(34),
-                                                child: Center(
-                                                  child: Text(
-                                                    '升级会员',
-                                                    style: DefaultStyle.zhuti12,
-                                                  ),
-                                                ),
-                                              )
+                                              Text(
+                                                '${data.discountCoins}币',
+                                                style: TextStyle(
+                                                    foreground: Paint()
+                                                      ..shader =
+                                                          ui.Gradient.linear(
+                                                        const Offset(100, 560),
+                                                        const Offset(100, 630),
+                                                        <Color>[
+                                                          Color(0xffFFFCB1),
+                                                          Color(0xffFFCA81),
+                                                        ],
+                                                      ),
+                                                    shadows: <Shadow>[
+                                                      Shadow(
+                                                        offset: Offset(
+                                                            ScreenUtil()
+                                                                .setWidth(1),
+                                                            ScreenUtil()
+                                                                .setWidth(1)),
+                                                        blurRadius: 3.0,
+                                                        color:
+                                                            Color(0xffB96A11),
+                                                      ),
+                                                    ],
+                                                    fontSize:
+                                                        ScreenUtil().setSp(32),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              data.coins == data.discountCoins
+                                                  ? Container()
+                                                  : Text(
+                                                      '${data.coins}G',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0XFFFF5B8C),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(16)),
+                                                    ),
                                             ],
                                           ),
-                                          Positioned(
-                                              top: setVideoWidth(-7),
-                                              left: setVideoWidth(0),
-                                              child: PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/vie_zhekou.png',
-                                                height: setVideoWidth(15),
-                                                fit: BoxFit.fitHeight,
-                                              ))
                                         ],
                                       ),
-                                    )),
-                                    SizedBox(
-                                      width: setVideoWidth(15),
                                     ),
-                                    Expanded(
-                                        child: GestureDetector(
+                                  )
+                                ],
+                              ),
+                            ),
+                            Text('购买视频',
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: ScreenUtil().setSp(8),
+                            ),
+                            Text(data.title,
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontSize: ScreenUtil().setSp(14),
+                                    overflow: TextOverflow.ellipsis,
+                                    decoration: TextDecoration.none)),
+                            Expanded(
+                                child: Container(
+                              alignment: Alignment.bottomCenter,
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().bottomBarHeight +
+                                      ScreenUtil().setWidth(20)),
+                              child: isVip
+                                  ? GestureDetector(
                                       onTap: () {
                                         if (isInsufficient) {
                                           context.pop();
-                                          // context
-                                              // .push('/${Routes.coinRecharge}');
+                                          // context.push('/${Routes.coinRecharge}');
                                         } else {
                                           buyFunction();
                                         }
                                       },
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                              top: 0,
-                                              bottom: 0,
-                                              left: 0,
-                                              right: 0,
-                                              child: Image.asset(
-                                                'assets/pengke/video/video_chang_btn.png',
-                                                fit: BoxFit.fill,
-                                              )),
-                                          Container(
-                                            width: double.infinity,
-                                            height: setVideoWidth(34),
-                                            child: Center(
-                                              child: Text(
-                                                isInsufficient
-                                                    ? 'GOLD不足，前往充值'
-                                                    : '立即购买',
-                                                style: DefaultStyle.zhuti12,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenUtil().setWidth(20)),
+                                            gradient: SweepGradient(
+                                                //  begin: Alignment.bottomCenter,
+                                                colors: [
+                                                  Color(0XFFff84a9),
+                                                  Color(0XFFff9e9e),
+                                                ])),
+                                        width: double.infinity,
+                                        height: ScreenUtil().setWidth(40),
+                                        child: Center(
+                                          child: Text(
+                                            isInsufficient
+                                                ? '皮哩币不足，前往充值'
+                                                : '立即购买',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    ScreenUtil().setSp(16)),
+                                          ),
+                                        ),
+                                      ))
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                            child: GestureDetector(
+                                          onTap: () {
+                                            context.pop();
+                                            // context.push('/${Routes.vip}');
+                                          },
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            ScreenUtil()
+                                                                .setWidth(20)),
+                                                    gradient: SweepGradient(
+                                                        //  begin: Alignment.bottomCenter,
+                                                        colors: [
+                                                          Color(0XFFff84a9),
+                                                          Color(0XFFff9e9e),
+                                                        ])),
+                                                width: double.infinity,
+                                                height:
+                                                    ScreenUtil().setWidth(40),
+                                                child: Center(
+                                                  child: Text(
+                                                    '升级会员',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(isInsufficient?12:16)),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ))
-                                  ],
-                                )
-                        ],
+                                              Positioned(
+                                                  top:
+                                                      ScreenUtil().setWidth(-7),
+                                                  left:
+                                                      ScreenUtil().setWidth(0),
+                                                  child:
+                                                      PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/vie_zhekou.png',
+                                                    height: ScreenUtil()
+                                                        .setWidth(15),
+                                                    fit: BoxFit.fitHeight,
+                                                  ))
+                                            ],
+                                          ),
+                                        )),
+                                        SizedBox(
+                                          width: ScreenUtil().setWidth(15),
+                                        ),
+                                        Expanded(
+                                            child: GestureDetector(
+                                                onTap: () {
+                                                  if (isInsufficient) {
+                                                    context.pop();
+                                                    // context
+                                                    // .push('/${Routes.coinRecharge}');
+                                                  } else {
+                                                    buyFunction();
+                                                  }
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius
+                                                          .circular(ScreenUtil()
+                                                              .setWidth(20)),
+                                                      gradient: SweepGradient(
+                                                          //  begin: Alignment.bottomCenter,
+                                                          colors: [
+                                                            Color(0XFFff84a9),
+                                                            Color(0XFFff9e9e),
+                                                          ])),
+                                                  width: double.infinity,
+                                                  height:
+                                                      ScreenUtil().setWidth(40),
+                                                  child: Center(
+                                                    child: Text(
+                                                      isInsufficient
+                                                          ? '皮哩币不足，前往充值'
+                                                          : '立即购买',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(isInsufficient?12:16)),
+                                                    ),
+                                                  ),
+                                                )))
+                                      ],
+                                    ),
+                            ))
+                          ],
+                        ),
                       )),
                     ],
                   ),
                 ),
                 Positioned(
-                    top: setVideoWidth(19.5),
-                    right: setVideoWidth(19.5),
+                    top: ScreenUtil().setWidth(19.5),
+                    right: ScreenUtil().setWidth(19.5),
                     child: GestureDetector(
                       onTap: () {
                         context.pop();
                       },
-                      child: PlatformAwareAssetImage(
-                        url: 'assets/images/pment/icon_close.png',
-                        width: setVideoWidth(14),
-                        height: setVideoWidth(14),
+                      child: Image.asset(
+                        'assets/images/detail/icon_close.png',
+                        width: ScreenUtil().setWidth(24),
+                        height: ScreenUtil().setWidth(24),
                       ),
                     ))
               ],
@@ -355,12 +419,12 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
             showBuy(data, buyFunction);
           },
           child: Container(
-            margin: EdgeInsets.only(top: setVideoWidth(22)),
-            height: setVideoWidth(32),
-            width: setVideoWidth(118.5),
+            margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
+            height: ScreenUtil().setWidth(32),
+            width: ScreenUtil().setWidth(118.5),
             decoration: BoxDecoration(
                 color: Colors.black54,
-                borderRadius: BorderRadius.circular(setVideoWidth(16))),
+                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(16))),
             child: Center(
               child: Text(
                 '继续观看',
@@ -379,7 +443,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: setVideoWidth(225),
+          width: ScreenUtil().setWidth(225),
           child: Text(
             '您已经没有播放次数，升级会员即可无限观看海量AV',
             style: TextStyle(
@@ -390,7 +454,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
           ),
         ),
         SizedBox(
-          height: setVideoWidth(20),
+          height: ScreenUtil().setWidth(20),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -407,11 +471,12 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                     url: '${config.share.affUrl}');
               },
               child: Container(
-                  margin: EdgeInsets.only(right: setVideoWidth(26)),
-                  width: setVideoWidth(119),
-                  height: setVideoWidth(32),
+                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(26)),
+                  width: ScreenUtil().setWidth(119),
+                  height: ScreenUtil().setWidth(32),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(setVideoWidth(16)),
+                      borderRadius:
+                          BorderRadius.circular(ScreenUtil().setWidth(16)),
                       gradient: LinearGradient(
                         colors: [
                           Color(0xff37f4ff),
@@ -432,10 +497,11 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                 // context.push('/${Routes.vip}');
               },
               child: Container(
-                  width: setVideoWidth(119),
-                  height: setVideoWidth(32),
+                  width: ScreenUtil().setWidth(119),
+                  height: ScreenUtil().setWidth(32),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(setVideoWidth(16)),
+                      borderRadius:
+                          BorderRadius.circular(ScreenUtil().setWidth(16)),
                       gradient: LinearGradient(
                         colors: [
                           Color(0xff37f4ff),
