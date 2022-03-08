@@ -16,7 +16,7 @@ class PageStatus {
               Container(
                 width: ScreenUtil().screenWidth / 5,
                 child: Image.asset(
-                  'assets/pengke/loading.gif',
+                  'assets/images/loading.gif',
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -44,7 +44,7 @@ class PageStatus {
               width: ScreenUtil().screenWidth / 5,
               padding: EdgeInsets.only(top: ScreenUtil().setWidth(50)),
               child: Image.asset(
-                'assets/pengke/loading.gif',
+                'assets/images/loading.gif',
                 fit: BoxFit.fitWidth,
               ),
             ),

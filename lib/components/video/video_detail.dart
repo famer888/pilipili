@@ -199,7 +199,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                   child: Container(
                                     width: ScreenUtil().screenWidth / 5,
                                     child: Image.asset(
-                                      'assets/pengke/loading.gif',
+                                      'assets/images/loading.gif',
                                       fit: BoxFit.fitWidth,
                                     ),
                                   ),

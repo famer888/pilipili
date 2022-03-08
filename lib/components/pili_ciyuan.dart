@@ -72,6 +72,12 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
                             isShow: currentIndex == e,
                             id: int.parse(navitems[e].linkUrl),
                             parentName: 'jingxuan',
+                            tabList: [
+                              {"name": '限免', 'type': 1},
+                              {"name": '网黄', 'type': 2},
+                              {"name": 'COS', 'type': 2},
+                              {"name": '精彩活动', 'type': 3},
+                            ],
                             index: e)
                         : Container()))
                 .toList(),
