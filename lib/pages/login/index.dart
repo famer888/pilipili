@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
               AppGlobal.apiToken = res.data;
               setToken(res.data);
               getHomeConfig(context).then((res) {
-                context.pop('login');
+                context.pop();
               });
             } else {
               CommonUtils.showText(res.msg);
@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
               AppGlobal.apiToken = res.data;
               setToken(res.data);
               getHomeConfig(context).then((res) {
-                context.pop('login');
+                context.pop();
               });
             } else {
               CommonUtils.showText(res.msg);
