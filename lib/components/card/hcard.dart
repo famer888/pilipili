@@ -100,7 +100,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                   Container(
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          // color: Colors.grey,
                           borderRadius: BorderRadius.all(
                               Radius.circular(ScreenUtil().setWidth(5)))),
                       height: thumbHeight,

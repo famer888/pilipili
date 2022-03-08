@@ -27,19 +27,15 @@ class _SearchPageState extends State<SearchPage> {
   List tabList = [
     {
       'id': 1,
-      'name': '影片',
+      'name': '次元',
     },
     {
       'id': 2,
-      'name': '短视频',
+      'name': '动漫',
     },
     {
       'id': 3,
       'name': '漫画',
-    },
-    {
-      'id': 4,
-      'name': '小说',
     }
   ];
   int tabIndex = 0;
@@ -394,8 +390,7 @@ class _SearchResultState extends State<SearchResult> {
   PageController controller = PageController();
   int currentTab = 0;
   List tabList = [
-    {'title': '视频'},
-    {'title': '短视频'},
+    {'title': '次元'},
     {'title': '动漫'},
     {'title': '动画'}
   ];
@@ -491,10 +486,9 @@ class TabHead extends StatefulWidget {
 class _TabHeadState extends State<TabHead> {
   int currentIndex = 0;
   List tabList = [
-    {'title': '视频'},
-    {'title': '短视频'},
+    {'title': '次元'},
     {'title': '动漫'},
-    {'title': '动画'}
+    {'title': '漫画'}
   ];
   @override
   void didUpdateWidget(TabHead oldWidget) {

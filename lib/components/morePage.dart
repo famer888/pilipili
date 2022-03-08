@@ -109,6 +109,10 @@ class _MorePageState extends State<MorePage>
                           padding:
                               EdgeInsets.only(top: DefaultStyle.pagePadding),
                           cacheExtent: ScreenUtil().screenHeight * 5,
+                          padding: EdgeInsets.only(
+                              top: ScreenUtil().setWidth(16),
+                              bottom: ScreenUtil().bottomBarHeight +
+                                  ScreenUtil().setWidth(16)),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,

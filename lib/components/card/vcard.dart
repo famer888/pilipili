@@ -98,7 +98,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                   Container(
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          // color: Colors.grey,
                           borderRadius: BorderRadius.all(
                               Radius.circular(ScreenUtil().setWidth(5)))),
                       height: thumbHeight,

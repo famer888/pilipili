@@ -329,7 +329,7 @@ class _WodeState extends State<Wode> {
                     Container(
                       margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
                       child: ClipOval(
-                        child: Image.asset("assets/images/wode/avatr.jpg",
+                        child: Image.asset("assets/images/wode/activity_bg.png",
                             width: ScreenUtil().setWidth(60)),
                       ),
                     ),

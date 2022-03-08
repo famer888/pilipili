@@ -47,7 +47,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
               width: ScreenUtil().screenWidth * 0.8,
               child: Text(
                 widget.title != null ? widget.title : '二级列表页',
-                style: DefaultStyle.white18bold,
+                style: DefaultStyle.white16bold,
               ),
             )),
         Positioned(

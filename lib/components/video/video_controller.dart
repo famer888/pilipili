@@ -428,7 +428,7 @@ class _VideoControllerState extends State<VideoController>
                                     widget.videoController.value.isPlaying
                                         ? Icons.pause
                                         : Icons.play_arrow,
-                                    color: Color(0xffff84a9),
+                                    color: Colors.white,
                                     size: ScreenUtil().setWidth(22),
                                   ),
                                 ),
@@ -510,7 +510,7 @@ class _VideoControllerState extends State<VideoController>
                                     widget.videoController.value.volume > 0
                                         ? Icons.volume_up
                                         : Icons.volume_off,
-                                    color: Color(0xffff84a9),
+                                    color: Colors.white,
                                     size: ScreenUtil().setWidth(22),
                                   ),
                                 ),
@@ -536,7 +536,7 @@ class _VideoControllerState extends State<VideoController>
                         behavior: HitTestBehavior.translucent,
                         child: Icon(
                           isLock ? Icons.lock : Icons.lock_open,
-                          color: Color(0xffff84a9),
+                          color: Colors.white,
                           size: ScreenUtil().setWidth(30),
                         ),
                       ),
@@ -585,7 +585,7 @@ class _VideoControllerState extends State<VideoController>
                                 widget.isFull
                                     ? Icons.fullscreen_exit
                                     : Icons.fullscreen,
-                                color: Color(0xffff84a9),
+                                color: Colors.white,
                                 size: ScreenUtil().setWidth(22),
                               ),
                             ),
