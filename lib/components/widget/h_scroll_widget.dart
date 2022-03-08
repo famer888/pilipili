@@ -7,6 +7,7 @@ import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:go_router/go_router.dart';
 
 class HscrollWidget extends StatefulWidget {
   HscrollWidget(
@@ -81,10 +82,16 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                         .toList(),
                   ),
                   GestureDetector(
+                    onTap: () {
+                      context.push(
+                          '/morePage/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
+                    },
                     child: Container(
                       width: ScreenUtil().setWidth(70),
                       height: ScreenUtil().setWidth(39),
-                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(16),bottom: ScreenUtil().setWidth(48) ),
+                      margin: EdgeInsets.only(
+                          right: ScreenUtil().setWidth(16),
+                          bottom: ScreenUtil().setWidth(48)),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius:

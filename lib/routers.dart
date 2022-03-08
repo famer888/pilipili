@@ -10,6 +10,7 @@ import 'package:pilipili/components/activityList.dart';
 import 'package:pilipili/components/activityDetail.dart';
 import 'package:pilipili/components/seconedPage.dart';
 import 'package:pilipili/components/seconedPageDetail.dart';
+import 'package:pilipili/components/morePage.dart';
 
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
@@ -23,6 +24,7 @@ class Routes {
   static String activityList = 'activityList'; // 精彩活动列表
   static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
+  static String morePage = 'morePage/:id/:title/:morePageType'; //更多列表
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -69,12 +71,28 @@ class Routes {
                   ? null
                   : int.parse(state.params['id'].toString()));
         },
-      ),
+      )
     ];
   }
 
   static GoRouter init() {
-    List<GoRoute> rootRoutes = [];
+    List<GoRoute> rootRoutes = [
+      GoRoute(
+          path: morePage,
+          builder: (context, state) {
+            return MorePage(
+                title: state.params['title'] == null
+                    ? ''
+                    : state.params['title'].toString(),
+                id: state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id'].toString()),
+                morePageType: state.params['morePageType'] == null
+                    ? 1
+                    : int.parse(state.params['morePageType'].toString()));
+          },
+          routes: getDetailRoutes()),
+    ];
     rootRoutes.addAll(getDetailRoutes());
     return GoRouter(routerNeglect: true, routes: [
       GoRoute(

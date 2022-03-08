@@ -200,3 +200,15 @@ Future publishComment(
     return null;
   }
 }
+
+// 二级列表
+Future getElementByIdSecondPage({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/element/getElementByIdSecondPage',
+        data: {'id': id, 'page': page, 'limit': limit});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
