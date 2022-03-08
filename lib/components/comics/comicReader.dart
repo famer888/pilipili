@@ -95,32 +95,32 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    if (AppGlobal.vipLevel < 2) {
-      context.pop();
-      YyShowDialog.showdialog(
-        context,
-        title: '提示',
-        content: (setDialogState) {
-          return Text(
-            '开通月卡会员即畅读所有漫画哟～',
-            style: TextStyle(
-                color: Color.fromRGBO(51, 51, 51, 1),
-                fontSize: ScreenUtil().setSp(15),
-                decoration: TextDecoration.none),
-          );
-        },
-        cancelText: '取消',
-        btnText: '立即开通',
-        callBack: () {
-          // context.push('/${Routes.vip}');
-        },
-      );
-    }
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   if (AppGlobal.vipLevel < 2) {
+  //     context.pop();
+  //     YyShowDialog.showdialog(
+  //       context,
+  //       title: '提示',
+  //       content: (setDialogState) {
+  //         return Text(
+  //           '开通月卡会员即畅读所有漫画哟～',
+  //           style: TextStyle(
+  //               color: Color.fromRGBO(51, 51, 51, 1),
+  //               fontSize: ScreenUtil().setSp(15),
+  //               decoration: TextDecoration.none),
+  //         );
+  //       },
+  //       cancelText: '取消',
+  //       btnText: '立即开通',
+  //       callBack: () {
+  //         // context.push('/${Routes.vip}');
+  //       },
+  //     );
+  //   }
+  // }
 
   @override
   void initState() {

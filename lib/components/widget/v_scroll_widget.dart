@@ -81,6 +81,10 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                         .toList(),
                   ),
                   GestureDetector(
+                     onTap: () {
+                      context.push(
+                          '/morePage/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
+                    },
                     child: Container(
                       width: ScreenUtil().setWidth(70),
                       height: ScreenUtil().setWidth(39),

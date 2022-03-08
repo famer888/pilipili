@@ -8,6 +8,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:isolated_worker/worker_delegator.dart';
@@ -29,8 +30,9 @@ class CommonUtils {
   static showText(String text, {int time}) {
     return BotToast.showText(
         text: text,
+        backgroundColor:Colors.black,
         textStyle: TextStyle(
-            color: Color.fromRGBO(255, 255, 255, 1),
+            color: Color(0xffFF5B8C),
             fontSize: ScreenUtil().setSp(15),
             decoration: TextDecoration.none),
         align: Alignment(0, 0),

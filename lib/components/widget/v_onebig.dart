@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/global.dart';
@@ -86,6 +87,10 @@ class _VoneBigState extends State<VoneBig> {
                 .toList(),
           ),
           GestureDetector(
+            onTap: () {
+              context.push(
+                  '/morePage/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
+            },
             child: Container(
               width: ScreenUtil().setWidth(240),
               height: ScreenUtil().setWidth(39),

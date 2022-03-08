@@ -104,13 +104,15 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
           showField: element['show_field'],
           element: element,
         );
-      // yyElement = Padding(
-      //   padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
-      //   child: Text(
-      //     '当前模块不可见,或下载最新版本',
-      //     style: DefaultStyle.red13,
-      //   ),
-      // );
+      //  yyElement = Padding(
+      //     padding: EdgeInsets.symmetric(
+      //       vertical: ScreenUtil().setWidth(16),
+      //       horizontal: DefaultStyle.pagePadding),
+      //     child: Text(
+      //       '当前模块不可见,或下载最新版本',
+      //       style: DefaultStyle.red13,
+      //     ),
+      //   );
     }
 
     if (element['value'] == null || element['value'].length == 0) {

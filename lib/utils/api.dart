@@ -381,6 +381,28 @@ Future<Basic> forgetPassword(
   }
 }
 
+// 活动列表
+Future getActivityList() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/page/list', data: {});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 活动详情
+Future getActivityDetail(id) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/page/detail', data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
 //修改用户头像或昵称
 Future<Basic> updateUserInfo({String nickname, String thumb}) async {
   try {
