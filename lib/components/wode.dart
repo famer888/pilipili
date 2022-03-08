@@ -42,16 +42,39 @@ class _WodeState extends State<Wode> {
     if (widget.isShow && pageStatus == 0) {}
   }
 
+  List MenuList = [
+    {'name': "观看记录", 'icon': "record"},
+    {'name': "我购买的", 'icon': "buy"},
+    {'name': "我的收藏", 'icon': "collect"},
+    {'name': "我的下载", 'icon': "download"},
+    {'name': "在线客服", 'icon': "customer"},
+    {'name': "联系官方", 'icon': "official"},
+    {'name': "邀请好友", 'icon': "invite"},
+    {'name': "应用推荐", 'icon': "app_recommen"},
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [_header(), _cardList()],
+      children: [
+        header(),
+        cardList(),
+        SizedBox(
+          height: ScreenUtil().setHeight(22),
+        ),
+        setHandleList()
+      ],
     );
   }
 
-  Widget _cardList() {
+  Widget cardList() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
+      margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
+      padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(14)),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.0, color: Color(0xFFFFDCE6)),
+        ),
+      ),
       child: Flex(
         direction: Axis.horizontal,
         children: <Widget>[
@@ -60,7 +83,7 @@ class _WodeState extends State<Wode> {
             children: <Widget>[
               Image.asset(
                 "assets/images/wode/vip_bg.png",
-                width: ScreenUtil().setHeight(158),
+                width: ScreenUtil().setHeight(156),
                 fit: BoxFit.fill,
               ),
               Positioned(
