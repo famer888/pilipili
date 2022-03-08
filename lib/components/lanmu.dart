@@ -225,6 +225,12 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                 if (tabList[e] == '限免') {
                                                   context.push(
                                                       "/${Routes.xianmian}");
+                                                } else if (tabList[e] ==
+                                                    '精彩活动') {
+                                                  context.push(
+                                                      "/${Routes.activityList}");
+                                                }else{
+                                                  context.push(CommonUtils.getRealHash('seconedPage/${tabList[e]}'));
                                                 }
                                               },
                                               child: Container(

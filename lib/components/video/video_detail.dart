@@ -431,18 +431,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                       YyShowDialog
                                                                           .showdialog(
                                                                         context,
-                                                                        title:
-                                                                            '提示',
                                                                         content:
                                                                             (setDialogState) {
                                                                           return Text(
                                                                             videoInfo.isfree == 2
-                                                                                ? '您还未购买本视频,缓存完成随心快进到高潮~'
-                                                                                : '您离下载还差一个VIP！缓存完成随心快进到高潮~',
+                                                                                ? '开通会员才能下载视频哦'
+                                                                                : '收费视频需要先购买才能下载哦！',
                                                                             style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: ScreenUtil().setSp(15),
-                                                                                decoration: TextDecoration.none),
+                                                                                color: Color(0xff646464),
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: ScreenUtil().setSp(16)),
                                                                           );
                                                                         },
                                                                         cancelText:
@@ -807,7 +805,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   } else {
                                                     YyShowDialog.showdialog(
                                                         context,
-                                                        title: '提示',
                                                         btnText: '升级VIP',
                                                         cancelText: '取消',
                                                         callBack: () {
@@ -817,14 +814,24 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             (setDialogState) {
                                                       return DefaultTextStyle(
                                                           style: DefaultStyle
-                                                              .white14,
+                                                              .black14,
                                                           child: Column(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
                                                               Text(
-                                                                  '升级VIP即可发布影评哦～'),
+                                                                '升级VIP即可发布影评哦～',
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xff646464),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize: ScreenUtil()
+                                                                        .setSp(
+                                                                            16)),
+                                                              ),
                                                             ],
                                                           ));
                                                     });
@@ -919,7 +926,7 @@ class _ConmentItemState extends State<ConmentItem> {
                             reply: value)
                         .then((res) {
                       if (res['status'] != 0) {
-                        CommonUtils.showText('��评发布成功,请刷新查看～');
+                        CommonUtils.showText('影评发布成功,请刷新查看～');
                       } else {
                         CommonUtils.showText(res['msg']);
                       }
@@ -928,19 +935,15 @@ class _ConmentItemState extends State<ConmentItem> {
                 });
               } else {
                 YyShowDialog.showdialog(context,
-                    title: '提示',
-                    btnText: '升级VIP',
-                    cancelText: '取消', callBack: () {
+                    btnText: '升级VIP', cancelText: '取消', callBack: () {
                   // context.push('/${Routes.vip}');
                 }, content: (setDialogState) {
                   return DefaultTextStyle(
-                      style: DefaultStyle.white14,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('升级VIP即可发布影评哦～'),
-                        ],
-                      ));
+                      style: TextStyle(
+                          color: Color(0xff646464),
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil().setSp(16)),
+                      child: Text('升级VIP即可发布影评哦～'));
                 });
               }
             },

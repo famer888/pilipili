@@ -8,6 +8,8 @@ import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
+import 'package:pilipili/components/activityList.dart';
+import 'package:pilipili/components/activityDetail.dart';
 import 'package:pilipili/components/seconedPage.dart';
 import 'package:pilipili/components/seconedPageDetail.dart';
 
@@ -20,6 +22,8 @@ class Routes {
   static String seconedPageDetail =
       'seconedPageDetail/:title'; // 网黄、cos、时间表等二级页面详情
   static String search = 'search'; // 网黄、cos、时间表等二级页面
+  static String activityList = 'activityList'; // 精彩活动列表
+  static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
   static String login = 'login'; //登陆页面
   static String register = 'register'; //注册找回密码
@@ -30,6 +34,19 @@ class Routes {
         path: xianmian,
         builder: (context, state) => Xianmian(),
       ),
+      GoRoute(
+          path: activityList,
+          builder: (context, state) => ActivityList(),
+          routes: [
+            GoRoute(
+              path: activityDetail,
+              builder: (context, state) => ActivityDetail(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : '${state.params['id']}',
+              ),
+            ),
+          ]),
       GoRoute(
           path: seconedPage,
           builder: (context, state) => SeconedPage(

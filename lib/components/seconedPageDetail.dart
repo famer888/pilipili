@@ -27,6 +27,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   @override
   void initState() {
     super.initState();
+    print('ScreenUtil().statusBarHeight=${ScreenUtil().statusBarHeight}');
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index.toDouble() == _tabController.animation.value) {
@@ -36,12 +37,12 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
       }
     });
     _scrollController.addListener(() {
-      if (_scrollController.offset >= ScreenUtil().setWidth(140) &&
+      if (_scrollController.offset >= ScreenUtil().setWidth(110) &&
           isShow == false) {
         setState(() {
           isShow = true;
         });
-      } else if (_scrollController.offset < ScreenUtil().setWidth(140) &&
+      } else if (_scrollController.offset < ScreenUtil().setWidth(110) &&
           isShow == true) {
         setState(() {
           isShow = false;
@@ -85,6 +86,8 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
                   SliverAppBar(
+                    collapsedHeight: ScreenUtil().setWidth(44),
+                    toolbarHeight: 0,
                     shadowColor: Colors.transparent,
                     pinned: true,
                     backgroundColor: Colors.transparent,
@@ -126,10 +129,9 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                       ),
                     ),
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(ScreenUtil().setWidth(32)),
+                      preferredSize: Size.fromHeight(ScreenUtil().setWidth(44)),
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(7)),
+                        height: ScreenUtil().setWidth(44),
                         alignment: Alignment.centerLeft,
                         decoration:
                             BoxDecoration(color: Colors.white, boxShadow: [
@@ -145,18 +147,20 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                           unselectedLabelColor: Colors.transparent,
                           labelPadding: EdgeInsets.symmetric(
                               vertical: ScreenUtil().setWidth(0),
-                              horizontal: ScreenUtil().setWidth(6)),
+                              horizontal: ScreenUtil().setWidth(3)),
                           controller: _tabController,
                           isScrollable: true,
                           tabs: _tabs
                               .asMap()
                               .keys
                               .map((e) => Container(
+                                    height: ScreenUtil().setWidth(44),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ScreenUtil().setWidth(10)),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Opacity(
                                           opacity: e == currentTab ? 1 : 0,

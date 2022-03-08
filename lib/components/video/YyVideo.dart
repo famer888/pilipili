@@ -174,7 +174,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                                 Positioned(
                                     child: Center(
                                   child: Container(
-                                    width: setVideoWidth(60),
+                                    width: ScreenUtil().setWidth(60),
                                     child: Image.asset(
                                       'assets/pengke/loading.gif',
                                       fit: BoxFit.fitWidth,
@@ -237,66 +237,64 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                         )
                       : Container()),
           Positioned(
-              child: (!widget.isPreview ||
-                      widget.videoUrl == null ||
-                      !previewShow)
-                  ? Container()
-                  : GestureDetector(
-                      onTap: () {
-                        if (widget.data.isfree == 1) {
-                          // context.push('/${Routes.vip}');
-                        } else {
-                          showBuy(widget.data, buySmallVideo);
-                        }
-                      },
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Stack(
+              child:
+                  (!widget.isPreview || widget.videoUrl == null || !previewShow)
+                      ? Container()
+                      : GestureDetector(
+                          onTap: () {
+                            if (widget.data.isfree == 1) {
+                              // context.push('/${Routes.vip}');
+                            } else {
+                              showBuy(widget.data, buySmallVideo);
+                            }
+                          },
+                          child: Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Positioned(
-                                    top: 0,
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Image.asset(
-                                      'assets/pengke/video/video_tip_bg.png',
-                                      fit: BoxFit.fill,
-                                    )),
                                 Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          ScreenUtil().setWidth(11)),
+                                      gradient: LinearGradient(colors: [
+                                        widget.data.isfree == 1
+                                            ? Color.fromRGBO(255, 132, 169, 0.7)
+                                            : Color.fromRGBO(255, 210, 49, 0.7),
+                                        widget.data.isfree == 1
+                                            ? Color.fromRGBO(255, 132, 169, 0.7)
+                                            : Color.fromRGBO(237, 34, 34, 0.7),
+                                      ])),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: ScreenUtil().setWidth(20)),
-                                  height: setVideoWidth(40),
+                                  height: ScreenUtil().setWidth(22),
                                   child: Center(
                                       child: Text.rich(TextSpan(children: [
                                     TextSpan(
                                         text: widget.data.isfree == 1
-                                            ? '点击'
-                                            : '点击支付',
+                                            ? '立即成为VIP解锁全站视频'
+                                            : '支付${widget.data.discountCoins}币即可观看完整版',
                                         style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: ScreenUtil().setSp(13))),
-                                    TextSpan(
-                                        text: widget.data.isfree == 1
-                                            ? '升级会员'
-                                            : '${widget.data.discountCoins}GOLD',
-                                        style: TextStyle(
-                                            color: Color(0xff62f7ff),
-                                            fontSize: ScreenUtil().setSp(13))),
-                                    TextSpan(
-                                        text: '解锁完整版>>',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: ScreenUtil().setSp(13)))
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: ScreenUtil().setSp(12))),
+                                    // TextSpan(
+                                    //     text: widget.data.isfree == 1
+                                    //         ? '升级会员'
+                                    //         : '${widget.data.discountCoins}GOLD',
+                                    //     style: TextStyle(
+                                    //         color: Color(0xff62f7ff),
+                                    //         fontSize: ScreenUtil().setSp(13))),
+                                    // TextSpan(
+                                    //     text: '解锁完整版>>',
+                                    //     style: TextStyle(
+                                    //         color: Colors.white,
+                                    //         fontSize: ScreenUtil().setSp(13)))
                                   ]))),
                                 )
                               ],
-                            )
-                          ],
-                        ),
-                      ),
-                    )),
+                            ),
+                          ),
+                        )),
           videoController == null || !videoController.value.isInitialized
               ? Positioned(child: head())
               : Container()

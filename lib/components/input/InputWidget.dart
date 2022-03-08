@@ -78,6 +78,7 @@ class _InputWidgetState extends State<InputWidget> {
                       ),
                     ),
                     Container(
+                      color: Colors.white,
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -99,7 +100,9 @@ class _InputWidgetState extends State<InputWidget> {
                                         align: Alignment(0, 0));
                                   }
                                 },
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: ScreenUtil().setSp(14)),
                                 keyboardType: widget.boardType,
                                 textInputAction: TextInputAction.done,
                                 autofocus: true,
@@ -110,48 +113,45 @@ class _InputWidgetState extends State<InputWidget> {
                                     contentPadding: EdgeInsets.only(
                                         left: 10, right: 10, top: 5, bottom: 5),
                                     border: InputBorder.none,
-                                    hintStyle: DefaultStyle.gray15,
+                                    hintStyle: TextStyle(
+                                        color: Color(0xff979797),
+                                        fontSize: ScreenUtil().setSp(14)),
                                     hintText: widget.tips),
                               ),
                             ),
                           ),
                           GestureDetector(
-                              onTap: (() {
-                                var text = editingController.text?.replaceAll(
-                                        new RegExp(r"\s+\b|\b\s"), "") ??
-                                    "";
-                                if (text.isNotEmpty) {
-                                  context.pop(text);
-                                } else {
-                                  CommonUtils.showText(widget.tips);
-                                }
-                              }),
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      top: 0,
-                                      left: 0,
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Image.asset(
-                                        'assets/pengke/btn_bg.png',
-                                        fit: BoxFit.fill,
-                                      )),
-                                  Container(
-                                    width: ScreenUtil().setWidth(60),
-                                    height: ScreenUtil().setWidth(30),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      widget.btnText == null
-                                          ? '提交'
-                                          : widget.btnText,
-                                      style: TextStyle(
-                                          color: Color(0xff62f7ff),
-                                          fontSize: ScreenUtil().setSp(14)),
-                                    ),
-                                  ),
-                                ],
-                              )),
+                            onTap: (() {
+                              var text = editingController.text?.replaceAll(
+                                      new RegExp(r"\s+\b|\b\s"), "") ??
+                                  "";
+                              if (text.isNotEmpty) {
+                                context.pop(text);
+                              } else {
+                                CommonUtils.showText(widget.tips);
+                              }
+                            }),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setWidth(15)),
+                                  gradient: SweepGradient(
+                                      //  begin: Alignment.bottomCenter,
+                                      colors: [
+                                        Color(0XFFff84a9),
+                                        Color(0XFFff9e9e),
+                                      ])),
+                              width: ScreenUtil().setWidth(60),
+                              height: ScreenUtil().setWidth(30),
+                              alignment: Alignment.center,
+                              child: Text(
+                                widget.btnText == null ? '提交' : widget.btnText,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: ScreenUtil().setSp(14)),
+                              ),
+                            ),
+                          ),
                           Container(
                             width: ScreenUtil().setWidth(15.5),
                           ),
