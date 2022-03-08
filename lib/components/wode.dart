@@ -241,15 +241,16 @@ class _WodeState extends State<Wode> {
             ),
             child: Row(
               children: [
-                Container(
-                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-                    width: ScreenUtil().setWidth(60),
-                    height: ScreenUtil().setHeight(60),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/wode/avatr.jpg'),
-                            fit: BoxFit.cover))),
+                // Container(
+                //     margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                //     width: ScreenUtil().setWidth(60),
+                //     height: ScreenUtil().setHeight(60),
+                //     clipBehavior: Clip.antiAlias,
+                //     decoration: BoxDecoration(
+                //         shape: BoxShape.circle,
+                //         image: DecorationImage(
+                //             image: AssetImage('assets/images/wode/avatr.jpg'),
+                //             fit: BoxFit.cover))),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

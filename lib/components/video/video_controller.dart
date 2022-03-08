@@ -303,7 +303,7 @@ class _VideoControllerState extends State<VideoController>
                     child: Container(
                       width: ScreenUtil().setWidth(60),
                       child: Image.asset(
-                        'assets/pengke/loading.gif',
+                        'assets/images/loading.gif',
                         fit: BoxFit.fitWidth,
                       ),
                     ),
