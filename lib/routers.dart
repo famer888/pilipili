@@ -7,7 +7,7 @@ import 'package:pilipili/components/pili/search.dart';
 import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
-// import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/login/register.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
