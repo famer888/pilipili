@@ -203,6 +203,18 @@ Future publishComment(
   }
 }
 
+// 二级列表
+Future getElementByIdSecondPage({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/element/getElementByIdSecondPage',
+        data: {'id': id, 'page': page, 'limit': limit});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
 //漫画阅读
 Future<ComicReading> getComicReading({int id, int episode}) async {
   try {
