@@ -26,7 +26,7 @@ class Routes {
   static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
   static String login = 'login'; //登陆页面
-  static String register = 'register'; //注册找回密码
+  static String register = 'register/:type'; //注册找回密码
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -74,14 +74,15 @@ class Routes {
                   : int.parse(state.params['id'].toString()));
         },
       ),
-      GoRoute(
-        path: login,
-        builder: (context, state) => LoginPage(),
-      ),
-      GoRoute(
-        path: register,
-        builder: (context, state) => Register(),
-      ),
+      GoRoute(path: login, builder: (context, state) => LoginPage(), routes: [
+        GoRoute(
+          path: register,
+          builder: (context, state) => Register(
+              type: state.params == null || state.params['type'] == null
+                  ? null
+                  : int.parse(state.params['type'].toString())),
+        ),
+      ]),
     ];
   }
 

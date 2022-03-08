@@ -5,21 +5,21 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
 import '../../routers.dart';
 import 'login_box.dart';
 
 class Register extends StatefulWidget {
-  Register({Key key, this.type, this.isExpired = false}) : super(key: key);
+  Register({Key key, this.type}) : super(key: key);
   final int type;
-  final bool isExpired;
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-  int currentIndex = 1;
+  int currentIndex = 0;
 
   int loginType = 1; //0 手机 1 账号密码
   int retrieveStatus = 0; //0 输入找回账号  1开始找回
@@ -28,10 +28,11 @@ class _RegisterState extends State<Register> {
   void initState() {
     super.initState();
     CommonUtils.debugPrint('-**********************************${widget.type}');
-    if (widget.isExpired) {
-      // getHomeConfig(context);
-    }
+    // if (widget.isExpired) {
+    //   // getHomeConfig(context);
+    // }
     if (widget.type != null) {
+      CommonUtils.debugPrint('${widget.type}');
       currentIndex = widget.type;
       setState(() {});
     }
@@ -46,14 +47,14 @@ class _RegisterState extends State<Register> {
     final phoneCode = TextEditingController();
     Function startTime;
     String phonePrefix = '86';
-    // clearInput() {
-    //   username.clear();
-    //   code.clear();
-    //   password.clear();
-    //   cpassword.clear();
-    //   phone.clear();
-    //   phoneCode.clear();
-    // }
+    clearInput() {
+      username.clear();
+      code.clear();
+      password.clear();
+      cpassword.clear();
+      phone.clear();
+      phoneCode.clear();
+    }
 
     return LoginBox(
       btnText: '立即注册',
@@ -65,7 +66,7 @@ class _RegisterState extends State<Register> {
           children: [
             GestureDetector(
               onTap: () {
-                context.push('/${Routes.login}');
+                context.pop();
               },
               child: Container(
                 padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
@@ -114,23 +115,23 @@ class _RegisterState extends State<Register> {
             return;
           }
           PageStatus.showLoading();
-          // registerByPhone(
-          //         code: phoneCode.text,
-          //         phone: phone.text,
-          //         phonePrefix: phonePrefix,
-          //         invitedAff: code.text)
-          //     .then((res) {
-          //   if (res.status != 0) {
-          //     currentIndex = 0;
-          //     setState(() {});
-          //     CommonUtils.showText('注册成功,快去登录吧～');
-          //     clearInput();
-          //   } else {
-          //     CommonUtils.showText(res.msg);
-          //   }
-          // }).whenComplete(() {
-          //   PageStatus.closeLoading();
-          // });
+          registerByPhone(
+                  code: phoneCode.text,
+                  phone: phone.text,
+                  phonePrefix: phonePrefix,
+                  invitedAff: code.text)
+              .then((res) {
+            if (res.status != 0) {
+              currentIndex = 0;
+              setState(() {});
+              CommonUtils.showText('注册成功,快去登录吧～');
+              clearInput();
+            } else {
+              CommonUtils.showText(res.msg);
+            }
+          }).whenComplete(() {
+            PageStatus.closeLoading();
+          });
         } else {
           if (username.text.isEmpty) {
             CommonUtils.showText('请输入用户名～');
@@ -151,23 +152,23 @@ class _RegisterState extends State<Register> {
             return;
           }
           PageStatus.showLoading();
-          // registerByPassword(
-          //         username: username.text,
-          //         password: password.text,
-          //         confirmPwd: cpassword.text,
-          //         invitedAff: code.text)
-          //     .then((res) {
-          //   if (res.status != 0) {
-          //     currentIndex = 0;
-          //     setState(() {});
-          //     CommonUtils.showText('注册成功,快去登录吧～');
-          //     clearInput();
-          //   } else {
-          //     CommonUtils.showText(res.msg);
-          //   }
-          // }).whenComplete(() {
-          //   PageStatus.closeLoading();
-          // });
+          registerByPassword(
+                  username: username.text,
+                  password: password.text,
+                  confirmPwd: cpassword.text,
+                  invitedAff: code.text)
+              .then((res) {
+            if (res.status != 0) {
+              currentIndex = 0;
+              setState(() {});
+              CommonUtils.showText('注册成功,快去登录吧～');
+              clearInput();
+            } else {
+              CommonUtils.showText(res.msg);
+            }
+          }).whenComplete(() {
+            PageStatus.closeLoading();
+          });
         }
       },
       children: loginType == 0
@@ -187,20 +188,18 @@ class _RegisterState extends State<Register> {
                   startTime = e;
                 },
                 onSendCode: () {
-                  // sendPhone(
-                  //         phone: phone.text,
-                  //         phonePrefix: phonePrefix,
-                  //         type: 5)
-                  //     .then((res) {
-                  //   if (res.status == 1) {
-                  //     if (startTime != null) {
-                  //       startTime();
-                  //       CommonUtils.showText('发送成功～');
-                  //     }
-                  //   } else {
-                  //     CommonUtils.showText(res.msg);
-                  //   }
-                  // });
+                  sendPhone(
+                          phone: phone.text, phonePrefix: phonePrefix, type: 5)
+                      .then((res) {
+                    if (res.status == 1) {
+                      if (startTime != null) {
+                        startTime();
+                        CommonUtils.showText('发送成功～');
+                      }
+                    } else {
+                      CommonUtils.showText(res.msg);
+                    }
+                  });
                 },
                 hintText: '输入短信验证码',
               ),
@@ -264,19 +263,19 @@ class _RegisterState extends State<Register> {
             CommonUtils.showText('请输入要找回的用户名～');
             return;
           }
-          // PageStatus.showLoading();
-          // validateUsername(username: acount.text).then((res) {
-          //   if (res.status == 0) {
-          retrieveName = "123123213";
-          retrieveStatus = 1;
-          setState(() {});
-          //   }
-          //   if (res.status == 1) {
-          //     CommonUtils.showText('该账号不存在～');
-          //   }
-          // }).whenComplete(() {
-          //   PageStatus.closeLoading();
-          // });
+          PageStatus.showLoading();
+          validateUsername(username: acount.text).then((res) {
+            if (res.status == 0) {
+              retrieveName = acount.text;
+              retrieveStatus = 1;
+              setState(() {});
+            }
+            if (res.status == 1) {
+              CommonUtils.showText('该账号不存在～');
+            }
+          }).whenComplete(() {
+            PageStatus.closeLoading();
+          });
         } else {
           if (phone.text.isEmpty) {
             CommonUtils.showText('请输入手机号');
@@ -305,25 +304,25 @@ class _RegisterState extends State<Register> {
             return;
           }
           PageStatus.showLoading();
-          // forgetPassword(
-          //         code: phoneCode.text,
-          //         username: retrieveName,
-          //         phone: phone.text,
-          //         phonePrefix: code,
-          //         password: password.text,
-          //         passwordConfirm: cpassword.text)
-          //     .then((res) {
-          //   if (res.status != 0) {
-          //     currentIndex = 0;
-          //     setState(() {});
-          //     CommonUtils.showText('密码已成功找回～');
-          //     clearinput();
-          //   } else {
-          //     CommonUtils.showText(res.msg);
-          //   }
-          // }).whenComplete(() {
-          //   PageStatus.closeLoading();
-          // });
+          forgetPassword(
+                  code: phoneCode.text,
+                  username: retrieveName,
+                  phone: phone.text,
+                  phonePrefix: code,
+                  password: password.text,
+                  passwordConfirm: cpassword.text)
+              .then((res) {
+            if (res.status != 0) {
+              currentIndex = 0;
+              setState(() {});
+              CommonUtils.showText('密码已成功找回～');
+              clearinput();
+            } else {
+              CommonUtils.showText(res.msg);
+            }
+          }).whenComplete(() {
+            PageStatus.closeLoading();
+          });
         }
       },
       children: retrieveStatus == 0
@@ -350,17 +349,17 @@ class _RegisterState extends State<Register> {
                   startTime = e;
                 },
                 onSendCode: () {
-                  // sendPhone(phone: phone.text, phonePrefix: code, type: 3)
-                  //     .then((res) {
-                  //   if (res.status == 1) {
-                  //     if (startTime != null) {
-                  //       startTime();
-                  //       CommonUtils.showText('发送成功～');
-                  //     }
-                  //   } else {
-                  //     CommonUtils.showText(res.msg);
-                  //   }
-                  // });
+                  sendPhone(phone: phone.text, phonePrefix: code, type: 3)
+                      .then((res) {
+                    if (res.status == 1) {
+                      if (startTime != null) {
+                        startTime();
+                        CommonUtils.showText('发送成功～');
+                      }
+                    } else {
+                      CommonUtils.showText(res.msg);
+                    }
+                  });
                 },
               ),
               YyInput(
@@ -402,8 +401,8 @@ class _RegisterState extends State<Register> {
                           child: IndexedStack(
                         index: currentIndex,
                         children: [
-                          _register(), //注册 1
-                          _recoverAccount() //忘记密码 2
+                          _register(), //注册 0
+                          _recoverAccount() //忘记密码 1
                         ],
                       ))
                     ],
@@ -414,30 +413,32 @@ class _RegisterState extends State<Register> {
                     left: 0,
                     right: 0,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: DefaultStyle.pagePadding,
-                      ),
-                      child: Container(
-                        height: ScreenUtil().setWidth(44),
-                        child: Row(children: [
-                          Center(
-                            child: Icon(
-                              Icons.chevron_left,
-                              color: Colors.white,
-                              size: ScreenUtil().setSp(35),
-                            ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: DefaultStyle.pagePadding,
+                        ),
+                        child: GestureDetector(
+                          onTap: () => {context.pop()},
+                          child: Container(
+                            height: ScreenUtil().setWidth(44),
+                            child: Row(children: [
+                              Center(
+                                child: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                  size: ScreenUtil().setSp(35),
+                                ),
+                              ),
+                              Text(
+                                currentIndex == 0 ? "注册登陆" : "忘记密码",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(16),
+                                ),
+                              ),
+                            ]),
                           ),
-                          Text(
-                            "注册登陆",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(16),
-                            ),
-                          ),
-                        ]),
-                      ),
-                    ))
+                        )))
               ],
             ))),
       ],

@@ -1,12 +1,15 @@
-import 'package:country_code_picker/country_code.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:provider/provider.dart';
 
-import '../../routers.dart';
 import 'login_box.dart';
 
 class LoginPage extends StatefulWidget {
@@ -35,6 +38,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  setToken(String value) async {
+    Box box = AppGlobal.appBox;
+    box.put('yy_token', value);
+  }
+
   Widget _login() {
     final phone = TextEditingController();
     final username = TextEditingController();
@@ -52,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             GestureDetector(
               onTap: () {
-                context.push('/${Routes.register}');
+                // context.push(CommonUtils.getRealHash('register'));
+                context.push(CommonUtils.getRealHash('register/${0}'));
               },
               child: Container(
                 padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
@@ -76,7 +85,8 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             GestureDetector(
               onTap: () {
-                context.push('/${Routes.register}');
+                // context.push('/${Routes.register}/${1}');
+                context.push(CommonUtils.getRealHash('register/${1}'));
               },
               child: Text(
                 '忘记密码',
@@ -88,8 +98,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
             GestureDetector(
               onTap: () {
-                CommonUtils.debugPrint(
-                    '-**********************************12312312');
                 loginType = loginType == 0 ? 1 : 0;
                 setState(() {});
               },
@@ -117,6 +125,22 @@ class _LoginPageState extends State<LoginPage> {
             return;
           }
           PageStatus.showLoading(text: '正在登录...');
+          loginByPhone(
+                  code: phoneCode.text, phone: phone.text, phonePrefix: code)
+              .then((res) {
+            if (res.status != 0) {
+              CommonUtils.showText('登录成功～');
+              AppGlobal.apiToken = res.data;
+              setToken(res.data);
+              getHomeConfig(context).then((res) {
+                context.pop('login');
+              });
+            } else {
+              CommonUtils.showText(res.msg);
+            }
+          }).whenComplete(() {
+            PageStatus.closeLoading();
+          });
         } else {
           if (username.text.isEmpty) {
             CommonUtils.showText('请输入用户名～');
@@ -127,6 +151,21 @@ class _LoginPageState extends State<LoginPage> {
             return;
           }
           PageStatus.showLoading(text: '正在登录...');
+          loginByPassword(password: userPassword.text, username: username.text)
+              .then((res) {
+            if (res.status != 0) {
+              CommonUtils.showText('登录成功～');
+              AppGlobal.apiToken = res.data;
+              setToken(res.data);
+              getHomeConfig(context).then((res) {
+                context.pop('login');
+              });
+            } else {
+              CommonUtils.showText(res.msg);
+            }
+          }).whenComplete(() {
+            PageStatus.closeLoading();
+          });
         }
       },
       children: loginType == 0
@@ -152,6 +191,18 @@ class _LoginPageState extends State<LoginPage> {
                     return;
                   }
                   PageStatus.showLoading();
+                  sendPhone(phone: phone.text, phonePrefix: code, type: 1)
+                      .then((res) {
+                    if (res.status == 1) {
+                      if (startTime != null) {
+                        startTime();
+                        CommonUtils.showText('发送成功～');
+                      }
+                    } else {
+                      CommonUtils.showText(res.msg);
+                    }
+                    PageStatus.closeLoading();
+                  });
                 },
               ),
             ]
