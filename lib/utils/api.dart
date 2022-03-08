@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/model/animationDetail.dart';
 import 'package:pilipili/model/basic.dart';
+import 'package:pilipili/model/comicReading.dart';
+import 'package:pilipili/model/comicsDetail.dart';
 import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/model/homedata.dart';
@@ -201,24 +203,48 @@ Future publishComment(
   }
 }
 
-//忘记密码
-Future<Basic> forgetPassword(
-    {String username,
-    String phone,
-    String phonePrefix,
-    String code,
-    String password,
-    String passwordConfirm}) async {
+//漫画阅读
+Future<ComicReading> getComicReading({int id, int episode}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/forgetPassword', data: {
-      'username': username,
-      'phone': phone,
-      'phonePrefix': phonePrefix,
-      'code': code,
-      'password': password,
-      'passwordConfirm': passwordConfirm
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/read",
+        data: {'bookId': id, 'episode': episode});
+    return ComicReading.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//详情页推荐漫画
+Future<RecommendComics> getRecommendComicsList(
+    {int limit = 5, int page = 1, String category = '', int id}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        "/api/book/getDetailRecommendList",
+        data: {'limit': limit, 'page': page, 'category': category, 'id': id});
+    return RecommendComics.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//漫画详情
+Future<ComicDetail> getComicDetail({int id}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/getDetail",
+        data: {'bookId': id});
+    CommonUtils.debugPrint(res.data);
+    return ComicDetail.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//验证手机号
+Future<Basic> validatePhone({String phone, String phonePrefix}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/validatePhone',
+        data: {'phone': phone, 'phonePrefix': phonePrefix});
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {
@@ -251,6 +277,24 @@ Future<Basic> sendPhone({String phone, String phonePrefix, int type}) async {
   }
 }
 
+//手机注册
+Future<Basic> registerByPhone(
+    {String phone, String phonePrefix, String code, String invitedAff}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/registerByPhone', data: {
+      'phone': phone,
+      'phonePrefix': phonePrefix,
+      'code': code,
+      'invitedAff': invitedAff
+    });
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
 //用户名注册
 Future<Basic> registerByPassword(
     {String username,
@@ -263,24 +307,6 @@ Future<Basic> registerByPassword(
       'username': username,
       'password': password,
       'confirm_pwd': confirmPwd,
-      'invitedAff': invitedAff
-    });
-    Basic result = Basic.fromJson(res.data);
-    return result;
-  } catch (e) {
-    return null;
-  }
-}
-
-//手机注册
-Future<Basic> registerByPhone(
-    {String phone, String phonePrefix, String code, String invitedAff}) async {
-  try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/registerByPhone', data: {
-      'phone': phone,
-      'phonePrefix': phonePrefix,
-      'code': code,
       'invitedAff': invitedAff
     });
     Basic result = Basic.fromJson(res.data);
@@ -310,6 +336,31 @@ Future<Basic> loginByPassword({String username, String password}) async {
     Response<dynamic> res = await PlatformAwareHttp.post(
         '/api/account/loginByPassword',
         data: {'username': username, 'password': password});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//忘记密码
+Future<Basic> forgetPassword(
+    {String username,
+    String phone,
+    String phonePrefix,
+    String code,
+    String password,
+    String passwordConfirm}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/forgetPassword', data: {
+      'username': username,
+      'phone': phone,
+      'phonePrefix': phonePrefix,
+      'code': code,
+      'password': password,
+      'passwordConfirm': passwordConfirm
+    });
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {

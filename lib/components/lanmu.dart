@@ -12,19 +12,26 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/routers.dart';
 
 class Lanmu extends StatefulWidget {
-  Lanmu({Key key, this.data, this.id, this.isShow, this.parentName, this.index})
+  Lanmu(
+      {Key key,
+      this.data,
+      this.id,
+      this.isShow,
+      this.parentName,
+      this.index,
+      this.tabList})
       : super(key: key);
   final dynamic data;
   final int id;
   final bool isShow;
   final String parentName;
   final int index;
+  final List tabList;
   @override
   _LanmuState createState() => _LanmuState();
 }
 
 class _LanmuState extends State<Lanmu> with ElementMixin {
-  List tabList = ['限免', '网黄', 'COS', '精彩活动'];
   int pageStatus = 0;
   int page = 1;
   bool isAll = false;
@@ -208,7 +215,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                     child: Wrap(
                                       alignment: WrapAlignment.center,
                                       spacing: ScreenUtil().setWidth(5),
-                                      children: tabList.asMap().keys.map((e) {
+                                      children:
+                                          widget.tabList.asMap().keys.map((e) {
                                         return Stack(
                                           children: [
                                             Positioned(
@@ -222,15 +230,19 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                 )),
                                             GestureDetector(
                                               onTap: () {
-                                                if (tabList[e] == '限免') {
+                                                if (widget.tabList[e]['type'] ==
+                                                    1) {
                                                   context.push(
                                                       "/${Routes.xianmian}");
-                                                } else if (tabList[e] ==
-                                                    '精彩活动') {
+                                                } else if (widget.tabList[e]
+                                                        ['type'] ==
+                                                    3) {
                                                   context.push(
                                                       "/${Routes.activityList}");
-                                                }else{
-                                                  context.push(CommonUtils.getRealHash('seconedPage/${tabList[e]}'));
+                                                } else {
+                                                  context.push(
+                                                      CommonUtils.getRealHash(
+                                                          'seconedPage/${widget.tabList[e]['name']}'));
                                                 }
                                               },
                                               child: Container(
@@ -245,7 +257,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                         .setWidth(3)),
                                                 alignment: Alignment.center,
                                                 child: Text(
-                                                  tabList[e],
+                                                  widget.tabList[e]['name'],
                                                   style: TextStyle(
                                                       color: Color(0xffc8003c),
                                                       fontSize: ScreenUtil()
