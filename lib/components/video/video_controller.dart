@@ -339,7 +339,7 @@ class _VideoControllerState extends State<VideoController>
                                 }
                               },
                               child: Image.asset(
-                                'assets/pengke/video/${widget.videoController.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
+                                'assets/images/detail/${widget.videoController.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
                                 width: ScreenUtil().setWidth(50),
                                 fit: BoxFit.fitWidth,
                               ),
@@ -397,8 +397,8 @@ class _VideoControllerState extends State<VideoController>
                         widget.isPreview
                     ? Container()
                     : Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(5)),
+                        padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setWidth(5)),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                           colors: [Colors.black26, Colors.black45],
@@ -422,8 +422,8 @@ class _VideoControllerState extends State<VideoController>
                                   }
                                 },
                                 child: Container(
-                                  margin:
-                                      EdgeInsets.only(right: ScreenUtil().setWidth(15)),
+                                  margin: EdgeInsets.only(
+                                      right: ScreenUtil().setWidth(15)),
                                   child: Icon(
                                     widget.videoController.value.isPlaying
                                         ? Icons.pause
@@ -448,7 +448,8 @@ class _VideoControllerState extends State<VideoController>
                                               enabledThumbRadius:
                                                   ScreenUtil().setWidth(5)),
                                           overlayShape: RoundSliderOverlayShape(
-                                            overlayRadius: ScreenUtil().setWidth(9),
+                                            overlayRadius:
+                                                ScreenUtil().setWidth(9),
                                           ),
                                           thumbColor: Color(0xffff84a9)),
                                       child: Slider(
@@ -503,8 +504,8 @@ class _VideoControllerState extends State<VideoController>
                                   }
                                 },
                                 child: Container(
-                                  margin:
-                                      EdgeInsets.only(left: ScreenUtil().setWidth(15)),
+                                  margin: EdgeInsets.only(
+                                      left: ScreenUtil().setWidth(15)),
                                   child: Icon(
                                     widget.videoController.value.volume > 0
                                         ? Icons.volume_up
@@ -578,7 +579,8 @@ class _VideoControllerState extends State<VideoController>
                         ? GestureDetector(
                             onTap: changeFull,
                             child: Container(
-                              margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
+                              margin: EdgeInsets.only(
+                                  left: ScreenUtil().setWidth(15)),
                               child: Icon(
                                 widget.isFull
                                     ? Icons.fullscreen_exit
@@ -615,7 +617,8 @@ class _VideoControllerState extends State<VideoController>
                           initVideo();
                         },
                         child: Container(
-                          margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
+                          margin:
+                              EdgeInsets.only(top: ScreenUtil().setWidth(22)),
                           height: ScreenUtil().setWidth(32),
                           width: ScreenUtil().setWidth(118.5),
                           decoration: BoxDecoration(
@@ -623,8 +626,8 @@ class _VideoControllerState extends State<VideoController>
                                   width: ScreenUtil().setWidth(0.5),
                                   color: Colors.white),
                               color: Color.fromRGBO(247, 222, 185, 0.5),
-                              borderRadius:
-                                  BorderRadius.circular(ScreenUtil().setWidth(16))),
+                              borderRadius: BorderRadius.circular(
+                                  ScreenUtil().setWidth(16))),
                           child: Center(
                             child: Text(
                               '重新加载',

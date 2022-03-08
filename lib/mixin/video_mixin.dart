@@ -260,8 +260,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                             gradient: SweepGradient(
                                                 //  begin: Alignment.bottomCenter,
                                                 colors: [
-                                                  Color(0XFFff84a9),
-                                                  Color(0XFFff9e9e),
+                                                  Color(isInsufficient?0xffffccdb:0XFFff84a9),
+                                                  Color(isInsufficient?0xffffe4e4:0XFFff9e9e),
                                                 ])),
                                         width: double.infinity,
                                         height: ScreenUtil().setWidth(40),
@@ -271,7 +271,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 ? '皮哩币不足，前往充值'
                                                 : '立即购买',
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color:isInsufficient?Color(0xffff84a9): Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize:
                                                     ScreenUtil().setSp(16)),
@@ -312,21 +312,22 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: ScreenUtil()
-                                                            .setSp(isInsufficient?12:16)),
+                                                            .setSp(
+                                                                isInsufficient
+                                                                    ? 14
+                                                                    : 16)),
                                                   ),
                                                 ),
                                               ),
                                               Positioned(
-                                                  top:
-                                                      ScreenUtil().setWidth(-7),
-                                                  left:
-                                                      ScreenUtil().setWidth(0),
-                                                  child:
-                                                      PlatformAwareAssetImage(
-                                                    url:
-                                                        'assets/images/vie_zhekou.png',
+                                                  top: ScreenUtil()
+                                                      .setWidth(-26.4),
+                                                  left: ScreenUtil()
+                                                      .setWidth(-12),
+                                                  child: Image.asset(
+                                                    'assets/images/detail/vip_zhekou.png',
                                                     height: ScreenUtil()
-                                                        .setWidth(15),
+                                                        .setWidth(26),
                                                     fit: BoxFit.fitHeight,
                                                   ))
                                             ],
@@ -354,8 +355,12 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                       gradient: SweepGradient(
                                                           //  begin: Alignment.bottomCenter,
                                                           colors: [
-                                                            Color(0XFFff84a9),
-                                                            Color(0XFFff9e9e),
+                                                            Color(isInsufficient
+                                                                ? 0xffffccdb
+                                                                : 0XFFff84a9),
+                                                            Color(isInsufficient
+                                                                ? 0xffffe4e4
+                                                                : 0XFFff9e9e),
                                                           ])),
                                                   width: double.infinity,
                                                   height:
@@ -366,11 +371,17 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                           ? '皮哩币不足，前往充值'
                                                           : '立即购买',
                                                       style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: isInsufficient
+                                                              ? Color(
+                                                                  0xffff84a9)
+                                                              : Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: ScreenUtil()
-                                                              .setSp(isInsufficient?12:16)),
+                                                              .setSp(
+                                                                  isInsufficient
+                                                                      ? 14
+                                                                      : 16)),
                                                     ),
                                                   ),
                                                 )))

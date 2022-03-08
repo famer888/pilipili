@@ -129,7 +129,7 @@ class _SearchPageState extends State<SearchPage> {
                     border: InputBorder.none,
                     prefixIcon: Padding(
                       child: Image.asset(
-                        'assets/images/icon_search.png',
+                        'assets/images/detail/icon_search_red.png',
                         color: Color(0xffFF84A9),
                       ),
                       padding: EdgeInsets.only(
