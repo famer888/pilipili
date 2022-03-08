@@ -272,165 +272,182 @@ class _WodeState extends State<Wode> {
   }
 
   Widget header() {
-    return Container(
-      padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top + ScreenUtil().setHeight(10),
-          left: ScreenUtil().setWidth(18),
-          right: ScreenUtil().setWidth(16),
-          bottom: ScreenUtil().setHeight(18)),
-      // height: ScreenUtil().setHeight(120),
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/wode/header_bg.png"),
-              fit: BoxFit.fill)),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Image.asset(
-                "assets/images/wode/Chat_Circle_Dots.png",
-                width: ScreenUtil().setWidth(24),
-                fit: BoxFit.fitWidth,
-              ),
-              SizedBox(
-                width: ScreenUtil().setWidth(13),
-              ),
-              Image.asset(
-                "assets/images/wode/Settings.png",
-                width: ScreenUtil().setWidth(24),
-                fit: BoxFit.fitWidth,
-              )
-            ],
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: Image.asset(
+            "assets/images/wode/header_bg.png",
+            fit: BoxFit.fill,
           ),
-          Container(
-            margin: EdgeInsets.only(
-              top: ScreenUtil().setWidth(15),
-            ),
-            child: Row(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-                    width: ScreenUtil().setWidth(60),
-                    height: ScreenUtil().setHeight(60),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/wode/avatr.jpg'),
-                            fit: BoxFit.cover))),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "名字最长20个字",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: ScreenUtil().setSp(18),
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                top: ScreenUtil().setWidth(5),
-                                right: ScreenUtil().setWidth(5),
-                              ),
-                              // width: ScreenUtil().setWidth(93),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setWidth(8)),
-                              height: ScreenUtil().setHeight(20),
-                              decoration: new BoxDecoration(
-                                color: Color.fromRGBO(225, 225, 225, 0.28),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25)),
-                                //设置四周边框
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "1231232",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil().setSp(14),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(
-                                  top: ScreenUtil().setWidth(5)),
-                              // width: ScreenUtil().setWidth(93),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setWidth(8)),
-                              height: ScreenUtil().setHeight(20),
-                              decoration: new BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFFFFD875),
-                                    Color(0xFFFF6915)
-                                  ],
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25)),
-                                //设置四周边框
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "VIP:永久",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil().setSp(14),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ))
-                        ],
-                      )
-                    ],
+        ),
+        Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top +
+                  ScreenUtil().setHeight(10),
+              left: ScreenUtil().setWidth(18),
+              right: ScreenUtil().setWidth(16),
+              bottom: ScreenUtil().setHeight(18)),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/${Routes.setup}');
+                    },
+                    child: Image.asset(
+                      "assets/images/wode/Chat_Circle_Dots.png",
+                      width: ScreenUtil().setWidth(24),
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
+                  SizedBox(
+                    width: ScreenUtil().setWidth(13),
+                  ),
+                  GestureDetector(
                       onTap: () {
-                        context.push('/${Routes.login}');
+                        context.push('/${Routes.setup}');
                       },
-                      child: Row(
+                      child: Image.asset(
+                        "assets/images/wode/Settings.png",
+                        width: ScreenUtil().setWidth(24),
+                        fit: BoxFit.fitWidth,
+                      )),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: ScreenUtil().setWidth(15),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                      child: ClipOval(
+                        child: Image.asset("assets/images/wode/avatr.jpg",
+                            width: ScreenUtil().setWidth(60)),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "注册登陆",
+                            "名字最长20个字",
                             style: TextStyle(
                               color: Colors.white,
+                              fontSize: ScreenUtil().setSp(18),
                               fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(12),
+                              overflow: TextOverflow.ellipsis,
+                              decoration: TextDecoration.none,
                             ),
                           ),
-                          Center(
-                            child: Icon(
-                              Icons.chevron_right,
-                              color: Colors.white,
-                              size: ScreenUtil().setSp(15),
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(
+                                    top: ScreenUtil().setWidth(5),
+                                    right: ScreenUtil().setWidth(5),
+                                  ),
+                                  // width: ScreenUtil().setWidth(93),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: ScreenUtil().setWidth(8)),
+                                  height: ScreenUtil().setHeight(20),
+                                  decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(225, 225, 225, 0.28),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(25)),
+                                    //设置四周边框
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "1231232",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(14),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )),
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      top: ScreenUtil().setWidth(5)),
+                                  // width: ScreenUtil().setWidth(93),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: ScreenUtil().setWidth(8)),
+                                  height: ScreenUtil().setHeight(20),
+                                  decoration: new BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xFFFFD875),
+                                        Color(0xFFFF6915)
+                                      ],
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(25)),
+                                    //设置四周边框
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "VIP:永久",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(14),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ))
+                            ],
                           )
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(28),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            context.push('/${Routes.login}');
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "注册登陆",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(12),
+                                ),
+                              ),
+                              Center(
+                                child: Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.white,
+                                  size: ScreenUtil().setSp(15),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(28),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+                ),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }

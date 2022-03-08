@@ -6,6 +6,7 @@ import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
@@ -27,6 +28,7 @@ class Routes {
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
   static String login = 'login'; //登陆页面
   static String register = 'register/:type'; //注册找回密码
+  static String setup = 'setup'; //设置
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -83,6 +85,7 @@ class Routes {
                   : int.parse(state.params['type'].toString())),
         ),
       ]),
+      GoRoute(path: setup, builder: (context, state) => SetupPage()),
     ];
   }
 
