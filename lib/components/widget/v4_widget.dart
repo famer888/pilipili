@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -107,20 +108,9 @@ class _V4ColumnState extends State<V4Column> {
                       .toList(),
                 ),
           GestureDetector(
-            onTap: (){
-                      YyShowDialog.showdialog(context,
-              title: '提示', btnText: '升级VIP', cancelText: '取消', callBack: () {
-            // context.push('/${Routes.vip}');
-          }, content: (setDialogState) {
-            return DefaultTextStyle(
-                style: DefaultStyle.black14,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('升级VIP才能约炮哦。平台官方认证美女，裸聊预约皆有保障，让你约到称心如意的妹子!'),
-                  ],
-                ));
-          });
+            onTap: () {
+              context.push(
+                  '/morePage/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
             },
             child: Container(
               width: ScreenUtil().setWidth(240),

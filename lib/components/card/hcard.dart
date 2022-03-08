@@ -100,7 +100,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                   Container(
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          // color: Colors.grey,
                           borderRadius: BorderRadius.all(
                               Radius.circular(ScreenUtil().setWidth(5)))),
                       height: thumbHeight,
@@ -136,7 +136,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                                     ? (widget.cardData['second_title'] ??
                                         widget.cardData['title'])
                                     : widget.cardData['title'],
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Color(0xff646464),
