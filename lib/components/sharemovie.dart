@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -100,6 +101,242 @@ class ShareMovieModel {
       );
     }
 
+    Widget _header() {
+      return Container(
+        padding: EdgeInsets.only(
+            left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(100)),
+        height: ScreenUtil().setWidth(80),
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+          Color.fromRGBO(255, 134, 172, 1),
+          Color.fromRGBO(255, 91, 140, 1),
+          Color.fromRGBO(250, 67, 122, 1)
+        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$title',
+              style: TextStyle(
+                  color: Color(0xffffffff),
+                  decoration: TextDecoration.none,
+                  fontWeight: FontWeight.bold,
+                  fontSize: ScreenUtil().setSp(18)),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            Text(
+              '$subtitle',
+              style: TextStyle(
+                  color: Color(0xffffffff),
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.none,
+                  fontSize: ScreenUtil().setSp(14)),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget _body() {
+      return Container(
+        padding: EdgeInsets.all(DefaultStyle.pagePadding),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(5)),
+              child: SizedBox(
+                width: double.infinity,
+                height:
+                    width == null ? ScreenUtil().setWidth(111) : width * 0.36,
+                child: PlatformAwareNetworkImage(
+                  fit: BoxFit.cover,
+                  url: '$thumb',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(10),
+                  right: ScreenUtil().setWidth(10),
+                  top: DefaultStyle.pagePadding),
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: DefaultStyle.pagePadding),
+                    width: ScreenUtil().setWidth(80),
+                    height: ScreenUtil().setWidth(80),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        //阴影
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(0, 0),
+                            blurRadius: ScreenUtil().setWidth(6.5))
+                      ],
+                    ),
+                    child: QrImage(
+                        data: '$url', version: 3, padding: EdgeInsets.all(7)),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '扫码下载APP',
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.none,
+                                    fontSize: ScreenUtil().setSp(14)),
+                              ),
+                              Text(
+                                '立即观看pilipili视频！',
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.none,
+                                    fontSize: ScreenUtil().setSp(14)),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.only(left: ScreenUtil().setWidth(5)),
+                            child: Image.asset(
+                              "assets/images/icon_logo.png",
+                              width: ScreenUtil().setWidth(50),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          )
+                        ],
+                      ),
+                      Container(
+                        width: ScreenUtil().screenWidth -
+                            DefaultStyle.pagePadding * 5 -
+                            ScreenUtil().setWidth(115),
+                        padding: EdgeInsets.only(top: ScreenUtil().setWidth(0)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "若二维码无法打开，请输入以下网址",
+                              style: TextStyle(
+                                  color: Color(0xff646464),
+                                  fontWeight: FontWeight.normal,
+                                  decoration: TextDecoration.none,
+                                  fontSize: ScreenUtil().setSp(11)),
+                            ),
+                            Text(
+                              "${url}",
+                              style: TextStyle(
+                                  color: Color(0xff646464),
+                                  fontWeight: FontWeight.normal,
+                                  decoration: TextDecoration.none,
+                                  fontSize: ScreenUtil().setSp(11)),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: ScreenUtil().setWidth(60))
+          ],
+        ),
+      );
+    }
+
+    Widget _footer() {
+      return Positioned(
+          right: 0,
+          bottom: 0,
+          left: 0,
+          child: Container(
+            // color: Colors.red,
+            height: ScreenUtil().setWidth(70),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: _saveImgShare,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(10)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(18),
+                        vertical: ScreenUtil().setWidth(8)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: [
+                          //阴影
+                          BoxShadow(
+                              color: Color.fromRGBO(255, 128, 163, 0.5),
+                              offset: Offset(0, 0),
+                              blurRadius: ScreenUtil().setWidth(4))
+                        ],
+                        gradient: LinearGradient(
+                            colors: [
+                              Color.fromRGBO(255, 132, 169, 1),
+                              Color.fromRGBO(255, 158, 158, 1),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter)),
+                    child: Text(
+                      '保存图片分享',
+                      style: DefaultStyle.white15bold,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _copyLinkShare,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(10)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(18),
+                        vertical: ScreenUtil().setWidth(8)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: [
+                          //阴影
+                          BoxShadow(
+                              color: Color.fromRGBO(255, 128, 163, 0.5),
+                              offset: Offset(0, 0),
+                              blurRadius: ScreenUtil().setWidth(4))
+                        ],
+                        gradient: LinearGradient(
+                            colors: [
+                              Color.fromRGBO(255, 132, 169, 1),
+                              Color.fromRGBO(255, 158, 158, 1),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter)),
+                    child: Text(
+                      '复制分享链接',
+                      style: DefaultStyle.white15bold,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ));
+    }
+
     BotToast.showWidget(
         toastBuilder: (cancelFunc) => Container(
               child: Stack(
@@ -116,27 +353,11 @@ class ShareMovieModel {
                   Positioned(
                     child: Center(
                       child: Container(
-                        width: ScreenUtil().setWidth(280),
+                        width: ScreenUtil().screenWidth -
+                            ScreenUtil().setWidth(40),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                cancelFunc();
-                                cancel?.call();
-                              },
-                              child: SizedBox(
-                                width: ScreenUtil().setWidth(43),
-                                height: ScreenUtil().setWidth(43),
-                                child: PlatformAwareAssetImage(
-                                    url: 'assets/images/icon_close2.png',
-                                    width: double.infinity,
-                                    height: double.infinity),
-                              ),
-                            ),
-                            SizedBox(
-                              height: ScreenUtil().setWidth(10),
-                            ),
                             Stack(
                               children: [
                                 Positioned(
@@ -144,365 +365,40 @@ class ShareMovieModel {
                                     key: certificateWidgetKey,
                                     child: Stack(
                                       children: [
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                                height:
+                                                    ScreenUtil().setWidth(60)),
+                                            Container(
+                                              width: double.infinity,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xfffff4f9),
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          ScreenUtil()
+                                                              .setWidth(10)))),
+                                              child: Column(
+                                                children: [_header(), _body()],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                         Positioned(
                                             top: 0,
-                                            bottom: 0,
                                             right: 0,
-                                            left: 0,
                                             child: Image.asset(
-                                              'assets/pengke/share_dialog_bg.png',
-                                              fit: BoxFit.fill,
-                                            )),
-                                        Container(
-                                          padding: EdgeInsets.all(
-                                              ScreenUtil().setWidth(15)),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(5)),
-                                                child: SizedBox(
-                                                  width: ScreenUtil()
-                                                      .setWidth(270),
-                                                  height: width == null
-                                                      ? ScreenUtil()
-                                                          .setWidth(157.5)
-                                                      : ScreenUtil().setWidth(
-                                                          (270 / width) *
-                                                              height),
-                                                  child:
-                                                      PlatformAwareNetworkImage(
-                                                    fit: BoxFit.cover,
-                                                    url: '$thumb',
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height:
-                                                    ScreenUtil().setWidth(18),
-                                              ),
-                                              Text(
-                                                '$title',
-                                                style: TextStyle(
-                                                    color: Color(0xffffffff),
-                                                    decoration:
-                                                        TextDecoration.none,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(15)),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                              ),
-                                              SizedBox(
-                                                height:
-                                                    ScreenUtil().setWidth(11),
-                                              ),
-                                              Text(
-                                                '$subtitle',
-                                                style: TextStyle(
-                                                    color: Color(0xffd7d7d7),
-                                                    decoration:
-                                                        TextDecoration.none,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(13)),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 3,
-                                              ),
-                                              SizedBox(
-                                                height:
-                                                    ScreenUtil().setWidth(14),
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: ScreenUtil()
-                                                        .setWidth(120),
-                                                    height: ScreenUtil()
-                                                        .setWidth(120),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      boxShadow: [
-                                                        //阴影
-                                                        BoxShadow(
-                                                            color:
-                                                                Colors.black12,
-                                                            offset:
-                                                                Offset(0, 0),
-                                                            blurRadius:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        6.5))
-                                                      ],
-                                                    ),
-                                                    child: QrImage(
-                                                      data: '$url',
-                                                      version: 3,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: ScreenUtil()
-                                                        .setWidth(15),
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      '下载地址：$url',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffd7d7d7),
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(12)),
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        )
+                                              "assets/images/share_bg.png",
+                                              height:
+                                                  ScreenUtil().setWidth(140),
+                                              fit: BoxFit.fitHeight,
+                                            ))
                                       ],
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                          top: 0,
-                                          bottom: 0,
-                                          right: 0,
-                                          left: 0,
-                                          child: Image.asset(
-                                            'assets/pengke/share_dialog_bg.png',
-                                            fit: BoxFit.fill,
-                                          )),
-                                      Container(
-                                        padding: EdgeInsets.all(
-                                            ScreenUtil().setWidth(15)),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      ScreenUtil().setWidth(5)),
-                                              child: SizedBox(
-                                                width:
-                                                    ScreenUtil().setWidth(270),
-                                                height: width == null
-                                                    ? ScreenUtil()
-                                                        .setWidth(157.5)
-                                                    : ScreenUtil().setWidth(
-                                                        (270 / width) *
-                                                            (height > width
-                                                                ? width
-                                                                : height)),
-                                                child:
-                                                    PlatformAwareNetworkImage(
-                                                  fit: BoxFit.cover,
-                                                  url: '$thumb',
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: ScreenUtil().setWidth(18),
-                                            ),
-                                            Text(
-                                              '$title',
-                                              style: TextStyle(
-                                                  color: Color(0xffffffff),
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize:
-                                                      ScreenUtil().setSp(15)),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                            SizedBox(
-                                              height: ScreenUtil().setWidth(11),
-                                            ),
-                                            Text(
-                                              '$subtitle',
-                                              style: TextStyle(
-                                                  color: Color(0xffd7d7d7),
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize:
-                                                      ScreenUtil().setSp(13)),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 3,
-                                            ),
-                                            SizedBox(
-                                              height: ScreenUtil().setWidth(14),
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: ScreenUtil()
-                                                      .setWidth(120),
-                                                  height: ScreenUtil()
-                                                      .setWidth(120),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    boxShadow: [
-                                                      //阴影
-                                                      BoxShadow(
-                                                          color: Colors.black12,
-                                                          offset: Offset(0, 0),
-                                                          blurRadius:
-                                                              ScreenUtil()
-                                                                  .setWidth(
-                                                                      6.5))
-                                                    ],
-                                                  ),
-                                                  child: QrImage(
-                                                    data: '$url',
-                                                    version: 3,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width:
-                                                      ScreenUtil().setWidth(15),
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        '下载地址：$url',
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xffd7d7d7),
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .none,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(12)),
-                                                      ),
-                                                      SizedBox(
-                                                        height: ScreenUtil()
-                                                            .setWidth(15),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: _copyLinkShare,
-                                                        child: Stack(
-                                                          children: [
-                                                            Positioned(
-                                                                top: 0,
-                                                                bottom: 0,
-                                                                right: 0,
-                                                                left: 0,
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/pengke/video/video_duan_btn.png',
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                )),
-                                                            Container(
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          30),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  '复制下载链接',
-                                                                  style: TextStyle(
-                                                                      color: Color(
-                                                                          0xff62f7ff),
-                                                                      decoration:
-                                                                          TextDecoration
-                                                                              .none,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
-                                                                      fontSize:
-                                                                          ScreenUtil()
-                                                                              .setSp(12)),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: ScreenUtil()
-                                                            .setWidth(7.5),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: _saveImgShare,
-                                                        child: Stack(
-                                                          children: [
-                                                            Positioned(
-                                                                top: 0,
-                                                                bottom: 0,
-                                                                right: 0,
-                                                                left: 0,
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/pengke/btn_bg.png',
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                )),
-                                                            Container(
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          30),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  '保存图片',
-                                                                  style: TextStyle(
-                                                                      color: Color(
-                                                                          0xff62f7ff),
-                                                                      decoration:
-                                                                          TextDecoration
-                                                                              .none,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
-                                                                      fontSize:
-                                                                          ScreenUtil()
-                                                                              .setSp(12)),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                _footer()
                               ],
                             ),
                           ],

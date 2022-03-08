@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
@@ -10,47 +12,46 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/common.dart';
 
-class SeconedPage extends StatefulWidget {
-  SeconedPage({Key key, this.title}) : super(key: key);
-  final String title;
+class ActivityList extends StatefulWidget {
+  ActivityList({Key key}) : super(key: key);
   @override
-  State<SeconedPage> createState() => _SeconedPageState();
+  State<ActivityList> createState() => _ActivityListState();
 }
 
-class _SeconedPageState extends State<SeconedPage> {
+class _ActivityListState extends State<ActivityList> {
   List data = [
     {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
+      'date': "2022.02.14-2022.02.19",
       'url':
           "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
     },
     {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
+      'date': "2022.02.14-2022.02.19",
       'url':
           "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
     },
     {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
+      'date': "2022.02.14-2022.02.19",
       'url':
           "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
     },
     {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
+      'date': "2022.02.14-2022.02.19",
       'url':
           "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
     },
   ];
-  Widget renderItem(String name, String url) {
+  Widget renderItem(Map _data) {
     return GestureDetector(
       onTap: () {
-        context.push(CommonUtils.getRealHash('seconedPageDetail/${name}'));
+        context.push(CommonUtils.getRealHash('ActivityDetail/${1}'));
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                  color: Color.fromRGBO(255, 91, 140, 0.4),
+                  color: Color.fromRGBO(255, 91, 140, 0.2),
                   offset: Offset(0, 2),
                   blurRadius: 3,
                   spreadRadius: 0)
@@ -60,26 +61,38 @@ class _SeconedPageState extends State<SeconedPage> {
         margin: EdgeInsets.only(bottom: DefaultStyle.pagePadding),
         child: Stack(
           children: [
-            Image.network(
-              url,
-              width: double.infinity,
-              height: ScreenUtil().setWidth(140),
-              fit: BoxFit.cover,
+            Column(
+              children: [
+                Image.network(
+                  _data["url"],
+                  width: double.infinity,
+                  height: ScreenUtil().setWidth(127),
+                  fit: BoxFit.cover,
+                ),
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.symmetric(
+                      vertical: ScreenUtil().setWidth(6),
+                      horizontal: ScreenUtil().setWidth(6)),
+                  child: Text(
+                    _data['date'],
+                    style: TextStyle(
+                      color: Color(0xff979797),
+                      fontSize: ScreenUtil().setSp(12),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Positioned(
                 top: 0,
                 right: 0,
-                bottom: 0,
-                left: 0,
-                child: Container(
-                  color: Color.fromRGBO(0, 0, 0, 0.4),
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(25)),
-                  child: Text(
-                    name,
-                    style: DefaultStyle.white15,
-                  ),
+                child: Image.asset(
+                  "assets/images/icon_ing.png",
+                  width: ScreenUtil().setWidth(50),
+                  fit: BoxFit.fitWidth,
                 ))
           ],
         ),
@@ -94,14 +107,13 @@ class _SeconedPageState extends State<SeconedPage> {
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: widget.title,
+            title: "精彩活动",
           ),
           Expanded(
               child: SingleChildScrollView(
             padding: EdgeInsets.all(DefaultStyle.pagePadding),
             child: Column(
-              children:
-                  data.map((e) => renderItem(e['name'], e['url'])).toList(),
+              children: data.map((e) => renderItem(e)).toList(),
             ),
           ))
         ],
