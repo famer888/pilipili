@@ -8,6 +8,7 @@ import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/fill_code.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/components/xianmian.dart';
@@ -33,6 +34,7 @@ class Routes {
   static String login = 'login'; //登陆页面
   static String register = 'register/:type'; //注册找回密码
   static String setup = 'setup'; //设置
+  static String fillcode = 'fillcode/:type'; //填写邀请码兑换码
 
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
@@ -95,7 +97,19 @@ class Routes {
                   : int.parse(state.params['type'].toString())),
         ),
       ]),
-      GoRoute(path: setup, builder: (context, state) => SetupPage()),
+      GoRoute(
+        path: setup,
+        builder: (context, state) => SetupPage(),
+        routes: [
+          GoRoute(
+            path: fillcode,
+            builder: (context, state) => FillCodePage(
+                type: state.params == null || state.params['type'] == null
+                    ? null
+                    : int.parse(state.params['type'].toString())),
+          ),
+        ],
+      ),
       GoRoute(
           path: comicsdetail,
           builder: (context, state) {
