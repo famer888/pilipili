@@ -132,8 +132,9 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                             ? Text(
                                 widget.isSubtitle
                                     ? (widget.cardData['second_title'] ??
-                                        widget.cardData['title'])
-                                    : widget.cardData['title'],
+                                        widget.cardData['title'] ??
+                                        '')
+                                    : widget.cardData['title' ?? ''],
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

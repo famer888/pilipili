@@ -5,6 +5,10 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/networkImage.dart';
+import '../utils/api.dart';
 
 class ActivityList extends StatefulWidget {
   ActivityList({Key key}) : super(key: key);
@@ -13,32 +17,33 @@ class ActivityList extends StatefulWidget {
 }
 
 class _ActivityListState extends State<ActivityList> {
-  List data = [
-    {
-      'date': "2022.02.14-2022.02.19",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-    {
-      'date': "2022.02.14-2022.02.19",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-    {
-      'date': "2022.02.14-2022.02.19",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-    {
-      'date': "2022.02.14-2022.02.19",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-  ];
+  bool loading = true;
+  List listData;
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() {
+    getActivityList().then((res) {
+      LogUtil.d(res['data']);
+      if (res != null && res['data'] != null) {
+        setState(() {
+          listData = res['data'];
+        });
+      }
+    }).whenComplete(() {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
   Widget renderItem(Map _data) {
     return GestureDetector(
       onTap: () {
-        context.push(CommonUtils.getRealHash('ActivityDetail/${1}'));
+        context.push(CommonUtils.getRealHash('ActivityDetail/${_data['id']}'));
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
@@ -57,21 +62,27 @@ class _ActivityListState extends State<ActivityList> {
           children: [
             Column(
               children: [
-                Image.network(
-                  _data["url"],
-                  width: double.infinity,
-                  height: ScreenUtil().setWidth(127),
-                  fit: BoxFit.cover,
+                Container(
+                  width:
+                      (ScreenUtil().screenWidth - DefaultStyle.pagePadding * 2),
+                  height: (ScreenUtil().screenWidth -
+                          DefaultStyle.pagePadding * 2) *
+                      0.37,
+                  child: PlatformAwareNetworkImage(
+                    url: _data["resource"][0]['url'],
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Container(
-                  width: double.infinity,
+                  width:
+                      (ScreenUtil().screenWidth - DefaultStyle.pagePadding * 2),
                   color: Colors.white,
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.symmetric(
                       vertical: ScreenUtil().setWidth(6),
                       horizontal: ScreenUtil().setWidth(6)),
                   child: Text(
-                    _data['date'],
+                    _data['desc'].split('：')[1],
                     style: TextStyle(
                       color: Color(0xff979797),
                       fontSize: ScreenUtil().setSp(12),
@@ -80,14 +91,16 @@ class _ActivityListState extends State<ActivityList> {
                 ),
               ],
             ),
-            Positioned(
-                top: 0,
-                right: 0,
-                child: Image.asset(
-                  "assets/images/icon_ing.png",
-                  width: ScreenUtil().setWidth(50),
-                  fit: BoxFit.fitWidth,
-                ))
+            _data['status'] == 1
+                ? Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Image.asset(
+                      "assets/images/icon_ing.png",
+                      width: ScreenUtil().setWidth(50),
+                      fit: BoxFit.fitWidth,
+                    ))
+                : Container()
           ],
         ),
       ),
@@ -104,12 +117,17 @@ class _ActivityListState extends State<ActivityList> {
             title: "精彩活动",
           ),
           Expanded(
-              child: SingleChildScrollView(
-            padding: EdgeInsets.all(DefaultStyle.pagePadding),
-            child: Column(
-              children: data.map((e) => renderItem(e)).toList(),
-            ),
-          ))
+              child: loading
+                  ? PageStatus.loading(mounted)
+                  : listData == null || listData.length == 0
+                      ? PageStatus.noData()
+                      : SingleChildScrollView(
+                          padding: EdgeInsets.all(DefaultStyle.pagePadding),
+                          child: Column(
+                            children:
+                                listData.map((e) => renderItem(e)).toList(),
+                          ),
+                        ))
         ],
       ),
     );
