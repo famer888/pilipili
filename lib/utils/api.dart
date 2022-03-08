@@ -203,6 +203,18 @@ Future publishComment(
   }
 }
 
+// 二级列表
+Future getElementByIdSecondPage({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/element/getElementByIdSecondPage',
+        data: {'id': id, 'page': page, 'limit': limit});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
 //漫画阅读
 Future<ComicReading> getComicReading({int id, int episode}) async {
   try {
@@ -226,6 +238,7 @@ Future<RecommendComics> getRecommendComicsList(
     return null;
   }
 }
+
 //漫画详情
 Future<ComicDetail> getComicDetail({int id}) async {
   try {
@@ -233,6 +246,135 @@ Future<ComicDetail> getComicDetail({int id}) async {
         data: {'bookId': id});
     CommonUtils.debugPrint(res.data);
     return ComicDetail.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//验证手机号
+Future<Basic> validatePhone({String phone, String phonePrefix}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/validatePhone',
+        data: {'phone': phone, 'phonePrefix': phonePrefix});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//验证用户名
+Future<Basic> validateUsername({String username}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/validateUsername',
+        data: {'username': username});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//发送验证码
+Future<Basic> sendPhone({String phone, String phonePrefix, int type}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/home/send',
+        data: {'phone': phone, 'phonePrefix': phonePrefix, 'type': type});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//手机注册
+Future<Basic> registerByPhone(
+    {String phone, String phonePrefix, String code, String invitedAff}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/registerByPhone', data: {
+      'phone': phone,
+      'phonePrefix': phonePrefix,
+      'code': code,
+      'invitedAff': invitedAff
+    });
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//用户名注册
+Future<Basic> registerByPassword(
+    {String username,
+    String password,
+    String confirmPwd,
+    String invitedAff}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/registerByPassword', data: {
+      'username': username,
+      'password': password,
+      'confirm_pwd': confirmPwd,
+      'invitedAff': invitedAff
+    });
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//手机登录
+Future<Basic> loginByPhone(
+    {String phone, String phonePrefix, String code}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/loginByPhone',
+        data: {'phone': phone, 'phonePrefix': phonePrefix, 'code': code});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//用户名登录
+Future<Basic> loginByPassword({String username, String password}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/loginByPassword',
+        data: {'username': username, 'password': password});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//忘记密码
+Future<Basic> forgetPassword(
+    {String username,
+    String phone,
+    String phonePrefix,
+    String code,
+    String password,
+    String passwordConfirm}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/forgetPassword', data: {
+      'username': username,
+      'phone': phone,
+      'phonePrefix': phonePrefix,
+      'code': code,
+      'password': password,
+      'passwordConfirm': passwordConfirm
+    });
+    Basic result = Basic.fromJson(res.data);
+    return result;
   } catch (e) {
     return null;
   }

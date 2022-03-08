@@ -18,7 +18,7 @@ class _SetupPageState extends State<SetupPage> {
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: "精彩活动",
+            title: "设置",
           ),
         ],
       ),

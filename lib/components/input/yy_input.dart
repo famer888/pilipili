@@ -94,6 +94,8 @@ class _YyInputState extends State<YyInput> {
             vertical: ScreenUtil().setWidth(10),
             horizontal: ScreenUtil().setWidth(9.5)),
         decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 223, 227, .8),
+            borderRadius: BorderRadius.all(Radius.circular(25)),
             border: Border.all(
                 width: ScreenUtil().setWidth(0.5), color: Colors.white54)),
         child: Row(
@@ -106,7 +108,11 @@ class _YyInputState extends State<YyInput> {
                       Container(
                         width: ScreenUtil().setWidth(40),
                         child: CountryCodePicker(
-                          textStyle: DefaultStyle.white13,
+                          textStyle: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              overflow: TextOverflow.ellipsis,
+                              color: Color(0xff6D6D6D),
+                              decoration: TextDecoration.none),
                           onChanged: widget.onChangeCountryCode,
                           padding: EdgeInsets.symmetric(horizontal: 0),
                           initialSelection: 'CN',
@@ -122,7 +128,7 @@ class _YyInputState extends State<YyInput> {
                       Container(
                         width: ScreenUtil().setWidth(0.5),
                         height: ScreenUtil().setWidth(15),
-                        color: Color(0xffffffff),
+                        color: Color(0xff6D6D6D),
                       )
                     ],
                   ),
@@ -150,11 +156,11 @@ class _YyInputState extends State<YyInput> {
                       : inputController,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(13),
-                      color: Color(0XFFffffff)),
+                      color: Color(0XFF6D6D6D)),
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                       hintText: widget.hintText,
-                      hintStyle: TextStyle(color: Color(0xffd7d7d7)),
+                      hintStyle: TextStyle(color: Color(0xff979797)),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
                       disabledBorder: OutlineInputBorder(
@@ -174,38 +180,15 @@ class _YyInputState extends State<YyInput> {
                           borderSide: BorderSide(
                               color: Colors.transparent, width: 0)))),
             )),
-            widget.isPassword
-                ? GestureDetector(
-                    onTap: () {
-                      isPassword = !isPassword;
-                      setState(() {});
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
-                      child: Image.asset(
-                        'assets/pengke/ps_${isPassword ? 'on' : 'off'}.png',
-                        width: ScreenUtil().setWidth(20.7),
-                        height: ScreenUtil().setWidth(20),
-                      ),
-                    ),
-                  )
-                : Container(
-                    width: ScreenUtil().setWidth(20.7),
-                    height: ScreenUtil().setWidth(20),
-                    color: Colors.transparent,
-                  ),
+            Container(
+              width: ScreenUtil().setWidth(20.7),
+              height: ScreenUtil().setWidth(20),
+              color: Colors.transparent,
+            ),
             widget.isGetCode
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: ScreenUtil().setWidth(0.5),
-                        height: ScreenUtil().setWidth(15),
-                        color: Color(0xffededed),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setWidth(10),
-                      ),
                       GestureDetector(
                         onTap: () {
                           if (widget.onSendCode != null) {
@@ -218,17 +201,12 @@ class _YyInputState extends State<YyInput> {
                         child: Container(
                           width: ScreenUtil().setWidth(75),
                           height: ScreenUtil().setWidth(24.5),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: ScreenUtil().setWidth(0.5),
-                                  color: Color(0xff7bf7ff)),
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(12.25))),
                           child: Center(
                             child: Text(
                               codeText,
                               style: TextStyle(
-                                  color: Color(0xff7bf7ff),
+                                  color: Color(0xffFE155B),
+                                  fontWeight: FontWeight.bold,
                                   fontSize: ScreenUtil().setSp(11)),
                             ),
                           ),
