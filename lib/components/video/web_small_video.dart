@@ -391,10 +391,16 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                           onTap: () {
                             context.pop();
                           },
-                          child: Image.asset(
-                            'assets/images/comics_backarrow.png',
-                            width: ScreenUtil().setWidth(32),
+                          behavior: HitTestBehavior.translucent,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setWidth(10)
+                            ),
+                            child: Image.asset(
+                            'assets/images/backarrow.png',
+                            width: ScreenUtil().setWidth(12),
                             fit: BoxFit.fitWidth,
+                          ),
                           ),
                         ),
                         loading
