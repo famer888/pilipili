@@ -11,13 +11,15 @@ import 'package:pilipili/pages/login/register.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
+import 'package:pilipili/pages/mine/collect.dart';
+import 'package:pilipili/pages/mine/down_page.dart';
+
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
 import 'package:pilipili/components/activityDetail.dart';
 import 'package:pilipili/components/seconedPage.dart';
 import 'package:pilipili/components/seconedPageDetail.dart';
 import 'package:pilipili/components/morePage.dart';
-import 'package:pilipili/pages/mine/collect.dart';
 
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
@@ -44,43 +46,10 @@ class Routes {
   static String localComicsDetatl = 'localComicsDetatl'; //漫画本地详情页
   static String localComicsReader = 'localComicsReader'; //漫画本地阅读器
   static String collect = 'collect'; //我的收藏
+  static String down_page = 'down_page'; //我的下载
 
   static List<GoRoute> getDetailRoutes() {
     return [
-      GoRoute(
-        path: xianmian,
-        builder: (context, state) => Xianmian(),
-      ),
-      GoRoute(
-          path: activityList,
-          builder: (context, state) => ActivityList(),
-          routes: [
-            GoRoute(
-              path: activityDetail,
-              builder: (context, state) => ActivityDetail(
-                id: state.params == null || state.params['id'] == null
-                    ? null
-                    : '${state.params['id']}',
-              ),
-            ),
-          ]),
-      GoRoute(
-          path: seconedPage,
-          builder: (context, state) => SeconedPage(
-                title: state.params == null || state.params['title'] == null
-                    ? null
-                    : state.params['title'],
-              ),
-          routes: [
-            GoRoute(
-              path: seconedPageDetail,
-              builder: (context, state) => SeconedPageDetail(
-                title: state.params == null || state.params['title'] == null
-                    ? null
-                    : state.params['title'],
-              ),
-            ),
-          ]),
       GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
         path: videoDetail,
@@ -152,6 +121,40 @@ class Routes {
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
       GoRoute(
+        path: xianmian,
+        builder: (context, state) => Xianmian(),
+      ),
+      GoRoute(
+          path: activityList,
+          builder: (context, state) => ActivityList(),
+          routes: [
+            GoRoute(
+              path: activityDetail,
+              builder: (context, state) => ActivityDetail(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : '${state.params['id']}',
+              ),
+            ),
+          ]),
+      GoRoute(
+          path: seconedPage,
+          builder: (context, state) => SeconedPage(
+                title: state.params == null || state.params['title'] == null
+                    ? null
+                    : state.params['title'],
+              ),
+          routes: [
+            GoRoute(
+              path: seconedPageDetail,
+              builder: (context, state) => SeconedPageDetail(
+                title: state.params == null || state.params['title'] == null
+                    ? null
+                    : state.params['title'],
+              ),
+            ),
+          ]),
+      GoRoute(
           path: morePage,
           builder: (context, state) {
             return MorePage(
@@ -169,6 +172,10 @@ class Routes {
       GoRoute(
           path: collect,
           builder: (context, state) => CollectPage(),
+          routes: getDetailRoutes()),
+      GoRoute(
+          path: down_page,
+          builder: (context, state) => DownPage(),
           routes: getDetailRoutes()),
     ];
     rootRoutes.addAll(getDetailRoutes());
