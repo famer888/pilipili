@@ -23,8 +23,8 @@ class ShareMovieModel {
       VoidCallback confirm,
       String thumb = 'undefine',
       String title = 'undefine',
-      double width,
-      double height,
+      double width = 1,
+      double height = 1,
       String copyUrl = '',
       String subtitle = 'undefine',
       String url = 'undefine'}) {
@@ -153,8 +153,7 @@ class ShareMovieModel {
                 width: double.infinity,
                 height: width == 1 || height == 1
                     ? ScreenUtil().setWidth(111)
-                    : height /
-                        width *
+                    : (height / width) *
                         (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)),
                 child: PlatformAwareNetworkImage(
                   fit: BoxFit.cover,
