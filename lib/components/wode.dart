@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
-import 'package:pilipili/components/common/pullrefreshlist.dart';
-import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/global.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
-import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/networkImage.dart';
+
+import '../global.dart';
 
 class Wode extends StatefulWidget {
   Wode({Key key, this.isShow = false}) : super(key: key);
@@ -54,9 +52,17 @@ class _WodeState extends State<Wode> {
   ];
   @override
   Widget build(BuildContext context) {
+    Member members = Provider.of<HomeConfig>(context, listen: false).member;
+    CommonUtils.debugPrint("******************************${members.username}");
+    bool isLogin = false;
+    if (['', null, false].contains(AppGlobal.apiToken)) {
+      isLogin = false;
+    } else {
+      isLogin = true;
+    }
     return Column(
       children: [
-        header(),
+        header(members, isLogin),
         cardList(),
         SizedBox(
           height: ScreenUtil().setHeight(22),
@@ -271,7 +277,7 @@ class _WodeState extends State<Wode> {
     );
   }
 
-  Widget header() {
+  Widget header(Member members, bool isLogin) {
     return Stack(
       children: [
         Positioned(
@@ -296,16 +302,17 @@ class _WodeState extends State<Wode> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      context.push('/${Routes.setup}');
-                    },
-                    child: Image.asset(
-                      "assets/images/wode/Chat_Circle_Dots.png",
-                      width: ScreenUtil().setWidth(24),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     context.push('/${Routes.setup}');
+                  //   },
+                  //   child: Image.asset(
+                  //     "assets/images/wode/Chat_Circle_Dots.png",
+                  //     width: ScreenUtil().setWidth(24),
+                  //     fit: BoxFit.fitWidth,
+                  //   ),
+                  // ),
+                  SystemNoticeIcon(),
                   SizedBox(
                     width: ScreenUtil().setWidth(13),
                   ),
@@ -329,7 +336,7 @@ class _WodeState extends State<Wode> {
                     Container(
                       margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
                       child: ClipOval(
-                        child: Image.asset("assets/images/wode/activity_bg.png",
+                        child: Image.asset("assets/images/wode/avatar.png",
                             width: ScreenUtil().setWidth(60)),
                       ),
                     ),
@@ -338,7 +345,7 @@ class _WodeState extends State<Wode> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "名字最长20个字",
+                            members?.nickname ?? "pilpil用户",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: ScreenUtil().setSp(18),
@@ -366,7 +373,7 @@ class _WodeState extends State<Wode> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "1231232",
+                                      'ID:${members?.aff ?? '0000000'}',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Colors.white,
@@ -409,38 +416,40 @@ class _WodeState extends State<Wode> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            context.push('/${Routes.login}');
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    isLogin
+                        ? Container()
+                        : Column(
                             children: [
-                              Text(
-                                "注册登陆",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: ScreenUtil().setSp(12),
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/${Routes.login}');
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "注册登陆",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: ScreenUtil().setSp(12),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Icon(
+                                        Icons.chevron_right,
+                                        color: Colors.white,
+                                        size: ScreenUtil().setSp(15),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Center(
-                                child: Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.white,
-                                  size: ScreenUtil().setSp(15),
-                                ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(28),
                               )
                             ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(28),
-                        )
-                      ],
-                    )
+                          )
                   ],
                 ),
               )
@@ -448,6 +457,31 @@ class _WodeState extends State<Wode> {
           ),
         )
       ],
+    );
+  }
+}
+
+class SystemNoticeIcon extends StatelessWidget {
+  const SystemNoticeIcon({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HomeConfig>(
+      builder: (ctx, state, child) => GestureDetector(
+        onTap: () {
+          context.push('/${Routes.messagecenter}');
+        },
+        child: Image.asset(
+          // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
+          (state.systemnotice?.data ?? false) != null &&
+                  (state.systemnotice?.data?.systemNoticeCount != 0 ||
+                      state.systemnotice.data.feedCount != 0)
+              ? 'assets/images/wode/Chat_Circle_Dots_active.png'
+              : 'assets/images/wode/Chat_Circle_Dots.png',
+          width: ScreenUtil().setWidth(24),
+          fit: BoxFit.fitWidth,
+        ),
+      ),
     );
   }
 }

@@ -6,19 +6,23 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pilipili/model/systemnotice.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:convert/convert.dart';
 import 'package:pilipili/utils/logUtil.dart';
 import 'package:universal_html/html.dart' as html;
+
+import 'api.dart';
 
 class CommonUtils {
   static bool isAndroidWeb() {
@@ -27,11 +31,18 @@ class CommonUtils {
             html.window.navigator.userAgent.indexOf('Linux') > -1);
   }
 
+  static updateSystemNotice(context) async {
+    SystemNotice sysResult = await getSystemNotice();
+    CommonUtils.debugPrint(sysResult.toJson());
+    if (sysResult.status == 1) {
+      Provider.of<HomeConfig>(context, listen: false)
+          .setSystemNotice(sysResult);
+    }
+  }
+
   static showText(String text, {int time}) {
     return BotToast.showText(
         text: text,
-        // backgroundColor:Colors.black,
-        contentColor: Color(0xffffffff),
         textStyle: TextStyle(
             color: Colors.white,
             fontSize: ScreenUtil().setSp(15),

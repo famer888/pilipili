@@ -149,12 +149,12 @@ class _SetupPageState extends State<SetupPage> {
                               )
                             : Container(),
                         SizedBox(
-                          width: ScreenUtil().setWidth(3.5),
+                          width: ScreenUtil().setWidth(8),
                         ),
-                        PlatformAwareAssetImage(
-                          url: 'assets/images/mine/icon_right.png',
-                          width: ScreenUtil().setWidth(25),
-                          height: ScreenUtil().setWidth(25),
+                        Image.asset(
+                          'assets/images/wode/setup_right.png',
+                          width: ScreenUtil().setWidth(16),
+                          height: ScreenUtil().setWidth(16),
                         )
                       ],
                     )
@@ -408,7 +408,7 @@ class _SetupPageState extends State<SetupPage> {
                 child: Center(
                     child: Container(
                   width: ScreenUtil().setWidth(90),
-                  height: ScreenUtil().setWidth(140),
+                  height: ScreenUtil().setWidth(120),
                   child: Stack(
                     children: [
                       Stack(
@@ -426,7 +426,10 @@ class _SetupPageState extends State<SetupPage> {
                                         File(fileUrl),
                                         fit: BoxFit.cover,
                                       )
-                                    : UserAvatar(),
+                                    : Image.asset(
+                                        "assets/images/wode/setup_avatar.png",
+                                        fit: BoxFit.fill,
+                                      ),
                               ),
                             ),
                           ),
@@ -461,29 +464,30 @@ class _SetupPageState extends State<SetupPage> {
                   isAllRadius: true,
                   isBorderBottom: false,
                   onTap: () {
-                    // if (!Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM,
-                    //     PRIVILEGE_TYPE_SETTING)) {
-                    //   YyShowDialog.showdialog(
-                    //     context,
-                    //     title: '提示',
-                    //     content: (setDialogState) {
-                    //       return Text(
-                    //         '升级会员权限即可修改昵称～',
-                    //         style: TextStyle(
-                    //             color: Color(0xffFF5B8C),
-                    //             fontSize: ScreenUtil().setSp(15),
-                    //             decoration: TextDecoration.none),
-                    //       );
-                    //     },
-                    //     cancelText: '取消',
-                    //     btnText: '立即升级',
-                    //     callBack: () {
-                    //       // context.push('/${Routes.vip}');
-                    //     },
-                    //   );
-                    //   return;
-                    // }
-                    context.push(CommonUtils.getRealHash('fillcode/0'));
+                    if (!Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM,
+                        PRIVILEGE_TYPE_SETTING)) {
+                      YyShowDialog.showdialog(
+                        context,
+                        title: '提示',
+                        content: (setDialogState) {
+                          return Text(
+                            '升级会员权限即可修改昵称～',
+                            style: TextStyle(
+                                color: Color(0xffFF5B8C),
+                                fontSize: ScreenUtil().setSp(15),
+                                decoration: TextDecoration.none),
+                          );
+                        },
+                        cancelText: '取消',
+                        btnText: '立即升级',
+                        callBack: () {
+                          // context.push('/${Routes.vip}');
+                        },
+                      );
+                      return;
+                    }
+                    context.push(CommonUtils.getRealHash('fillcode'),
+                        extra: {'type': 0});
                   }),
               _line(),
               _setupItem(
@@ -491,7 +495,10 @@ class _SetupPageState extends State<SetupPage> {
                   title: members?.phone == null ? '绑定手机' : '更换绑定手机',
                   rightText: members?.phone == null ? '' : '${members.phone}',
                   onTap: () {
-                    context.push(CommonUtils.getRealHash('fillcode/2'));
+                    context.push(CommonUtils.getRealHash('fillcode'), extra: {
+                      'type': members?.phone == null ? 1 : 2,
+                      'phone': members?.phone
+                    });
                     // context.push('/${Routes.login}',
                     //     extra: {'type': members?.phone == null ? 5 : 4});
                   }),
@@ -515,7 +522,8 @@ class _SetupPageState extends State<SetupPage> {
                       '${members?.invitedBy == null ? '' : members.invitedBy}',
                   onTap: () {
                     if (members?.invitedBy == null) {
-                      context.push(CommonUtils.getRealHash('fillcode/4'));
+                      context.push(CommonUtils.getRealHash('fillcode'),
+                          extra: {'type': 4});
                       // context.push(CommonUtils.getRealHash('fillcode'),
                       //     extra: {'title': '邀请码'});
                     }
@@ -524,7 +532,8 @@ class _SetupPageState extends State<SetupPage> {
               _setupItem(
                   title: '输入兑换码',
                   onTap: () {
-                    context.push(CommonUtils.getRealHash('fillcode/3'));
+                    context.push(CommonUtils.getRealHash('fillcode'),
+                        extra: {'type': 3});
                     // context.push(CommonUtils.getRealHash('fillcode'),
                     //     extra: {'title': '兑换码'});
                   }),
@@ -552,7 +561,7 @@ class _SetupPageState extends State<SetupPage> {
                       ? '已是最新版本(${AppGlobal.appinfo['version']})'
                       : '有新版本,去更新？',
                   rightStyle: TextStyle(
-                      color: Color(0xff37f4ff),
+                      color: Color(0xff979797),
                       decoration: TextDecoration.underline,
                       fontSize: ScreenUtil().setSp(14)),
                   onTap: () {
@@ -564,65 +573,64 @@ class _SetupPageState extends State<SetupPage> {
                   }),
               SizedBox(
                 height: 20,
-              )
+              ),
+              isLogin
+                  ? GestureDetector(
+                      onTap: () {
+                        AppGlobal.apiToken = '';
+                        clearToken();
+                        context.pop('quit');
+                      },
+                      child: Center(
+                        child: (Container(
+                          height: ScreenUtil().setWidth(35),
+                          margin: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).padding.bottom),
+                          width: ScreenUtil().setWidth(200),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  ScreenUtil().setWidth(17.5)),
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              )),
+                          child: Center(
+                            child: Text(
+                              '退出登录',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: ScreenUtil().setSp(15)),
+                            ),
+                          ),
+                        )),
+                      ),
+                    )
+                  : Container()
             ],
           ),
         )),
-        isLogin
-            ? GestureDetector(
-                onTap: () {
-                  AppGlobal.apiToken = '';
-                  clearToken();
-                  context.pop('quit');
-                },
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: Image.asset(
-                        'assets/pengke/video/fot_bg.png',
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    Container(
-                      height: ScreenUtil().setWidth(49),
-                      width: double.infinity,
-                      child: Center(
-                        child: Text(
-                          '退出登录',
-                          style: TextStyle(
-                              color: Color(0xff7bf7ff),
-                              fontSize: ScreenUtil().setSp(15)),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            : Container()
       ],
     ));
   }
 }
 
-class UserAvatar extends StatelessWidget {
-  const UserAvatar({Key key}) : super(key: key);
+// class UserAvatar extends StatelessWidget {
+//   const UserAvatar({Key key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<HomeConfig>(builder: (ctx, state, child) {
-      return state.member?.thumb == null
-          ? PlatformAwareAssetImage(
-              url: 'assets/images/wode/avatar.png',
-              width: double.infinity,
-              fit: BoxFit.fitHeight,
-            )
-          : PlatformAwareNetworkImage(
-              fit: BoxFit.cover,
-              url: '${state.member.thumb}',
-            );
-    });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<HomeConfig>(builder: (ctx, state, child) {
+//       return state.member?.thumb == null
+//           ? PlatformAwareAssetImage(
+//               url: 'assets/images/wode/avatar.png',
+//               width: double.infinity,
+//               fit: BoxFit.fitHeight,
+//             )
+//           : PlatformAwareNetworkImage(
+//               fit: BoxFit.cover,
+//               url: '${state.member.thumb}',
+//             );
+//     });
+//   }
+// }

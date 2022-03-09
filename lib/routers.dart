@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/comics/comicReader.dart';
 import 'package:pilipili/components/comics/comics_detail.dart';
 import 'package:pilipili/components/pili/search.dart';
+import 'package:pilipili/components/video/small_video.dart';
 import 'package:pilipili/components/video/video_detail.dart';
+import 'package:pilipili/components/video/web_small_video.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
@@ -24,6 +26,8 @@ import 'package:pilipili/components/morePage.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 
+import 'mixin/message_center.dart';
+
 class Routes {
   static String xianmian = 'xianmian'; //home页限免页面
   static String seconedPage = 'seconedPage/:title'; // 网黄、cos、时间表等二级页面
@@ -37,7 +41,10 @@ class Routes {
   static String login = 'login'; //登陆页面
   static String register = 'register/:type'; //注册找回密码
   static String setup = 'setup'; //设置
-  static String fillcode = 'fillcode/:type'; //填写邀请码兑换码
+  static String smallVideo = 'smallVideo/:id'; //短视频
+  static String webSmallVideo = 'webSmallVideo/:id'; //短视频
+  static String fillcode = 'fillcode'; //填写邀请码兑换码
+  static String messagecenter = 'messagecenter'; // 消息中心
 
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
@@ -50,6 +57,44 @@ class Routes {
 
   static List<GoRoute> getDetailRoutes() {
     return [
+      GoRoute(
+        path: smallVideo,
+        builder: (context, state) {
+          final args = AppGlobal.currentDetailRouteExtra;
+          return SmallVideo(
+              videoData: args == null || args['videoData'] == null
+                  ? null
+                  : args['videoData'],
+              elementId: args == null || args['elementId'] == null
+                  ? null
+                  : int.parse(args['elementId'].toString()),
+              page: args == null || args['page'] == null
+                  ? null
+                  : int.parse(args['page'].toString()),
+              id: args == null || args['id'] == null
+                  ? null
+                  : int.parse(args['id'].toString()));
+        },
+      ),
+      GoRoute(
+        path: webSmallVideo,
+        builder: (context, state) {
+          final args = AppGlobal.currentDetailRouteExtra;
+          return WebSmallVideo(
+              videoData: args == null || args['videoData'] == null
+                  ? null
+                  : args['videoData'],
+              elementId: args == null || args['elementId'] == null
+                  ? null
+                  : int.parse(args['elementId'].toString()),
+              page: args == null || args['page'] == null
+                  ? null
+                  : int.parse(args['page'].toString()),
+              id: args == null || args['id'] == null
+                  ? null
+                  : int.parse(args['id'].toString()));
+        },
+      ),
       GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
         path: videoDetail,
@@ -74,13 +119,29 @@ class Routes {
         builder: (context, state) => SetupPage(),
         routes: [
           GoRoute(
-            path: fillcode,
-            builder: (context, state) => FillCodePage(
-                type: state.params == null || state.params['type'] == null
-                    ? null
-                    : int.parse(state.params['type'].toString())),
-          ),
+              path: fillcode,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                return FillCodePage(args: args);
+              }),
         ],
+      ),
+      GoRoute(
+        path: messagecenter,
+        builder: (context, state) => MessageCenter(),
+        // routes: [
+        //   GoRoute(
+        //     path: noticemessage,
+        //     builder: (context, state) {
+        //       final args = state.extra as Map<String, dynamic>;
+        //       return NoticeMessage(args: args);
+        //     },
+        //   ),
+        //   GoRoute(
+        //     path: customerService,
+        //     builder: (context, state) => CustomerService(),
+        //   ),
+        // ],
       ),
       GoRoute(
           path: comicsdetail,
@@ -115,6 +176,22 @@ class Routes {
               },
             ),
           ]),
+      GoRoute(
+        path: activityDetail,
+        builder: (context, state) => ActivityDetail(
+          id: state.params == null || state.params['id'] == null
+              ? null
+              : '${state.params['id']}',
+        ),
+      ),
+      GoRoute(
+        path: seconedPageDetail,
+        builder: (context, state) => SeconedPageDetail(
+          title: state.params == null || state.params['title'] == null
+              ? null
+              : state.params['title'],
+        ),
+      )
     ];
   }
 
@@ -127,16 +204,7 @@ class Routes {
       GoRoute(
           path: activityList,
           builder: (context, state) => ActivityList(),
-          routes: [
-            GoRoute(
-              path: activityDetail,
-              builder: (context, state) => ActivityDetail(
-                id: state.params == null || state.params['id'] == null
-                    ? null
-                    : '${state.params['id']}',
-              ),
-            ),
-          ]),
+          routes: getDetailRoutes()),
       GoRoute(
           path: seconedPage,
           builder: (context, state) => SeconedPage(
@@ -144,16 +212,7 @@ class Routes {
                     ? null
                     : state.params['title'],
               ),
-          routes: [
-            GoRoute(
-              path: seconedPageDetail,
-              builder: (context, state) => SeconedPageDetail(
-                title: state.params == null || state.params['title'] == null
-                    ? null
-                    : state.params['title'],
-              ),
-            ),
-          ]),
+          routes: getDetailRoutes()),
       GoRoute(
           path: morePage,
           builder: (context, state) {
