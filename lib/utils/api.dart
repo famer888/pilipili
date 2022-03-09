@@ -449,3 +449,15 @@ Future<Basic> onExchange({String cdk}) async {
     return null;
   }
 }
+
+// 我收藏的
+Future<dynamic> getUserFavor({int page, int limit = 24, int type}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/user/getUserFavor',
+        data: {'page': page, 'limit': limit, 'type': type});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}

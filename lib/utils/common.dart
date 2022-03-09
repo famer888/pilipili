@@ -30,7 +30,8 @@ class CommonUtils {
   static showText(String text, {int time}) {
     return BotToast.showText(
         text: text,
-        backgroundColor:Colors.black,
+        // backgroundColor:Colors.black,
+        contentColor: Color(0xffffffff),
         textStyle: TextStyle(
             color: Color(0xffFF5B8C),
             fontSize: ScreenUtil().setSp(15),
@@ -150,7 +151,8 @@ class CommonUtils {
 
   static Map<String, int> retryCountMap = {};
   static List<List> tasks = [];
-  static List<bool> wdsRuningStatuses = List.generate(AppGlobal.decryptProcessLimit, (index) => false);
+  static List<bool> wdsRuningStatuses =
+      List.generate(AppGlobal.decryptProcessLimit, (index) => false);
   static void getRealImage(
       {dynamic url,
       dynamic imgUrl,

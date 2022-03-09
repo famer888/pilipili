@@ -17,6 +17,7 @@ import 'package:pilipili/components/activityDetail.dart';
 import 'package:pilipili/components/seconedPage.dart';
 import 'package:pilipili/components/seconedPageDetail.dart';
 import 'package:pilipili/components/morePage.dart';
+import 'package:pilipili/pages/mine/collect.dart';
 
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
@@ -42,6 +43,8 @@ class Routes {
   static String localSmallVideoDetail = 'localSmallVideoDetail/:id'; //小视频本地详情页
   static String localComicsDetatl = 'localComicsDetatl'; //漫画本地详情页
   static String localComicsReader = 'localComicsReader'; //漫画本地阅读器
+  static String collect = 'collect'; //我的收藏
+
   static List<GoRoute> getDetailRoutes() {
     return [
       GoRoute(
@@ -162,6 +165,10 @@ class Routes {
                     ? 1
                     : int.parse(state.params['morePageType'].toString()));
           },
+          routes: getDetailRoutes()),
+      GoRoute(
+          path: collect,
+          builder: (context, state) => CollectPage(),
           routes: getDetailRoutes()),
     ];
     rootRoutes.addAll(getDetailRoutes());
