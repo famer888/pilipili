@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,8 +76,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                           url: '${config.share.affUrl}');
                     },
                     child: Container(
-                      // color: Colors.red,
-                      child: Image.asset("assets/images/icon_share.png",
+                      child: Image.asset("assets/images/share_white.png",
                           color: Colors.white,
                           width: ScreenUtil().setWidth(20),
                           height: ScreenUtil().setWidth(20)),
