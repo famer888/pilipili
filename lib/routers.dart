@@ -21,6 +21,8 @@ import 'package:pilipili/components/morePage.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 
+import 'mixin/message_center.dart';
+
 class Routes {
   static String xianmian = 'xianmian'; //home页限免页面
   static String seconedPage = 'seconedPage/:title'; // 网黄、cos、时间表等二级页面
@@ -34,7 +36,8 @@ class Routes {
   static String login = 'login'; //登陆页面
   static String register = 'register/:type'; //注册找回密码
   static String setup = 'setup'; //设置
-  static String fillcode = 'fillcode/:type'; //填写邀请码兑换码
+  static String fillcode = 'fillcode'; //填写邀请码兑换码
+  static String messagecenter = 'messagecenter'; // 消息中心
 
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
@@ -102,13 +105,29 @@ class Routes {
         builder: (context, state) => SetupPage(),
         routes: [
           GoRoute(
-            path: fillcode,
-            builder: (context, state) => FillCodePage(
-                type: state.params == null || state.params['type'] == null
-                    ? null
-                    : int.parse(state.params['type'].toString())),
-          ),
+              path: fillcode,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                return FillCodePage(args: args);
+              }),
         ],
+      ),
+      GoRoute(
+        path: messagecenter,
+        builder: (context, state) => MessageCenter(),
+        // routes: [
+        //   GoRoute(
+        //     path: noticemessage,
+        //     builder: (context, state) {
+        //       final args = state.extra as Map<String, dynamic>;
+        //       return NoticeMessage(args: args);
+        //     },
+        //   ),
+        //   GoRoute(
+        //     path: customerService,
+        //     builder: (context, state) => CustomerService(),
+        //   ),
+        // ],
       ),
       GoRoute(
           path: comicsdetail,

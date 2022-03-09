@@ -10,6 +10,7 @@ import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/model/recommendComics.dart';
+import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
@@ -356,6 +357,44 @@ Future<Basic> loginByPassword({String username, String password}) async {
   }
 }
 
+//绑定手机
+Future<Basic> bindPhone({String phone, String phonePrefix, String code}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/bindPhone',
+        data: {'phone': phone, 'phonePrefix': phonePrefix, 'code': code});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//切换手机
+Future<Basic> changePhone(
+    {String oldPhone,
+    String oldPhonePrefix,
+    String oldCode,
+    String phone,
+    String phonePrefix,
+    String code}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/changePhone', data: {
+      'oldPhone': oldPhone,
+      'oldPhonePrefix': oldPhonePrefix,
+      'oldCode': oldCode,
+      'phone': phone,
+      'phonePrefix': phonePrefix,
+      'code': code
+    });
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
 //忘记密码
 Future<Basic> forgetPassword(
     {String username,
@@ -445,6 +484,16 @@ Future<Basic> onExchange({String cdk}) async {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/home/exchange', data: {'cdk': cdk});
     return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+Future<SystemNotice> getSystemNotice() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/message/getUnreadCount');
+    return SystemNotice.fromJson(res.data);
   } catch (e) {
     return null;
   }
