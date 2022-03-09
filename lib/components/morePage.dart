@@ -106,8 +106,6 @@ class _MorePageState extends State<MorePage>
                           await getPageData();
                         },
                         child: GridView(
-                          padding:
-                              EdgeInsets.only(top: DefaultStyle.pagePadding),
                           cacheExtent: ScreenUtil().screenHeight * 5,
                           padding: EdgeInsets.only(
                               top: ScreenUtil().setWidth(16),
