@@ -151,8 +151,11 @@ class ShareMovieModel {
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(5)),
               child: SizedBox(
                 width: double.infinity,
-                height:
-                    width == null ? ScreenUtil().setWidth(111) : width * 0.36,
+                height: width == 1 || height == 1
+                    ? ScreenUtil().setWidth(111)
+                    : height /
+                        width *
+                        (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)),
                 child: PlatformAwareNetworkImage(
                   fit: BoxFit.cover,
                   url: '$thumb',

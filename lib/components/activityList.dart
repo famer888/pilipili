@@ -82,7 +82,8 @@ class _ActivityListState extends State<ActivityList> {
                       vertical: ScreenUtil().setWidth(6),
                       horizontal: ScreenUtil().setWidth(6)),
                   child: Text(
-                    _data['desc'].split('：')[1],
+                    _data['title'],
+                    // _data['desc'].split('：')[1],
                     style: TextStyle(
                       color: Color(0xff979797),
                       fontSize: ScreenUtil().setSp(12),
