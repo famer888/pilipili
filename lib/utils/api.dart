@@ -10,6 +10,7 @@ import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/model/recommendComics.dart';
+import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
@@ -397,6 +398,53 @@ Future getActivityDetail(id) async {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/page/detail', data: {'id': id});
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//修改用户头像或昵称
+Future<Basic> updateUserInfo({String nickname, String thumb}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/user/updateUserInfo',
+        data: {'nickname': nickname, 'thumb': thumb});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//填写邀请码
+Future<Basic> toInvitation({String affCode}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/invitation',
+        data: {'aff_code': affCode});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//获取获取用户信息
+Future<UserInfo> getUserInfo(BuildContext context) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/userInfo', data: {});
+    UserInfo data = UserInfo.fromJson(res.data);
+    HomeConfig.setUserCoins(context, data.data.money);
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//兑换
+Future<Basic> onExchange({String cdk}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/home/exchange', data: {'cdk': cdk});
+    return Basic.fromJson(res.data);
   } catch (e) {
     return null;
   }

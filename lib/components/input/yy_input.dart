@@ -11,6 +11,7 @@ class YyInput extends StatefulWidget {
       this.type,
       this.isPassword = false,
       this.onSubmit,
+      this.isLogin = true,
       this.hintText = '请输入内容',
       this.autofocus = false,
       this.onChangeCountryCode,
@@ -24,6 +25,7 @@ class YyInput extends StatefulWidget {
   TextInputType type;
   Function onSubmit;
   String hintText;
+  bool isLogin;
   bool autofocus;
   Function onChangeCountryCode;
   bool isGetCode;
@@ -94,8 +96,12 @@ class _YyInputState extends State<YyInput> {
             vertical: ScreenUtil().setWidth(10),
             horizontal: ScreenUtil().setWidth(9.5)),
         decoration: BoxDecoration(
-            color: Color.fromRGBO(255, 223, 227, .8),
-            borderRadius: BorderRadius.all(Radius.circular(25)),
+            color: widget.isLogin
+                ? Color.fromRGBO(255, 223, 227, .8)
+                : Colors.white,
+            borderRadius: widget.isLogin
+                ? BorderRadius.all(Radius.circular(25))
+                : BorderRadius.all(Radius.circular(0)),
             border: Border.all(
                 width: ScreenUtil().setWidth(0.5), color: Colors.white54)),
         child: Row(
@@ -112,6 +118,7 @@ class _YyInputState extends State<YyInput> {
                               fontSize: ScreenUtil().setSp(12),
                               overflow: TextOverflow.ellipsis,
                               color: Color(0xff6D6D6D),
+                              fontWeight: FontWeight.bold,
                               decoration: TextDecoration.none),
                           onChanged: widget.onChangeCountryCode,
                           padding: EdgeInsets.symmetric(horizontal: 0),
@@ -156,6 +163,7 @@ class _YyInputState extends State<YyInput> {
                       : inputController,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(13),
+                      fontWeight: FontWeight.bold,
                       color: Color(0XFF6D6D6D)),
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
