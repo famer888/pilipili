@@ -1,19 +1,12 @@
-import 'dart:ffi';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/sharemovie.dart';
 import 'package:pilipili/store/homeConfig.dart';
-import 'package:pilipili/components/common/pullrefreshlist.dart';
-import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -78,8 +71,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                           url: '${config.share.affUrl}');
                     },
                     child: Container(
-                      // color: Colors.red,
-                      child: Image.asset("assets/images/icon_share.png",
+                      child: Image.asset("assets/images/share_white.png",
                           color: Colors.white,
                           width: ScreenUtil().setWidth(20),
                           height: ScreenUtil().setWidth(20)),

@@ -14,6 +14,7 @@ import 'package:pilipili/model/recommendComics.dart';
 import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/model/systemnoticelist.dart';
 import 'package:pilipili/model/userinfo.dart';
+import 'package:pilipili/model/videolist.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
@@ -491,6 +492,19 @@ Future<Basic> onExchange({String cdk}) async {
   }
 }
 
+//元素视频列表
+Future<VideoList> getListFromElement({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        "/api/mv/getListFromElement",
+        data: {'elementId': id, 'page': page, 'limit': limit});
+    return VideoList.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//消息通知
 Future<SystemNotice> getSystemNotice() async {
   try {
     Response<dynamic> res =

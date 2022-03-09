@@ -43,8 +43,6 @@ class CommonUtils {
   static showText(String text, {int time}) {
     return BotToast.showText(
         text: text,
-        // backgroundColor:Colors.black,
-        contentColor: Color(0xffffffff),
         textStyle: TextStyle(
             color: Colors.white,
             fontSize: ScreenUtil().setSp(15),

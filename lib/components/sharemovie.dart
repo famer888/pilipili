@@ -107,12 +107,16 @@ class ShareMovieModel {
             left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(100)),
         height: ScreenUtil().setWidth(80),
         alignment: Alignment.centerLeft,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(ScreenUtil().setWidth(10)),
+                topRight: Radius.circular(ScreenUtil().setWidth(10))),
             gradient: LinearGradient(colors: [
-          Color.fromRGBO(255, 134, 172, 1),
-          Color.fromRGBO(255, 91, 140, 1),
-          Color.fromRGBO(250, 67, 122, 1)
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              Color.fromRGBO(255, 134, 172, 1),
+              Color.fromRGBO(255, 91, 140, 1),
+              Color.fromRGBO(250, 67, 122, 1)
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +168,6 @@ class ShareMovieModel {
             Padding(
               padding: EdgeInsets.only(
                   left: ScreenUtil().setWidth(10),
-                  right: ScreenUtil().setWidth(10),
                   top: DefaultStyle.pagePadding),
               child: Row(
                 children: [
@@ -191,33 +194,38 @@ class ShareMovieModel {
                     children: [
                       Row(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '扫码下载APP',
-                                style: TextStyle(
-                                    color: Color(0xff646464),
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.none,
-                                    fontSize: ScreenUtil().setSp(14)),
-                              ),
-                              Text(
-                                '立即观看pilipili视频！',
-                                style: TextStyle(
-                                    color: Color(0xff646464),
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.none,
-                                    fontSize: ScreenUtil().setSp(14)),
-                              )
-                            ],
+                          Container(
+                            width: ScreenUtil().screenWidth -
+                                DefaultStyle.pagePadding * 3 -
+                                ScreenUtil().setWidth(180),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '扫码下载APP',
+                                  style: TextStyle(
+                                      color: Color(0xff646464),
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.none,
+                                      fontSize: ScreenUtil().setSp(12)),
+                                ),
+                                Text(
+                                  '立即观看pilipili视频！',
+                                  style: TextStyle(
+                                      color: Color(0xff646464),
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.none,
+                                      fontSize: ScreenUtil().setSp(12)),
+                                )
+                              ],
+                            ),
                           ),
                           Padding(
                             padding:
                                 EdgeInsets.only(left: ScreenUtil().setWidth(5)),
                             child: Image.asset(
                               "assets/images/icon_logo.png",
-                              width: ScreenUtil().setWidth(50),
+                              width: ScreenUtil().setWidth(45),
                               fit: BoxFit.fitWidth,
                             ),
                           )
@@ -225,8 +233,8 @@ class ShareMovieModel {
                       ),
                       Container(
                         width: ScreenUtil().screenWidth -
-                            DefaultStyle.pagePadding * 5 -
-                            ScreenUtil().setWidth(115),
+                            DefaultStyle.pagePadding * 3 -
+                            ScreenUtil().setWidth(150),
                         padding: EdgeInsets.only(top: ScreenUtil().setWidth(0)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +248,7 @@ class ShareMovieModel {
                                   fontSize: ScreenUtil().setSp(11)),
                             ),
                             Text(
-                              "${url}",
+                              "${url}skagdkgaksgdkgaksgdkgsakgdk",
                               style: TextStyle(
                                   color: Color(0xff646464),
                                   fontWeight: FontWeight.normal,

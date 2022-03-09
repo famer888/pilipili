@@ -94,7 +94,7 @@ class YyShowDialog {
                 padding: new EdgeInsets.only(
                     left: ScreenUtil().setWidth(24.5),
                     right: ScreenUtil().setWidth(24.5),
-                    top: ScreenUtil().setWidth(25),
+                    top: ScreenUtil().setWidth(title == null ? 0 : 25),
                     bottom: ScreenUtil().setWidth(33.5)),
                 child: Stack(
                   overflow: Overflow.visible,
@@ -117,7 +117,8 @@ class YyShowDialog {
                                 ),
                           Container(
                               margin: new EdgeInsets.only(
-                                  top: ScreenUtil().setWidth(26)),
+                                  top: ScreenUtil()
+                                      .setWidth(title == null ? 32 : 26)),
                               child: content(setDialogState)),
                           Row(
                             children: [
@@ -135,7 +136,7 @@ class YyShowDialog {
                                           margin: EdgeInsets.only(
                                               left: ScreenUtil().setWidth(5),
                                               right: ScreenUtil().setWidth(5),
-                                              top: ScreenUtil().setWidth(40)),
+                                              top: ScreenUtil().setWidth(32)),
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -150,7 +151,7 @@ class YyShowDialog {
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
                                                 )),
-                                            width: ScreenUtil().setWidth(120),
+                                            // width: ScreenUtil().setWidth(120),
                                             height: ScreenUtil().setWidth(36),
                                             child: Center(
                                               child: Text(
@@ -183,7 +184,7 @@ class YyShowDialog {
                                           margin: EdgeInsets.only(
                                               left: ScreenUtil().setWidth(5),
                                               right: ScreenUtil().setWidth(5),
-                                              top: ScreenUtil().setWidth(40)),
+                                              top: ScreenUtil().setWidth(32)),
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -198,7 +199,7 @@ class YyShowDialog {
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
                                                 )),
-                                            width: ScreenUtil().setWidth(120),
+                                            // width: ScreenUtil().setWidth(120),
                                             height: ScreenUtil().setWidth(36),
                                             child: Center(
                                               child: Text(

@@ -1019,19 +1019,6 @@ class _ConmentItemState extends State<ConmentItem> {
                       widget.children == null || widget.children.length == 0
                           ? SizedBox()
                           : Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setWidth(8),
-                                  vertical: ScreenUtil().setWidth(9.5)),
-                              decoration: ShapeDecoration(
-                                  shape: BeveledRectangleBorder(
-                                      side: BorderSide(
-                                          color: Color(0xffd7d7d7),
-                                          width: ScreenUtil().setWidth(0.5)),
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(
-                                              ScreenUtil().setWidth(10)),
-                                          topRight: Radius.circular(
-                                              ScreenUtil().setWidth(10))))),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: widget.children,

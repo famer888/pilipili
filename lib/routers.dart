@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/comics/comicReader.dart';
 import 'package:pilipili/components/comics/comics_detail.dart';
 import 'package:pilipili/components/pili/search.dart';
+import 'package:pilipili/components/video/small_video.dart';
 import 'package:pilipili/components/video/video_detail.dart';
+import 'package:pilipili/components/video/web_small_video.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
@@ -41,6 +43,8 @@ class Routes {
   static String login = 'login'; //登录页面
   static String register = 'register/:type'; //注册找回密码
   static String setup = 'setup'; //设置
+  static String smallVideo = 'smallVideo/:id'; //短视频
+  static String webSmallVideo = 'webSmallVideo/:id'; //短视频
   static String fillcode = 'fillcode'; //填写邀请码兑换码
   static String messagecenter = 'messagecenter'; // 消息中心
   static String noticemessage = 'noticemessage'; // 系统消息
@@ -57,6 +61,44 @@ class Routes {
 
   static List<GoRoute> getDetailRoutes() {
     return [
+      GoRoute(
+        path: smallVideo,
+        builder: (context, state) {
+          final args = AppGlobal.currentDetailRouteExtra;
+          return SmallVideo(
+              videoData: args == null || args['videoData'] == null
+                  ? null
+                  : args['videoData'],
+              elementId: args == null || args['elementId'] == null
+                  ? null
+                  : int.parse(args['elementId'].toString()),
+              page: args == null || args['page'] == null
+                  ? null
+                  : int.parse(args['page'].toString()),
+              id: args == null || args['id'] == null
+                  ? null
+                  : int.parse(args['id'].toString()));
+        },
+      ),
+      GoRoute(
+        path: webSmallVideo,
+        builder: (context, state) {
+          final args = AppGlobal.currentDetailRouteExtra;
+          return WebSmallVideo(
+              videoData: args == null || args['videoData'] == null
+                  ? null
+                  : args['videoData'],
+              elementId: args == null || args['elementId'] == null
+                  ? null
+                  : int.parse(args['elementId'].toString()),
+              page: args == null || args['page'] == null
+                  ? null
+                  : int.parse(args['page'].toString()),
+              id: args == null || args['id'] == null
+                  ? null
+                  : int.parse(args['id'].toString()));
+        },
+      ),
       GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
         path: videoDetail,
@@ -138,6 +180,22 @@ class Routes {
               },
             ),
           ]),
+      GoRoute(
+        path: activityDetail,
+        builder: (context, state) => ActivityDetail(
+          id: state.params == null || state.params['id'] == null
+              ? null
+              : '${state.params['id']}',
+        ),
+      ),
+      GoRoute(
+        path: seconedPageDetail,
+        builder: (context, state) => SeconedPageDetail(
+          title: state.params == null || state.params['title'] == null
+              ? null
+              : state.params['title'],
+        ),
+      )
     ];
   }
 
@@ -150,16 +208,7 @@ class Routes {
       GoRoute(
           path: activityList,
           builder: (context, state) => ActivityList(),
-          routes: [
-            GoRoute(
-              path: activityDetail,
-              builder: (context, state) => ActivityDetail(
-                id: state.params == null || state.params['id'] == null
-                    ? null
-                    : '${state.params['id']}',
-              ),
-            ),
-          ]),
+          routes: getDetailRoutes()),
       GoRoute(
           path: seconedPage,
           builder: (context, state) => SeconedPage(
@@ -167,16 +216,7 @@ class Routes {
                     ? null
                     : state.params['title'],
               ),
-          routes: [
-            GoRoute(
-              path: seconedPageDetail,
-              builder: (context, state) => SeconedPageDetail(
-                title: state.params == null || state.params['title'] == null
-                    ? null
-                    : state.params['title'],
-              ),
-            ),
-          ]),
+          routes: getDetailRoutes()),
       GoRoute(
           path: morePage,
           builder: (context, state) {
