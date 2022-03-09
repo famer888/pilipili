@@ -40,6 +40,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
   List recommendList = [];
   bool isFavorites = false;
   bool isOpenAll = false; //是否展开全部章节
+  int likeCount = 0;
   getPageData() {
     newestSeries.clear();
     getComicDetail(id: widget.id).then((res) {
@@ -49,6 +50,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
         AppGlobal.comicThumb = res.data.thumb;
         data = res.data;
         isFavorites = res.data.userFavorites == 1;
+        likeCount = res.data.favorites;
         watchLog = data.watchLog;
         newestSeriesNum = res.data.newestSeries;
         for (var i = 0; i < res.data.newestSeries; i++) {
@@ -434,6 +436,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                         .then((res) {
                                                       if (res != null &&
                                                           res.status != 0) {
+                                                        if (isFavorites) {
+                                                          likeCount--;
+                                                        } else {
+                                                          likeCount++;
+                                                        }
                                                         isFavorites =
                                                             !isFavorites;
                                                         setState(() {});
@@ -447,7 +454,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                       icon: isFavorites
                                                           ? 'icon_unlike'
                                                           : 'icon_like',
-                                                      name: '1.2w',
+                                                      name: CommonUtils
+                                                          .renderFixedNumber(
+                                                              likeCount
+                                                                  .toDouble()),
                                                       color: isFavorites
                                                           ? Color(0xffFF84A9)
                                                           : null),

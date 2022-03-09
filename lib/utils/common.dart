@@ -33,7 +33,7 @@ class CommonUtils {
         // backgroundColor:Colors.black,
         contentColor: Color(0xffffffff),
         textStyle: TextStyle(
-            color: Color(0xffFF5B8C),
+            color: Colors.white,
             fontSize: ScreenUtil().setSp(15),
             decoration: TextDecoration.none),
         align: Alignment(0, 0),
@@ -87,7 +87,7 @@ class CommonUtils {
     var tips;
     if (value >= 10000) {
       var newvalue = (value / 1000) / 10.round();
-      tips = formatNum(newvalue, 2) + "万";
+      tips = formatNum(newvalue, 2) + "W";
     } else if (value >= 1000) {
       var newvalue = (value / 100) / 10.round();
       tips = formatNum(newvalue, 2) + "千";
