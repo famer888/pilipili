@@ -341,7 +341,7 @@ class _FillCodePageState extends State<FillCodePage> {
             margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
             child: Center(
               child: Text(
-                "更换后原来手机号将不能用于登陆",
+                "更换后原来手机号将不能用于登录",
                 style: TextStyle(
                   color: Color(0xffFE155B),
                   fontWeight: FontWeight.bold,

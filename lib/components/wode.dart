@@ -428,7 +428,7 @@ class _WodeState extends State<Wode> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "注册登陆",
+                                      "注册登录",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
