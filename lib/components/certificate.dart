@@ -112,225 +112,310 @@ class CertificateModel {
                           children: [
                             Stack(
                               children: [
-                                // Positioned(
-                                //   child: RepaintBoundary(
-                                //     key: certificateWidgetKey,
-                                //     child: Container(
-                                //       child: Stack(
-                                //         children: [
-                                //           ClipRRect(
-                                //             borderRadius: BorderRadius.circular(
-                                //                 ScreenUtil().setWidth(15)),
-                                //             child: PlatformAwareAssetImage(
-                                //               url:
-                                //                   'assets/images/certificate_bg.png',
-                                //               width: ScreenUtil().setWidth(280),
-                                //               height:
-                                //                   ScreenUtil().setWidth(351),
-                                //               fit: BoxFit.cover,
-                                //               alignment: Alignment.topCenter,
-                                //             ),
-                                //           ),
-                                //           Positioned(
-                                //               child: Column(
-                                //             mainAxisAlignment:
-                                //                 MainAxisAlignment.start,
-                                //             crossAxisAlignment:
-                                //                 CrossAxisAlignment.start,
-                                //             children: [
-                                //               Padding(
-                                //                 padding: EdgeInsets.all(
-                                //                     ScreenUtil().setWidth(17)),
-                                //                 child: PlatformAwareAssetImage(
-                                //                   url:
-                                //                       'assets/images/logo2.png',
-                                //                   width: ScreenUtil()
-                                //                       .setWidth(46.7),
-                                //                   height: ScreenUtil()
-                                //                       .setWidth(46.7),
-                                //                 ),
-                                //               ),
-                                //               SizedBox(
-                                //                 height:
-                                //                     ScreenUtil().setWidth(60),
-                                //               ),
-                                //               Center(
-                                //                 child: Text(
-                                //                   '用户ID：$id',
-                                //                   style: TextStyle(
-                                //                       color: Colors.white,
-                                //                       decoration:
-                                //                           TextDecoration.none,
-                                //                       fontWeight:
-                                //                           FontWeight.normal,
-                                //                       fontSize: ScreenUtil()
-                                //                           .setSp(16.5)),
-                                //                 ),
-                                //               ),
-                                //               Center(
-                                //                 child: Text(
-                                //                   '邀请码：$code',
-                                //                   style: TextStyle(
-                                //                       color: Colors.white,
-                                //                       decoration:
-                                //                           TextDecoration.none,
-                                //                       fontWeight:
-                                //                           FontWeight.normal,
-                                //                       fontSize: ScreenUtil()
-                                //                           .setSp(16.5)),
-                                //                 ),
-                                //               ),
-                                //               SizedBox(
-                                //                 height:
-                                //                     ScreenUtil().setWidth(16),
-                                //               ),
-                                //               Center(
-                                //                 child: Container(
-                                //                   width: ScreenUtil()
-                                //                       .setWidth(129),
-                                //                   height: ScreenUtil()
-                                //                       .setWidth(129),
-                                //                   decoration: BoxDecoration(
-                                //                     color: Colors.white,
-                                //                     boxShadow: [
-                                //                       //阴影
-                                //                       BoxShadow(
-                                //                           color: Color.fromRGBO(
-                                //                               72, 46, 0, 0.54),
-                                //                           offset: Offset(0, 0),
-                                //                           blurRadius:
-                                //                               ScreenUtil()
-                                //                                   .setWidth(20))
-                                //                     ],
-                                //                   ),
-                                //                   child: QrImage(
-                                //                     data: '$url',
-                                //                     version: 3,
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ],
-                                //           ))
-                                //         ],
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
                                 Positioned(
+                                  child: RepaintBoundary(
+                                    key: certificateWidgetKey,
                                     child: Container(
-                                        child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: ScreenUtil().setHeight(50),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  ScreenUtil().setWidth(10)),
-                                              topRight: Radius.circular(
-                                                  ScreenUtil().setWidth(10))),
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color(0xFFFF89AC),
-                                              Color(0xFFFF5B8C)
-                                            ],
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                          )),
                                       child: Stack(
                                         children: [
-                                          Expanded(
-                                            child: Center(
-                                                child: Text("账号凭证",
-                                                    style: TextStyle(
+                                          Positioned(
+                                              child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height:
+                                                    ScreenUtil().setHeight(50),
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        10)),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        10))),
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Color(0xFFFF89AC),
+                                                        Color(0xFFFF5B8C)
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                    )),
+                                                child: Stack(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Center(
+                                                          child: Text("账号凭证",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .none,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      ScreenUtil()
+                                                                          .setSp(
+                                                                              16.5)))),
+                                                    ),
+                                                    Positioned(
+                                                      right: ScreenUtil()
+                                                          .setWidth(10),
+                                                      top: ScreenUtil()
+                                                          .setHeight(16),
+                                                      child: Icon(
+                                                        Icons.close,
                                                         color: Colors.white,
+                                                        size: ScreenUtil()
+                                                            .setSp(20),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(10),
+                                              ),
+                                              Center(
+                                                child: Image.asset(
+                                                  "assets/images/wode/user_icon.png",
+                                                  width:
+                                                      ScreenUtil().setWidth(96),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(5),
+                                              ),
+                                              Center(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      '用户ID：$id',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff646464),
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(16.5)),
+                                                    ),
+                                                    SizedBox(
+                                                      height: ScreenUtil()
+                                                          .setHeight(2),
+                                                    ),
+                                                    Text(
+                                                      '邀请码：$code',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff646464),
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(16.5)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(
+                                                    ScreenUtil().setWidth(10)),
+                                                topRight: Radius.circular(
+                                                    ScreenUtil().setWidth(10))),
+                                            color: Color(0xffFFF4F9)),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height:
+                                                  ScreenUtil().setHeight(50),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          10)),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          10))),
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFFF89AC),
+                                                      Color(0xFFFF5B8C)
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  )),
+                                              child: Stack(
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                        child: Text("账号凭证",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .none,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            16.5)))),
+                                                  ),
+                                                  Positioned(
+                                                      right: ScreenUtil()
+                                                          .setWidth(10),
+                                                      top: ScreenUtil()
+                                                          .setHeight(16),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          cancelFunc();
+                                                          cancel?.call();
+                                                        },
+                                                        child: Icon(
+                                                          Icons.close,
+                                                          color: Colors.white,
+                                                          size: ScreenUtil()
+                                                              .setSp(20),
+                                                        ),
+                                                      ))
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  ScreenUtil().setHeight(10),
+                                            ),
+                                            Center(
+                                              child: Image.asset(
+                                                "assets/images/wode/user_icon.png",
+                                                width:
+                                                    ScreenUtil().setWidth(96),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: ScreenUtil().setHeight(5),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: ScreenUtil()
+                                                      .setWidth(28)),
+                                              child: Text(
+                                                '首次安装请先保存此账号信息，可在不慎遗失账号时作为凭证极大提高找回账号的概率 若您遇到账号遗失问题，请直接联系在线客服反馈。',
+                                                style: TextStyle(
+                                                    color: Color(0xff646464),
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                    fontWeight: FontWeight.w500,
+                                                    height: 1.75,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(12)),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  ScreenUtil().setHeight(10),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: ScreenUtil()
+                                                      .setWidth(28)),
+                                              child: Text(
+                                                '建议您尽快注册账号，以免账号丢失。使用账号登录更加安全',
+                                                style: TextStyle(
+                                                    color: Color(0xff646464),
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                    fontWeight: FontWeight.w500,
+                                                    height: 1.75,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(12)),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  ScreenUtil().setHeight(25),
+                                            ),
+                                            Center(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '用户ID：$id',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff646464),
                                                         decoration:
                                                             TextDecoration.none,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: ScreenUtil()
-                                                            .setSp(16.5)))),
-                                          ),
-                                          Positioned(
-                                            right: ScreenUtil().setWidth(10),
-                                            top: ScreenUtil().setHeight(16),
-                                            child: Icon(
-                                              Icons.close,
-                                              color: Colors.white,
-                                              size: ScreenUtil().setSp(20),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: ScreenUtil().setWidth(60),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        '用户ID：$id',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            decoration: TextDecoration.none,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: ScreenUtil().setSp(16.5)),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        '邀请码：$code',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            decoration: TextDecoration.none,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: ScreenUtil().setSp(16.5)),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: ScreenUtil().setWidth(16),
-                                    ),
-                                    Center(
-                                      child: Container(
-                                        width: ScreenUtil().setWidth(129),
-                                        height: ScreenUtil().setWidth(129),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            //阴影
-                                            BoxShadow(
-                                                color: Color.fromRGBO(
-                                                    72, 46, 0, 0.54),
-                                                offset: Offset(0, 0),
-                                                blurRadius:
-                                                    ScreenUtil().setWidth(20))
+                                                            .setSp(16.5)),
+                                                  ),
+                                                  SizedBox(
+                                                    height: ScreenUtil()
+                                                        .setHeight(2),
+                                                  ),
+                                                  Text(
+                                                    '邀请码：$code',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff646464),
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(16.5)),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
                                           ],
-                                        ),
-                                        child: QrImage(
-                                          data: '$url',
-                                          version: 3,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: ScreenUtil().setWidth(15),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              ScreenUtil().setWidth(10)),
-                                      child: Text(
-                                        '首次安装请先保存此账号信息，可在不慎遗失账号时作为凭证极大提高找回账号的概率。若您遇到账号遗失问题，请直接联系在线客服反馈。建议您尽快注册绑定手机，以免账号丢失。使用手机登录更加安全！',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            decoration: TextDecoration.none,
-                                            fontWeight: FontWeight.normal,
-                                            height: 1.75,
-                                            fontSize: ScreenUtil().setSp(11)),
-                                      ),
-                                    )
-                                  ],
-                                ))),
+                                        ))),
                               ],
                             ),
                             SizedBox(
@@ -341,15 +426,17 @@ class CertificateModel {
                                 _saveImgShare();
                               },
                               child: Container(
-                                width: ScreenUtil().setWidth(162),
-                                height: ScreenUtil().setWidth(38.5),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: ScreenUtil().setWidth(28)),
+                                width: double.infinity,
+                                height: ScreenUtil().setWidth(36),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                         ScreenUtil().setWidth(17.5)),
                                     gradient: LinearGradient(
                                       colors: [
-                                        Color(0xffff6a4a),
-                                        Color(0xff37f4ff)
+                                        Color(0xffFF84A9),
+                                        Color(0xffFF9E9E)
                                       ],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
@@ -365,6 +452,9 @@ class CertificateModel {
                                   ),
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil().setWidth(25),
                             ),
                           ],
                         ),

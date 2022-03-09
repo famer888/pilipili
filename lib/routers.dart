@@ -13,6 +13,9 @@ import 'package:pilipili/pages/login/register.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
+import 'package:pilipili/pages/mine/collect.dart';
+import 'package:pilipili/pages/mine/down_page.dart';
+
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
 import 'package:pilipili/components/activityDetail.dart';
@@ -22,6 +25,8 @@ import 'package:pilipili/components/morePage.dart';
 
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
+
+import 'mixin/message_center.dart';
 
 class Routes {
   static String xianmian = 'xianmian'; //home页限免页面
@@ -36,15 +41,20 @@ class Routes {
   static String login = 'login'; //登陆页面
   static String register = 'register/:type'; //注册找回密码
   static String setup = 'setup'; //设置
-  static String fillcode = 'fillcode/:type'; //填写邀请码兑换码
   static String smallVideo = 'smallVideo/:id'; //短视频
   static String webSmallVideo = 'webSmallVideo/:id'; //短视频
+  static String fillcode = 'fillcode'; //填写邀请码兑换码
+  static String messagecenter = 'messagecenter'; // 消息中心
+
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
   static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
   static String localSmallVideoDetail = 'localSmallVideoDetail/:id'; //小视频本地详情页
   static String localComicsDetatl = 'localComicsDetatl'; //漫画本地详情页
   static String localComicsReader = 'localComicsReader'; //漫画本地阅读器
+  static String collect = 'collect'; //我的收藏
+  static String down_page = 'down_page'; //我的下载
+
   static List<GoRoute> getDetailRoutes() {
     return [
       GoRoute(
@@ -109,13 +119,29 @@ class Routes {
         builder: (context, state) => SetupPage(),
         routes: [
           GoRoute(
-            path: fillcode,
-            builder: (context, state) => FillCodePage(
-                type: state.params == null || state.params['type'] == null
-                    ? null
-                    : int.parse(state.params['type'].toString())),
-          ),
+              path: fillcode,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                return FillCodePage(args: args);
+              }),
         ],
+      ),
+      GoRoute(
+        path: messagecenter,
+        builder: (context, state) => MessageCenter(),
+        // routes: [
+        //   GoRoute(
+        //     path: noticemessage,
+        //     builder: (context, state) {
+        //       final args = state.extra as Map<String, dynamic>;
+        //       return NoticeMessage(args: args);
+        //     },
+        //   ),
+        //   GoRoute(
+        //     path: customerService,
+        //     builder: (context, state) => CustomerService(),
+        //   ),
+        // ],
       ),
       GoRoute(
           path: comicsdetail,
@@ -201,6 +227,14 @@ class Routes {
                     ? 1
                     : int.parse(state.params['morePageType'].toString()));
           },
+          routes: getDetailRoutes()),
+      GoRoute(
+          path: collect,
+          builder: (context, state) => CollectPage(),
+          routes: getDetailRoutes()),
+      GoRoute(
+          path: down_page,
+          builder: (context, state) => DownPage(),
           routes: getDetailRoutes()),
     ];
     rootRoutes.addAll(getDetailRoutes());

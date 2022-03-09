@@ -21,6 +21,7 @@ class Hcard extends StatefulWidget {
       this.isNovel = false,
       this.replace = false,
       this.isSearch = false,
+      this.isLocal = false,
       this.isSubtitle = false})
       : super(key: key);
   final double width;
@@ -36,6 +37,7 @@ class Hcard extends StatefulWidget {
   final bool isNovel;
   final bool replace;
   final bool isSearch;
+  final bool isLocal;
   final bool isSubtitle;
   @override
   _HcardState createState() => _HcardState();

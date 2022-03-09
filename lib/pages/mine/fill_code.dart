@@ -1,22 +1,19 @@
 import 'package:country_code_picker/country_code.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/store/homeConfig.dart';
-import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
 class FillCodePage extends StatefulWidget {
-  FillCodePage({Key key, this.type}) : super(key: key);
-  final int type;
+  final Map args;
+
+  FillCodePage({Key key, this.args}) : super(key: key);
   @override
   _FillCodePageState createState() => _FillCodePageState();
 }
@@ -31,6 +28,8 @@ class _FillCodePageState extends State<FillCodePage> {
   final invite = TextEditingController();
   final newphone = TextEditingController();
   final newphoneCode = TextEditingController();
+  String code = '86';
+  String newcode = '86';
   List typeList = [
     {
       "name": "昵称修改",
@@ -51,16 +50,17 @@ class _FillCodePageState extends State<FillCodePage> {
   @override
   void initState() {
     super.initState();
-    CommonUtils.debugPrint('-**********************************${widget.type}');
-    if (widget.type != null) {
-      currentIndex = widget.type;
+    // CommonUtils.debugPrint('-**********************************${widget.type}');
+    if (widget?.args["type"] != null) {
+      currentIndex = widget?.args["type"];
       setState(() {});
     }
   }
 
-  void onSubmit() {
-    CommonUtils.debugPrint("${username.text}");
-    switch (widget.type) {
+  Future<void> onSubmit() async {
+    CommonUtils.debugPrint("$currentIndex");
+
+    switch (currentIndex) {
       case 0:
         if (username.text.isEmpty) {
           CommonUtils.showText('请输入新的昵称');
@@ -69,7 +69,108 @@ class _FillCodePageState extends State<FillCodePage> {
         if (username.text.length > 10) {
           CommonUtils.showText('昵称最大长度10个字符');
         }
+        PageStatus.loading(mounted);
+        var result = await updateUserInfo(nickname: username.text);
+        if (result.status == 1) {
+          Provider.of<HomeConfig>(context, listen: false)
+              .setNickname(username.text);
+          showText(status: result.status, msg: result.msg);
+        } else {
+          showText(status: result.status, msg: result.msg);
+        }
+        PageStatus.closeLoading();
         break;
+      case 1:
+        if (phone.text.isEmpty) {
+          CommonUtils.showText('请输入需要绑定的手机号');
+          return;
+        }
+        if (phoneCode.text.isEmpty) {
+          CommonUtils.showText('请输入短信验证码');
+          return;
+        }
+        PageStatus.showLoading();
+        bindPhone(code: phoneCode.text, phonePrefix: code, phone: phone.text)
+            .then((result) {
+          if (result.status != 0) {
+            showText(status: result.status, msg: result.msg, word: "手机绑定");
+          } else {
+            showText(status: result.status, msg: result.msg, word: "手机绑定");
+          }
+        });
+        PageStatus.closeLoading();
+        break;
+      case 2:
+        if (phone.text.isEmpty) {
+          CommonUtils.showText('请输入原手机号～');
+          return;
+        }
+        if (phoneCode.text.isEmpty) {
+          CommonUtils.showText('请输入原手机短信验证码～');
+          return;
+        }
+        if (newphone.text.isEmpty) {
+          CommonUtils.showText('请输入新手机号～');
+          return;
+        }
+        if (newphoneCode.text.isEmpty) {
+          CommonUtils.showText('请输入新手机短信验证码～');
+          return;
+        }
+        PageStatus.showLoading();
+        changePhone(
+                oldPhone: phone.text,
+                oldPhonePrefix: code,
+                oldCode: phoneCode.text,
+                phone: newphone.text,
+                phonePrefix: newcode,
+                code: newphoneCode.text)
+            .then((res) {
+          if (res.status != 0) {
+            CommonUtils.showText('手机换绑成功 ${res.msg}');
+            getHomeConfig(context).then((res) {
+              context.pop();
+            });
+          } else {
+            CommonUtils.showText('手机换绑失败 ${res.msg}');
+          }
+        });
+        break;
+      case 3:
+        if (exchange.text.isEmpty) {
+          CommonUtils.showText('请输入兑换码');
+          return;
+        }
+        PageStatus.showLoading();
+        var result = await onExchange(cdk: exchange.text);
+        showText(status: result.status, msg: result.msg, word: '兑换');
+        PageStatus.closeLoading();
+        break;
+      case 4:
+        if (invite.text.isEmpty) {
+          CommonUtils.showText('请输入邀请码');
+          return;
+        }
+        PageStatus.showLoading();
+        var result = await toInvitation(affCode: invite.text);
+        if (result.status == 1) {
+          Provider.of<HomeConfig>(context, listen: false)
+              .setInviteBy(invite.text);
+        }
+        showText(status: result.status, msg: result.msg, word: '填写');
+        PageStatus.closeLoading();
+        break;
+    }
+  }
+
+  void showText({status, msg, word = '修改'}) {
+    if (status == 1) {
+      CommonUtils.showText('$word成功 $msg');
+      Future.delayed(Duration(seconds: 2), () {
+        context.pop();
+      });
+    } else {
+      CommonUtils.showText('$word失败 $msg');
     }
   }
 
@@ -115,7 +216,6 @@ class _FillCodePageState extends State<FillCodePage> {
   }
 
   Widget _bindPhone() {
-    String code = '86';
     Function startTime;
     return Column(
       children: [
@@ -165,8 +265,7 @@ class _FillCodePageState extends State<FillCodePage> {
   Widget _setPhone() {
     Function startTime;
     Function newstartTime;
-    String code = '86';
-    String newcode = '86';
+
     return Column(
       children: [
         Container(
@@ -261,12 +360,12 @@ class _FillCodePageState extends State<FillCodePage> {
         children: [
           PageTitleBar(
               paddingTop: ScreenUtil().statusBarHeight,
-              title: typeList[widget.type]["name"],
+              title: typeList[currentIndex]["name"],
               rightWidget: TextButton(
                 onPressed: onSubmit,
                 // child: Text("123123"),
                 child: Text(
-                  typeList[widget.type]["btnname"],
+                  typeList[currentIndex]["btnname"],
                   style: TextStyle(color: Colors.white),
                 ),
               )),
