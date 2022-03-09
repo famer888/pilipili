@@ -52,6 +52,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   int limit = 15;
   bool isAll = false;
   bool videoLoading = false;
+  int likeCount = 0;
   List tabList = [
     {
       'id': 1,
@@ -100,6 +101,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
         tags = res.data.tags == '' || res.data.tags == null
             ? []
             : res.data.tags.split(',');
+        likeCount = res.data.favorites;
         videoInfo = res.data;
         setState(() {});
         getDetailRecommendList(
@@ -508,6 +510,11 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                           null &&
                                                                       res.status !=
                                                                           0) {
+                                                                    if (isFavorites) {
+                                                                      likeCount--;
+                                                                    } else {
+                                                                      likeCount++;
+                                                                    }
                                                                     isFavorites =
                                                                         !isFavorites;
                                                                     setState(
@@ -523,7 +530,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   icon: isFavorites
                                                                       ? 'icon_unlike'
                                                                       : 'icon_like',
-                                                                  name: '1.2w',
+                                                                  name: CommonUtils
+                                                                      .renderFixedNumber(
+                                                                          likeCount
+                                                                              .toDouble()),
                                                                   color: isFavorites
                                                                       ? Color(
                                                                           0xffFF84A9)
@@ -671,7 +681,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                           crossAxisCount: 2,
                                           crossAxisSpacing:
                                               ScreenUtil().setWidth(7),
-                                          childAspectRatio: 1.25,
+                                          childAspectRatio: 1.1,
                                           children: recommendList
                                               .asMap()
                                               .keys

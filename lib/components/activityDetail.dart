@@ -62,16 +62,27 @@ class _ActivityDetailState extends State<ActivityDetail> {
                               .config;
                       ShareMovieModel.showShareMovie(backButtonBehavior,
                           copyUrl: config.share.affUrlCopy.url,
-                          thumb:
-                              "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg",
-                          title: "撒看到过胩是公开的撒" ?? '--',
-                          subtitle: "谁看过的卡萨看到过卡啊的撒卡" ?? '--',
+                          thumb: activityInfo['resource'][0]['url'],
+                          width: activityInfo['resource'][0]['width'] == null
+                              ? 1
+                              : double.parse(activityInfo['resource'][0]
+                                      ['width']
+                                  .toString()),
+                          height: activityInfo['resource'][0]['height'] == null
+                              ? 1
+                              : double.parse(activityInfo['resource'][0]
+                                      ['height']
+                                  .toString()),
+                          title: activityInfo['title'] ?? '--',
+                          subtitle: activityInfo['desc'] ?? '--',
                           url: '${config.share.affUrl}');
                     },
-                    child: Image.asset(
-                      "assets/images/icon_share.png",
-                      width: ScreenUtil().setWidth(20),
-                      fit: BoxFit.fitWidth,
+                    child: Container(
+                      // color: Colors.red,
+                      child: Image.asset("assets/images/icon_share.png",
+                          color: Colors.white,
+                          width: ScreenUtil().setWidth(20),
+                          height: ScreenUtil().setWidth(20)),
                     ),
                   )),
               loading

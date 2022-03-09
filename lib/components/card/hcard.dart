@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
-import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:pilipili/utils/index.dart';
 
 // ignore: must_be_immutable
 class Hcard extends StatefulWidget {
@@ -23,6 +21,7 @@ class Hcard extends StatefulWidget {
       this.isNovel = false,
       this.replace = false,
       this.isSearch = false,
+      this.isLocal = false,
       this.isSubtitle = false})
       : super(key: key);
   final double width;
@@ -38,6 +37,7 @@ class Hcard extends StatefulWidget {
   final bool isNovel;
   final bool replace;
   final bool isSearch;
+  final bool isLocal;
   final bool isSubtitle;
   @override
   _HcardState createState() => _HcardState();
@@ -137,7 +137,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                                         widget.cardData['title'] ??
                                         '')
                                     : widget.cardData['title' ?? ""],
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Color(0xff646464),

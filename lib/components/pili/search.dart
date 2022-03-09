@@ -106,6 +106,9 @@ class _SearchPageState extends State<SearchPage> {
                     prevText = myController.text;
                     loading = true;
                     if (historyTags.indexOf(myController.text) == -1) {
+                      if (historyTags.length >= 3) {
+                        historyTags.removeAt(2);
+                      }
                       historyTags.add(myController.text);
                       AppGlobal.appBox.put('search_history', historyTags);
                     }
@@ -221,6 +224,7 @@ class _SearchPageState extends State<SearchPage> {
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
+                                    blurRadius: 10,
                                     blurStyle: BlurStyle.outer,
                                     color: Color.fromRGBO(255, 91, 140, 0.2),
                                     offset: Offset(0, ScreenUtil().setWidth(6)),
@@ -237,12 +241,77 @@ class _SearchPageState extends State<SearchPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '搜索记录',
-                                    style: TextStyle(
-                                        color: Color(0xff6D6D6D),
-                                        fontSize: ScreenUtil().setSp(14),
-                                        fontWeight: FontWeight.bold),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '搜索记录',
+                                        style: TextStyle(
+                                            color: Color(0xff6D6D6D),
+                                            fontSize: ScreenUtil().setSp(14),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          historyTags.clear();
+                                          AppGlobal.appBox.put(
+                                              'search_history', historyTags);
+                                          setState(() {});
+                                        },
+                                        behavior: HitTestBehavior.translucent,
+                                        child: Image.asset(
+                                          'assets/images/detail/icon_clear.png',
+                                          width: ScreenUtil().setWidth(20),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil().setWidth(24)),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children:
+                                          historyTags.asMap().keys.map((e) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(
+                                              bottom: ScreenUtil().setWidth(8),
+                                              top: ScreenUtil().setWidth(8),
+                                              left: ScreenUtil().setWidth(8)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                historyTags[e],
+                                                style: TextStyle(
+                                                    color: Color(0xff979797),
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14)),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  historyTags.removeAt(e);
+                                                  AppGlobal.appBox.put(
+                                                      'search_history',
+                                                      historyTags);
+                                                  setState(() {});
+                                                },
+                                                behavior:
+                                                    HitTestBehavior.translucent,
+                                                child: Image.asset(
+                                                  'assets/images/detail/icon_delete.png',
+                                                  width:
+                                                      ScreenUtil().setWidth(20),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
                                   ),
                                   Text(
                                     '热门标签',
@@ -552,8 +621,9 @@ class _TabHeadState extends State<TabHead> {
                   bottom: ScreenUtil().setWidth(10),
                   child: Container(
                     height: ScreenUtil().setWidth(36),
+                    padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
                     child: Wrap(
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.start,
                       spacing: ScreenUtil().setWidth(4),
                       children: tabList.asMap().keys.map((e) {
                         return GestureDetector(
