@@ -15,11 +15,11 @@ import 'package:waterfall_flow/waterfall_flow.dart';
 
 class PublicList extends StatefulWidget {
   @required
-  final bool isShow;
-  final String api;
-  final Map data;
+  final bool isShow;//是否展示
+  final String api;//接口地址
+  final Map data;//传递参数
   final int limit;
-  final bool isFlow;
+  final bool isFlow;//是否瀑布流
   final String cartType; //  "h" 横向card  "v"竖向card
   PublicList(
       {Key key,
