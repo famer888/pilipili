@@ -19,6 +19,7 @@ import 'package:pilipili/model/systemnoticelist.dart';
 import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/model/videolist.dart';
+import 'package:pilipili/model/coindetail.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
@@ -548,6 +549,84 @@ Future<dynamic> getUserFavor({int page, int limit = 24, int type}) async {
         '/api/user/getUserFavor',
         data: {'page': page, 'limit': limit, 'type': type});
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//获取商品-金币
+Future<Basic> getProductOfGold(int type) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList',
+        data: {'type': type});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 超值金币卡状态
+Future getCoinCardStatus() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/getCoinCardStatus');
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 领取金币卡
+Future getCoinFromCoinCard() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/getCoinFromCoinCard');
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 金币兑换
+Future<Basic> onOrderExchange({
+  int product_id,
+}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/exchange',
+        data: {'product_id': product_id});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//在线支付
+Future<Basic> onCreatePaying({
+  String pay_way,
+  String pay_type,
+  int product_id,
+}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/order/createPaying', data: {
+      'pay_way': pay_way,
+      'pay_type': pay_type,
+      'product_id': product_id
+    });
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//GOLD明细
+Future<CoinDetialModel> getListMoneyDetail(
+    {int page = 1, dynamic type = '', limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        "/api/user/listMoneyDetail",
+        data: {'limit': limit, 'page': page, 'type': type});
+    return CoinDetialModel.fromJson(res.data);
   } catch (e) {
     return null;
   }

@@ -614,7 +614,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         )
                                       : ListView.builder(
                                           padding: EdgeInsets.symmetric(
-                                              // vertical: DefaultStyle.pagePadding,
+                                              vertical: DefaultStyle.pagePadding,
                                               horizontal:
                                                   DefaultStyle.pagePadding),
                                           itemCount: commentList.length,

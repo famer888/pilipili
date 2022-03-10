@@ -36,7 +36,7 @@ class PageStatus {
   static Widget loading(bool mouted, {String text}) {
     if (mouted) {
       return Container(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -85,7 +85,7 @@ class PageStatus {
             height: ScreenUtil().setWidth(9),
           ),
           Text(
-            text == null ? '这里什么都没找到～' : text,
+            text == null ? '快来填满我～' : text,
             style: DefaultStyle.gray15,
           )
         ],

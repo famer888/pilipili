@@ -365,7 +365,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              '作者：山本一夫',
+                                                              '演员：${videoInfo.actors == null || videoInfo.actors == "" ? "--" : videoInfo.actors}',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xffFF5B8C),
@@ -375,7 +375,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               12)),
                                                             ),
                                                             Text(
-                                                              '4512人看过 - 2月1日更新',
+                                                              '${videoInfo.countPlay}人看过 - ${videoInfo.createdAt.split(' ')[0]}更新',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xff979797),
@@ -734,6 +734,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               .screenHeight *
                                                           5,
                                                       padding: EdgeInsets.symmetric(
+                                                          vertical: DefaultStyle
+                                                              .pagePadding,
                                                           horizontal:
                                                               DefaultStyle
                                                                   .pagePadding),
@@ -961,71 +963,97 @@ class _ConmentItemState extends State<ConmentItem> {
               }
             },
             child: Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setWidth(17)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: EdgeInsets.only(top: ScreenUtil().setWidth(7.5)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: ScreenUtil().setWidth(30),
-                    height: ScreenUtil().setWidth(30),
-                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(11)),
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(ScreenUtil().setWidth(15)),
-                      child: PlatformAwareNetworkImage(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                width: ScreenUtil().setWidth(0.5),
+                                color: Color(0xffffd1df)))),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
                           width: ScreenUtil().setWidth(30),
                           height: ScreenUtil().setWidth(30),
-                          fit: BoxFit.fill,
-                          url: widget.data['userInfo']['thumb']),
-                    ),
-                  ),
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: ScreenUtil().setWidth(35),
-                        child: Row(
+                          margin:
+                              EdgeInsets.only(right: ScreenUtil().setWidth(11)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                ScreenUtil().setWidth(15)),
+                            child: PlatformAwareNetworkImage(
+                                width: ScreenUtil().setWidth(30),
+                                height: ScreenUtil().setWidth(30),
+                                fit: BoxFit.fill,
+                                url: widget.data['userInfo']['thumb']),
+                          ),
+                        ),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.data['userInfo']['nickname'],
-                              style: TextStyle(
-                                  color: Color(0xff646464),
-                                  fontSize: ScreenUtil().setSp(14),
-                                  fontWeight: FontWeight.bold),
+                            Container(
+                              height: ScreenUtil().setWidth(35),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    widget.data['userInfo']['nickname'],
+                                    style: TextStyle(
+                                        color: Color(0xff646464),
+                                        fontSize: ScreenUtil().setSp(14),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(8),
+                                  ),
+                                  Text(
+                                    getCreateTime(),
+                                    style: TextStyle(
+                                        color: Color(0xffC2C2C2),
+                                        fontSize: ScreenUtil().setSp(12)),
+                                  ),
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(8),
-                            ),
-                            Text(
-                              getCreateTime(),
-                              style: TextStyle(
-                                  color: Color(0xffC2C2C2),
-                                  fontSize: ScreenUtil().setSp(12)),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.only(bottom: ScreenUtil().setWidth(13)),
-                        child: Text(
-                          widget.data['reply'],
-                          style: TextStyle(
-                              color: Color(0xff646464),
-                              fontSize: ScreenUtil().setSp(12)),
-                        ),
-                      ),
-                      widget.children == null || widget.children.length == 0
-                          ? SizedBox()
-                          : Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: widget.children,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setWidth(13)),
+                              child: Text(
+                                widget.data['reply'],
+                                style: TextStyle(
+                                    color: Color(0xff646464),
+                                    fontSize: ScreenUtil().setSp(12)),
                               ),
                             )
+                          ],
+                        ))
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: ScreenUtil().setWidth(30),
+                        margin:
+                            EdgeInsets.only(right: ScreenUtil().setWidth(11)),
+                      ),
+                      Expanded(
+                          child: widget.children == null ||
+                                  widget.children.length == 0
+                              ? SizedBox()
+                              : Container(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: widget.children,
+                                  ),
+                                ))
                     ],
-                  ))
+                  )
                 ],
               ),
             ),

@@ -43,7 +43,7 @@ class _ActivityListState extends State<ActivityList> {
   Widget renderItem(Map _data) {
     return GestureDetector(
       onTap: () {
-        context.push(CommonUtils.getRealHash('ActivityDetail/${_data['id']}'));
+        context.push(CommonUtils.getRealHash('activityDetail/${_data['id']}'));
       },
       child: Container(
         clipBehavior: Clip.antiAlias,

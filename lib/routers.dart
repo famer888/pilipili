@@ -20,6 +20,8 @@ import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
+import 'package:pilipili/pages/mine/coinRecharge.dart';
+import 'package:pilipili/pages/mine/coin_detail.dart';
 
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
@@ -63,6 +65,8 @@ class Routes {
   static String localComicsReader = 'localComicsReader'; //漫画本地阅读器
   static String collect = 'collect'; //我的收藏
   static String down_page = 'down_page'; //我的下载
+  static String coinRecharge = 'coinRecharge'; //皮哩币充值
+  static String coinDetail = 'coinDetail'; //皮哩币明细
 
   static String invitefriend = 'invitefriend'; // 邀请好友
   static String promote = 'promote'; // 去推广
@@ -251,6 +255,15 @@ class Routes {
         path: xianmian,
         builder: (context, state) => Xianmian(),
       ),
+      GoRoute(
+          path: coinRecharge,
+          builder: (context, state) => Coinrecharge(),
+          routes: [
+            GoRoute(
+              path: coinDetail,
+              builder: (context, state) => CoinDetail(),
+            ),
+          ]),
       GoRoute(
           path: activityList,
           builder: (context, state) => ActivityList(),
