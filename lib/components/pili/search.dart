@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
@@ -371,7 +371,7 @@ class _SearchPageState extends State<SearchPage> {
                           )),
                       bottom: PreferredSize(
                         preferredSize:
-                            Size(double.infinity, ScreenUtil().setWidth(50.3)),
+                            Size(double.infinity, ScreenUtil().setWidth(kIsWeb?44:50.4)),
                         child: TabHead(
                             index: tabIndex,
                             changeHead: (e) {
