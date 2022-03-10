@@ -309,4 +309,9 @@ class DefaultStyle {
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+  static LinearGradient defaluGrandientLine = LinearGradient(
+    colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
 }

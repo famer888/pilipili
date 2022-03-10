@@ -65,7 +65,7 @@ class MessageOfSystem extends StatelessWidget {
       return MessageActionItem(
         title: '【通知消息】',
         message: '$messages',
-        icon: 'assets/images/mine/notice_icon.png',
+        icon: 'assets/images/wode/official_avatar.png',
         time: times != null ? '$times' : ' ',
         number: '$noticeCount',
         onTap: () {
@@ -97,7 +97,7 @@ class MessageOfNotice extends StatelessWidget {
       return MessageActionItem(
         title: '【客服回复】',
         message: '$messages',
-        icon: 'assets/images/mine/sever_reply.png',
+        icon: 'assets/images/wode/customer_avatar.png',
         time: times != null ? '$times' : ' ',
         number: '$noticeCount',
         onTap: () {
@@ -167,8 +167,8 @@ class MessageActionItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                PlatformAwareAssetImage(
-                  url: icon,
+                Image.asset(
+                  icon,
                   width: ScreenUtil().setWidth(50),
                   height: ScreenUtil().setWidth(50),
                 ),
