@@ -54,7 +54,7 @@ class MessageOfSystem extends StatelessWidget {
       var times;
       var messages = '暂无消息';
       var noticeCount = 0;
-      if (state.systemnotice.data.systemNotice != null) {
+      if (state.systemnotice?.data?.systemNotice != null) {
         times = state.systemnotice.data.systemNotice.createdAt;
         messages = state.systemnotice.data.systemNotice.question == null
             ? '暂无消息'
@@ -86,7 +86,7 @@ class MessageOfNotice extends StatelessWidget {
       var times;
       var messages = '暂无消息';
       var noticeCount = 0;
-      if (state.systemnotice.data.feed != null) {
+      if (state.systemnotice?.data?.feed != null) {
         times = state.systemnotice.data.feed.createdAt is String
             ? state.systemnotice.data.feed.createdAt
             : CommonUtils.getHMTime(

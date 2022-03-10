@@ -10,7 +10,9 @@ import 'package:pilipili/components/video/web_small_video.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/customer_service.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
+import 'package:pilipili/pages/mine/notice_message.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
@@ -38,13 +40,15 @@ class Routes {
   static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
   static String videoDetail = 'videoDetail/:id'; //长视频详情页
   static String morePage = 'morePage/:id/:title/:morePageType'; //更多列表
-  static String login = 'login'; //登陆页面
+  static String login = 'login'; //登录页面
   static String register = 'register/:type'; //注册找回密码
   static String setup = 'setup'; //设置
   static String smallVideo = 'smallVideo/:id'; //短视频
   static String webSmallVideo = 'webSmallVideo/:id'; //短视频
   static String fillcode = 'fillcode'; //填写邀请码兑换码
   static String messagecenter = 'messagecenter'; // 消息中心
+  static String noticemessage = 'noticemessage'; // 系统消息
+  static String customerService = 'customerService'; //客服
 
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
@@ -129,19 +133,19 @@ class Routes {
       GoRoute(
         path: messagecenter,
         builder: (context, state) => MessageCenter(),
-        // routes: [
-        //   GoRoute(
-        //     path: noticemessage,
-        //     builder: (context, state) {
-        //       final args = state.extra as Map<String, dynamic>;
-        //       return NoticeMessage(args: args);
-        //     },
-        //   ),
-        //   GoRoute(
-        //     path: customerService,
-        //     builder: (context, state) => CustomerService(),
-        //   ),
-        // ],
+        routes: [
+          GoRoute(
+            path: noticemessage,
+            builder: (context, state) {
+              final args = state.extra as Map<String, dynamic>;
+              return NoticeMessage(args: args);
+            },
+          ),
+          GoRoute(
+            path: customerService,
+            builder: (context, state) => CustomerService(),
+          ),
+        ],
       ),
       GoRoute(
           path: comicsdetail,

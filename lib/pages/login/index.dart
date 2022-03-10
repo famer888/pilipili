@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                   padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
                   child: Text(
-                    loginType == 0 ? '账号密码登陆' : '手机验证码登陆',
+                    loginType == 0 ? '账号密码登录' : '手机验证码登录',
                     style: TextStyle(
                         color: Color(0xffffffff),
                         fontWeight: FontWeight.bold,
@@ -235,20 +236,55 @@ class _LoginPageState extends State<LoginPage> {
         Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(
-              child: Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                    child: IndexedStack(
-                  index: currentIndex,
+              child: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _login(), //登录 0
+                    Expanded(
+                        child: IndexedStack(
+                      index: currentIndex,
+                      children: [
+                        _login(), //登录 0
+                      ],
+                    ))
                   ],
-                ))
-              ],
-            ),
+                ),
+              ),
+              Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: DefaultStyle.pagePadding,
+                      ),
+                      child: GestureDetector(
+                        onTap: () => {context.pop()},
+                        child: Container(
+                          height: ScreenUtil().setWidth(44),
+                          child: Row(children: [
+                            Center(
+                              child: Icon(
+                                Icons.chevron_left,
+                                color: Colors.white,
+                                size: ScreenUtil().setSp(35),
+                              ),
+                            ),
+                            Text(
+                              "登录",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(16),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      )))
+            ],
           )),
         )
       ],

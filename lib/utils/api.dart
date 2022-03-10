@@ -8,9 +8,11 @@ import 'package:pilipili/model/comicReading.dart';
 import 'package:pilipili/model/comicsDetail.dart';
 import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/model/element.dart';
+import 'package:pilipili/model/feedback.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/model/recommendComics.dart';
 import 'package:pilipili/model/systemnotice.dart';
+import 'package:pilipili/model/systemnoticelist.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/model/videolist.dart';
 import 'package:pilipili/store/homeConfig.dart';
@@ -513,6 +515,17 @@ Future<SystemNotice> getSystemNotice() async {
   }
 }
 
+Future<SystemNoticeList> getSystemNoticeList({int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/message/getSystemNoticeList',
+        data: {'page': page, 'limit': limit});
+    return SystemNoticeList.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
 // 我收藏的
 Future<dynamic> getUserFavor({int page, int limit = 24, int type}) async {
   try {
@@ -520,6 +533,29 @@ Future<dynamic> getUserFavor({int page, int limit = 24, int type}) async {
         '/api/user/getUserFavor',
         data: {'page': page, 'limit': limit, 'type': type});
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//工单列表
+Future<Basic> sendFeeding(String content, int type, int helpType) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/message/feeding',
+        data: {'content': content, 'type': type, 'helpType': helpType});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//工单列表
+Future<FeedBack> getFeedbackList({int page}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/message/feedback',
+        data: {'page': page});
+    return FeedBack.fromJson(res.data);
   } catch (e) {
     return null;
   }
