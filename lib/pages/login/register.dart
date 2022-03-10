@@ -71,7 +71,7 @@ class _RegisterState extends State<Register> {
               child: Container(
                 padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
                 child: Text(
-                  '已有账号 ！去登陆',
+                  '已有账号 ！去登录',
                   style: TextStyle(
                       color: Color(0xffffffff),
                       fontWeight: FontWeight.bold,
@@ -429,7 +429,7 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                               Text(
-                                currentIndex == 0 ? "注册登陆" : "忘记密码",
+                                currentIndex == 0 ? "注册登录" : "忘记密码",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
@@ -101,22 +102,22 @@ class _SearchPageState extends State<SearchPage> {
                       CommonUtils.showText('请输入搜索关键字～');
                       return;
                     }
-                    if (prevText == myController.text) return;
+                    if (prevText == myController.text && tabIndex == 1) return;
                     searchController.jumpToPage(1);
                     prevText = myController.text;
                     loading = true;
                     if (historyTags.indexOf(myController.text) == -1) {
                       if (historyTags.length >= 3) {
-                        historyTags.removeAt(2);
+                        historyTags.removeAt(0);
                       }
                       historyTags.add(myController.text);
                       AppGlobal.appBox.put('search_history', historyTags);
                     }
                     setState(() {});
-                    Timer(Duration(milliseconds: 200), () {
-                      loading = false;
-                      setState(() {});
-                    });
+                    // Timer(Duration(milliseconds: 200), () {
+                    //   loading = false;
+                    //   setState(() {});
+                    // });
                   },
                   decoration: InputDecoration(
                     hintText: '请输入搜索内容',
@@ -370,8 +371,8 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           )),
                       bottom: PreferredSize(
-                        preferredSize:
-                            Size(double.infinity, ScreenUtil().setWidth(50.3)),
+                        preferredSize: Size(double.infinity,
+                            ScreenUtil().setWidth(kIsWeb ? 44 : 50.4)),
                         child: TabHead(
                             index: tabIndex,
                             changeHead: (e) {
@@ -405,7 +406,7 @@ class _SearchPageState extends State<SearchPage> {
                 }).toList(),
               ),
             ),
-            SearchResult()
+            SearchResult(word: myController.text)
           ],
         ))
       ],
@@ -449,7 +450,8 @@ class _PageGridViewState extends State<PageGridView> {
 }
 
 class SearchResult extends StatefulWidget {
-  SearchResult({Key key}) : super(key: key);
+  final String word;
+  SearchResult({Key key, this.word}) : super(key: key);
 
   @override
   _SearchResultState createState() => _SearchResultState();
@@ -459,9 +461,17 @@ class _SearchResultState extends State<SearchResult> {
   PageController controller = PageController();
   int currentTab = 0;
   List tabList = [
-    {'title': '次元'},
-    {'title': '动漫'},
-    {'title': '动画'}
+    {
+      'title': '次元',
+      'api': '/api/mv/search',
+      'pramas': {'type': 1}
+    },
+    {
+      'title': '动漫',
+      'api': '/api/mv/search',
+      'pramas': {'type': 2}
+    },
+    {'title': '漫画', 'api': '/api/book/search', 'pramas': {}}
   ];
   @override
   Widget build(BuildContext context) {
@@ -534,8 +544,14 @@ class _SearchResultState extends State<SearchResult> {
             setState(() {});
           },
           children: tabList.asMap().keys.map((e) {
-            return PageGridView(
-              id: e,
+            Map pramas = {
+              'word': widget.word,
+            };
+            pramas.addAll(tabList[e]['pramas']);
+            return PublicList(
+              data: pramas,
+              api: tabList[e]['api'],
+              isShow: e == currentTab,
             );
           }).toList(),
         ))
