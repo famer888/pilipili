@@ -205,6 +205,7 @@ class DefaultStyle {
       color: Color.fromRGBO(51, 51, 51, 1),
       fontSize: ScreenUtil().setSp(16),
       fontWeight: FontWeight.bold,
+      overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle black18bold = TextStyle(

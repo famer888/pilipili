@@ -138,48 +138,53 @@ class _WodeState extends State<Wode> {
                 SizedBox(
                   height: ScreenUtil().setHeight(13),
                 ),
-                Stack(
-                  alignment: Alignment.topLeft,
-                  children: <Widget>[
-                    Image.asset(
-                      "assets/images/wode/glod_bg.png",
-                      fit: BoxFit.fill,
-                    ),
-                    Positioned(
-                      left: ScreenUtil().setWidth(14),
-                      top: ScreenUtil().setHeight(13),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "皮哩币",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(13),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "余额:300",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(11),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
+                GestureDetector(
+                  onTap: () {
+                    context.push('/${Routes.coinRecharge}');
+                  },
+                  child: Stack(
+                    alignment: Alignment.topLeft,
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/images/wode/glod_bg.png",
+                        fit: BoxFit.fill,
                       ),
-                    ),
-                    Positioned(
-                      bottom: ScreenUtil().setHeight(5),
-                      left: ScreenUtil().setWidth(12),
-                      child: Text(
-                        "立即充值",
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(12),
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                      Positioned(
+                        left: ScreenUtil().setWidth(14),
+                        top: ScreenUtil().setHeight(13),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "皮哩币",
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(13),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "余额:300",
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(11),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      Positioned(
+                        bottom: ScreenUtil().setHeight(5),
+                        left: ScreenUtil().setWidth(12),
+                        child: Text(
+                          "立即充值",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Stack(
                   alignment: Alignment.topLeft,
