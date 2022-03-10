@@ -365,7 +365,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              '作者：山本一夫',
+                                                              '演员：${videoInfo.actors == null || videoInfo.actors == "" ? "--" : videoInfo.actors}',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xffFF5B8C),
@@ -375,7 +375,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               12)),
                                                             ),
                                                             Text(
-                                                              '4512人看过 - 2月1日更新',
+                                                              '${videoInfo.countPlay}人看过 - ${videoInfo.createdAt.split(' ')[0]}更新',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xff979797),

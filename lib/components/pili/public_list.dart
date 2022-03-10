@@ -51,7 +51,6 @@ class _PublicListState extends State<PublicList> {
     try {
       Response<dynamic> res =
           await PlatformAwareHttp.post(widget.api, data: reqData);
-      CommonUtils.debugPrint('****$reqData***********${res.data}');
       if (res.data['status'] != 0) {
         List resdata = res.data['data'] == null ? [] : res.data['data'];
         isAll = resdata.length < reqData['limit'];

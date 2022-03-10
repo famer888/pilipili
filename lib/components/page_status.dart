@@ -36,7 +36,7 @@ class PageStatus {
   static Widget loading(bool mouted, {String text}) {
     if (mouted) {
       return Container(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
