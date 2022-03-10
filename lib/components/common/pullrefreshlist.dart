@@ -142,7 +142,7 @@ class _PullRefreshListState extends State<PullRefreshList> {
         header: WaterDropMaterialHeader(
           color: Colors.white,
           offset: widget.offset,
-          backgroundColor: Color(0xffFF5B8C),
+          backgroundColor:DefaultStyle.themeColor,
         ),
         // header: CustomHeader(
         //   builder: (BuildContext context, RefreshStatus mode) {
