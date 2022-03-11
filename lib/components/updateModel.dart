@@ -566,95 +566,92 @@ class _DownloadApkState extends State<DownloadApk> {
         children: [
           Positioned(
               child: Center(
-            child: Container(
-                  width: ScreenUtil().setWidth(345),
-                    clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    color: Color(0xffFFF4F9),
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(15))),
+                  child: Container(
+            width: ScreenUtil().setWidth(345),
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+                color: Color(0xffFFF4F9),
+                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                      vertical: ScreenUtil().setWidth(15.5),
+                      horizontal: ScreenUtil().setWidth(20)),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(15.5),
-                            horizontal: ScreenUtil().setWidth(20)),
-                        child: Column(
+                    children: <Widget>[
+                      Text(
+                        "正在更新 v.${widget.version}",
+                        style: TextStyle(
+                            color: Color(0xFF646464),
+                            fontSize: ScreenUtil().setSp(18),
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setWidth(25),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setWidth(185),
+                        height: ScreenUtil().setWidth(4),
+                        child: Stack(
                           children: <Widget>[
-                            Text(
-                              "正在更新 v.${widget.version}",
-                              style: TextStyle(
-                                  color: Color(0xFF646464),
-                                  fontSize: ScreenUtil().setSp(18),
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.left,
-                            ),
-                            SizedBox(
-                              height: ScreenUtil().setWidth(25),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(185),
-                              height: ScreenUtil().setWidth(4),
+                            ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(ScreenUtil().setWidth(2))),
                               child: Stack(
                                 children: <Widget>[
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                            ScreenUtil().setWidth(2))),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Opacity(
-                                          opacity: 0.3,
-                                          child: Container(
-                                            width: ScreenUtil().setWidth(185),
-                                            height: ScreenUtil().setWidth(4),
-                                            decoration: BoxDecoration(
-                                                color: Color(0xFFAB3854)),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          left: 0,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    ScreenUtil().setWidth(4))),
-                                            child: Container(
-                                              width: progress /
-                                                  100 *
-                                                  ScreenUtil().setWidth(185),
-                                              height: ScreenUtil().setWidth(4),
-                                              decoration: BoxDecoration(
-                                                  color: Color(0xFFFF5B8C)),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                  Opacity(
+                                    opacity: 0.3,
+                                    child: Container(
+                                      width: ScreenUtil().setWidth(185),
+                                      height: ScreenUtil().setWidth(4),
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFFAB3854)),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    left: 0,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              ScreenUtil().setWidth(4))),
+                                      child: Container(
+                                        width: progress /
+                                            100 *
+                                            ScreenUtil().setWidth(185),
+                                        height: ScreenUtil().setWidth(4),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFFFF5B8C)),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: ScreenUtil().setWidth(12),
-                            ),
-                            Center(
-                              child: Text('$progress%',
-                                  style: TextStyle(
-                                      color: Color(0xFF646464),
-                                      fontSize: ScreenUtil().setSp(18),
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.bold)),
-                            )
                           ],
                         ),
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setWidth(12),
+                      ),
+                      Center(
+                        child: Text('$progress%',
+                            style: TextStyle(
+                                color: Color(0xFF646464),
+                                fontSize: ScreenUtil().setSp(18),
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
                 )
-          ))
+              ],
+            ),
+          )))
         ],
       ),
     );

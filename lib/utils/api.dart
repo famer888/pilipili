@@ -10,9 +10,13 @@ import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/model/feedback.dart';
 import 'package:pilipili/model/homedata.dart';
+import 'package:pilipili/model/invitionlist.dart';
+import 'package:pilipili/model/myinvitation.dart';
+import 'package:pilipili/model/myreward.dart';
 import 'package:pilipili/model/recommendComics.dart';
 import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/model/systemnoticelist.dart';
+import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/model/videolist.dart';
 import 'package:pilipili/model/coindetail.dart';
@@ -517,6 +521,17 @@ Future<SystemNotice> getSystemNotice() async {
   }
 }
 
+// 联系官方
+Future getContactList() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/home/getContactList');
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
 Future<SystemNoticeList> getSystemNoticeList({int page, int limit}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post(
@@ -674,6 +689,18 @@ Future buyPackage({int id}) async {
   }
 }
 
+/// 获取更新数量
+Future<UpdateNumModel> apiGetUpdateNum({int cartoonId}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/home/getUpdateNum');
+    UpdateNumModel result = UpdateNumModel.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
 // 漫画列表
 Future getComicsList({int type, int limit, int page, int day}) async {
   try {
@@ -720,6 +747,18 @@ Future getPackageList({int page, int limit}) async {
   }
 }
 
+//邀请记录
+Future<InvitionList> getListInvition({int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/user/listInvitation',
+        data: {'page': page, 'limit': limit});
+    return InvitionList.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
 // 活动列表
 Future activityList() async {
   try {
@@ -731,12 +770,34 @@ Future activityList() async {
   }
 }
 
+// 我的邀请
+Future<MyInvitationModel> myInvitation({int page, int limit}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/myInvitation');
+    return MyInvitationModel.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
 // 打折包详情
 Future getPackageDetail({int id, int page, int limit}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/package/detail',
         data: {'id': id, 'page': page, 'limit': limit});
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 收益明细
+Future<MyRewardModel> getMyReward() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/getMyReward');
+    return MyRewardModel.fromJson(res.data);
   } catch (e) {
     return null;
   }

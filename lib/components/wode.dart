@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/model/updateNum.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
@@ -9,6 +13,7 @@ import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/index.dart';
 
 import '../global.dart';
+import 'common/pullrefreshlist.dart';
 
 class Wode extends StatefulWidget {
   Wode({Key key, this.isShow = false}) : super(key: key);
@@ -18,26 +23,53 @@ class Wode extends StatefulWidget {
 }
 
 class _WodeState extends State<Wode> {
+  bool networkErr = false;
   int pageStatus = 0;
 
-  @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    EventBus().on('need-update-login-state', (args) {
+      CommonUtils.debugPrint("*********************$args");
+      if (args == 'login') {
+        setState(() {});
+      } else if (args == 'quit') {
+        CommonUtils.debugPrint("我执行了");
+        getHomeConfig(context);
+      }
+    });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     EventBus().off('need-update-login-state');
   }
 
   @override
   void didUpdateWidget(covariant Wode oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    if (widget.isShow && pageStatus == 0) {}
+    if (widget.isShow && pageStatus == 0) {
+      setState(() {
+        pageStatus = 1;
+      });
+      initInfo();
+    }
+  }
+
+  void initInfo() async {
+    UpdateNumModel getUpdateNum = await apiGetUpdateNum();
+    if (getUpdateNum == null) {
+      CommonUtils.showText('请检查网络后重试～');
+      networkErr = true;
+      setState(() {});
+      return;
+    }
+    await getHomeConfig(context);
+    await CommonUtils.updateSystemNotice(context);
+    setState(() {
+      pageStatus = 2;
+    });
   }
 
   List MenuList = [
@@ -45,11 +77,16 @@ class _WodeState extends State<Wode> {
     {'name': "我购买的", 'icon': "buy"},
     {'name': "我的收藏", 'icon': "collect", "router": '/${Routes.collect}'},
     {'name': "我的下载", 'icon': "download", 'router': '/${Routes.down_page}'},
-    {'name': "在线客服", 'icon': "customer"},
-    {'name': "联系官方", 'icon': "official"},
-    {'name': "邀请好友", 'icon': "invite"},
+    {'name': "在线客服", 'icon': "customer", 'router': '/${Routes.onlineService}'},
+    {
+      'name': "联系官方",
+      'icon': "official",
+      'router': '/${Routes.contactOfficial}'
+    },
+    {'name': "邀请好友", 'icon': "invite", 'router': '/${Routes.invitefriend}'},
     {'name': "应用推荐", 'icon': "app_recommen"},
   ];
+
   @override
   Widget build(BuildContext context) {
     Member members = Provider.of<HomeConfig>(context, listen: false).member;
@@ -61,12 +98,49 @@ class _WodeState extends State<Wode> {
     }
     return Column(
       children: [
-        header(members, isLogin),
-        cardList(),
-        SizedBox(
-          height: ScreenUtil().setHeight(22),
-        ),
-        setHandleList()
+        pageStatus != 2 ? Container() : header(members, isLogin),
+        Expanded(
+            child: PullRefreshList(
+          onLoading: () {
+            if (networkErr) {
+              networkErr = false;
+              setState(() {});
+            }
+            initInfo();
+          },
+          onRefresh: () {},
+          child: networkErr
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: ScreenUtil().setWidth(23),
+                      ),
+                      child: setHandleList(),
+                    ),
+                    Center(
+                      child: Text(
+                        '-请检查网络后下拉刷新-',
+                        style: DefaultStyle.red14,
+                      ),
+                    )
+                  ],
+                )
+              : pageStatus != 2
+                  ? pageStatus == 1
+                      ? PageStatus.loading(true)
+                      : Container()
+                  : Column(
+                      children: [
+                        cardList(),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(22),
+                        ),
+                        setHandleList()
+                      ],
+                    ),
+        ))
       ],
     );
   }
@@ -288,7 +362,7 @@ class _WodeState extends State<Wode> {
           left: 0,
           top: 0,
           right: 0,
-          bottom: 0,
+          bottom: ScreenUtil().setHeight(-10),
           child: Image.asset(
             "assets/images/wode/header_bg.png",
             fit: BoxFit.fill,
@@ -331,132 +405,142 @@ class _WodeState extends State<Wode> {
                       )),
                 ],
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  top: ScreenUtil().setWidth(15),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-                      child: ClipOval(
-                        child: Image.asset("assets/images/wode/avatar.png",
-                            width: ScreenUtil().setWidth(60)),
+              networkErr
+                  ? Container()
+                  : Container(
+                      margin: EdgeInsets.only(
+                        top: ScreenUtil().setWidth(15),
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          Text(
-                            members?.nickname ?? "pilpil用户",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: ScreenUtil().setSp(18),
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                              decoration: TextDecoration.none,
+                          Container(
+                            margin: EdgeInsets.only(
+                                right: ScreenUtil().setWidth(8)),
+                            child: ClipOval(
+                              child: Image.asset(
+                                  "assets/images/wode/avatar.png",
+                                  width: ScreenUtil().setWidth(60)),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(
-                                    top: ScreenUtil().setWidth(5),
-                                    right: ScreenUtil().setWidth(5),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  members?.nickname ?? "pilpil用户",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: ScreenUtil().setSp(18),
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                    decoration: TextDecoration.none,
                                   ),
-                                  // width: ScreenUtil().setWidth(93),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(8)),
-                                  height: ScreenUtil().setHeight(20),
-                                  decoration: new BoxDecoration(
-                                    color: Color.fromRGBO(225, 225, 225, 0.28),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(25)),
-                                    //设置四周边框
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'ID:${members?.aff ?? '0000000'}',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: ScreenUtil().setSp(14),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )),
-                              Container(
-                                  margin: EdgeInsets.only(
-                                      top: ScreenUtil().setWidth(5)),
-                                  // width: ScreenUtil().setWidth(93),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(8)),
-                                  height: ScreenUtil().setHeight(20),
-                                  decoration: new BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFFFFD875),
-                                        Color(0xFFFF6915)
-                                      ],
-                                      begin: Alignment.bottomLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(25)),
-                                    //设置四周边框
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "VIP:永久",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: ScreenUtil().setSp(14),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ))
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    isLogin
-                        ? Container()
-                        : Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  context.push('/${Routes.login}');
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                ),
+                                Row(
                                   children: [
-                                    Text(
-                                      "注册登录",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: ScreenUtil().setSp(12),
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                          top: ScreenUtil().setWidth(5),
+                                          right: ScreenUtil().setWidth(5),
+                                        ),
+                                        // width: ScreenUtil().setWidth(93),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                ScreenUtil().setWidth(8)),
+                                        height: ScreenUtil().setHeight(20),
+                                        decoration: new BoxDecoration(
+                                          color: Color.fromRGBO(
+                                              225, 225, 225, 0.28),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          //设置四周边框
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'ID:${members?.aff ?? '0000000'}',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    ScreenUtil().setSp(14),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )),
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            top: ScreenUtil().setWidth(5)),
+                                        // width: ScreenUtil().setWidth(93),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                ScreenUtil().setWidth(8)),
+                                        height: ScreenUtil().setHeight(20),
+                                        decoration: new BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color(0xFFFFD875),
+                                              Color(0xFFFF6915)
+                                            ],
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          //设置四周边框
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "VIP:永久",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    ScreenUtil().setSp(14),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ))
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          isLogin
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.push('/${Routes.login}');
+                                      },
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "注册登录",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: ScreenUtil().setSp(12),
+                                            ),
+                                          ),
+                                          Center(
+                                            child: Icon(
+                                              Icons.chevron_right,
+                                              color: Colors.white,
+                                              size: ScreenUtil().setSp(15),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    Center(
-                                      child: Icon(
-                                        Icons.chevron_right,
-                                        color: Colors.white,
-                                        size: ScreenUtil().setSp(15),
-                                      ),
+                                    SizedBox(
+                                      height: ScreenUtil().setHeight(28),
                                     )
                                   ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: ScreenUtil().setHeight(28),
-                              )
-                            ],
-                          )
-                  ],
-                ),
-              )
+                                )
+                        ],
+                      ),
+                    )
             ],
           ),
         )
@@ -470,22 +554,23 @@ class SystemNoticeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeConfig>(
-      builder: (ctx, state, child) => GestureDetector(
+    return Consumer<HomeConfig>(builder: (ctx, state, child) {
+      CommonUtils.debugPrint(state.systemnotice?.data?.systemNoticeCount != 0);
+      return GestureDetector(
         onTap: () {
           context.push('/${Routes.messagecenter}');
         },
         child: Image.asset(
           // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
           (state.systemnotice?.data ?? false) != null &&
-                  (state.systemnotice?.data?.systemNoticeCount != 0 ||
+                  (state.systemnotice.data.systemNoticeCount != 0 ||
                       state.systemnotice.data.feedCount != 0)
               ? 'assets/images/wode/Chat_Circle_Dots_active.png'
               : 'assets/images/wode/Chat_Circle_Dots.png',
           width: ScreenUtil().setWidth(24),
           fit: BoxFit.fitWidth,
         ),
-      ),
-    );
+      );
+    });
   }
 }

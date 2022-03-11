@@ -13,9 +13,14 @@ import 'package:pilipili/components/video/web_small_video.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/contact_official.dart';
 import 'package:pilipili/pages/mine/customer_service.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
+import 'package:pilipili/pages/mine/invite_friends.dart';
+import 'package:pilipili/pages/mine/invite_recored.dart';
 import 'package:pilipili/pages/mine/notice_message.dart';
+import 'package:pilipili/pages/mine/online_service.dart';
+import 'package:pilipili/pages/mine/promote.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
@@ -56,6 +61,9 @@ class Routes {
   static String customerService = 'customerService'; //客服
   static String atlasDetail = 'atlasDetail/:id'; //图集详情
   static String atlasList = 'atlasList/:index'; //图集列表展示
+  static String onlineService = 'onlineService'; //在线客服
+  static String contactOfficial = 'contactOfficial'; //联系官方
+
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
   static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
@@ -67,6 +75,11 @@ class Routes {
   static String coinRecharge = 'coinRecharge'; //皮哩币充值
   static String coinDetail = 'coinDetail'; //皮哩币明细
   static String packageDetail = 'packageDetail/:id/:contentType/:title'; //视频包详情
+
+  static String invitefriend = 'invitefriend'; // 邀请好友
+  static String promote = 'promote'; // 去推广
+  static String inviterecored = 'inviterecored'; // 邀请记录
+  static String promoteActionList = 'promoteActionList'; //推广方法;
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -173,6 +186,28 @@ class Routes {
       ),
       GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
+          path: invitefriend,
+          builder: (context, state) => InviteFriend(),
+          routes: [
+            GoRoute(
+                path: promote,
+                builder: (context, state) => Promote(),
+                routes: [
+                  GoRoute(
+                    path: promoteActionList,
+                    builder: (context, state) => PromoteActionList(),
+                  ),
+                  GoRoute(
+                    path: inviterecored,
+                    builder: (context, state) => InviteRecored(),
+                  )
+                ]),
+            GoRoute(
+              path: inviterecored,
+              builder: (context, state) => InviteRecored(),
+            ),
+          ]),
+      GoRoute(
         path: videoDetail,
         builder: (context, state) {
           return VideoDetail(
@@ -218,6 +253,19 @@ class Routes {
             builder: (context, state) => CustomerService(),
           ),
         ],
+      ),
+      GoRoute(
+          path: onlineService,
+          builder: (context, state) => OnlineService(),
+          routes: [
+            GoRoute(
+              path: customerService,
+              builder: (context, state) => CustomerService(),
+            ),
+          ]),
+      GoRoute(
+        path: contactOfficial,
+        builder: (context, state) => ContactOfficial(),
       ),
       GoRoute(
           path: comicsdetail,
@@ -377,6 +425,16 @@ class MyNavObserver extends NavigatorObserver {
         previousRoute.settings != null &&
         previousRoute.settings.name == '/') {
       AppGlobal.routerReplace = false;
+    }
+    if (route.str.indexOf('/${Routes.login}') != -1 ||
+        route.str.indexOf('/${Routes.setup}') != -1) {
+      route.popped.then((value) {
+        EventBus().emit('need-update-login-state', value);
+      });
+    }
+    if (route.str.indexOf('noticemessage') != -1 ||
+        route.str.indexOf('customerService') != -1) {
+      CommonUtils.updateSystemNotice(AppGlobal.appContext);
     }
     CommonUtils.debugPrint(
         'didPop: ${route.str} result: ${route?.settings?.name}, 当前路由= ${previousRoute?.settings?.name}');
