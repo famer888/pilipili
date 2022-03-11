@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/routers.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
@@ -18,6 +20,7 @@ class UpdateModel {
       {VoidCallback cancel,
       VoidCallback confirm,
       VoidCallback confirmApp,
+      BuildContext context,
       String text,
       String type = "2"}) {
     var tipSplit = text.split('#');
@@ -25,7 +28,7 @@ class UpdateModel {
       return Text(
         value,
         style: TextStyle(
-          color: Color(0xFFffffff),
+          color: Color(0xFFf646464),
           fontSize: ScreenUtil().setSp(15),
           decoration: TextDecoration.none,
           fontWeight: FontWeight.normal,
@@ -60,99 +63,191 @@ class UpdateModel {
                   Positioned(
                       child: Center(
                     child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                          color: Color(0xffFFF4F9),
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().setWidth(15))),
                       width: ScreenUtil().setWidth(345),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Stack(
-                            children: [
-                              Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Image.asset(
-                                    'assets/pengke/dialog_bg.png',
-                                    fit: BoxFit.fill,
+                          Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              width: double.infinity,
+                              height: ScreenUtil().setWidth(360),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xFFFF89AC),
+                                        Color(0xFFFF5B8C)
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                    )),
+                                    height: ScreenUtil().setWidth(60),
+                                    child: Text('官方公告',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: ScreenUtil().setSp(18),
+                                            height: 1.5)),
+                                  ),
+                                  Expanded(
+                                      child: SingleChildScrollView(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: ScreenUtil().setWidth(33.5),
+                                        horizontal: ScreenUtil().setWidth(25)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: newTipsWidget,
+                                    ),
                                   )),
-                              Material(
-                                color: Colors.transparent,
-                                child: Container(
-                                  width: double.infinity,
-                                  height: ScreenUtil().setWidth(360),
-                                  padding: EdgeInsets.only(
-                                      top: ScreenUtil().setWidth(20)),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        child: Text('官方公告',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    ScreenUtil().setSp(18),
-                                                height: 1.5)),
-                                      ),
-                                      Expanded(
-                                          child: SingleChildScrollView(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                ScreenUtil().setWidth(33.5),
-                                            horizontal:
-                                                ScreenUtil().setWidth(25)),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: newTipsWidget,
-                                        ),
-                                      )),
-                                      Center(
-                                        child: GestureDetector(
-                                            onTap: () {
-                                              cancelFunc();
-                                              confirm?.call();
-                                              // type == "1"
-                                              //     ? confirm?.call()
-                                              //     : confirmApp?.call();
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: ScreenUtil()
-                                                      .setWidth(21.5)),
-                                              child: Stack(
-                                                children: [
-                                                  Positioned(
-                                                      top: 0,
-                                                      bottom: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      child: Image.asset(
-                                                        'assets/pengke/video/video_duan_btn.png',
-                                                        fit: BoxFit.fill,
-                                                      )),
-                                                  Container(
-                                                    width: ScreenUtil()
-                                                        .setWidth(190),
+                                  AppGlobal.shouApp
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            GestureDetector(
+                                                onTap: () {
+                                                  cancelFunc();
+                                                  // context.push(
+                                                  //     '/${Routes.appCenter}');
+                                                },
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            Color(0xffFF84A9),
+                                                            Color(0xffFF9E9E)
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        18))),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical:
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        21.5)),
+                                                    child: Container(
+                                                      width: ScreenUtil()
+                                                          .setWidth(150),
+                                                      height: ScreenUtil()
+                                                          .setWidth(36),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '应用中心',
+                                                          style: DefaultStyle
+                                                              .white15,
+                                                        ),
+                                                      ),
+                                                    ))),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  cancelFunc();
+                                                  confirm?.call();
+                                                  // type == "1"
+                                                  //     ? confirm?.call()
+                                                  //     : confirmApp?.call();
+                                                },
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            Color(0xffFF84A9),
+                                                            Color(0xffFF9E9E)
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        18))),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical:
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        21.5)),
+                                                    child: Container(
+                                                      width: ScreenUtil()
+                                                          .setWidth(150),
+                                                      height: ScreenUtil()
+                                                          .setWidth(35),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '确定',
+                                                          style: DefaultStyle
+                                                              .white15,
+                                                        ),
+                                                      ),
+                                                    )))
+                                          ],
+                                        )
+                                      : Center(
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                cancelFunc();
+                                                confirm?.call();
+                                                // type == "1"
+                                                //     ? confirm?.call()
+                                                //     : confirmApp?.call();
+                                              },
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          Color(0xffFF84A9),
+                                                          Color(0xffFF9E9E)
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                      ),
+                                                      borderRadius: BorderRadius
+                                                          .circular(ScreenUtil()
+                                                              .setWidth(18))),
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: ScreenUtil()
+                                                          .setWidth(21.5)),
+                                                  child: Container(
                                                     height: ScreenUtil()
-                                                        .setWidth(35.5),
+                                                        .setWidth(36),
                                                     child: Center(
                                                       child: Text(
                                                         '确定',
                                                         style: DefaultStyle
-                                                            .zhuti15,
+                                                            .white15,
                                                       ),
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            )),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
+                                                  ))),
+                                        )
+                                ],
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -175,7 +270,7 @@ class UpdateModel {
       return Text(
         value,
         style: TextStyle(
-          color: Color(0xFFffffff),
+          color: Color(0xFF646464),
           fontSize: ScreenUtil().setSp(15),
           decoration: TextDecoration.none,
           fontWeight: FontWeight.normal,
@@ -211,104 +306,115 @@ class UpdateModel {
                   ),
                   Positioned(
                       child: Center(
-                    child: Stack(
-                      children: [
-                        Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Image.asset(
-                              'assets/pengke/dialog_bg.png',
-                              fit: BoxFit.fill,
-                            )),
-                        Material(
-                            color: Colors.transparent,
-                            child: Container(
-                              width: ScreenUtil().setWidth(345),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: ScreenUtil().setWidth(360),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  ScreenUtil().setWidth(20)),
-                                          child: Text('更新公告',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize:
-                                                      ScreenUtil().setSp(18),
-                                                  height: 1.5)),
-                                        ),
-                                        Expanded(
-                                            child: SingleChildScrollView(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  DefaultStyle.pagePadding),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: newTipsWidget,
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                    color: Color(0xffFFF4F9),
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setWidth(15))),
+                                width: ScreenUtil().setWidth(345),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      height: ScreenUtil().setWidth(360),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFFF89AC),
+                                                Color(0xFFFF5B8C)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            )),
+                                            height: ScreenUtil().setWidth(60),
+                                            child: Text('更新公告',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(18),
+                                                    height: 1.5)),
                                           ),
-                                        )),
-                                        Center(
-                                          child: GestureDetector(
-                                              onTap: () {
-                                                if (!mustupdate) {
-                                                  cancelFunc();
-                                                } else if (mustupdate &&
-                                                    Platform.isAndroid) {
-                                                  cancelFunc();
-                                                }
-                                                confirm?.call();
-                                              },
-                                              child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: ScreenUtil()
-                                                          .setWidth(21.5)),
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 0,
-                                                          right: 0,
-                                                          child: Image.asset(
-                                                            'assets/pengke/video/video_duan_btn.png',
-                                                            fit: BoxFit.fill,
-                                                          )),
-                                                      Container(
-                                                        width: ScreenUtil()
-                                                            .setWidth(190),
-                                                        height: ScreenUtil()
-                                                            .setWidth(35.5),
-                                                        child: Center(
-                                                          child: Text(
-                                                            '立即更新',
-                                                            style: DefaultStyle
-                                                                .zhuti15,
+                                          Expanded(
+                                              child: SingleChildScrollView(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    DefaultStyle.pagePadding),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: newTipsWidget,
+                                            ),
+                                          )),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    DefaultStyle.pagePadding),
+                                            child: Center(
+                                              child: GestureDetector(
+                                                  onTap: () {
+                                                    if (!mustupdate) {
+                                                      cancelFunc();
+                                                    } else if (mustupdate &&
+                                                        Platform.isAndroid) {
+                                                      cancelFunc();
+                                                    }
+                                                    confirm?.call();
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical:
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        21.5)),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              Color(0xffFF84A9),
+                                                              Color(0xffFF9E9E)
+                                                            ],
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
                                                           ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          18))),
+                                                      height: ScreenUtil()
+                                                          .setWidth(36),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '立即更新',
+                                                          style: DefaultStyle
+                                                              .white15,
                                                         ),
                                                       ),
-                                                    ],
-                                                  ))),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ))
-                      ],
-                    ),
-                  ))
+                                                    ),
+                                                  )),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ))))
                 ],
               ),
             ));
@@ -460,19 +566,13 @@ class _DownloadApkState extends State<DownloadApk> {
         children: [
           Positioned(
               child: Center(
-            child: Stack(
-              children: [
-                Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Image.asset(
-                      'assets/pengke/dialog_bg.png',
-                      fit: BoxFit.fill,
-                    )),
-                Container(
+            child: Container(
                   width: ScreenUtil().setWidth(345),
+                    clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                    color: Color(0xffFFF4F9),
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setWidth(15))),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -486,7 +586,7 @@ class _DownloadApkState extends State<DownloadApk> {
                             Text(
                               "正在更新 v.${widget.version}",
                               style: TextStyle(
-                                  color: Color(0xFF62f7ff),
+                                  color: Color(0xFF646464),
                                   fontSize: ScreenUtil().setSp(18),
                                   decoration: TextDecoration.none,
                                   fontWeight: FontWeight.w500),
@@ -512,7 +612,7 @@ class _DownloadApkState extends State<DownloadApk> {
                                             width: ScreenUtil().setWidth(185),
                                             height: ScreenUtil().setWidth(4),
                                             decoration: BoxDecoration(
-                                                color: Color(0xFF62f7ff)),
+                                                color: Color(0xFFAB3854)),
                                           ),
                                         ),
                                         Positioned(
@@ -527,7 +627,7 @@ class _DownloadApkState extends State<DownloadApk> {
                                                   ScreenUtil().setWidth(185),
                                               height: ScreenUtil().setWidth(4),
                                               decoration: BoxDecoration(
-                                                  color: Color(0xFF62f7ff)),
+                                                  color: Color(0xFFFF5B8C)),
                                             ),
                                           ),
                                         ),
@@ -543,7 +643,7 @@ class _DownloadApkState extends State<DownloadApk> {
                             Center(
                               child: Text('$progress%',
                                   style: TextStyle(
-                                      color: Color(0xFF62f7ff),
+                                      color: Color(0xFF646464),
                                       fontSize: ScreenUtil().setSp(18),
                                       decoration: TextDecoration.none,
                                       fontWeight: FontWeight.bold)),
@@ -554,8 +654,6 @@ class _DownloadApkState extends State<DownloadApk> {
                     ],
                   ),
                 )
-              ],
-            ),
           ))
         ],
       ),

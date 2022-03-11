@@ -53,7 +53,6 @@ class _WodeState extends State<Wode> {
   @override
   Widget build(BuildContext context) {
     Member members = Provider.of<HomeConfig>(context, listen: false).member;
-    CommonUtils.debugPrint("******************************${members.username}");
     bool isLogin = false;
     if (['', null, false].contains(AppGlobal.apiToken)) {
       isLogin = false;

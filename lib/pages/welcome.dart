@@ -65,6 +65,7 @@ class _WelcomeState extends State<Welcome> {
       });
     }
     adsCountDown();
+    
     CommonUtils.checkline(onFailed: () {
       if (yyads == null) {
         toHome();

@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
     CommonUtils.debugPrint(targetVersion);
     CommonUtils.debugPrint(currentVersion);
     CommonUtils.debugPrint(version.toJson());
-    var needUpdate = int.parse(targetVersion) > int.parse(currentVersion);
+    var needUpdate = true;//int.parse(targetVersion) > int.parse(currentVersion);
     AppGlobal.isNewVersion = !needUpdate;
     AppGlobal.officeSite = config.officeSite;
     if (AppGlobal.yyShow == false) return;
@@ -250,6 +250,7 @@ class _HomeState extends State<Home> {
         "self";
     UpdateModel.showAnnouncementDialog(
       backButtonBehavior,
+      context: context,
       cancel: () {
         AppGlobal.yyShow = false;
       },

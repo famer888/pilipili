@@ -26,6 +26,7 @@ import 'http.dart';
 Future<HomeData> getHomeConfig(BuildContext context) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/home/config');
+    print('************************************$res');
     Response<dynamic> res2 =
         await PlatformAwareHttp.post('/api/privilege/getUserPrivilege');
     if (res.data['data']['help'] != null) {
@@ -635,6 +636,107 @@ Future<FeedBack> getFeedbackList({int page}) async {
         '/api/message/feedback',
         data: {'page': page});
     return FeedBack.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 图集列表
+Future getPicList({int page, int limit, int day}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/pic/getList',
+        data: {'page': page, 'limit': limit, 'day': day});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 图集详情
+Future getPicDetail({int id}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/pic/getDetail', data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 购买打折包
+Future buyPackage({int id}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/package/buy', data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 漫画列表
+Future getComicsList({int type, int limit, int page, int day}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/book/getList',
+        data: {
+          'page': page,
+          'limit': limit,
+          'type': type == null ? 1 : type,
+          'day': day
+        });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//获取视频列表
+Future getChangVideoList(
+    {int type, int page, int limit, int isfree, int category, int day}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/mv/getList', data: {
+      'type': type,
+      'page': page,
+      'limit': limit,
+      'isfree': isfree,
+      'category': category,
+      'day': day
+    });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 打折包列表
+Future getPackageList({int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/package/list',
+        data: {'page': page, 'limit': limit});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 活动列表
+Future activityList() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/page/list', data: {});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 打折包详情
+Future getPackageDetail({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/package/detail',
+        data: {'id': id, 'page': page, 'limit': limit});
+    return res.data;
   } catch (e) {
     return null;
   }

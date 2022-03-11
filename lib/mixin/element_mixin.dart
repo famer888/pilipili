@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/widget/h_scroll_widget.dart';
 import 'package:pilipili/components/widget/three_v_column.dart';
 import 'package:pilipili/components/widget/v4_widget.dart';
 import 'package:pilipili/components/widget/v_onebig.dart';
 import 'package:pilipili/components/widget/v_scroll_widget.dart';
-import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 
 mixin ElementMixin<T extends StatefulWidget> on State<T> {
@@ -91,19 +89,14 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
           element: element,
         );
         break;
+      case 6: //固定第一行banner
+        yyElement = Container();
+        break;
+      case 7: //固定第二行导航
+        yyElement = Container();
+        break;
       default:
-        yyElement = HscrollWidget(
-          data: elementValue,
-          contentType: element['content_type'],
-          title: element['title'] == null || element['title'] == ''
-              ? null
-              : element['title'],
-          id: element['id'],
-          moreButton: element['more_button'] == 1,
-          morePageType: element['more_page_show_type'],
-          showField: element['show_field'],
-          element: element,
-        );
+        yyElement = Container();
       //  yyElement = Padding(
       //     padding: EdgeInsets.symmetric(
       //       vertical: ScreenUtil().setWidth(16),

@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/global.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 import 'package:http_parser/http_parser.dart';
@@ -168,7 +167,8 @@ class PlatformAwareHttp {
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
   static Future post(String path, {Map data, CancelToken cancelToken}) {
-    // AppGlobal.apiBaseURL = "https://squid.yesebo.net/api.php";
+    AppGlobal.apiBaseURL = "https://apiv2.ltsapi.com";
+    // print(AppGlobal.apiBaseURL + path);
     return _apiDio.post(AppGlobal.apiBaseURL + path,
         data: data, cancelToken: cancelToken);
   }

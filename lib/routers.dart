@@ -1,8 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/atlas/atlas_detail.dart';
+import 'package:pilipili/components/atlas/atlas_list.dart';
 import 'package:pilipili/components/comics/comicReader.dart';
 import 'package:pilipili/components/comics/comics_detail.dart';
+import 'package:pilipili/components/package_detail.dart';
 import 'package:pilipili/components/pili/search.dart';
 import 'package:pilipili/components/video/small_video.dart';
 import 'package:pilipili/components/video/video_detail.dart';
@@ -51,7 +54,8 @@ class Routes {
   static String messagecenter = 'messagecenter'; // 消息中心
   static String noticemessage = 'noticemessage'; // 系统消息
   static String customerService = 'customerService'; //客服
-
+  static String atlasDetail = 'atlasDetail/:id'; //图集详情
+  static String atlasList = 'atlasList/:index'; //图集列表展示
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
   static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
@@ -62,9 +66,73 @@ class Routes {
   static String down_page = 'down_page'; //我的下载
   static String coinRecharge = 'coinRecharge'; //皮哩币充值
   static String coinDetail = 'coinDetail'; //皮哩币明细
+  static String packageDetail = 'packageDetail/:id/:contentType/:title'; //视频包详情
 
   static List<GoRoute> getDetailRoutes() {
     return [
+      GoRoute(
+          path: packageDetail,
+          builder: (context, state) {
+            return PackageDetail(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id'].toString()),
+                contentType: state.params == null || state.params['id'] == null
+                    ? 1
+                    : int.parse(state.params['contentType'].toString()),
+                title: state.params == null || state.params['id'] == null
+                    ? ''
+                    : state.params['title']);
+          },
+          routes: [
+            GoRoute(
+              path: videoDetail,
+              builder: (context, state) {
+                return VideoDetail(
+                    id: state.params == null || state.params['id'] == null
+                        ? null
+                        : int.parse(state.params['id'].toString()));
+              },
+            ),
+            GoRoute(
+              path: webSmallVideo,
+              builder: (context, state) {
+                final args = AppGlobal.currentDetailRouteExtra;
+                return WebSmallVideo(
+                    videoData: args == null || args['videoData'] == null
+                        ? null
+                        : args['videoData'],
+                    elementId: args == null || args['elementId'] == null
+                        ? null
+                        : int.parse(args['elementId'].toString()),
+                    page: args == null || args['page'] == null
+                        ? null
+                        : int.parse(args['page'].toString()),
+                    id: args == null || args['id'] == null
+                        ? null
+                        : int.parse(args['id'].toString()));
+              },
+            ),
+            GoRoute(
+              path: smallVideo,
+              builder: (context, state) {
+                final args = AppGlobal.currentDetailRouteExtra;
+                return SmallVideo(
+                    videoData: args == null || args['videoData'] == null
+                        ? null
+                        : args['videoData'],
+                    elementId: args == null || args['elementId'] == null
+                        ? null
+                        : int.parse(args['elementId'].toString()),
+                    page: args == null || args['page'] == null
+                        ? null
+                        : int.parse(args['page'].toString()),
+                    id: args == null || args['id'] == null
+                        ? null
+                        : int.parse(args['id'].toString()));
+              },
+            )
+          ]),
       GoRoute(
         path: smallVideo,
         builder: (context, state) {
@@ -199,7 +267,24 @@ class Routes {
               ? null
               : state.params['title'],
         ),
-      )
+      ),
+      GoRoute(
+          path: atlasDetail,
+          builder: (context, state) {
+            return AtlasDetail(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id'].toString()));
+          },
+          routes: [
+            GoRoute(
+              path: atlasList,
+              builder: (context, state) {
+                final args = AppGlobal.currentReaderRouteExtra;
+                return AtilasList(pramas: args);
+              },
+            ),
+          ]),
     ];
   }
 
