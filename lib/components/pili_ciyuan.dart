@@ -38,7 +38,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
   }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig();
+    ElementModel data = await getFisrtTopNavConfig(2);
     if (data == null) {
       // netWorkErr = true;
       setState(() {});

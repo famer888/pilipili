@@ -75,11 +75,11 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
   }
 }
 
-Future<ElementModel> getFisrtTopNavConfig() async {
+Future<ElementModel> getFisrtTopNavConfig(int id) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post(
         '/api/element/getElementById',
-        data: {'id': 7});
+        data: {'id':id});
     ElementModel result = ElementModel.fromJson(res.data['data']);
     return result;
   } catch (e) {

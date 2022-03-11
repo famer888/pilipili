@@ -39,7 +39,7 @@ class _DongmanState extends State<Dongman> {
   }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig();
+    ElementModel data = await getFisrtTopNavConfig(3);
     if (data == null) {
       // netWorkErr = true;
       setState(() {});
