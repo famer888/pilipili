@@ -106,14 +106,14 @@ class _HomeState extends State<Home> {
     var needUpdate = int.parse(targetVersion) > int.parse(currentVersion);
     AppGlobal.isNewVersion = !needUpdate;
     AppGlobal.officeSite = config.officeSite;
-    if (AppGlobal.yyShow == false) return;
-    if (version.must == 1 && needUpdate) {
-      showUpdate(version.version, version.tips, version.apk,
-          must: version.must,
-          showAnnouncementDialog: false,
-          official: config.officeSite);
-      return;
-    }
+    // if (AppGlobal.yyShow == false) return;
+    // if (version.must == 1 && needUpdate) {
+    //   showUpdate(version.version, version.tips, version.apk,
+    //       must: version.must,
+    //       showAnnouncementDialog: false,
+    //       official: config.officeSite);
+    //   return;
+    // }
 
     // 非强制更新 无公告 (关闭更新后弹出公告)
     if (version.must == 2 && version.mstatus == 0 && needUpdate) {

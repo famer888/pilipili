@@ -25,6 +25,21 @@ class Wode extends StatefulWidget {
 class _WodeState extends State<Wode> {
   bool networkErr = false;
   int pageStatus = 0;
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EventBus().on('need-update-login-state', (args) {
+      CommonUtils.debugPrint("*********************$args");
+      if (args == 'login') {
+        setState(() {});
+      } else if (args == 'quit') {
+        CommonUtils.debugPrint("我执行了");
+        getHomeConfig(context);
+      }
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();

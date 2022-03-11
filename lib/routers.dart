@@ -14,8 +14,10 @@ import 'package:pilipili/pages/mine/contact_official.dart';
 import 'package:pilipili/pages/mine/customer_service.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
 import 'package:pilipili/pages/mine/invite_friends.dart';
+import 'package:pilipili/pages/mine/invite_recored.dart';
 import 'package:pilipili/pages/mine/notice_message.dart';
 import 'package:pilipili/pages/mine/online_service.dart';
+import 'package:pilipili/pages/mine/promote.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
@@ -115,28 +117,27 @@ class Routes {
       ),
       GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
-        path: invitefriend,
-        builder: (context, state) => InviteFriend(),
-        // routes: [
-        //   GoRoute(
-        //       path: promote,
-        //       builder: (context, state) => Promote(),
-        //       routes: [
-        //         GoRoute(
-        //           path: promoteActionList,
-        //           builder: (context, state) => PromoteActionList(),
-        //         ),
-        //         GoRoute(
-        //           path: inviterecored,
-        //           builder: (context, state) => InviteRecored(),
-        //         )
-        //       ]),
-        //   GoRoute(
-        //     path: inviterecored,
-        //     builder: (context, state) => InviteRecored(),
-        //   ),
-        // ]
-      ),
+          path: invitefriend,
+          builder: (context, state) => InviteFriend(),
+          routes: [
+            GoRoute(
+                path: promote,
+                builder: (context, state) => Promote(),
+                routes: [
+                  GoRoute(
+                    path: promoteActionList,
+                    builder: (context, state) => PromoteActionList(),
+                  ),
+                  GoRoute(
+                    path: inviterecored,
+                    builder: (context, state) => InviteRecored(),
+                  )
+                ]),
+            GoRoute(
+              path: inviterecored,
+              builder: (context, state) => InviteRecored(),
+            ),
+          ]),
       GoRoute(
         path: videoDetail,
         builder: (context, state) {
@@ -338,6 +339,12 @@ class MyNavObserver extends NavigatorObserver {
         previousRoute.settings != null &&
         previousRoute.settings.name == '/') {
       AppGlobal.routerReplace = false;
+    }
+    if (route.str.indexOf('/${Routes.login}') != -1 ||
+        route.str.indexOf('/${Routes.setup}') != -1) {
+      route.popped.then((value) {
+        EventBus().emit('need-update-login-state', value);
+      });
     }
     if (route.str.indexOf('noticemessage') != -1 ||
         route.str.indexOf('customerService') != -1) {

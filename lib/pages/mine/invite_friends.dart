@@ -51,8 +51,24 @@ class _InviteFriendState extends State<InviteFriend> {
       });
     }
     if (reward != null && reward.data != null) {
+      Datum list2 = Datum.fromJson({
+        "nickname": "Guest_qaDby8h9",
+        "id": 45,
+        "aff": 73887,
+        "source": 2,
+        "type": 1,
+        "coinCnt": "20.00",
+        "desc": "38",
+        "source_aff": 73888,
+        "created_at": "2021-12-14 15:50:00",
+        "source_str": "邀请",
+        "type_str": "增加"
+      });
+
       setState(() {
         incomeList.addAll(reward.data);
+        incomeList.insert(0, list2);
+        incomeList.insert(1, list2);
       });
     }
   }
@@ -76,7 +92,10 @@ class _InviteFriendState extends State<InviteFriend> {
         Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(color: Color.fromRGBO(255, 94, 67, 1)),
+          decoration: BoxDecoration(
+              color: channel != 'self'
+                  ? Color.fromRGBO(255, 133, 101, 1)
+                  : Color.fromRGBO(255, 94, 67, 1)),
         ),
         channel != 'self'
             ? Container()
@@ -104,7 +123,7 @@ class _InviteFriendState extends State<InviteFriend> {
                       Container(
                         width: double.infinity,
                         height: ScreenUtil()
-                            .setWidth((channel != 'self' ? 163 : 163)),
+                            .setWidth((channel != 'self' ? 50 : 163)),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -120,7 +139,14 @@ class _InviteFriendState extends State<InviteFriend> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(
                                   ScreenUtil().setWidth(10)),
-                              color: Colors.white),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(255, 255, 255, 0.77),
+                                  Color(0xFFFFE1C5)
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              )),
                           child: isLoading
                               ? PageStatus.loading(mounted)
                               : Column(
@@ -132,58 +158,69 @@ class _InviteFriendState extends State<InviteFriend> {
                                       text: TextSpan(
                                           text: '我的邀请',
                                           style: TextStyle(
-                                              color: Color(0xff1a1a1a),
+                                              color: Color(0xffAF5A0C),
                                               fontSize: ScreenUtil().setSp(16),
-                                              fontWeight: FontWeight.w400),
+                                              fontWeight: FontWeight.bold),
                                           children: <TextSpan>[
                                             TextSpan(
                                                 text: ' 好友绑定手机后，才是有效的注册哦！',
                                                 style: TextStyle(
-                                                  color: Color(0xff999999),
+                                                  color: Color(0xff9C8484),
+                                                  fontWeight: FontWeight.normal,
                                                   fontSize:
                                                       ScreenUtil().setSp(12),
                                                 ))
                                           ]),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        MyInviteNumber(
-                                            number: '${myInvition?.allNum}',
-                                            label: '成功邀请数'),
-                                        MyInviteNumber(
-                                            number: '${myInvition?.regNum}',
-                                            label: '注册用户数'),
-                                        MyInviteNumber(
-                                            number: '${myInvition?.moneyNum}',
-                                            label: '累积收入'),
-                                      ],
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal:
+                                              ScreenUtil().setWidth(15)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          MyInviteNumber(
+                                              number: '${myInvition?.allNum}',
+                                              label: '邀请人数'),
+                                          MyInviteNumber(
+                                              number: '${myInvition?.regNum}',
+                                              label: '注册数'),
+                                          MyInviteNumber(
+                                              number: '${myInvition?.moneyNum}',
+                                              label: '皮哩币收入'),
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ActionImage(
-                                          url:
-                                              'assets/images/mine/invite_recore_icon.png',
-                                          onTap: () {
-                                            context.push(
-                                                CommonUtils.getRealHash(
-                                                    'inviterecored'));
-                                          },
-                                        ),
-                                        ActionImage(
-                                          url:
-                                              'assets/images/mine/promote_icon.png',
-                                          onTap: () {
-                                            context.push(
-                                                CommonUtils.getRealHash(
-                                                    'promote'));
-                                          },
-                                        )
-                                      ],
-                                    )
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal:
+                                              ScreenUtil().setWidth(10)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ActionImage(
+                                            url:
+                                                'assets/images/wode/invite_recore_icon.png',
+                                            onTap: () {
+                                              context.push(
+                                                  CommonUtils.getRealHash(
+                                                      'inviterecored'));
+                                            },
+                                          ),
+                                          ActionImage(
+                                            url:
+                                                'assets/images/wode/promote_icon.png',
+                                            onTap: () {
+                                              context.push(
+                                                  CommonUtils.getRealHash(
+                                                      'promote'));
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                         ),
@@ -199,7 +236,14 @@ class _InviteFriendState extends State<InviteFriend> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(
                                   ScreenUtil().setWidth(10)),
-                              color: Colors.white),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(255, 255, 255, 0.77),
+                                  Color(0xFFFFE1C5)
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              )),
                           child: isLoading
                               ? PageStatus.loading(mounted)
                               : incomeList.length == 0
@@ -214,13 +258,15 @@ class _InviteFriendState extends State<InviteFriend> {
                                             style: TextStyle(
                                                 fontSize:
                                                     ScreenUtil().setSp(16),
-                                                color: Color(0xff1a1a1a)),
+                                                color: Color(0xffAF5A0C),
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                         ListView.builder(
                                           cacheExtent:
                                               ScreenUtil().screenHeight * 5,
                                           shrinkWrap: true,
+                                          padding: EdgeInsets.only(top: 1),
                                           physics: BouncingScrollPhysics(),
                                           controller: _scrollController,
                                           itemCount: incomeList.length,
@@ -267,17 +313,21 @@ class IncomeItem extends StatelessWidget {
             children: [
               Text('${incomeListItem?.nickname}',
                   style: TextStyle(
+                      fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(16),
-                      color: Color(0xff333333))),
+                      color: Color(0xff7A3C04))),
+              SizedBox(height: ScreenUtil().setHeight(10)),
               Text('${incomeListItem?.createdAt}',
                   style: TextStyle(
-                      fontSize: ScreenUtil().setSp(12),
+                      fontSize: ScreenUtil().setSp(13),
                       color: Color(0xff999999))),
             ],
           )),
-          Text('+20G',
+          Text('+20币',
               style: TextStyle(
-                  fontSize: ScreenUtil().setSp(24), color: Color(0xff333333))),
+                  fontWeight: FontWeight.bold,
+                  fontSize: ScreenUtil().setSp(15),
+                  color: Color(0xffFD6840))),
         ],
       ),
     );
@@ -295,10 +345,15 @@ class MyInviteNumber extends StatelessWidget {
       children: [
         Text(number,
             style: TextStyle(
-                fontSize: ScreenUtil().setSp(24), color: Color(0xff333333))),
+                fontSize: ScreenUtil().setSp(24),
+                color: Color(0xff7A3D04),
+                fontWeight: FontWeight.bold)),
+        SizedBox(
+          height: ScreenUtil().setHeight(3),
+        ),
         Text(label,
             style: TextStyle(
-                fontSize: ScreenUtil().setSp(11), color: Color(0xff999999))),
+                fontSize: ScreenUtil().setSp(11), color: Color(0xff9C8484))),
       ],
     );
   }
@@ -313,10 +368,8 @@ class ActionImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: PlatformAwareAssetImage(
-          url: url,
-          width: ScreenUtil().setWidth(125),
-          height: ScreenUtil().setWidth(42)),
+      child: Image.asset(url,
+          width: ScreenUtil().setWidth(125), height: ScreenUtil().setWidth(42)),
     );
   }
 }
