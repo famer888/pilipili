@@ -71,9 +71,10 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
         cm_data.elements.addAll(res.elements);
       }
       fixedBanner =
-          cm_data.elements.firstWhere((element) => fixedNav['type'] == 6);
+          cm_data.elements.firstWhere((element) => element['type'] == 6);
       fixedNav =
-          cm_data.elements.firstWhere((element) => fixedNav['type'] == 7);
+          cm_data.elements.firstWhere((element) => element['type'] == 7);
+          CommonUtils.debugPrint('---------------------------------------${fixedNav}');
     }).whenComplete(() {
       setState(() {
         pageStatus = 2;
@@ -154,8 +155,9 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                       children: fixedNav['value']
                                           .asMap()
                                           .keys
-                                          .map((e) {
+                                          .map<Widget>((e) {
                                         return HomeNavBtn(
+                                          contentType:fixedNav['content_type'],
                                           cardData: fixedNav['value'][e],
                                         );
                                       }).toList(),
@@ -169,9 +171,15 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                 Stack(clipBehavior: Clip.none, children: [
                               fixedBanner == null ||
                                       fixedBanner['value'].length == 0
-                                  ? Image.asset(
-                                      'assets/images/demo_bg.png',
-                                      fit: BoxFit.fill,
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        context.push(CommonUtils.getRealHash(
+                                            'seconedPage/456'));
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/demo_bg.png',
+                                        fit: BoxFit.fill,
+                                      ),
                                     )
                                   : Swiper(
                                       autoplayDelay: 3000,

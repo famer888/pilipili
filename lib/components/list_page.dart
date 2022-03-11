@@ -146,87 +146,80 @@ class _ListPageState extends State<ListPage> {
 
   Widget _listView() {
     return isListView
-        ? ListView.builder(
-            primary: false,
-            cacheExtent: ScreenUtil().screenHeight * 5,
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).padding.bottom +
-                    ScreenUtil().bottomBarHeight,
-                left: DefaultStyle.pagePadding,
-                right: DefaultStyle.pagePadding),
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return isActivity
-                  ? GestureDetector(
-                      onTap: () {
-                        context.push(CommonUtils.getRealHash(
-                            'activeDetail/${data[index]['id']}'));
-                      },
-                      child: LayoutBuilder(builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        return Container(
-                            width: constraints.minWidth,
-                            height: constraints.minWidth * 0.3,
-                            margin: EdgeInsets.only(
-                                bottom: ScreenUtil().setWidth(15)),
-                            decoration: BoxDecoration(),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(10)),
-                              child: Container(
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(),
-                                  child: Stack(
-                                    children: [
-                                      PlatformAwareNetworkImage(
-                                        url: data[index]['resource'][0]['url'],
-                                        fit: BoxFit.cover,
-                                      ),
-                                      BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 5.0, sigmaY: 5.0),
-                                        child: Opacity(
-                                          opacity: 0.7,
-                                          child: Container(),
+        ? SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return isActivity
+                    ? GestureDetector(
+                        onTap: () {
+                          context.push(CommonUtils.getRealHash(
+                              'activeDetail/${data[index]['id']}'));
+                        },
+                        child: LayoutBuilder(builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          return Container(
+                              width: constraints.minWidth,
+                              height: constraints.minWidth * 0.3,
+                              margin: EdgeInsets.only(
+                                  bottom: ScreenUtil().setWidth(15)),
+                              decoration: BoxDecoration(),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(10)),
+                                child: Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(),
+                                    child: Stack(
+                                      children: [
+                                        PlatformAwareNetworkImage(
+                                          url: data[index]['resource'][0]
+                                              ['url'],
+                                          fit: BoxFit.cover,
                                         ),
-                                      ),
-                                      Positioned(
-                                          child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                ScreenUtil().setWidth(15)),
-                                        child: Center(
-                                          child: Text(
-                                            data[index]['title'],
-                                            style: DefaultStyle.white20bold,
+                                        BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 5.0, sigmaY: 5.0),
+                                          child: Opacity(
+                                            opacity: 0.7,
+                                            child: Container(),
                                           ),
                                         ),
-                                      ))
-                                    ],
-                                  )),
-                            ));
-                      }),
-                    )
-                  : YouxuanCard(
-                      data: data[index],
-                      isHorizontal: data[index]['type'] == 1);
-            },
+                                        Positioned(
+                                            child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setWidth(15)),
+                                          child: Center(
+                                            child: Text(
+                                              data[index]['title'],
+                                              style: DefaultStyle.white20bold,
+                                            ),
+                                          ),
+                                        ))
+                                      ],
+                                    )),
+                              ));
+                        }),
+                      )
+                    : YouxuanCard(
+                        data: data[index],
+                        isHorizontal: data[index]['type'] == 1);
+              },
+              childCount: data.length,
+              addSemanticIndexes: false,
+              addRepaintBoundaries: true,
+              addAutomaticKeepAlives: true,
+            ),
           )
         : (isFall
-            ? WaterfallFlow.builder(
-                primary: false,
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom +
-                        ScreenUtil().bottomBarHeight,
-                    left: DefaultStyle.pagePadding,
-                    right: DefaultStyle.pagePadding),
-                itemCount: data.length,
+            ? SliverWaterfallFlow(
                 gridDelegate:
                     SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: ScreenUtil().setWidth(10),
                         crossAxisSpacing: ScreenUtil().setWidth(10)),
-                itemBuilder: (BuildContext context, int index) {
+                delegate:
+                    SliverChildBuilderDelegate((BuildContext c, int index) {
                   return data[index]['mv_type'] == 1
                       ? Hcard(
                           width: ScreenUtil().setWidth(175),
@@ -243,20 +236,11 @@ class _ListPageState extends State<ListPage> {
                           contentType: 7,
                           cardData: data[index],
                           showField: 'title');
-                })
-            : GridView(
-                primary: false,
-                controller: _controller,
-                cacheExtent: ScreenUtil().screenHeight * 5,
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom +
-                        ScreenUtil().bottomBarHeight,
-                    left: DefaultStyle.pagePadding,
-                    right: DefaultStyle.pagePadding),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isHorizontal ? 2 : 3,
-                    crossAxisSpacing: ScreenUtil().setWidth(7),
-                    childAspectRatio: isHorizontal ? 1.1 : 0.55),
+                }))
+            : SliverGrid.count(
+                crossAxisCount: isHorizontal ? 2 : 3,
+                crossAxisSpacing: ScreenUtil().setWidth(7),
+                childAspectRatio: isHorizontal ? 1.1 : 0.55,
                 children: data.asMap().keys.map((e) {
                   return isHorizontal
                       ? Hcard(
@@ -305,13 +289,61 @@ class _ListPageState extends State<ListPage> {
                     page = 1;
                     getPageData();
                   },
-                  child: data.length == 0
-                      ? SingleChildScrollView(
-                          child: PageStatus.noData(
-                              text: '还没有“${widget.title}”的数据哦～'),
-                        )
-                      : _listView(),
-                )),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverAppBar(
+                          backgroundColor: Colors.transparent,
+                          primary: false,
+                          leading: Container(),
+                          pinned: false,
+                          elevation: 0,
+                          forceElevated: true,
+                          expandedHeight: ScreenUtil().statusBarHeight +
+                              DefaultStyle.navbarHegiht +
+                              ScreenUtil().setWidth(160) +
+                              ScreenUtil().setWidth(32),
+                          bottom: PreferredSize(
+                            preferredSize: Size(
+                                double.infinity, ScreenUtil().setWidth(32)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(
+                                      ScreenUtil().setWidth(30)),
+                                  topLeft: Radius.circular(
+                                      ScreenUtil().setWidth(30))),
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(255, 244, 249, 1),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: ScreenUtil().setWidth(16)),
+                              ),
+                            ),
+                          ),
+                          flexibleSpace: FlexibleSpaceBar(
+                              collapseMode: CollapseMode.parallax,
+                              background:
+                                  Stack(clipBehavior: Clip.none, children: [
+                                Image.asset(
+                                  'assets/images/demo_bg.png',
+                                  fit: BoxFit.fill,
+                                ),
+                              ]))),
+                      data.length == 0
+                          ? SliverToBoxAdapter(
+                              child: PageStatus.noData(
+                                  text: '还没有“${widget.title}”的数据哦～'),
+                            )
+                          : _listView(),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).padding.bottom +
+                              ScreenUtil().bottomBarHeight,
+                        ),
+                      )
+                    ],
+                  ))),
     );
   }
 }

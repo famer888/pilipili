@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
     super.initState();
     AppGlobal.apInit = true;
     if (!kIsWeb) {
-      _initDownloadStastu();
+      // _initDownloadStastu();
     }
     fetchBeforeEnterApp();
   }

@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pilipili/components/common/pagetitlebar.dart';
-import 'package:pilipili/components/common/pullrefreshlist.dart';
-import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/routers.dart';
-import 'package:pilipili/utils/common.dart';
-
 class SeconedPageDetail extends StatefulWidget {
   SeconedPageDetail({Key key, this.title}) : super(key: key);
   final String title;

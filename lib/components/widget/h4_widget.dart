@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/components/card/vcard.dart';
+import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
@@ -10,8 +10,8 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
-class V4Column extends StatefulWidget {
-  V4Column(
+class H4Column extends StatefulWidget {
+  H4Column(
       {Key key,
       this.data,
       this.title,
@@ -33,10 +33,10 @@ class V4Column extends StatefulWidget {
   final dynamic id;
   final dynamic element;
   @override
-  _V4ColumnState createState() => _V4ColumnState();
+  _H4ColumnState createState() => _H4ColumnState();
 }
 
-class _V4ColumnState extends State<V4Column> {
+class _H4ColumnState extends State<H4Column> {
   List<dynamic> dataList;
   int page = 1;
   bool isAll = false;
@@ -92,7 +92,7 @@ class _V4ColumnState extends State<V4Column> {
                   children: dataList
                       .asMap()
                       .keys
-                      .map((e) => Vcard(
+                      .map((e) => Hcard(
                             isSubtitle: true,
                             page: ((page * widget.element['max_num']) /
                                     AppGlobal.smallVideoLimit)

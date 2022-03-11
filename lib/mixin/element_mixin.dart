@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilipili/components/widget/h4_widget.dart';
 import 'package:pilipili/components/widget/h_scroll_widget.dart';
 import 'package:pilipili/components/widget/three_v_column.dart';
 import 'package:pilipili/components/widget/v4_widget.dart';
@@ -19,7 +20,7 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
         '-----------------${element['title']}----------------组件类型:${element['type']}---是否有magin:${element['is_margin'] == 1}');
     switch (element['type']) {
       case 1:
-        yyElement = V4Column(
+        yyElement = H4Column(
           data: elementValue,
           contentType: element['content_type'],
           title: element['title'] == null || element['title'] == ''
@@ -94,6 +95,25 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
         break;
       case 7: //固定第二行导航
         yyElement = Container();
+        break;
+      case 8: //顶部导航
+        yyElement = Container();
+        break;
+      case 9:
+        yyElement = V4Column(
+          data: elementValue,
+          contentType: element['content_type'],
+          title: element['title'] == null || element['title'] == ''
+              ? null
+              : element['title'],
+          id: element['id'],
+          moreButton: element['more_button'] == 1,
+          morePageType: element['more_page_show_type'],
+          limit: element['max_num'],
+          showField: element['show_field'],
+          element: element,
+        );
+        ;
         break;
       default:
         yyElement = Container();
