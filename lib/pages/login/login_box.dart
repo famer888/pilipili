@@ -9,14 +9,16 @@ class LoginBox extends StatefulWidget {
       this.btnText,
       this.topText,
       this.onTap,
+      this.onLeftTap,
       this.btnMargin,
       this.footer})
       : super(key: key);
   List<Widget> children;
   String title;
-  String btnText;
+  dynamic btnText;
   Function onTap;
   Widget topText;
+  Function onLeftTap;
   Widget footer;
   num btnMargin;
   @override
@@ -40,36 +42,105 @@ class _LoginBoxState extends State<LoginBox> {
               children: widget.children,
             ),
             widget.topText != null ? widget.topText : Container(),
-            GestureDetector(
-              onTap: widget.onTap,
-              child: Container(
-                  margin: EdgeInsets.only(
-                      top: ScreenUtil().setWidth(56),
-                      bottom: widget.btnMargin != null
-                          ? widget.btnMargin
-                          : ScreenUtil().setWidth(48)),
-                  child: Center(
+            widget.btnText is List
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: widget.onLeftTap,
+                        child: Container(
+                            margin: EdgeInsets.only(
+                                top: ScreenUtil().setWidth(30),
+                                bottom: widget.btnMargin != null
+                                    ? widget.btnMargin
+                                    : ScreenUtil().setWidth(48)),
+                            child: Center(
+                              child: Container(
+                                width: ScreenUtil().setWidth(100),
+                                height: ScreenUtil().setHeight(34),
+                                decoration: new BoxDecoration(
+                                  color: Color(0xffFFE4E4),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25)),
+                                  //设置四周边框
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    widget.btnText[0],
+                                    style: TextStyle(
+                                      color: Color(0xffff84A9),
+                                      fontSize: ScreenUtil().setSp(15),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: Container(
+                            margin: EdgeInsets.only(
+                                top: ScreenUtil().setWidth(30),
+                                bottom: widget.btnMargin != null
+                                    ? widget.btnMargin
+                                    : ScreenUtil().setWidth(48)),
+                            child: Center(
+                              child: Container(
+                                width: ScreenUtil().setWidth(100),
+                                height: ScreenUtil().setHeight(34),
+                                decoration: new BoxDecoration(
+                                  color: Color(0xffFFE4E4),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25)),
+                                  //设置四周边框
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    widget.btnText[1],
+                                    style: TextStyle(
+                                      color: Color(0xffff84A9),
+                                      fontSize: ScreenUtil().setSp(15),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                      )
+                    ],
+                  )
+                : GestureDetector(
+                    onTap: widget.onTap,
                     child: Container(
-                      width: ScreenUtil().setWidth(160),
-                      height: ScreenUtil().setHeight(34),
-                      decoration: new BoxDecoration(
-                        color: Color(0xffFFE4E4),
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        //设置四周边框
-                      ),
-                      child: Center(
-                        child: Text(
-                          widget.btnText,
-                          style: TextStyle(
-                            color: Color(0xffff84A9),
-                            fontSize: ScreenUtil().setSp(15),
-                            fontWeight: FontWeight.bold,
+                        margin: EdgeInsets.only(
+                            top: ScreenUtil().setWidth(30),
+                            bottom: widget.btnMargin != null
+                                ? widget.btnMargin
+                                : ScreenUtil().setWidth(48)),
+                        child: Center(
+                          child: Container(
+                            width: ScreenUtil().setWidth(160),
+                            height: ScreenUtil().setHeight(34),
+                            decoration: new BoxDecoration(
+                              color: Color(0xffFFE4E4),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
+                              //设置四周边框
+                            ),
+                            child: Center(
+                              child: Text(
+                                widget.btnText,
+                                style: TextStyle(
+                                  color: Color(0xffff84A9),
+                                  fontSize: ScreenUtil().setSp(15),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  )),
-            ),
+                        )),
+                  ),
             widget.footer != null ? widget.footer : Container()
           ],
         ));
