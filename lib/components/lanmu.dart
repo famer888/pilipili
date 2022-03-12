@@ -104,6 +104,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                 ? PageStatus.loading(mounted)
                 : Container()
             : PullRefreshList(
+                color: Color.fromRGBO(130, 26, 70, 0.44),
                 offset:
                     DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
                 onRefresh: () {

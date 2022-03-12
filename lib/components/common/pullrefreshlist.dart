@@ -65,10 +65,16 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
 // ignore: must_be_immutable
 class PullRefreshList extends StatefulWidget {
   PullRefreshList(
-      {Key key, this.child, this.onRefresh, this.offset = 0, this.onLoading})
+      {Key key,
+      this.child,
+      this.onRefresh,
+      this.offset = 0,
+      this.onLoading,
+      this.color})
       : super(key: key);
   Widget child;
   double offset;
+  Color color;
   Function onRefresh;
   Function onLoading;
   @override
@@ -142,7 +148,7 @@ class _PullRefreshListState extends State<PullRefreshList> {
         header: WaterDropMaterialHeader(
           color: Colors.white,
           offset: widget.offset,
-          backgroundColor:DefaultStyle.themeColor,
+          backgroundColor: widget.color ?? DefaultStyle.themeColor,
         ),
         // header: CustomHeader(
         //   builder: (BuildContext context, RefreshStatus mode) {

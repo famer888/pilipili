@@ -264,6 +264,9 @@ class _ListPageState extends State<ListPage> {
                   ? PageStatus.loading(mounted)
                   : Container()
               : PullRefreshList(
+                  color: Color.fromRGBO(130, 26, 70, 0.44),
+                  offset:
+                      DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
                   onLoading: () {
                     if (isAll) return;
                     page++;
