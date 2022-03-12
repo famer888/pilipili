@@ -58,5 +58,6 @@ class AppGlobal {
   static dynamic currenClickData;
   static int initVipTab = 0;
   static int decryptProcessLimit = 20;
-  static bool shouApp=false;
+  static bool shouApp = false;
+  static Map xianmianPramas; //限免页面参数
 }

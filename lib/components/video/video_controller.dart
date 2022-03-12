@@ -601,7 +601,7 @@ class _VideoControllerState extends State<VideoController>
         ? controlShow()
         : (videoPlayErr
             ? Container(
-                color: Color(0xff18112b),
+                color: Color(0xfffd9fc140),
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -609,7 +609,7 @@ class _VideoControllerState extends State<VideoController>
                       Text(
                         '视频播放错误,请检查网络后重试',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xff646464),
                             fontSize: ScreenUtil().setSp(16)),
                       ),
                       GestureDetector(
@@ -622,10 +622,11 @@ class _VideoControllerState extends State<VideoController>
                           height: ScreenUtil().setWidth(32),
                           width: ScreenUtil().setWidth(118.5),
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: ScreenUtil().setWidth(0.5),
-                                  color: Colors.white),
-                              color: Color.fromRGBO(247, 222, 185, 0.5),
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
                               borderRadius: BorderRadius.circular(
                                   ScreenUtil().setWidth(16))),
                           child: Center(

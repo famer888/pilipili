@@ -4,12 +4,18 @@ import 'package:pilipili/mixin/cardMixin.dart';
 
 class HomeNavBtn extends StatefulWidget {
   HomeNavBtn(
-      {Key key, this.cardData, this.contentType, this.id, this.replace = false})
+      {Key key,
+      this.cardData,
+      this.contentType,
+      this.id,
+      this.replace = false,
+      this.page})
       : super(key: key);
   final dynamic cardData;
   final int contentType;
   final dynamic id;
   final bool replace;
+  final int page;
   @override
   _HomeNavBtnState createState() => _HomeNavBtnState();
 }
@@ -18,6 +24,7 @@ class _HomeNavBtnState extends State<HomeNavBtn> with CardMixin {
   @override
   Widget build(BuildContext context) {
     return callDetail(
+        contentType: widget.contentType,
         cardData: widget.cardData,
         widget: widget,
         replace: widget.replace,
