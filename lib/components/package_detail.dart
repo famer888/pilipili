@@ -58,74 +58,77 @@ class _PackageDetailState extends State<PackageDetail>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            PageTitleBar(
-              title: widget.title,
-              height: ScreenUtil().setWidth(60),
-            ),
-            Expanded(
-                child: Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
-              child: loading
-                  ? PageStatus.loading(mounted)
-                  : data.length == 0
-                      ? PageStatus.noData()
-                      : PullRefreshList(
-                          onLoading: () {
-                            if (isAll) {
-                              CommonUtils.showText('已经没有数据啦～');
-                              return;
-                            }
-                            page++;
-                            getPageData();
-                          },
-                          onRefresh: () async {
-                            page = 1;
-                            isAll = false;
-                            await getPageData();
-                          },
-                          child: GridView(
-                            cacheExtent: ScreenUtil().screenHeight * 5,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: ScreenUtil().setWidth(7),
-                                    childAspectRatio:
-                                        widget.contentType == 1 ? 1.25 : 0.65),
-                            children: data
-                                .asMap()
-                                .keys
-                                .map((e) => widget.contentType == 1
-                                    ? Hcard(
-                                        page: ((e + 1) /
-                                                AppGlobal.smallVideoLimit)
-                                            .ceil(),
-                                        width: ScreenUtil().setWidth(171),
-                                        contentType: 1,
-                                        thumbUrl: CommonUtils.getThumb(data[e]),
-                                        cardData: data[e],
-                                        showField: 'title',
-                                      )
-                                    : Vcard(
-                                        page: ((e + 1) /
-                                                AppGlobal.smallVideoLimit)
-                                            .ceil(),
-                                        width: ScreenUtil().setWidth(171),
-                                        contentType: 7,
-                                        thumbUrl: CommonUtils.getThumb(data[e]),
-                                        cardData: data[e],
-                                        isSearch: true,
-                                        showField: 'title',
-                                      ))
-                                .toList(),
-                          ),
+      body: Column(
+        children: [
+          PageTitleBar(
+            title: widget.title,
+            paddingTop: ScreenUtil().statusBarHeight,
+          ),
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+            child: loading
+                ? PageStatus.loading(mounted)
+                : data.length == 0
+                    ? PageStatus.noData()
+                    : PullRefreshList(
+                        onLoading: () {
+                          if (isAll) {
+                            CommonUtils.showText('已经没有数据啦～');
+                            return;
+                          }
+                          page++;
+                          getPageData();
+                        },
+                        onRefresh: () async {
+                          page = 1;
+                          isAll = false;
+                          await getPageData();
+                        },
+                        child: GridView(
+                          padding: EdgeInsets.only(
+                              top: ScreenUtil().setWidth(20),
+                              bottom: ScreenUtil().bottomBarHeight +
+                                  ScreenUtil().setWidth(20)),
+                          cacheExtent: ScreenUtil().screenHeight * 5,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: ScreenUtil().setWidth(7),
+                                  childAspectRatio:
+                                      widget.contentType == 1 ? 1.25 : 0.65),
+                          children: data
+                              .asMap()
+                              .keys
+                              .map((e) => widget.contentType == 1
+                                  ? Hcard(
+                                      maxLines: 1,
+                                      page:
+                                          ((e + 1) / AppGlobal.smallVideoLimit)
+                                              .ceil(),
+                                      width: ScreenUtil().setWidth(171),
+                                      contentType: 1,
+                                      thumbUrl: CommonUtils.getThumb(data[e]),
+                                      cardData: data[e],
+                                      showField: 'title',
+                                    )
+                                  : Vcard(
+                                      maxLines: 1,
+                                      page:
+                                          ((e + 1) / AppGlobal.smallVideoLimit)
+                                              .ceil(),
+                                      width: ScreenUtil().setWidth(171),
+                                      contentType: 7,
+                                      thumbUrl: CommonUtils.getThumb(data[e]),
+                                      cardData: data[e],
+                                      isSearch: true,
+                                      showField: 'title',
+                                    ))
+                              .toList(),
                         ),
-            ))
-          ],
-        ),
+                      ),
+          ))
+        ],
       ),
     );
   }

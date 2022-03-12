@@ -601,7 +601,7 @@ class _VideoControllerState extends State<VideoController>
         ? controlShow()
         : (videoPlayErr
             ? Container(
-                color: Color(0xfffd9fc140),
+                color: Color(0xfffff4f9),
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

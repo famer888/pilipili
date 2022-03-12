@@ -185,7 +185,6 @@ class Routes {
                   : int.parse(args['id'].toString()));
         },
       ),
-      GoRoute(path: search, builder: (context, state) => SearchPage()),
       GoRoute(
           path: invitefriend,
           builder: (context, state) => InviteFriend(),
@@ -335,6 +334,10 @@ class Routes {
 
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
+      GoRoute(
+          path: search,
+          builder: (context, state) => SearchPage(),
+          routes: getDetailRoutes()),
       GoRoute(
           path: buy,
           builder: (context, state) => BuyPage(),

@@ -85,7 +85,13 @@ class _PublicListState extends State<PublicList> {
   @override
   void didUpdateWidget(PublicList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.data != oldWidget.data && initPage) {
+    bool isSame = true;
+    widget.data.forEach((key, value) {
+      if (widget.data[key] != oldWidget.data[key]) {
+        isSame = false;
+      }
+    });
+    if (!isSame && initPage) {
       loading = true;
       reqData['page'] = 1;
       isAll = false;

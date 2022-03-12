@@ -987,29 +987,26 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                 ? widget.data.preview
                                                 : widget.data.source240);
                                           },
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                top: ScreenUtil().setWidth(22)),
-                                            height: ScreenUtil().setWidth(32),
-                                            width: ScreenUtil().setWidth(118.5),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: ScreenUtil()
-                                                        .setWidth(0.5),
-                                                    color: Colors.white),
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(16))),
-                                            child: Center(
-                                              child: Text('重新加载',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(14))),
-                                            ),
-                                          ),
+                                          child:Container(
+                          margin:
+                              EdgeInsets.only(top: ScreenUtil().setWidth(22)),
+                          height: ScreenUtil().setWidth(32),
+                          width: ScreenUtil().setWidth(118.5),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                  ScreenUtil().setWidth(16))),
+                          child: Center(
+                            child: Text(
+                              '重新加载',
+                              style: DefaultStyle.white14,
+                            ),
+                          ),
+                        ),
                                         )
                                       ],
                                     ),

@@ -548,10 +548,12 @@ class _SearchResultState extends State<SearchResult> {
               'word': widget.word,
             };
             pramas.addAll(tabList[e]['pramas']);
-            return PublicList(
-              data: pramas,
-              api: tabList[e]['api'],
-              isShow: e == currentTab,
+            return PageViewMixin(
+              child: PublicList(
+                data: pramas,
+                api: tabList[e]['api'],
+                isShow: e == currentTab,
+              ),
             );
           }).toList(),
         ))
