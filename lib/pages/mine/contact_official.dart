@@ -292,7 +292,7 @@ class AppInfo extends StatelessWidget {
                       child: Text(
                         'TG群打不开?看这里',
                         style: TextStyle(
-                            color: Color(0xff7bf7ff),
+                            color: Color(0xffFF84A9),
                             decoration: TextDecoration.underline,
                             fontSize: ScreenUtil().setSp(12)),
                       ),
