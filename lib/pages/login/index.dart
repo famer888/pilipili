@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -52,32 +53,33 @@ class _LoginPageState extends State<LoginPage> {
     Function startTime;
     String code = '86';
     return LoginBox(
-      btnText: '立即登录',
-      footer: Container(
-        margin: EdgeInsets.only(top: ScreenUtil().setWidth(12)),
-        width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                // context.push(CommonUtils.getRealHash('register'));
-                context.push(CommonUtils.getRealHash('register/${0}'));
-              },
-              child: Container(
-                padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
-                child: Text(
-                  '没有账号？快速注册',
-                  style: TextStyle(
-                      color: Color(0xffffffff),
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(13)),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+      btnText: ["注册", "登陆"],
+      btnMargin: ScreenUtil().setWidth(60),
+      // footer: Container(
+      //   margin: EdgeInsets.only(top: ScreenUtil().setWidth(12)),
+      //   width: double.infinity,
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       GestureDetector(
+      //         onTap: () {
+      //           // context.push(CommonUtils.getRealHash('register'));
+      //           context.push(CommonUtils.getRealHash('register/${0}'));
+      //         },
+      //         child: Container(
+      //           padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+      //           child: Text(
+      //             '没有账号？快速注册',
+      //             style: TextStyle(
+      //                 color: Color(0xffffffff),
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: ScreenUtil().setSp(13)),
+      //           ),
+      //         ),
+      //       )
+      //     ],
+      //   ),
+      // ),
       topText: Container(
         margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
         width: double.infinity,
@@ -115,6 +117,84 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+      onLeftTap: () {
+        if (username.text.isEmpty) {
+          CommonUtils.showText('请输入用户名～');
+          return;
+        }
+        if (userPassword.text.isEmpty) {
+          CommonUtils.showText('请输入密码～');
+          return;
+        }
+        PageStatus.showLoading();
+        registerByPassword(username: username.text, password: userPassword.text)
+            .then((res) {
+          if (res.status != 0) {
+            AppGlobal.apiToken = res.data;
+            setToken(res.data);
+            getHomeConfig(context).then((res) {
+              context.pop('login');
+              YyShowDialog.showdialog(
+                context,
+                title: '请截图保存账号密码',
+                content: (setDialogState) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '账号:   ',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: ScreenUtil().setSp(15),
+                                decoration: TextDecoration.none),
+                          ),
+                          Text(
+                            username.text,
+                            style: TextStyle(
+                                color: Color(0xffFE155B),
+                                fontSize: ScreenUtil().setSp(15),
+                                decoration: TextDecoration.none),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setWidth(25),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '密码:   ',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: ScreenUtil().setSp(15),
+                                decoration: TextDecoration.none),
+                          ),
+                          Text(
+                            userPassword.text,
+                            style: TextStyle(
+                                color: Color(0xffFE155B),
+                                fontSize: ScreenUtil().setSp(15),
+                                decoration: TextDecoration.none),
+                          )
+                        ],
+                      )
+                    ],
+                  );
+                },
+                btnText: '知道了',
+              );
+            });
+          } else {
+            CommonUtils.showText(res.msg);
+          }
+        }).whenComplete(() {
+          PageStatus.closeLoading();
+        });
+      },
       onTap: () {
         if (loginType == 0) {
           if (phone.text.isEmpty) {
@@ -134,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
               AppGlobal.apiToken = res.data;
               setToken(res.data);
               getHomeConfig(context).then((res) {
-                context.pop();
+                context.pop('login');
               });
             } else {
               CommonUtils.showText(res.msg);
@@ -159,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
               AppGlobal.apiToken = res.data;
               setToken(res.data);
               getHomeConfig(context).then((res) {
-                context.pop();
+                context.pop('login');
               });
             } else {
               CommonUtils.showText(res.msg);
@@ -169,6 +249,7 @@ class _LoginPageState extends State<LoginPage> {
           });
         }
       },
+
       children: loginType == 0
           ? [
               YyInput(
