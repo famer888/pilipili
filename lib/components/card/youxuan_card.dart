@@ -37,10 +37,9 @@ class _YouxuanCardState extends State<YouxuanCard> {
       },
       child: Container(
           margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(23)),
-          color: Colors.white,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(ScreenUtil().setWidth(11))
-          ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(11))),
           child: Container(
             padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
             child: Column(
@@ -56,16 +55,14 @@ class _YouxuanCardState extends State<YouxuanCard> {
                       Text(
                         widget.data['title'],
                         style: TextStyle(
-                          color: Color(0xff646464),
-                          fontSize: ScreenUtil().setSp(18),
-                          fontWeight: FontWeight.bold
-                        ),
+                            color: Color(0xff646464),
+                            fontSize: ScreenUtil().setSp(18),
+                            fontWeight: FontWeight.bold),
                       ),
                       Text('总视频：${widget.data['total_num']}部',
                           style: TextStyle(
-                            color: Color(0XFFFE155B),
-                            fontSize: ScreenUtil().setSp(12)
-                          ))
+                              color: Color(0XFFFE155B),
+                              fontSize: ScreenUtil().setSp(12)))
                     ],
                   ),
                 ),
@@ -75,8 +72,8 @@ class _YouxuanCardState extends State<YouxuanCard> {
                 Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: ScreenUtil().setWidth(15.5)),
-                    child:
-                        Text(widget.data['desc'], style:  TextStyle(
+                    child: Text(widget.data['desc'],
+                        style: TextStyle(
                           color: Color(0xff646464),
                           fontSize: ScreenUtil().setSp(14),
                         ))),
@@ -124,15 +121,6 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                       fit: BoxFit.cover,
                                     ),
                                     Positioned(
-                                        top: 0,
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                        child: Image.asset(
-                                          'assets/pengke/video/${widget.isHorizontal ? 'youxuan_duan_border' : 'youxuan_chang_border'}.png',
-                                          fit: BoxFit.fill,
-                                        )),
-                                    Positioned(
                                         left: 0,
                                         top: 0,
                                         child: widget.data['resource'][e]
@@ -167,140 +155,165 @@ class _YouxuanCardState extends State<YouxuanCard> {
                         .toList(),
                   ),
                 ),
-                Center(
-                  child: Stack(
-                    children: [
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          bottom: 0,
-                          right: 0,
-                          child: Image.asset(
-                            'assets/pengke/video/youxuan_price_bg.png',
-                            fit: BoxFit.fill,
-                          )),
-                      Container(
-                        height: ScreenUtil().setWidth(33),
-                        width: ScreenUtil().setWidth(320),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              padding: EdgeInsets.only(
-                                  left: ScreenUtil().setWidth(29)),
-                              child: Text.rich(TextSpan(
-                                  text: '折扣价: ',
-                                  style: DefaultStyle.white11,
-                                  children: [
-                                    TextSpan(
-                                      text: '${widget.data['price']}G',
-                                      style: DefaultStyle.white15bold,
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          ' 原价：${widget.data['original_price']}G',
-                                      style: TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          color: Color.fromRGBO(
-                                              255, 255, 255, 0.5),
-                                          fontSize: ScreenUtil().setSp(9)),
-                                    )
-                                  ])),
-                            )),
-                            GestureDetector(
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(13)),
+                  child: isBuy
+                      ? Center(
+                          child: GestureDetector(
                               onTap: () {
-                                if (isBuy) {
-                                  context.push(
-                                      '/packageDetail/${widget.data['id']}/${widget.data['type']}/${widget.data['title']}');
-                                } else {
-                                  YyShowDialog.showdialog(context,
-                                      title: '鱿选特价包',
-                                      btnText: '立即购买',
-                                      cancelText: '一会再买', callBack: () {
-                                    buyPackage(id: widget.data['id'])
-                                        .then((res) {
-                                      if (res['status'] != 0) {
-                                        CommonUtils.showText('购买成功～');
-                                        isBuy = true;
-                                        setState(() {});
-                                      } else {
-                                        CommonUtils.showText(res['msg']);
-                                      }
-                                    });
-                                  }, content: (setDialogState) {
-                                    return DefaultTextStyle(
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(14),
-                                            color: Colors.white),
-                                        child: Column(
-                                          children: [
-                                            Text.rich(TextSpan(children: [
-                                              TextSpan(
-                                                text: '您将支付',
-                                              ),
-                                              TextSpan(
-                                                  text:
-                                                      '${widget.data['price']}G',
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(16),
-                                                    color: Color(0xff62f7ff),
-                                                    fontWeight: FontWeight.bold,
-                                                  )),
-                                              TextSpan(
-                                                text: '购买',
-                                              ),
-                                            ])),
-                                            Text.rich(TextSpan(children: [
-                                              TextSpan(text: '【'),
-                                              TextSpan(
-                                                  text: widget.data['title'],
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(16),
-                                                    color: Color(0xff37f4ff),
-                                                    fontWeight: FontWeight.bold,
-                                                  )),
-                                              TextSpan(text: '】'),
-                                            ]))
-                                          ],
-                                        ));
-                                  });
-                                }
+                                context.push(
+                                    '/packageDetail/${widget.data['id']}/${widget.data['type']}/${widget.data['title']}');
                               },
-                              child: Stack(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setWidth(16)),
+                                    gradient: SweepGradient(colors: [
+                                      Color(0xffFF84A9),
+                                      Color(0xffFF9E9E)
+                                    ])),
+                                height: ScreenUtil().setWidth(32),
+                                width: ScreenUtil().setWidth(96),
+                                child: Center(
+                                  child: Text(
+                                    '查看合集',
+                                    style: DefaultStyle.white12,
+                                  ),
+                                ),
+                              )),
+                        )
+                      : Stack(
+                          children: [
+                            Positioned(
+                                top: 0,
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                child: Image.asset(
+                                  'assets/images/dazhebaobg.png',
+                                  fit: BoxFit.fill,
+                                )),
+                            Container(
+                              height: ScreenUtil().setWidth(64),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: ScreenUtil().setWidth(32)),
+                              child: Row(
                                 children: [
-                                  Positioned(
-                                      top: 0,
-                                      left: 0,
-                                      bottom: 0,
-                                      right: 0,
-                                      child: Image.asset(
-                                        'assets/pengke/video/youxuan_buy_btn.png',
-                                        fit: BoxFit.fill,
-                                      )),
-                                  Container(
-                                    height: double.infinity,
-                                    width: ScreenUtil().setWidth(143.5),
-                                    padding: EdgeInsets.only(
-                                        left: ScreenUtil().setWidth(30)),
-                                    child: Center(
-                                      child: Text(
-                                        isBuy ? '查看鱿选包' : '立即购买',
-                                        style: DefaultStyle.white12,
-                                      ),
-                                    ),
-                                  )
+                                  Expanded(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text.rich(TextSpan(
+                                          text: '折扣价: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xffFF5B8C),
+                                              fontSize: ScreenUtil().setSp(12)),
+                                          children: [
+                                            TextSpan(
+                                              text: '${widget.data['price']}币',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(20)),
+                                            ),
+                                          ])),
+                                      Text(
+                                        ' 原价：${widget.data['original_price']}币',
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color: Color(0xffFF5B8C),
+                                            fontSize: ScreenUtil().setSp(12)),
+                                      )
+                                    ],
+                                  )),
+                                  GestureDetector(
+                                      onTap: () {
+                                        YyShowDialog.showdialog(context,
+                                            btnText: '立即购买',
+                                            cancelText: '一会再买', callBack: () {
+                                          buyPackage(id: widget.data['id'])
+                                              .then((res) {
+                                            if (res['status'] != 0) {
+                                              CommonUtils.showText('购买成功～');
+                                              isBuy = true;
+                                              setState(() {});
+                                            } else {
+                                              CommonUtils.showText(res['msg']);
+                                            }
+                                          });
+                                        }, content: (setDialogState) {
+                                          return DefaultTextStyle(
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(14),
+                                                  color: Color(0xff646464)),
+                                              child: Column(
+                                                children: [
+                                                  Text.rich(TextSpan(children: [
+                                                    TextSpan(
+                                                      text: '您将支付',
+                                                    ),
+                                                    TextSpan(
+                                                        text:
+                                                            '${widget.data['price']}币',
+                                                        style: TextStyle(
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(16),
+                                                          color:
+                                                              Color(0xffFF5B8C),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        )),
+                                                    TextSpan(
+                                                      text: '购买',
+                                                    ),
+                                                  ])),
+                                                  Text.rich(TextSpan(children: [
+                                                    TextSpan(text: '【'),
+                                                    TextSpan(
+                                                        text: widget
+                                                            .data['title'],
+                                                        style: TextStyle(
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(16),
+                                                          color:
+                                                              Color(0xffFF5B8C),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        )),
+                                                    TextSpan(text: '】'),
+                                                  ]))
+                                                ],
+                                              ));
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenUtil().setWidth(16)),
+                                            gradient: SweepGradient(colors: [
+                                              Color(0xffFF84A9),
+                                              Color(0xffFF9E9E)
+                                            ])),
+                                        height: ScreenUtil().setWidth(32),
+                                        width: ScreenUtil().setWidth(96),
+                                        child: Center(
+                                          child: Text(
+                                            '立即购买合集',
+                                            style: DefaultStyle.white12,
+                                          ),
+                                        ),
+                                      ))
                                 ],
                               ),
                             )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                )
               ],
             ),
           )),

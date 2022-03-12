@@ -79,7 +79,7 @@ Future<ElementModel> getFisrtTopNavConfig(int id) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post(
         '/api/element/getElementById',
-        data: {'id':id});
+        data: {'id': id});
     ElementModel result = ElementModel.fromJson(res.data['data']);
     return result;
   } catch (e) {
@@ -798,6 +798,17 @@ Future<MyRewardModel> getMyReward() async {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/user/getMyReward');
     return MyRewardModel.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 我购买的
+Future getUserBuy({int page, int type, int limit = 24}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/user/getUserBuy",
+        data: {'page': page, 'limit': limit, 'type': type});
+    return res.data;
   } catch (e) {
     return null;
   }

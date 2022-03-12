@@ -13,6 +13,7 @@ import 'package:pilipili/components/video/web_small_video.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/buy_page.dart';
 import 'package:pilipili/pages/mine/contact_official.dart';
 import 'package:pilipili/pages/mine/customer_service.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
@@ -42,9 +43,8 @@ import 'mixin/message_center.dart';
 
 class Routes {
   static String xianmian = 'xianmian'; //home页限免页面
-  static String seconedPage = 'seconedPage/:title'; // 网黄、cos、时间表等二级页面
-  static String seconedPageDetail =
-      'seconedPageDetail/:title'; // 网黄、cos、时间表等二级页面详情
+  static String seconedPage = 'seconedPage/:title/:id'; // 网黄、cos、时间表等二级页面
+  static String seconedPageDetail = 'seconedPageDetail'; // 网黄、cos、时间表等二级页面详情
   static String search = 'search'; // 网黄、cos、时间表等二级页面
   static String activityList = 'activityList'; // 精彩活动列表
   static String activityDetail = 'activityDetail/:id'; // 精彩活动详情
@@ -80,6 +80,7 @@ class Routes {
   static String promote = 'promote'; // 去推广
   static String inviterecored = 'inviterecored'; // 邀请记录
   static String promoteActionList = 'promoteActionList'; //推广方法;
+  static String buy = 'buy'; //我的购买记录
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -310,11 +311,7 @@ class Routes {
       ),
       GoRoute(
         path: seconedPageDetail,
-        builder: (context, state) => SeconedPageDetail(
-          title: state.params == null || state.params['title'] == null
-              ? null
-              : state.params['title'],
-        ),
+        builder: (context, state) => SeconedPageDetail(),
       ),
       GoRoute(
           path: atlasDetail,
@@ -339,6 +336,10 @@ class Routes {
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
       GoRoute(
+          path: buy,
+          builder: (context, state) => BuyPage(),
+          routes: getDetailRoutes()),
+      GoRoute(
         path: xianmian,
         builder: (context, state) => Xianmian(),
       ),
@@ -361,6 +362,9 @@ class Routes {
                 title: state.params == null || state.params['title'] == null
                     ? null
                     : state.params['title'],
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id']),
               ),
           routes: getDetailRoutes()),
       GoRoute(

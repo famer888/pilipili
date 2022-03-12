@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
 import 'package:pilipili/components/lanmu.dart';
+import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
@@ -60,28 +61,25 @@ class _DongmanState extends State<Dongman> {
             emitName: 'dongman',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              // setState(() {
-              //   currentIndex = index;
-              // });
+              setState(() {
+                currentIndex = index;
+              });
             },
-            pages: navitems
-                .asMap()
-                .keys
-                .map((e) => PageViewMixin(
-                    child: navitems[e].redirectType == 3
-                        ? Lanmu(
-                            isShow: currentIndex == e,
-                            id: int.parse(navitems[e].linkUrl),
-                            parentName: 'dongman',
-                            tabList: [
-                              {"name": '限免', 'type': 1},
-                              {"name": '时间表', 'type': 2},
-                              {"name": '二创', 'type': 2},
-                              {"name": '专题', 'type': 2},
-                            ],
-                            index: e)
-                        : Container()))
-                .toList(),
+            pages: navitems.asMap().keys.map<Widget>((e) {
+              return PageViewMixin(
+                child: navitems[e].redirectType == 3
+                    ? Lanmu(
+                        isShow: currentIndex == e,
+                        id: int.parse(navitems[e].linkUrl),
+                        index: e)
+                    : ListPage(
+                        isShow: currentIndex == e,
+                        title: navitems[e].name,
+                        id: navitems[e].linkUrl,
+                        index: e,
+                      ),
+              );
+            }).toList(),
           );
   }
 }

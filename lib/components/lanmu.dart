@@ -13,22 +13,15 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 
 class Lanmu extends StatefulWidget {
-  Lanmu(
-      {Key key,
-      this.data,
-      this.id,
-      this.isShow,
-      this.parentName,
-      this.index,
-      this.tabList})
+  Lanmu({Key key, this.data, this.id, this.isShow, this.index, this.tabList})
       : super(key: key);
   final dynamic data;
   final int id;
   final bool isShow;
-  final String parentName;
   final int index;
   final List tabList;
   @override
@@ -49,10 +42,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (pageStatus == 0) {
-      setState(() {
-        pageStatus = 1;
-      });
+    if (widget.isShow && pageStatus == 0) {
+      pageStatus = 1;
       getPageData();
     }
   }
@@ -72,14 +63,24 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
       }
       fixedBanner =
           cm_data.elements.firstWhere((element) => element['type'] == 6);
-      fixedNav =
-          cm_data.elements.firstWhere((element) => element['type'] == 7);
-          CommonUtils.debugPrint('---------------------------------------${fixedNav}');
+      fixedNav = cm_data.elements.firstWhere((element) => element['type'] == 7);
+      CommonUtils.debugPrint(
+          '---------------------------------------${fixedBanner}');
     }).whenComplete(() {
       setState(() {
         pageStatus = 2;
       });
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant Lanmu oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    if (widget.isShow && pageStatus == 0) {
+      pageStatus = 1;
+      getPageData();
+    }
   }
 
   @override
@@ -157,7 +158,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                           .keys
                                           .map<Widget>((e) {
                                         return HomeNavBtn(
-                                          contentType:fixedNav['content_type'],
+                                          contentType: fixedNav['content_type'],
                                           cardData: fixedNav['value'][e],
                                         );
                                       }).toList(),
@@ -171,15 +172,9 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                 Stack(clipBehavior: Clip.none, children: [
                               fixedBanner == null ||
                                       fixedBanner['value'].length == 0
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        context.push(CommonUtils.getRealHash(
-                                            'seconedPage/456'));
-                                      },
-                                      child: Image.asset(
-                                        'assets/images/demo_bg.png',
-                                        fit: BoxFit.fill,
-                                      ),
+                                  ? Image.asset(
+                                      'assets/images/demo_bg.png',
+                                      fit: BoxFit.fill,
                                     )
                                   : Swiper(
                                       autoplayDelay: 3000,
@@ -257,8 +252,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                               }
                                               context.push(urlList[0],
                                                   extra: pramas);
-                                            } else if (widget.data[index]
-                                                    ['type'] ==
+                                            } else if (fixedBanner['value']
+                                                    [index]['type'] ==
                                                 4) {
                                               var members =
                                                   Provider.of<HomeConfig>(
@@ -268,7 +263,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                               var aff = members.aff;
                                               var yyid = members.uuid;
                                               CommonUtils.launchURL(
-                                                  '${widget.data[index]['url'].trim()}?aff=$aff&yyid=$yyid');
+                                                  '${fixedBanner['value'][index]['url'].trim()}?aff=$aff&yyid=$yyid');
                                             }
                                           },
                                           child: Container(
@@ -290,8 +285,14 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                     children: [
                                                       Opacity(
                                                         opacity: 0.7,
-                                                        child: Image.asset(
-                                                          'assets/images/demo_bg.png',
+                                                        child:
+                                                            PlatformAwareNetworkImage(
+                                                          noVisibilityDetector:
+                                                              true,
+                                                          url: fixedBanner[
+                                                                      'value']
+                                                                  [index]
+                                                              ['resource_url'],
                                                           fit: BoxFit.fill,
                                                         ),
                                                       ),
@@ -326,8 +327,14 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                                   .navbarHegiht),
                                                       child: Container(
                                                         width: double.infinity,
-                                                        child: Image.asset(
-                                                          'assets/images/demo_bg.png',
+                                                        child:
+                                                            PlatformAwareNetworkImage(
+                                                          noVisibilityDetector:
+                                                              true,
+                                                          url: fixedBanner[
+                                                                      'value']
+                                                                  [index]
+                                                              ['resource_url'],
                                                           fit: BoxFit.fill,
                                                         ),
                                                       ),
@@ -337,7 +344,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                           ),
                                         );
                                       },
-                                      itemCount: 10,
+                                      itemCount: fixedBanner['value'].length,
                                     ),
                             ]))),
                     cm_data?.elements == null

@@ -22,7 +22,8 @@ class Vcard extends StatefulWidget {
       this.replace = false,
       this.isSearch = false,
       this.isLocal = false,
-      this.isSubtitle = false})
+      this.isSubtitle = false,
+      this.maxLines = 1})
       : super(key: key);
   final double width;
   final double height;
@@ -39,6 +40,7 @@ class Vcard extends StatefulWidget {
   final bool isSearch;
   final bool isLocal;
   final bool isSubtitle;
+  final int maxLines;
   @override
   _VcardState createState() => _VcardState();
 }
@@ -137,7 +139,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                                         widget.cardData['title'] ??
                                         '')
                                     : widget.cardData['title' ?? ''],
-                                maxLines: 2,
+                                maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Color(0xff646464),

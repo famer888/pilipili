@@ -16,18 +16,11 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
-  ListPage(
-      {Key key,
-      this.title = '列表页',
-      this.id,
-      this.isShow,
-      this.parentName,
-      this.index})
+  ListPage({Key key, this.title = '列表页', this.id, this.isShow, this.index})
       : super(key: key);
   final String title;
   final String id;
   final bool isShow;
-  final String parentName;
   final int index;
 
   @override
@@ -50,32 +43,26 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    EventBus().on('lanmu-init-view', (arg) {
-      if (arg['parentName'] == widget.parentName &&
-          arg['currentIndex'] == widget.index &&
-          pageStatus == 0) {
-        setState(() {
-          pageStatus = 1;
-        });
-        getPageData();
-      }
-    });
-    EventBus().on('BACK_TOP', (arg) {
-      if (arg['parentName'] == widget.parentName &&
-          arg['currentIndex'] == widget.index) {
-        _controller.animateTo(0,
-            duration: Duration(milliseconds: 200), curve: Curves.easeInSine);
-      }
-    });
+    if (widget.isShow && pageStatus == 0) {
+      pageStatus = 1;
+      getPageData();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ListPage oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    if (widget.isShow && pageStatus == 0) {
+      pageStatus = 1;
+      getPageData();
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
-    EventBus().off('lanmu-init-view');
-    EventBus().off('BACK_TOP');
   }
 
   getPageData() async {
@@ -115,7 +102,7 @@ class _ListPageState extends State<ListPage> {
         isHorizontal = true;
         cardType = 1;
         break;
-      case 'youxuan':
+      case 'dazhebao':
         res = await getPackageList(limit: limit, page: page);
         isListView = true;
         break;
@@ -126,12 +113,12 @@ class _ListPageState extends State<ListPage> {
         break;
       default:
     }
+
     if (res == null) {
       networkErr = true;
       setState(() {});
       return;
     }
-    CommonUtils.debugPrint(res);
     if (res == null || res['data'] == null) return;
     List resData = res['data'];
     if (page == 1) {
@@ -335,7 +322,11 @@ class _ListPageState extends State<ListPage> {
                               child: PageStatus.noData(
                                   text: '还没有“${widget.title}”的数据哦～'),
                             )
-                          : _listView(),
+                          : SliverPadding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: DefaultStyle.pagePadding),
+                              sliver: _listView(),
+                            ),
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: MediaQuery.of(context).padding.bottom +

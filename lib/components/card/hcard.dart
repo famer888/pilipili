@@ -22,7 +22,9 @@ class Hcard extends StatefulWidget {
       this.replace = false,
       this.isSearch = false,
       this.isLocal = false,
-      this.isSubtitle = false})
+      this.isSubtitle = false,
+      this.maxLines=2
+      })
       : super(key: key);
   final double width;
   final double height;
@@ -39,6 +41,7 @@ class Hcard extends StatefulWidget {
   final bool isSearch;
   final bool isLocal;
   final bool isSubtitle;
+  final int maxLines;
   @override
   _HcardState createState() => _HcardState();
 }
@@ -137,7 +140,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                                         widget.cardData['title'] ??
                                         '')
                                     : widget.cardData['title' ?? ""],
-                                maxLines: 2,
+                                maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Color(0xff646464),

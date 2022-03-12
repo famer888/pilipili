@@ -10,7 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
 import 'package:pilipili/components/lanmu.dart';
+import 'package:pilipili/components/list_page.dart';
+import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/element.dart';
+import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 import '../utils/api.dart';
@@ -27,6 +30,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
   int currentIndex = 0;
   List pages = [];
   bool initPage = false;
+  bool loading = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -39,39 +43,39 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
 
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(2);
-    if (data == null) {
-      // netWorkErr = true;
-      setState(() {});
-      return;
-    }
-    setState(() {
-      navitems = data.value.asMap().keys.map((e) {
-        return LinkModel.fromJson(data.value[e]);
-      }).toList();
-    });
+    loading = false;
+    navitems = data.value.asMap().keys.map((e) {
+      return LinkModel.fromJson(data.value[e]);
+    }).toList();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return navitems == null
-        ? Container()
+    return navitems == null || loading
+        ? PageStatus.loading(true)
         : Scrollnav(
             emitName: 'pili_ciyuan',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              // setState(() {
-              //   currentIndex = index;
-              // });
+              setState(() {
+                currentIndex = index;
+              });
             },
             pages: navitems.asMap().keys.map<Widget>((e) {
               return PageViewMixin(
-                  child: navitems[e].redirectType == 3
-                      ? Lanmu(
-                          isShow: currentIndex == e,
-                          id: int.parse(navitems[e].linkUrl),
-                          parentName: 'jingxuan',
-                          index: e)
-                      : Container());
+                child: navitems[e].redirectType == 3
+                    ? Lanmu(
+                        isShow: currentIndex == e,
+                        id: int.parse(navitems[e].linkUrl),
+                        index: e)
+                    : ListPage(
+                        isShow: currentIndex == e,
+                        title: navitems[e].name,
+                        id: navitems[e].linkUrl,
+                        index: e,
+                      ),
+              );
             }).toList(),
           );
   }

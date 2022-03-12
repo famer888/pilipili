@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
 import 'package:pilipili/components/lanmu.dart';
+import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
@@ -60,28 +61,25 @@ class _ManhuaState extends State<Manhua> {
             emitName: 'manhua',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              // setState(() {
-              //   currentIndex = index;
-              // });
+              setState(() {
+                currentIndex = index;
+              });
             },
-            pages: navitems
-                .asMap()
-                .keys
-                .map((e) => PageViewMixin(
-                    child: navitems[e].redirectType == 3
-                        ? Lanmu(
-                            isShow: currentIndex == e,
-                            id: int.parse(navitems[e].linkUrl),
-                            parentName: 'manhua',
-                            tabList: [
-                              {"name": '限免', 'type': 1},
-                              {"name": '同人漫画', 'type': 2},
-                              {"name": '完结长篇', 'type': 2},
-                              {"name": '福利套图', 'type': 2},
-                            ],
-                            index: e)
-                        : Container()))
-                .toList(),
+            pages: navitems.asMap().keys.map<Widget>((e) {
+              return PageViewMixin(
+                child: navitems[e].redirectType == 3
+                    ? Lanmu(
+                        isShow: currentIndex == e,
+                        id: int.parse(navitems[e].linkUrl),
+                        index: e)
+                    : ListPage(
+                        isShow: currentIndex == e,
+                        title: navitems[e].name,
+                        id: navitems[e].linkUrl,
+                        index: e,
+                      ),
+              );
+            }).toList(),
           );
   }
 }

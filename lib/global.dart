@@ -60,4 +60,5 @@ class AppGlobal {
   static int decryptProcessLimit = 20;
   static bool shouApp = false;
   static Map xianmianPramas; //限免页面参数
+  static Map seconedPagePramas; //页面参数
 }

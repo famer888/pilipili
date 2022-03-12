@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/networkImage.dart';
+
 class SeconedPageDetail extends StatefulWidget {
-  SeconedPageDetail({Key key, this.title}) : super(key: key);
-  final String title;
+  SeconedPageDetail({Key key}) : super(key: key);
   @override
   State<SeconedPageDetail> createState() => _SeconedPageDetailState();
 }
@@ -17,10 +18,11 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   bool isShow = false;
   List _tabs = ["最新", "推荐", "随机"];
   int currentTab = 0;
+  dynamic pagePramas;
   @override
   void initState() {
     super.initState();
-    print('ScreenUtil().statusBarHeight=${ScreenUtil().statusBarHeight}');
+    pagePramas = AppGlobal.seconedPagePramas;
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index.toDouble() == _tabController.animation.value) {
@@ -53,12 +55,14 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               top: -ScreenUtil().setWidth(96),
               right: 0,
               left: 0,
-              child: Image.network(
-                "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg",
-                width: double.infinity,
+              child: Container(
                 height:
                     ScreenUtil().setWidth(140) + ScreenUtil().statusBarHeight,
-                fit: BoxFit.cover,
+                child: PlatformAwareNetworkImage(
+                  url: pagePramas['resource_url'],
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               )),
           Positioned(
               top: ScreenUtil().statusBarHeight,
@@ -70,7 +74,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                     EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(60)),
                 alignment: Alignment.center,
                 child: Text(
-                  widget.title,
+                  pagePramas['name'],
                   style: DefaultStyle.white14,
                 ),
               )),
@@ -90,34 +94,31 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                     expandedHeight: ScreenUtil().setWidth(140) +
                         ScreenUtil().statusBarHeight,
                     flexibleSpace: FlexibleSpaceBar(
-                      // title: Text(
-                      //   widget.title,
-                      //   style: DefaultStyle.white14,
-                      // ),
+
                       collapseMode: CollapseMode.pin,
                       background: Stack(
                         children: [
-                          Image.network(
-                            "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg",
+                          PlatformAwareNetworkImage(
+                            url: pagePramas['resource_url'],
                             width: double.infinity,
                             height: ScreenUtil().setWidth(163) +
                                 ScreenUtil().statusBarHeight,
                             fit: BoxFit.cover,
                           ),
-                          Positioned(
-                              top: 0,
-                              right: 0,
-                              left: 0,
-                              bottom: 0,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: ScreenUtil().setWidth(60)),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  widget.title,
-                                  style: DefaultStyle.white15bold,
-                                ),
-                              )),
+                          // Positioned(
+                          //     top: 0,
+                          //     right: 0,
+                          //     left: 0,
+                          //     bottom: 0,
+                          //     child: Container(
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: ScreenUtil().setWidth(60)),
+                          //       alignment: Alignment.center,
+                          //       child: Text(
+                          //         pagePramas['name'],
+                          //         style: DefaultStyle.white15bold,
+                          //       ),
+                          //     )),
                         ],
                       ),
                     ),
@@ -153,7 +154,8 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Opacity(
                                           opacity: e == currentTab ? 1 : 0,
@@ -204,19 +206,22 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         ))
                     .toList(),
               )),
-          isShow
-              ? Positioned(
-                  top: -ScreenUtil().setWidth(96),
-                  right: 0,
-                  left: 0,
-                  child: Image.network(
-                    "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg",
+          Positioned(
+              top: -ScreenUtil().setWidth(96),
+              right: 0,
+              left: 0,
+              child: Opacity(
+                opacity: isShow ? 1 : 0,
+                child: Container(
+                  height:
+                      ScreenUtil().setWidth(140) + ScreenUtil().statusBarHeight,
+                  child: PlatformAwareNetworkImage(
+                    url: pagePramas['resource_url'],
                     width: double.infinity,
-                    height: ScreenUtil().setWidth(140) +
-                        ScreenUtil().statusBarHeight,
                     fit: BoxFit.cover,
-                  ))
-              : Container(),
+                  ),
+                ),
+              )),
           Positioned(
               top: ScreenUtil().statusBarHeight,
               right: 0,
@@ -255,7 +260,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         horizontal: ScreenUtil().setWidth(60)),
                     alignment: Alignment.center,
                     child: Text(
-                      widget.title,
+                      pagePramas['name'],
                       style: DefaultStyle.white14,
                     ),
                   ))

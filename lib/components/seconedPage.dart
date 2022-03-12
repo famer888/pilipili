@@ -1,87 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
-import 'package:waterfall_flow/waterfall_flow.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/model/construct.dart';
+import 'package:pilipili/model/element.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class SeconedPage extends StatefulWidget {
-  SeconedPage({Key key, this.title}) : super(key: key);
+  SeconedPage({Key key, this.title, this.id}) : super(key: key);
   final String title;
+  final int id;
   @override
   State<SeconedPage> createState() => _SeconedPageState();
 }
 
 class _SeconedPageState extends State<SeconedPage> {
-  List data = [
-    {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-    {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-    {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-    {
-      'name': "萨克胩是看不到卡上看到挥洒的撒刘德华拉萨喝多了哈撒了电话",
-      'url':
-          "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg"
-    },
-  ];
-  Widget renderItem(String name, String url) {
+  bool loading = true;
+  int page = 1;
+  bool isAll = false;
+  int limit = 10;
+  bool networkErr = false;
+  bool isShow = false;
+  ConstructModel cm_data;
+  void getPageData() async {
+    getConstructById(id: widget.id, page: page, limit: limit).then((res) {
+      isAll = res.elements.length < limit;
+      if (page == 1) {
+        cm_data = res;
+      } else {
+        cm_data.elements.addAll(res.elements);
+      }
+    }).whenComplete(() {
+      loading = false;
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPageData();
+  }
+
+  Widget renderItem(dynamic itemData) {
     return GestureDetector(
       onTap: () {
-        context.push(CommonUtils.getRealHash('seconedPageDetail/${name}'));
+        AppGlobal.seconedPagePramas = itemData;
+        context.push(CommonUtils.getRealHash('seconedPageDetail'));
       },
       child: Container(
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.hardEdge,
+        height: ScreenUtil().setWidth(140),
         decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  color: Color.fromRGBO(255, 91, 140, 0.4),
-                  offset: Offset(0, 2),
-                  blurRadius: 3,
-                  spreadRadius: 0)
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //       color: Color.fromRGBO(255, 91, 140, 0.4),
+            //       blurRadius:15,
+            //       spreadRadius:ScreenUtil().setWidth(5)
+            //       )
+            // ],
             borderRadius:
                 BorderRadius.all(Radius.circular(ScreenUtil().setWidth(5)))),
         margin: EdgeInsets.only(bottom: DefaultStyle.pagePadding),
-        child: Stack(
-          children: [
-            Image.network(
-              url,
-              width: double.infinity,
-              height: ScreenUtil().setWidth(140),
-              fit: BoxFit.cover,
-            ),
-            Positioned(
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-                child: Container(
-                  color: Color.fromRGBO(0, 0, 0, 0.4),
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(25)),
-                  child: Text(
-                    name,
-                    style: DefaultStyle.white15,
-                  ),
-                ))
-          ],
+        child: PlatformAwareNetworkImage(
+          url: itemData['resource_url'],
+          fit: BoxFit.fill,
         ),
       ),
     );
@@ -96,14 +85,45 @@ class _SeconedPageState extends State<SeconedPage> {
             paddingTop: ScreenUtil().statusBarHeight,
             title: widget.title,
           ),
-          Expanded(
-              child: SingleChildScrollView(
-            padding: EdgeInsets.all(DefaultStyle.pagePadding),
-            child: Column(
-              children:
-                  data.map((e) => renderItem(e['name'], e['url'])).toList(),
-            ),
-          ))
+          loading
+              ? Container()
+              : Expanded(
+                  child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: DefaultStyle.pagePadding),
+                  child: cm_data.elements.isEmpty
+                      ? PageStatus.noData()
+                      : PullRefreshList(
+                          onRefresh: () {
+                            page = 1;
+                            getPageData();
+                          },
+                          onLoading: () {
+                            if (isAll) {
+                              CommonUtils.showText('数据已经加载完啦～');
+                              return;
+                            }
+                            page++;
+                            getPageData();
+                          },
+                          child: ListView.builder(
+                              padding: EdgeInsets.only(
+                                top: DefaultStyle.pagePadding,
+                                bottom: ScreenUtil().bottomBarHeight +
+                                    ScreenUtil().setWidth(20),
+                              ),
+                              itemCount: cm_data.elements.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                List itemCard =
+                                    cm_data.elements[index]['value'] == null
+                                        ? []
+                                        : cm_data.elements[index]['value'];
+                                return itemCard.isEmpty
+                                    ? Container()
+                                    : renderItem(itemCard[0]);
+                              }),
+                        ),
+                ))
         ],
       ),
     );

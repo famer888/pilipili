@@ -74,7 +74,7 @@ class _WodeState extends State<Wode> {
 
   List MenuList = [
     {'name': "观看记录", 'icon': "record"},
-    {'name': "我购买的", 'icon': "buy"},
+    {'name': "我购买的", 'icon': "buy", "router": '/${Routes.buy}'},
     {'name': "我的收藏", 'icon': "collect", "router": '/${Routes.collect}'},
     {'name': "我的下载", 'icon': "download", 'router': '/${Routes.down_page}'},
     {'name': "在线客服", 'icon': "customer", 'router': '/${Routes.onlineService}'},
