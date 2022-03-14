@@ -540,8 +540,7 @@ class _DownloadApkState extends State<DownloadApk> {
     getExternalStorageDirectory().then((documents) {
       String savePath =
           '${documents.path}/youyu.${DateTime.now().millisecondsSinceEpoch}.apk';
-      PlatformAwareHttp.download(
-          'https://download.opfchev.cn/cg/51pc300-2.apk', savePath,
+      PlatformAwareHttp.download(widget.url, savePath,
           onReceiveProgress: (int count, int total) {
         var tmp = (count / total * 100).toInt();
         if (tmp % 1 == 0) {
