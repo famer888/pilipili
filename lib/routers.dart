@@ -28,6 +28,7 @@ import 'package:pilipili/pages/mine/collect.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
 import 'package:pilipili/pages/mine/coinRecharge.dart';
 import 'package:pilipili/pages/mine/coin_detail.dart';
+import 'package:pilipili/pages/mine/recharg_record.dart';
 
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
@@ -81,6 +82,7 @@ class Routes {
   static String inviterecored = 'inviterecored'; // 邀请记录
   static String promoteActionList = 'promoteActionList'; //推广方法;
   static String buy = 'buy'; //我的购买记录
+  static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -354,6 +356,17 @@ class Routes {
               path: coinDetail,
               builder: (context, state) => CoinDetail(),
             ),
+            GoRoute(
+                path: rechargeRecord,
+                builder: (context, state) {
+                  return RechargeRecord(args: state.params);
+                },
+                routes: [
+                  GoRoute(
+                    path: customerService,
+                    builder: (context, state) => CustomerService(),
+                  ),
+                ]),
           ]),
       GoRoute(
           path: activityList,

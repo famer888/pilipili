@@ -585,6 +585,9 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
               paddingTop: ScreenUtil().statusBarHeight,
               title: '皮哩币充值',
               rightWidget: GestureDetector(
+                onTap: () {
+                  context.push(CommonUtils.getRealHash('RechargeRecord/2'));
+                },
                 child: Text(
                   '充值记录',
                   style: DefaultStyle.white13,
