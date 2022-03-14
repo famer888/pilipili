@@ -15,7 +15,7 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
   <application 
-    android:label="鱿鱼视频" 
+    android:label="Pilipili" 
     android:hardwareAccelerated="true" 
     android:requestLegacyExternalStorage="true" 
     android:usesCleartextTraffic="true" 

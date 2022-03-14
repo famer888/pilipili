@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
                     ),
                     Expanded(
                         child: Text(
-                      '打开浏览器[菜单]，选择[添加至主屏幕]或[添加至桌面]或[安装]，将鱿鱼视频添加至手机桌面，以便迅捷访问APP',
+                      '打开浏览器[菜单]，选择[添加至主屏幕]或[添加至桌面]或[安装]，将Pilipili添加至手机桌面，以便迅捷访问APP',
                       style: TextStyle(
                           color: Color(0xff333333),
                           fontSize: ScreenUtil().setSp(14)),
@@ -236,7 +236,7 @@ class _HomeState extends State<Home> {
           CommonUtils.launchURL(apkurl);
         }
       }
-    }, version: "鱿鱼视频v.$version", mustupdate: must == 1, text: '$tips');
+    }, version: "Pilipiliv.$version", mustupdate: must == 1, text: '$tips');
 
     showUpdateStatus = true;
     setState(() {});
