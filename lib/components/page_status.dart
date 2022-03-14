@@ -108,17 +108,17 @@ class PageStatus {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              PlatformAwareAssetImage(
-                url: 'assets/images/networkerr.png',
-                width: ScreenUtil().setWidth(100),
-                fit: BoxFit.fitWidth,
+              Image.asset(
+                'assets/images/404.png',
+                width: ScreenUtil().setWidth(164),
               ),
               SizedBox(
                 height: ScreenUtil().setWidth(9),
               ),
               Text(
                 text == null ? '加载失败，检查网络' : text,
-                style: DefaultStyle.gray15,
+                style: TextStyle(
+                    color: Color(0xffFFA4BF), fontSize: ScreenUtil().setSp(14)),
               ),
               SizedBox(
                 height: ScreenUtil().setWidth(20),
@@ -126,11 +126,11 @@ class PageStatus {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PlatformAwareAssetImage(
-                    url: 'assets/images/icon_shuaxin.png',
-                    width: ScreenUtil().setWidth(14),
-                    fit: BoxFit.fitWidth,
-                  ),
+                  // PlatformAwareAssetImage(
+                  //   url: 'assets/images/icon_shuaxin.png',
+                  //   width: ScreenUtil().setWidth(14),
+                  //   fit: BoxFit.fitWidth,
+                  // ),
                   SizedBox(
                     width: ScreenUtil().setWidth(5),
                   ),

@@ -200,7 +200,7 @@ class _SmallVideoState extends State<SmallVideo> {
                       child: Container(
                         width: ScreenUtil().screenWidth / 5,
                         child: Image.asset(
-                          'assets/pengke/loading.gif',
+                          'assets/images/loading.gif',
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -890,7 +890,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               width:
                                                   ScreenUtil().screenWidth / 5,
                                               child: Image.asset(
-                                                'assets/pengke/loading.gif',
+                                                'assets/images/loading.gif',
                                                 fit: BoxFit.fitWidth,
                                               ),
                                             ),
@@ -913,7 +913,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         child: Container(
                                           width: ScreenUtil().screenWidth / 5,
                                           child: Image.asset(
-                                            'assets/pengke/loading.gif',
+                                            'assets/images/loading.gif',
                                             fit: BoxFit.fitWidth,
                                           ),
                                         ),
@@ -939,7 +939,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                               child: Container(
                                 width: ScreenUtil().screenWidth / 5,
                                 child: Image.asset(
-                                  'assets/pengke/loading.gif',
+                                  'assets/images/loading.gif',
                                   fit: BoxFit.fitWidth,
                                 ),
                               ),
