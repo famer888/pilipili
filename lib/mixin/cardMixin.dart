@@ -8,6 +8,8 @@ import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/privilege.dart';
 
+import '../components/yy_dialog.dart';
+
 mixin CardMixin<T extends StatefulWidget> on State<T> {
   // String thumb = CommonUtils.getRandomThumb();
   @override
@@ -84,6 +86,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     6: {'privilege': RESOURCE_TYPE_PIC, 'text': '你没有开启色图权限呢！写真套图他人妻通通保存到手机~'},
     // 7: {'privilege': RESOURCE_TYPE_SHORT_VIDEO, 'text': '你没有开启短视频权限呢！该死，为什么我的手停不下来了~'},
   };
+
   Widget callDetail({
     Widget child,
     int contentType,
@@ -99,6 +102,30 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
+        if (privilegeMap[contentType] != null) {
+          bool _isAllowed = Privilege.isAllowed(context,
+              privilegeMap[contentType]['privilege'], PRIVILEGE_TYPE_VIEW);
+          if (!_isAllowed) {
+            YyShowDialog.showdialog(
+              context,
+              content: (setDialogState) {
+                return Text(
+                  privilegeMap[contentType]['text'],
+                  style: TextStyle(
+                      color: Color(0xffff84a9),
+                      fontSize: ScreenUtil().setSp(15),
+                      decoration: TextDecoration.none),
+                );
+              },
+              cancelText: '取消',
+              btnText: '立即升级',
+              callBack: () {
+                // context.push('/${Routes.vip}');
+              },
+            );
+            return;
+          }
+        }
         if (contentType != 4) {
           var id = cardData['related_id'] == null
               ? cardData['id']
