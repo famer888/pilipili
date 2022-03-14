@@ -317,7 +317,8 @@ class _ListPageState extends State<ListPage> {
                                   Stack(clipBehavior: Clip.none, children: [
                                 Image.asset(
                                   'assets/images/demo_bg.png',
-                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
                                 ),
                               ]))),
                       data.length == 0
