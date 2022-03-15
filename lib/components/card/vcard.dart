@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/index.dart';
 
 // ignore: must_be_immutable
 class Vcard extends StatefulWidget {
@@ -18,7 +19,6 @@ class Vcard extends StatefulWidget {
       this.id,
       this.page,
       this.height,
-      this.isNovel = false,
       this.replace = false,
       this.isSearch = false,
       this.isLocal = false,
@@ -35,7 +35,6 @@ class Vcard extends StatefulWidget {
   final int contentType;
   final dynamic id;
   final int page;
-  final bool isNovel;
   final bool replace;
   final bool isSearch;
   final bool isLocal;
@@ -60,15 +59,58 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
       downloading = widget.cardData["downloading"];
       isWaiting = widget.cardData["isWaiting"];
       progress = widget.cardData["progress"];
-      if (!widget.isNovel) {
+      if (widget.cardData["sets"].length > widget.cardData["progress"]) {
+        currentImg =
+            widget.cardData["sets"][widget.cardData["progress"]].length;
+        imgTotal = widget.cardData["sets"][widget.cardData["progress"]].length;
+      }
+      setState(() {});
+    }
+    if (widget.isLocal) {
+      EventBus().on('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}', (arg) {
+        if (widget.cardData["id"] == arg["id"]) {
+          setState(() {
+            progress = arg["progress"] ?? progress;
+            downloading = arg["downloading"] ?? true;
+            downloadError = arg["downloadError"] ?? false;
+            currentImg = arg["currentImg"] ?? currentImg;
+            imgTotal = arg["imgTotal"] ?? imgTotal;
+            isWaiting = false;
+          });
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(Vcard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isLocal) {
+      if (widget.cardData["id"] != oldWidget.cardData["id"]) {
+        progress = widget.cardData["progress"];
+        downloading = widget.cardData["downloading"];
+        isWaiting = widget.cardData["isWaiting"];
+        downloadError = false;
         if (widget.cardData["sets"].length > widget.cardData["progress"]) {
           currentImg =
               widget.cardData["sets"][widget.cardData["progress"]].length;
           imgTotal =
               widget.cardData["sets"][widget.cardData["progress"]].length;
         }
+        setState(() {});
       }
-      setState(() {});
+    }
+  }
+
+  String getDownloadText() {
+    return "${progress == 0 ? 1 : progress}章:${currentImg}/${imgTotal}";
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (widget.isLocal) {
+      EventBus().off('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}');
     }
   }
 
@@ -81,9 +123,8 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
         widget: widget,
         smallVideoData: widget.isSearch ? widget.cardData : null,
         replace: widget.replace,
-        progress: widget.isNovel
-            ? (progress / (widget.cardData["serieses"]?.length ?? 1))
-            : (progress / (widget.cardData["allEpisode"] ?? 1)),
+        isLocal: widget.isLocal,
+        progress: (progress / (widget.cardData["allEpisode"] ?? 1)),
         setDownloading: () {
           setState(() {
             isWaiting = true;
@@ -106,20 +147,78 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                           borderRadius: BorderRadius.all(
                               Radius.circular(ScreenUtil().setWidth(5)))),
                       height: thumbHeight,
-                      child: widget.isNovel
-                          ? PlatformAwareAssetImage(
-                              url: CommonUtils.getThumb(widget.cardData),
-                              width: widget.width,
-                              height: thumbHeight,
-                              fit: BoxFit.cover,
-                            )
-                          : PlatformAwareNetworkImage(
-                              width: widget.width,
-                              height: thumbHeight,
-                              fit: BoxFit.cover,
-                              url: widget.thumbUrl,
-                            )),
+                      child: PlatformAwareNetworkImage(
+                        width: widget.width,
+                        height: thumbHeight,
+                        fit: BoxFit.cover,
+                        url: widget.thumbUrl,
+                      )),
                   renderTagIcon(widget),
+                  widget.isLocal && progress != widget.cardData["allEpisode"]
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          left: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(0, 0, 0, 0.4)),
+                          ))
+                      : Container(),
+                  widget.isLocal && progress != widget.cardData["allEpisode"]
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          left: 0,
+                          child: downloading
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "正在下载:",
+                                      style: TextStyle(
+                                          color: progress == -1
+                                              ? Colors.red
+                                              : Colors.white,
+                                          decoration: TextDecoration.none,
+                                          fontSize: ScreenUtil().setSp(16)),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: ScreenUtil().setWidth(6)),
+                                      child: Text(
+                                        getDownloadText(),
+                                        style: TextStyle(
+                                            color: progress == -1
+                                                ? Colors.red
+                                                : Colors.white,
+                                            decoration: TextDecoration.none,
+                                            fontSize: ScreenUtil().setSp(16)),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Center(
+                                  child: Text(
+                                    downloadError
+                                        ? "下载失败，点击重试"
+                                        : isWaiting
+                                            ? "等待下载..."
+                                            : progress == 0
+                                                ? "点击开始下载"
+                                                : "暂停下载",
+                                    style: TextStyle(
+                                        color: progress == -1
+                                            ? Colors.red
+                                            : Colors.white,
+                                        decoration: TextDecoration.none,
+                                        fontSize: ScreenUtil().setSp(16)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ))
+                      : Container()
                 ],
               ),
               Stack(

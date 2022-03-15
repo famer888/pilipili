@@ -5,15 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/comics/comicsImg.dart';
 import 'package:pilipili/components/gestureZoomBox.dart';
+import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/scrollablePositionedList/item_positions_listener.dart';
 import 'package:pilipili/components/scrollablePositionedList/scrollable_positioned_list.dart';
+import 'package:pilipili/components/yy_dialog.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/watchRecordMixin.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/logUtil.dart';
-import 'package:pilipili/utils/networkImage.dart';
-
-import '../../utils/privilege.dart';
 
 class LocalComicsReader extends StatefulWidget {
   LocalComicsReader({Key key, this.comicsInfo, this.episode}) : super(key: key);
@@ -95,7 +96,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
       episodeList.add(index);
       index++;
     });
-    setPageDetail();
+    getPageDetail();
   }
 
   swichComic(int episode, {bool replace = false}) {
@@ -104,12 +105,9 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
             .replaceAll(RegExp(r"localComicsReader"), 'localComicsReader'),
         extra: {'comicsInfo': widget.comicsInfo, 'episode': episode},
         replace: replace);
-    // context.push(CommonUtils.getRealHash('localComicsReader'),
-    //     extra: {'comicsInfo': widget.comicsInfo, 'episode': episode},
-    //     replace: replace);
   }
 
-  setPageDetail() {
+  getPageDetail() async {
     comicsData = widget.comicsInfo["sets"][widget.episode - 1];
     LogUtil.d("漫画数据-----${comicsData}");
     comicLength = widget.comicsInfo["sets"][widget.episode - 1].length;
@@ -133,7 +131,6 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   @override
   void dispose() {
     super.dispose();
-
     EventBus().off('GETOFFSET');
     if (_timer != null && _timer.isActive) {
       _timer.cancel();
@@ -146,37 +143,43 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      body: Container(
-        height: ScreenUtil().screenHeight,
-        width: ScreenUtil().screenWidth,
-        child: Stack(
-          overflow: Overflow.clip,
-          children: [
-            Column(
-              children: [
-                // SizedBox(
-                //   height: ScreenUtil().statusBarHeight,
-                // ),
-                Expanded(
-                    child: GestureZoomBox(
-                  maxScale: 5.0,
-                  isHorizontal: isHorizontal,
-                  doubleTapScale: 2.0,
-                  duration: Duration(milliseconds: 200),
-                  onPressed: () {
-                    isShow = !isShow;
-                    setState(() {});
-                  },
-                  child: comicsPageView(),
-                ))
-              ],
+      body: loading
+          ? PageStatus.loading(mounted)
+          : Container(
+              height: ScreenUtil().screenHeight,
+              width: ScreenUtil().screenWidth,
+              child: Stack(
+                overflow: Overflow.clip,
+                children: [
+                  Column(
+                    children: [
+                      // SizedBox(
+                      //   height: ScreenUtil().statusBarHeight,
+                      // ),
+                      Expanded(
+                          child: GestureZoomBox(
+                        maxScale: 5.0,
+                        isHorizontal: isHorizontal,
+                        doubleTapScale: 2.0,
+                        duration: Duration(milliseconds: 200),
+                        onPressed: () {
+                          isShow = !isShow;
+                          setState(() {});
+                        },
+                        child: comicsPageView(),
+                      ))
+                    ],
+                  ),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: operatiogArea()),
+                  pageController()
+                ],
+              ),
             ),
-            Positioned(
-                top: 0, left: 0, right: 0, bottom: 0, child: operatiogArea()),
-            pageController()
-          ],
-        ),
-      ),
       endDrawer: comicDrawer(),
     );
   }
@@ -398,9 +401,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           padding: EdgeInsets.only(top: 0),
           itemBuilder: (BuildContext context, int index) {
             return isHorizontal
-                ? comicsData[index]["imgWidth"] == 'none' ||
-                        comicsData[index]["imgHeight"] == 'none' ||
-                        comicsData[index]["imgUrl"] == ''
+                ? comicsData[index].imgWidth == 'none' ||
+                        comicsData[index].imgHeight == 'none'
                     ? Container()
                     : Container(
                         height: ScreenUtil().screenHeight,
@@ -408,18 +410,16 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                         color: Colors.black,
                         child: Center(
                           child: ComicsImg(
-                              isLocal: true,
-                              img: comicsData[index]["imgUrl"],
+                              img: comicsData[index].imgUrl,
                               isHorizontal: isHorizontal,
                               isTap: isTap,
                               index: index,
-                              width: comicsData[index]["imgWidth"] == '0'
+                              width: comicsData[index].imgWidth == '0'
                                   ? ScreenUtil().screenWidth
-                                  : double.parse(comicsData[index]["imgWidth"]),
-                              height: comicsData[index]["imgHeight"] == '0'
+                                  : double.parse(comicsData[index].imgWidth),
+                              height: comicsData[index].imgHeight == '0'
                                   ? ScreenUtil().screenHeight
-                                  : double.parse(
-                                      comicsData[index]["imgHeight"]),
+                                  : double.parse(comicsData[index].imgHeight),
                               currentIndex: currenPage,
                               setPosition: (int position, double pageOffset) {
                                 currenPage = position;
@@ -429,20 +429,18 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                               length: comicLength),
                         ),
                       )
-                : (comicsData[index]["imgWidth"] == 'none' ||
-                        comicsData[index]["imgHeight"] == 'none' ||
-                        comicsData[index]["imgUrl"] == ''
+                : (comicsData[index].imgWidth == 'none' ||
+                        comicsData[index].imgHeight == 'none'
                     ? Container()
                     : ComicsImg(
-                        isLocal: true,
-                        img: comicsData[index]["imgUrl"],
+                        img: comicsData[index].imgUrl,
                         isHorizontal: isHorizontal,
-                        width: comicsData[index]["imgWidth"] == '0'
+                        width: comicsData[index].imgWidth == '0'
                             ? ScreenUtil().screenWidth
-                            : double.parse(comicsData[index]["imgWidth"]),
-                        height: comicsData[index]["imgHeight"] == '0'
+                            : double.parse(comicsData[index].imgWidth),
+                        height: comicsData[index].imgHeight == '0'
                             ? ScreenUtil().screenHeight
-                            : double.parse(comicsData[index]["imgHeight"]),
+                            : double.parse(comicsData[index].imgHeight),
                         isTap: isTap,
                         index: index,
                         currentIndex: currenPage,
@@ -754,7 +752,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           _timer.cancel();
         }
         isTap = true;
-        //打印手指按下的位置(相对于屏幕)
+        //打印手指按下的位置(相对于屏��)
         controllerOffset[offset] = e.globalPosition.dx - leftDx;
         fixOffset(offset, segmet, max);
       },
@@ -839,7 +837,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
-           'assets/images/comics//reader_icon_$img.png',
+            'assets/images/comics/reader_icon_$img.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
             filterQuality: FilterQuality.high,
@@ -885,7 +883,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset(
-            'assets/images/comics/' +
+              'assets/images/comics/' +
                   (type == 'left' ? 'left.png' : 'right.png'),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
@@ -987,7 +985,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
     return Container(
       height: ScreenUtil().screenHeight,
       width: ScreenUtil().setWidth(286.5),
-      color: Color(0xff161423),
+      color: Color(0xfff7f6fb),
       child: Column(
         children: [
           SizedBox(
@@ -1020,30 +1018,24 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                       cureentIndex = e + 1;
                     });
                   },
-                  child: Stack(children: [
-                    Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Image.asset(
-                          'assets/images/comics/${cureentIndex == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
-                          fit: BoxFit.fill,
-                        )),
-                    Container(
-                      width: ScreenUtil().setWidth(84.5),
-                      height: ScreenUtil().setWidth(32),
-                      child: Center(
-                          child: Text(
-                        episodeList[e].toString(),
-                        style: TextStyle(
-                            color: cureentIndex == e + 1
-                                ? Color(0xff62f7ff)
-                                : Colors.white,
-                            fontSize: ScreenUtil().setSp(15)),
-                      )),
-                    )
-                  ]),
+                  child: Container(
+                    width: ScreenUtil().setWidth(84.5),
+                    height: ScreenUtil().setWidth(32),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2.5),
+                        color: cureentIndex == e + 1
+                            ? Color(0xffff506b)
+                            : Colors.white),
+                    child: Center(
+                        child: Text(
+                      episodeList[e].toString(),
+                      style: TextStyle(
+                          color: cureentIndex == e + 1
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: ScreenUtil().setSp(15)),
+                    )),
+                  ),
                 );
               }).toList(),
             ),

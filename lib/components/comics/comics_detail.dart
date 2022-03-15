@@ -21,6 +21,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 import '../../model/comicsDetail.dart';
 import '../../utils/privilege.dart';
+import 'package:pilipili/utils/download_comics.dart';
 
 class ComicsDetatl extends StatefulWidget {
   ComicsDetatl({Key key, this.id}) : super(key: key);
@@ -428,19 +429,19 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                                 RESOURCE_TYPE_BOOK,
                                                                 PRIVILEGE_TYPE_DOWNLOAD);
                                                         if (canDownload) {
-                                                          // DownloadComics.createDownloadTask({
-                                                          //   'id': widget.id,
-                                                          //   'title': data.title,
-                                                          //   "description": data.description,
-                                                          //   "author": data.author,
-                                                          //   "tags": data.tags,
-                                                          //   "viewsCount": data.viewsCount,
-                                                          //   'thumb': data.thumb,
-                                                          //   'allEpisode': data.newestSeries,
-                                                          //   "downloading": false,
-                                                          //   "isWaiting": true,
-                                                          //   "sets": []
-                                                          // });
+                                                          DownloadComics.createDownloadTask({
+                                                            'id': widget.id,
+                                                            'title': data.title,
+                                                            "description": data.description,
+                                                            "author": data.author,
+                                                            "tags": data.tags,
+                                                            "viewsCount": data.viewsCount,
+                                                            'thumb': data.thumb,
+                                                            'allEpisode': data.newestSeries,
+                                                            "downloading": false,
+                                                            "isWaiting": true,
+                                                            "sets": []
+                                                          });
                                                         } else {
                                                           YyShowDialog
                                                               .showdialog(

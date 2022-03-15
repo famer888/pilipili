@@ -31,6 +31,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:pilipili/routers.dart';
 
 import '../../utils/privilege.dart';
 
@@ -614,7 +615,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         )
                                       : ListView.builder(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: DefaultStyle.pagePadding,
+                                              vertical:
+                                                  DefaultStyle.pagePadding,
                                               horizontal:
                                                   DefaultStyle.pagePadding),
                                           itemCount: commentList.length,
@@ -987,26 +989,31 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                 ? widget.data.preview
                                                 : widget.data.source240);
                                           },
-                                          child:Container(
-                          margin:
-                              EdgeInsets.only(top: ScreenUtil().setWidth(22)),
-                          height: ScreenUtil().setWidth(32),
-                          width: ScreenUtil().setWidth(118.5),
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(16))),
-                          child: Center(
-                            child: Text(
-                              '重新加载',
-                              style: DefaultStyle.white14,
-                            ),
-                          ),
-                        ),
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                top: ScreenUtil().setWidth(22)),
+                                            height: ScreenUtil().setWidth(32),
+                                            width: ScreenUtil().setWidth(118.5),
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xffFF84A9),
+                                                    Color(0xffFF9E9E)
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        ScreenUtil()
+                                                            .setWidth(16))),
+                                            child: Center(
+                                              child: Text(
+                                                '重新加载',
+                                                style: DefaultStyle.white14,
+                                              ),
+                                            ),
+                                          ),
                                         )
                                       ],
                                     ),
@@ -1458,8 +1465,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                                       : '购买观看',
                                                               callBack: () {
                                                             if (isInsufficient) {
-                                                              // context.push(
-                                                              //     '/${Routes.coinRecharge}');
+                                                              context.push(
+                                                                  '/${Routes.coinRecharge}');
                                                             } else {
                                                               buySmallVideo(
                                                                   money);
