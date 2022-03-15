@@ -294,9 +294,9 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                   child: buffering
                                       ? Center(
                                           child: Container(
-                                            width: ScreenUtil().screenWidth / 5,
+                                            width: ScreenUtil().setWidth(120),
                                             child: Image.asset(
-                                              'assets/images/loading.gif',
+                                              'assets/images/loading_pink.gif',
                                               fit: BoxFit.fitWidth,
                                             ),
                                           ),
@@ -311,9 +311,9 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
               ? mounted
                   ? Center(
                       child: Container(
-                        width: ScreenUtil().screenWidth / 5,
+                        width: ScreenUtil().setWidth(120),
                         child: Image.asset(
-                          'assets/images/loading.gif',
+                          'assets/images/loading_pink.gif',
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -926,9 +926,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                   widget.currentIndex != widget.index
                               ? Container()
                               : Container(
-                                  width: ScreenUtil().screenWidth / 5,
+                                  width: ScreenUtil().setWidth(120),
                                   child: Image.asset(
-                                    'assets/images/loading.gif',
+                                    'assets/images/loading_pink.gif',
                                     fit: BoxFit.fitWidth,
                                   ),
                                 ),

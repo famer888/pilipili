@@ -600,7 +600,7 @@ class _DownloadApkState extends State<DownloadApk> {
                         child: Stack(
                           children: <Widget>[
                             Image.asset(
-                              'assets/images/loading.gif',
+                              'assets/images/loading_1.gif',
                               width: ScreenUtil().setWidth(76),
                               height: ScreenUtil().setWidth(76),
                             ),

@@ -199,9 +199,9 @@ class _SmallVideoState extends State<SmallVideo> {
               ? mounted
                   ? Center(
                       child: Container(
-                        width: ScreenUtil().screenWidth / 5,
+                        width: ScreenUtil().setWidth(120),
                         child: Image.asset(
-                          'assets/images/loading.gif',
+                          'assets/images/loading_pink.gif',
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -890,9 +890,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         ? Center(
                                             child: Container(
                                               width:
-                                                  ScreenUtil().screenWidth / 5,
+                                                  ScreenUtil().setWidth(120),
                                               child: Image.asset(
-                                                'assets/images/loading.gif',
+                                                'assets/images/loading_pink.gif',
                                                 fit: BoxFit.fitWidth,
                                               ),
                                             ),
@@ -913,9 +913,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                       Positioned(
                                           child: Center(
                                         child: Container(
-                                          width: ScreenUtil().screenWidth / 5,
+                                          width: ScreenUtil().setWidth(120),
                                           child: Image.asset(
-                                            'assets/images/loading.gif',
+                                            'assets/images/loading_pink.gif',
                                             fit: BoxFit.fitWidth,
                                           ),
                                         ),
@@ -939,9 +939,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                             Positioned(
                                 child: Center(
                               child: Container(
-                                width: ScreenUtil().screenWidth / 5,
+                                width: ScreenUtil().setWidth(120),
                                 child: Image.asset(
-                                  'assets/images/loading.gif',
+                                  'assets/images/loading_pink.gif',
                                   fit: BoxFit.fitWidth,
                                 ),
                               ),
