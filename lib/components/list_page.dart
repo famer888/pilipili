@@ -234,14 +234,12 @@ class _ListPageState extends State<ListPage> {
                           width: ScreenUtil().setWidth(174),
                           contentType: cardType,
                           thumbUrl: CommonUtils.getThumb(data[e]),
-                          isNovel: cardType == 3 || cardType == 5,
                           cardData: data[e],
                           showField: 'title',
                         )
                       : Vcard(
                           width: ScreenUtil().setWidth(110),
                           contentType: cardType,
-                          isNovel: cardType == 3 || cardType == 5,
                           thumbUrl: CommonUtils.getThumb(data[e]),
                           cardData: data[e],
                           showField: 'title',
@@ -317,7 +315,8 @@ class _ListPageState extends State<ListPage> {
                                   Stack(clipBehavior: Clip.none, children: [
                                 Image.asset(
                                   'assets/images/demo_bg.png',
-                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
                                 ),
                               ]))),
                       data.length == 0

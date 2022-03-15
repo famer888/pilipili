@@ -108,12 +108,14 @@ class _CollectPageState extends State<CollectPage>
     setState(() {
       dataList[index]['isloading'] = true;
     });
+    dataList[index]['page'] = 1;
     var result = await getUserFavor(
-        page: 1, limit: limit, type: tabList[index - 1]['id']);
+        page: dataList[index]['page'],
+        limit: limit,
+        type: tabList[index - 1]['id']);
     if (result['data'] != null && result['data'].length > 0) {
       setState(() {
         dataList[index]['data'] = result['data'];
-        dataList[index]['page'] = 1;
         dataList[index]['isloading'] = false;
       });
       if (result['data'].length < limit) {
@@ -135,14 +137,14 @@ class _CollectPageState extends State<CollectPage>
 
   _onLoading(int index) async {
     if (dataList[index]['isall'] == false) {
+      dataList[index]['page']++;
       var result = await getUserFavor(
-          page: dataList[index]['page'] + 1,
+          page: dataList[index]['page'],
           limit: limit,
           type: tabList[index - 1]['id']);
       if (result['data'] != null && result['data'].length > 0) {
         setState(() {
-          dataList[index]['data'] = result['data'];
-          dataList[index]['page']++;
+          dataList[index]['data'].addAll(result['data']);
           dataList[index]['isloading'] = false;
         });
         if (result['data'].length < limit) {

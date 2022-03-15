@@ -21,6 +21,7 @@ import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/model/videolist.dart';
 import 'package:pilipili/model/coindetail.dart';
+import 'package:pilipili/model/coinorvip.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';

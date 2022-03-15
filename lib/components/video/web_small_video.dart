@@ -296,7 +296,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                           child: Container(
                                             width: ScreenUtil().screenWidth / 5,
                                             child: Image.asset(
-                                              'assets/pengke/loading.gif',
+                                              'assets/images/loading.gif',
                                               fit: BoxFit.fitWidth,
                                             ),
                                           ),
@@ -313,7 +313,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                       child: Container(
                         width: ScreenUtil().screenWidth / 5,
                         child: Image.asset(
-                          'assets/pengke/loading.gif',
+                          'assets/images/loading.gif',
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -928,7 +928,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                               : Container(
                                   width: ScreenUtil().screenWidth / 5,
                                   child: Image.asset(
-                                    'assets/pengke/loading.gif',
+                                    'assets/images/loading.gif',
                                     fit: BoxFit.fitWidth,
                                   ),
                                 ),

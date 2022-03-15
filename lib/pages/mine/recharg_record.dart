@@ -68,11 +68,11 @@ class _RechargeRecordState extends State<RechargeRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           PageTitleBar(
+              paddingTop: ScreenUtil().statusBarHeight,
               title: '充值记录',
               rightWidget: GestureDetector(
                 onTap: () {
@@ -83,23 +83,9 @@ class _RechargeRecordState extends State<RechargeRecord> {
                     CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
                   }
                 },
-                child: Container(
-                  width: ScreenUtil().setWidth(69.5),
-                  height: ScreenUtil().setWidth(18),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: ScreenUtil().setWidth(0.5),
-                          color: Color(0xff7bf7ff)),
-                      borderRadius:
-                          BorderRadius.circular(ScreenUtil().setWidth(9))),
-                  child: Center(
-                    child: Text(
-                      '联系客服',
-                      style: TextStyle(
-                          color: Color(0xff7bf7ff),
-                          fontSize: ScreenUtil().setSp(11)),
-                    ),
-                  ),
+                child: Text(
+                  '联系客服',
+                  style: DefaultStyle.white13,
                 ),
               )),
           Expanded(
@@ -146,7 +132,7 @@ class _RechargeRecordState extends State<RechargeRecord> {
                       ),
           ),
         ],
-      )),
+      ),
     );
   }
 }
@@ -163,13 +149,16 @@ class OrderItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           vertical: ScreenUtil().setWidth(18.5),
           horizontal: ScreenUtil().setWidth(14)),
-      decoration: ShapeDecoration(
-          shape: BeveledRectangleBorder(
-              side: BorderSide(
-                  width: ScreenUtil().setWidth(0.5), color: Color(0xffd7d7d7)),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(ScreenUtil().setWidth(10)),
-                  topRight: Radius.circular(ScreenUtil().setWidth(10))))),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.1),
+                offset: Offset(0, 0),
+                blurRadius: 5,
+                spreadRadius: 0)
+          ],
+          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
       child: Column(
         children: [
           Row(
@@ -188,17 +177,17 @@ class OrderItem extends StatelessWidget {
                 child: Row(
                   children: [
                     Image.asset(
-                      'assets/pengke/user/clipboard_icon.png',
-                      width: ScreenUtil().setWidth(15),
-                      height: ScreenUtil().setWidth(10),
+                      'assets/images/wode/clipboard_icon.png',
+                      width: ScreenUtil().setWidth(12),
+                      fit: BoxFit.fitWidth,
                     ),
                     SizedBox(
-                      width: ScreenUtil().setWidth(6),
+                      width: ScreenUtil().setWidth(4),
                     ),
                     Text(
                       '复制单号',
                       style: TextStyle(
-                          color: Color(0xff7bf7ff),
+                          color: DefaultStyle.themeColor,
                           fontSize: ScreenUtil().setSp(12),
                           overflow: TextOverflow.ellipsis,
                           decoration: TextDecoration.none),
@@ -223,9 +212,9 @@ class OrderItem extends StatelessWidget {
             children: [
               Text(
                 '${orderData?.descp}',
-                style: DefaultStyle.white16bold,
+                style: DefaultStyle.black16bold,
               ),
-              Text('${orderData?.amount}', style: DefaultStyle.white16bold),
+              Text('${orderData?.amount}', style: DefaultStyle.black16bold),
             ],
           ),
           SizedBox(

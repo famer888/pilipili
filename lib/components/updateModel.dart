@@ -594,47 +594,72 @@ class _DownloadApkState extends State<DownloadApk> {
                       SizedBox(
                         height: ScreenUtil().setWidth(25),
                       ),
-                      SizedBox(
-                        width: ScreenUtil().setWidth(185),
-                        height: ScreenUtil().setWidth(4),
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(ScreenUtil().setWidth(38))),
                         child: Stack(
                           children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(ScreenUtil().setWidth(2))),
-                              child: Stack(
-                                children: <Widget>[
-                                  Opacity(
-                                    opacity: 0.3,
-                                    child: Container(
-                                      width: ScreenUtil().setWidth(185),
-                                      height: ScreenUtil().setWidth(4),
-                                      decoration: BoxDecoration(
-                                          color: Color(0xFFAB3854)),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 0,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              ScreenUtil().setWidth(4))),
-                                      child: Container(
-                                        width: progress /
-                                            100 *
-                                            ScreenUtil().setWidth(185),
-                                        height: ScreenUtil().setWidth(4),
-                                        decoration: BoxDecoration(
-                                            color: Color(0xFFFF5B8C)),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            Image.asset(
+                              'assets/images/loading.gif',
+                              width: ScreenUtil().setWidth(76),
+                              height: ScreenUtil().setWidth(76),
                             ),
+                            Positioned(
+                                top: 0,
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: ScreenUtil().setWidth(12),
+                                  backgroundColor: Colors.transparent,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Color(0xffFF5B8C)),
+                                  value: progress / 100,
+                                ))
                           ],
                         ),
                       ),
+                      // SizedBox(
+                      //   width: ScreenUtil().setWidth(185),
+                      //   height: ScreenUtil().setWidth(4),
+                      //   child: Stack(
+                      //     children: <Widget>[
+                      //       ClipRRect(
+                      //         borderRadius: BorderRadius.all(
+                      //             Radius.circular(ScreenUtil().setWidth(38))),
+                      //         child: Stack(
+                      //           children: <Widget>[
+                      //             Opacity(
+                      //               opacity: 0.3,
+                      //               child: Container(
+                      //                 width: ScreenUtil().setWidth(185),
+                      //                 height: ScreenUtil().setWidth(4),
+                      //                 decoration: BoxDecoration(
+                      //                     color: Color(0xFFAB3854)),
+                      //               ),
+                      //             ),
+                      //             Positioned(
+                      //               left: 0,
+                      //               child: ClipRRect(
+                      //                 borderRadius: BorderRadius.all(
+                      //                     Radius.circular(
+                      //                         ScreenUtil().setWidth(4))),
+                      //                 child: Container(
+                      //                   width: progress /
+                      //                       100 *
+                      //                       ScreenUtil().setWidth(185),
+                      //                   height: ScreenUtil().setWidth(4),
+                      //                   decoration: BoxDecoration(
+                      //                       color: Color(0xFFFF5B8C)),
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(
                         height: ScreenUtil().setWidth(12),
                       ),
