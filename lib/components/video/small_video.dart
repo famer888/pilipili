@@ -502,7 +502,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
             },
             cancelText: '分享无限看',
             callBack: () {
-              // context.push('/${Routes.vip}');
+              context.push('/${Routes.vip}');
             },
             content: (setDialogState) {
               return DefaultTextStyle(
@@ -673,7 +673,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                 title: '提示',
                                 btnText: '升级VIP',
                                 cancelText: '取消', callBack: () {
-                              // context.push('/${Routes.vip}');
+                              context.push('/${Routes.vip}');
                             }, content: (setDialogState) {
                               return DefaultTextStyle(
                                   style: DefaultStyle.white14,
@@ -1120,8 +1120,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                             ));
                                                       });
                                                     } else {
-                                                      // context.push(
-                                                      //     '/${Routes.vip}');
+                                                      context.push(
+                                                          '/${Routes.vip}');
                                                     }
                                                   },
                                                   child: Row(
@@ -1500,8 +1500,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                                 ));
                                                           });
                                                         } else {
-                                                          // context.push(
-                                                          //     '/${Routes.vip}');
+                                                          context.push(
+                                                              '/${Routes.vip}');
                                                         }
                                                       },
                                                     );
