@@ -191,7 +191,7 @@ class _WelcomeState extends State<Welcome> {
                               // Container(
                               //   width: ScreenUtil().screenWidth / 3,
                               //   child: Image.asset(
-                              //     'assets/images/loading.gif',
+                              //     'assets/images/loading_pink.gif',
                               //     fit: BoxFit.fitWidth,
                               //   ),
                               // ),

@@ -18,6 +18,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/logUtil.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/routers.dart';
 import 'package:provider/provider.dart';
 import '../../model/comicsDetail.dart';
 import '../../utils/privilege.dart';
@@ -467,7 +468,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                             cancelText: '取消',
                                                             btnText: '立即升级',
                                                             callBack: () {
-                                                              // context.push('/${Routes.vip}');
+                                                              context.push('/${Routes.vip}');
                                                             },
                                                           );
                                                         }

@@ -200,9 +200,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                           child: videoLoading
                               ? Center(
                                   child: Container(
-                                    width: ScreenUtil().screenWidth / 5,
+                                    width: ScreenUtil().setWidth(90),
                                     child: Image.asset(
-                                      'assets/images/loading.gif',
+                                      'assets/images/loading_pink.gif',
                                       fit: BoxFit.fitWidth,
                                     ),
                                   ),
@@ -476,7 +476,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               });
                                                                             });
                                                                           } else {
-                                                                            // context.push('/${Routes.vip}');
+                                                                            context.push('/${Routes.vip}');
                                                                           }
                                                                         },
                                                                       );
@@ -822,8 +822,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         btnText: '升级VIP',
                                                         cancelText: '取消',
                                                         callBack: () {
-                                                      // context.push(
-                                                      //     '/${Routes.vip}');
+                                                      context.push(
+                                                          '/${Routes.vip}');
                                                     }, content:
                                                             (setDialogState) {
                                                       return DefaultTextStyle(
@@ -952,7 +952,7 @@ class _ConmentItemState extends State<ConmentItem> {
                     title: '权限不足',
                     btnText: '升级VIP',
                     cancelText: '取消', callBack: () {
-                  // context.push('/${Routes.vip}');
+                  context.push('/${Routes.vip}');
                 }, content: (setDialogState) {
                   return DefaultTextStyle(
                       style: TextStyle(

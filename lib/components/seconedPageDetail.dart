@@ -60,7 +60,10 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                     ScreenUtil().setWidth(140) + ScreenUtil().statusBarHeight,
                 child: PlatformAwareNetworkImage(
                   url: pagePramas['resource_url'],
+                  alignment: Alignment.bottomCenter,
                   width: double.infinity,
+                  height:
+                      ScreenUtil().setWidth(140) + ScreenUtil().statusBarHeight,
                   fit: BoxFit.cover,
                 ),
               )),
@@ -94,7 +97,6 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                     expandedHeight: ScreenUtil().setWidth(140) +
                         ScreenUtil().statusBarHeight,
                     flexibleSpace: FlexibleSpaceBar(
-
                       collapseMode: CollapseMode.pin,
                       background: Stack(
                         children: [
@@ -217,7 +219,10 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                       ScreenUtil().setWidth(140) + ScreenUtil().statusBarHeight,
                   child: PlatformAwareNetworkImage(
                     url: pagePramas['resource_url'],
+                    alignment: Alignment.bottomCenter,
                     width: double.infinity,
+                    height: ScreenUtil().setWidth(140) +
+                        ScreenUtil().statusBarHeight,
                     fit: BoxFit.cover,
                   ),
                 ),
