@@ -25,6 +25,7 @@ import 'package:pilipili/pages/mine/promote.dart';
 import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/mine/vip_page.dart';
+import 'package:pilipili/pages/mine/watch_history.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
@@ -74,6 +75,7 @@ class Routes {
   static String vip = 'vip'; //会员充值页面
   static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
 
+  static String watchhistory = 'watchhistory'; //观看记录
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
   static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
@@ -361,6 +363,10 @@ class Routes {
           builder: (context, state) => CustomerService(),
         ),
       ]),
+      GoRoute(
+          path: watchhistory,
+          builder: (context, state) => WatchHistoryPage(),
+          routes: getDetailRoutes()),
       GoRoute(
           path: search,
           builder: (context, state) => SearchPage(),
