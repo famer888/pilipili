@@ -199,9 +199,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                           child: videoLoading
                               ? Center(
                                   child: Container(
-                                    width: ScreenUtil().screenWidth / 5,
+                                    width: ScreenUtil().setWidth(90),
                                     child: Image.asset(
-                                      'assets/images/loading.gif',
+                                      'assets/images/loading_pink.gif',
                                       fit: BoxFit.fitWidth,
                                     ),
                                   ),

@@ -14,9 +14,9 @@ class PageStatus {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: ScreenUtil().screenWidth / 5,
+                width: ScreenUtil().setWidth(120),
                 child: Image.asset(
-                  'assets/images/loading.gif',
+                  'assets/images/loading_pink.gif',
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -35,16 +35,18 @@ class PageStatus {
 //列表loding
   static Widget loading(bool mouted, {String text}) {
     if (mouted) {
-      return Container(
-        alignment: Alignment.center,
+      return SafeArea(
+          child: Container(
+        alignment: Alignment.topCenter,
+        padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(100)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: ScreenUtil().screenWidth / 5,
+              width: ScreenUtil().setWidth(120),
               padding: EdgeInsets.only(top: ScreenUtil().setWidth(50)),
               child: Image.asset(
-                'assets/images/loading.gif',
+                'assets/images/loading_pink.gif',
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -53,11 +55,12 @@ class PageStatus {
             ),
             Text(
               text == null ? '正在为您加载数据...' : text,
-              style: DefaultStyle.lgray12,
+              style: TextStyle(
+                  color: Color(0xffFFA4BF), fontSize: ScreenUtil().setSp(14)),
             )
           ],
         ),
-      );
+      ));
     } else {
       return Container();
     }
@@ -77,7 +80,7 @@ class PageStatus {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
-            'assets/pengke/nodata.png',
+            'assets/images/nodata.png',
             width: ScreenUtil().setWidth(100),
             fit: BoxFit.fitWidth,
           ),
@@ -86,7 +89,8 @@ class PageStatus {
           ),
           Text(
             text == null ? '快来填满我～' : text,
-            style: DefaultStyle.gray15,
+            style: TextStyle(
+                color: Color(0xffFFA4BF), fontSize: ScreenUtil().setSp(14)),
           )
         ],
       ),
