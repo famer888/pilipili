@@ -91,7 +91,6 @@ class Routes {
   static String inviterecored = 'inviterecored'; // 邀请记录
   static String promoteActionList = 'promoteActionList'; //推广方法;
   static String buy = 'buy'; //我的购买记录
-  static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
 
   static List<GoRoute> getDetailRoutes() {
     return [
