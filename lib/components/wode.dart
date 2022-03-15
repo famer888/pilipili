@@ -73,7 +73,7 @@ class _WodeState extends State<Wode> {
   }
 
   List MenuList = [
-    {'name': "观看记录", 'icon': "record"},
+    {'name': "观看记录", 'icon': "record", 'router': '/${Routes.watchhistory}'},
     {'name': "我购买的", 'icon': "buy", "router": '/${Routes.buy}'},
     {'name': "我的收藏", 'icon': "collect", "router": '/${Routes.collect}'},
     {'name': "我的下载", 'icon': "download", 'router': '/${Routes.down_page}'},
@@ -101,14 +101,14 @@ class _WodeState extends State<Wode> {
         pageStatus != 2 ? Container() : header(members, isLogin),
         Expanded(
             child: PullRefreshList(
-          onLoading: () {
+          // onLoading: () {},
+          onRefresh: () {
             if (networkErr) {
               networkErr = false;
               setState(() {});
             }
             initInfo();
           },
-          onRefresh: () {},
           child: networkErr
               ? Column(
                   mainAxisSize: MainAxisSize.min,
@@ -166,8 +166,8 @@ class _WodeState extends State<Wode> {
               children: <Widget>[
                 Image.asset(
                   "assets/images/wode/vip_bg.png",
-                  width: ScreenUtil().setHeight(156),
-                  fit: BoxFit.fill,
+                  width: ScreenUtil().setWidth(170),
+                  fit: BoxFit.fitWidth,
                 ),
                 Positioned(
                   top: ScreenUtil().setHeight(62),
@@ -196,7 +196,7 @@ class _WodeState extends State<Wode> {
                   ),
                 ),
                 Positioned(
-                  bottom: ScreenUtil().setHeight(12),
+                  bottom: ScreenUtil().setWidth(11),
                   left: ScreenUtil().setWidth(14),
                   child: Text(
                     "立即开通",
@@ -225,6 +225,7 @@ class _WodeState extends State<Wode> {
                     children: <Widget>[
                       Image.asset(
                         "assets/images/wode/glod_bg.png",
+                        width: ScreenUtil().setWidth(160),
                         fit: BoxFit.fill,
                       ),
                       Positioned(
@@ -251,7 +252,7 @@ class _WodeState extends State<Wode> {
                         ),
                       ),
                       Positioned(
-                        bottom: ScreenUtil().setHeight(5),
+                        bottom: ScreenUtil().setWidth(6),
                         left: ScreenUtil().setWidth(12),
                         child: Text(
                           "立即充值",
@@ -269,6 +270,7 @@ class _WodeState extends State<Wode> {
                   children: <Widget>[
                     Image.asset(
                       "assets/images/wode/activity_bg.png",
+                      width: ScreenUtil().setWidth(160),
                       fit: BoxFit.fill,
                     ),
                     Positioned(
@@ -295,10 +297,10 @@ class _WodeState extends State<Wode> {
                       ),
                     ),
                     Positioned(
-                      bottom: ScreenUtil().setHeight(5),
+                      bottom: ScreenUtil().setWidth(6),
                       left: ScreenUtil().setWidth(12),
                       child: Text(
-                        "立即充值",
+                        "立即领取",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(12),
                             color: Colors.white,
