@@ -119,11 +119,12 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
     setState(() {
       dataList[index]['isloading'] = true;
     });
-    var result = await getUserBuy(page: 1, type: tabList[index - 1]['id']);
+    dataList[index]['page'] = 1;
+    var result = await getUserBuy(
+        page: dataList[index]['page'], type: tabList[index - 1]['id']);
     if (result['data'] != null && result['data'].length > 0) {
       setState(() {
         dataList[index]['data'] = result['data'];
-        dataList[index]['page'] = 1;
         dataList[index]['isloading'] = false;
       });
       if (result['data'].length < 24) {
@@ -145,12 +146,12 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
 
   _onLoading(int index) async {
     if (dataList[index]['isall'] == false) {
+      dataList[index]['page']++;
       var result = await getUserBuy(
-          page: dataList[index]['page'] + 1, type: tabList[index - 1]['id']);
+          page: dataList[index]['page'], type: tabList[index - 1]['id']);
       if (result['data'] != null && result['data'].length > 0) {
         setState(() {
-          dataList[index]['data'] = result['data'];
-          dataList[index]['page']++;
+          dataList[index]['data'].addAll(result['data']);
           dataList[index]['isloading'] = false;
         });
         if (result['data'].length < 24) {
@@ -344,7 +345,7 @@ class _BuyListState extends State<BuyList> {
                     ),
                     itemBuilder: (context, index) {
                       return Vcard(
-                        maxLines: 1,
+                          maxLines: 1,
                           isSearch: true,
                           width: ScreenUtil().setWidth(110.5),
                           thumbUrl: CommonUtils.getThumb(

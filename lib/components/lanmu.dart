@@ -175,7 +175,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                       fixedBanner['value'].length == 0
                                   ? Image.asset(
                                       'assets/images/demo_bg.png',
-                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
                                     )
                                   : Swiper(
                                       autoplayDelay: 3000,

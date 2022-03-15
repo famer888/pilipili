@@ -188,6 +188,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                           controller: scrollController,
                           slivers: [
                               SliverAppBar(
+                                  automaticallyImplyLeading: false,
+                                  actions: <Widget>[Container()],
                                   backgroundColor: Colors.transparent,
                                   primary: false,
                                   leading: Container(),
