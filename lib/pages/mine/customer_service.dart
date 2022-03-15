@@ -549,8 +549,8 @@ class _CustomerServiceState extends State<CustomerService> {
               ? Container()
               : Stack(children: [
                   Container(
-                    margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).padding.bottom),
+                    // padding: EdgeInsets.only(
+                    //     bottom: MediaQuery.of(context).padding.bottom),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
@@ -561,9 +561,11 @@ class _CustomerServiceState extends State<CustomerService> {
                             blurRadius: ScreenUtil().setWidth(10))
                       ],
                     ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: DefaultStyle.pagePadding),
-                    height: ScreenUtil().setWidth(50),
+                    padding: EdgeInsets.only(
+                        left: DefaultStyle.pagePadding,
+                        right: DefaultStyle.pagePadding,
+                        bottom: MediaQuery.of(context).padding.bottom),
+                    // height: ScreenUtil().setWidth(50),
                     child: Row(
                       children: [
                         Container(

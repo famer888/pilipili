@@ -22,7 +22,9 @@ import 'package:pilipili/pages/mine/invite_recored.dart';
 import 'package:pilipili/pages/mine/notice_message.dart';
 import 'package:pilipili/pages/mine/online_service.dart';
 import 'package:pilipili/pages/mine/promote.dart';
+import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/mine/setup.dart';
+import 'package:pilipili/pages/mine/vip_page.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
@@ -63,6 +65,9 @@ class Routes {
   static String atlasList = 'atlasList/:index'; //图集列表展示
   static String onlineService = 'onlineService'; //在线客服
   static String contactOfficial = 'contactOfficial'; //联系官方
+
+  static String vip = 'vip'; //会员充值页面
+  static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
 
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
@@ -334,6 +339,23 @@ class Routes {
 
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
+      GoRoute(path: vip, builder: (context, state) => VipPage(), routes: [
+        GoRoute(
+            path: rechargeRecord,
+            builder: (context, state) {
+              return RechargeRecord(args: state.params);
+            },
+            routes: [
+              GoRoute(
+                path: customerService,
+                builder: (context, state) => CustomerService(),
+              ),
+            ]),
+        GoRoute(
+          path: customerService,
+          builder: (context, state) => CustomerService(),
+        ),
+      ]),
       GoRoute(
           path: search,
           builder: (context, state) => SearchPage(),

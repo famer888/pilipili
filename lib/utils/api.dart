@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/model/animationDetail.dart';
 import 'package:pilipili/model/basic.dart';
+import 'package:pilipili/model/coinorvip.dart';
 import 'package:pilipili/model/comicReading.dart';
 import 'package:pilipili/model/comicsDetail.dart';
 import 'package:pilipili/model/construct.dart';
@@ -809,6 +810,41 @@ Future getUserBuy({int page, int type, int limit = 24}) async {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/user/getUserBuy",
         data: {'page': page, 'limit': limit, 'type': type});
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//获取商品-VIP
+Future<Basic> getProductOfVIP({int showMore}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList',
+        data: {'type': 1, 'show_more': showMore});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 我的卡包  VIP
+Future getUserProductList({int limit, int page}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/user/getUserProductList',
+        data: {'limit': limit, 'page': page});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 充值记录
+Future<CoinOrVipModel> getOrderList(
+    {int page = 1, dynamic type = '', int limit = 24}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/order/orderList",
+        data: {'limit': limit, 'page': page, 'type': type});
+    return CoinOrVipModel.fromJson(res.data);
   } catch (e) {
     return null;
   }

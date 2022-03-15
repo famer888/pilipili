@@ -65,6 +65,7 @@ dependencies:
   video_player_web_hls: ^0.1.11+3
   waterfall_flow: ^3.0.2
   wakelock: ^0.6.1+1
+  card_swiper: ^2.0.3
 
 dev_dependencies:
   flutter_test:
