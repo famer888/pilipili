@@ -546,11 +546,11 @@ Future<SystemNoticeList> getSystemNoticeList({int page, int limit}) async {
 }
 
 // 我收藏的
-Future<dynamic> getUserFavor({int page, int limit = 24, int type}) async {
+Future<dynamic> getUserFavor({int page, int limit = 24, int type,int category}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post(
         '/api/user/getUserFavor',
-        data: {'page': page, 'limit': limit, 'type': type});
+        data: {'page': page, 'limit': limit, 'type': type,'category':category});
     return res.data;
   } catch (e) {
     return null;
@@ -806,10 +806,15 @@ Future<MyRewardModel> getMyReward() async {
 }
 
 // 我购买的
-Future getUserBuy({int page, int type, int limit = 24}) async {
+Future getUserBuy({int page, int type, int limit = 24, int category}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/user/getUserBuy",
-        data: {'page': page, 'limit': limit, 'type': type});
+        data: {
+          'page': page,
+          'limit': limit,
+          'type': type,
+          'category': category
+        });
     return res.data;
   } catch (e) {
     return null;

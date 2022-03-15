@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/sharemovie.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -248,7 +249,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                       onTap: () {
                                         if (isInsufficient) {
                                           context.pop();
-                                          // context.push('/${Routes.coinRecharge}');
+                                          context.push('/${Routes.coinRecharge}');
                                         } else {
                                           buyFunction();
                                         }
@@ -284,7 +285,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                             child: GestureDetector(
                                           onTap: () {
                                             context.pop();
-                                            // context.push('/${Routes.vip}');
+                                            context.push('/${Routes.vip}');
                                           },
                                           child: Stack(
                                             clipBehavior: Clip.none,
@@ -505,7 +506,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
             ),
             GestureDetector(
               onTap: () {
-                // context.push('/${Routes.vip}');
+                context.push('/${Routes.vip}');
               },
               child: Container(
                   width: ScreenUtil().setWidth(119),

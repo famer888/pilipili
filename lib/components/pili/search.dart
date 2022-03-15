@@ -461,15 +461,11 @@ class _SearchResultState extends State<SearchResult> {
   PageController controller = PageController();
   int currentTab = 0;
   List tabList = [
-    {
-      'title': '次元',
-      'api': '/api/mv/search',
-      'pramas': {'type': 1}
-    },
+    {'title': '次元', 'api': '/api/mv/search', 'pramas': {}},
     {
       'title': '动漫',
       'api': '/api/mv/search',
-      'pramas': {'type': 2}
+      'pramas': {'category': 1}
     },
     {'title': '漫画', 'api': '/api/book/search', 'pramas': {}}
   ];
@@ -550,6 +546,7 @@ class _SearchResultState extends State<SearchResult> {
             pramas.addAll(tabList[e]['pramas']);
             return PageViewMixin(
               child: PublicList(
+                contentType: e==2?2:null,
                 data: pramas,
                 api: tabList[e]['api'],
                 isShow: e == currentTab,

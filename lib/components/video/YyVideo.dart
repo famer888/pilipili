@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/video/video_controller.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/video_mixin.dart';
+import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -243,7 +244,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                       : GestureDetector(
                           onTap: () {
                             if (widget.data.isfree == 1) {
-                              // context.push('/${Routes.vip}');
+                              context.push('/${Routes.vip}');
                             } else {
                               showBuy(widget.data, buySmallVideo);
                             }

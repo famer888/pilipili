@@ -25,17 +25,17 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
   List tabList = [
     {
       'id': 1,
-      'name': '长视频',
+      'name': '次元精选',
       'index': 1,
     },
     {
       'id': 11,
-      'name': '短视频',
+      'name': '次元竖屏',
       'index': 2,
     },
     {
-      'id': 2,
-      'name': '漫画',
+      'id': 1,
+      'name': '动漫',
       'index': 3,
     },
     {
@@ -95,7 +95,10 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
   onTabsChange(int index) async {
     if (dataList[index]['data'].length == 0 &&
         dataList[index]['isall'] == false) {
-      var result = await getUserBuy(page: 1, type: tabList[index - 1]['id']);
+      var result = await getUserBuy(
+          category: index == 3 ? 1 : null,
+          page: 1,
+          type: tabList[index - 1]['id']);
       if (result['data'] != null && result['data'].length > 0) {
         setState(() {
           dataList[index]['data'] = result['data'];
@@ -121,7 +124,9 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
     });
     dataList[index]['page'] = 1;
     var result = await getUserBuy(
-        page: dataList[index]['page'], type: tabList[index - 1]['id']);
+        category: index == 3 ? 1 : null,
+        page: dataList[index]['page'],
+        type: tabList[index - 1]['id']);
     if (result['data'] != null && result['data'].length > 0) {
       setState(() {
         dataList[index]['data'] = result['data'];
@@ -148,7 +153,9 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
     if (dataList[index]['isall'] == false) {
       dataList[index]['page']++;
       var result = await getUserBuy(
-          page: dataList[index]['page'], type: tabList[index - 1]['id']);
+          category: index == 3 ? 1 : null,
+          page: dataList[index]['page'],
+          type: tabList[index - 1]['id']);
       if (result['data'] != null && result['data'].length > 0) {
         setState(() {
           dataList[index]['data'].addAll(result['data']);
@@ -357,44 +364,6 @@ class _BuyListState extends State<BuyList> {
                     }));
   }
 
-  Widget _comicsList() {
-    return widget.dataList[widget.index]['isloading']
-        ? PageStatus.loading(mounted)
-        : PullRefreshList(
-            onRefresh: () {
-              widget.onRefreshPost(widget.index);
-            },
-            onLoading: () {
-              widget.onLoading(widget.index);
-            },
-            child: widget.dataList[widget.index]['data'].length == 0
-                ? SingleChildScrollView(
-                    child: PageStatus.noData(text: '您还没有购买漫画'),
-                  )
-                : GridView.builder(
-                    cacheExtent: ScreenUtil().screenHeight * 5,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: DefaultStyle.pagePadding,
-                        vertical: ScreenUtil().setWidth(20)),
-                    itemCount: widget.dataList[widget.index]['data'].length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: ScreenUtil().setWidth(9.5),
-                      crossAxisSpacing: ScreenUtil().setWidth(9.5),
-                      childAspectRatio: 0.55,
-                    ),
-                    itemBuilder: (context, index) {
-                      return Vcard(
-                        contentType: 2,
-                        width: ScreenUtil().setWidth(110.5),
-                        thumbUrl: CommonUtils.getThumb(
-                            widget.dataList[widget.index]['data'][index]),
-                        cardData: widget.dataList[widget.index]['data'][index],
-                        showField: 'title',
-                      );
-                    }));
-  }
-
   Widget _youxuanList() {
     return widget.dataList[widget.index]['isloading']
         ? PageStatus.loading(mounted)
@@ -430,7 +399,7 @@ class _BuyListState extends State<BuyList> {
         return _videoList();
         break;
       case 2:
-        return _comicsList();
+        return _videoList();
         break;
       case 99:
         return _youxuanList();

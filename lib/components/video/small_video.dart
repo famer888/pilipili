@@ -462,7 +462,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
         YyShowDialog.showdialog(context,
             btnText: isInsufficient ? 'GOLD不足，前往充值' : '购买观看', callBack: () {
           if (isInsufficient) {
-            // context.push('/${Routes.coinRecharge}');
+            context.push('/${Routes.coinRecharge}');
           } else {
             buySmallVideo(money);
           }
@@ -1081,8 +1081,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                               : '购买观看',
                                                           callBack: () {
                                                         if (isInsufficient) {
-                                                          // context.push(
-                                                          //     '/${Routes.coinRecharge}');
+                                                          context.push(
+                                                              '/${Routes.coinRecharge}');
                                                         } else {
                                                           buySmallVideo(money);
                                                         }

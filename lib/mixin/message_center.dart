@@ -120,7 +120,7 @@ class MessageOfNotice extends StatelessWidget {
               cancelText: '取消',
               btnText: '立即升级',
               callBack: () {
-                // context.push('/${Routes.vip}');
+                context.push('/${Routes.vip}');
               },
             );
             return;

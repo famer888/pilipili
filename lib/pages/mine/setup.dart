@@ -307,7 +307,7 @@ class _SetupPageState extends State<SetupPage> {
         cancelText: '取消',
         btnText: '立即升级',
         callBack: () {
-          // context.push('/${Routes.vip}');
+          context.push('/${Routes.vip}');
         },
       );
       return;
@@ -481,7 +481,7 @@ class _SetupPageState extends State<SetupPage> {
                         cancelText: '取消',
                         btnText: '立即升级',
                         callBack: () {
-                          // context.push('/${Routes.vip}');
+                          context.push('/${Routes.vip}');
                         },
                       );
                       return;
