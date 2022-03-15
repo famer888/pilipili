@@ -79,6 +79,12 @@ class DefaultStyle {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static TextStyle lgray14Bold = TextStyle(
+      color: Color(0xff979797),
+      fontWeight: FontWeight.bold,
+      fontSize: ScreenUtil().setSp(14),
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
   static TextStyle lgray16bolb = TextStyle(
       color: Color(0xff979797),
       fontWeight: FontWeight.bold,
@@ -315,4 +321,10 @@ class DefaultStyle {
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   );
+  static TextStyle pink14bold = TextStyle(
+      color: Color(0xffFF5B8C),
+      fontSize: ScreenUtil().setSp(14),
+      fontWeight: FontWeight.bold,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
 }

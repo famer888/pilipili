@@ -157,52 +157,57 @@ class _WodeState extends State<Wode> {
       child: Flex(
         direction: Axis.horizontal,
         children: <Widget>[
-          Stack(
-            alignment: Alignment.topLeft,
-            children: <Widget>[
-              Image.asset(
-                "assets/images/wode/vip_bg.png",
-                width: ScreenUtil().setHeight(156),
-                fit: BoxFit.fill,
-              ),
-              Positioned(
-                top: ScreenUtil().setHeight(62),
-                left: ScreenUtil().setWidth(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "xx会员",
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(18),
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(5),
-                    ),
-                    Text(
-                      "您有3张会员卡",
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
+          GestureDetector(
+            onTap: () {
+              context.push('/${Routes.vip}');
+            },
+            child: Stack(
+              alignment: Alignment.topLeft,
+              children: <Widget>[
+                Image.asset(
+                  "assets/images/wode/vip_bg.png",
+                  width: ScreenUtil().setHeight(156),
+                  fit: BoxFit.fill,
                 ),
-              ),
-              Positioned(
-                bottom: ScreenUtil().setHeight(12),
-                left: ScreenUtil().setWidth(14),
-                child: Text(
-                  "立即开通",
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                Positioned(
+                  top: ScreenUtil().setHeight(62),
+                  left: ScreenUtil().setWidth(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "xx会员",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(18),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(5),
+                      ),
+                      Text(
+                        "您有3张会员卡",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
                 ),
-              )
-            ],
+                Positioned(
+                  bottom: ScreenUtil().setHeight(12),
+                  left: ScreenUtil().setWidth(14),
+                  child: Text(
+                    "立即开通",
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
           ),
           Expanded(
             flex: 1,

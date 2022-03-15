@@ -7,6 +7,8 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/privilege.dart';
+import 'package:pilipili/utils/download_video.dart';
+import 'package:pilipili/utils/download_comics.dart';
 
 import '../components/yy_dialog.dart';
 
@@ -94,6 +96,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     dynamic widget,
     dynamic smallVideoData,
     bool replace = false,
+    bool isLocal = false,
     double progress = 0,
     bool downloading = false,
     bool isWaiting = false,
@@ -124,6 +127,30 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
               },
             );
             return;
+          }
+        }
+        if (isLocal) {
+          if (progress.toInt() == 1) {
+            // 跳详情
+            if (contentType == 1 || contentType == 7) {
+              // 视频
+              context.push(
+                  contentType == 1
+                      ? CommonUtils.getRealHash('localVideoDetail/0')
+                      : CommonUtils.getRealHash('localSmallVideoDetail/0'),
+                  extra: {'videoInfo': cardData});
+            } else if (contentType == 2) {
+              // 漫画
+              context.push(CommonUtils.getRealHash('localComicsDetatl'),
+                  extra: {'comicsInfo': cardData});
+            }
+          } else if (!downloading && !isWaiting) {
+            setDownloading();
+            if (contentType == 1 || contentType == 7) {
+              DownloadUtil.createDownloadTask(cardData);
+            } else if (contentType == 2) {
+              DownloadComics.createDownloadTask(cardData);
+            }
           }
         }
         if (contentType != 4) {
@@ -192,8 +219,22 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
       bool downloading = false,
       bool downloadError = false,
       bool isWaiting = false,
+      bool isLocal = false,
       bool isColor = false,
       marginBottom = 6.5}) {
+    String getDownloadText() {
+      String _text = downloadError
+          ? "下载失败，点击尝试"
+          : isWaiting
+              ? "等待下载..."
+              : progress == 0
+                  ? "点击开始下载"
+                  : downloading
+                      ? "下载进度:" + (progress * 100).toInt().toString() + "%"
+                      : "暂停下载";
+      return _text;
+    }
+
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
@@ -219,6 +260,60 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                         url: widget.thumbUrl,
                       ))),
         renderTagIcon(widget),
+        isLocal && progress.toInt() != 1
+            ? Positioned(
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      getDownloadText(),
+                      style: TextStyle(
+                          color: progress == -1 ? Colors.red : Colors.white,
+                          decoration: TextDecoration.none,
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil().setSp(18)),
+                    ),
+                  ),
+                ))
+            : Container(),
+        isLocal && progress.toInt() != 1
+            ? Positioned(
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                        borderRadius: marginBottom != 0
+                            ? BorderRadius.all(
+                                Radius.circular(ScreenUtil().setWidth(5)))
+                            : BorderRadius.vertical(
+                                bottom: Radius.zero,
+                                top:
+                                    Radius.circular(ScreenUtil().setWidth(5)))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: ScreenUtil().setWidth(2),
+                          width: thumbWidth * progress,
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(255, 35, 126, 1),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(ScreenUtil().setWidth(1)))),
+                        ),
+                      ],
+                    )),
+              )
+            : Container(),
       ],
     );
   }

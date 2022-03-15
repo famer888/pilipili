@@ -51,24 +51,8 @@ class _InviteFriendState extends State<InviteFriend> {
       });
     }
     if (reward != null && reward.data != null) {
-      Datum list2 = Datum.fromJson({
-        "nickname": "Guest_qaDby8h9",
-        "id": 45,
-        "aff": 73887,
-        "source": 2,
-        "type": 1,
-        "coinCnt": "20.00",
-        "desc": "38",
-        "source_aff": 73888,
-        "created_at": "2021-12-14 15:50:00",
-        "source_str": "邀请",
-        "type_str": "增加"
-      });
-
       setState(() {
         incomeList.addAll(reward.data);
-        incomeList.insert(0, list2);
-        incomeList.insert(1, list2);
       });
     }
   }
@@ -87,6 +71,7 @@ class _InviteFriendState extends State<InviteFriend> {
   Widget build(BuildContext context) {
     String channel =
         Provider.of<HomeConfig>(context, listen: false).member.channel;
+    CommonUtils.debugPrint(channel);
     return Stack(
       children: [
         Container(
@@ -115,7 +100,7 @@ class _InviteFriendState extends State<InviteFriend> {
           body: Column(
             children: [
               PageTitleBar(
-                  title: '联系官方', paddingTop: ScreenUtil().statusBarHeight),
+                  title: '邀请好友', paddingTop: ScreenUtil().statusBarHeight),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

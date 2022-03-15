@@ -22,13 +22,19 @@ import 'package:pilipili/pages/mine/invite_recored.dart';
 import 'package:pilipili/pages/mine/notice_message.dart';
 import 'package:pilipili/pages/mine/online_service.dart';
 import 'package:pilipili/pages/mine/promote.dart';
+import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/mine/setup.dart';
+import 'package:pilipili/pages/mine/vip_page.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/mine/collect.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
 import 'package:pilipili/pages/mine/coinRecharge.dart';
 import 'package:pilipili/pages/mine/coin_detail.dart';
 import 'package:pilipili/pages/mine/recharg_record.dart';
+import 'package:pilipili/pages/detail/local_video_detail.dart';
+import 'package:pilipili/pages/detail/local_small_video_detail.dart';
+import 'package:pilipili/pages/detail/local_comics_detail.dart';
+import 'package:pilipili/pages/detail/local_comicsReader.dart';
 
 import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/activityList.dart';
@@ -65,6 +71,9 @@ class Routes {
   static String onlineService = 'onlineService'; //在线客服
   static String contactOfficial = 'contactOfficial'; //联系官方
 
+  static String vip = 'vip'; //会员充值页面
+  static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
+
   static String comicsdetail = 'comicsdetail/:id'; // 漫画详情
   static String comicReader = 'comicReader/:chapid'; // 漫画阅读器
   static String localVideoDetail = 'localVideoDetail/:id'; //长视频本地详情页
@@ -82,7 +91,6 @@ class Routes {
   static String inviterecored = 'inviterecored'; // 邀请记录
   static String promoteActionList = 'promoteActionList'; //推广方法;
   static String buy = 'buy'; //我的购买记录
-  static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -336,6 +344,23 @@ class Routes {
 
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
+      GoRoute(path: vip, builder: (context, state) => VipPage(), routes: [
+        GoRoute(
+            path: rechargeRecord,
+            builder: (context, state) {
+              return RechargeRecord(args: state.params);
+            },
+            routes: [
+              GoRoute(
+                path: customerService,
+                builder: (context, state) => CustomerService(),
+              ),
+            ]),
+        GoRoute(
+          path: customerService,
+          builder: (context, state) => CustomerService(),
+        ),
+      ]),
       GoRoute(
           path: search,
           builder: (context, state) => SearchPage(),
@@ -405,7 +430,56 @@ class Routes {
       GoRoute(
           path: down_page,
           builder: (context, state) => DownPage(),
-          routes: getDetailRoutes()),
+          routes: [
+            GoRoute(
+              path: localVideoDetail,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                return LocalVideoDetail(
+                  videoInfo: args == null || args['videoInfo'] == null
+                      ? null
+                      : args['videoInfo'],
+                );
+              },
+            ),
+            GoRoute(
+              path: localSmallVideoDetail,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                return LocalSmallVideo(
+                  videoInfo: args == null || args['videoInfo'] == null
+                      ? null
+                      : args['videoInfo'],
+                );
+              },
+            ),
+            GoRoute(
+                path: localComicsDetatl,
+                builder: (context, state) {
+                  final args = state.extra as Map<String, dynamic>;
+                  return LocalComicsDetatl(
+                    comicsInfo: args == null || args['comicsInfo'] == null
+                        ? null
+                        : args['comicsInfo'],
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: localComicsReader,
+                    builder: (context, state) {
+                      final args = state.extra as Map<String, dynamic>;
+                      return LocalComicsReader(
+                        comicsInfo: args == null || args['comicsInfo'] == null
+                            ? null
+                            : args['comicsInfo'],
+                        episode: args == null || args['episode'] == null
+                            ? null
+                            : args['episode'],
+                      );
+                    },
+                  ),
+                ]),
+          ]),
     ];
     rootRoutes.addAll(getDetailRoutes());
     return GoRouter(routerNeglect: true, routes: [

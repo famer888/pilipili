@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/index.dart';
 
 // ignore: must_be_immutable
 class Hcard extends StatefulWidget {
@@ -18,13 +19,11 @@ class Hcard extends StatefulWidget {
       this.id,
       this.page,
       this.height,
-      this.isNovel = false,
       this.replace = false,
       this.isSearch = false,
       this.isLocal = false,
       this.isSubtitle = false,
-      this.maxLines=2
-      })
+      this.maxLines = 2})
       : super(key: key);
   final double width;
   final double height;
@@ -36,7 +35,6 @@ class Hcard extends StatefulWidget {
   final int contentType;
   final dynamic id;
   final int page;
-  final bool isNovel;
   final bool replace;
   final bool isSearch;
   final bool isLocal;
@@ -48,9 +46,7 @@ class Hcard extends StatefulWidget {
 
 class _HcardState extends State<Hcard> with CardMixin<Hcard> {
   // String thumb = CommonUtils.getRandomThumb();
-  int progress = 0;
-  int currentImg = 1;
-  int imgTotal = 0;
+  double progress = 0;
   bool downloading = false;
   bool downloadError = false;
   bool isWaiting = false;
@@ -58,19 +54,45 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
   void initState() {
     super.initState();
     if (widget.cardData["progress"] != null) {
-      downloading = widget.cardData["downloading"];
-      isWaiting = widget.cardData["isWaiting"];
-      progress = widget.cardData["progress"];
-      if (!widget.isNovel) {
-        if (widget.cardData["sets"].length > widget.cardData["progress"]) {
-          currentImg =
-              widget.cardData["sets"][widget.cardData["progress"]].length;
-          imgTotal =
-              widget.cardData["sets"][widget.cardData["progress"]].length;
-        }
-      }
-      setState(() {});
+      setState(() {
+        progress = widget.cardData["progress"] + .0;
+        downloading = widget.cardData["downloading"];
+        isWaiting = widget.cardData["isWaiting"];
+      });
     }
+    if (widget.isLocal) {
+      EventBus().on('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}', (arg) {
+        if (widget.cardData["id"] == arg["id"]) {
+          setState(() {
+            progress = arg["progress"] ?? progress;
+            downloading = arg["downloading"] ?? true;
+            downloadError = arg["downloadError"] ?? false;
+            isWaiting = false;
+          });
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(Hcard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isLocal) {
+      if (widget.cardData["id"] != oldWidget.cardData["id"]) {
+        setState(() {
+          progress = widget.cardData["progress"] + .0;
+          downloading = widget.cardData["downloading"];
+          isWaiting = widget.cardData["isWaiting"];
+          downloadError = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    EventBus().off('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}');
   }
 
   @override
@@ -82,9 +104,10 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
         widget: widget,
         smallVideoData: widget.isSearch ? widget.cardData : null,
         replace: widget.replace,
-        progress: widget.isNovel
-            ? (progress / (widget.cardData["serieses"]?.length ?? 1))
-            : (progress / (widget.cardData["allEpisode"] ?? 1)),
+        isLocal: widget.isLocal,
+        progress: progress,
+        downloading: downloading,
+        isWaiting: isWaiting,
         setDownloading: () {
           setState(() {
             isWaiting = true;
@@ -107,19 +130,12 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                           borderRadius: BorderRadius.all(
                               Radius.circular(ScreenUtil().setWidth(5)))),
                       height: thumbHeight,
-                      child: widget.isNovel
-                          ? PlatformAwareAssetImage(
-                              url: CommonUtils.getThumb(widget.cardData),
-                              width: widget.width,
-                              height: thumbHeight,
-                              fit: BoxFit.cover,
-                            )
-                          : PlatformAwareNetworkImage(
-                              width: widget.width,
-                              height: thumbHeight,
-                              fit: BoxFit.cover,
-                              url: widget.thumbUrl,
-                            )),
+                      child: PlatformAwareNetworkImage(
+                        width: widget.width,
+                        height: thumbHeight,
+                        fit: BoxFit.cover,
+                        url: widget.thumbUrl,
+                      )),
                   renderTagIcon(widget),
                 ],
               ),

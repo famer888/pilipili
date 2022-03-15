@@ -26,6 +26,7 @@ import 'package:provider/provider.dart';
 import '../../components/page_status.dart';
 import '../../utils/common.dart';
 import '../../utils/privilege.dart';
+import 'package:pilipili/routers.dart';
 
 class VideoDetail extends StatefulWidget {
   VideoDetail({Key key, this.id}) : super(key: key);
