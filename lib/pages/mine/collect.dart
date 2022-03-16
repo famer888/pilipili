@@ -26,15 +26,17 @@ class _CollectPageState extends State<CollectPage>
   int currentTab = 0;
   int limit = 24;
   List tabList = [
-    {'id': 1, 'name': '长视频', 'index': 1},
-    {'id': 10, 'name': '短视频', 'index': 2},
-    {'id': 2, 'name': '漫画', 'index': 3},
+    {'id': 1, 'name': '次元精选', 'index': 1},
+    {'id': 10, 'name': '次元竖屏', 'index': 2},
+    {'id': 1, 'name': '动漫', 'index': 3},
+    {'id': 2, 'name': '漫画', 'index': 4},
   ];
 
   Map<int, dynamic> dataList = {
     1: {"page": 1, "data": [], "isall": false, "isloading": true},
     2: {"page": 1, "data": [], "isall": false, "isloading": true},
     3: {"page": 1, "data": [], "isall": false, "isloading": true},
+    4: {"page": 1, "data": [], "isall": false, "isloading": true},
   };
 
   @override
@@ -83,7 +85,10 @@ class _CollectPageState extends State<CollectPage>
     if (dataList[index]['data'].length == 0 &&
         dataList[index]['isall'] == false) {
       var result = await getUserFavor(
-          page: 1, limit: limit, type: tabList[index - 1]['id']);
+          category: index == 3 ? 1 : null,
+          page: 1,
+          limit: limit,
+          type: tabList[index - 1]['id']);
       if (result['data'] != null && result['data'].length > 0) {
         setState(() {
           dataList[index]['data'] = result['data'];
@@ -110,6 +115,7 @@ class _CollectPageState extends State<CollectPage>
     });
     dataList[index]['page'] = 1;
     var result = await getUserFavor(
+        category: index == 3 ? 1 : null,
         page: dataList[index]['page'],
         limit: limit,
         type: tabList[index - 1]['id']);
@@ -139,6 +145,7 @@ class _CollectPageState extends State<CollectPage>
     if (dataList[index]['isall'] == false) {
       dataList[index]['page']++;
       var result = await getUserFavor(
+          category: index == 3 ? 1 : null,
           page: dataList[index]['page'],
           limit: limit,
           type: tabList[index - 1]['id']);

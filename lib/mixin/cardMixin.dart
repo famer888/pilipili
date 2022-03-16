@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -123,7 +124,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
               cancelText: '取消',
               btnText: '立即升级',
               callBack: () {
-                // context.push('/${Routes.vip}');
+                context.push('/${Routes.vip}');
               },
             );
             return;

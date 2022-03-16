@@ -23,7 +23,7 @@ Map payIcons = {
   'bankcard': 'assets/images/pment/u.png',
   'usdt': 'assets/images/pment/usdt.png',
   'agent': 'assets/images/pment/agent.png',
-  'money': 'assets/images/mine/icon_coin_max.png'
+  'money': 'assets/images/wode/icon_coin.png'
 };
 
 mixin PayMixin<T extends StatefulWidget> on State<T> {
@@ -55,6 +55,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
     int currentPay;
     List pays;
     pays = List.from(product['pay']);
+    print(pays);
 
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
@@ -70,47 +71,86 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
             }
             return Stack(
               children: [
-                Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Image.asset(
-                      'assets/pengke/bottomsheet_bg.png',
-                      fit: BoxFit.fill,
-                    )),
                 Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: Color(0xffFFF4F9),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(ScreenUtil().setWidth(10)),
+                        topLeft: Radius.circular(ScreenUtil().setWidth(10))),
+                  ),
                   width: double.infinity,
                   height: ScreenUtil().setWidth(470),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(15)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.only(
-                            top: ScreenUtil().setWidth(24.5),
-                            bottom: ScreenUtil().setWidth(19.5)),
-                        child: Center(
-                          child: Text(
-                            '选择支付方式',
-                            style: DefaultStyle.white18bold,
+                          width: double.infinity,
+                          margin: EdgeInsets.only(
+                              bottom: ScreenUtil().setWidth(16)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setWidth(18),
+                              horizontal: ScreenUtil().setWidth(20)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight:
+                                    Radius.circular(ScreenUtil().setWidth(10)),
+                                topLeft:
+                                    Radius.circular(ScreenUtil().setWidth(10))),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffFF89AC),
+                                Color(0xffFF5B8C),
+                                Color(0xffFA437A)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
-                        ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Opacity(
+                                opacity: 0,
+                                child: Image.asset(
+                                  'assets/images/detail/icon_close.png',
+                                  width: ScreenUtil().setWidth(18),
+                                  height: ScreenUtil().setWidth(18),
+                                ),
+                              ),
+                              Text(
+                                '选择支付方式',
+                                style: DefaultStyle.white18bold,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  context.pop();
+                                },
+                                child: Image.asset(
+                                  'assets/images/detail/icon_close.png',
+                                  width: ScreenUtil().setWidth(18),
+                                  height: ScreenUtil().setWidth(18),
+                                ),
+                              )
+                            ],
+                          )),
+                      Center(
+                        child: Text.rich(TextSpan(
+                            text: '支付金额',
+                            style: DefaultStyle.black14,
+                            children: [
+                              TextSpan(
+                                  text: '${product['promo_price']}元',
+                                  style: TextStyle(
+                                      color: Color(0xffFE155B),
+                                      fontSize: ScreenUtil().setSp(14)))
+                            ])),
                       ),
-                      Text.rich(TextSpan(
-                          text: '支付金额',
-                          style: DefaultStyle.white14,
-                          children: [
-                            TextSpan(
-                                text: '${product['promo_price']}元',
-                                style: TextStyle(
-                                    color: Color(0xff7bf7ff),
-                                    fontSize: ScreenUtil().setSp(14)))
-                          ])),
                       Expanded(
                           child: SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setWidth(15)),
                         child: Column(
                           children: pays
                               .asMap()
@@ -124,7 +164,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                     behavior: HitTestBehavior.translucent,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                          top: ScreenUtil().setWidth(20)),
+                                          top: ScreenUtil().setWidth(16)),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -132,9 +172,8 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                           Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              PlatformAwareAssetImage(
-                                                url: payIcons[pays[e]
-                                                    ['channel']],
+                                              Image.asset(
+                                                payIcons[pays[e]['channel']],
                                                 width: ScreenUtil().setSp(40),
                                                 height: ScreenUtil().setSp(40),
                                               ),
@@ -143,15 +182,28 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                               ),
                                               Text(
                                                 pays[e]['name'],
-                                                style: DefaultStyle.white15bold,
+                                                style: DefaultStyle.black15bold,
                                               )
                                             ],
                                           ),
-                                          Image.asset(
-                                            'assets/pengke/yuepao/${currentPay == e ? 'select' : 'unselect'}.png',
-                                            width: ScreenUtil().setSp(20),
-                                            height: ScreenUtil().setSp(20),
-                                          )
+                                          currentPay == e
+                                              ? Image.asset(
+                                                  'assets/images/wode/icon_choosed.png',
+                                                  width: ScreenUtil().setSp(16),
+                                                  height:
+                                                      ScreenUtil().setSp(16),
+                                                )
+                                              : Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffFFD1DF),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              ScreenUtil()
+                                                                  .setSp(10))),
+                                                  width: ScreenUtil().setSp(16),
+                                                  height:
+                                                      ScreenUtil().setSp(16),
+                                                )
                                         ],
                                       ),
                                     ),
@@ -241,13 +293,23 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                         child: Column(
                                           children: [
                                             Text(
-                                                '您正在使用游客账号，建议您先登录注册再充值，资金安全有保障'),
+                                              '您正在使用游客账号，建议您先登录注册再充值，资金安全有保障',
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    51, 51, 51, 1),
+                                                fontSize:
+                                                    ScreenUtil().setSp(15),
+                                              ),
+                                            ),
                                             SizedBox(
                                               height: ScreenUtil().setWidth(25),
                                             ),
                                             RichText(
                                               text: TextSpan(children: [
-                                                TextSpan(text: '您也可以先'),
+                                                TextSpan(
+                                                    text: '您也可以先',
+                                                    style:
+                                                        DefaultStyle.black13),
                                                 WidgetSpan(
                                                   child: GestureDetector(
                                                     onTap: () {
@@ -265,7 +327,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                       '保存账号凭证',
                                                       style: TextStyle(
                                                           color:
-                                                              Color(0xff62f7ff),
+                                                              Color(0xffFE155B),
                                                           fontSize: ScreenUtil()
                                                               .setWidth(15),
                                                           decoration:
@@ -274,7 +336,10 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                     ),
                                                   ),
                                                 ),
-                                                TextSpan(text: ', 防止账号丢失'),
+                                                TextSpan(
+                                                    text: ', 防止账号丢失',
+                                                    style:
+                                                        DefaultStyle.black13),
                                               ]),
                                             )
                                           ],
@@ -294,49 +359,35 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(
+                                horizontal: ScreenUtil().setWidth(25.5),
                                 vertical: ScreenUtil().setWidth(25.5)),
                             child: Center(
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      top: 0,
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: Image.asset(
-                                        'assets/pengke/video/video_chang_btn.png',
-                                        fit: BoxFit.fill,
-                                      )),
-                                  Container(
-                                    width: double.infinity,
-                                    height: ScreenUtil().setWidth(34),
-                                    child: Center(
-                                      child: Text(
-                                        '立即支付',
-                                        style: DefaultStyle.zhuti15,
-                                      ),
+                              child: Container(
+                                width: double.infinity,
+                                height: ScreenUtil().setWidth(40),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xffFF84A9),
+                                        Color(0xffFF9E9E)
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
                                     ),
-                                  )
-                                ],
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setWidth(20))),
+                                child: Center(
+                                  child: Text(
+                                    '立即支付',
+                                    style: DefaultStyle.white15bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ))
                     ],
                   ),
                 ),
-                Positioned(
-                    top: ScreenUtil().setWidth(19.5),
-                    right: ScreenUtil().setWidth(19.5),
-                    child: GestureDetector(
-                      onTap: () {
-                        context.pop();
-                      },
-                      child: PlatformAwareAssetImage(
-                        url: 'assets/images/pment/icon_close.png',
-                        width: ScreenUtil().setWidth(14),
-                        height: ScreenUtil().setWidth(14),
-                      ),
-                    ))
               ],
             );
           });

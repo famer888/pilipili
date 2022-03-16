@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pageviewmixin.dart';
 
 class SeconedPageDetail extends StatefulWidget {
   SeconedPageDetail({Key key}) : super(key: key);
@@ -16,7 +18,21 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   TabController _tabController;
   ScrollController _scrollController = ScrollController();
   bool isShow = false;
-  List _tabs = ["最新", "推荐", "随机"];
+  List _tabs = [
+    {
+      'title': "最新",
+      'data': {'order': 1, 'filter': AppGlobal.seconedPagePramas['link_url']}
+    },
+    {
+      'title': "推荐",
+      'data': {'order': 2, 'filter': AppGlobal.seconedPagePramas['link_url']}
+    },
+    {
+      'title': "随机",
+      'data': {'order': 3, 'filter': AppGlobal.seconedPagePramas['link_url']}
+    },
+  ];
+  // AppGlobal.seconedPagePramas
   int currentTab = 0;
   dynamic pagePramas;
   @override
@@ -168,7 +184,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                           ),
                                         ),
                                         Text(
-                                          _tabs[e],
+                                          _tabs[e]['title'],
                                           style: TextStyle(
                                               color: e == currentTab
                                                   ? Color(0xffff5b8c)
@@ -187,26 +203,18 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               },
               body: TabBarView(
                 controller: _tabController,
-                children: _tabs
-                    .map((e) => Padding(
-                          padding: EdgeInsets.all(DefaultStyle.pagePadding),
-                          child: GridView(
-                            padding: EdgeInsets.all(0),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: ScreenUtil().setWidth(12),
-                              crossAxisSpacing: ScreenUtil().setWidth(12),
-                              childAspectRatio: 1.8,
-                            ),
-                            children: [111, 1, 1, 1, 1, 1, 1, 1, 1]
-                                .map((e) => Container(
-                                      color: Colors.red,
-                                    ))
-                                .toList(),
-                          ),
-                        ))
-                    .toList(),
+                children: _tabs.asMap().keys.map((e) {
+                  return Padding(
+                    padding: EdgeInsets.all(DefaultStyle.pagePadding),
+                    child: PageViewMixin(
+                      child: PublicList(
+                        data: _tabs[e]['data'],
+                        api: '/api/mv/getList',
+                        isShow: e == currentTab,
+                      ),
+                    ),
+                  );
+                }).toList(),
               )),
           Positioned(
               top: -ScreenUtil().setWidth(96),

@@ -181,6 +181,9 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                   : Swiper(
                                       autoplayDelay: 3000,
                                       autoplay: fixedBanner['value'].length > 1,
+                                      physics: fixedBanner['value'].length > 1
+                                          ? null
+                                          : new NeverScrollableScrollPhysics(),
                                       onIndexChanged: (e) {
                                         // CommonUtils.debugPrint('-------------------$e---------------------');
                                       },
@@ -278,38 +281,38 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                     BeveledRectangleBorder()),
                                             child: Stack(
                                               children: [
-                                                Positioned(
-                                                  right: 0,
-                                                  left: 0,
-                                                  bottom: 0,
-                                                  top: 0,
-                                                  child: Stack(
-                                                    children: [
-                                                      Opacity(
-                                                        opacity: 0.7,
-                                                        child:
-                                                            PlatformAwareNetworkImage(
-                                                          noVisibilityDetector:
-                                                              true,
-                                                          url: fixedBanner[
-                                                                      'value']
-                                                                  [index]
-                                                              ['resource_url'],
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
-                                                      BackdropFilter(
-                                                        filter:
-                                                            ImageFilter.blur(
-                                                                sigmaX: 15,
-                                                                sigmaY: 15),
-                                                        child: Container(
-                                                          color: Colors.black38,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
+                                                // Positioned(
+                                                //   right: 0,
+                                                //   left: 0,
+                                                //   bottom: 0,
+                                                //   top: 0,
+                                                //   child: Stack(
+                                                //     children: [
+                                                //       Opacity(
+                                                //         opacity: 0.7,
+                                                //         child:
+                                                //             PlatformAwareNetworkImage(
+                                                //           noVisibilityDetector:
+                                                //               true,
+                                                //           url: fixedBanner[
+                                                //                       'value']
+                                                //                   [index]
+                                                //               ['resource_url'],
+                                                //           fit: BoxFit.fill,
+                                                //         ),
+                                                //       ),
+                                                //       BackdropFilter(
+                                                //         filter:
+                                                //             ImageFilter.blur(
+                                                //                 sigmaX: 15,
+                                                //                 sigmaY: 15),
+                                                //         child: Container(
+                                                //           color: Colors.black38,
+                                                //         ),
+                                                //       )
+                                                //     ],
+                                                //   ),
+                                                // ),
                                                 Container(
                                                   height: ScreenUtil()
                                                           .setWidth(260) +
@@ -322,22 +325,26 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                     right: 0,
                                                     left: 0,
                                                     child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: ScreenUtil()
-                                                                  .statusBarHeight +
-                                                              DefaultStyle
-                                                                  .navbarHegiht),
+                                                      padding:
+                                                          EdgeInsets.all(0),
+                                                      // EdgeInsets.only(
+                                                      //     top: ScreenUtil()
+                                                      //             .statusBarHeight +
+                                                      //         DefaultStyle
+                                                      //             .navbarHegiht
+                                                      //             ),
                                                       child: Container(
                                                         width: double.infinity,
                                                         child:
                                                             PlatformAwareNetworkImage(
+                                                              alignment: Alignment.center,
                                                           noVisibilityDetector:
                                                               true,
                                                           url: fixedBanner[
                                                                       'value']
                                                                   [index]
                                                               ['resource_url'],
-                                                          fit: BoxFit.fill,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ))
