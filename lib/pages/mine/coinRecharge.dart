@@ -14,6 +14,7 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/mixin/payMixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class Coinrecharge extends StatefulWidget {
   const Coinrecharge({Key key}) : super(key: key);
@@ -28,11 +29,13 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   List products;
   Map cardStatus;
   bool networkErr = false;
+  Map adData;
   @override
   void initState() {
     super.initState();
     _initPage();
     getUserInfo(context);
+    getAdData();
   }
 
   getCardStatus() {
@@ -52,6 +55,17 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
         }
       } else {
         CommonUtils.showText(product.msg);
+      }
+    });
+  }
+
+  getAdData() {
+    getAdForCoin().then((res) {
+      print('广告------$res');
+      if (res != null && res['data'] != null && res['data'].length > 0) {
+        setState(() {
+          adData = res['data'][0];
+        });
       }
     });
   }
@@ -561,19 +575,49 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   }
 
   Widget footer() {
-    return Container(
-      margin: EdgeInsets.only(
-          bottom: ScreenUtil().bottomBarHeight, top: ScreenUtil().setWidth(0)),
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
-      child: Image.network(
-        "https://www.meishujixun.com/uploads/9a21a34e7d12c47a97a05034849faca9.jpg",
-        width: double.infinity,
-        height: ScreenUtil().setWidth(126),
-        fit: BoxFit.cover,
-      ),
-    );
+    if (adData != null) {
+      return GestureDetector(
+        onTap: () {
+          if (adData['type'] == 1) {
+            CommonUtils.launchURL(adData['url'].trim());
+          } else if (adData['type'] == 2) {
+            String linkUrl = adData['url'];
+            List urlList = linkUrl.split('?');
+            Map<String, dynamic> pramas = {};
+            if (urlList.length > 1) {
+              urlList[1].split("&").forEach((item) {
+                List stringText = item.split('=');
+                pramas[stringText[0]] =
+                    stringText.length > 1 ? stringText[1] : null;
+              });
+            }
+            context.push(urlList[0], extra: pramas);
+          } else if (adData['type'] == 4) {
+            var members =
+                Provider.of<HomeConfig>(context, listen: false).member;
+            var aff = members.aff;
+            var piliid = members.uuid;
+            CommonUtils.launchURL(
+                '${adData['url'].trim()}?aff=$aff&piliid=$piliid');
+          }
+        },
+        child: Container(
+          width: ScreenUtil().screenWidth - DefaultStyle.pagePadding * 2,
+          height: ScreenUtil().setWidth(126),
+          margin: EdgeInsets.only(
+              bottom: ScreenUtil().bottomBarHeight,
+              top: ScreenUtil().setWidth(0)),
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
+          child: PlatformAwareNetworkImage(
+            url: adData['img_url'],
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
+    return Container();
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
@@ -18,6 +19,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   TabController _tabController;
   ScrollController _scrollController = ScrollController();
   bool isShow = false;
+  String cartType = 'h';
   List _tabs = [
     {
       'title': "最新",
@@ -39,6 +41,24 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   void initState() {
     super.initState();
     pagePramas = AppGlobal.seconedPagePramas;
+    String _prams = pagePramas['link_url'];
+    List _pramsString = _prams.split(',');
+
+    Map _pramsMap = {};
+
+    _pramsString.forEach((item) {
+      List _map = item.split(':');
+      if (_map.length >= 2) {
+        _pramsMap[_map[0]] = _map[1];
+      }
+    });
+    try {
+      if (int.parse(_pramsMap['type']) == 2) {
+        cartType = 'v';
+      }
+    } catch (e) {
+      CommonUtils.showText('Type值应为数字');
+    }
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index.toDouble() == _tabController.animation.value) {
@@ -208,6 +228,9 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                     padding: EdgeInsets.all(DefaultStyle.pagePadding),
                     child: PageViewMixin(
                       child: PublicList(
+                        isFlow: false,
+                        contentType: cartType == 'v' ? 7 : 1,
+                        cartType: cartType,
                         data: _tabs[e]['data'],
                         api: '/api/mv/getList',
                         isShow: e == currentTab,
