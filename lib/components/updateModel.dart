@@ -119,8 +119,8 @@ class UpdateModel {
                                             GestureDetector(
                                                 onTap: () {
                                                   cancelFunc();
-                                                  // context.push(
-                                                  //     '/${Routes.appCenter}');
+                                                  context.push(
+                                                      '/${Routes.appCenter}');
                                                 },
                                                 child: Container(
                                                     decoration: BoxDecoration(
