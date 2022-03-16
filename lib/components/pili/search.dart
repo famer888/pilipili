@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/primaryScrollContainer.dart';
@@ -25,21 +26,25 @@ class _SearchPageState extends State<SearchPage> {
   List historyTags = [];
   List<GlobalKey<PrimaryScrollContainerState>> scrollChildKeys = [];
   bool loading = false;
+
   List tabList = [
-    {
-      'id': 1,
-      'name': '次元',
-    },
+    {'id': 1, 'name': '次元', 'api': '/api/mv/getList', 'pramas': {}},
     {
       'id': 2,
       'name': '动漫',
+      'api': '/api/mv/getList',
+      'pramas': {'category': 1}
     },
     {
       'id': 3,
       'name': '漫画',
+      'api': '/api/book/getList',
+      'pramas': {'type': 1}
     }
   ];
+  List hotTags = [];
   int tabIndex = 0;
+  int cureentPage = 1;
   PageController pageController = PageController();
   PageController searchController = PageController();
   @override
@@ -51,6 +56,12 @@ class _SearchPageState extends State<SearchPage> {
     }
     tabList.forEach((item) {
       scrollChildKeys.add(GlobalKey());
+    });
+    gethotTags().then((res) {
+      if (res['status'] != 0) {
+        hotTags = res['data'];
+        setState(() {});
+      }
     });
   }
 
@@ -67,7 +78,12 @@ class _SearchPageState extends State<SearchPage> {
                 vertical: ScreenUtil().setWidth(5)),
             child: GestureDetector(
               onTap: () {
-                context.pop();
+                if (cureentPage == 0) {
+                  context.pop();
+                } else {
+                  myController.clear();
+                  searchController.jumpTo(0);
+                }
               },
               child: Image.asset('assets/images/backarrow.png',
                   height: ScreenUtil().setWidth(22)),
@@ -191,110 +207,86 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _searchHead(),
-        Expanded(
-            child: PageView(
-          controller: searchController,
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            NestedScrollView(
-              physics: ClampingScrollPhysics(),
-              headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                      backgroundColor: Colors.transparent,
-                      primary: false,
-                      leading: Container(),
-                      pinned: true,
-                      elevation: 0,
-                      forceElevated: true,
-                      expandedHeight: ScreenUtil().setWidth(444),
-                      flexibleSpace: FlexibleSpaceBar(
-                          collapseMode: CollapseMode.parallax,
-                          background: Container(
-                            padding: EdgeInsets.only(
-                                bottom: ScreenUtil().setWidth(114)),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setWidth(16),
-                                  vertical: ScreenUtil().setWidth(8)),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 10,
-                                    blurStyle: BlurStyle.outer,
-                                    color: Color.fromRGBO(255, 91, 140, 0.2),
-                                    offset: Offset(0, ScreenUtil().setWidth(6)),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(
-                                      ScreenUtil().setWidth(30),
-                                    ),
-                                    bottomRight: Radius.circular(
-                                      ScreenUtil().setWidth(30),
-                                    )),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '搜索记录',
-                                        style: TextStyle(
-                                            color: Color(0xff6D6D6D),
-                                            fontSize: ScreenUtil().setSp(14),
-                                            fontWeight: FontWeight.bold),
+        body: GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _searchHead(),
+          Expanded(
+              child: PageView(
+            controller: searchController,
+            physics: NeverScrollableScrollPhysics(),
+            onPageChanged: (e) {
+              cureentPage = e;
+              setState(() {});
+            },
+            children: [
+              NestedScrollView(
+                physics: ClampingScrollPhysics(),
+                headerSliverBuilder:
+                    (BuildContext context, bool boxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                        backgroundColor: Colors.transparent,
+                        primary: false,
+                        leading: Container(),
+                        pinned: true,
+                        elevation: 0,
+                        forceElevated: true,
+                        expandedHeight: ScreenUtil().setWidth(444),
+                        flexibleSpace: FlexibleSpaceBar(
+                            collapseMode: CollapseMode.parallax,
+                            background: Container(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setWidth(114)),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: ScreenUtil().setWidth(16),
+                                    vertical: ScreenUtil().setWidth(8)),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 10,
+                                      blurStyle: BlurStyle.outer,
+                                      color: Color.fromRGBO(255, 91, 140, 0.2),
+                                      offset:
+                                          Offset(0, ScreenUtil().setWidth(6)),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(
+                                        ScreenUtil().setWidth(30),
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          historyTags.clear();
-                                          AppGlobal.appBox.put(
-                                              'search_history', historyTags);
-                                          setState(() {});
-                                        },
-                                        behavior: HitTestBehavior.translucent,
-                                        child: Image.asset(
-                                          'assets/images/detail/icon_clear.png',
-                                          width: ScreenUtil().setWidth(20),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: ScreenUtil().setWidth(24)),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children:
-                                          historyTags.asMap().keys.map((e) {
-                                        return Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: ScreenUtil().setWidth(8),
-                                              top: ScreenUtil().setWidth(8),
-                                              left: ScreenUtil().setWidth(8)),
-                                          child: Row(
+                                      bottomRight: Radius.circular(
+                                        ScreenUtil().setWidth(30),
+                                      )),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    historyTags.isEmpty
+                                        ? Container()
+                                        : Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                historyTags[e],
+                                                '搜索记录',
                                                 style: TextStyle(
-                                                    color: Color(0xff979797),
+                                                    color: Color(0xff6D6D6D),
                                                     fontSize:
-                                                        ScreenUtil().setSp(14)),
+                                                        ScreenUtil().setSp(14),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  historyTags.removeAt(e);
+                                                  historyTags.clear();
                                                   AppGlobal.appBox.put(
                                                       'search_history',
                                                       historyTags);
@@ -303,113 +295,217 @@ class _SearchPageState extends State<SearchPage> {
                                                 behavior:
                                                     HitTestBehavior.translucent,
                                                 child: Image.asset(
-                                                  'assets/images/detail/icon_delete.png',
+                                                  'assets/images/detail/icon_clear.png',
                                                   width:
                                                       ScreenUtil().setWidth(20),
                                                 ),
                                               )
                                             ],
                                           ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                  Text(
-                                    '热门标签',
-                                    style: TextStyle(
-                                        color: Color(0xff6D6D6D),
-                                        fontSize: ScreenUtil().setSp(14),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        top: ScreenUtil().setWidth(12)),
-                                    child: Wrap(
-                                      spacing: ScreenUtil().setWidth(8),
-                                      runSpacing: ScreenUtil().setWidth(12),
-                                      children: List(20)
-                                          .asMap()
-                                          .keys
-                                          .map((e) => Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    height: ScreenUtil()
-                                                        .setWidth(28),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        14)),
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0xffFFF5F9),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        14))),
-                                                    child: Text(
-                                                      e.toString(),
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xffFFADC6),
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                      ),
+                                    historyTags.isEmpty
+                                        ? Container()
+                                        : Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom:
+                                                    ScreenUtil().setWidth(24)),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: historyTags
+                                                  .asMap()
+                                                  .keys
+                                                  .map((e) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    myController.text =
+                                                        historyTags[e];
+                                                    hideClear = false;
+                                                    setState(() {});
+                                                    searchController
+                                                        .jumpToPage(1);
+                                                  },
+                                                  behavior: HitTestBehavior
+                                                      .translucent,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: ScreenUtil()
+                                                            .setWidth(8),
+                                                        top: ScreenUtil()
+                                                            .setWidth(8),
+                                                        left: ScreenUtil()
+                                                            .setWidth(8)),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          historyTags[e],
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff979797),
+                                                              fontSize:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          14)),
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            historyTags
+                                                                .removeAt(e);
+                                                            AppGlobal.appBox.put(
+                                                                'search_history',
+                                                                historyTags);
+                                                            setState(() {});
+                                                          },
+                                                          behavior:
+                                                              HitTestBehavior
+                                                                  .translucent,
+                                                          child: Image.asset(
+                                                            'assets/images/detail/icon_delete.png',
+                                                            width: ScreenUtil()
+                                                                .setWidth(20),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
-                                                  )
-                                                ],
-                                              ))
-                                          .toList(),
-                                    ),
-                                  )
-                                ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                    hotTags.isEmpty
+                                        ? Container()
+                                        : Text(
+                                            '热门标签',
+                                            style: TextStyle(
+                                                color: Color(0xff6D6D6D),
+                                                fontSize:
+                                                    ScreenUtil().setSp(14),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                    hotTags.isEmpty
+                                        ? Container()
+                                        : Container(
+                                            margin: EdgeInsets.only(
+                                                top: ScreenUtil().setWidth(12)),
+                                            child: Wrap(
+                                              spacing: ScreenUtil().setWidth(8),
+                                              runSpacing:
+                                                  ScreenUtil().setWidth(12),
+                                              children: hotTags
+                                                  .asMap()
+                                                  .keys
+                                                  .map((e) => GestureDetector(
+                                                        onTap: () {
+                                                          myController.text =
+                                                              hotTags[e];
+                                                          hideClear = false;
+                                                          setState(() {});
+                                                          searchController
+                                                              .jumpToPage(1);
+                                                        },
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          28),
+                                                              padding: EdgeInsets.symmetric(
+                                                                  horizontal:
+                                                                      ScreenUtil()
+                                                                          .setWidth(
+                                                                              14)),
+                                                              decoration: BoxDecoration(
+                                                                  color: Color(
+                                                                      0xffFFF5F9),
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          ScreenUtil()
+                                                                              .setWidth(14))),
+                                                              child: Text(
+                                                                hotTags[e],
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color(
+                                                                      0xffFFADC6),
+                                                                  fontSize:
+                                                                      ScreenUtil()
+                                                                          .setSp(
+                                                                              14),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                            ),
+                                          )
+                                  ],
+                                ),
                               ),
-                            ),
-                          )),
-                      bottom: PreferredSize(
-                        preferredSize: Size(double.infinity,
-                            ScreenUtil().setWidth(kIsWeb ? 44 : 50.4)),
-                        child: TabHead(
-                            index: tabIndex,
-                            changeHead: (e) {
-                              pageController.jumpToPage(e);
-                            }),
-                      )),
-                ];
-              },
-              body: PageView(
-                controller: pageController,
-                onPageChanged: (e) {
-                  for (int i = 0; i < scrollChildKeys.length; i++) {
-                    GlobalKey<PrimaryScrollContainerState> key =
-                        scrollChildKeys[i];
-
-                    if (key.currentState != null) {
-                      key.currentState.onPageChange(e == i); //控制是否当前显示
-                    }
-                  }
-                  tabIndex = e;
-                  setState(() {});
-                },
-                children: tabList.asMap().keys.map((e) {
-                  return PageViewMixin(
-                    child: PrimaryScrollContainer(
-                        scrollChildKeys[e],
-                        PageGridView(
-                          id: e,
+                            )),
+                        bottom: PreferredSize(
+                          preferredSize:
+                              Size.fromHeight(ScreenUtil().setWidth(44.5)),
+                          child: TabHead(
+                              index: tabIndex,
+                              changeHead: (e) {
+                                pageController.jumpToPage(e);
+                              }),
                         )),
-                  );
-                }).toList(),
+                  ];
+                },
+                body: PageView(
+                  controller: pageController,
+                  onPageChanged: (e) {
+                    for (int i = 0; i < scrollChildKeys.length; i++) {
+                      GlobalKey<PrimaryScrollContainerState> key =
+                          scrollChildKeys[i];
+
+                      if (key.currentState != null) {
+                        key.currentState.onPageChange(e == i); //控制是否当��显示
+                      }
+                    }
+                    tabIndex = e;
+                    setState(() {});
+                  },
+                  children: tabList.asMap().keys.map((e) {
+                    return PageViewMixin(
+                      child: PrimaryScrollContainer(
+                          scrollChildKeys[e],
+                          PublicList(
+                            cartType:e<=1?'v':'h',
+                            isFlow: false,
+                            noRefresh: true,
+                            contentType: e == 2 ? 2 : null,
+                            data: tabList[e]['pramas'],
+                            api: tabList[e]['api'],
+                            isShow: e == tabIndex,
+                          )
+                          // PageGridView(
+                          //   id: e,
+                          // )
+                          ),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            SearchResult(word: myController.text)
-          ],
-        ))
-      ],
+              cureentPage == 1
+                  ? SearchResult(word: myController.text)
+                  : Container()
+            ],
+          ))
+        ],
+      ),
     ));
   }
 }
@@ -460,12 +556,16 @@ class SearchResult extends StatefulWidget {
 class _SearchResultState extends State<SearchResult> {
   PageController controller = PageController();
   int currentTab = 0;
-  List tabList = [
-    {'title': '次元', 'api': '/api/mv/search', 'pramas': {}},
+ List tabList = [
+    {
+      'title': '次元',
+      'api': '/api/mv/search',
+      'pramas': {'type': 1}
+    },
     {
       'title': '动漫',
       'api': '/api/mv/search',
-      'pramas': {'category': 1}
+      'pramas': {'type': 2}
     },
     {'title': '漫画', 'api': '/api/book/search', 'pramas': {}}
   ];
@@ -546,7 +646,7 @@ class _SearchResultState extends State<SearchResult> {
             pramas.addAll(tabList[e]['pramas']);
             return PageViewMixin(
               child: PublicList(
-                contentType: e==2?2:null,
+                contentType: e == 2 ? 2 : null,
                 data: pramas,
                 api: tabList[e]['api'],
                 isShow: e == currentTab,
@@ -570,9 +670,13 @@ class TabHead extends StatefulWidget {
 class _TabHeadState extends State<TabHead> {
   int currentIndex = 0;
   List tabList = [
-    {'title': '次元'},
-    {'title': '动漫'},
-    {'title': '漫画'}
+    {'title': '次元', 'api': '/api/mv/getList', 'data': {}},
+    {
+      'title': '动漫',
+      'api': '/api/mv/getList',
+      'data': {'category': 1}
+    },
+    {'title': '漫画', 'api': '/api/book/getList', 'data': {}}
   ];
   @override
   void didUpdateWidget(TabHead oldWidget) {
@@ -585,109 +689,111 @@ class _TabHeadState extends State<TabHead> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          color: Color(0xfffff4f9),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(16)),
-            child: Text(
-              '最近更新',
-              style: TextStyle(
-                  color: Color(0xff6d6d6d),
-                  fontSize: ScreenUtil().setSp(16),
-                  fontWeight: FontWeight.w700),
+    return Container(
+      color: Color(0xfffff4f9),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: Padding(
+              padding:
+                  EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(16)),
+              child: Text(
+                '最近更新',
+                style: TextStyle(
+                    color: Color(0xff6d6d6d),
+                    fontSize: ScreenUtil().setSp(16),
+                    fontWeight: FontWeight.w700),
+              ),
             ),
           ),
-        ),
-        Container(
-          color: Color(0xfffff4f9),
-          alignment: Alignment.bottomCenter,
-          height: ScreenUtil().setWidth(50),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: ScreenUtil().setWidth(38)),
-                decoration: BoxDecoration(
-                  color: Color(0xffff84a9),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(ScreenUtil().setWidth(12)),
-                      topRight: Radius.circular(ScreenUtil().setWidth(12))),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(
-                      top: ScreenUtil().setWidth(2),
-                      left: ScreenUtil().setWidth(2),
-                      right: ScreenUtil().setWidth(2)),
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: ScreenUtil().setWidth(50),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: ScreenUtil().setWidth(38)),
                   decoration: BoxDecoration(
-                    color: Color(0xfffff4f9),
+                    color: Color(0xffff84a9),
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(ScreenUtil().setWidth(8)),
-                        topRight: Radius.circular(ScreenUtil().setWidth(8))),
+                        topLeft: Radius.circular(ScreenUtil().setWidth(12)),
+                        topRight: Radius.circular(ScreenUtil().setWidth(12))),
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        top: ScreenUtil().setWidth(2),
+                        left: ScreenUtil().setWidth(2),
+                        right: ScreenUtil().setWidth(2)),
+                    decoration: BoxDecoration(
+                      color: Color(0xfffff4f9),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(ScreenUtil().setWidth(8)),
+                          topRight: Radius.circular(ScreenUtil().setWidth(8))),
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: ScreenUtil().setWidth(10),
-                  child: Container(
-                    height: ScreenUtil().setWidth(36),
-                    padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: ScreenUtil().setWidth(4),
-                      children: tabList.asMap().keys.map((e) {
-                        return GestureDetector(
-                          onTap: () {
-                            currentIndex = e;
-                            widget.changeHead(e);
-                            setState(() {});
-                          },
-                          behavior: HitTestBehavior.translucent,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Image.asset(
-                                    'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
-                                    fit: BoxFit.fill,
-                                  )),
-                              Container(
-                                width: ScreenUtil().setWidth(79),
-                                height: ScreenUtil().setWidth(36),
-                                alignment: Alignment.center,
-                                padding: currentIndex != e
-                                    ? null
-                                    : EdgeInsets.only(
-                                        top: ScreenUtil().setWidth(2),
-                                        right: ScreenUtil().setWidth(3)),
-                                child: Text(
-                                  tabList[e]['title'],
-                                  style: TextStyle(
-                                      color: currentIndex != e
-                                          ? Colors.white
-                                          : Color(0xff6d6567),
-                                      fontSize: ScreenUtil().setSp(16),
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ))
-            ],
-          ),
-        )
-      ],
+                Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: ScreenUtil().setWidth(10),
+                    child: Container(
+                      height: ScreenUtil().setWidth(36),
+                      padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        spacing: ScreenUtil().setWidth(4),
+                        children: tabList.asMap().keys.map((e) {
+                          return GestureDetector(
+                            onTap: () {
+                              currentIndex = e;
+                              widget.changeHead(e);
+                              setState(() {});
+                            },
+                            behavior: HitTestBehavior.translucent,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                    top: 0,
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Image.asset(
+                                      'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
+                                      fit: BoxFit.fill,
+                                    )),
+                                Container(
+                                  width: ScreenUtil().setWidth(79),
+                                  height: ScreenUtil().setWidth(36),
+                                  alignment: Alignment.center,
+                                  padding: currentIndex != e
+                                      ? null
+                                      : EdgeInsets.only(
+                                          top: ScreenUtil().setWidth(2),
+                                          right: ScreenUtil().setWidth(3)),
+                                  child: Text(
+                                    tabList[e]['title'],
+                                    style: TextStyle(
+                                        color: currentIndex != e
+                                            ? Colors.white
+                                            : Color(0xff6d6567),
+                                        fontSize: ScreenUtil().setSp(16),
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ))
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

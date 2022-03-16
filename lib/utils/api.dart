@@ -563,7 +563,7 @@ Future<dynamic> getUserFavor(
   }
 }
 
-//获取商品-金币
+//获取商��-金币
 Future<Basic> getProductOfGold(int type) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList',
@@ -857,6 +857,17 @@ Future<CoinOrVipModel> getOrderList(
     Response<dynamic> res = await PlatformAwareHttp.post("/api/order/orderList",
         data: {'limit': limit, 'page': page, 'type': type});
     return CoinOrVipModel.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 获取搜索热门标签
+Future<dynamic> gethotTags() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/user/hotTags", data: {});
+    return res.data;
   } catch (e) {
     return null;
   }

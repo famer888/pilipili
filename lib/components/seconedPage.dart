@@ -51,8 +51,16 @@ class _SeconedPageState extends State<SeconedPage> {
   Widget renderItem(dynamic itemData) {
     return GestureDetector(
       onTap: () {
-        AppGlobal.seconedPagePramas = itemData;
-        context.push(CommonUtils.getRealHash('seconedPageDetail'));
+        if (itemData['redirect_type'] == 1) {
+          if (itemData['link_url'] == '' || itemData['link_url'] == null)
+            return;
+          context.push(CommonUtils.getRealHash(itemData['link_url']));
+        } else if (itemData['redirect_type'] == 5) {
+          if (itemData['link_url'] == '' || itemData['link_url'] == null)
+            return;
+          AppGlobal.seconedPagePramas = itemData;
+          context.push(CommonUtils.getRealHash('seconedPageDetail'));
+        }
       },
       child: Container(
         clipBehavior: Clip.hardEdge,
