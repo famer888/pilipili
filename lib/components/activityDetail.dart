@@ -246,9 +246,9 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                               listen: false)
                                           .member;
                                       var aff = members.aff;
-                                      var yyid = members.uuid;
+                                      var piliid = members.uuid;
                                       CommonUtils.launchURL(
-                                          '${urlList[0]}?aff=$aff&piliid=$yyid');
+                                          '${urlList[0]}?aff=$aff&piliid=$piliid');
                                     } else {
                                       CommonUtils.launchURL(
                                           activityInfo['link']);
