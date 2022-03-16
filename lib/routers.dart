@@ -13,6 +13,7 @@ import 'package:pilipili/components/video/web_small_video.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
+import 'package:pilipili/pages/mine/app_center.dart';
 import 'package:pilipili/pages/mine/buy_page.dart';
 import 'package:pilipili/pages/mine/contact_official.dart';
 import 'package:pilipili/pages/mine/customer_service.dart';
@@ -71,6 +72,7 @@ class Routes {
   static String atlasList = 'atlasList/:index'; //图集列表展示
   static String onlineService = 'onlineService'; //在线客服
   static String contactOfficial = 'contactOfficial'; //联系官方
+  static String appCenter = 'appCenter'; //应用推荐
 
   static String vip = 'vip'; //会员充值页面
   static String rechargeRecord = 'RechargeRecord/:type'; //充值记录
@@ -363,6 +365,10 @@ class Routes {
           builder: (context, state) => CustomerService(),
         ),
       ]),
+      GoRoute(
+        path: appCenter,
+        builder: (context, state) => AppCenter(),
+      ),
       GoRoute(
           path: watchhistory,
           builder: (context, state) => WatchHistoryPage(),

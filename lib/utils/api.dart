@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/model/animationDetail.dart';
+import 'package:pilipili/model/appcenter.dart';
 import 'package:pilipili/model/basic.dart';
 import 'package:pilipili/model/coinorvip.dart';
 import 'package:pilipili/model/comicReading.dart';
@@ -562,7 +563,7 @@ Future<dynamic> getUserFavor(
   }
 }
 
-//获取商品-金币
+//获取商��-金币
 Future<Basic> getProductOfGold(int type) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList',
@@ -867,6 +868,16 @@ Future<dynamic> gethotTags() async {
     Response<dynamic> res =
         await PlatformAwareHttp.post("/api/user/hotTags", data: {});
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 应用商店
+Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/home/appCenter");
+    return AppCenterModel.fromJson(res.data);
   } catch (e) {
     return null;
   }

@@ -71,11 +71,20 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: ScreenUtil().setWidth(17.5),
-            ),
+            // SizedBox(
+            //   height: ScreenUtil().setWidth(17.5),
+            // ),
             Container(
-              padding: EdgeInsets.only(left: ScreenUtil().setWidth(6)),
+              height: ScreenUtil().setWidth(44),
+              // padding: EdgeInsets.only(left: ScreenUtil().setWidth(6)),
+              width: double.infinity,
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(255, 91, 140, 0.1),
+                    offset: Offset(0, 10),
+                    blurRadius: 10,
+                    spreadRadius: 0)
+              ]),
               child: Theme(
                   data: ThemeData(
                     splashColor: Colors.transparent,

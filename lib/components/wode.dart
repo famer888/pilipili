@@ -84,7 +84,7 @@ class _WodeState extends State<Wode> {
       'router': '/${Routes.contactOfficial}'
     },
     {'name': "邀请好友", 'icon': "invite", 'router': '/${Routes.invitefriend}'},
-    {'name': "应用推荐", 'icon': "app_recommen"},
+    {'name': "应用推荐", 'icon': "app_recommen", 'router': '/${Routes.appCenter}'},
   ];
 
   @override
