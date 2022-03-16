@@ -285,7 +285,7 @@ class _HomeState extends State<Home> {
   _onTapSwiper(String type, String _adsUrl) {
     var members = Provider.of<HomeConfig>(context, listen: false).member;
     var aff = members.aff;
-    var yyid = members.uuid;
+    var piliid = members.uuid;
     var types = type;
     if (['', null, false].contains(_adsUrl)) {
       BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
@@ -315,7 +315,7 @@ class _HomeState extends State<Home> {
         break;
       case "3":
         // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl?aff=$aff&yyid=$yyid");
+        CommonUtils.launchURL("$_adsUrl?aff=$aff&piliid=$piliid");
         break;
       case "2":
         // 外部浏览器

@@ -882,3 +882,15 @@ Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
     return null;
   }
 }
+
+// 购买金币广告
+Future getAdForCoin() async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        "/api/home/getADsByPosition",
+        data: {'pos': 601});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}

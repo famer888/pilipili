@@ -266,9 +266,9 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                           listen: false)
                                                       .member;
                                               var aff = members.aff;
-                                              var yyid = members.uuid;
+                                              var piliid = members.uuid;
                                               CommonUtils.launchURL(
-                                                  '${fixedBanner['value'][index]['url'].trim()}?aff=$aff&yyid=$yyid');
+                                                  '${fixedBanner['value'][index]['url'].trim()}?aff=$aff&piliid=$piliid');
                                             }
                                           },
                                           child: Container(
