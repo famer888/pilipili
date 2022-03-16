@@ -235,7 +235,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
     //       bytes = e;
     //       setState(() {});
     //     });
-    double _width = ScreenUtil().screenWidth - 18 * 2;
+    double _width = ScreenUtil().screenWidth - 40 * 2;
     return Scaffold(
       // backgroundColor: Color(0xff171222),
       body: Stack(
@@ -368,7 +368,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                               child: Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: ScreenUtil()
-                                                        .setWidth(16)),
+                                                        .setWidth(20)),
                                                 child: Image.asset(
                                                   "assets/images/wode/vip_icon_header.png",
                                                   fit: BoxFit.fill,
@@ -395,15 +395,18 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                                             ScreenUtil()
                                                                 .setWidth(10))),
                                               ),
-                                              padding: EdgeInsets.only(
-                                                  top:
-                                                      ScreenUtil().setWidth(8)),
+                                              // padding: EdgeInsets.symmetric(
+                                              //     vertical: ScreenUtil()
+                                              //         .setWidth(16)),
                                               margin: EdgeInsets.only(
-                                                left: ScreenUtil().setWidth(16),
+                                                left: ScreenUtil().setWidth(20),
                                                 right:
-                                                    ScreenUtil().setWidth(16),
+                                                    ScreenUtil().setWidth(20),
                                               ),
                                               child: SingleChildScrollView(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: ScreenUtil()
+                                                        .setWidth(16)),
                                                 child: Center(
                                                   child: Wrap(
                                                     spacing: 0,

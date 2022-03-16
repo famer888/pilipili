@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/model/animationDetail.dart';
+import 'package:pilipili/model/appcenter.dart';
 import 'package:pilipili/model/basic.dart';
 import 'package:pilipili/model/coinorvip.dart';
 import 'package:pilipili/model/comicReading.dart';
@@ -846,6 +847,16 @@ Future<CoinOrVipModel> getOrderList(
     Response<dynamic> res = await PlatformAwareHttp.post("/api/order/orderList",
         data: {'limit': limit, 'page': page, 'type': type});
     return CoinOrVipModel.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 应用商店
+Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/home/appCenter");
+    return AppCenterModel.fromJson(res.data);
   } catch (e) {
     return null;
   }
