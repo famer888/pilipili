@@ -413,7 +413,22 @@ class Routes {
                     ? null
                     : int.parse(state.params['id']),
               ),
-          routes: getDetailRoutes()),
+          routes: getDetailRoutes()
+            ..add(GoRoute(
+                path: morePage,
+                builder: (context, state) {
+                  return MorePage(
+                      title: state.params['title'] == null
+                          ? ''
+                          : state.params['title'].toString(),
+                      id: state.params['id'] == null
+                          ? null
+                          : int.parse(state.params['id'].toString()),
+                      morePageType: state.params['morePageType'] == null
+                          ? 1
+                          : int.parse(state.params['morePageType'].toString()));
+                },
+                routes: getDetailRoutes()))),
       GoRoute(
           path: morePage,
           builder: (context, state) {

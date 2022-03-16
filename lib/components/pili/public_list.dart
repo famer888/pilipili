@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +20,7 @@ class PublicList extends StatefulWidget {
   final bool isFlow; //是否瀑布流
   final String cartType; //  "h" 横向card  "v"竖向card
   final int contentType; //参照 cardMixin.dart 文件
+  final bool noRefresh;
   PublicList(
       {Key key,
       this.isShow,
@@ -30,7 +29,8 @@ class PublicList extends StatefulWidget {
       this.limit = 20,
       this.isFlow = true,
       this.cartType = 'h',
-      this.contentType})
+      this.contentType,
+      this.noRefresh = false})
       : super(key: key);
 
   @override
@@ -128,13 +128,16 @@ class _PublicListState extends State<PublicList> {
                   reqData['page']++;
                   getSearchResult();
                 },
-                onRefresh: () {
-                  reqData['page'] = 1;
-                  isAll = false;
-                  getSearchResult();
-                },
+                onRefresh: widget.noRefresh
+                    ? null
+                    : () {
+                        reqData['page'] = 1;
+                        isAll = false;
+                        getSearchResult();
+                      },
                 child: widget.isFlow
                     ? WaterfallFlow.builder(
+                        physics: ClampingScrollPhysics(),
                         primary: false,
                         padding: EdgeInsets.only(
                             top: DefaultStyle.pagePadding,
@@ -151,6 +154,7 @@ class _PublicListState extends State<PublicList> {
                         itemBuilder: (BuildContext context, int index) {
                           return searchData[index]['mv_type'] == 1
                               ? Hcard(
+                                  maxLines: 1,
                                   width: ScreenUtil().setWidth(175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
@@ -159,6 +163,7 @@ class _PublicListState extends State<PublicList> {
                                   cardData: searchData[index],
                                   showField: 'title')
                               : Vcard(
+                                  maxLines: 1,
                                   width: ScreenUtil().setWidth(175),
                                   isSearch: true,
                                   tagIconType: searchData[index]['isfree'],
@@ -171,6 +176,7 @@ class _PublicListState extends State<PublicList> {
                         })
                     : GridView.builder(
                         cacheExtent: ScreenUtil().screenHeight * 5,
+                        physics: ClampingScrollPhysics(),
                         padding: EdgeInsets.symmetric(
                             horizontal: DefaultStyle.pagePadding,
                             vertical: ScreenUtil().setWidth(20)),
@@ -179,11 +185,12 @@ class _PublicListState extends State<PublicList> {
                           crossAxisCount: 2,
                           mainAxisSpacing: ScreenUtil().setWidth(7),
                           crossAxisSpacing: ScreenUtil().setWidth(7),
-                          childAspectRatio: 1.11,
+                          childAspectRatio:widget.cartType == 'h'? 1.3:0.62,
                         ),
                         itemBuilder: (context, index) {
                           return widget.cartType == 'h'
                               ? Hcard(
+                                  maxLines: 1,
                                   width: ScreenUtil().setWidth(175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
@@ -192,6 +199,7 @@ class _PublicListState extends State<PublicList> {
                                   cardData: searchData[index],
                                   showField: 'title')
                               : Vcard(
+                                  maxLines: 1,
                                   width: ScreenUtil().setWidth(175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:

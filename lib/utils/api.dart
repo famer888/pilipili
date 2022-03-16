@@ -546,11 +546,16 @@ Future<SystemNoticeList> getSystemNoticeList({int page, int limit}) async {
 }
 
 // 我收藏的
-Future<dynamic> getUserFavor({int page, int limit = 24, int type,int category}) async {
+Future<dynamic> getUserFavor(
+    {int page, int limit = 24, int type, int category}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/user/getUserFavor',
-        data: {'page': page, 'limit': limit, 'type': type,'category':category});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/getUserFavor', data: {
+      'page': page,
+      'limit': limit,
+      'type': type,
+      'category': category
+    });
     return res.data;
   } catch (e) {
     return null;
@@ -851,6 +856,17 @@ Future<CoinOrVipModel> getOrderList(
     Response<dynamic> res = await PlatformAwareHttp.post("/api/order/orderList",
         data: {'limit': limit, 'page': page, 'type': type});
     return CoinOrVipModel.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 获取搜索热门标签
+Future<dynamic> gethotTags() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/user/hotTags", data: {});
+    return res.data;
   } catch (e) {
     return null;
   }
