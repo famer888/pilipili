@@ -7,6 +7,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/model/basic.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/logUtil.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -40,11 +41,13 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
 
   getCardStatus() {
     getProductOfGold(5).then((product) {
+      LogUtil.d('金币充值----${product.toJson()}');
       if (product.status != 0) {
         if (product.data['product'] != null &&
             product.data['product'].length > 0) {
           spcard = product.data['product'][0];
           getCoinCardStatus().then((res) {
+            LogUtil.d('金币充值----${res['data']}');
             if (res['status'] != 0) {
               cardStatus = res['data'];
               setState(() {});
@@ -300,7 +303,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '3000币',
+                                                    '${spcard['valid_date'] * spcard['coins']}币',
                                                     style: TextStyle(
                                                         shadows: [
                                                           BoxShadow(
