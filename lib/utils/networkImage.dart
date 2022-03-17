@@ -300,7 +300,9 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
             bottom: 0,
             left: 0,
             child: Container(
-              alignment: Alignment.center,
+              alignment: !isAnimated || widget.noVisibilityDetector
+                  ? null
+                  : Alignment.center,
               child: !isAnimated || widget.noVisibilityDetector
                   ? (isShow
                       ? Image.memory(
