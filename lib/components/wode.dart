@@ -34,7 +34,6 @@ class _WodeState extends State<Wode> {
       if (args == 'login') {
         setState(() {});
       } else if (args == 'quit') {
-        CommonUtils.debugPrint("我执行了");
         getHomeConfig(context);
       }
     });
@@ -133,7 +132,7 @@ class _WodeState extends State<Wode> {
                       : Container()
                   : Column(
                       children: [
-                        cardList(),
+                        cardList(members),
                         SizedBox(
                           height: ScreenUtil().setHeight(22),
                         ),
@@ -145,7 +144,7 @@ class _WodeState extends State<Wode> {
     );
   }
 
-  Widget cardList() {
+  Widget cardList(Member member) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
       padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(14)),
@@ -176,7 +175,7 @@ class _WodeState extends State<Wode> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "xx会员",
+                        "VIP充值",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(18),
                             color: Colors.white,
@@ -186,7 +185,7 @@ class _WodeState extends State<Wode> {
                         height: ScreenUtil().setHeight(5),
                       ),
                       Text(
-                        "您有3张会员卡",
+                        "您有${member.level ?? 0}张会员卡",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             color: Colors.white,
@@ -242,7 +241,7 @@ class _WodeState extends State<Wode> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "余额:300",
+                              "余额:${member.money ?? 0}",
                               style: TextStyle(
                                   fontSize: ScreenUtil().setSp(11),
                                   color: Colors.white,
@@ -265,49 +264,54 @@ class _WodeState extends State<Wode> {
                     ],
                   ),
                 ),
-                Stack(
-                  alignment: Alignment.topLeft,
-                  children: <Widget>[
-                    Image.asset(
-                      "assets/images/wode/activity_bg.png",
-                      width: ScreenUtil().setWidth(160),
-                      fit: BoxFit.fill,
-                    ),
-                    Positioned(
-                      left: ScreenUtil().setWidth(14),
-                      top: ScreenUtil().setHeight(11),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "领取",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(12),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "免费会员",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(13),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
+                GestureDetector(
+                  onTap: () {
+                    context.push('/${Routes.invitefriend}');
+                  },
+                  child: Stack(
+                    alignment: Alignment.topLeft,
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/images/wode/activity_bg.png",
+                        width: ScreenUtil().setWidth(160),
+                        fit: BoxFit.fill,
                       ),
-                    ),
-                    Positioned(
-                      bottom: ScreenUtil().setWidth(6),
-                      left: ScreenUtil().setWidth(12),
-                      child: Text(
-                        "立即领取",
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(12),
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                      Positioned(
+                        left: ScreenUtil().setWidth(14),
+                        top: ScreenUtil().setHeight(11),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "领取",
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(12),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "免费会员",
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(13),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      Positioned(
+                        bottom: ScreenUtil().setWidth(6),
+                        left: ScreenUtil().setWidth(12),
+                        child: Text(
+                          "立即领取",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -473,38 +477,39 @@ class _WodeState extends State<Wode> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         )),
-                                    Container(
-                                        margin: EdgeInsets.only(
-                                            top: ScreenUtil().setWidth(5)),
-                                        // width: ScreenUtil().setWidth(93),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                ScreenUtil().setWidth(8)),
-                                        height: ScreenUtil().setHeight(20),
-                                        decoration: new BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color(0xFFFFD875),
-                                              Color(0xFFFF6915)
-                                            ],
-                                            begin: Alignment.bottomLeft,
-                                            end: Alignment.bottomRight,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          //设置四周边框
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "VIP:永久",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ))
+                                    // Container(
+                                    //     margin: EdgeInsets.only(
+                                    //         top: ScreenUtil().setWidth(5)),
+                                    //     // width: ScreenUtil().setWidth(93),
+                                    //     padding: EdgeInsets.symmetric(
+                                    //         horizontal:
+                                    //             ScreenUtil().setWidth(8)),
+                                    //     height: ScreenUtil().setHeight(20),
+                                    //     decoration: new BoxDecoration(
+                                    //       gradient: LinearGradient(
+                                    //         colors: [
+                                    //           Color(0xFFFFD875),
+                                    //           Color(0xFFFF6915)
+                                    //         ],
+                                    //         begin: Alignment.bottomLeft,
+                                    //         end: Alignment.bottomRight,
+                                    //       ),
+                                    //       borderRadius: BorderRadius.all(
+                                    //           Radius.circular(25)),
+                                    //       //设置四周边框
+                                    //     ),
+                                    //     child: Center(
+                                    //       child: Text(
+                                    //         "VIP:永久",
+                                    //         textAlign: TextAlign.center,
+                                    //         style: TextStyle(
+                                    //             color: Colors.white,
+                                    //             fontSize:
+                                    //                 ScreenUtil().setSp(14),
+                                    //             fontWeight: FontWeight.bold),
+                                    //       ),
+                                    //     )
+                                    //     )
                                   ],
                                 )
                               ],

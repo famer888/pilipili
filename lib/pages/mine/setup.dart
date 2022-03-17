@@ -512,8 +512,8 @@ class _SetupPageState extends State<SetupPage> {
                       isTips: isSetPassword == 0,
                       rightText: isSetPassword == 0 ? '手机号+密码一键登录' : '',
                       onTap: () {
-                        context.push('/${Routes.login}',
-                            extra: {'type': isSetPassword == 0 ? 6 : 2});
+                        context.push(CommonUtils.getRealHash('fillcode'),
+                            extra: {'type': isSetPassword == 0 ? 6 : 5});
                       }),
               _line(),
               _setupItem(

@@ -1028,12 +1028,11 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
         Container(
           width: ScreenUtil().setWidth(301),
           height: ScreenUtil().setWidth(172),
-          color: Colors.black,
-          // child: PlatformAwareNetworkImage(
-          //   noVisibilityDetector: true,
-          //   url: widget.product['img_url'],
-          //   fit: BoxFit.fill,
-          // ),
+          child: PlatformAwareNetworkImage(
+            noVisibilityDetector: true,
+            url: widget.product['img_url'],
+            fit: BoxFit.fill,
+          ),
         ),
         Container(
           padding: EdgeInsets.symmetric(

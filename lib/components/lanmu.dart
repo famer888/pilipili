@@ -369,7 +369,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                 .toList())),
                     SliverToBoxAdapter(
                       child: SizedBox(
-                        height: ScreenUtil().setWidth(30),
+                        height: ScreenUtil().bottomBarHeight+ScreenUtil().setWidth(30),
                       ),
                     )
                   ],

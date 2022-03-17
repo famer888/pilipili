@@ -894,3 +894,33 @@ Future getAdForCoin() async {
     return null;
   }
 }
+
+//更改密码
+Future<Basic> updatePassword(
+    {String password, String newPassword, String newPasswordConfirm}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/updatePassword', data: {
+      'password': password,
+      'newPassword': newPassword,
+      'newPasswordConfirm': newPasswordConfirm
+    });
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+//设置密码
+Future<Basic> setPassword({String password, String passwordConfirm}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/account/setPassword',
+        data: {'password': password, 'passwordConfirm': passwordConfirm});
+    Basic result = Basic.fromJson(res.data);
+    return result;
+  } catch (e) {
+    return null;
+  }
+}

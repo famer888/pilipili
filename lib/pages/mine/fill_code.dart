@@ -26,6 +26,9 @@ class _FillCodePageState extends State<FillCodePage> {
   final phoneCode = TextEditingController();
   final exchange = TextEditingController();
   final invite = TextEditingController();
+  final password = TextEditingController();
+  final newpassword = TextEditingController();
+  final cnewpassword = TextEditingController();
   final newphone = TextEditingController();
   final newphoneCode = TextEditingController();
   String code = '86';
@@ -38,11 +41,19 @@ class _FillCodePageState extends State<FillCodePage> {
     {"name": "绑定手机", "btnname": "立即绑定"},
     {"name": "更换手机", "btnname": "确认更换"},
     {
-      "name": "输入兑换码",
+      "name": "请输入兑换码",
       "btnname": "确认",
     },
     {
-      "name": "输入邀请码",
+      "name": "请输入邀请码",
+      "btnname": "确认",
+    },
+    {
+      "name": "修改密码",
+      "btnname": "修改密码",
+    },
+    {
+      "name": "设置密码",
       "btnname": "确认",
     },
   ];
@@ -160,6 +171,84 @@ class _FillCodePageState extends State<FillCodePage> {
         showText(status: result.status, msg: result.msg, word: '填写');
         PageStatus.closeLoading();
         break;
+      case 5:
+        if (password.text.isEmpty) {
+          CommonUtils.showText('请输入原密码');
+          return;
+        }
+        if (newpassword.text.isEmpty) {
+          CommonUtils.showText('请输入新密码');
+          return;
+        }
+        if (cnewpassword.text.isEmpty) {
+          CommonUtils.showText('请再次输入新密码');
+          return;
+        }
+        CommonUtils.debugPrint(newpassword.text);
+        CommonUtils.debugPrint(cnewpassword.text);
+        if (newpassword.text != cnewpassword.text) {
+          CommonUtils.showText('两次输入的密码不一致,请重新输入');
+          newpassword.clear();
+          cnewpassword.clear();
+          return;
+        }
+        if (newpassword.text.length < 6) {
+          CommonUtils.showText('请输入至少6位的新密码');
+          return;
+        }
+        PageStatus.showLoading();
+        updatePassword(
+                password: password.text,
+                newPassword: newpassword.text,
+                newPasswordConfirm: cnewpassword.text)
+            .then((res) {
+          if (res.status != 0) {
+            CommonUtils.showText('密码修改成功');
+            context.pop();
+          } else {
+            CommonUtils.showText(res.msg);
+          }
+        });
+        PageStatus.closeLoading();
+        break;
+
+      case 6:
+        if (password.text.isEmpty) {
+          CommonUtils.showText('请输入密码');
+          return;
+        }
+        if (newpassword.text.isEmpty) {
+          CommonUtils.showText('请输入确认密码');
+          return;
+        }
+        if (newpassword.text != password.text) {
+          CommonUtils.showText('两次输入的密码不一致,请重新输入');
+          newpassword.clear();
+          password.clear();
+          return;
+        }
+        if (password.text.length < 6) {
+          CommonUtils.showText('请输入至少6位的新密码');
+          return;
+        }
+        PageStatus.showLoading();
+        setPassword(
+          password: password.text,
+          passwordConfirm: newpassword.text,
+        ).then((res) {
+          if (res.status != 0) {
+            CommonUtils.showText('密码设置成功');
+            Future.delayed(Duration(seconds: 2), () {
+              context.pop();
+            });
+            Provider.of<HomeConfig>(context, listen: false).setIsSetpassword(1);
+          } else {
+            CommonUtils.showText(res.msg);
+          }
+        }).whenComplete(() {
+          PageStatus.closeLoading();
+        });
+        break;
     }
   }
 
@@ -257,6 +346,63 @@ class _FillCodePageState extends State<FillCodePage> {
               PageStatus.closeLoading();
             });
           },
+        ),
+      ],
+    );
+  }
+
+  Widget _changePasswor() {
+    var member = Provider.of<HomeConfig>(context, listen: false).member;
+    return Column(
+      children: [
+        member?.username == null
+            ? SizedBox()
+            : YyInput(
+                isLogin: false,
+                margin: 1,
+                isPassword: true,
+                controller: password,
+                type: TextInputType.text,
+                hintText: '请输入原密码',
+              ),
+        YyInput(
+          isLogin: false,
+          margin: 1,
+          isPassword: true,
+          controller: newpassword,
+          type: TextInputType.text,
+          hintText: '请输入新密码',
+        ),
+        YyInput(
+          isLogin: false,
+          margin: 1,
+          isPassword: true,
+          controller: cnewpassword,
+          type: TextInputType.text,
+          hintText: '请再次确认新密码',
+        )
+      ],
+    );
+  }
+
+  Widget _setPassword() {
+    return Column(
+      children: [
+        YyInput(
+          isLogin: false,
+          margin: 1,
+          isPassword: true,
+          controller: password,
+          type: TextInputType.text,
+          hintText: '请输入密码',
+        ),
+        YyInput(
+          isLogin: false,
+          margin: 1,
+          isPassword: true,
+          controller: newpassword,
+          type: TextInputType.text,
+          hintText: '请再次输入密码',
         ),
       ],
     );
@@ -377,7 +523,9 @@ class _FillCodePageState extends State<FillCodePage> {
               _bindPhone(), //绑定手机号 1
               _setPhone(), //更换手机号2
               _getExChange(), //输入兑换码3
-              _getInvite() //输入邀请码4
+              _getInvite(), //输入邀请码4
+              _changePasswor(), // 设置密码 5
+              _setPassword() //修改密码 6
             ],
           ))
         ],
