@@ -10,10 +10,8 @@ import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/mixin/payMixin.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class Coinrecharge extends StatefulWidget {
@@ -482,7 +480,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   Widget productItem(Map product) {
     double _width = (ScreenUtil().screenWidth -
             DefaultStyle.pagePadding * 2 -
-            ScreenUtil().setWidth(16)) /
+            ScreenUtil().setWidth(17)) /
         3;
     List<Widget> textList = [
       Row(

@@ -75,17 +75,17 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-# flutter_native_splash:
-#   android: true
-#   ios: true
-#   web: false
-#   android_gravity: 'fill'
-#   ios_content_mode: scaleAspectFill
-#   image: 'assets/images/started.png'
-#   image_dark: 'assets/images/started.png'
-#   background_image: 'assets/images/started.png'
-#   background_image_dark: 'assets/images/started.png'
-#   fullscreen: true
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  android_gravity: 'fill'
+  ios_content_mode: scaleAspectFill
+  image: 'assets/images/started.png'
+  image_dark: 'assets/images/started.png'
+  background_image: 'assets/images/started.png'
+  background_image_dark: 'assets/images/started.png'
+  fullscreen: true
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is

@@ -44,7 +44,7 @@ class _SearchPageState extends State<SearchPage> {
   ];
   List hotTags = [];
   int tabIndex = 0;
-  int cureentPage = 1;
+  int cureentPage = 0;
   PageController pageController = PageController();
   PageController searchController = PageController();
   @override
@@ -738,7 +738,7 @@ class _TabHeadState extends State<TabHead> {
                 Positioned(
                     left: 0,
                     right: 0,
-                    bottom: ScreenUtil().setWidth(10),
+                    bottom: ScreenUtil().setWidth(9),
                     child: Container(
                       height: ScreenUtil().setWidth(36),
                       padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
