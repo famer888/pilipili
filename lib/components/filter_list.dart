@@ -99,6 +99,16 @@ class _FilterListState extends State<FilterList> with ElementMixin {
             limit: limit);
         cardType = 7;
         break;
+      case 3:
+        res = await getChangVideoList(
+            type: 1,
+            category: 1,
+            filter: widget.data,
+            order: order,
+            page: page,
+            limit: limit);
+        cardType = 1;
+        break;
       default:
         res = await getFilterComics(
             filter: widget.data, order: order, page: page, limit: limit);
