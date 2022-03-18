@@ -181,6 +181,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                     },
                     child: CustomScrollView(
                       cacheExtent: ScreenUtil().screenHeight * 5,
+                      physics: ClampingScrollPhysics(),
                       slivers: [
                         SliverAppBar(
                             backgroundColor: Colors.transparent,
