@@ -727,7 +727,14 @@ Future getComicsList({int type, int limit, int page, int day}) async {
 
 //获取视频列表
 Future getChangVideoList(
-    {int type, int page, int limit, int isfree, int category, int day}) async {
+    {int type,
+    int page,
+    int limit,
+    int isfree,
+    int category,
+    int day,
+    String filter,
+    int order}) async {
   try {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/mv/getList', data: {
@@ -736,8 +743,21 @@ Future getChangVideoList(
       'limit': limit,
       'isfree': isfree,
       'category': category,
-      'day': day
+      'filter': filter,
+      'order': order
     });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//获取视频列表
+Future getFilterComics({int page, int limit, String filter, int order}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/book/getListFilter',
+        data: {'page': page, 'limit': limit, 'filter': filter, 'order': order});
     return res.data;
   } catch (e) {
     return null;

@@ -227,10 +227,11 @@ class _ListPageState extends State<ListPage> {
             : SliverGrid.count(
                 crossAxisCount: isHorizontal ? 2 : 3,
                 crossAxisSpacing: ScreenUtil().setWidth(7),
-                childAspectRatio: isHorizontal ? 1.1 : 0.55,
+                childAspectRatio: isHorizontal ? 1.3 : 0.62,
                 children: data.asMap().keys.map((e) {
                   return isHorizontal
                       ? Hcard(
+                          maxLines: 1,
                           width: ScreenUtil().setWidth(174),
                           contentType: cardType,
                           thumbUrl: CommonUtils.getThumb(data[e]),
@@ -238,6 +239,7 @@ class _ListPageState extends State<ListPage> {
                           showField: 'title',
                         )
                       : Vcard(
+                          maxLines: 1,
                           width: ScreenUtil().setWidth(110),
                           contentType: cardType,
                           thumbUrl: CommonUtils.getThumb(data[e]),

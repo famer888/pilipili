@@ -423,12 +423,13 @@ class _DownListState extends State<DownList> {
               crossAxisCount: 2,
               mainAxisSpacing: ScreenUtil().setWidth(20),
               crossAxisSpacing: ScreenUtil().setWidth(7),
-              childAspectRatio: 1.1,
+              childAspectRatio: 1.3,
             ),
             itemBuilder: (context, index) {
               return Stack(
                 children: [
                   Hcard(
+                    maxLines: 1,
                     width: ScreenUtil().setWidth(171.5),
                     contentType: data[index]["contentType"],
                     thumbUrl: data[index]["thumbCover"],
@@ -455,12 +456,13 @@ class _DownListState extends State<DownList> {
               crossAxisCount: 3,
               mainAxisSpacing: ScreenUtil().setWidth(9.5),
               crossAxisSpacing: ScreenUtil().setWidth(9.5),
-              childAspectRatio: 0.55,
+              childAspectRatio: 0.62,
             ),
             itemBuilder: (context, index) {
               return Stack(
                 children: [
                   Vcard(
+                    maxLines: 1,
                     width: ScreenUtil().setWidth(110.5),
                     contentType: 2,
                     thumbUrl: data[index]["thumb"],
