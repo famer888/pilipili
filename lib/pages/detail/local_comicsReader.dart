@@ -401,8 +401,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           padding: EdgeInsets.only(top: 0),
           itemBuilder: (BuildContext context, int index) {
             return isHorizontal
-                ? comicsData[index].imgWidth == 'none' ||
-                        comicsData[index].imgHeight == 'none'
+                ? comicsData[index]["imgWidth"] == 'none' ||
+                        comicsData[index]['imgHeight'] == 'none'
                     ? Container()
                     : Container(
                         height: ScreenUtil().screenHeight,
@@ -410,16 +410,18 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                         color: Colors.black,
                         child: Center(
                           child: ComicsImg(
-                              img: comicsData[index].imgUrl,
+                              isLocal: true,
+                              img: comicsData[index]['imgUrl'],
                               isHorizontal: isHorizontal,
                               isTap: isTap,
                               index: index,
-                              width: comicsData[index].imgWidth == '0'
+                              width: comicsData[index]['imgWidth'] == '0'
                                   ? ScreenUtil().screenWidth
-                                  : double.parse(comicsData[index].imgWidth),
-                              height: comicsData[index].imgHeight == '0'
+                                  : double.parse(comicsData[index]['imgWidth']),
+                              height: comicsData[index]['imgHeight'] == '0'
                                   ? ScreenUtil().screenHeight
-                                  : double.parse(comicsData[index].imgHeight),
+                                  : double.parse(
+                                      comicsData[index]['imgHeight']),
                               currentIndex: currenPage,
                               setPosition: (int position, double pageOffset) {
                                 currenPage = position;
@@ -429,18 +431,19 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                               length: comicLength),
                         ),
                       )
-                : (comicsData[index].imgWidth == 'none' ||
-                        comicsData[index].imgHeight == 'none'
+                : (comicsData[index]['imgWidth'] == 'none' ||
+                        comicsData[index]['imgHeight'] == 'none'
                     ? Container()
                     : ComicsImg(
-                        img: comicsData[index].imgUrl,
+                        isLocal: true,
+                        img: comicsData[index]['imgUrl'],
                         isHorizontal: isHorizontal,
-                        width: comicsData[index].imgWidth == '0'
+                        width: comicsData[index]['imgWidth'] == '0'
                             ? ScreenUtil().screenWidth
-                            : double.parse(comicsData[index].imgWidth),
-                        height: comicsData[index].imgHeight == '0'
+                            : double.parse(comicsData[index]['imgWidth']),
+                        height: comicsData[index]['imgHeight'] == '0'
                             ? ScreenUtil().screenHeight
-                            : double.parse(comicsData[index].imgHeight),
+                            : double.parse(comicsData[index]['imgHeight']),
                         isTap: isTap,
                         index: index,
                         currentIndex: currenPage,

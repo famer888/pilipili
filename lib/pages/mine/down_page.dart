@@ -463,7 +463,7 @@ class _DownListState extends State<DownList> {
                 children: [
                   Vcard(
                     maxLines: 1,
-                    width: ScreenUtil().setWidth(110.5),
+                    width: ScreenUtil().setWidth(110),
                     contentType: 2,
                     thumbUrl: data[index]["thumb"],
                     cardData: data[index],

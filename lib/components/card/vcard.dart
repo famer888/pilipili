@@ -162,6 +162,8 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                           left: 0,
                           child: Container(
                             decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(ScreenUtil().setWidth(5))),
                                 color: Color.fromRGBO(0, 0, 0, 0.4)),
                           ))
                       : Container(),

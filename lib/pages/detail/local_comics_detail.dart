@@ -131,7 +131,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
         : newestSeries;
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: comicDrawer(),
+      // endDrawer: comicDrawer(),
       body: Stack(
         children: [
           Positioned(
@@ -339,45 +339,37 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                           ),
                                         ),
                                   Container(
+                                    alignment: Alignment.center,
                                     padding: EdgeInsets.symmetric(
                                         vertical: ScreenUtil().setWidth(16)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(),
-                                        GestureDetector(
-                                            onTap: () {
-                                              swichComic(1);
-                                            },
-                                            child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            ScreenUtil()
-                                                                .setWidth(20)),
-                                                    gradient: SweepGradient(
-                                                        colors: [
-                                                          Color(0xffff84a9),
-                                                          Color(0xffff9e9e)
-                                                        ])),
-                                                height:
-                                                    ScreenUtil().setWidth(40),
-                                                width:
-                                                    ScreenUtil().setWidth(144),
-                                                child: Center(
-                                                  child: Text(
-                                                    '开始阅读',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                )))
-                                      ],
-                                    ),
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          swichComic(1);
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        ScreenUtil()
+                                                            .setWidth(20)),
+                                                gradient: SweepGradient(
+                                                    colors: [
+                                                      Color(0xffff84a9),
+                                                      Color(0xffff9e9e)
+                                                    ])),
+                                            height: ScreenUtil().setWidth(40),
+                                            width: ScreenUtil().setWidth(144),
+                                            child: Center(
+                                              child: Text(
+                                                '开始阅读',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ))),
                                   ),
                                   Wrap(
                                     spacing: ScreenUtil().setWidth(3),

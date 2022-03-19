@@ -153,8 +153,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
               DownloadComics.createDownloadTask(cardData);
             }
           }
-        }
-        if (contentType != 4) {
+        }else if (contentType != 4) {
           var id = cardData['related_id'] == null
               ? cardData['id']
               : cardData['related_id'];

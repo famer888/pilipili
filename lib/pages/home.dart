@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
     super.initState();
     AppGlobal.apInit = true;
     if (!kIsWeb) {
-      // _initDownloadStastu();
+      _initDownloadStastu();
     }
     fetchBeforeEnterApp();
   }
@@ -85,10 +85,8 @@ class _HomeState extends State<Home> {
 
     List video_tasks = box.get('download_video_tasks') ?? [];
     List comics_tasks = box.get('download_comics_tasks') ?? [];
-    List novel_tasks = box.get('download_novel_tasks') ?? [];
     setData("download_video_tasks", video_tasks);
     setData("download_comics_tasks", comics_tasks);
-    setData("download_novel_tasks", novel_tasks);
   }
 
   void checkUpdateAnnouncement(VersionMsg version, Config config) {

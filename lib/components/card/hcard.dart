@@ -95,8 +95,22 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
     EventBus().off('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}');
   }
 
+  String getDownloadText() {
+    String _text = downloadError
+        ? "下载失败，点击尝试"
+        : isWaiting
+            ? "等待下载..."
+            : progress == 0
+                ? "点击开始下载"
+                : downloading
+                    ? "下载进度:" + (progress * 100).toInt().toString() + "%"
+                    : "暂停下载";
+    return _text;
+  }
+
   @override
   Widget build(BuildContext context) {
+    double thumbWidth = widget.width;
     double thumbHeight = widget.width / 167 * 100;
     String desc = getCardDesc(widget);
     return callDetail(
@@ -137,6 +151,61 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                         url: widget.thumbUrl,
                       )),
                   renderTagIcon(widget),
+                  widget.isLocal && progress.toInt() != 1
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          left: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(ScreenUtil().setWidth(5))),
+                              color: Color.fromRGBO(0, 0, 0, 0.5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                getDownloadText(),
+                                style: TextStyle(
+                                    color: progress == -1
+                                        ? Colors.red
+                                        : Colors.white,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(18)),
+                              ),
+                            ),
+                          ))
+                      : Container(),
+                  widget.isLocal && progress.toInt() != 1
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          left: 0,
+                          child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          ScreenUtil().setWidth(5)))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    height: ScreenUtil().setWidth(2),
+                                    width: thumbWidth * progress,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(255, 35, 126, 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                ScreenUtil().setWidth(1)))),
+                                  ),
+                                ],
+                              )),
+                        )
+                      : Container(),
                 ],
               ),
               Stack(

@@ -373,7 +373,7 @@ class DownloadUtil {
             tasks[taskNum]["downloading"] = true;
             tasks[taskNum]["tsListsFinished"].add(urlPath);
             box.put("download_video_tasks", tasks);
-            // LogUtil.d("完成单个任务id---------${id}");
+            LogUtil.d("完成单个任务---------${finishCount / tsTotal}");
             // 发送进度数据
             EventBus().emit('DOWNLOADVIDEO_PROGRESS_${id}',
                 {"id": id, "progress": finishCount / tsTotal});
