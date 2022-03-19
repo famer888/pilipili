@@ -310,10 +310,11 @@ class _BuyListState extends State<BuyList> {
                       crossAxisCount: 2,
                       mainAxisSpacing: ScreenUtil().setWidth(10),
                       crossAxisSpacing: ScreenUtil().setWidth(7),
-                      childAspectRatio: 1.1,
+                      childAspectRatio: 1.3,
                     ),
                     itemBuilder: (context, index) {
                       return Hcard(
+                          maxLines: 1,
                           width: ScreenUtil().setWidth(171.5),
                           thumbUrl: CommonUtils.getThumb(
                               widget.dataList[widget.index]['data'][index]),
@@ -348,7 +349,7 @@ class _BuyListState extends State<BuyList> {
                       crossAxisCount: 3,
                       mainAxisSpacing: ScreenUtil().setWidth(9.5),
                       crossAxisSpacing: ScreenUtil().setWidth(9.5),
-                      childAspectRatio: 0.61,
+                      childAspectRatio: 0.62,
                     ),
                     itemBuilder: (context, index) {
                       return Vcard(

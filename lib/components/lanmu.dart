@@ -61,11 +61,13 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
       } else {
         cm_data.elements.addAll(res.elements);
       }
-      fixedBanner =
-          cm_data.elements.firstWhere((element) => element['type'] == 6);
-      fixedNav = cm_data.elements.firstWhere((element) => element['type'] == 7);
-      CommonUtils.debugPrint(
-          '---------------------------------------${fixedBanner}');
+      cm_data.elements.forEach((item) {
+        if (item['type'] == 6) {
+          fixedBanner = item;
+        } else if (item['type'] == 7) {
+          fixedNav = item;
+        }
+      });
     }).whenComplete(() {
       setState(() {
         pageStatus = 2;
@@ -337,7 +339,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                         width: double.infinity,
                                                         child:
                                                             PlatformAwareNetworkImage(
-                                                              alignment: Alignment.center,
+                                                          alignment:
+                                                              Alignment.center,
                                                           noVisibilityDetector:
                                                               true,
                                                           url: fixedBanner[
@@ -369,7 +372,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                 .toList())),
                     SliverToBoxAdapter(
                       child: SizedBox(
-                        height: ScreenUtil().bottomBarHeight+ScreenUtil().setWidth(30),
+                        height: ScreenUtil().bottomBarHeight +
+                            ScreenUtil().setWidth(30),
                       ),
                     )
                   ],

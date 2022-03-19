@@ -195,10 +195,11 @@ class _HistoryListState extends State<HistoryList> {
           crossAxisCount: 2,
           mainAxisSpacing: ScreenUtil().setWidth(20),
           crossAxisSpacing: ScreenUtil().setWidth(7),
-          childAspectRatio: 1.1,
+          childAspectRatio: 1.3,
         ),
         itemBuilder: (context, index) {
           return Hcard(
+            maxLines: 1,
             width: ScreenUtil().setWidth(171.5),
             cardData: history[index],
             tagIconType: history[index]['isfree'],
@@ -220,10 +221,11 @@ class _HistoryListState extends State<HistoryList> {
           crossAxisCount: 3,
           mainAxisSpacing: ScreenUtil().setWidth(9.5),
           crossAxisSpacing: ScreenUtil().setWidth(9.5),
-          childAspectRatio: 0.55,
+          childAspectRatio: 0.62,
         ),
         itemBuilder: (context, index) {
           return Vcard(
+            maxLines: 1,
             width: ScreenUtil().setWidth(110.5),
             cardData: history[index],
             tagIconType: history[index]['isfree'],
@@ -246,10 +248,11 @@ class _HistoryListState extends State<HistoryList> {
           crossAxisCount: 3,
           mainAxisSpacing: ScreenUtil().setWidth(9.5),
           crossAxisSpacing: ScreenUtil().setWidth(9.5),
-          childAspectRatio: 0.55,
+          childAspectRatio: 0.62,
         ),
         itemBuilder: (context, index) {
           return Vcard(
+            maxLines: 1,
             width: ScreenUtil().setWidth(110.5),
             cardData: history[index],
             tagIconType: history[index]['isfree'],
@@ -271,10 +274,11 @@ class _HistoryListState extends State<HistoryList> {
           crossAxisCount: 3,
           mainAxisSpacing: ScreenUtil().setWidth(9.5),
           crossAxisSpacing: ScreenUtil().setWidth(9.5),
-          childAspectRatio: 0.55,
+          childAspectRatio: 0.62,
         ),
         itemBuilder: (context, index) {
           return Vcard(
+            maxLines: 1,
             width: ScreenUtil().setWidth(110.5),
             cardData: history[index],
             tagIconType: history[index]['isfree'],

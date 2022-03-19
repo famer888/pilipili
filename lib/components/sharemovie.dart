@@ -156,7 +156,9 @@ class ShareMovieModel {
               child: SizedBox(
                 width: double.infinity,
                 height: width == 1 || height == 1
-                    ? ScreenUtil().setWidth(111)
+                    ? (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)) *
+                        9 /
+                        16
                     : (height / width) *
                         (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)),
                 child: PlatformAwareNetworkImage(
