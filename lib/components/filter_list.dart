@@ -7,6 +7,7 @@ import 'package:pilipili/components/card/home_nav_btn.dart';
 import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/element_mixin.dart';
 import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/store/homeConfig.dart';
@@ -33,7 +34,6 @@ class _FilterListState extends State<FilterList> with ElementMixin {
   int pageStatus = 0;
   int page = 1;
   bool isAll = false;
-  int limit = 30;
   bool networkErr = false;
   bool isShow = false;
   dynamic fixedBanner;
@@ -86,7 +86,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
             filter: widget.data,
             order: order,
             page: page,
-            limit: limit);
+            limit: AppGlobal.smallVideoLimit);
         cardType = 1;
         break;
       case 2:
@@ -95,7 +95,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
             filter: widget.data,
             order: order,
             page: page,
-            limit: limit);
+            limit: AppGlobal.smallVideoLimit);
         cardType = 7;
         break;
       case 3:
@@ -105,12 +105,15 @@ class _FilterListState extends State<FilterList> with ElementMixin {
             filter: widget.data,
             order: order,
             page: page,
-            limit: limit);
+            limit: AppGlobal.smallVideoLimit);
         cardType = 1;
         break;
       default:
         res = await getFilterComics(
-            filter: widget.data, order: order, page: page, limit: limit);
+            filter: widget.data,
+            order: order,
+            page: page,
+            limit: AppGlobal.smallVideoLimit);
         cardType = 2;
     }
     if (res == null) {
@@ -126,12 +129,13 @@ class _FilterListState extends State<FilterList> with ElementMixin {
       filterList.addAll(resData);
     }
     pageStatus = 2;
-    isAll = (resData.length < limit);
+    isAll = (resData.length < AppGlobal.smallVideoLimit);
     setState(() {});
   }
 
   void getPageData() async {
-    getElementById(id: elementID, page: 1, limit: limit).then((res) {
+    getElementById(id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
+        .then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
@@ -447,17 +451,43 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                           filterList.asMap().keys.map((e) {
                                         return dataType == 1 || cardType == 3
                                             ? Hcard(
+                                                onTap: () {
+                                                  AppGlobal.smallVideoApi =
+                                                      '/api/mv/getList';
+                                                  AppGlobal.smallVideoPramas = {
+                                                    'type': 2,
+                                                    'filter': widget.data,
+                                                    'order': order
+                                                  };
+                                                },
                                                 maxLines: 1,
                                                 width:
                                                     ScreenUtil().setWidth(174),
                                                 contentType: cardType,
+                                                page: ((e + 1) /
+                                                        AppGlobal
+                                                            .smallVideoLimit)
+                                                    .ceil(),
                                                 thumbUrl: CommonUtils.getThumb(
                                                     filterList[e]),
                                                 cardData: filterList[e],
                                                 showField: 'title',
                                               )
                                             : Vcard(
+                                                onTap: () {
+                                                  AppGlobal.smallVideoApi =
+                                                      '/api/mv/getList';
+                                                  AppGlobal.smallVideoPramas = {
+                                                    'type': 2,
+                                                    'filter': widget.data,
+                                                    'order': order
+                                                  };
+                                                },
                                                 maxLines: 1,
+                                                page: ((e + 1) /
+                                                        AppGlobal
+                                                            .smallVideoLimit)
+                                                    .ceil(),
                                                 width:
                                                     ScreenUtil().setWidth(110),
                                                 contentType: cardType,

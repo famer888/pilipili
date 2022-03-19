@@ -23,7 +23,7 @@ class Hcard extends StatefulWidget {
       this.isSearch = false,
       this.isLocal = false,
       this.isSubtitle = false,
-      this.maxLines = 2})
+      this.maxLines = 2, this.onTap})
       : super(key: key);
   final double width;
   final double height;
@@ -40,6 +40,7 @@ class Hcard extends StatefulWidget {
   final bool isLocal;
   final bool isSubtitle;
   final int maxLines;
+  final Function onTap;
   @override
   _HcardState createState() => _HcardState();
 }
@@ -122,6 +123,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
         progress: progress,
         downloading: downloading,
         isWaiting: isWaiting,
+        onTap:widget.onTap,
         setDownloading: () {
           setState(() {
             isWaiting = true;

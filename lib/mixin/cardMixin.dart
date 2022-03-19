@@ -90,22 +90,25 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     // 7: {'privilege': RESOURCE_TYPE_SHORT_VIDEO, 'text': '你没有开启短视频权限呢！该死，为什么我的手停不下来了~'},
   };
 
-  Widget callDetail({
-    Widget child,
-    int contentType,
-    dynamic cardData,
-    dynamic widget,
-    dynamic smallVideoData,
-    bool replace = false,
-    bool isLocal = false,
-    double progress = 0,
-    bool downloading = false,
-    bool isWaiting = false,
-    Function setDownloading,
-  }) {
+  Widget callDetail(
+      {Widget child,
+      int contentType,
+      dynamic cardData,
+      dynamic widget,
+      dynamic smallVideoData,
+      bool replace = false,
+      bool isLocal = false,
+      double progress = 0,
+      bool downloading = false,
+      bool isWaiting = false,
+      Function setDownloading,
+      Function onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
+        if (onTap != null) {
+          onTap();
+        }
         if (privilegeMap[contentType] != null) {
           bool _isAllowed = Privilege.isAllowed(context,
               privilegeMap[contentType]['privilege'], PRIVILEGE_TYPE_VIEW);
@@ -153,7 +156,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
               DownloadComics.createDownloadTask(cardData);
             }
           }
-        }else if (contentType != 4) {
+        } else if (contentType != 4) {
           var id = cardData['related_id'] == null
               ? cardData['id']
               : cardData['related_id'];
@@ -323,13 +326,13 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     if (widget.tagIconType == 0) {
       _asset = 'assets/images/icon_free.png';
     } else if (widget.tagIconType == 1) {
-      _asset = 'assets/images/icon_vip.png';
+      _asset = null; // 'assets/images/icon_vip.png';
     } else if (widget.tagIconType == 2) {
       _asset = 'assets/images/icon_hot.png';
     } else if (widget.tagIconType == 3) {
       _asset = 'assets/images/icon_ad.png';
     }
-    return widget.tagIconType != null
+    return widget.tagIconType != null && _asset != null
         ? Positioned(
             top: 0,
             right: 0,

@@ -18,6 +18,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/download_video.dart';
+import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/shelf_proxy.dart';
@@ -64,11 +65,13 @@ class _SmallVideoState extends State<SmallVideo> {
     if (widget.videoData != null) return;
     loading = true;
     setState(() {});
-    getListFromElement(
-            id: widget.elementId,
-            page: videoPage == null ? page : videoPage,
-            limit: AppGlobal.smallVideoLimit)
-        .then((res) {
+    Map _pramas = {
+      'page': videoPage == null ? page : videoPage,
+      'limit': AppGlobal.smallVideoLimit
+    };
+    _pramas.addAll(AppGlobal.smallVideoPramas);
+    PlatformAwareHttp.post(AppGlobal.smallVideoApi, data: _pramas).then((json) {
+      VideoList res = VideoList.fromJson(json.data);
       if (res.status != 0) {
         if (res.data == null) return;
         if (res.data.length < AppGlobal.smallVideoLimit) {
@@ -152,6 +155,12 @@ class _SmallVideoState extends State<SmallVideo> {
   @override
   void initState() {
     super.initState();
+    if (AppGlobal.smallVideoApi == null) {
+      AppGlobal.smallVideoApi = '/api/mv/getListFromElement';
+      AppGlobal.smallVideoPramas = {
+        'elementId': widget.elementId,
+      };
+    }
     Wakelock.enable();
     if (widget.videoData == null) {
       getSmallVideolist(videoPage: widget.page);
@@ -182,6 +191,8 @@ class _SmallVideoState extends State<SmallVideo> {
   @override
   void dispose() {
     super.dispose();
+    AppGlobal.smallVideoApi = null;
+    AppGlobal.smallVideoPramas = null;
     Wakelock.disable();
     if (!kIsWeb) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -889,8 +900,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                     child: mounted && loading
                                         ? Center(
                                             child: Container(
-                                              width:
-                                                  ScreenUtil().setWidth(120),
+                                              width: ScreenUtil().setWidth(120),
                                               child: Image.asset(
                                                 'assets/images/loading_pink.gif',
                                                 fit: BoxFit.fitWidth,

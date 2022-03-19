@@ -23,7 +23,8 @@ class Vcard extends StatefulWidget {
       this.isSearch = false,
       this.isLocal = false,
       this.isSubtitle = false,
-      this.maxLines = 1})
+      this.maxLines = 1,
+      this.onTap})
       : super(key: key);
   final double width;
   final double height;
@@ -40,6 +41,7 @@ class Vcard extends StatefulWidget {
   final bool isLocal;
   final bool isSubtitle;
   final int maxLines;
+  final Function onTap;
   @override
   _VcardState createState() => _VcardState();
 }
@@ -125,6 +127,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
         replace: widget.replace,
         isLocal: widget.isLocal,
         progress: (progress / (widget.cardData["allEpisode"] ?? 1)),
+        onTap: widget.onTap,
         setDownloading: () {
           setState(() {
             isWaiting = true;
@@ -205,7 +208,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                               : Center(
                                   child: Text(
                                     downloadError
-                                        ? "下载失败，点击重试"
+                                        ? "下��失败，点击重试"
                                         : isWaiting
                                             ? "等待下载..."
                                             : progress == 0

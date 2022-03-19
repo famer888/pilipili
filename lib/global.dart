@@ -18,7 +18,7 @@ class AppGlobal {
   static String comicThumb; //避免传参，用来记录漫画封面
   static Map appinfo;
   static String apiBaseURL = "";
-  static int smallVideoLimit = 15;
+  static int smallVideoLimit = 18;
   static List<String> apiLines = [
     'https://api.youyuapi.com',
     'https://api.youyuapi.org',
@@ -61,4 +61,6 @@ class AppGlobal {
   static bool shouApp = false;
   static Map xianmianPramas; //限免页面参数
   static Map seconedPagePramas; //页面参数
+  static String smallVideoApi;
+  static Map smallVideoPramas;
 }
