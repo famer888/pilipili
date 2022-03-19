@@ -742,14 +742,32 @@ class _MyVipState extends State<MyVip> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                  vipList[index]['pname'],
-                                                  style: TextStyle(
-                                                      color: Colors.transparent,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(24)),
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: ScreenUtil()
+                                                            .setWidth(8)),
+                                                    width: ScreenUtil()
+                                                        .setWidth(24),
+                                                    height: ScreenUtil()
+                                                        .setWidth(24),
+                                                    child:
+                                                        PlatformAwareNetworkImage(
+                                                      noVisibilityDetector:
+                                                          true,
+                                                      url: vipList[index]
+                                                          ['second_img_url'],
+                                                      fit: BoxFit.fill,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                    vipList[index]['pname'],
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(20)),
+                                                  ),
                                                 ),
                                                 Text(
                                                   '剩余时间:' +
@@ -923,13 +941,31 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                moreProducts[index]['pname'],
-                                                style: TextStyle(
-                                                    color: Colors.transparent,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(24)),
+                                              Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: ScreenUtil()
+                                                          .setWidth(8)),
+                                                  width:
+                                                      ScreenUtil().setWidth(24),
+                                                  height:
+                                                      ScreenUtil().setWidth(24),
+                                                  child:
+                                                      PlatformAwareNetworkImage(
+                                                    noVisibilityDetector: true,
+                                                    url: moreProducts[index]
+                                                        ['second_img_url'],
+                                                    fit: BoxFit.fill,
+                                                  )),
+                                              Expanded(
+                                                child: Text(
+                                                  moreProducts[index]['pname'],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(20)),
+                                                ),
                                               ),
                                               Text(
                                                 (moreProducts[index][
@@ -1043,16 +1079,34 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: Text(
-                  '${widget.product['valid_date']}天特权时间',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: Color(
-                          0xffffffff), //_vipColors(widget.product['pname']),
-                      fontSize: ScreenUtil().setSp(13)),
-                ),
+              Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                      width: ScreenUtil().setWidth(24),
+                      height: ScreenUtil().setWidth(24),
+                      child: PlatformAwareNetworkImage(
+                        noVisibilityDetector: true,
+                        url: widget.product['second_img_url'],
+                        fit: BoxFit.fill,
+                      )),
+                  Expanded(
+                      child: Text(
+                    widget.product['pname'],
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtil().setSp(20),
+                        fontWeight: FontWeight.bold),
+                  )),
+                  Text(
+                    '${widget.product['valid_date']}天特权时间',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color: Color(
+                            0xffffffff), //_vipColors(widget.product['pname']),
+                        fontSize: ScreenUtil().setSp(13)),
+                  ),
+                ],
               ),
               SizedBox(
                 height: ScreenUtil().setWidth(10),
