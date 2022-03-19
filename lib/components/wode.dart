@@ -146,7 +146,8 @@ class _WodeState extends State<Wode> {
 
   Widget cardList(Member member) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
+      margin: EdgeInsets.only(
+          left: ScreenUtil().setWidth(5), right: ScreenUtil().setWidth(10)),
       padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(14)),
       decoration: const BoxDecoration(
         border: Border(
@@ -165,12 +166,12 @@ class _WodeState extends State<Wode> {
               children: <Widget>[
                 Image.asset(
                   "assets/images/wode/vip_bg.png",
-                  width: ScreenUtil().setWidth(170),
-                  fit: BoxFit.fitWidth,
+                  width: ScreenUtil().setWidth(190),
+                  fit: BoxFit.fill,
                 ),
                 Positioned(
                   top: ScreenUtil().setHeight(62),
-                  left: ScreenUtil().setWidth(12),
+                  left: ScreenUtil().setWidth(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -195,12 +196,12 @@ class _WodeState extends State<Wode> {
                   ),
                 ),
                 Positioned(
-                  bottom: ScreenUtil().setWidth(11),
-                  left: ScreenUtil().setWidth(14),
+                  bottom: ScreenUtil().setHeight(12),
+                  left: ScreenUtil().setWidth(20),
                   child: Text(
                     "立即开通",
                     style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
+                        fontSize: ScreenUtil().setSp(15),
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
@@ -208,12 +209,15 @@ class _WodeState extends State<Wode> {
               ],
             ),
           ),
+          SizedBox(
+            width: ScreenUtil().setWidth(2),
+          ),
           Expanded(
             flex: 1,
             child: Column(
               children: [
                 SizedBox(
-                  height: ScreenUtil().setHeight(13),
+                  height: ScreenUtil().setHeight(19),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -224,7 +228,7 @@ class _WodeState extends State<Wode> {
                     children: <Widget>[
                       Image.asset(
                         "assets/images/wode/glod_bg.png",
-                        width: ScreenUtil().setWidth(160),
+                        width: double.infinity,
                         fit: BoxFit.fill,
                       ),
                       Positioned(
@@ -273,7 +277,7 @@ class _WodeState extends State<Wode> {
                     children: <Widget>[
                       Image.asset(
                         "assets/images/wode/activity_bg.png",
-                        width: ScreenUtil().setWidth(160),
+                        width: double.infinity,
                         fit: BoxFit.fill,
                       ),
                       Positioned(
@@ -339,7 +343,7 @@ class _WodeState extends State<Wode> {
                 Image.asset(
                   'assets/images/wode/${item['icon']}.png',
                   fit: BoxFit.fitWidth,
-                  width: ScreenUtil().setWidth(25),
+                  width: ScreenUtil().setWidth(32),
                   // height: ScreenUtil().setWidth(45),
                 ),
                 SizedBox(
@@ -429,8 +433,10 @@ class _WodeState extends State<Wode> {
                                 right: ScreenUtil().setWidth(8)),
                             child: ClipOval(
                               child: Image.asset(
-                                  "assets/images/wode/avatar.png",
-                                  width: ScreenUtil().setWidth(60)),
+                                "assets/images/wode/avatar.png",
+                                width: ScreenUtil().setWidth(60),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                           Expanded(
