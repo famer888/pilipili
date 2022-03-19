@@ -38,7 +38,6 @@ class _FilterListState extends State<FilterList> with ElementMixin {
   bool isShow = false;
   dynamic fixedBanner;
   List filterList;
-  ConstructModel cm_data;
   int elementID;
   int dataType;
   int order = 1;
@@ -132,18 +131,13 @@ class _FilterListState extends State<FilterList> with ElementMixin {
   }
 
   void getPageData() async {
-    getConstructById(id: elementID, page: 1, limit: limit).then((res) {
+    getElementById(id: elementID, page: 1, limit: limit).then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
         return;
       }
-      cm_data = res;
-      cm_data.elements.forEach((item) {
-        if (item['type'] == 6) {
-          fixedBanner = item;
-        }
-      });
+      fixedBanner = res['data'];
       getDataList();
     });
   }
