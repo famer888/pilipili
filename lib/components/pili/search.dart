@@ -32,6 +32,7 @@ class _SearchPageState extends State<SearchPage> {
       'id': 1,
       'name': '次元',
       'api': '/api/mv/getList',
+      'isFlow': true,
       'pramas': {},
     },
     {
