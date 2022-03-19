@@ -439,14 +439,19 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: DefaultStyle.pagePadding),
                                     sliver: SliverGrid.count(
-                                      crossAxisCount: dataType == 2 ? 2 : 3,
+                                      crossAxisCount:
+                                          dataType == 1 || cardType == 3
+                                              ? 2
+                                              : 3,
                                       crossAxisSpacing:
                                           ScreenUtil().setWidth(7),
                                       childAspectRatio:
-                                          dataType == 2 ? 1.3 : 0.62,
+                                          dataType == 1 || cardType == 3
+                                              ? 1.3
+                                              : 0.62,
                                       children:
                                           filterList.asMap().keys.map((e) {
-                                        return dataType == 2
+                                        return dataType == 1 || cardType == 3
                                             ? Hcard(
                                                 maxLines: 1,
                                                 width:

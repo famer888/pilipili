@@ -28,18 +28,27 @@ class _SearchPageState extends State<SearchPage> {
   bool loading = false;
 
   List tabList = [
-    {'id': 1, 'name': '次元', 'api': '/api/mv/getList', 'pramas': {}},
+    {
+      'id': 1,
+      'name': '次元',
+      'api': '/api/mv/getList',
+      'pramas': {},
+    },
     {
       'id': 2,
       'name': '动漫',
       'api': '/api/mv/getList',
-      'pramas': {'category': 1}
+      'pramas': {'category': 1},
+      'cardType': 'h',
+      'isFlow': false,
     },
     {
       'id': 3,
       'name': '漫画',
       'api': '/api/book/getList',
-      'pramas': {'type': 1}
+      'pramas': {'type': 1},
+      'cardType': 'v',
+      'isFlow': false,
     }
   ];
   List hotTags = [];
@@ -483,8 +492,8 @@ class _SearchPageState extends State<SearchPage> {
                       child: PrimaryScrollContainer(
                           scrollChildKeys[e],
                           PublicList(
-                            cartType:e<=1?'v':'h',
-                            isFlow: false,
+                            cartType: tabList[e]['cardType'],
+                            isFlow: tabList[e]['isFlow'],
                             noRefresh: true,
                             contentType: e == 2 ? 2 : null,
                             data: tabList[e]['pramas'],
@@ -556,18 +565,27 @@ class SearchResult extends StatefulWidget {
 class _SearchResultState extends State<SearchResult> {
   PageController controller = PageController();
   int currentTab = 0;
- List tabList = [
+  List tabList = [
     {
       'title': '次元',
       'api': '/api/mv/search',
-      'pramas': {'type': 1}
+      'pramas': {'type': 1},
+      'isFlow': true,
     },
     {
       'title': '动漫',
       'api': '/api/mv/search',
-      'pramas': {'type': 2}
+      'cardType': 'h',
+      'pramas': {'type': 2},
+      'isFlow': false,
     },
-    {'title': '漫画', 'api': '/api/book/search', 'pramas': {}}
+    {
+      'title': '漫画',
+      'cardType': 'v',
+      'api': '/api/book/search',
+      'pramas': {},
+      'isFlow': false,
+    }
   ];
   @override
   Widget build(BuildContext context) {
@@ -646,8 +664,10 @@ class _SearchResultState extends State<SearchResult> {
             pramas.addAll(tabList[e]['pramas']);
             return PageViewMixin(
               child: PublicList(
+                isFlow: tabList[e]['isFlow'],
                 contentType: e == 2 ? 2 : null,
                 data: pramas,
+                cartType: tabList[e]['cardType'],
                 api: tabList[e]['api'],
                 isShow: e == currentTab,
               ),

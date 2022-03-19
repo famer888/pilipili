@@ -172,7 +172,6 @@ class _PublicListState extends State<PublicList> {
                                   contentType: widget.contentType ?? 7,
                                   cardData: searchData[index],
                                   showField: 'title');
-                          ;
                         })
                     : GridView.builder(
                         cacheExtent: ScreenUtil().screenHeight * 5,
@@ -185,7 +184,7 @@ class _PublicListState extends State<PublicList> {
                           crossAxisCount: 2,
                           mainAxisSpacing: ScreenUtil().setWidth(7),
                           crossAxisSpacing: ScreenUtil().setWidth(7),
-                          childAspectRatio:widget.cartType == 'h'? 1.3:0.62,
+                          childAspectRatio: widget.cartType == 'h' ? 1.3 : 0.62,
                         ),
                         itemBuilder: (context, index) {
                           return widget.cartType == 'h'
