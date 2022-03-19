@@ -19,6 +19,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/download_video.dart';
+import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:preload_page_view/preload_page_view.dart';
@@ -67,11 +68,13 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
     if (widget.videoData != null) return;
     loading = true;
     setState(() {});
-    getListFromElement(
-            id: widget.elementId,
-            page: videoPage == null ? page : videoPage,
-            limit: AppGlobal.smallVideoLimit)
-        .then((res) {
+    Map _pramas = {
+      'page': videoPage == null ? page : videoPage,
+      'limit': AppGlobal.smallVideoLimit
+    };
+    _pramas.addAll(AppGlobal.smallVideoPramas);
+    PlatformAwareHttp.post(AppGlobal.smallVideoApi, data: _pramas).then((json) {
+      VideoList res = VideoList.fromJson(json.data);
       if (res.status != 0) {
         if (res.data == null) return;
         if (res.data.length < AppGlobal.smallVideoLimit) {
@@ -225,6 +228,12 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
   @override
   void initState() {
     super.initState();
+    if (AppGlobal.smallVideoApi == null) {
+      AppGlobal.smallVideoApi = '/api/mv/getListFromElement';
+      AppGlobal.smallVideoPramas = {
+        'elementId': widget.elementId,
+      };
+    }
     Wakelock.enable();
     if (widget.videoData == null) {
       getSmallVideolist(videoPage: widget.page);
@@ -257,6 +266,8 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
   @override
   void dispose() {
     super.dispose();
+    AppGlobal.smallVideoApi = null;
+    AppGlobal.smallVideoPramas = null;
     webController?.removeListener(parentLisHandler);
     webController?.dispose();
     Wakelock.disable();
@@ -269,7 +280,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff333333),
+      backgroundColor: Color(0xffFFDFE9),
       body: Stack(
         children: [
           loading
@@ -395,13 +406,12 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                           behavior: HitTestBehavior.translucent,
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setWidth(10)
-                            ),
+                                vertical: ScreenUtil().setWidth(10)),
                             child: Image.asset(
-                            'assets/images/backarrow.png',
-                            width: ScreenUtil().setWidth(12),
-                            fit: BoxFit.fitWidth,
-                          ),
+                              'assets/images/backarrow.png',
+                              width: ScreenUtil().setWidth(12),
+                              fit: BoxFit.fitWidth,
+                            ),
                           ),
                         ),
                         loading
@@ -724,7 +734,8 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                         )
                                       : ListView.builder(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: DefaultStyle.pagePadding,
+                                              vertical:
+                                                  DefaultStyle.pagePadding,
                                               horizontal:
                                                   DefaultStyle.pagePadding),
                                           itemCount: commentList.length,
@@ -1013,7 +1024,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                           context,
                                                           title: 'GOLD视频',
                                                           btnText: isInsufficient
-                                                              ? 'GOLD不足，前往充值'
+                                                              ? 'GOLD不足���前往充值'
                                                               : '购买观看',
                                                           callBack: () {
                                                         if (isInsufficient) {
@@ -1116,7 +1127,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                                               .isfree ==
                                                                           1
                                                                       ? '立即成为VIP解锁全站视频'
-                                                                      : '支付${widget.data.discountCoins}币即可观看完整版',
+                                                                      : '支付${widget.data.discountCoins}币��可观看完整版',
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .white,

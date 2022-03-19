@@ -203,7 +203,7 @@ class _SmallVideoState extends State<SmallVideo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff333333),
+      backgroundColor: Color(0xffFFDFE9),
       body: Stack(
         children: [
           pageLoading || controller == null
