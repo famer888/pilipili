@@ -175,7 +175,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
         newestSeries.length > 8 ? newestSeries.sublist(0, 8) : newestSeries;
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: loading || data == null ? Container() : comicDrawer(),
+      // endDrawer: loading || data == null ? Container() : comicDrawer(),
       body: Stack(
         children: [
           Positioned(
