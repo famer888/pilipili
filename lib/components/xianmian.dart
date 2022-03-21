@@ -54,6 +54,12 @@ class _XianmianState extends State<Xianmian> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getPageData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -70,9 +76,7 @@ class _XianmianState extends State<Xianmian> {
                 })
               : Expanded(
                   child: pageStatus != 2
-                      ? pageStatus == 1
-                          ? PageStatus.loading(mounted)
-                          : Container()
+                      ? PageStatus.loading(mounted)
                       : PullRefreshList(
                           onLoading: () {
                             if (isAll) return;
@@ -93,6 +97,7 @@ class _XianmianState extends State<Xianmian> {
                               : WaterfallFlow.builder(
                                   primary: false,
                                   padding: EdgeInsets.only(
+                                      top: DefaultStyle.pagePadding,
                                       bottom: MediaQuery.of(context)
                                               .padding
                                               .bottom +

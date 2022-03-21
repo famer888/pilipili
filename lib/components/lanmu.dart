@@ -230,6 +230,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                           (BuildContext context, int index) {
                                         return GestureDetector(
                                           onTap: () {
+                                            CommonUtils.debugPrint(
+                                                '****************************跳转地址:${fixedBanner['value'][index]['url']}');
                                             if (fixedBanner['value'][index]
                                                     ['type'] ==
                                                 1) {
@@ -283,38 +285,6 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                     BeveledRectangleBorder()),
                                             child: Stack(
                                               children: [
-                                                // Positioned(
-                                                //   right: 0,
-                                                //   left: 0,
-                                                //   bottom: 0,
-                                                //   top: 0,
-                                                //   child: Stack(
-                                                //     children: [
-                                                //       Opacity(
-                                                //         opacity: 0.7,
-                                                //         child:
-                                                //             PlatformAwareNetworkImage(
-                                                //           noVisibilityDetector:
-                                                //               true,
-                                                //           url: fixedBanner[
-                                                //                       'value']
-                                                //                   [index]
-                                                //               ['resource_url'],
-                                                //           fit: BoxFit.fill,
-                                                //         ),
-                                                //       ),
-                                                //       BackdropFilter(
-                                                //         filter:
-                                                //             ImageFilter.blur(
-                                                //                 sigmaX: 15,
-                                                //                 sigmaY: 15),
-                                                //         child: Container(
-                                                //           color: Colors.black38,
-                                                //         ),
-                                                //       )
-                                                //     ],
-                                                //   ),
-                                                // ),
                                                 Container(
                                                   height: ScreenUtil()
                                                           .setWidth(260) +
@@ -329,12 +299,6 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                     child: Padding(
                                                       padding:
                                                           EdgeInsets.all(0),
-                                                      // EdgeInsets.only(
-                                                      //     top: ScreenUtil()
-                                                      //             .statusBarHeight +
-                                                      //         DefaultStyle
-                                                      //             .navbarHegiht
-                                                      //             ),
                                                       child: Container(
                                                         width: double.infinity,
                                                         child:
