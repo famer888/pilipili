@@ -232,9 +232,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               body: TabBarView(
                 controller: _tabController,
                 children: _tabs.asMap().keys.map((e) {
-                  return Padding(
-                    padding: EdgeInsets.all(DefaultStyle.pagePadding),
-                    child: PageViewMixin(
+                  return PageViewMixin(
                       child: PublicList(
                         isFlow: false,
                         contentType: cartType == 'v' ? 7 : 1,
@@ -243,7 +241,6 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         api: '/api/mv/getList',
                         isShow: e == currentTab,
                       ),
-                    ),
                   );
                 }).toList(),
               )),
