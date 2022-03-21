@@ -222,7 +222,7 @@ class _HistoryListState extends State<HistoryList> {
         itemBuilder: (context, index) {
           return Vcard(
             maxLines: 1,
-            width: ScreenUtil().setWidth(110.5),
+            width: ScreenUtil().setWidth(110),
             cardData: history[index],
             tagIconType: history[index]['isfree'],
             contentType: 7,
@@ -249,7 +249,7 @@ class _HistoryListState extends State<HistoryList> {
         itemBuilder: (context, index) {
           return Vcard(
             maxLines: 1,
-            width: ScreenUtil().setWidth(110.5),
+            width: ScreenUtil().setWidth(110),
             cardData: history[index],
             tagIconType: history[index]['isfree'],
             contentType: 2,
