@@ -463,9 +463,9 @@ class Routes {
           builder: (context, state) => BuyPage(),
           routes: getDetailRoutes()),
       GoRoute(
-        path: xianmian,
-        builder: (context, state) => Xianmian(),
-      ),
+          path: xianmian,
+          builder: (context, state) => Xianmian(),
+          routes: getDetailRoutes()),
       GoRoute(
           path: coinRecharge,
           builder: (context, state) => Coinrecharge(),
