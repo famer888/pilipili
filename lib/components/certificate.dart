@@ -152,23 +152,21 @@ class CertificateModel {
                                                     )),
                                                 child: Stack(
                                                   children: [
-                                                    Expanded(
-                                                      child: Center(
-                                                          child: Text("账号凭证",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .none,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      ScreenUtil()
-                                                                          .setSp(
-                                                                              16.5)))),
-                                                    ),
+                                                    Center(
+                                                        child: Text("账号凭证",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .none,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            16.5)))),
                                                     Positioned(
                                                       right: ScreenUtil()
                                                           .setWidth(10),
@@ -286,23 +284,21 @@ class CertificateModel {
                                                   )),
                                               child: Stack(
                                                 children: [
-                                                  Expanded(
-                                                    child: Center(
-                                                        child: Text("账号凭证",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                decoration:
-                                                                    TextDecoration
-                                                                        .none,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            16.5)))),
-                                                  ),
+                                                  Center(
+                                                      child: Text("账号凭证",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .none,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          16.5)))),
                                                   Positioned(
                                                       right: ScreenUtil()
                                                           .setWidth(10),
