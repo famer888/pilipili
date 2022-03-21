@@ -45,7 +45,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
     return Container(
       margin: EdgeInsets.only(
           bottom:
-              ScreenUtil().setWidth(widget.element['is_margin'] == 1 ? 20 : 5)),
+              ScreenUtil().setWidth(widget.element['is_margin'] == 1 ? 24 : 5)),
       child: Column(
         children: [
           widget.title != null
@@ -95,6 +95,13 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                                 bottom: ScreenUtil().setWidth(48)),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Color.fromRGBO(255, 128, 163, 0.5),
+                                      offset: Offset(0, 2),
+                                      blurRadius: 3,
+                                      spreadRadius: 0)
+                                ],
                                 borderRadius: BorderRadius.circular(
                                     ScreenUtil().setWidth(50)),
                                 gradient: LinearGradient(

@@ -59,7 +59,6 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
             emitName: 'pili_ciyuan',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              print('****************************${navitems[index].toJson()}');
               setState(() {
                 currentIndex = index;
               });
