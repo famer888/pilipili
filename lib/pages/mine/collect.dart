@@ -28,7 +28,7 @@ class _CollectPageState extends State<CollectPage>
   List tabList = [
     {'id': 1, 'name': '次元精选', 'index': 1},
     {'id': 10, 'name': '次元竖屏', 'index': 2},
-    {'id': 1, 'name': '动漫', 'index': 3},
+    {'id': 3, 'name': '动漫', 'index': 3},
     {'id': 2, 'name': '漫画', 'index': 4},
   ];
 
