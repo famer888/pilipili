@@ -250,7 +250,7 @@ class ShareMovieModel {
                                   fontSize: ScreenUtil().setSp(11)),
                             ),
                             Text(
-                              "${url}skagdkgaksgdkgaksgdkgsakgdk",
+                              "${url}",
                               style: TextStyle(
                                   color: Color(0xff646464),
                                   fontWeight: FontWeight.normal,
