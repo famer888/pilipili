@@ -9,13 +9,11 @@ import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/model/basic.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import "package:universal_html/html.dart" as html;
-import 'package:pilipili/utils/networkImage.dart';
 
 Map payIcons = {
   'alipay': 'assets/images/pment/a.png',
