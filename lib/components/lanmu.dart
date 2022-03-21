@@ -93,7 +93,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
 
   @override
   Widget build(BuildContext context) {
-    double navHeight = (fixedNav == null || fixedNav.length == 0 ? 32 : 88);
+    double navHeight = (fixedNav == null || fixedNav.length == 0 ? 24 : 88);
     return networkErr
         ? PageStatus.noNetWork(onTap: () {
             networkErr = false;
@@ -139,17 +139,24 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                               ScreenUtil().setWidth(navHeight)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.only(
-                                topRight:
-                                    Radius.circular(ScreenUtil().setWidth(30)),
-                                topLeft:
-                                    Radius.circular(ScreenUtil().setWidth(30))),
+                                topRight: Radius.circular(ScreenUtil().setWidth(
+                                    fixedNav == null || fixedNav.length == 0
+                                        ? 24
+                                        : 30)),
+                                topLeft: Radius.circular(ScreenUtil().setWidth(
+                                    fixedNav == null || fixedNav.length == 0
+                                        ? 24
+                                        : 30))),
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: Color.fromRGBO(255, 244, 249, 1),
                               ),
                               padding: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setWidth(16)),
+                                  vertical: ScreenUtil().setWidth(
+                                      fixedNav == null || fixedNav.length == 0
+                                          ? 12
+                                          : 16)),
                               child: fixedNav == null ||
                                       fixedNav['value'].length == 0
                                   ? Container()

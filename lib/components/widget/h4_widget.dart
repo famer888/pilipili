@@ -142,10 +142,6 @@ class _H4ColumnState extends State<H4Column> {
                         Text(
                           '查看更多',
                           style: DefaultStyle.white14,
-                        ),
-                        Image.asset(
-                          'assets/images/icon_more.png',
-                          height: ScreenUtil().setWidth(8),
                         )
                       ],
                     ),

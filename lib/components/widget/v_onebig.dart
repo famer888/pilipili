@@ -122,10 +122,6 @@ class _VoneBigState extends State<VoneBig> {
                         Text(
                           '查看更多',
                           style: DefaultStyle.white14,
-                        ),
-                        Image.asset(
-                          'assets/images/icon_more.png',
-                          height: ScreenUtil().setWidth(8),
                         )
                       ],
                     ),

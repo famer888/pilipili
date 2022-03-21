@@ -30,8 +30,7 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
         children: [
           Image.asset(
             'assets/images/icon_love_red.png',
-            width: ScreenUtil().setWidth(6),
-            height: ScreenUtil().setWidth(6),
+            width: ScreenUtil().setWidth(8),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(8)),
@@ -42,8 +41,7 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
           ),
           Image.asset(
             'assets/images/icon_love_red.png',
-            width: ScreenUtil().setWidth(6),
-            height: ScreenUtil().setWidth(6),
+            width: ScreenUtil().setWidth(8),
           ),
         ],
       ),

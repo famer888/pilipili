@@ -119,6 +119,9 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                                   '更多',
                                   style: DefaultStyle.white14,
                                 ),
+                                 SizedBox(
+                                  width: ScreenUtil().setWidth(9),
+                                ),
                                 Image.asset(
                                   'assets/images/icon_more.png',
                                   height: ScreenUtil().setWidth(8),
