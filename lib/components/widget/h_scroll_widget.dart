@@ -55,7 +55,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                 )
               : Container(),
           Container(
-            height: ScreenUtil().setWidth(190),
+            height: ScreenUtil().setWidth(170),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: DefaultStyle.pagePadding),

@@ -23,7 +23,7 @@ class Hcard extends StatefulWidget {
       this.isSearch = false,
       this.isLocal = false,
       this.isSubtitle = false,
-      this.maxLines = 2, this.onTap})
+      this.maxLines = 1, this.onTap})
       : super(key: key);
   final double width;
   final double height;

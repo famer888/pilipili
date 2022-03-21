@@ -54,7 +54,7 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                 )
               : Container(),
           Container(
-            height: ScreenUtil().setWidth(250),
+            height: ScreenUtil().setWidth(225),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: DefaultStyle.pagePadding),
