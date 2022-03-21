@@ -101,10 +101,10 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
                         child: Stack(
                           alignment: Alignment.topCenter,
                           children: [
-                            Opacity(
-                              opacity: currentTab == e ? 1 : 0,
-                              child: Positioned(
-                                top: 0,
+                            Positioned(
+                              top: 0,
+                              child: Opacity(
+                                opacity: currentTab == e ? 1 : 0,
                                 child: Image.asset(
                                   'assets/images/vip_table_active.png',
                                   fit: BoxFit.fitHeight,
