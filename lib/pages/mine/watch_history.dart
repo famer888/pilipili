@@ -25,19 +25,15 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
   List tabList = [
     {
       'id': 1,
-      'name': '视频',
+      'name': '精选',
+    },
+    {
+      'id': 4,
+      'name': '次元竖屏',
     },
     {
       'id': 2,
       'name': '漫画',
-    },
-    {
-      'id': 3,
-      'name': '小说',
-    },
-    {
-      'id': 4,
-      'name': '小视频',
     }
   ];
   @override
@@ -221,7 +217,7 @@ class _HistoryListState extends State<HistoryList> {
           crossAxisCount: 3,
           mainAxisSpacing: ScreenUtil().setWidth(9.5),
           crossAxisSpacing: ScreenUtil().setWidth(9.5),
-          childAspectRatio: 0.62,
+          childAspectRatio: 0.61,
         ),
         itemBuilder: (context, index) {
           return Vcard(

@@ -298,16 +298,16 @@ class _ListPageState extends State<ListPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(
-                                      ScreenUtil().setWidth(30)),
+                                      ScreenUtil().setWidth(24)),
                                   topLeft: Radius.circular(
-                                      ScreenUtil().setWidth(30))),
+                                      ScreenUtil().setWidth(24))),
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: Color.fromRGBO(255, 244, 249, 1),
                                 ),
                                 padding: EdgeInsets.symmetric(
-                                    vertical: ScreenUtil().setWidth(16)),
+                                    vertical: ScreenUtil().setWidth(12)),
                               ),
                             ),
                           ),

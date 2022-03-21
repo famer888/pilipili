@@ -323,9 +323,90 @@ class Routes {
         ),
       ),
       GoRoute(
-        path: seconedPageDetail,
-        builder: (context, state) => SeconedPageDetail(),
-      ),
+          path: seconedPageDetail,
+          builder: (context, state) => SeconedPageDetail(),
+          routes: [
+            GoRoute(
+                path: comicsdetail,
+                builder: (context, state) {
+                  return ComicsDetatl(
+                      id: state.params == null || state.params['id'] == null
+                          ? null
+                          : int.parse(state.params['id'].toString()));
+                },
+                routes: [
+                  GoRoute(
+                    path: comicReader,
+                    builder: (context, state) {
+                      final args = AppGlobal.currentReaderRouteExtra;
+                      return ComicReader(
+                        id: args == null || args['id'] == null
+                            ? null
+                            : int.parse(args['id'].toString()),
+                        episode: args == null || args['episode'] == null
+                            ? null
+                            : int.parse(args['episode'].toString()),
+                        allEpisode: args == null || args['allEpisode'] == null
+                            ? null
+                            : int.parse(args['allEpisode'].toString()),
+                        title: args == null || args['title'] == null
+                            ? null
+                            : args['title'],
+                        type: args == null || args['type'] == null
+                            ? null
+                            : int.parse(args['type'].toString()),
+                      );
+                    },
+                  ),
+                ]),
+            GoRoute(
+              path: videoDetail,
+              builder: (context, state) {
+                return VideoDetail(
+                    id: state.params == null || state.params['id'] == null
+                        ? null
+                        : int.parse(state.params['id'].toString()));
+              },
+            ),
+            GoRoute(
+              path: smallVideo,
+              builder: (context, state) {
+                final args = AppGlobal.currentDetailRouteExtra;
+                return SmallVideo(
+                    videoData: args == null || args['videoData'] == null
+                        ? null
+                        : args['videoData'],
+                    elementId: args == null || args['elementId'] == null
+                        ? null
+                        : int.parse(args['elementId'].toString()),
+                    page: args == null || args['page'] == null
+                        ? null
+                        : int.parse(args['page'].toString()),
+                    id: args == null || args['id'] == null
+                        ? null
+                        : int.parse(args['id'].toString()));
+              },
+            ),
+            GoRoute(
+              path: webSmallVideo,
+              builder: (context, state) {
+                final args = AppGlobal.currentDetailRouteExtra;
+                return WebSmallVideo(
+                    videoData: args == null || args['videoData'] == null
+                        ? null
+                        : args['videoData'],
+                    elementId: args == null || args['elementId'] == null
+                        ? null
+                        : int.parse(args['elementId'].toString()),
+                    page: args == null || args['page'] == null
+                        ? null
+                        : int.parse(args['page'].toString()),
+                    id: args == null || args['id'] == null
+                        ? null
+                        : int.parse(args['id'].toString()));
+              },
+            ),
+          ]),
       GoRoute(
           path: atlasDetail,
           builder: (context, state) {

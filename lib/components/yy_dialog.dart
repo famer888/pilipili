@@ -95,7 +95,7 @@ class YyShowDialog {
                     left: ScreenUtil().setWidth(24.5),
                     right: ScreenUtil().setWidth(24.5),
                     top: ScreenUtil().setWidth(title == null ? 0 : 25),
-                    bottom: ScreenUtil().setWidth(33.5)),
+                    bottom: ScreenUtil().setWidth(24)),
                 child: Stack(
                   overflow: Overflow.visible,
                   children: <Widget>[

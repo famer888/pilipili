@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
+import 'package:pilipili/components/filter_list.dart';
 import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/model/element.dart';
@@ -72,12 +73,17 @@ class _DongmanState extends State<Dongman> {
                         isShow: currentIndex == e,
                         id: int.parse(navitems[e].linkUrl),
                         index: e)
-                    : ListPage(
-                        isShow: currentIndex == e,
-                        title: navitems[e].name,
-                        id: navitems[e].linkUrl,
-                        index: e,
-                      ),
+                    : (navitems[e].redirectType == 6
+                        ? FilterList(
+                            isShow: currentIndex == e,
+                            data: navitems[e].linkUrl,
+                            index: e)
+                        : ListPage(
+                            isShow: currentIndex == e,
+                            title: navitems[e].name,
+                            id: navitems[e].linkUrl,
+                            index: e,
+                          )),
               );
             }).toList(),
           );

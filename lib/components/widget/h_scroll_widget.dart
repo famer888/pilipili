@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
-import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
@@ -46,7 +45,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
     return Container(
       margin: EdgeInsets.only(
           bottom:
-              ScreenUtil().setWidth(widget.element['is_margin'] == 1 ? 20 : 5)),
+              ScreenUtil().setWidth(widget.element['is_margin'] == 1 ? 24 : 5)),
       child: Column(
         children: [
           widget.title != null
@@ -96,6 +95,13 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                                 bottom: ScreenUtil().setWidth(48)),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Color.fromRGBO(255, 128, 163, 0.5),
+                                      offset: Offset(0, 2),
+                                      blurRadius: 3,
+                                      spreadRadius: 0)
+                                ],
                                 borderRadius: BorderRadius.circular(
                                     ScreenUtil().setWidth(50)),
                                 gradient: LinearGradient(
@@ -112,6 +118,9 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                                 Text(
                                   '更多',
                                   style: DefaultStyle.white14,
+                                ),
+                                SizedBox(
+                                  width: ScreenUtil().setWidth(9),
                                 ),
                                 Image.asset(
                                   'assets/images/icon_more.png',
