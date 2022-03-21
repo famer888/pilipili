@@ -115,57 +115,6 @@ class _VipPageState extends State<VipPage> with PayMixin {
     }
   }
 
-  // Widget _vipHead() {
-  //   return Container(
-  //     height: ScreenUtil().setWidth(44),
-  //     width: double.infinity,
-  //     child: Stack(
-  //       children: [
-  //         Center(
-  //           child: Text(
-  //             'VIP充值',
-  //             style: DefaultStyle.white18bold,
-  //           ),
-  //         ),
-  //         Positioned(
-  //             top: 0,
-  //             bottom: 0,
-  //             right: 0,
-  //             left: 0,
-  //             child: Padding(
-  //               padding:
-  //                   EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   GestureDetector(
-  //                     onTap: () {
-  //                       context.pop();
-  //                     },
-  //                     child: Image.asset(
-  //                       'assets/pengke/backarrow.png',
-  //                       width: ScreenUtil().setWidth(20),
-  //                       height: ScreenUtil().setWidth(20),
-  //                     ),
-  //                   ),
-  //                   GestureDetector(
-  //                     onTap: () {
-  //                       context
-  //                           .push(CommonUtils.getRealHash('RechargeRecord/1'));
-  //                     },
-  //                     child: Text(
-  //                       '充值记录',
-  //                       style: DefaultStyle.white15,
-  //                     ),
-  //                   )
-  //                 ],
-  //               ),
-  //             ))
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _qyItem({String logo, String title, String text}) {
     return Container(
       child: Row(
@@ -235,356 +184,325 @@ class _VipPageState extends State<VipPage> with PayMixin {
     //     });
     double _width = ScreenUtil().screenWidth - 40 * 2;
     return Scaffold(
-      // backgroundColor: Color(0xff171222),
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // _vipHead(),
-              PageTitleBar(
-                  paddingTop: ScreenUtil().statusBarHeight, title: 'VIP会员'),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(255, 158, 164, 0.25),
-                      blurRadius: ScreenUtil().setWidth(5),
-                    )
-                  ],
-                ),
-                padding: EdgeInsets.only(
-                    left: DefaultStyle.pagePadding,
-                    right: DefaultStyle.pagePadding,
-                    top: ScreenUtil().setWidth(8),
-                    bottom: ScreenUtil().setWidth(10)),
-                margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(11)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: tabList.asMap().keys.map((e) {
-                    return GestureDetector(
-                      onTap: () {
-                        tabController.jumpToPage(e);
-                      },
-                      child: Container(
-                        margin:
-                            EdgeInsets.only(right: ScreenUtil().setWidth(32)),
-                        child: Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            Opacity(
-                              opacity: currentTab == e ? 1 : 0,
-                              child: Positioned(
-                                top: 0,
-                                child: Image.asset(
-                                  'assets/images/vip_table_active.png',
-                                  fit: BoxFit.fitHeight,
-                                  height: ScreenUtil().setWidth(7),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: ScreenUtil().setWidth(8)),
-                              child: Text(
-                                tabList[e]['name'],
-                                style: currentTab == e
-                                    ? DefaultStyle.pink14bold
-                                    : DefaultStyle.lgray14Bold,
-                              ),
-                            )
-                          ],
+        // backgroundColor: Color(0xff171222),
+        body: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // _vipHead(),
+        PageTitleBar(paddingTop: ScreenUtil().statusBarHeight, title: 'VIP会员'),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(255, 158, 164, 0.25),
+                blurRadius: ScreenUtil().setWidth(5),
+              )
+            ],
+          ),
+          padding: EdgeInsets.only(
+              left: DefaultStyle.pagePadding,
+              right: DefaultStyle.pagePadding,
+              top: ScreenUtil().setWidth(8),
+              bottom: ScreenUtil().setWidth(10)),
+          margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(11)),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: tabList.asMap().keys.map((e) {
+              return GestureDetector(
+                onTap: () {
+                  tabController.jumpToPage(e);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(32)),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Positioned(
+                        top: 0,
+                        child: Opacity(
+                          opacity: currentTab == e ? 1 : 0,
+                          child: Image.asset(
+                            'assets/images/vip_table_active.png',
+                            fit: BoxFit.fitHeight,
+                            height: ScreenUtil().setWidth(7),
+                          ),
                         ),
                       ),
-                    );
-                  }).toList(),
+                      Container(
+                        margin: EdgeInsets.only(top: ScreenUtil().setWidth(8)),
+                        child: Text(
+                          tabList[e]['name'],
+                          style: currentTab == e
+                              ? DefaultStyle.pink14bold
+                              : DefaultStyle.lgray14Bold,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              networkErr
-                  ? Expanded(
-                      child: Container(
-                      width: double.infinity,
-                      child: PageStatus.noNetWork(onTap: () {
-                        networkErr = false;
-                        setState(() {});
-                        _initPage();
-                      }),
-                    ))
-                  : pageStatus == 'loading'
-                      ? PageStatus.loading(true)
-                      : pageStatus == 'error'
-                          ? PageStatus.noData()
-                          : Expanded(
-                              child: PageView(
-                              controller: tabController,
-                              onPageChanged: (e) {
-                                currentTab = e;
-                                setState(() {});
-                              },
-                              children: [
-                                products.length == 0
-                                    ? PageStatus.noData()
-                                    : Column(
+              );
+            }).toList(),
+          ),
+        ),
+        networkErr
+            ? Expanded(
+                child: Container(
+                width: double.infinity,
+                child: PageStatus.noNetWork(onTap: () {
+                  networkErr = false;
+                  setState(() {});
+                  _initPage();
+                }),
+              ))
+            : pageStatus == 'loading'
+                ? PageStatus.loading(true)
+                : pageStatus == 'error'
+                    ? PageStatus.noData()
+                    : Expanded(
+                        child: PageView(
+                        controller: tabController,
+                        onPageChanged: (e) {
+                          currentTab = e;
+                          setState(() {});
+                        },
+                        children: [
+                          products.length == 0
+                              ? PageStatus.noData()
+                              : Column(
+                                  children: [
+                                    Container(
+                                      child: Stack(
+                                        clipBehavior: Clip.none,
                                         children: [
                                           Container(
+                                            height: ScreenUtil().setWidth(187),
+                                            child: Swiper(
+                                              onIndexChanged: onIndexChanged,
+                                              itemCount: products.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return PageViewMixin(
+                                                  child: VIPItemContainer(
+                                                      product: products
+                                                          .elementAt(index),
+                                                      currentPrice:
+                                                          currentPrice,
+                                                      promoPrice: promoPrice),
+                                                );
+                                              },
+                                              viewportFraction: 0.8,
+                                              scale: 0.9,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: ScreenUtil().setWidth(80),
+                                        width: double.infinity,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setWidth(20)),
+                                          child: Image.asset(
+                                            "assets/images/wode/vip_icon_header.png",
+                                            fit: BoxFit.fill,
+                                          ),
+                                        )),
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color.fromRGBO(
+                                                  255, 158, 164, 0.25),
+                                              blurRadius:
+                                                  ScreenUtil().setWidth(5),
+                                            )
+                                          ],
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(
+                                                  ScreenUtil().setWidth(10)),
+                                              bottomRight: Radius.circular(
+                                                  ScreenUtil().setWidth(10))),
+                                        ),
+                                        // padding: EdgeInsets.symmetric(
+                                        //     vertical: ScreenUtil()
+                                        //         .setWidth(16)),
+                                        margin: EdgeInsets.only(
+                                          left: ScreenUtil().setWidth(20),
+                                          right: ScreenUtil().setWidth(20),
+                                        ),
+                                        child: SingleChildScrollView(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical:
+                                                  ScreenUtil().setWidth(16)),
+                                          child: Center(
+                                            child: Wrap(
+                                              spacing: 0,
+                                              runSpacing:
+                                                  ScreenUtil().setWidth(29),
+                                              children: rightsList
+                                                  .asMap()
+                                                  .keys
+                                                  .map((e) => Container(
+                                                        width: _width / 2,
+                                                        child: Center(
+                                                          child: _qyItem(
+                                                              logo:
+                                                                  rightsList[e]
+                                                                      ['img'],
+                                                              text:
+                                                                  rightsList[e]
+                                                                      ['name'],
+                                                              title:
+                                                                  rightsList[e]
+                                                                      ['desc']),
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: ScreenUtil().setWidth(17),
+                                        vertical: ScreenUtil().setWidth(23),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                if (Privilege.isAllowed(
+                                                    context,
+                                                    RESOURCE_TYPE_SYSTEM,
+                                                    PRIVILEGE_TYPE_FEED)) {
+                                                  context.push(
+                                                      CommonUtils.getRealHash(
+                                                          'customerService'));
+                                                } else {
+                                                  CommonUtils.showText(
+                                                      '哥哥~开启1V1服务需要会员呢！您好像没有哦~');
+                                                }
+                                              },
+                                              child: Container(
+                                                  margin: EdgeInsets.only(
+                                                    left: ScreenUtil()
+                                                        .setWidth(5),
+                                                    // right: ScreenUtil()
+                                                    //     .setWidth(16),
+                                                  ),
+                                                  width:
+                                                      ScreenUtil().setWidth(56),
+                                                  height:
+                                                      ScreenUtil().setWidth(56),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Color.fromRGBO(
+                                                            255,
+                                                            158,
+                                                            164,
+                                                            0.25),
+                                                        blurRadius: ScreenUtil()
+                                                            .setWidth(5),
+                                                      )
+                                                    ],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            ScreenUtil()
+                                                                .setWidth(12)),
+                                                  ),
+                                                  child: Center(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                            'assets/images/wode/vip_kefu.png',
+                                                            width: ScreenUtil()
+                                                                .setWidth(24),
+                                                            height: ScreenUtil()
+                                                                .setWidth(24),
+                                                            fit: BoxFit.fill),
+                                                        Text('客服',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffFF84A9),
+                                                                fontSize:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            12)))
+                                                      ],
+                                                    ),
+                                                  ))),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showPay(products[swiperIndex]);
+                                            },
                                             child: Stack(
-                                              clipBehavior: Clip.none,
                                               children: [
                                                 Container(
-                                                  height: ScreenUtil()
-                                                      .setWidth(187),
-                                                  child: Swiper(
-                                                    onIndexChanged:
-                                                        onIndexChanged,
-                                                    itemCount: products.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return PageViewMixin(
-                                                        child: VIPItemContainer(
-                                                            product: products
-                                                                .elementAt(
-                                                                    index),
-                                                            currentPrice:
-                                                                currentPrice,
-                                                            promoPrice:
-                                                                promoPrice),
-                                                      );
-                                                    },
-                                                    viewportFraction: 0.8,
-                                                    scale: 0.9,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              height: ScreenUtil().setWidth(80),
-                                              width: double.infinity,
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: ScreenUtil()
-                                                        .setWidth(20)),
-                                                child: Image.asset(
-                                                  "assets/images/wode/vip_icon_header.png",
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              )),
-                                          Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Color.fromRGBO(
-                                                        255, 158, 164, 0.25),
-                                                    blurRadius: ScreenUtil()
-                                                        .setWidth(5),
-                                                  )
-                                                ],
-                                                borderRadius: BorderRadius.only(
-                                                    bottomLeft: Radius.circular(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
                                                         ScreenUtil()
-                                                            .setWidth(10)),
-                                                    bottomRight:
-                                                        Radius.circular(
-                                                            ScreenUtil()
-                                                                .setWidth(10))),
-                                              ),
-                                              // padding: EdgeInsets.symmetric(
-                                              //     vertical: ScreenUtil()
-                                              //         .setWidth(16)),
-                                              margin: EdgeInsets.only(
-                                                left: ScreenUtil().setWidth(20),
-                                                right:
-                                                    ScreenUtil().setWidth(20),
-                                              ),
-                                              child: SingleChildScrollView(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: ScreenUtil()
-                                                        .setWidth(16)),
-                                                child: Center(
-                                                  child: Wrap(
-                                                    spacing: 0,
-                                                    runSpacing: ScreenUtil()
-                                                        .setWidth(29),
-                                                    children: rightsList
-                                                        .asMap()
-                                                        .keys
-                                                        .map((e) => Container(
-                                                              width: _width / 2,
-                                                              child: Center(
-                                                                child: _qyItem(
-                                                                    logo: rightsList[
-                                                                            e]
-                                                                        ['img'],
-                                                                    text: rightsList[
-                                                                            e][
-                                                                        'name'],
-                                                                    title: rightsList[
-                                                                            e][
-                                                                        'desc']),
-                                                              ),
-                                                            ))
-                                                        .toList(),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  ScreenUtil().setWidth(17),
-                                              vertical:
-                                                  ScreenUtil().setWidth(23),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                    onTap: () {
-                                                      if (Privilege.isAllowed(
-                                                          context,
-                                                          RESOURCE_TYPE_SYSTEM,
-                                                          PRIVILEGE_TYPE_FEED)) {
-                                                        context.push(CommonUtils
-                                                            .getRealHash(
-                                                                'customerService'));
-                                                      } else {
-                                                        CommonUtils.showText(
-                                                            '哥哥~开启1V1服务需要会员呢！您好像没有哦~');
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                        margin: EdgeInsets.only(
-                                                          left: ScreenUtil()
-                                                              .setWidth(5),
-                                                          // right: ScreenUtil()
-                                                          //     .setWidth(16),
-                                                        ),
-                                                        width: ScreenUtil()
-                                                            .setWidth(56),
-                                                        height: ScreenUtil()
-                                                            .setWidth(56),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      255,
-                                                                      158,
-                                                                      164,
-                                                                      0.25),
-                                                              blurRadius:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          5),
-                                                            )
-                                                          ],
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          12)),
-                                                        ),
-                                                        child: Center(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Image.asset(
-                                                                  'assets/images/wode/vip_kefu.png',
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          24),
-                                                                  height: ScreenUtil()
-                                                                      .setWidth(
-                                                                          24),
-                                                                  fit: BoxFit
-                                                                      .fill),
-                                                              Text('客服',
-                                                                  style: TextStyle(
-                                                                      color: Color(
-                                                                          0xffFF84A9),
-                                                                      fontSize:
-                                                                          ScreenUtil()
-                                                                              .setSp(12)))
-                                                            ],
-                                                          ),
-                                                        ))),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showPay(
-                                                        products[swiperIndex]);
-                                                  },
+                                                            .setWidth(50),
+                                                      ),
+                                                      gradient: DefaultStyle
+                                                          .defaluGrandientLine),
+                                                  width: ScreenUtil()
+                                                      .setWidth(239),
+                                                  height:
+                                                      ScreenUtil().setWidth(40),
                                                   child: Stack(
+                                                    clipBehavior: Clip.none,
                                                     children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          50),
-                                                                ),
-                                                                gradient:
-                                                                    DefaultStyle
-                                                                        .defaluGrandientLine),
-                                                        width: ScreenUtil()
-                                                            .setWidth(239),
-                                                        height: ScreenUtil()
-                                                            .setWidth(40),
-                                                        child: Stack(
-                                                          clipBehavior:
-                                                              Clip.none,
-                                                          children: [
-                                                            Center(
-                                                              child: Text.rich(
+                                                      Center(
+                                                        child: Text.rich(
+                                                          TextSpan(
+                                                              text:
+                                                                  '¥$currentPrice',
+                                                              style: DefaultStyle
+                                                                  .white18bold,
+                                                              children: [
                                                                 TextSpan(
                                                                     text:
-                                                                        '¥$currentPrice',
-                                                                    style: DefaultStyle
-                                                                        .white18bold,
-                                                                    children: [
-                                                                      TextSpan(
-                                                                          text:
-                                                                              '  ¥$promoPrice',
-                                                                          style: TextStyle(
-                                                                              color: Colors.white54,
-                                                                              fontSize: ScreenUtil().setSp(12),
-                                                                              decoration: TextDecoration.lineThrough))
-                                                                    ]),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                                left: 0,
-                                                                top: ScreenUtil()
-                                                                    .setWidth(
-                                                                        -3.5),
-                                                                child:
-                                                                    PlatformAwareAssetImage(
-                                                                  url:
-                                                                      'assets/images/pment/icon_youhui.png',
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          89.5),
-                                                                  height: ScreenUtil()
-                                                                      .setWidth(
-                                                                          19),
-                                                                )),
-                                                          ],
+                                                                        '  ¥$promoPrice',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white54,
+                                                                        fontSize:
+                                                                            ScreenUtil().setSp(
+                                                                                12),
+                                                                        decoration:
+                                                                            TextDecoration.lineThrough))
+                                                              ]),
                                                         ),
-                                                      )
+                                                      ),
+                                                      Positioned(
+                                                          left: 0,
+                                                          top: ScreenUtil()
+                                                              .setWidth(-3.5),
+                                                          child:
+                                                              PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/pment/icon_youhui.png',
+                                                            width: ScreenUtil()
+                                                                .setWidth(89.5),
+                                                            height: ScreenUtil()
+                                                                .setWidth(19),
+                                                          )),
                                                     ],
                                                   ),
                                                 )
@@ -593,21 +511,20 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                           )
                                         ],
                                       ),
-                                PageViewMixin(
-                                  child: MoreVipContainer(
-                                      isShow: currentTab == 1,
-                                      showPay: showPay),
+                                    )
+                                  ],
                                 ),
-                                PageViewMixin(
-                                  child: MyVip(isShow: currentTab == 2),
-                                )
-                              ],
-                            )),
-            ],
-          )
-        ],
-      ),
-    );
+                          PageViewMixin(
+                            child: MoreVipContainer(
+                                isShow: currentTab == 1, showPay: showPay),
+                          ),
+                          PageViewMixin(
+                            child: MyVip(isShow: currentTab == 2),
+                          )
+                        ],
+                      )),
+      ],
+    ));
   }
 }
 
@@ -1122,36 +1039,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                           0xffffffff), //_vipColors(widget.product['pname']),
                       fontSize: ScreenUtil().setSp(13)),
                 ),
-              )),
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(),
-                  ),
-                  // Row(
-                  //   mainAxisSize: MainAxisSize.max,
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     Text(
-                  //       '¥${widget.promoPrice}',
-                  //       style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontSize: ScreenUtil().setSp(28.8),
-                  //           fontWeight: FontWeight.bold),
-                  //     ),
-                  //     SizedBox(
-                  //       width: ScreenUtil().setWidth(12.5),
-                  //     ),
-                  //     Text('¥${widget.currentPrice}',
-                  //         style: TextStyle(
-                  //             color: Colors.white54,
-                  //             fontSize: ScreenUtil().setSp(19.8),
-                  //             decoration: TextDecoration.lineThrough,
-                  //             fontWeight: FontWeight.bold))
-                  //   ],
-                  // )
-                ],
-              )
+              ))
             ],
           ),
         ),
