@@ -245,7 +245,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                           pagination: SwiperPagination(
                                               margin: EdgeInsets.only(
                                                   bottom: ScreenUtil()
-                                                      .setWidth(100)),
+                                                      .setWidth(40)),
                                               alignment: Alignment.bottomCenter,
                                               builder: SwiperCustomPagination(
                                                   builder:
