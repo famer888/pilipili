@@ -217,6 +217,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                             : GestureDetector(
                                 onTap: () {
                                   String linkUrl = activityInfo['link'];
+                                    if(linkUrl==''||linkUrl==null) return;
                                   List urlList = linkUrl.split('?');
                                   if (activityInfo['link'].indexOf('http') ==
                                       -1) {
