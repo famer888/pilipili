@@ -120,7 +120,8 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                   privilegeMap[contentType]['text'],
                   style: TextStyle(
                       color: Color(0xffff84a9),
-                      fontSize: ScreenUtil().setSp(15),
+                      fontWeight: FontWeight.bold,
+                      fontSize: ScreenUtil().setSp(16),
                       decoration: TextDecoration.none),
                 );
               },

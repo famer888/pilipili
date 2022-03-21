@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
-import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
