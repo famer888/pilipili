@@ -209,8 +209,7 @@ class _ScrollnavState extends State<Scrollnav> {
                                                           selectedIndex ==
                                                                   index
                                                               ? FontWeight.bold
-                                                              : FontWeight
-                                                                  .normal),
+                                                              : FontWeight.w500),
                                                 ),
                                               ),
                                             ],

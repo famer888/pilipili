@@ -235,6 +235,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
+                                    blurRadius: 0.5,
                                     blurStyle: BlurStyle.outer,
                                     color: Color.fromRGBO(255, 91, 140, 0.2),
                                     offset: Offset(0, ScreenUtil().setWidth(2)),
@@ -641,9 +642,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                       ),
                                                                       decoration: BoxDecoration(
                                                                           color: Colors
-                                                                              .white,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(3)),
+                                                                              .white),
                                                                       child:
                                                                           Text(
                                                                         '${tags[e]}',

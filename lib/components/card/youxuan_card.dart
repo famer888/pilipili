@@ -56,7 +56,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                         widget.data['title'],
                         style: TextStyle(
                             color: Color(0xff646464),
-                            fontSize: ScreenUtil().setSp(18),
+                            fontSize: ScreenUtil().setSp(16),
                             fontWeight: FontWeight.bold),
                       ),
                       Text('总视频：${widget.data['total_num']}部',
@@ -210,7 +210,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                           text: '折扣价: ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xffFF5B8C),
+                                              color: Color(0xffFE004C),
                                               fontSize: ScreenUtil().setSp(12)),
                                           children: [
                                             TextSpan(
@@ -225,7 +225,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough,
-                                            color: Color(0xffFF5B8C),
+                                            color: Color(0xffFE004C),
                                             fontSize: ScreenUtil().setSp(12)),
                                       )
                                     ],
@@ -304,7 +304,11 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                         child: Center(
                                           child: Text(
                                             '立即购买合集',
-                                            style: DefaultStyle.white12,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    ScreenUtil().setSp(12)),
                                           ),
                                         ),
                                       ))

@@ -86,7 +86,8 @@ class UpdateModel {
                                         gradient: LinearGradient(
                                       colors: [
                                         Color(0xFFFF89AC),
-                                        Color(0xFFFF5B8C)
+                                        Color(0xFFFF5B8C),
+                                        Color(0xFFFA437A)
                                       ],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
@@ -111,55 +112,132 @@ class UpdateModel {
                                       children: newTipsWidget,
                                     ),
                                   )),
-                                  AppGlobal.shouApp
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            GestureDetector(
-                                                onTap: () {
-                                                  cancelFunc();
-                                                  context.push(
-                                                      '/${Routes.appCenter}');
-                                                },
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          colors: [
-                                                            Color(0xffFF84A9),
-                                                            Color(0xffFF9E9E)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: ScreenUtil().setWidth(25)),
+                                    child: AppGlobal.shouApp
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    cancelFunc();
+                                                    context.push(
+                                                        '/${Routes.appCenter}');
+                                                  },
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        255,
+                                                                        128,
+                                                                        163,
+                                                                        0.5),
+                                                                offset: Offset(
+                                                                    0, 2),
+                                                                blurRadius: 3,
+                                                                spreadRadius: 0)
                                                           ],
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              Color(0xffFF9E9E),
+                                                              Color(0xffFF84A9),
+                                                            ],
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          18))),
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          21.5)),
+                                                      child: Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(120),
+                                                        height: ScreenUtil()
+                                                            .setWidth(36),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '应用中心',
+                                                            style: DefaultStyle
+                                                                .white15,
+                                                          ),
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        18))),
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        21.5)),
-                                                    child: Container(
-                                                      width: ScreenUtil()
-                                                          .setWidth(150),
-                                                      height: ScreenUtil()
-                                                          .setWidth(36),
-                                                      child: Center(
-                                                        child: Text(
-                                                          '应用中心',
-                                                          style: DefaultStyle
-                                                              .white15,
+                                                      ))),
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    cancelFunc();
+                                                    confirm?.call();
+                                                    // type == "1"
+                                                    //     ? confirm?.call()
+                                                    //     : confirmApp?.call();
+                                                  },
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        255,
+                                                                        128,
+                                                                        163,
+                                                                        0.5),
+                                                                offset: Offset(
+                                                                    0, 2),
+                                                                blurRadius: 3,
+                                                                spreadRadius: 0)
+                                                          ],
+                                                          gradient:
+                                                              LinearGradient(
+                                                            colors: [
+                                                              Color(0xffFF9E9E),
+                                                              Color(0xffFF84A9),
+                                                            ],
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          18))),
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          21.5)),
+                                                      child: Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(120),
+                                                        height: ScreenUtil()
+                                                            .setWidth(35),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '确定',
+                                                            style: DefaultStyle
+                                                                .white15,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ))),
-                                            GestureDetector(
+                                                      )))
+                                            ],
+                                          )
+                                        : Center(
+                                            child: GestureDetector(
                                                 onTap: () {
                                                   cancelFunc();
                                                   confirm?.call();
@@ -169,11 +247,24 @@ class UpdateModel {
                                                 },
                                                 child: Container(
                                                     decoration: BoxDecoration(
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      255,
+                                                                      128,
+                                                                      163,
+                                                                      0.5),
+                                                              offset:
+                                                                  Offset(0, 2),
+                                                              blurRadius: 3,
+                                                              spreadRadius: 0)
+                                                        ],
                                                         gradient:
                                                             LinearGradient(
                                                           colors: [
+                                                            Color(0xffFF9E9E),
                                                             Color(0xffFF84A9),
-                                                            Color(0xffFF9E9E)
                                                           ],
                                                           begin: Alignment
                                                               .topCenter,
@@ -192,10 +283,8 @@ class UpdateModel {
                                                                     .setWidth(
                                                                         21.5)),
                                                     child: Container(
-                                                      width: ScreenUtil()
-                                                          .setWidth(150),
                                                       height: ScreenUtil()
-                                                          .setWidth(35),
+                                                          .setWidth(36),
                                                       child: Center(
                                                         child: Text(
                                                           '确定',
@@ -203,48 +292,9 @@ class UpdateModel {
                                                               .white15,
                                                         ),
                                                       ),
-                                                    )))
-                                          ],
-                                        )
-                                      : Center(
-                                          child: GestureDetector(
-                                              onTap: () {
-                                                cancelFunc();
-                                                confirm?.call();
-                                                // type == "1"
-                                                //     ? confirm?.call()
-                                                //     : confirmApp?.call();
-                                              },
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        colors: [
-                                                          Color(0xffFF84A9),
-                                                          Color(0xffFF9E9E)
-                                                        ],
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                      ),
-                                                      borderRadius: BorderRadius
-                                                          .circular(ScreenUtil()
-                                                              .setWidth(18))),
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: ScreenUtil()
-                                                          .setWidth(21.5)),
-                                                  child: Container(
-                                                    height: ScreenUtil()
-                                                        .setWidth(36),
-                                                    child: Center(
-                                                      child: Text(
-                                                        '确定',
-                                                        style: DefaultStyle
-                                                            .white15,
-                                                      ),
-                                                    ),
-                                                  ))),
-                                        )
+                                                    ))),
+                                          ),
+                                  )
                                 ],
                               ),
                             ),
@@ -330,7 +380,8 @@ class UpdateModel {
                                                 gradient: LinearGradient(
                                               colors: [
                                                 Color(0xFFFF89AC),
-                                                Color(0xFFFF5B8C)
+                                                Color(0xFFFF5B8C),
+                                                Color(0xFFFA437A)
                                               ],
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
@@ -359,7 +410,7 @@ class UpdateModel {
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal:
-                                                    DefaultStyle.pagePadding),
+                                                    DefaultStyle.pagePadding+ScreenUtil().setWidth(10)),
                                             child: Center(
                                               child: GestureDetector(
                                                   onTap: () {
@@ -380,11 +431,24 @@ class UpdateModel {
                                                                         21.5)),
                                                     child: Container(
                                                       decoration: BoxDecoration(
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        255,
+                                                                        128,
+                                                                        163,
+                                                                        0.5),
+                                                                offset: Offset(
+                                                                    0, 2),
+                                                                blurRadius: 3,
+                                                                spreadRadius: 0)
+                                                          ],
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
+                                                              Color(0xffFF9E9E),
                                                               Color(0xffFF84A9),
-                                                              Color(0xffFF9E9E)
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,

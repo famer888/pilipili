@@ -199,7 +199,9 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                       pagination: SwiperPagination(
                                           margin: EdgeInsets.only(
                                               bottom: ScreenUtil().setWidth(
-                                                  fixedNav['value'] == null ||
+                                                  fixedNav == null ||
+                                                          fixedNav['value'] ==
+                                                              null ||
                                                           fixedNav['value']
                                                                   .length ==
                                                               0
