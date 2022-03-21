@@ -121,11 +121,14 @@ class _V4ColumnState extends State<V4Column> {
                     decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.circular(ScreenUtil().setWidth(50)),
-                        gradient: LinearGradient(colors: [
-                          Color(0xffff8b8b),
-                          Color(0xffff7696),
-                          Color(0xffff7299),
-                        ])),
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xffff8b8b),
+                              Color(0xffff7696),
+                              Color(0xffff7299),
+                            ])),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

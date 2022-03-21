@@ -442,9 +442,9 @@ class _HomeState extends State<Home> {
                                                               : navBarItem[key]
                                                                   ['icon'],
                                                           width: ScreenUtil()
-                                                              .setWidth(30),
+                                                              .setWidth(25),
                                                           height: ScreenUtil()
-                                                              .setWidth(30),
+                                                              .setWidth(25),
                                                           fit: BoxFit.fitWidth)
                                                       : Container(),
                                                   Text(

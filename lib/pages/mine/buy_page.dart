@@ -234,7 +234,15 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                                       ? Color(0xffff5b8c)
                                       : Color(0xffc2c2c2),
                                   fontSize: ScreenUtil().setSp(15)),
-                            )
+                            ),
+                            Opacity(
+                              opacity: 0,
+                              child: Image.asset(
+                                "assets/images/icon_love_red2.png",
+                                width: ScreenUtil().setWidth(6),
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
                           ],
                         ),
                       );

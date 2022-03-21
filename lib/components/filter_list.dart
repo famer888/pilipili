@@ -528,8 +528,8 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                         spreadRadius: 0)
                   ],
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(ScreenUtil().setWidth(20)),
-                      bottomLeft: Radius.circular(ScreenUtil().setWidth(20)))),
+                      topLeft: Radius.circular(ScreenUtil().setWidth(12)),
+                      bottomLeft: Radius.circular(ScreenUtil().setWidth(12)))),
               child: Row(
                 children: filterNavList.asMap().keys.map((e) {
                   return GestureDetector(
@@ -565,11 +565,21 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                           Text(
                             filterNavList[e]['title'],
                             style: TextStyle(
+                                height: 1.2,
+                                fontWeight: FontWeight.w700,
                                 color: filterNavList[e]['order'] == order
                                     ? Color(0xffff5b8c)
                                     : Color(0xffc2c2c2),
-                                fontSize: ScreenUtil().setSp(15)),
-                          )
+                                fontSize: ScreenUtil().setSp(14)),
+                          ),
+                          Opacity(
+                            opacity: 0,
+                            child: Image.asset(
+                              "assets/images/icon_love_red2.png",
+                              width: ScreenUtil().setWidth(6),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
                         ],
                       ),
                     ),
