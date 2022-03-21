@@ -379,7 +379,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                             : minWestSeries)
                                         .asMap()
                                         .keys
-                                        .map((e) => selectItem(newestSeries[e]))
+                                        .map((e) => selectItem(e+1))
                                         .toList(),
                                   ),
                                   newestSeries.length < 8

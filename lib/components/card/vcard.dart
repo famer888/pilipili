@@ -70,6 +70,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
     }
     if (widget.isLocal) {
       EventBus().on('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}', (arg) {
+        // print(arg);
         if (widget.cardData["id"] == arg["id"]) {
           setState(() {
             progress = arg["progress"] ?? progress;
@@ -105,7 +106,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
   }
 
   String getDownloadText() {
-    return "${progress == 0 ? 1 : progress}章:${currentImg}/${imgTotal}";
+    return "${progress < widget.cardData["sets"].length ? progress + 1 : progress}章:${currentImg}/${imgTotal}";
   }
 
   @override
@@ -208,7 +209,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                               : Center(
                                   child: Text(
                                     downloadError
-                                        ? "下��失败，点击重试"
+                                        ? "下载失败，点击重试"
                                         : isWaiting
                                             ? "等待下载..."
                                             : progress == 0
