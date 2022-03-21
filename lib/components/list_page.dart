@@ -252,93 +252,90 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: (networkErr || data == null)
-          ? PageStatus.noNetWork(onTap: () {
-              networkErr = false;
-              setState(() {});
-              getPageData();
-            })
-          : (pageStatus != 2
-              ? pageStatus == 1
-                  ? PageStatus.loading(mounted)
-                  : Container()
-              : PullRefreshList(
-                  color: Color.fromRGBO(130, 26, 70, 0.44),
-                  offset:
-                      DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
-                  onLoading: () {
-                    if (isAll) return;
-                    page++;
-                    getPageData();
-                  },
-                  onRefresh: () async {
-                    page = 1;
-                    isAll = false;
-                    networkErr = false;
-                    page = 1;
-                    getPageData();
-                  },
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverAppBar(
-                          backgroundColor: Colors.transparent,
-                          primary: false,
-                          leading: Container(),
-                          pinned: false,
-                          elevation: 0,
-                          forceElevated: true,
-                          expandedHeight: ScreenUtil().statusBarHeight +
-                              DefaultStyle.navbarHegiht +
-                              ScreenUtil().setWidth(160) +
-                              ScreenUtil().setWidth(32),
-                          bottom: PreferredSize(
-                            preferredSize: Size(
-                                double.infinity, ScreenUtil().setWidth(32)),
-                            child: ClipRRect(
+    return (networkErr || data == null)
+        ? PageStatus.noNetWork(onTap: () {
+            networkErr = false;
+            setState(() {});
+            getPageData();
+          })
+        : (pageStatus != 2
+            ? pageStatus == 1
+                ? PageStatus.loading(mounted)
+                : Container()
+            : PullRefreshList(
+                color: Color.fromRGBO(130, 26, 70, 0.44),
+                offset:
+                    DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
+                onLoading: () {
+                  if (isAll) return;
+                  page++;
+                  getPageData();
+                },
+                onRefresh: () async {
+                  page = 1;
+                  isAll = false;
+                  networkErr = false;
+                  page = 1;
+                  getPageData();
+                },
+                child: CustomScrollView(
+                  cacheExtent: ScreenUtil().screenHeight * 5,
+                  slivers: [
+                    SliverAppBar(
+                        backgroundColor: Colors.transparent,
+                        primary: false,
+                        leading: Container(),
+                        pinned: false,
+                        elevation: 0,
+                        forceElevated: true,
+                        expandedHeight: ScreenUtil().statusBarHeight +
+                            DefaultStyle.navbarHegiht +
+                            ScreenUtil().setWidth(160) +
+                            ScreenUtil().setWidth(24),
+                        bottom: PreferredSize(
+                          preferredSize:
+                              Size(double.infinity, ScreenUtil().setWidth(24)),
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(
                                       ScreenUtil().setWidth(24)),
                                   topLeft: Radius.circular(
                                       ScreenUtil().setWidth(24))),
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Color.fromRGBO(255, 244, 249, 1),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: ScreenUtil().setWidth(12)),
-                              ),
+                              color: Color.fromRGBO(255, 244, 249, 1),
                             ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setWidth(12)),
                           ),
-                          flexibleSpace: FlexibleSpaceBar(
-                              collapseMode: CollapseMode.parallax,
-                              background:
-                                  Stack(clipBehavior: Clip.none, children: [
-                                Image.asset(
-                                  'assets/images/demo_bg.png',
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ]))),
-                      data.length == 0
-                          ? SliverToBoxAdapter(
-                              child: PageStatus.noData(
-                                  text: '还没有“${widget.title}”的数据哦～'),
-                            )
-                          : SliverPadding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: DefaultStyle.pagePadding),
-                              sliver: _listView(),
-                            ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: MediaQuery.of(context).padding.bottom +
-                              ScreenUtil().bottomBarHeight,
                         ),
-                      )
-                    ],
-                  ))),
-    );
+                        flexibleSpace: FlexibleSpaceBar(
+                            collapseMode: CollapseMode.parallax,
+                            background:
+                                Stack(clipBehavior: Clip.none, children: [
+                              Image.asset(
+                                'assets/images/demo_bg.png',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ]))),
+                    data.length == 0
+                        ? SliverToBoxAdapter(
+                            child: PageStatus.noData(
+                                text: '还没有“${widget.title}”的数据哦～'),
+                          )
+                        : SliverPadding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: DefaultStyle.pagePadding),
+                            sliver: _listView(),
+                          ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).padding.bottom +
+                            ScreenUtil().bottomBarHeight,
+                      ),
+                    )
+                  ],
+                )));
   }
 }

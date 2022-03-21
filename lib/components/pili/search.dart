@@ -570,14 +570,14 @@ class _SearchResultState extends State<SearchResult> {
     {
       'title': '次元',
       'api': '/api/mv/search',
-      'pramas': {'type': 1},
+      'pramas': {},
       'isFlow': true,
     },
     {
       'title': '动漫',
       'api': '/api/mv/search',
       'cardType': 'h',
-      'pramas': {'type': 2},
+      'pramas': {'category': 1},
       'isFlow': false,
     },
     {

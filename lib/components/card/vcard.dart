@@ -246,6 +246,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                                 maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     color: Color(0xff646464),
                                     fontSize: ScreenUtil().setSp(14)),
                               )
