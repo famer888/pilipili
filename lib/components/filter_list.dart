@@ -444,8 +444,8 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                           ScreenUtil().setWidth(7),
                                       childAspectRatio:
                                           dataType == 1 || cardType == 3
-                                              ? 1.3
-                                              : 0.62,
+                                              ? 1.2
+                                              : 0.61,
                                       children:
                                           filterList.asMap().keys.map((e) {
                                         return dataType == 1 || cardType == 3

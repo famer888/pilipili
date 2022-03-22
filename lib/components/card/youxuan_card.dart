@@ -103,7 +103,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                         'videoDetail/${widget.data['resource'][e]['id']}'));
                                   }
                                 } else {
-                                  CommonUtils.showText('购买鱿选礼包后即可观看哦～');
+                                  CommonUtils.showText('购买打折包礼包后即可观看哦～');
                                 }
                               },
                               child: Container(

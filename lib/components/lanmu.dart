@@ -122,6 +122,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                   getPageData();
                 },
                 child: CustomScrollView(
+                  cacheExtent: ScreenUtil().screenHeight * 5,
                   slivers: [
                     SliverAppBar(
                         backgroundColor: Colors.transparent,
