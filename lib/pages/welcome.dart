@@ -19,7 +19,7 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
   Map yyads;
-  int curTime = 0;
+  int curTime = 6;
   Timer _timer;
   int currenIndex = 0;
   toHome() async {
