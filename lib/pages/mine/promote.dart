@@ -103,34 +103,6 @@ class _InviteFriendState extends State<Promote> {
   Widget build(BuildContext context) {
     var config = Provider.of<HomeConfig>(context, listen: false).config;
 
-    // AppBar appBar = AppBar(
-    //     backgroundColor: Colors.transparent,
-    //     leading: GestureDetector(
-    //         onTap: () {
-    //           context.pop();
-    //         },
-    //         behavior: HitTestBehavior.translucent,
-    //        ),
-    //     elevation: 0,
-    //     actions: <Widget>[
-    //       GestureDetector(
-    //           onTap: () {
-    //             context.push(CommonUtils.getRealHash('inviterecored'));
-    //           },
-    //           child: Center(
-    //             child: Container(
-    //               margin: new EdgeInsets.only(right: ScreenUtil().setWidth(15)),
-    //               child: Text(
-    //                 '邀请记录',
-    //                 style: TextStyle(
-    //                     color: Colors.white,
-    //                     fontSize: ScreenUtil().setSp(15),
-    //                     fontWeight: FontWeight.w500),
-    //               ),
-    //             ),
-    //           ))
-    //     ]);
-
     return Stack(
       children: [
         Positioned(

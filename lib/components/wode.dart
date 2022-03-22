@@ -486,39 +486,6 @@ class _WodeState extends State<Wode> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         )),
-                                    // Container(
-                                    //     margin: EdgeInsets.only(
-                                    //         top: ScreenUtil().setWidth(5)),
-                                    //     // width: ScreenUtil().setWidth(93),
-                                    //     padding: EdgeInsets.symmetric(
-                                    //         horizontal:
-                                    //             ScreenUtil().setWidth(8)),
-                                    //     height: ScreenUtil().setHeight(20),
-                                    //     decoration: new BoxDecoration(
-                                    //       gradient: LinearGradient(
-                                    //         colors: [
-                                    //           Color(0xFFFFD875),
-                                    //           Color(0xFFFF6915)
-                                    //         ],
-                                    //         begin: Alignment.bottomLeft,
-                                    //         end: Alignment.bottomRight,
-                                    //       ),
-                                    //       borderRadius: BorderRadius.all(
-                                    //           Radius.circular(25)),
-                                    //       //设置四周边框
-                                    //     ),
-                                    //     child: Center(
-                                    //       child: Text(
-                                    //         "VIP:永久",
-                                    //         textAlign: TextAlign.center,
-                                    //         style: TextStyle(
-                                    //             color: Colors.white,
-                                    //             fontSize:
-                                    //                 ScreenUtil().setSp(14),
-                                    //             fontWeight: FontWeight.bold),
-                                    //       ),
-                                    //     )
-                                    //     )
                                   ],
                                 )
                               ],

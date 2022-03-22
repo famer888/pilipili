@@ -309,58 +309,58 @@ class _ApplicationItemState extends State<ApplicationItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(26.5)),
-      child: Row(
-        children: [
-          Expanded(
-              child: Row(
-            mainAxisSize: MainAxisSize.min,
+    return GestureDetector(
+        onTap: () {
+          _onTapSwiper();
+        },
+        child: Padding(
+          padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(26.5)),
+          child: Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(right: ScreenUtil().setWidth(13)),
-                height: ScreenUtil().setWidth(64),
-                width: ScreenUtil().setWidth(64),
-                child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(ScreenUtil().setWidth(10)),
-                  child: PlatformAwareNetworkImage(url: widget.iconurl),
-                ),
-              ),
               Expanded(
-                  child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${widget.appname}',
-                      style: DefaultStyle.black15bold,
+                  child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(13)),
+                    height: ScreenUtil().setWidth(64),
+                    width: ScreenUtil().setWidth(64),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(ScreenUtil().setWidth(10)),
+                      child: PlatformAwareNetworkImage(url: widget.iconurl),
                     ),
-                    SizedBox(
-                      height: 5,
+                  ),
+                  Expanded(
+                      child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${widget.appname}',
+                          style: DefaultStyle.black15bold,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '$clickNumber次下载',
+                          style: DefaultStyle.lgray10,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '${widget.des}',
+                          style: DefaultStyle.lgray11,
+                        ),
+                      ],
                     ),
-                    Text(
-                      '$clickNumber次下载',
-                      style: DefaultStyle.lgray10,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      '${widget.des}',
-                      style: DefaultStyle.lgray11,
-                    ),
-                  ],
-                ),
-              ))
-            ],
-          )),
-          GestureDetector(
-              onTap: () {
-                _onTapSwiper();
-              },
-              child: Stack(
+                  ))
+                ],
+              )),
+              Stack(
                 children: [
                   // Positioned(
                   //     top: 0,
@@ -389,9 +389,9 @@ class _ApplicationItemState extends State<ApplicationItem> {
                     ),
                   )
                 ],
-              ))
-        ],
-      ),
-    );
+              )
+            ],
+          ),
+        ));
   }
 }
