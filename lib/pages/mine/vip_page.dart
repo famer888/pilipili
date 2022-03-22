@@ -189,7 +189,18 @@ class _VipPageState extends State<VipPage> with PayMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // _vipHead(),
-        PageTitleBar(paddingTop: ScreenUtil().statusBarHeight, title: 'VIP会员'),
+        PageTitleBar(
+            paddingTop: ScreenUtil().statusBarHeight,
+            title: 'VIP会员',
+            rightWidget: GestureDetector(
+              onTap: () {
+                context.push(CommonUtils.getRealHash('RechargeRecord/1'));
+              },
+              child: Text(
+                '充值记录',
+                style: DefaultStyle.white13,
+              ),
+            )),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
