@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -65,8 +66,9 @@ class _OnlineServiceState extends State<OnlineService> {
               child: Text(
                 "常见问题",
                 style: TextStyle(
-                  color: Color(0xff979797),
-                ),
+                    color: Color(0xff979797),
+                    fontSize: ScreenUtil().setSp(14),
+                    fontWeight: FontWeight.w600),
               ),
             ),
             SingleChildScrollView(
@@ -99,7 +101,9 @@ class _OnlineServiceState extends State<OnlineService> {
             padding: EdgeInsets.only(
               left: DefaultStyle.pagePadding,
               right: DefaultStyle.pagePadding,
-              bottom: MediaQuery.of(context).padding.bottom,
+              bottom: ScreenUtil().bottomBarHeight == 0
+                  ? ScreenUtil().setHeight(16)
+                  : ScreenUtil().bottomBarHeight,
               top: DefaultStyle.pagePadding,
             ),
             child: Row(

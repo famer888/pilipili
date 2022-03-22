@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                     color: Color(0xffffffff),
                     fontWeight: FontWeight.bold,
-                    fontSize: ScreenUtil().setSp(13)),
+                    fontSize: ScreenUtil().setSp(12)),
               ),
             ),
             GestureDetector(
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         color: Color(0xffffffff),
                         fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil().setSp(13)),
+                        fontSize: ScreenUtil().setSp(12)),
                   )),
             ),
           ],
@@ -313,7 +313,7 @@ class _LoginPageState extends State<LoginPage> {
             left: 0,
             bottom: 0,
             child:
-                Image.asset('assets/images/login/bg_1.png', fit: BoxFit.fill)),
+                Image.asset('assets/images/login/bg_1.png', fit: BoxFit.cover)),
         Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(

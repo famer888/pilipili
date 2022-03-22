@@ -98,7 +98,7 @@ class _RegisterState extends State<Register> {
                 style: TextStyle(
                     color: Color(0xffffffff),
                     fontWeight: FontWeight.bold,
-                    fontSize: ScreenUtil().setSp(13)),
+                    fontSize: ScreenUtil().setSp(12)),
               ),
             ),
           ],

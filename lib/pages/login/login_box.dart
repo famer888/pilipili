@@ -59,7 +59,14 @@ class _LoginBoxState extends State<LoginBox> {
                                 width: ScreenUtil().setWidth(100),
                                 height: ScreenUtil().setHeight(34),
                                 decoration: new BoxDecoration(
-                                  color: Color(0xffFFE4E4),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xffFFCCDB),
+                                      Color(0xffFFE4E4)
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(25)),
                                   //设置四周边框
@@ -90,7 +97,14 @@ class _LoginBoxState extends State<LoginBox> {
                                 width: ScreenUtil().setWidth(100),
                                 height: ScreenUtil().setHeight(34),
                                 decoration: new BoxDecoration(
-                                  color: Color(0xffFFE4E4),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xffFFCCDB),
+                                      Color(0xffFFE4E4)
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(25)),
                                   //设置四周边框
@@ -123,9 +137,14 @@ class _LoginBoxState extends State<LoginBox> {
                             width: ScreenUtil().setWidth(160),
                             height: ScreenUtil().setHeight(34),
                             decoration: new BoxDecoration(
-                              color: Color(0xffFFE4E4),
+                              gradient: LinearGradient(
+                                colors: [Color(0xffFFCCDB), Color(0xffFFE4E4)],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(25)),
+
                               //设置四周边框
                             ),
                             child: Center(

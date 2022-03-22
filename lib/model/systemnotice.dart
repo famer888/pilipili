@@ -47,7 +47,7 @@ class Data {
 
   int systemNoticeCount;
   int feedCount;
-  Feed systemNotice;
+  SystemNotices systemNotice;
   Feed feed;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -57,7 +57,7 @@ class Data {
         feedCount: json["feedCount"] == null ? null : json["feedCount"],
         systemNotice: json["systemNotice"] == null
             ? null
-            : Feed.fromJson(json["systemNotice"]),
+            : SystemNotices.fromJson(json["systemNotice"]),
         feed: json["feed"] == null ? null : Feed.fromJson(json["feed"]),
       );
 
@@ -74,37 +74,37 @@ Feed feedFromJson(String str) => Feed.fromJson(json.decode(str));
 String feedToJson(Feed data) => json.encode(data.toJson());
 
 class Feed {
-    Feed({
-        this.id,
-        this.uuid,
-        this.userIp,
-        this.question,
-        this.messageType,
-        this.helpType,
-        this.image1,
-        this.status,
-        this.isRead,
-        this.evaluation,
-        this.createdAt,
-        this.updatedAt,
-        this.isReplay,
-    });
+  Feed({
+    this.id,
+    this.uuid,
+    this.userIp,
+    this.question,
+    this.messageType,
+    this.helpType,
+    this.image1,
+    this.status,
+    this.isRead,
+    this.evaluation,
+    this.createdAt,
+    this.updatedAt,
+    this.isReplay,
+  });
 
-    int id;
-    String uuid;
-    String userIp;
-    String question;
-    int messageType;
-    dynamic helpType;
-    String image1;
-    int status;
-    int isRead;
-    int evaluation;
-    String createdAt;
-    String updatedAt;
-    int isReplay;
+  int id;
+  String uuid;
+  String userIp;
+  String question;
+  int messageType;
+  dynamic helpType;
+  String image1;
+  int status;
+  int isRead;
+  int evaluation;
+  String createdAt;
+  String updatedAt;
+  int isReplay;
 
-    factory Feed.fromJson(Map<String, dynamic> json) => Feed(
+  factory Feed.fromJson(Map<String, dynamic> json) => Feed(
         id: json["id"],
         uuid: json["uuid"],
         userIp: json["user_ip"],
@@ -118,9 +118,9 @@ class Feed {
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         isReplay: json["is_replay"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "uuid": uuid,
         "user_ip": userIp,
@@ -134,5 +134,48 @@ class Feed {
         "created_at": createdAt,
         "updated_at": updatedAt,
         "is_replay": isReplay,
-    };
+      };
+}
+
+SystemNotices systemNoticesFromJson(String str) =>
+    SystemNotices.fromJson(json.decode(str));
+
+String systemNoticesToJson(Feed data) => json.encode(data.toJson());
+
+class SystemNotices {
+  SystemNotices({
+    this.id,
+    this.aff,
+    this.content,
+    this.title,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int id;
+  int aff;
+  String content;
+  String title;
+  int messageType;
+  String createdAt;
+  String updatedAt;
+
+  factory SystemNotices.fromJson(Map<String, dynamic> json) => SystemNotices(
+        id: json["id"],
+        aff: json["aff"],
+        content: json["content"],
+        title: json["title"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "aff": aff,
+        "content": content,
+        "title": title,
+        "message_type": messageType,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }

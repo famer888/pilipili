@@ -45,6 +45,7 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
             'problem': item['question'],
             'reply': item['answer'],
           };
+          CommonUtils.debugPrint(' *****************123${item['question']}');
           AppGlobal.helpList.add(problem);
         }
       });
@@ -518,6 +519,8 @@ Future<SystemNotice> getSystemNotice() async {
   try {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/message/getUnreadCount');
+
+    CommonUtils.debugPrint('Keys${SystemNotice.fromJson(res.data)}');
     return SystemNotice.fromJson(res.data);
   } catch (e) {
     return null;

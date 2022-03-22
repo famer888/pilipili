@@ -33,7 +33,7 @@ class CommonUtils {
 
   static updateSystemNotice(context) async {
     SystemNotice sysResult = await getSystemNotice();
-    CommonUtils.debugPrint(sysResult.toJson());
+    CommonUtils.debugPrint('Key${sysResult.toJson()}');
     if (sysResult.status == 1) {
       Provider.of<HomeConfig>(context, listen: false)
           .setSystemNotice(sysResult);

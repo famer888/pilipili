@@ -56,9 +56,9 @@ class MessageOfSystem extends StatelessWidget {
       var noticeCount = 0;
       if (state.systemnotice?.data?.systemNotice != null) {
         times = state.systemnotice.data.systemNotice.createdAt;
-        messages = state.systemnotice.data.systemNotice.question == null
+        messages = state.systemnotice.data.systemNotice.content == null
             ? '暂无消息'
-            : state.systemnotice.data.systemNotice.question;
+            : state.systemnotice.data.systemNotice.content;
         noticeCount = state.systemnotice.data.systemNoticeCount;
       }
 

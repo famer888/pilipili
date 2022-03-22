@@ -431,6 +431,12 @@ class _HomeState extends State<Home> {
                                                 setState(() {
                                                   selectedKey = key;
                                                 });
+
+                                                if (key == 3) {
+                                                  CommonUtils
+                                                      .updateSystemNotice(
+                                                          context);
+                                                }
                                               },
                                               child: Column(
                                                 children: [

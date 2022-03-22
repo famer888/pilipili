@@ -585,7 +585,10 @@ class _SetupPageState extends State<SetupPage> {
                         child: (Container(
                           height: ScreenUtil().setWidth(35),
                           margin: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).padding.bottom),
+                            bottom: ScreenUtil().bottomBarHeight == 0
+                                ? ScreenUtil().setHeight(24)
+                                : ScreenUtil().bottomBarHeight,
+                          ),
                           width: ScreenUtil().setWidth(200),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(

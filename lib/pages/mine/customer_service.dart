@@ -461,7 +461,7 @@ class _CustomerServiceState extends State<CustomerService> {
                       decoration: BoxDecoration(
                           border: Border.all(
                               width: ScreenUtil().setWidth(0.5),
-                              color: Color(0xffb4b4b4)),
+                              color: Color(0xffFF84A9)),
                           color: Color(0xffFF84A9),
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
@@ -593,6 +593,7 @@ class _CustomerServiceState extends State<CustomerService> {
                         Expanded(
                             child: Padding(
                           padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setHeight(8),
                               horizontal: ScreenUtil().setWidth(15)),
                           child: TextField(
                               autofocus: true,
@@ -631,7 +632,7 @@ class _CustomerServiceState extends State<CustomerService> {
                             child: Stack(children: [
                               Container(
                                 width: ScreenUtil().setWidth(64),
-                                height: ScreenUtil().setWidth(30),
+                                height: ScreenUtil().setHeight(30),
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
@@ -648,6 +649,7 @@ class _CustomerServiceState extends State<CustomerService> {
                                     '发送',
                                     style: TextStyle(
                                         color: Colors.white,
+                                        fontSize: ScreenUtil().setSp(12),
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),

@@ -167,10 +167,11 @@ class _WodeState extends State<Wode> {
                 Image.asset(
                   "assets/images/wode/vip_bg.png",
                   width: ScreenUtil().setWidth(190),
+                  // height: ScreenUtil().setWidth(164),
                   fit: BoxFit.fill,
                 ),
                 Positioned(
-                  top: ScreenUtil().setHeight(62),
+                  top: ScreenUtil().setWidth(85),
                   left: ScreenUtil().setWidth(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +197,7 @@ class _WodeState extends State<Wode> {
                   ),
                 ),
                 Positioned(
-                  bottom: ScreenUtil().setHeight(12),
+                  bottom: ScreenUtil().setWidth(15),
                   left: ScreenUtil().setWidth(20),
                   child: Text(
                     "立即开通",
@@ -228,12 +229,13 @@ class _WodeState extends State<Wode> {
                     children: <Widget>[
                       Image.asset(
                         "assets/images/wode/glod_bg.png",
+                        // height: ScreenUtil().setHeight(68),
                         width: double.infinity,
                         fit: BoxFit.fill,
                       ),
                       Positioned(
                         left: ScreenUtil().setWidth(14),
-                        top: ScreenUtil().setHeight(13),
+                        top: ScreenUtil().setWidth(15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -247,7 +249,7 @@ class _WodeState extends State<Wode> {
                             Text(
                               "余额:${member.money ?? 0}",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(11),
+                                  fontSize: ScreenUtil().setSp(12),
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             )
@@ -278,11 +280,12 @@ class _WodeState extends State<Wode> {
                       Image.asset(
                         "assets/images/wode/activity_bg.png",
                         width: double.infinity,
+                        // height: ScreenUtil().setHeight(68),
                         fit: BoxFit.fill,
                       ),
                       Positioned(
                         left: ScreenUtil().setWidth(14),
-                        top: ScreenUtil().setHeight(11),
+                        top: ScreenUtil().setWidth(15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
