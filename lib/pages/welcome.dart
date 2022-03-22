@@ -108,7 +108,7 @@ class _WelcomeState extends State<Welcome> {
           if (lastPopTime == null ||
               DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
             lastPopTime = DateTime.now();
-            BotToast.showText(text: '再按一下退出鱿鱼～', align: Alignment(0, 0));
+            BotToast.showText(text: '再按一下退出Pilipili～', align: Alignment(0, 0));
           } else {
             lastPopTime = DateTime.now();
             // 退出app

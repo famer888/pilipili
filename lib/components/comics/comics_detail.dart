@@ -432,16 +432,22 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                                 RESOURCE_TYPE_BOOK,
                                                                 PRIVILEGE_TYPE_DOWNLOAD);
                                                         if (canDownload) {
-                                                          DownloadComics.createDownloadTask({
+                                                          DownloadComics
+                                                              .createDownloadTask({
                                                             'id': widget.id,
                                                             'title': data.title,
-                                                            "description": data.description,
-                                                            "author": data.author,
+                                                            "description": data
+                                                                .description,
+                                                            "author":
+                                                                data.author,
                                                             "tags": data.tags,
-                                                            "viewsCount": data.viewsCount,
+                                                            "viewsCount":
+                                                                data.viewsCount,
                                                             'thumb': data.thumb,
-                                                            'allEpisode': data.newestSeries,
-                                                            "downloading": false,
+                                                            'allEpisode': data
+                                                                .newestSeries,
+                                                            "downloading":
+                                                                false,
                                                             "isWaiting": true,
                                                             "sets": []
                                                           });
@@ -468,7 +474,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                             cancelText: '取消',
                                                             btnText: '立即升级',
                                                             callBack: () {
-                                                              context.push('/${Routes.vip}');
+                                                              context.push(
+                                                                  '/${Routes.vip}');
                                                             },
                                                           );
                                                         }
@@ -614,8 +621,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                     scrollto = scrollController
                                                         .offset.h;
                                                   } else {
-                                                    scrollController
-                                                        .jumpTo(scrollto);
+                                                    scrollController.animateTo(
+                                                        scrollto,
+                                                        duration: Duration(
+                                                            milliseconds: 200),
+                                                        curve: Curves.easeIn);
                                                   }
                                                   isOpenAll = !isOpenAll;
                                                   setState(() {});

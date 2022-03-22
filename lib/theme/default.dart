@@ -172,57 +172,57 @@ class DefaultStyle {
       decoration: TextDecoration.none);
 
   static TextStyle black13 = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color: Color(0xff404040),
       fontSize: ScreenUtil().setSp(13),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle black13bold = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color:  Color(0xff404040),
       fontSize: ScreenUtil().setSp(13),
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle black14 = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color:  Color(0xff404040),
       fontSize: ScreenUtil().setSp(14),
       decoration: TextDecoration.none);
 
   static TextStyle black15 = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color:  Color(0xff404040),
       fontSize: ScreenUtil().setSp(15),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle black15bold = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color: Color(0xff404040),
       fontSize: ScreenUtil().setSp(15),
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.bold,
       decoration: TextDecoration.none);
 
   static TextStyle black16 = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color:  Color(0xff404040),
       fontSize: ScreenUtil().setSp(16),
       decoration: TextDecoration.none);
 
   static TextStyle black16bold = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color:  Color(0xff404040),
       fontSize: ScreenUtil().setSp(16),
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle black18bold = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color: Color(0xff404040),
       fontSize: ScreenUtil().setSp(18),
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static TextStyle black24 = TextStyle(
-      color: Color.fromRGBO(51, 51, 51, 1),
+      color:  Color(0xff404040),
       fontSize: ScreenUtil().setSp(24),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);

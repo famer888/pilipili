@@ -198,8 +198,15 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                       },
                                       pagination: SwiperPagination(
                                           margin: EdgeInsets.only(
-                                              bottom:
-                                                  ScreenUtil().setWidth(100)),
+                                              bottom: ScreenUtil().setWidth(
+                                                  fixedNav == null ||
+                                                          fixedNav['value'] ==
+                                                              null ||
+                                                          fixedNav['value']
+                                                                  .length ==
+                                                              0
+                                                      ? 40
+                                                      : 100)),
                                           alignment: Alignment.bottomCenter,
                                           builder: SwiperCustomPagination(
                                               builder: (BuildContext context,
@@ -282,48 +289,37 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                                                   '${fixedBanner['value'][index]['url'].trim()}?aff=$aff&piliid=$piliid');
                                             }
                                           },
-                                          child: Container(
-                                            clipBehavior: Clip.hardEdge,
-                                            padding: EdgeInsets.only(
-                                                bottom: ScreenUtil()
-                                                    .setWidth(navHeight - 32)),
-                                            decoration: ShapeDecoration(
-                                                shape:
-                                                    BeveledRectangleBorder()),
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                  height: ScreenUtil()
-                                                          .setWidth(260) +
-                                                      ScreenUtil()
-                                                          .statusBarHeight,
-                                                ),
-                                                Positioned(
-                                                    top: 0,
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    left: 0,
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.all(0),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        child:
-                                                            PlatformAwareNetworkImage(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          noVisibilityDetector:
-                                                              true,
-                                                          url: fixedBanner[
-                                                                      'value']
-                                                                  [index]
-                                                              ['resource_url'],
-                                                          fit: BoxFit.cover,
-                                                        ),
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                height:
+                                                    ScreenUtil().setWidth(260) +
+                                                        ScreenUtil()
+                                                            .statusBarHeight,
+                                              ),
+                                              Positioned(
+                                                  top: 0,
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  left: 0,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(0),
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      child:
+                                                          PlatformAwareNetworkImage(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        noVisibilityDetector:
+                                                            true,
+                                                        url: fixedBanner[
+                                                                'value'][index]
+                                                            ['resource_url'],
+                                                        fit: BoxFit.cover,
                                                       ),
-                                                    ))
-                                              ],
-                                            ),
+                                                    ),
+                                                  ))
+                                            ],
                                           ),
                                         );
                                       },

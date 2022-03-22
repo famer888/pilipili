@@ -225,8 +225,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                 collapseMode: CollapseMode.parallax,
                                 background:
                                     Stack(clipBehavior: Clip.none, children: [
-                                  fixedBanner == null ||
-                                          fixedBanner['value'].length == 0
+                                  fixedBanner == null ||!(fixedBanner is Map)||fixedBanner['value'].length == 0
                                       ? Image.asset(
                                           'assets/images/demo_bg.png',
                                           width: double.infinity,
@@ -246,7 +245,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                           pagination: SwiperPagination(
                                               margin: EdgeInsets.only(
                                                   bottom: ScreenUtil()
-                                                      .setWidth(100)),
+                                                      .setWidth(40)),
                                               alignment: Alignment.bottomCenter,
                                               builder: SwiperCustomPagination(
                                                   builder:

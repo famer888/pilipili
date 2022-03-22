@@ -215,7 +215,7 @@ class DownloadComics {
         // 发送下载初始信息
         EventBus().emit('DOWNLOADCOMICS_PROGRESS_${taskInfo["id"]}', {
           "id": taskInfo["id"],
-          "progress": finishCount + 1,
+          "progress": finishCount,
           'currentImg': tasks_1[taskNum_1]["sets"][finishCount].length + 1,
           'imgTotal': res.data.length
         });
@@ -309,7 +309,7 @@ class DownloadComics {
         } else {
           EventBus().emit('DOWNLOADCOMICS_PROGRESS_${id}', {
             "id": id,
-            "progress": finishCount + 1,
+            "progress": finishCount,
             'currentImg': currentImgIndex + 1,
             'imgTotal': dataList.data.length
           });
