@@ -104,18 +104,17 @@ class _FillCodePageState extends State<FillCodePage> {
         bindPhone(code: phoneCode.text, phonePrefix: code, phone: phone.text)
             .then((result) {
           if (result.status != 0) {
-            showText(status: result.status, msg: result.msg, word: "手机绑定");
+            CommonUtils.showText('手机绑定 ${result.msg}');
+            getHomeConfig(context).then((res) {
+              context.pop();
+            });
           } else {
-            showText(status: result.status, msg: result.msg, word: "手机绑定");
+            CommonUtils.showText('手机绑定 ${result.msg}');
           }
         });
         PageStatus.closeLoading();
         break;
       case 2:
-        if (phone.text.isEmpty) {
-          CommonUtils.showText('请输入原手机号～');
-          return;
-        }
         if (phoneCode.text.isEmpty) {
           CommonUtils.showText('请输入原手机短信验证码～');
           return;
@@ -130,22 +129,23 @@ class _FillCodePageState extends State<FillCodePage> {
         }
         PageStatus.showLoading();
         changePhone(
-                oldPhone: phone.text,
-                oldPhonePrefix: code,
+                oldPhone: widget.args["phone"],
+                oldPhonePrefix: widget.args["phonePrefix"],
                 oldCode: phoneCode.text,
                 phone: newphone.text,
                 phonePrefix: newcode,
                 code: newphoneCode.text)
             .then((res) {
           if (res.status != 0) {
-            CommonUtils.showText('手机换绑成功 ${res.msg}');
+            CommonUtils.showText('手机换绑 ${res.msg}');
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机换绑失败 ${res.msg}');
+            CommonUtils.showText('手机换绑 ${res.msg}');
           }
         });
+        PageStatus.closeLoading();
         break;
       case 3:
         if (exchange.text.isEmpty) {
@@ -333,7 +333,7 @@ class _FillCodePageState extends State<FillCodePage> {
               return;
             }
             PageStatus.showLoading();
-            sendPhone(phone: phone.text, phonePrefix: code, type: 1)
+            sendPhone(phone: phone.text, phonePrefix: code, type: 2)
                 .then((res) {
               if (res.status == 1) {
                 if (startTime != null) {
@@ -420,7 +420,7 @@ class _FillCodePageState extends State<FillCodePage> {
             // margin: EdgeInsets.only(top: ScreenUtil().setWidth(28)),
             child: Center(
               child: Text(
-                '当前手机号:+8613333333333',
+                '当前手机号:+${widget.args["phonePrefix"]}${widget.args["phone"]}',
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(15),
                     color: Color(0xff6D6D6D),
@@ -437,7 +437,10 @@ class _FillCodePageState extends State<FillCodePage> {
             startTime = e;
           },
           onSendCode: () {
-            sendPhone(phone: phone.text, phonePrefix: code, type: 4)
+            sendPhone(
+                    phone: widget.args["phone"],
+                    phonePrefix: widget.args["phonePrefix"],
+                    type: 4)
                 .then((res) {
               if (res.status == 1) {
                 if (startTime != null) {
