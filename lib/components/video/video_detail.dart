@@ -681,7 +681,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                           crossAxisCount: 2,
                                           crossAxisSpacing:
                                               ScreenUtil().setWidth(7),
-                                          childAspectRatio: 1.3,
+                                          childAspectRatio: 1.2,
                                           children: recommendList
                                               .asMap()
                                               .keys

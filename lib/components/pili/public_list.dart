@@ -184,7 +184,7 @@ class _PublicListState extends State<PublicList> {
                           crossAxisCount: 2,
                           mainAxisSpacing: ScreenUtil().setWidth(7),
                           crossAxisSpacing: ScreenUtil().setWidth(7),
-                          childAspectRatio: widget.cartType == 'h' ? 1.3 : 0.62,
+                          childAspectRatio: widget.cartType == 'h' ? 1.2 : 0.61,
                         ),
                         itemBuilder: (context, index) {
                           return widget.cartType == 'h'

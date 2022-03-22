@@ -431,7 +431,7 @@ class _DownListState extends State<DownList> {
               crossAxisCount: 2,
               mainAxisSpacing: ScreenUtil().setWidth(20),
               crossAxisSpacing: ScreenUtil().setWidth(7),
-              childAspectRatio: 1.3,
+              childAspectRatio: 1.2,
             ),
             itemBuilder: (context, index) {
               return Stack(
@@ -464,7 +464,7 @@ class _DownListState extends State<DownList> {
               crossAxisCount: 3,
               mainAxisSpacing: ScreenUtil().setWidth(9.5),
               crossAxisSpacing: ScreenUtil().setWidth(9.5),
-              childAspectRatio: 0.62,
+              childAspectRatio: 0.61,
             ),
             itemBuilder: (context, index) {
               return Stack(

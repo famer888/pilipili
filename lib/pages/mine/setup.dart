@@ -380,6 +380,7 @@ class _SetupPageState extends State<SetupPage> {
   @override
   Widget build(BuildContext context) {
     var members = Provider.of<HomeConfig>(context, listen: false).member;
+
     var config = Provider.of<HomeConfig>(context, listen: false).config;
     int isSetPassword =
         Provider.of<HomeConfig>(context, listen: false).member.isSetPassword;
@@ -426,10 +427,7 @@ class _SetupPageState extends State<SetupPage> {
                                         File(fileUrl),
                                         fit: BoxFit.cover,
                                       )
-                                    : Image.asset(
-                                        "assets/images/wode/setup_avatar.png",
-                                        fit: BoxFit.fill,
-                                      ),
+                                    : UserAvatar(),
                               ),
                             ),
                           ),
@@ -497,7 +495,8 @@ class _SetupPageState extends State<SetupPage> {
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'), extra: {
                       'type': members?.phone == null ? 1 : 2,
-                      'phone': members?.phone
+                      'phone': members?.phone,
+                      "phonePrefix": members?.phonePrefix
                     });
                     // context.push('/${Routes.login}',
                     //     extra: {'type': members?.phone == null ? 5 : 4});
@@ -618,22 +617,22 @@ class _SetupPageState extends State<SetupPage> {
   }
 }
 
-// class UserAvatar extends StatelessWidget {
-//   const UserAvatar({Key key}) : super(key: key);
+class UserAvatar extends StatelessWidget {
+  const UserAvatar({Key key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<HomeConfig>(builder: (ctx, state, child) {
-//       return state.member?.thumb == null
-//           ? PlatformAwareAssetImage(
-//               url: 'assets/images/wode/avatar.png',
-//               width: double.infinity,
-//               fit: BoxFit.fitHeight,
-//             )
-//           : PlatformAwareNetworkImage(
-//               fit: BoxFit.cover,
-//               url: '${state.member.thumb}',
-//             );
-//     });
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HomeConfig>(builder: (ctx, state, child) {
+      return state.member?.thumb == null
+          ? Image.asset(
+              'assets/images/wode/setup_avatar.png',
+              width: double.infinity,
+              fit: BoxFit.fitHeight,
+            )
+          : PlatformAwareNetworkImage(
+              fit: BoxFit.cover,
+              url: '${state.member.thumb}',
+            );
+    });
+  }
+}

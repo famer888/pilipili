@@ -249,7 +249,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                       onTap: () {
                                         if (isInsufficient) {
                                           context.pop();
-                                          context.push('/${Routes.coinRecharge}');
+                                          context
+                                              .push('/${Routes.coinRecharge}');
                                         } else {
                                           buyFunction();
                                         }
@@ -261,8 +262,12 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                             gradient: SweepGradient(
                                                 //  begin: Alignment.bottomCenter,
                                                 colors: [
-                                                  Color(isInsufficient?0xffffccdb:0XFFff84a9),
-                                                  Color(isInsufficient?0xffffe4e4:0XFFff9e9e),
+                                                  Color(isInsufficient
+                                                      ? 0xffffccdb
+                                                      : 0XFFff84a9),
+                                                  Color(isInsufficient
+                                                      ? 0xffffe4e4
+                                                      : 0XFFff9e9e),
                                                 ])),
                                         width: double.infinity,
                                         height: ScreenUtil().setWidth(40),
@@ -272,7 +277,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 ? '皮哩币不足，前往充值'
                                                 : '立即购买',
                                             style: TextStyle(
-                                                color:isInsufficient?Color(0xffff84a9): Colors.white,
+                                                color: isInsufficient
+                                                    ? Color(0xffff84a9)
+                                                    : Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize:
                                                     ScreenUtil().setSp(16)),
@@ -342,8 +349,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 onTap: () {
                                                   if (isInsufficient) {
                                                     context.pop();
-                                                    // context
-                                                    // .push('/${Routes.coinRecharge}');
+                                                    context.push(
+                                                        '/${Routes.coinRecharge}');
                                                   } else {
                                                     buyFunction();
                                                   }
