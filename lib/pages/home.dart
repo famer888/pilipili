@@ -183,7 +183,7 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: [
                     Image.asset(
-                      'assets/pengke/logo2.png',
+                      'assets/images/logo2.png',
                       width: ScreenUtil().setWidth(40),
                       height: ScreenUtil().setWidth(40),
                     ),

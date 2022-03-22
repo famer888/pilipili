@@ -547,118 +547,114 @@ class _CustomerServiceState extends State<CustomerService> {
                           })),
           msgList == null
               ? Container()
-              : Stack(children: [
-                  Container(
-                    // padding: EdgeInsets.only(
-                    //     bottom: MediaQuery.of(context).padding.bottom),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        //阴影
-                        BoxShadow(
-                            color: Color.fromRGBO(255, 132, 169, 0.2),
-                            offset: Offset(0, 0),
-                            blurRadius: ScreenUtil().setWidth(10))
-                      ],
-                    ),
-                    padding: EdgeInsets.only(
-                        left: DefaultStyle.pagePadding,
-                        right: DefaultStyle.pagePadding,
-                        bottom: MediaQuery.of(context).padding.bottom),
-                    // height: ScreenUtil().setWidth(50),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: ScreenUtil().setWidth(30),
-                          height: ScreenUtil().setWidth(30),
-                          child: Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: kIsWeb ? null : showUpimg,
-                                child: Image.asset(
-                                  'assets/images/wode/send_img_icon.png',
-                                  width: ScreenUtil().setWidth(30),
-                                  height: ScreenUtil().setWidth(30),
-                                ),
+              : Container(
+                  // padding: EdgeInsets.only(
+                  //     bottom: MediaQuery.of(context).padding.bottom),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      //阴影
+                      BoxShadow(
+                          color: Color.fromRGBO(255, 132, 169, 0.2),
+                          offset: Offset(0, 0),
+                          blurRadius: ScreenUtil().setWidth(10))
+                    ],
+                  ),
+                  padding: EdgeInsets.only(
+                      left: DefaultStyle.pagePadding,
+                      right: DefaultStyle.pagePadding,
+                      bottom: MediaQuery.of(context).padding.bottom),
+                  // height: ScreenUtil().setWidth(50),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: ScreenUtil().setWidth(30),
+                        height: ScreenUtil().setWidth(30),
+                        child: Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: kIsWeb ? null : showUpimg,
+                              child: Image.asset(
+                                'assets/images/wode/send_img_icon.png',
+                                width: ScreenUtil().setWidth(30),
+                                height: ScreenUtil().setWidth(30),
                               ),
-                              kIsWeb
-                                  ? Positioned(
-                                      child: HtmlElementView(
-                                          viewType: 'FileInput'),
-                                    )
-                                  : Container()
-                            ],
-                          ),
+                            ),
+                            kIsWeb
+                                ? Positioned(
+                                    child:
+                                        HtmlElementView(viewType: 'FileInput'),
+                                  )
+                                : Container()
+                          ],
                         ),
-                        Expanded(
-                            child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setHeight(8),
-                              horizontal: ScreenUtil().setWidth(15)),
-                          child: TextField(
-                              autofocus: true,
-                              // onSubmitted: _onSubmit,
-                              controller: editingController,
-                              style: TextStyle(
-                                color: Color(0xff979797),
-                                fontSize: ScreenUtil().setSp(14),
-                              ),
-                              textInputAction: TextInputAction.done,
-                              decoration: InputDecoration(
-                                  hintText: '输入回复内容',
-                                  hintStyle:
-                                      TextStyle(color: Color(0xff979797)),
-                                  contentPadding: EdgeInsets.zero,
-                                  disabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 0)))),
-                        )),
-                        GestureDetector(
-                            onTap: _sendMsg,
-                            child: Stack(children: [
-                              Container(
-                                width: ScreenUtil().setWidth(64),
-                                height: ScreenUtil().setHeight(30),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xffFF84A9),
-                                        Color(0xffFF9E9E)
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(50))),
-                                child: Center(
-                                  child: Text(
-                                    '发送',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: ScreenUtil().setSp(12),
-                                        fontWeight: FontWeight.bold),
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setHeight(8),
+                            horizontal: ScreenUtil().setWidth(15)),
+                        child: TextField(
+                            autofocus: true,
+                            // onSubmitted: _onSubmit,
+                            controller: editingController,
+                            style: TextStyle(
+                              color: Color(0xff979797),
+                              fontSize: ScreenUtil().setSp(14),
+                            ),
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                                hintText: '输入回复内容',
+                                hintStyle: TextStyle(color: Color(0xff979797)),
+                                contentPadding: EdgeInsets.zero,
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)))),
+                      )),
+                      GestureDetector(
+                          onTap: _sendMsg,
+                          child: Stack(children: [
+                            Container(
+                              width: ScreenUtil().setWidth(64),
+                              height: ScreenUtil().setHeight(30),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xffFF84A9),
+                                      Color(0xffFF9E9E)
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
                                   ),
+                                  borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setWidth(50))),
+                              child: Center(
+                                child: Text(
+                                  '发送',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: ScreenUtil().setSp(12),
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ]))
-                      ],
-                    ),
-                  )
-                ])
+                            ),
+                          ]))
+                    ],
+                  ),
+                )
         ],
       ),
     );
