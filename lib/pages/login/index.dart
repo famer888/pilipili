@@ -53,33 +53,8 @@ class _LoginPageState extends State<LoginPage> {
     Function startTime;
     String code = '86';
     return LoginBox(
-      btnText: ["注册", "登陆"],
+      btnText: loginType == 1 ? ["注册", "登陆"] : "登陆",
       btnMargin: ScreenUtil().setWidth(60),
-      // footer: Container(
-      //   margin: EdgeInsets.only(top: ScreenUtil().setWidth(12)),
-      //   width: double.infinity,
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       GestureDetector(
-      //         onTap: () {
-      //           // context.push(CommonUtils.getRealHash('register'));
-      //           context.push(CommonUtils.getRealHash('register/${0}'));
-      //         },
-      //         child: Container(
-      //           padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
-      //           child: Text(
-      //             '没有账号？快速注册',
-      //             style: TextStyle(
-      //                 color: Color(0xffffffff),
-      //                 fontWeight: FontWeight.bold,
-      //                 fontSize: ScreenUtil().setSp(13)),
-      //           ),
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
       topText: Container(
         margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
         width: double.infinity,
@@ -249,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
           });
         }
       },
-
       children: loginType == 0
           ? [
               YyInput(

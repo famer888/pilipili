@@ -6,6 +6,7 @@ import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/routers.dart';
@@ -398,16 +399,6 @@ class _WodeState extends State<Wode> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     context.push('/${Routes.setup}');
-                  //   },
-                  //   child: Image.asset(
-                  //     "assets/images/wode/Chat_Circle_Dots.png",
-                  //     width: ScreenUtil().setWidth(24),
-                  //     fit: BoxFit.fitWidth,
-                  //   ),
-                  // ),
                   SystemNoticeIcon(),
                   SizedBox(
                     width: ScreenUtil().setWidth(13),
@@ -431,14 +422,19 @@ class _WodeState extends State<Wode> {
                       ),
                       child: Row(
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                right: ScreenUtil().setWidth(8)),
-                            child: ClipOval(
-                              child: Image.asset(
-                                "assets/images/wode/avatar.png",
+                          GestureDetector(
+                            child: Center(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    right: ScreenUtil().setWidth(8)),
                                 width: ScreenUtil().setWidth(60),
-                                fit: BoxFit.fill,
+                                height: ScreenUtil().setWidth(60),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(37.25),
+                                  ),
+                                  child: UserAvatar(),
+                                ),
                               ),
                             ),
                           ),
@@ -486,39 +482,6 @@ class _WodeState extends State<Wode> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         )),
-                                    // Container(
-                                    //     margin: EdgeInsets.only(
-                                    //         top: ScreenUtil().setWidth(5)),
-                                    //     // width: ScreenUtil().setWidth(93),
-                                    //     padding: EdgeInsets.symmetric(
-                                    //         horizontal:
-                                    //             ScreenUtil().setWidth(8)),
-                                    //     height: ScreenUtil().setHeight(20),
-                                    //     decoration: new BoxDecoration(
-                                    //       gradient: LinearGradient(
-                                    //         colors: [
-                                    //           Color(0xFFFFD875),
-                                    //           Color(0xFFFF6915)
-                                    //         ],
-                                    //         begin: Alignment.bottomLeft,
-                                    //         end: Alignment.bottomRight,
-                                    //       ),
-                                    //       borderRadius: BorderRadius.all(
-                                    //           Radius.circular(25)),
-                                    //       //设置四周边框
-                                    //     ),
-                                    //     child: Center(
-                                    //       child: Text(
-                                    //         "VIP:永久",
-                                    //         textAlign: TextAlign.center,
-                                    //         style: TextStyle(
-                                    //             color: Colors.white,
-                                    //             fontSize:
-                                    //                 ScreenUtil().setSp(14),
-                                    //             fontWeight: FontWeight.bold),
-                                    //       ),
-                                    //     )
-                                    //     )
                                   ],
                                 )
                               ],
@@ -592,6 +555,27 @@ class SystemNoticeIcon extends StatelessWidget {
           fit: BoxFit.fitWidth,
         ),
       );
+    });
+  }
+}
+
+class UserAvatar extends StatelessWidget {
+  const UserAvatar({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HomeConfig>(builder: (ctx, state, child) {
+      return state.member.thumb == null
+          ? Image.asset(
+              'assets/images/wode/avatar.png',
+              width: ScreenUtil().setWidth(30),
+              fit: BoxFit.fitWidth,
+            )
+          : PlatformAwareNetworkImage(
+              width: ScreenUtil().setWidth(30),
+              fit: BoxFit.cover,
+              url: '${state.member.thumb}',
+            );
     });
   }
 }
