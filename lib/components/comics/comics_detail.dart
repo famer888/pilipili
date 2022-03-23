@@ -310,11 +310,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                 ),
                               ),
                               SliverPadding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: DefaultStyle.pagePadding,
-                                    vertical: ScreenUtil().setWidth(16)),
-                                sliver: SliverToBoxAdapter(
-                                  child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: DefaultStyle.pagePadding,
+                                      vertical: ScreenUtil().setWidth(16)),
+                                  sliver: SliverToBoxAdapter(
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -600,74 +599,80 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                             ],
                                           ),
                                         ),
-                                        Wrap(
-                                          spacing: ScreenUtil().setWidth(3),
-                                          runSpacing: ScreenUtil().setWidth(4),
-                                          children: (isOpenAll
-                                                  ? newestSeries
-                                                  : minWestSeries)
-                                              .asMap()
-                                              .keys
-                                              .map((e) =>
-                                                  selectItem(newestSeries[e]))
-                                              .toList(),
-                                        ),
-                                        newestSeries.length < 8
-                                            ? Container()
-                                            : GestureDetector(
-                                                onTap: () {
-                                                  if (!isOpenAll) {
-                                                    scrollto = scrollController
-                                                        .offset.h;
-                                                  } else {
-                                                    scrollController.animateTo(
-                                                        scrollto,
-                                                        duration: Duration(
-                                                            milliseconds: 200),
-                                                        curve: Curves.easeIn);
-                                                  }
-                                                  isOpenAll = !isOpenAll;
-                                                  setState(() {});
-                                                },
-                                                child: Container(
-                                                  margin: EdgeInsets.only(
-                                                    top: ScreenUtil()
-                                                        .setWidth(16),
-                                                    bottom: ScreenUtil()
-                                                        .setWidth(8),
-                                                  ),
-                                                  alignment: Alignment.center,
-                                                  height:
-                                                      ScreenUtil().setWidth(36),
-                                                  width: double.infinity,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius
-                                                          .circular(ScreenUtil()
-                                                              .setWidth(18)),
-                                                      gradient: SweepGradient(
-                                                          center: Alignment
-                                                              .topCenter,
-                                                          colors: [
-                                                            Color(0xffffccdb),
-                                                            Color(0xffffe4e4)
-                                                          ])),
-                                                  child: Text(
-                                                    isOpenAll ? '收起' : '全部章节',
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffff84a9),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14)),
-                                                  ),
-                                                ),
-                                              )
                                       ],
                                     ),
-                                  ),
-                                ),
-                              ),
+                                  )),
+                              SliverPadding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: DefaultStyle.pagePadding,
+                                      vertical: ScreenUtil().setWidth(16)),
+                                  sliver: SliverGrid.count(
+                                    crossAxisCount: 4,
+                                    mainAxisSpacing: ScreenUtil().setWidth(3),
+                                    crossAxisSpacing: ScreenUtil().setWidth(4),
+                                    childAspectRatio: 2.3,
+                                    children: (isOpenAll
+                                            ? newestSeries
+                                            : minWestSeries)
+                                        .asMap()
+                                        .keys
+                                        .map((e) => selectItem(newestSeries[e]))
+                                        .toList(),
+                                  )),
+                              SliverPadding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: DefaultStyle.pagePadding,
+                                      vertical: ScreenUtil().setWidth(16)),
+                                  sliver: SliverToBoxAdapter(
+                                    child: newestSeries.length < 8
+                                        ? Container()
+                                        : GestureDetector(
+                                            onTap: () {
+                                              if (!isOpenAll) {
+                                                scrollto =
+                                                    scrollController.offset.h;
+                                              } else {
+                                                scrollController.animateTo(
+                                                    scrollto,
+                                                    duration: Duration(
+                                                        milliseconds: 200),
+                                                    curve: Curves.easeIn);
+                                              }
+                                              isOpenAll = !isOpenAll;
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                top: ScreenUtil().setWidth(16),
+                                                bottom:
+                                                    ScreenUtil().setWidth(8),
+                                              ),
+                                              alignment: Alignment.center,
+                                              height: ScreenUtil().setWidth(36),
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          ScreenUtil()
+                                                              .setWidth(18)),
+                                                  gradient: SweepGradient(
+                                                      center:
+                                                          Alignment.topCenter,
+                                                      colors: [
+                                                        Color(0xffffccdb),
+                                                        Color(0xffffe4e4)
+                                                      ])),
+                                              child: Text(
+                                                isOpenAll ? '收起' : '全部章节',
+                                                style: TextStyle(
+                                                    color: Color(0xffff84a9),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14)),
+                                              ),
+                                            ),
+                                          ),
+                                  )),
                               SliverPadding(
                                 padding: EdgeInsets.only(
                                     bottom: ScreenUtil().setWidth(16),
@@ -779,47 +784,49 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
             ),
           ),
           Expanded(
-              child: SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(20)),
-            child: Wrap(
-              spacing: ScreenUtil().setWidth(2.5),
-              runSpacing: ScreenUtil().setWidth(4),
-              children: allList.asMap().keys.map((e) {
-                return GestureDetector(
-                  onTap: () {
-                    context.pop();
-                    swichComic(e + 1);
-                  },
-                  child: Stack(
-                    children: [
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          child: Image.asset(
-                            'assets/pengke/video/${watchLog == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
-                            fit: BoxFit.fill,
-                          )),
-                      Container(
-                        width: ScreenUtil().setWidth(84.5),
-                        height: ScreenUtil().setWidth(32),
-                        child: Center(
-                            child: Text(
-                          (e + 1).toString(),
-                          style: TextStyle(
-                              color: watchLog == e + 1
-                                  ? Color(0xff62f7ff)
-                                  : Colors.white,
-                              fontSize: ScreenUtil().setSp(15)),
-                        )),
-                      )
-                    ],
+              child: GridView.builder(
+                  padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(20)),
+                  itemCount: (allList ?? []).length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: ScreenUtil().setWidth(2.5),
+                    crossAxisSpacing: ScreenUtil().setWidth(4),
+                    childAspectRatio: 2.64,
                   ),
-                );
-              }).toList(),
-            ),
-          ))
+                  itemBuilder: (context, e) {
+                    return GestureDetector(
+                      onTap: () {
+                        context.pop();
+                        swichComic(e + 1);
+                      },
+                      child: Stack(
+                        children: [
+                          Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              child: Image.asset(
+                                'assets/pengke/video/${watchLog == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
+                                fit: BoxFit.fill,
+                              )),
+                          Container(
+                            width: ScreenUtil().setWidth(84.5),
+                            height: ScreenUtil().setWidth(32),
+                            child: Center(
+                                child: Text(
+                              (e + 1).toString(),
+                              style: TextStyle(
+                                  color: watchLog == e + 1
+                                      ? Color(0xff62f7ff)
+                                      : Colors.white,
+                                  fontSize: ScreenUtil().setSp(15)),
+                            )),
+                          )
+                        ],
+                      ),
+                    );
+                  }))
         ],
       ),
     );
