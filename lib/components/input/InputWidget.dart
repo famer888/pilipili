@@ -28,20 +28,41 @@ class InputWidget extends StatefulWidget {
   _InputWidgetState createState() => _InputWidgetState();
 }
 
-class _InputWidgetState extends State<InputWidget> {
+class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
   TextEditingController editingController = TextEditingController();
   FocusNode focusNode = new FocusNode();
   @override
   void initState() {
     super.initState();
     if (kIsWeb) {
-      /// WidgetsBinding 它能监听到第一帧绘制完成，第一帧绘制完成标志着已经Build完成
+      WidgetsBinding.instance.addObserver(this);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ///获取输入框焦点
         Future.delayed(Duration(milliseconds: 300), () {
-          FocusScope.of(context).requestFocus(focusNode);
+          focusNode.requestFocus();
         });
       });
+    }
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (MediaQuery.of(context).viewInsets.bottom == 0) {
+          focusNode.unfocus();
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if (kIsWeb) {
+      WidgetsBinding.instance.removeObserver(this);
     }
   }
 
@@ -105,7 +126,7 @@ class _InputWidgetState extends State<InputWidget> {
                                     fontSize: ScreenUtil().setSp(14)),
                                 keyboardType: widget.boardType,
                                 textInputAction: TextInputAction.done,
-                                autofocus: true,
+                                autofocus: !kIsWeb,
                                 maxLengthEnforced: true,
                                 controller: editingController,
                                 decoration: InputDecoration(

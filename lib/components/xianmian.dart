@@ -34,7 +34,7 @@ class _XianmianState extends State<Xianmian> {
   ScrollController _controller;
 
   getPageData() async {
-    var res = await getChangVideoList(limit: limit, page: page, isfree: 1);
+    var res = await getChangVideoList(limit: limit, page: page, isfree: 0);
     if (res == null) {
       networkErr = true;
       setState(() {});
