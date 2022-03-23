@@ -294,14 +294,13 @@ class _SetupPageState extends State<SetupPage> {
         context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_SETTING)) {
       YyShowDialog.showdialog(
         context,
-        title: '提示',
         content: (setDialogState) {
           return Text(
             '升级会员权限即可修改头像～',
             style: TextStyle(
-                color: Color(0xffFF5B8C),
-                fontSize: ScreenUtil().setSp(15),
-                decoration: TextDecoration.none),
+                color: Color(0xff646464),
+                fontSize: ScreenUtil().setSp(16),
+                fontWeight: FontWeight.bold),
           );
         },
         cancelText: '取消',
@@ -466,14 +465,13 @@ class _SetupPageState extends State<SetupPage> {
                         PRIVILEGE_TYPE_SETTING)) {
                       YyShowDialog.showdialog(
                         context,
-                        title: '提示',
                         content: (setDialogState) {
                           return Text(
                             '升级会员权限即可修改昵称～',
                             style: TextStyle(
-                                color: Color(0xffFF5B8C),
-                                fontSize: ScreenUtil().setSp(15),
-                                decoration: TextDecoration.none),
+                                color: Color(0xff646464),
+                                fontSize: ScreenUtil().setSp(16),
+                                fontWeight: FontWeight.bold),
                           );
                         },
                         cancelText: '取消',

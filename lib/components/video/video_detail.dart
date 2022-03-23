@@ -818,7 +818,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   } else {
                                                     YyShowDialog.showdialog(
                                                         context,
-                                                        title: '权限不足',
                                                         btnText: '升级VIP',
                                                         cancelText: '取消',
                                                         callBack: () {
@@ -949,7 +948,6 @@ class _ConmentItemState extends State<ConmentItem> {
                 });
               } else {
                 YyShowDialog.showdialog(context,
-                    title: '权限不足',
                     btnText: '升级VIP',
                     cancelText: '取消', callBack: () {
                   context.push('/${Routes.vip}');

@@ -455,20 +455,19 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                           YyShowDialog
                                                               .showdialog(
                                                             context,
-                                                            title: '提示',
                                                             content:
                                                                 (setDialogState) {
                                                               return Text(
-                                                                "您没有开启漫画下载权限哦！二次元的天堂等您开���~",
+                                                                "您没有开启漫画下载权限哦！二次元的天堂等您开启~",
                                                                 style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
+                                                                    color: Color(
+                                                                        0xff646464),
                                                                     fontSize: ScreenUtil()
                                                                         .setSp(
-                                                                            15),
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .none),
+                                                                            16),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
                                                               );
                                                             },
                                                             cancelText: '取消',

@@ -611,7 +611,6 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
         });
       } else {
         YyShowDialog.showdialog(context,
-            title: '提示',
             btnText: '充值VIP',
             cancelBack: () {
               var config =
@@ -629,7 +628,10 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
             },
             content: (setDialogState) {
               return DefaultTextStyle(
-                  style: DefaultStyle.white14,
+                  style: TextStyle(
+                      color: Color(0xff646464),
+                      fontSize: ScreenUtil().setSp(16),
+                      fontWeight: FontWeight.bold),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -789,13 +791,15 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                             });
                           } else {
                             YyShowDialog.showdialog(context,
-                                title: '提示',
                                 btnText: '升级VIP',
                                 cancelText: '取消', callBack: () {
                               context.push('/${Routes.vip}');
                             }, content: (setDialogState) {
                               return DefaultTextStyle(
-                                  style: DefaultStyle.white14,
+                                  style: TextStyle(
+                                      color: Color(0xff646464),
+                                      fontSize: ScreenUtil().setSp(16),
+                                      fontWeight: FontWeight.bold),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1366,7 +1370,6 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                   } else {
                                                     YyShowDialog.showdialog(
                                                       context,
-                                                      title: '提示',
                                                       content:
                                                           (setDialogState) {
                                                         return Text(

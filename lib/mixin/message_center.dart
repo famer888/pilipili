@@ -107,14 +107,13 @@ class MessageOfNotice extends StatelessWidget {
           } else {
             YyShowDialog.showdialog(
               context,
-              title: '提示',
               content: (setDialogState) {
                 return Text(
                   '哥哥~开启1V1服务需要会员呢！您好像没有哦~',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ScreenUtil().setSp(15),
-                      decoration: TextDecoration.none),
+                      color: Color(0xff646464),
+                      fontSize: ScreenUtil().setSp(16),
+                      fontWeight: FontWeight.bold),
                 );
               },
               cancelText: '取消',
