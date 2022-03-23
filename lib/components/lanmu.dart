@@ -58,16 +58,16 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
       isAll = res.elements.length < limit;
       if (page == 1) {
         cm_data = res;
+        cm_data.elements.forEach((item) {
+          if (item['type'] == 6) {
+            fixedBanner = item;
+          } else if (item['type'] == 7) {
+            fixedNav = item;
+          }
+        });
       } else {
         cm_data.elements.addAll(res.elements);
       }
-      cm_data.elements.forEach((item) {
-        if (item['type'] == 6) {
-          fixedBanner = item;
-        } else if (item['type'] == 7) {
-          fixedNav = item;
-        }
-      });
     }).whenComplete(() {
       setState(() {
         pageStatus = 2;
