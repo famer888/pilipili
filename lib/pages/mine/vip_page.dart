@@ -480,40 +480,45 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                                     clipBehavior: Clip.none,
                                                     children: [
                                                       Center(
-                                                        child: Text.rich(
-                                                          TextSpan(
-                                                              text:
-                                                                  '¥$currentPrice',
-                                                              style: DefaultStyle
-                                                                  .white18bold,
-                                                              children: [
-                                                                TextSpan(
-                                                                    text:
-                                                                        '  ¥$promoPrice',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white54,
-                                                                        fontSize:
-                                                                            ScreenUtil().setSp(
-                                                                                12),
-                                                                        decoration:
-                                                                            TextDecoration.lineThrough))
-                                                              ]),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                          left: 0,
-                                                          top: ScreenUtil()
-                                                              .setWidth(-3.5),
-                                                          child:
-                                                              PlatformAwareAssetImage(
-                                                            url:
-                                                                'assets/images/pment/icon_youhui.png',
-                                                            width: ScreenUtil()
-                                                                .setWidth(89.5),
-                                                            height: ScreenUtil()
-                                                                .setWidth(19),
-                                                          )),
+                                                          child: Text(
+                                                        "立即购买",
+                                                        style: DefaultStyle
+                                                            .white18bold,
+                                                      )
+                                                          //  Text.rich(
+                                                          //   TextSpan(
+                                                          //       text:
+                                                          //           '¥$currentPrice',
+                                                          //       style: DefaultStyle
+                                                          //           .white18bold,
+                                                          //       children: [
+                                                          //         TextSpan(
+                                                          //             text:
+                                                          //                 '  ¥$promoPrice',
+                                                          //             style: TextStyle(
+                                                          //                 color: Colors
+                                                          //                     .white54,
+                                                          //                 fontSize:
+                                                          //                     ScreenUtil().setSp(
+                                                          //                         12),
+                                                          //                 decoration:
+                                                          //                     TextDecoration.lineThrough))
+                                                          //       ]),
+                                                          // ),
+                                                          ),
+                                                      // Positioned(
+                                                      //     left: 0,
+                                                      //     top: ScreenUtil()
+                                                      //         .setWidth(-3.5),
+                                                      //     child:
+                                                      //         PlatformAwareAssetImage(
+                                                      //       url:
+                                                      //           'assets/images/pment/icon_youhui.png',
+                                                      //       width: ScreenUtil()
+                                                      //           .setWidth(89.5),
+                                                      //       height: ScreenUtil()
+                                                      //           .setWidth(19),
+                                                      //     )),
                                                     ],
                                                   ),
                                                 )
@@ -925,20 +930,11 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                       ),
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          Text(
-                                            '¥${double.parse(moreProducts[index]['promo_price']).toInt()}',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(28.8),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            width: ScreenUtil().setWidth(12.5),
-                                          ),
                                           Text(
                                               '¥${double.parse(moreProducts[index]['price']).toInt()}',
                                               style: TextStyle(
@@ -947,7 +943,18 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                                       ScreenUtil().setSp(19.8),
                                                   decoration: TextDecoration
                                                       .lineThrough,
-                                                  fontWeight: FontWeight.bold))
+                                                  fontWeight: FontWeight.bold)),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(12.5),
+                                          ),
+                                          Text(
+                                            '¥${double.parse(moreProducts[index]['promo_price']).toInt()}',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    ScreenUtil().setSp(28.8),
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ],
                                       )
                                     ],
@@ -1050,7 +1057,43 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                           0xffffffff), //_vipColors(widget.product['pname']),
                       fontSize: ScreenUtil().setSp(13)),
                 ),
-              ))
+              )),
+              SizedBox(
+                height: ScreenUtil().setWidth(2),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text('¥${widget.promoPrice}',
+                          style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: ScreenUtil().setSp(16.8),
+                              decoration: TextDecoration.lineThrough,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: ScreenUtil().setWidth(12.5),
+                      ),
+                      Text(
+                        '¥${widget.currentPrice}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: ScreenUtil().setSp(24.8),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: ScreenUtil().setWidth(7),
+              )
             ],
           ),
         ),
