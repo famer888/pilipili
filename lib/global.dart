@@ -20,11 +20,10 @@ class AppGlobal {
   static String apiBaseURL = "";
   static int smallVideoLimit = 18;
   static List<String> apiLines = [
-    'https://api.youyuapi.com',
-    'https://api.youyuapi.org',
-    'https://api.youyu.services'
+    'https://apiv2.ltsapi.com',
+    'https://apiv2.ltsapi1.com',
+    'https://apiv2.ltsapi2.com'
   ];
-  // 测试服"https://squid.yesebo.net/api.php"
   static Widget bannerWidget;
   static String uploadImgUrl;
   static String uploadImgKey;
