@@ -115,6 +115,7 @@ class _SeconedPageState extends State<SeconedPage> {
                             getPageData();
                           },
                           child: ListView.builder(
+                              cacheExtent: ScreenUtil().screenHeight * 5,
                               padding: EdgeInsets.only(
                                 top: DefaultStyle.pagePadding,
                                 bottom: ScreenUtil().bottomBarHeight +
