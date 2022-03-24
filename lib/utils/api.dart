@@ -44,7 +44,6 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
             'problem': item['question'],
             'reply': item['answer'],
           };
-          CommonUtils.debugPrint(' *****************123${item['question']}');
           AppGlobal.helpList.add(problem);
         }
       });
