@@ -233,11 +233,9 @@ class _CollectPageState extends State<CollectPage>
                                 ),
                                 Text(
                                   tabList[e]['name'],
-                                  style: TextStyle(
-                                      color: e == currentTab
-                                          ? Color(0xffff5b8c)
-                                          : Color(0xffc2c2c2),
-                                      fontSize: ScreenUtil().setSp(15)),
+                                  style: currentTab == e
+                                      ? DefaultStyle.pink14bold
+                                      : DefaultStyle.lgray14Bold,
                                 ),
                                 Opacity(
                                   opacity: 0,
