@@ -107,6 +107,10 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                 }
                               },
                               child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setWidth(5))),
                                 width: ScreenUtil().setWidth(
                                     widget.isHorizontal ? 140 : 100.5),
                                 height: ScreenUtil()
@@ -169,10 +173,13 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                         ScreenUtil().setWidth(16)),
-                                    gradient: SweepGradient(colors: [
-                                      Color(0xffFF84A9),
-                                      Color(0xffFF9E9E)
-                                    ])),
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color(0xffFF9E9E),
+                                          Color(0xffFF84A9),
+                                        ])),
                                 height: ScreenUtil().setWidth(32),
                                 width: ScreenUtil().setWidth(96),
                                 child: Center(
@@ -295,10 +302,13 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(
                                                 ScreenUtil().setWidth(16)),
-                                            gradient: SweepGradient(colors: [
-                                              Color(0xffFF84A9),
-                                              Color(0xffFF9E9E)
-                                            ])),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                                  Color(0xffFF9E9E),
+                                                  Color(0xffFF84A9),
+                                                ])),
                                         height: ScreenUtil().setWidth(32),
                                         width: ScreenUtil().setWidth(96),
                                         child: Center(

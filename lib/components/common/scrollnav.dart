@@ -41,13 +41,12 @@ class _ScrollnavState extends State<Scrollnav> {
     _controller = ScrollController();
     _pageController = PageController();
     _pageController.addListener(() {
-      int index = _pageController.page.round();
-      if (selectedIndex != index) {
-        selectedIndex = index;
+      if (_pageController.page % 1 == 0) {
+        selectedIndex = _pageController.page.toInt();
         setState(() {});
-        scrollItemToCenter(index);
+        scrollItemToCenter(_pageController.page.toInt());
         if (widget.onNavIndexChanged != null) {
-          widget.onNavIndexChanged(index);
+          widget.onNavIndexChanged(_pageController.page.toInt());
         }
       }
     });
@@ -206,10 +205,10 @@ class _ScrollnavState extends State<Scrollnav> {
                                                                   ? 18
                                                                   : 16),
                                                       fontWeight:
-                                                          selectedIndex ==
-                                                                  index
+                                                          selectedIndex == index
                                                               ? FontWeight.bold
-                                                              : FontWeight.w500),
+                                                              : FontWeight
+                                                                  .w500),
                                                 ),
                                               ),
                                             ],
