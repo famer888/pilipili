@@ -42,6 +42,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double _topC = ScreenUtil().setWidth(240) / 167 * 100;
     return Container(
       margin: EdgeInsets.only(
           bottom:
@@ -60,6 +61,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
               padding: EdgeInsets.only(left: DefaultStyle.pagePadding),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: widget.data
@@ -92,7 +94,8 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                             height: ScreenUtil().setWidth(39),
                             margin: EdgeInsets.only(
                                 right: ScreenUtil().setWidth(16),
-                                bottom: ScreenUtil().setWidth(48)),
+                                top: ((_topC - ScreenUtil().setWidth(39)) / 2)
+                                    .roundToDouble()),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 boxShadow: [
