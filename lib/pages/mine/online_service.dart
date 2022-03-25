@@ -19,7 +19,7 @@ class OnlineService extends StatefulWidget {
 
 class _OnlineServiceState extends State<OnlineService> {
   Widget _questionItem(data, int index) {
-    return Padding(
+    return Container(
       padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(32.5)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -55,35 +55,32 @@ class _OnlineServiceState extends State<OnlineService> {
           title: '在线客服',
           paddingTop: ScreenUtil().statusBarHeight,
         ),
+        Container(
+          padding: EdgeInsets.only(
+              // bottom: ScreenUtil().setHeight(13.5),
+              top: ScreenUtil().setHeight(13.5),
+              left: DefaultStyle.pagePadding),
+          child: Text(
+            "常见问题",
+            style: TextStyle(
+                color: Color(0xff979797),
+                fontSize: ScreenUtil().setSp(14),
+                fontWeight: FontWeight.w600),
+          ),
+        ),
         Expanded(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                  top: ScreenUtil().setHeight(13.5),
-                  left: DefaultStyle.pagePadding),
-              child: Text(
-                "常见问题",
-                style: TextStyle(
-                    color: Color(0xff979797),
-                    fontSize: ScreenUtil().setSp(14),
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-            SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                  horizontal: DefaultStyle.pagePadding,
-                  vertical: ScreenUtil().setWidth(13.5)),
-              child: Column(
-                children: AppGlobal.helpList
-                    .asMap()
-                    .keys
-                    .map((e) => _questionItem(AppGlobal.helpList[e], e))
-                    .toList(),
-              ),
-            )
-          ],
+            child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+              horizontal: DefaultStyle.pagePadding,
+              vertical: ScreenUtil().setWidth(13.5)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: AppGlobal.helpList
+                .asMap()
+                .keys
+                .map((e) => _questionItem(AppGlobal.helpList[e], e))
+                .toList(),
+          ),
         )),
         Container(
           width: double.infinity,
