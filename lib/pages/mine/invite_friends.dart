@@ -72,209 +72,217 @@ class _InviteFriendState extends State<InviteFriend> {
     String channel =
         Provider.of<HomeConfig>(context, listen: false).member.channel;
     CommonUtils.debugPrint(channel);
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-              color: channel != 'self'
-                  ? Color.fromRGBO(255, 133, 101, 1)
-                  : Color.fromRGBO(255, 94, 67, 1)),
-        ),
-        channel != 'self'
-            ? Container()
-            : Container(
-                margin: EdgeInsets.only(
-                    top: ScreenUtil().statusBarHeight +
-                        DefaultStyle.navbarHegiht),
-                child: Image.asset(
-                  'assets/images/wode/invite_header.png',
-                  width: double.infinity,
-                  height: ScreenUtil().setWidth(575),
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
+    return
+        // Container(
+        //   width: double.infinity,
+        //   height: double.infinity,
+        //   decoration: BoxDecoration(
+        //       color: channel != 'self'
+        //           ? Color.fromRGBO(255, 133, 101, 1)
+        //           : Color.fromRGBO(255, 94, 67, 1)),
+        // ),
+        // channel != 'self'
+        //     ? Container()
+        //     : Container(
+        //         margin: EdgeInsets.only(
+        //             top: ScreenUtil().statusBarHeight +
+        //                 DefaultStyle.navbarHegiht),
+        //         child: Image.asset(
+        //           'assets/images/wode/invite_header.png',
+        //           width: double.infinity,
+        //           height: ScreenUtil().setWidth(575),
+        //           fit: BoxFit.fitHeight,
+        //         ),
+        //       ),
         Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Column(
-            children: [
-              PageTitleBar(
-                  title: '邀请好友', paddingTop: ScreenUtil().statusBarHeight),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: ScreenUtil()
-                            .setWidth((channel != 'self' ? 50 : 163)),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(20)),
-                        child: Container(
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: [
+          PageTitleBar(title: '邀请好友', paddingTop: ScreenUtil().statusBarHeight),
+          Expanded(
+            child: SingleChildScrollView(
+                child: Stack(
+              children: [
+                channel != 'self'
+                    ? Container()
+                    : Container(
+                        child: Image.asset(
+                          'assets/images/wode/invite_header.png',
                           width: double.infinity,
-                          height: isLoading
-                              ? ScreenUtil().setWidth(250)
-                              : ScreenUtil().setWidth(184),
-                          padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setWidth(16),
-                              horizontal: ScreenUtil().setWidth(21)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(10)),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(255, 255, 255, 0.77),
-                                  Color(0xFFFFE1C5)
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              )),
-                          child: isLoading
-                              ? PageStatus.loading(mounted)
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                          text: '我的邀请',
-                                          style: TextStyle(
-                                              color: Color(0xffAF5A0C),
-                                              fontSize: ScreenUtil().setSp(16),
-                                              fontWeight: FontWeight.bold),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: ' 好友绑定手机后，才是有效的注册哦！',
-                                                style: TextStyle(
-                                                  color: Color(0xff9C8484),
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize:
-                                                      ScreenUtil().setSp(12),
-                                                ))
-                                          ]),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal:
-                                              ScreenUtil().setWidth(15)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          MyInviteNumber(
-                                              number: '${myInvition?.allNum}',
-                                              label: '邀请人数'),
-                                          MyInviteNumber(
-                                              number: '${myInvition?.regNum}',
-                                              label: '注册数'),
-                                          MyInviteNumber(
-                                              number: '${myInvition?.moneyNum}',
-                                              label: '皮哩币收入'),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal:
-                                              ScreenUtil().setWidth(10)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          ActionImage(
-                                            url:
-                                                'assets/images/wode/invite_recore_icon.png',
-                                            onTap: () {
-                                              context.push(
-                                                  CommonUtils.getRealHash(
-                                                      'inviterecored'));
-                                            },
-                                          ),
-                                          ActionImage(
-                                            url:
-                                                'assets/images/wode/promote_icon.png',
-                                            onTap: () {
-                                              context.push(
-                                                  CommonUtils.getRealHash(
-                                                      'promote'));
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          height: ScreenUtil().setWidth(575),
+                          fit: BoxFit.fill,
                         ),
                       ),
-                      Padding(
+                Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height:
+                          ScreenUtil().setWidth((channel != 'self' ? 50 : 163)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setWidth(20)),
+                      child: Container(
+                        width: double.infinity,
+                        height: isLoading
+                            ? ScreenUtil().setWidth(250)
+                            : ScreenUtil().setWidth(184),
                         padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(20)),
-                        child: Container(
-                          width: double.infinity,
-                          margin:
-                              EdgeInsets.only(top: ScreenUtil().setWidth(24.5)),
-                          padding: EdgeInsets.all(ScreenUtil().setWidth(16)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(10)),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(255, 255, 255, 0.77),
-                                  Color(0xFFFFE1C5)
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              )),
-                          child: isLoading
-                              ? PageStatus.loading(mounted)
-                              : incomeList.length == 0
-                                  ? PageStatus.noData(text: '暂无收益记录')
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: Text(
-                                            '收益明细',
-                                            style: TextStyle(
+                            vertical: ScreenUtil().setWidth(16),
+                            horizontal: ScreenUtil().setWidth(21)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                ScreenUtil().setWidth(10)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(255, 255, 255, 0.77),
+                                Color(0xFFFFE1C5)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            )),
+                        child: isLoading
+                            ? PageStatus.loading(mounted)
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        text: '我的邀请',
+                                        style: TextStyle(
+                                            color: Color(0xffAF5A0C),
+                                            fontSize: ScreenUtil().setSp(16),
+                                            fontWeight: FontWeight.bold),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: ' 好友绑定手机后，才是有效的注册哦！',
+                                              style: TextStyle(
+                                                color: Color(0xff9C8484),
+                                                fontWeight: FontWeight.normal,
                                                 fontSize:
-                                                    ScreenUtil().setSp(16),
-                                                color: Color(0xffAF5A0C),
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                                    ScreenUtil().setSp(12),
+                                              ))
+                                        ]),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: ScreenUtil().setWidth(15)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        MyInviteNumber(
+                                            number: '${myInvition?.allNum}',
+                                            label: '邀请人数'),
+                                        MyInviteNumber(
+                                            number: '${myInvition?.regNum}',
+                                            label: '注册数'),
+                                        MyInviteNumber(
+                                            number: '${myInvition?.moneyNum}',
+                                            label: '皮哩币收入'),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: ScreenUtil().setWidth(10)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ActionImage(
+                                          url:
+                                              'assets/images/wode/invite_recore_icon.png',
+                                          onTap: () {
+                                            context.push(
+                                                CommonUtils.getRealHash(
+                                                    'inviterecored'));
+                                          },
                                         ),
-                                        ListView.builder(
-                                          cacheExtent:
-                                              ScreenUtil().screenHeight * 5,
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.only(top: 1),
-                                          physics: BouncingScrollPhysics(),
-                                          controller: _scrollController,
-                                          itemCount: incomeList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return IncomeItem(
-                                              incomeListItem: incomeList[index],
-                                            );
+                                        ActionImage(
+                                          url:
+                                              'assets/images/wode/promote_icon.png',
+                                          onTap: () {
+                                            context.push(
+                                                CommonUtils.getRealHash(
+                                                    'promote'));
                                           },
                                         )
                                       ],
                                     ),
-                        ),
-                      )
-                    ],
-                  ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setWidth(20)),
+                      child: Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(
+                            top: ScreenUtil().setWidth(24.5),
+                            bottom: ScreenUtil().bottomBarHeight ??
+                                ScreenUtil().setWidth(24)),
+                        padding: EdgeInsets.all(ScreenUtil().setWidth(16)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                ScreenUtil().setWidth(10)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(255, 255, 255, 0.77),
+                                Color(0xFFFFE1C5)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            )),
+                        child: isLoading
+                            ? PageStatus.loading(mounted)
+                            : incomeList.length == 0
+                                ? PageStatus.noData(text: '暂无收益记录')
+                                : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          '收益明细',
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(16),
+                                              color: Color(0xffAF5A0C),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      ListView.builder(
+                                        cacheExtent:
+                                            ScreenUtil().screenHeight * 5,
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.only(top: 1),
+                                        physics: BouncingScrollPhysics(),
+                                        controller: _scrollController,
+                                        itemCount: incomeList.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return IncomeItem(
+                                            incomeListItem: incomeList[index],
+                                          );
+                                        },
+                                      )
+                                    ],
+                                  ),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-          backgroundColor: Colors.transparent,
-        ),
-      ],
+              ],
+            )),
+          )
+        ],
+      ),
+      backgroundColor: Color.fromRGBO(255, 94, 67, 1),
     );
   }
 }

@@ -388,7 +388,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.center,
                                         children: [
                                           GestureDetector(
                                               onTap: () {
@@ -464,6 +464,9 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                             child: Stack(
                                               children: [
                                                 Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: ScreenUtil()
+                                                          .setWidth(20)),
                                                   decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -475,7 +478,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                                   width: ScreenUtil()
                                                       .setWidth(239),
                                                   height:
-                                                      ScreenUtil().setWidth(40),
+                                                      ScreenUtil().setWidth(56),
                                                   child: Stack(
                                                     clipBehavior: Clip.none,
                                                     children: [
@@ -1018,8 +1021,8 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                 children: [
                   Container(
                       margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-                      width: ScreenUtil().setWidth(24),
-                      height: ScreenUtil().setWidth(24),
+                      width: ScreenUtil().setWidth(20),
+                      height: ScreenUtil().setWidth(20),
                       child: PlatformAwareNetworkImage(
                         noVisibilityDetector: true,
                         url: widget.product['second_img_url'],

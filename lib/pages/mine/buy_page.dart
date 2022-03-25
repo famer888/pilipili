@@ -195,6 +195,14 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              width: double.infinity,
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(255, 91, 140, 0.1),
+                    offset: Offset(0, 10),
+                    blurRadius: 10,
+                    spreadRadius: 0)
+              ]),
               child: Theme(
                   data: ThemeData(
                     splashColor: Colors.transparent,
@@ -229,11 +237,9 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                             ),
                             Text(
                               tabList[e]['name'],
-                              style: TextStyle(
-                                  color: e == currentTab
-                                      ? Color(0xffff5b8c)
-                                      : Color(0xffc2c2c2),
-                                  fontSize: ScreenUtil().setSp(15)),
+                              style: currentTab == e
+                                  ? DefaultStyle.pink14bold
+                                  : DefaultStyle.lgray14Bold,
                             ),
                             Opacity(
                               opacity: 0,
