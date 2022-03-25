@@ -14,7 +14,7 @@ class PlatformAwareAssetImage extends StatefulWidget {
       this.height,
       this.fit = BoxFit.fill,
       this.clipBehavior = Clip.hardEdge,
-      this.filterQuality = FilterQuality.none,
+      this.filterQuality = FilterQuality.high,
       this.alignment = Alignment.center})
       : super(key: key);
   final String url;
@@ -101,7 +101,7 @@ class PlatformAwareNetworkImage extends StatefulWidget {
       this.noVisibilityDetector = false,
       this.borderRadius,
       this.clipBehavior = Clip.hardEdge,
-      this.filterQuality = FilterQuality.none,
+      this.filterQuality = FilterQuality.high,
       this.alignment = Alignment.center,
       this.nothumb = false,
       this.background = const Color(0xffFFDFE9)})
@@ -157,7 +157,7 @@ class AwareNetworkImage extends StatefulWidget {
       this.noVisibilityDetector = false,
       this.borderRadius,
       this.clipBehavior = Clip.hardEdge,
-      this.filterQuality = FilterQuality.none,
+      this.filterQuality = FilterQuality.high,
       this.alignment = Alignment.center,
       this.background})
       : super(key: key);

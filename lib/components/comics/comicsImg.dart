@@ -106,7 +106,6 @@ class _ComicsImgState extends State<ComicsImg> {
                   : PlatformAwareNetworkImage(
                       noVisibilityDetector: true,
                       url: widget.img,
-                      filterQuality: FilterQuality.low,
                       fit: BoxFit.cover,
                     ),
             ),
