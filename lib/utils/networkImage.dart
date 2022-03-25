@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
@@ -196,7 +197,10 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
     if (isLoad != 0) return;
     if (widget.isVideoThumb) return;
     var thumbUrl = '';
-    if (widget.width != null && widget.height != null && !widget.nothumb) {
+    if (widget.width != null &&
+        widget.height != null &&
+        !widget.nothumb &&
+        !Platform.isAndroid) {
       int idx = widget.url.toString().lastIndexOf('.');
       String prev = widget.url.toString().substring(0, idx);
       String sufix = widget.url.toString().substring(idx);

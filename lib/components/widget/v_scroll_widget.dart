@@ -42,6 +42,7 @@ class _VscrollWidgetState extends State<VscrollWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double _topC = ScreenUtil().setWidth(145) / 140 * 194;
     return Container(
       margin: EdgeInsets.only(
           bottom:
@@ -92,7 +93,8 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                             height: ScreenUtil().setWidth(39),
                             margin: EdgeInsets.only(
                                 right: ScreenUtil().setWidth(16),
-                                bottom: ScreenUtil().setWidth(48)),
+                                top: ((_topC - ScreenUtil().setWidth(39)) / 2)
+                                    .roundToDouble()),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 boxShadow: [
@@ -119,7 +121,7 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                                   '更多',
                                   style: DefaultStyle.white14,
                                 ),
-                                 SizedBox(
+                                SizedBox(
                                   width: ScreenUtil().setWidth(9),
                                 ),
                                 Image.asset(
