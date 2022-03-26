@@ -72,7 +72,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     getCommentList(
             contentId: widget.id, contentType: 1, page: page, limit: limit)
         .then((res) {
-      print('************$res');
       if (res['status'] != 0) {
         commentLoadingStatus = 2;
         List resdata = res['data'] == null ? [] : res['data'];

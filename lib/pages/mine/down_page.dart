@@ -358,7 +358,7 @@ class _DownListState extends State<DownList> {
   Future getVideoDownloadInfo() async {
     Box box = await Hive.openBox('HiveBox');
     data = box.get('download_video_tasks') ?? [];
-    print("视频信息-----$data");
+    // print("视频信息-----$data");
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;
     }

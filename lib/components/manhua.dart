@@ -62,7 +62,6 @@ class _ManhuaState extends State<Manhua> {
             emitName: 'manhua',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              print('****************************${navitems[index].toJson()}');
               setState(() {
                 currentIndex = index;
               });

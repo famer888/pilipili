@@ -62,7 +62,6 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
 
   getAdData() {
     getAdForCoin().then((res) {
-      print('广告------$res');
       if (res != null && res['data'] != null && res['data'].length > 0) {
         setState(() {
           adData = res['data'][0];

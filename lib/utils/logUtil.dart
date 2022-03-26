@@ -67,7 +67,7 @@ class LogUtil {
         var lastIndex = index + 1;
         if (msg.length - lastIndex < _limitLength) {
           var remainderStr = msg.substring(lastIndex, msg.length);
-          print(remainderStr);
+          // print(remainderStr);
           break;
         }
       }
