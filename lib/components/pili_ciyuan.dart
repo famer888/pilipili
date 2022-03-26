@@ -13,6 +13,7 @@ import 'package:pilipili/components/filter_list.dart';
 import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -48,6 +49,37 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
     navitems = data.value.asMap().keys.map((e) {
       return LinkModel.fromJson(data.value[e]);
     }).toList();
+    AppGlobal.navList = navitems;
+    pages = data.value.asMap().keys.map((e) {
+      LinkModel _link = LinkModel.fromJson(data.value[e]);
+      if (_link.redirectType == 3) {
+        // 模块化栏目页
+        return PageViewMixin(
+          child: Lanmu(
+              isShow: currentIndex == e,
+              id: int.parse(navitems[e].linkUrl),
+              parentName: 'ciyuan',
+              index: e),
+        );
+      } else if (_link.redirectType == 6) {
+        //筛选
+        return PageViewMixin(
+          child: FilterList(
+              parentName: 'ciyuan',
+              isShow: currentIndex == e,
+              data: navitems[e].linkUrl,
+              index: e),
+        );
+      } else {
+        return ListPage(
+          parentName: 'ciyuan',
+          isShow: currentIndex == e,
+          title: navitems[e].name,
+          id: navitems[e].linkUrl,
+          index: e,
+        );
+      }
+    }).toList();
     setState(() {});
   }
 
@@ -59,30 +91,15 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
             emitName: 'pili_ciyuan',
             navitems: navitems,
             onNavIndexChanged: (index) {
+              EventBus().emit('lanmu-init-view', {
+                'parentName': 'ciyuan',
+                'currentIndex': index,
+              });
               setState(() {
                 currentIndex = index;
               });
             },
-            pages: navitems.asMap().keys.map<Widget>((e) {
-              return PageViewMixin(
-                child: navitems[e].redirectType == 3
-                    ? Lanmu(
-                        isShow: currentIndex == e,
-                        id: int.parse(navitems[e].linkUrl),
-                        index: e)
-                    : (navitems[e].redirectType == 6
-                        ? FilterList(
-                            isShow: currentIndex == e,
-                            data: navitems[e].linkUrl,
-                            index: e)
-                        : ListPage(
-                            isShow: currentIndex == e,
-                            title: navitems[e].name,
-                            id: navitems[e].linkUrl,
-                            index: e,
-                          )),
-              );
-            }).toList(),
+            pages: pages,
           );
   }
 }

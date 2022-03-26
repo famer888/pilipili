@@ -41,12 +41,13 @@ class _ScrollnavState extends State<Scrollnav> {
     _controller = ScrollController();
     _pageController = PageController();
     _pageController.addListener(() {
-      if (_pageController.page % 1 == 0) {
-        selectedIndex = _pageController.page.toInt();
+      int index = _pageController.page.round();
+      if (selectedIndex != index) {
+        selectedIndex = index;
         setState(() {});
-        scrollItemToCenter(_pageController.page.toInt());
+        scrollItemToCenter(index);
         if (widget.onNavIndexChanged != null) {
-          widget.onNavIndexChanged(_pageController.page.toInt());
+          widget.onNavIndexChanged(index);
         }
       }
     });

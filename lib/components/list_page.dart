@@ -20,13 +20,19 @@ import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
-  ListPage({Key key, this.title = '列表页', this.id, this.isShow, this.index})
+  ListPage(
+      {Key key,
+      this.title = '列表页',
+      this.id,
+      this.isShow,
+      this.index,
+      this.parentName})
       : super(key: key);
   final String title;
   final String id;
   final bool isShow;
   final int index;
-
+  final String parentName;
   @override
   _ListPageState createState() => _ListPageState();
 }
@@ -46,7 +52,6 @@ class _ListPageState extends State<ListPage> {
   dynamic fixedBanner;
   int elementID;
   String listType;
-  ScrollController _controller;
   @override
   void initState() {
     super.initState();
@@ -69,22 +74,20 @@ class _ListPageState extends State<ListPage> {
       pageStatus = 1;
       getBanner();
     }
-  }
-
-  @override
-  void didUpdateWidget(covariant ListPage oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && pageStatus == 0) {
-      pageStatus = 1;
-      getBanner();
-    }
+    EventBus().on('lanmu-init-view', (arg) {
+      if (arg['parentName'] == widget.parentName &&
+          arg['currentIndex'] == widget.index &&
+          pageStatus == 0) {
+        pageStatus = 1;
+        getPageData();
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    EventBus().off('lanmu-init-view');
   }
 
   void getBanner() async {
@@ -295,9 +298,7 @@ class _ListPageState extends State<ListPage> {
             getPageData();
           })
         : (pageStatus != 2
-            ? pageStatus == 1
-                ? PageStatus.loading(mounted)
-                : Container()
+            ? PageStatus.loading(true)
             : PullRefreshList(
                 color: Color.fromRGBO(130, 26, 70, 0.44),
                 offset:

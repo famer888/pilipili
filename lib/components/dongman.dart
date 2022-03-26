@@ -5,6 +5,7 @@ import 'package:pilipili/components/filter_list.dart';
 import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/model/element.dart';
+import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 import '../utils/api.dart';
@@ -47,11 +48,40 @@ class _DongmanState extends State<Dongman> {
       setState(() {});
       return;
     }
-    setState(() {
-      navitems = data.value.asMap().keys.map((e) {
-        return LinkModel.fromJson(data.value[e]);
-      }).toList();
-    });
+    navitems = data.value.asMap().keys.map((e) {
+      return LinkModel.fromJson(data.value[e]);
+    }).toList();
+    pages = data.value.asMap().keys.map((e) {
+      LinkModel _link = LinkModel.fromJson(data.value[e]);
+      if (_link.redirectType == 3) {
+        // 模块化栏目页
+        return PageViewMixin(
+          child: Lanmu(
+              isShow: currentIndex == e,
+              id: int.parse(navitems[e].linkUrl),
+              parentName: 'dongman',
+              index: e),
+        );
+      } else if (_link.redirectType == 6) {
+        //筛选
+        return PageViewMixin(
+          child: FilterList(
+              parentName: 'dongman',
+              isShow: currentIndex == e,
+              data: navitems[e].linkUrl,
+              index: e),
+        );
+      } else {
+        return ListPage(
+          parentName: 'dongman',
+          isShow: currentIndex == e,
+          title: navitems[e].name,
+          id: navitems[e].linkUrl,
+          index: e,
+        );
+      }
+    }).toList();
+    setState(() {});
   }
 
   @override
@@ -62,30 +92,15 @@ class _DongmanState extends State<Dongman> {
             emitName: 'dongman',
             navitems: navitems,
             onNavIndexChanged: (index) {
+              EventBus().emit('lanmu-init-view', {
+                'parentName': 'dongman',
+                'currentIndex': index,
+              });
               setState(() {
                 currentIndex = index;
               });
             },
-            pages: navitems.asMap().keys.map<Widget>((e) {
-              return PageViewMixin(
-                child: navitems[e].redirectType == 3
-                    ? Lanmu(
-                        isShow: currentIndex == e,
-                        id: int.parse(navitems[e].linkUrl),
-                        index: e)
-                    : (navitems[e].redirectType == 6
-                        ? FilterList(
-                            isShow: currentIndex == e,
-                            data: navitems[e].linkUrl,
-                            index: e)
-                        : ListPage(
-                            isShow: currentIndex == e,
-                            title: navitems[e].name,
-                            id: navitems[e].linkUrl,
-                            index: e,
-                          )),
-              );
-            }).toList(),
+            pages: pages,
           );
   }
 }

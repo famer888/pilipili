@@ -13,17 +13,26 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 
 class Lanmu extends StatefulWidget {
-  Lanmu({Key key, this.data, this.id, this.isShow, this.index, this.tabList})
+  Lanmu(
+      {Key key,
+      this.data,
+      this.id,
+      this.isShow,
+      this.index,
+      this.tabList,
+      this.parentName})
       : super(key: key);
   final dynamic data;
   final int id;
   final bool isShow;
   final int index;
   final List tabList;
+  final String parentName;
   @override
   _LanmuState createState() => _LanmuState();
 }
@@ -42,6 +51,14 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+    EventBus().on('lanmu-init-view', (arg) {
+      if (arg['parentName'] == widget.parentName &&
+          arg['currentIndex'] == widget.index &&
+          pageStatus == 0) {
+        pageStatus = 1;
+        getPageData();
+      }
+    });
     if (widget.isShow && pageStatus == 0) {
       pageStatus = 1;
       getPageData();
@@ -76,19 +93,10 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   }
 
   @override
-  void didUpdateWidget(covariant Lanmu oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && pageStatus == 0) {
-      pageStatus = 1;
-      getPageData();
-    }
-  }
-
-  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    EventBus().off('lanmu-init-view');
   }
 
   @override
@@ -102,9 +110,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
             getPageData();
           })
         : pageStatus != 2
-            ? pageStatus == 1
-                ? PageStatus.loading(mounted)
-                : Container()
+            ? PageStatus.loading(true)
             : PullRefreshList(
                 color: Color.fromRGBO(130, 26, 70, 0.44),
                 offset:
