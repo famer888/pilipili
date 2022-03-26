@@ -37,7 +37,7 @@ class LogUtil {
   //仅Debug模式可见
   static void d(dynamic obj) {
     if (_isDebug) {
-      _log(obj.toString());
+      // _log(obj.toString());
     }
   }
 
@@ -67,7 +67,7 @@ class LogUtil {
         var lastIndex = index + 1;
         if (msg.length - lastIndex < _limitLength) {
           var remainderStr = msg.substring(lastIndex, msg.length);
-          // print(remainderStr);
+          print(remainderStr);
           break;
         }
       }
