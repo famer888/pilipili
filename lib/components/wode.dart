@@ -197,23 +197,23 @@ class _WodeState extends State<Wode> {
                     ],
                   ),
                 ),
-                Positioned(
-                  bottom: ScreenUtil().setWidth(15),
-                  left: ScreenUtil().setWidth(20),
-                  child: Text(
-                    "立即开通",
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(15),
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
+                // Positioned(
+                //   bottom: ScreenUtil().setWidth(15),
+                //   left: ScreenUtil().setWidth(20),
+                //   child: Text(
+                //     "立即开通",
+                //     style: TextStyle(
+                //         fontSize: ScreenUtil().setSp(15),
+                //         color: Colors.white,
+                //         fontWeight: FontWeight.bold),
+                //   ),
+                // )
               ],
             ),
           ),
-          SizedBox(
-            width: ScreenUtil().setWidth(2),
-          ),
+          // SizedBox(
+          //   width: ScreenUtil().setWidth(2),
+          // ),
           Expanded(
             flex: 1,
             child: Column(
@@ -235,7 +235,7 @@ class _WodeState extends State<Wode> {
                         fit: BoxFit.fill,
                       ),
                       Positioned(
-                        left: ScreenUtil().setWidth(14),
+                        left: ScreenUtil().setWidth(20),
                         top: ScreenUtil().setWidth(15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,17 +257,17 @@ class _WodeState extends State<Wode> {
                           ],
                         ),
                       ),
-                      Positioned(
-                        bottom: ScreenUtil().setWidth(6),
-                        left: ScreenUtil().setWidth(12),
-                        child: Text(
-                          "立即充值",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
+                      // Positioned(
+                      //   bottom: ScreenUtil().setWidth(6),
+                      //   left: ScreenUtil().setWidth(12),
+                      //   child: Text(
+                      //     "立即充值",
+                      //     style: TextStyle(
+                      //         fontSize: ScreenUtil().setSp(12),
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.bold),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -285,7 +285,7 @@ class _WodeState extends State<Wode> {
                         fit: BoxFit.fill,
                       ),
                       Positioned(
-                        left: ScreenUtil().setWidth(14),
+                        left: ScreenUtil().setWidth(20),
                         top: ScreenUtil().setWidth(15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,17 +307,17 @@ class _WodeState extends State<Wode> {
                           ],
                         ),
                       ),
-                      Positioned(
-                        bottom: ScreenUtil().setWidth(6),
-                        left: ScreenUtil().setWidth(12),
-                        child: Text(
-                          "立即领取",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
+                      // Positioned(
+                      //   bottom: ScreenUtil().setWidth(6),
+                      //   left: ScreenUtil().setWidth(12),
+                      //   child: Text(
+                      //     "立即领取",
+                      //     style: TextStyle(
+                      //         fontSize: ScreenUtil().setSp(12),
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.bold),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
