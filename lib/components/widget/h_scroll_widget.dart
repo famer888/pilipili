@@ -42,7 +42,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double _topC = ScreenUtil().setWidth(240) / 167 * 100;
+    double _topC = (ScreenUtil().setWidth(240) / 167) * 100;
     return Container(
       margin: EdgeInsets.only(
           bottom:

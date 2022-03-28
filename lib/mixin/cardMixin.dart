@@ -338,6 +338,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
             top: 0,
             right: 0,
             child: Image.asset(_asset,
+                alignment: Alignment.topRight,
                 width: ScreenUtil().setWidth(34),
                 height: ScreenUtil().setWidth(24)))
         : Container();

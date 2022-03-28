@@ -42,7 +42,7 @@ class _VscrollWidgetState extends State<VscrollWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double _topC = ScreenUtil().setWidth(145) / 140 * 194;
+    double _topC = (ScreenUtil().setWidth(145) / 140) * 194;
     return Container(
       margin: EdgeInsets.only(
           bottom:
@@ -61,6 +61,7 @@ class _VscrollWidgetState extends State<VscrollWidget> {
               padding: EdgeInsets.only(left: DefaultStyle.pagePadding),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: widget.data
