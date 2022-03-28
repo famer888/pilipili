@@ -570,9 +570,11 @@ class _MyVipState extends State<MyVip> {
   initpage() {
     if (!isInitPage) {
       isInitPage = true;
+      CommonUtils.debugPrint(123123);
       getUserProductList(page: page, limit: limit).then((res) {
         if (res['status'] != 0) {
           List _data = res['data'] == null ? [] : res['data'];
+          CommonUtils.debugPrint("****************11${_data}");
           if (page == 1) {
             vipList = _data;
           } else {
@@ -597,18 +599,18 @@ class _MyVipState extends State<MyVip> {
     }
   }
 
-  Color _vipColors(String pname, int showMore) {
-    switch (pname) {
-      case "年卡":
-        return Color(0xffffe0a3);
-        break;
-      case "全能年卡":
-        return Color(0xffffe0a3);
-        break;
-      default:
-        return showMore == 1 ? Color(0XFF23140d) : Colors.white;
-    }
-  }
+  // Color _vipColors(String pname, int showMore) {
+  //   switch (pname) {
+  //     case "年卡":
+  //       return Color(0xffffe0a3);
+  //       break;
+  //     case "全能年卡":
+  //       return Color(0xffffe0a3);
+  //       break;
+  //     default:
+  //       return showMore == 1 ? Color(0XFF23140d) : Colors.white;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -691,7 +693,7 @@ class _MyVipState extends State<MyVip> {
                                                       noVisibilityDetector:
                                                           true,
                                                       url: vipList[index]
-                                                          ['second_img_url'],
+                                                          ['second_img'],
                                                       fit: BoxFit.fill,
                                                     )),
                                                 Expanded(
@@ -721,11 +723,14 @@ class _MyVipState extends State<MyVip> {
                                                                   isActivity:
                                                                       false)),
                                                   style: TextStyle(
-                                                      color: _vipColors(
-                                                          vipList[index]
-                                                              ['pname'],
-                                                          vipList[index]
-                                                              ['show_more']),
+                                                      color: Colors.white
+                                                      //  _vipColors(
+                                                      //     vipList[index]
+                                                      //         ['pname'],
+                                                      //     vipList[index]
+                                                      //         ['show_more'])
+
+                                                      ,
                                                       fontSize: ScreenUtil()
                                                           .setSp(12)),
                                                 )
@@ -737,10 +742,7 @@ class _MyVipState extends State<MyVip> {
                                             Text(
                                               vipList[index]['description'],
                                               style: TextStyle(
-                                                  color: _vipColors(
-                                                      vipList[index]['pname'],
-                                                      vipList[index]
-                                                          ['show_more']),
+                                                  color: Colors.white,
                                                   fontSize:
                                                       ScreenUtil().setSp(13),
                                                   height: 1.2),
