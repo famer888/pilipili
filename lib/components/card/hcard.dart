@@ -113,7 +113,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
   @override
   Widget build(BuildContext context) {
     double thumbWidth = widget.width;
-    double thumbHeight = widget.width / 167 * 100;
+    double thumbHeight = (widget.width / 167) * 100;
     String desc = getCardDesc(widget);
     return callDetail(
         cardData: widget.cardData,
