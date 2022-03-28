@@ -107,52 +107,58 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                 }
                               },
                               child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(5))),
-                                width: ScreenUtil().setWidth(
-                                    widget.isHorizontal ? 140 : 100.5),
-                                height: ScreenUtil()
-                                    .setWidth(widget.isHorizontal ? 80 : 141.5),
                                 margin: EdgeInsets.only(
                                     right: ScreenUtil().setWidth(5)),
-                                child: Stack(
-                                  children: [
-                                    PlatformAwareNetworkImage(
-                                      url: CommonUtils.getThumb(
-                                          widget.data['resource'][e]),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: widget.data['resource'][e]
-                                                        ['isfree'] ==
-                                                    0 &&
-                                                !isBuy
-                                            ? Container(
-                                                height:
-                                                    ScreenUtil().setWidth(18),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setWidth(5)),
+                                  child: Container(
+                                    width: ScreenUtil().setWidth(
+                                        widget.isHorizontal ? 140 : 100.5),
+                                    height: ScreenUtil().setWidth(
+                                        widget.isHorizontal ? 80 : 141.5),
+                                    child: Stack(
+                                      children: [
+                                        PlatformAwareNetworkImage(
+                                          url: CommonUtils.getThumb(
+                                              widget.data['resource'][e]),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Positioned(
+                                            left: 0,
+                                            top: 0,
+                                            child: widget.data['resource'][e]
+                                                            ['isfree'] ==
+                                                        0 &&
+                                                    !isBuy
+                                                ? Container(
+                                                    height: ScreenUtil()
+                                                        .setWidth(18),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(
                                                             bottomRight:
                                                                 Radius.circular(
                                                                     ScreenUtil()
                                                                         .setWidth(
                                                                             5))),
-                                                    color: Color(0xffff6a4a)),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: ScreenUtil()
-                                                        .setWidth(10)),
-                                                child: Text(
-                                                  '试看',
-                                                  style: DefaultStyle.white12,
-                                                ),
-                                              )
-                                            : Container())
-                                  ],
+                                                        color:
+                                                            Color(0xffff6a4a)),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        10)),
+                                                    child: Text(
+                                                      '试看',
+                                                      style:
+                                                          DefaultStyle.white12,
+                                                    ),
+                                                  )
+                                                : Container())
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ))

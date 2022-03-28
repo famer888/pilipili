@@ -140,19 +140,18 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
               Stack(
                 alignment: AlignmentDirectional.topEnd,
                 children: [
-                  Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                          // color: Colors.grey,
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(ScreenUtil().setWidth(5)))),
-                      height: thumbHeight,
-                      child: PlatformAwareNetworkImage(
-                        width: widget.width,
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(ScreenUtil().setWidth(5))),
+                    child: Container(
                         height: thumbHeight,
-                        fit: BoxFit.cover,
-                        url: widget.thumbUrl,
-                      )),
+                        child: PlatformAwareNetworkImage(
+                          width: widget.width,
+                          height: thumbHeight,
+                          fit: BoxFit.cover,
+                          url: widget.thumbUrl,
+                        )),
+                  ),
                   renderTagIcon(widget),
                   widget.isLocal && progress.toInt() != 1
                       ? Positioned(

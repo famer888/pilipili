@@ -144,19 +144,17 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
               Stack(
                 alignment: AlignmentDirectional.topEnd,
                 children: [
-                  Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                          // color: Colors.grey,
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(ScreenUtil().setWidth(5)))),
-                      height: thumbHeight,
-                      child: PlatformAwareNetworkImage(
-                        width: widget.width,
-                        height: thumbHeight,
-                        fit: BoxFit.cover,
-                        url: widget.thumbUrl,
-                      )),
+                  ClipRRect(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(ScreenUtil().setWidth(5))),
+                      child: Container(
+                          height: thumbHeight,
+                          child: PlatformAwareNetworkImage(
+                            width: widget.width,
+                            height: thumbHeight,
+                            fit: BoxFit.cover,
+                            url: widget.thumbUrl,
+                          ))),
                   renderTagIcon(widget),
                   widget.isLocal && progress != widget.cardData["allEpisode"]
                       ? Positioned(
@@ -209,7 +207,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                               : Center(
                                   child: Text(
                                     downloadError
-                                        ? "下载失败，点击重试"
+                                        ? "下载失���，点击重试"
                                         : isWaiting
                                             ? "等待下载..."
                                             : progress == 0
