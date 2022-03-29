@@ -47,6 +47,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   dynamic fixedBanner;
   dynamic fixedNav;
   ConstructModel cm_data;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -129,6 +130,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                 },
                 child: CustomScrollView(
                   cacheExtent: ScreenUtil().screenHeight * 5,
+                  controller: _scrollController,
                   slivers: [
                     SliverAppBar(
                         backgroundColor: Colors.transparent,

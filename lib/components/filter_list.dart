@@ -48,6 +48,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
   int dataType;
   int order = 1;
   int cardType;
+  ScrollController _scrollController = ScrollController();
   bool navShow = true;
   List filterNavList = [
     {'title': '最新', 'order': 1},
@@ -191,6 +192,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                       getDataList();
                     },
                     child: CustomScrollView(
+                      controller: _scrollController,
                       cacheExtent: ScreenUtil().screenHeight * 5,
                       physics: ClampingScrollPhysics(),
                       slivers: [

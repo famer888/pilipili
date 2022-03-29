@@ -45,6 +45,7 @@ class _ListPageState extends State<ListPage> {
   int page = 1;
   int limit = 24;
   List data = [];
+  ScrollController _scrollController = ScrollController();
   bool isHorizontal = false;
   bool isListView = false;
   bool isActivity = false;
@@ -316,6 +317,7 @@ class _ListPageState extends State<ListPage> {
                   getPageData();
                 },
                 child: CustomScrollView(
+                  controller: _scrollController,
                   cacheExtent: ScreenUtil().screenHeight * 5,
                   slivers: [
                     SliverAppBar(
