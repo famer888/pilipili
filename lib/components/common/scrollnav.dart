@@ -40,17 +40,6 @@ class _ScrollnavState extends State<Scrollnav> {
     super.initState();
     _controller = ScrollController();
     _pageController = PageController();
-    _pageController.addListener(() {
-      int index = _pageController.page.round();
-      if (selectedIndex != index) {
-        selectedIndex = index;
-        setState(() {});
-        scrollItemToCenter(index);
-        if (widget.onNavIndexChanged != null) {
-          widget.onNavIndexChanged(index);
-        }
-      }
-    });
     for (int i = 0; i < widget.navitems.length; i++) {
       keys.add(GlobalKey(debugLabel: 'navitems-${i.toString()}'));
     }
@@ -79,8 +68,14 @@ class _ScrollnavState extends State<Scrollnav> {
     double windowW = ScreenUtil().screenWidth;
     double rlOffset = windowW / 2 - (x + w / 2);
     double offset = _controller.offset - rlOffset;
-    _controller.animateTo(offset,
-        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+    _controller
+        .animateTo(offset,
+            duration: Duration(milliseconds: 200), curve: Curves.easeInOut)
+        .then((value) {
+      if (widget.onNavIndexChanged != null) {
+        widget.onNavIndexChanged(pos);
+      }
+    });
   }
 
   @override
@@ -91,6 +86,13 @@ class _ScrollnavState extends State<Scrollnav> {
               PageView(
                 controller: _pageController,
                 children: widget.pages,
+                onPageChanged: (index) {
+                  if (selectedIndex != index) {
+                    selectedIndex = index;
+                    setState(() {});
+                    scrollItemToCenter(index);
+                  }
+                },
               ),
               Positioned(
                   top: 0,
@@ -123,9 +125,7 @@ class _ScrollnavState extends State<Scrollnav> {
                                       if (selectedIndex == index) {
                                         widget.onBackTop(index);
                                       }
-                                      _pageController.animateToPage(index,
-                                          duration: Duration(milliseconds: 200),
-                                          curve: Curves.easeInOut);
+                                      _pageController.jumpToPage(index);
                                     },
                                     behavior: HitTestBehavior.translucent,
                                     child: Stack(
