@@ -34,7 +34,7 @@ dependencies:
   shelf: ^1.2.0
   flutter_screenutil: ^5.0.0+2 # 屏幕尺寸适配
   pull_to_refresh: ^2.0.0 # 下拉刷新
-  flutter_swiper: ^1.1.6
+  swipe_cards: ^1.0.0
   visibility_detector: ^0.2.2 # 判断组件可见性
   hive: ^2.0.4
   hive_flutter: ^1.1.0

@@ -137,8 +137,8 @@ class _PublicListState extends State<PublicList> {
                       },
                 child: widget.isFlow
                     ? WaterfallFlow.builder(
+                        cacheExtent: ScreenUtil().screenHeight * 5,
                         physics: ClampingScrollPhysics(),
-                        primary: false,
                         padding: EdgeInsets.only(
                             top: DefaultStyle.pagePadding,
                             bottom: MediaQuery.of(context).padding.bottom +

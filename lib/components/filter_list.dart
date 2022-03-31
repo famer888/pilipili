@@ -1,15 +1,13 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
-import 'package:pilipili/components/card/home_nav_btn.dart';
 import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/element_mixin.dart';
-import 'package:pilipili/model/construct.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -50,6 +48,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
   int dataType;
   int order = 1;
   int cardType;
+  ScrollController _scrollController = ScrollController();
   bool navShow = true;
   List filterNavList = [
     {'title': '最新', 'order': 1},
@@ -193,6 +192,7 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                       getDataList();
                     },
                     child: CustomScrollView(
+                      controller: _scrollController,
                       cacheExtent: ScreenUtil().screenHeight * 5,
                       physics: ClampingScrollPhysics(),
                       slivers: [

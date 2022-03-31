@@ -1,7 +1,7 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:pilipili/components/card/home_nav_btn.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -47,6 +47,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
   dynamic fixedBanner;
   dynamic fixedNav;
   ConstructModel cm_data;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -129,6 +130,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin {
                 },
                 child: CustomScrollView(
                   cacheExtent: ScreenUtil().screenHeight * 5,
+                  controller: _scrollController,
                   slivers: [
                     SliverAppBar(
                         backgroundColor: Colors.transparent,

@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
@@ -45,6 +45,7 @@ class _ListPageState extends State<ListPage> {
   int page = 1;
   int limit = 24;
   List data = [];
+  ScrollController _scrollController = ScrollController();
   bool isHorizontal = false;
   bool isListView = false;
   bool isActivity = false;
@@ -316,6 +317,7 @@ class _ListPageState extends State<ListPage> {
                   getPageData();
                 },
                 child: CustomScrollView(
+                  controller: _scrollController,
                   cacheExtent: ScreenUtil().screenHeight * 5,
                   slivers: [
                     SliverAppBar(

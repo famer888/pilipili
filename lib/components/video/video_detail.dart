@@ -45,6 +45,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   List recommendList = [];
   List commentList = [];
   int commentLoadingStatus = 0;
+  ScrollController _scrollController = ScrollController();
   bool commentShow = false;
   bool isPreview = false;
   TextEditingController commentController = TextEditingController();
@@ -313,6 +314,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                               children: [
                                 PageViewMixin(
                                     child: CustomScrollView(
+                                  controller: _scrollController,
                                   cacheExtent: ScreenUtil().screenHeight * 5,
                                   slivers: [
                                     SliverToBoxAdapter(
@@ -639,9 +641,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         horizontal:
                                                                             ScreenUtil().setWidth(16.5),
                                                                       ),
-                                                                      decoration: BoxDecoration(
-                                                                          color: Colors
-                                                                              .white),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                              color: Colors.white),
                                                                       child:
                                                                           Text(
                                                                         '${tags[e]}',
@@ -947,8 +949,7 @@ class _ConmentItemState extends State<ConmentItem> {
                 });
               } else {
                 YyShowDialog.showdialog(context,
-                    btnText: '升级VIP',
-                    cancelText: '取消', callBack: () {
+                    btnText: '升级VIP', cancelText: '取消', callBack: () {
                   context.push('/${Routes.vip}');
                 }, content: (setDialogState) {
                   return DefaultTextStyle(
