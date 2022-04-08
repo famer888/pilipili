@@ -177,6 +177,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
           }
         } else {
           AppGlobal.currenClickData = cardData;
+          if (cardData['link_url'].indexOf('/') == -1) return;
           if (cardData['redirect_type'] == 1) {
             String linkUrl = cardData['link_url'];
             List urlList = linkUrl.split('?');

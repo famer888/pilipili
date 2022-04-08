@@ -7,6 +7,7 @@ import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/mixin/element_mixin.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
@@ -36,7 +37,7 @@ class FilterList extends StatefulWidget {
   _FilterListState createState() => _FilterListState();
 }
 
-class _FilterListState extends State<FilterList> with ElementMixin {
+class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   int pageStatus = 0;
   int page = 1;
   bool isAll = false;
@@ -294,53 +295,10 @@ class _FilterListState extends State<FilterList> with ElementMixin {
                                               })),
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                if (fixedBanner['value'][index]
-                                                        ['type'] ==
-                                                    1) {
-                                                  CommonUtils.launchURL(
-                                                      fixedBanner['value']
-                                                              [index]['url']
-                                                          .trim());
-                                                } else if (fixedBanner['value']
-                                                        [index]['type'] ==
-                                                    2) {
-                                                  String linkUrl =
-                                                      fixedBanner['value']
-                                                          [index]['url'];
-                                                  List urlList =
-                                                      linkUrl.split('?');
-                                                  Map<String, dynamic> pramas =
-                                                      {};
-                                                  if (urlList.length > 1) {
-                                                    urlList[1]
-                                                        .split("&")
-                                                        .forEach((item) {
-                                                      List stringText =
-                                                          item.split('=');
-                                                      pramas[stringText[0]] =
-                                                          stringText.length > 1
-                                                              ? stringText[1]
-                                                              : null;
-                                                    });
-                                                  }
-                                                  context.push(urlList[0],
-                                                      extra: pramas);
-                                                } else if (fixedBanner['value']
-                                                        [index]['type'] ==
-                                                    4) {
-                                                  var members =
-                                                      Provider.of<HomeConfig>(
-                                                              context,
-                                                              listen: false)
-                                                          .member;
-                                                  var aff = members.aff;
-                                                  var piliid = members.uuid;
-                                                  CommonUtils.launchURL(
-                                                      '${fixedBanner['value'][index]['url'].trim()}?aff=$aff&piliid=$piliid');
-                                                }
-                                              },
+                                            return callDetail(
+                                              cardData: fixedBanner['value']
+                                                  [index],
+                                              contentType: 4,
                                               child: Container(
                                                 clipBehavior: Clip.hardEdge,
                                                 padding: EdgeInsets.only(

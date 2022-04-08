@@ -10,6 +10,7 @@ import 'package:pilipili/components/card/youxuan_card.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -37,7 +38,7 @@ class ListPage extends StatefulWidget {
   _ListPageState createState() => _ListPageState();
 }
 
-class _ListPageState extends State<ListPage> {
+class _ListPageState extends State<ListPage> with CardMixin {
   int pageStatus = 0;
   bool isAll = false;
   bool networkErr = false;
@@ -410,51 +411,9 @@ class _ListPageState extends State<ListPage> {
                                           })),
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            if (fixedBanner['value'][index]
-                                                    ['type'] ==
-                                                1) {
-                                              CommonUtils.launchURL(
-                                                  fixedBanner['value'][index]
-                                                          ['url']
-                                                      .trim());
-                                            } else if (fixedBanner['value']
-                                                    [index]['type'] ==
-                                                2) {
-                                              String linkUrl =
-                                                  fixedBanner['value'][index]
-                                                      ['url'];
-                                              List urlList = linkUrl.split('?');
-                                              Map<String, dynamic> pramas = {};
-                                              if (urlList.length > 1) {
-                                                urlList[1]
-                                                    .split("&")
-                                                    .forEach((item) {
-                                                  List stringText =
-                                                      item.split('=');
-                                                  pramas[stringText[0]] =
-                                                      stringText.length > 1
-                                                          ? stringText[1]
-                                                          : null;
-                                                });
-                                              }
-                                              context.push(urlList[0],
-                                                  extra: pramas);
-                                            } else if (fixedBanner['value']
-                                                    [index]['type'] ==
-                                                4) {
-                                              var members =
-                                                  Provider.of<HomeConfig>(
-                                                          context,
-                                                          listen: false)
-                                                      .member;
-                                              var aff = members.aff;
-                                              var piliid = members.uuid;
-                                              CommonUtils.launchURL(
-                                                  '${fixedBanner['value'][index]['url'].trim()}?aff=$aff&piliid=$piliid');
-                                            }
-                                          },
+                                        return callDetail(
+                                          cardData: fixedBanner['value'][index],
+                                          contentType: 4,
                                           child: Container(
                                             clipBehavior: Clip.hardEdge,
                                             decoration: ShapeDecoration(
@@ -462,38 +421,6 @@ class _ListPageState extends State<ListPage> {
                                                     BeveledRectangleBorder()),
                                             child: Stack(
                                               children: [
-                                                // Positioned(
-                                                //   right: 0,
-                                                //   left: 0,
-                                                //   bottom: 0,
-                                                //   top: 0,
-                                                //   child: Stack(
-                                                //     children: [
-                                                //       Opacity(
-                                                //         opacity: 0.7,
-                                                //         child:
-                                                //             PlatformAwareNetworkImage(
-                                                //           noVisibilityDetector:
-                                                //               true,
-                                                //           url: fixedBanner[
-                                                //                       'value']
-                                                //                   [index]
-                                                //               ['resource_url'],
-                                                //           fit: BoxFit.fill,
-                                                //         ),
-                                                //       ),
-                                                //       BackdropFilter(
-                                                //         filter:
-                                                //             ImageFilter.blur(
-                                                //                 sigmaX: 15,
-                                                //                 sigmaY: 15),
-                                                //         child: Container(
-                                                //           color: Colors.black38,
-                                                //         ),
-                                                //       )
-                                                //     ],
-                                                //   ),
-                                                // ),
                                                 Container(
                                                   height: ScreenUtil()
                                                           .setWidth(260) +
@@ -508,12 +435,6 @@ class _ListPageState extends State<ListPage> {
                                                     child: Padding(
                                                       padding:
                                                           EdgeInsets.all(0),
-                                                      // EdgeInsets.only(
-                                                      //     top: ScreenUtil()
-                                                      //             .statusBarHeight +
-                                                      //         DefaultStyle
-                                                      //             .navbarHegiht
-                                                      //             ),
                                                       child: Container(
                                                         width: double.infinity,
                                                         child:

@@ -18,8 +18,6 @@ import 'package:pilipili/utils/logUtil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pilipili/model/comicReading.dart';
 import 'package:pilipili/utils/api.dart';
-import 'package:isolated_worker/worker_delegator.dart';
-import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/http.dart';
 import 'dart:convert';
 
