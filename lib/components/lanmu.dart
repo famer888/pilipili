@@ -197,101 +197,102 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                                       width: double.infinity,
                                       fit: BoxFit.cover,
                                     )
-                                  : Swiper(
-                                      autoplayDelay: 3000,
-                                      autoplay: fixedBanner['value'].length > 1,
-                                      physics: fixedBanner['value'].length > 1
-                                          ? null
-                                          : new NeverScrollableScrollPhysics(),
-                                      onIndexChanged: (e) {
-                                        // CommonUtils.debugPrint('-------------------$e---------------------');
-                                      },
-                                      pagination: SwiperPagination(
-                                          margin: EdgeInsets.only(
-                                              bottom: ScreenUtil().setWidth(
-                                                  fixedNav == null ||
-                                                          fixedNav['value'] ==
-                                                              null ||
-                                                          fixedNav['value']
-                                                                  .length ==
-                                                              0
-                                                      ? 40
-                                                      : 100)),
-                                          alignment: Alignment.bottomCenter,
-                                          builder: SwiperCustomPagination(
-                                              builder: (BuildContext context,
-                                                  SwiperPluginConfig config) {
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: fixedBanner['value']
-                                                  .asMap()
-                                                  .keys
-                                                  .map<Widget>((e) {
-                                                return AnimatedContainer(
-                                                  duration: Duration(
-                                                      milliseconds: 250),
-                                                  width:
-                                                      ScreenUtil().setWidth(6),
-                                                  height:
-                                                      ScreenUtil().setWidth(6),
-                                                  margin: EdgeInsets.only(
-                                                      left: ScreenUtil()
-                                                          .setWidth(16)),
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          config.activeIndex ==
-                                                                  e
-                                                              ? Colors.white
-                                                              : Colors.white54,
-                                                      borderRadius: BorderRadius
-                                                          .circular(ScreenUtil()
-                                                              .setWidth(3))),
-                                                );
-                                              }).toList(),
-                                            );
-                                          })),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return callDetail(
-                                            cardData: fixedBanner['value']
-                                                [index],
+                                  : Container(
+                                      height: ScreenUtil().statusBarHeight +
+                                          DefaultStyle.navbarHegiht +
+                                          ScreenUtil().setWidth(160) +
+                                          ScreenUtil().setWidth(30),
+                                      child: Swiper(
+                                        autoplayDelay: 3000,
+                                        autoplay:
+                                            fixedBanner['value'].length > 1,
+                                        physics: fixedBanner['value'].length > 1
+                                            ? null
+                                            : new NeverScrollableScrollPhysics(),
+                                        pagination: SwiperPagination(
+                                            margin: EdgeInsets.only(
+                                                bottom:
+                                                    ScreenUtil().setWidth(40)),
+                                            alignment: Alignment.bottomCenter,
+                                            builder: SwiperCustomPagination(
+                                                builder: (BuildContext context,
+                                                    SwiperPluginConfig config) {
+                                              return Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: fixedBanner['value']
+                                                    .asMap()
+                                                    .keys
+                                                    .map<Widget>((e) {
+                                                  return AnimatedContainer(
+                                                    duration: Duration(
+                                                        milliseconds: 250),
+                                                    width: ScreenUtil()
+                                                        .setWidth(6),
+                                                    height: ScreenUtil()
+                                                        .setWidth(6),
+                                                    margin: EdgeInsets.only(
+                                                        left: ScreenUtil()
+                                                            .setWidth(16)),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            config.activeIndex ==
+                                                                    e
+                                                                ? Colors.white
+                                                                : Colors
+                                                                    .white54,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        3))),
+                                                  );
+                                                }).toList(),
+                                              );
+                                            })),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return callDetail(
+                                              cardData: fixedBanner['value']
+                                                  [index],
                                               contentType: 4,
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                  height: ScreenUtil()
-                                                          .setWidth(260) +
-                                                      ScreenUtil()
-                                                          .statusBarHeight,
-                                                ),
-                                                Positioned(
-                                                    top: 0,
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    left: 0,
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.all(0),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        child:
-                                                            PlatformAwareNetworkImage(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          noVisibilityDetector:
-                                                              true,
-                                                          url: fixedBanner[
-                                                                      'value']
-                                                                  [index]
-                                                              ['resource_url'],
-                                                          fit: BoxFit.cover,
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    height: ScreenUtil()
+                                                            .setWidth(260) +
+                                                        ScreenUtil()
+                                                            .statusBarHeight,
+                                                  ),
+                                                  Positioned(
+                                                      top: 0,
+                                                      bottom: 0,
+                                                      right: 0,
+                                                      left: 0,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(0),
+                                                        child: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          child:
+                                                              PlatformAwareNetworkImage(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            noVisibilityDetector:
+                                                                true,
+                                                            url: fixedBanner[
+                                                                        'value']
+                                                                    [index][
+                                                                'resource_url'],
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ))
-                                              ],
-                                            ));
-                                      },
-                                      itemCount: fixedBanner['value'].length,
+                                                      ))
+                                                ],
+                                              ));
+                                        },
+                                        itemCount: fixedBanner['value'].length,
+                                      ),
                                     ),
                             ]))),
                     cm_data?.elements == null
