@@ -25,7 +25,7 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
   List tabList = [
     {
       'id': 1,
-      'name': '精选',
+      'name': '次元精选',
     },
     {
       'id': 4,
