@@ -173,16 +173,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                               Text(
                                                 '${data.discountCoins}币',
                                                 style: TextStyle(
-                                                    foreground: Paint()
-                                                      ..shader =
-                                                          ui.Gradient.linear(
-                                                        const Offset(100, 560),
-                                                        const Offset(100, 630),
-                                                        <Color>[
-                                                          Color(0xffFFFCB1),
-                                                          Color(0xffFFCA81),
-                                                        ],
-                                                      ),
+                                                    color: Colors.yellow,
                                                     shadows: <Shadow>[
                                                       Shadow(
                                                         offset: Offset(
