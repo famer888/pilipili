@@ -131,8 +131,8 @@ class _VideoControllerState extends State<VideoController>
             startWatchRecordTimer(AppGlobal.videoWatchRecordBox, widget.data.id,
                 chapterId: widget.data.id,
                 offset: videoValue,
-                thumb:
-                    widget.data.thumbCover ?? widget.data.coverThumbHorizontal,
+                thumb: widget.data.coverOriginalVertical ??
+                    widget.data.coverOriginalHorizontal,
                 isFree: widget.data.isfree,
                 title: widget.data.title);
           });

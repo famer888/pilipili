@@ -102,6 +102,8 @@ class DetailData {
     this.userFavorites,
     this.userLike,
     this.coverThumbHorizontal,
+    this.coverOriginalVertical,
+    this.coverOriginalHorizontal,
     this.discountCoins,
     this.favorites,
     this.preview,
@@ -164,6 +166,8 @@ class DetailData {
   int userFavorites;
   int userLike;
   String coverThumbHorizontal;
+  String coverOriginalVertical;
+  String coverOriginalHorizontal;
   int discountCoins;
   int favorites;
   String preview;
@@ -233,6 +237,12 @@ class DetailData {
       coverThumbHorizontal: json["cover_thumb_horizontal"] == null
           ? null
           : json["cover_thumb_horizontal"],
+      coverOriginalVertical: json["cover_original_vertical"] == null
+          ? null
+          : json["cover_original_vertical"],
+      coverOriginalHorizontal: json["cover_original_horizontal"] == null
+          ? null
+          : json["cover_original_horizontal"],
       discountCoins:
           json["discount_coins"] == null ? 0 : json["discount_coins"],
       favorites: json["favorites"] == null ? 0 : json["favorites"],
@@ -297,6 +307,10 @@ class DetailData {
         "userLike": userLike == null ? null : userLike,
         "cover_thumb_horizontal":
             coverThumbHorizontal == null ? null : coverThumbHorizontal,
+        "cover_original_vertical":
+            coverOriginalVertical == null ? null : coverOriginalVertical,
+        "cover_original_horizontal":
+            coverOriginalHorizontal == null ? null : coverOriginalHorizontal,
         "discount_coins": discountCoins == null ? 0 : discountCoins,
         "favorites": favorites == null ? 0 : favorites,
         "preview": preview == null ? null : preview,

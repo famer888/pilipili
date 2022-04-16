@@ -37,7 +37,7 @@ class LogUtil {
   //仅Debug模式可见
   static void d(dynamic obj) {
     if (_isDebug) {
-      // _log(obj.toString());
+      _log(obj.toString());
     }
   }
 

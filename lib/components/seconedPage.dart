@@ -62,25 +62,27 @@ class _SeconedPageState extends State<SeconedPage> {
           context.push(CommonUtils.getRealHash('seconedPageDetail'));
         }
       },
-      child: ClipRRect(
-        clipBehavior: Clip.hardEdge,
-        borderRadius:
-            BorderRadius.all(Radius.circular(ScreenUtil().setWidth(5))),
-        child: Container(
-          height: ScreenUtil().setWidth(140),
-          // decoration: BoxDecoration(
-          // boxShadow: [
-          //   BoxShadow(
-          //       color: Color.fromRGBO(255, 91, 140, 0.4),
-          //       blurRadius:15,
-          //       spreadRadius:ScreenUtil().setWidth(5)
-          //       )
-          // ],
-          // ),
-          margin: EdgeInsets.only(bottom: DefaultStyle.pagePadding),
-          child: PlatformAwareNetworkImage(
-            url: itemData['resource_url'],
-            fit: BoxFit.fill,
+      child: Container(
+        margin: EdgeInsets.only(bottom: DefaultStyle.pagePadding),
+        child: ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius:
+              BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
+          child: Container(
+            height: ScreenUtil().setWidth(140),
+            // decoration: BoxDecoration(
+            // boxShadow: [
+            //   BoxShadow(
+            //       color: Color.fromRGBO(255, 91, 140, 0.4),
+            //       blurRadius:15,
+            //       spreadRadius:ScreenUtil().setWidth(5)
+            //       )
+            // ],
+            // ),
+            child: PlatformAwareNetworkImage(
+              url: itemData['resource_url'],
+              fit: BoxFit.fill,
+            ),
           ),
         ),
       ),
