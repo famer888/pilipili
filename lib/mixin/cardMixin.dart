@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/privilege.dart';
 import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/download_comics.dart';
+import 'package:provider/provider.dart';
 
 import '../components/yy_dialog.dart';
 
@@ -212,6 +214,13 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                 return;
               }
             }
+          } else if (cardData['redirect_type'] == 4) {
+            String linkUrl = cardData['link_url'];
+            var members =
+                Provider.of<HomeConfig>(context, listen: false).member;
+            var aff = members.aff;
+            var piliid = members.uuid;
+            CommonUtils.launchURL('${linkUrl.trim()}?aff=$aff&piliid=$piliid');
           }
         }
       },
