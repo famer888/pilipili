@@ -46,7 +46,7 @@ void main() async {
   WorkerDelegator().addAllDelegates(wds);
   await WorkerDelegator().importScripts(const <String>[
     'js/aware.js?v=2',
-    'js/crypto-js.min.js'
+    'js/crypto-js.min.js?v=3'
   ]);
 
   // 禁用图片缓存
