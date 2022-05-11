@@ -17,6 +17,7 @@ import "package:universal_html/html.dart" as html;
 
 Map payIcons = {
   'alipay': 'assets/images/pment/a.png',
+  'visa': 'assets/images/pment/visa.png',
   'wechat': 'assets/images/pment/w.png',
   'bankcard': 'assets/images/pment/u.png',
   'usdt': 'assets/images/pment/usdt.png',
