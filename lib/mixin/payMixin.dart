@@ -23,7 +23,6 @@ Map payIcons = {
   'usdt': 'assets/images/pment/usdt.png',
   'agent': 'assets/images/pment/agent.png',
   'money': 'assets/images/wode/icon_coin.png',
-  'visa': 'assets/images/pment/visa.png',
 };
 
 mixin PayMixin<T extends StatefulWidget> on State<T> {
