@@ -375,19 +375,26 @@ class CommonUtils {
   static void checkline({Function onSuccess, Function onFailed}) async {
     int _timeout = 30;
     Box box = AppGlobal.appBox;
-    List<String> unChecklines = box.get('api_lines') ?? AppGlobal.apiLines;
+    List apiLines = box.get('api_lines') ?? [];
+    List<dynamic> unChecklines =
+        apiLines.length > 0 ? apiLines : AppGlobal.apiLines;
     List<Map> errorLines = [];
     // int errorCount = 0;
     Function doCheck;
     Function reportErrorLines = () async {
       // 上报错误线路&保存服务端推荐线路到本地
-      dynamic res = await PlatformAwareHttp.post('/api/home/domainCheckReport',
-          data: {'list': errorLines});
-      // List<String> serverLines = [];
-      // res.data.forEach((l) {
-      //   serverLines.add(l.toString());
-      // });
-      // box.put('api_lines', serverLines);
+      try {
+        Response res = await PlatformAwareHttp.post(
+            '/api/home/domainCheckReport',
+            data: {'list': errorLines});
+        CommonUtils.debugPrint("============reportErrorLines============");
+        CommonUtils.debugPrint(res.data['data']);
+        List<String> serverLines = [];
+        List.from(res.data['data']).forEach((l) {
+          serverLines.add(l.toString());
+        });
+        box.put('api_lines', serverLines);
+      } catch (err) {}
     };
 
     Function handleResult = (String line) async {
@@ -439,7 +446,7 @@ class CommonUtils {
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       Future.any(unChecklines.map((line) {
-        return doCheck(line: line, isPub: false).then((value) {
+        return doCheck(line: line.toString(), isPub: false).then((value) {
           if (value.toString() == '200') {
             return line;
           } else {
