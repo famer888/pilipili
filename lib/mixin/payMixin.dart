@@ -21,7 +21,8 @@ Map payIcons = {
   'bankcard': 'assets/images/pment/u.png',
   'usdt': 'assets/images/pment/usdt.png',
   'agent': 'assets/images/pment/agent.png',
-  'money': 'assets/images/wode/icon_coin.png'
+  'money': 'assets/images/wode/icon_coin.png',
+  'visa': 'assets/images/pment/visa.png',
 };
 
 mixin PayMixin<T extends StatefulWidget> on State<T> {
@@ -53,7 +54,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
     int currentPay;
     List pays;
     pays = List.from(product['pay']);
-    // print(pays);
+    print("pay--------$pays");
 
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
