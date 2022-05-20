@@ -234,11 +234,10 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                   fixedBanner == null ||
                                           !(fixedBanner is Map) ||
                                           fixedBanner['value'].length == 0
-                                      ? Image.asset(
-                                          'assets/images/demo_bg.png',
+                                      ? Image.asset('assets/images/demo_bg.png',
                                           width: double.infinity,
                                           fit: BoxFit.cover,
-                                        )
+                                          filterQuality: FilterQuality.high)
                                       : Swiper(
                                           autoplayDelay: 3000,
                                           autoplay:
@@ -521,10 +520,10 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                           Opacity(
                             opacity: filterNavList[e]['order'] == order ? 1 : 0,
                             child: Image.asset(
-                              "assets/images/icon_love_red2.png",
-                              width: ScreenUtil().setWidth(6),
-                              fit: BoxFit.fitWidth,
-                            ),
+                                "assets/images/icon_love_red2.png",
+                                width: ScreenUtil().setWidth(6),
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.high),
                           ),
                           Text(
                             filterNavList[e]['title'],
@@ -539,10 +538,10 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                           Opacity(
                             opacity: 0,
                             child: Image.asset(
-                              "assets/images/icon_love_red2.png",
-                              width: ScreenUtil().setWidth(6),
-                              fit: BoxFit.fitWidth,
-                            ),
+                                "assets/images/icon_love_red2.png",
+                                width: ScreenUtil().setWidth(6),
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.high),
                           ),
                         ],
                       ),

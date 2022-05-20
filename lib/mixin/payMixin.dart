@@ -113,10 +113,10 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                               Opacity(
                                 opacity: 0,
                                 child: Image.asset(
-                                  'assets/images/detail/icon_close.png',
-                                  width: ScreenUtil().setWidth(18),
-                                  height: ScreenUtil().setWidth(18),
-                                ),
+                                    'assets/images/detail/icon_close.png',
+                                    width: ScreenUtil().setWidth(18),
+                                    height: ScreenUtil().setWidth(18),
+                                    filterQuality: FilterQuality.high),
                               ),
                               Text(
                                 '选择支付方式',
@@ -127,10 +127,10 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                   context.pop();
                                 },
                                 child: Image.asset(
-                                  'assets/images/detail/icon_close.png',
-                                  width: ScreenUtil().setWidth(18),
-                                  height: ScreenUtil().setWidth(18),
-                                ),
+                                    'assets/images/detail/icon_close.png',
+                                    width: ScreenUtil().setWidth(18),
+                                    height: ScreenUtil().setWidth(18),
+                                    filterQuality: FilterQuality.high),
                               )
                             ],
                           )),
@@ -172,10 +172,12 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Image.asset(
-                                                payIcons[pays[e]['channel']],
-                                                width: ScreenUtil().setSp(40),
-                                                height: ScreenUtil().setSp(40),
-                                              ),
+                                                  payIcons[pays[e]['channel']],
+                                                  width: ScreenUtil().setSp(40),
+                                                  height:
+                                                      ScreenUtil().setSp(40),
+                                                  filterQuality:
+                                                      FilterQuality.high),
                                               SizedBox(
                                                 width: ScreenUtil().setSp(10.5),
                                               ),
@@ -191,7 +193,8 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                   width: ScreenUtil().setSp(16),
                                                   height:
                                                       ScreenUtil().setSp(16),
-                                                )
+                                                  filterQuality:
+                                                      FilterQuality.high)
                                               : Container(
                                                   decoration: BoxDecoration(
                                                       color: Color(0xffFFD1DF),

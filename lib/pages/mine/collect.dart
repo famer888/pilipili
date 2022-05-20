@@ -229,6 +229,7 @@ class _CollectPageState extends State<CollectPage>
                                     "assets/images/icon_love_red2.png",
                                     width: ScreenUtil().setWidth(6),
                                     fit: BoxFit.fitWidth,
+                                    filterQuality: FilterQuality.high
                                   ),
                                 ),
                                 Text(
@@ -243,6 +244,7 @@ class _CollectPageState extends State<CollectPage>
                                     "assets/images/icon_love_red2.png",
                                     width: ScreenUtil().setWidth(6),
                                     fit: BoxFit.fitWidth,
+                                    filterQuality: FilterQuality.high
                                   ),
                                 ),
                               ],

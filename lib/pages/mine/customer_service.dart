@@ -393,11 +393,10 @@ class _CustomerServiceState extends State<CustomerService>
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                'assets/images/wode/customer_avatar.png',
-                width: ScreenUtil().setWidth(40),
-                height: ScreenUtil().setWidth(40),
-              ),
+              Image.asset('assets/images/wode/customer_avatar.png',
+                  width: ScreenUtil().setWidth(40),
+                  height: ScreenUtil().setWidth(40),
+                  filterQuality: FilterQuality.high),
               SizedBox(
                 width: ScreenUtil().setWidth(5),
               ),
@@ -408,10 +407,10 @@ class _CustomerServiceState extends State<CustomerService>
                     left: 0,
                     top: ScreenUtil().setHeight(5),
                     child: Image.asset(
-                      "assets/images/wode/send_message_left.png",
-                      width: ScreenUtil().setWidth(10),
-                      fit: BoxFit.fitWidth,
-                    ),
+                        "assets/images/wode/send_message_left.png",
+                        width: ScreenUtil().setWidth(10),
+                        fit: BoxFit.fitWidth,
+                        filterQuality: FilterQuality.high),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
@@ -515,10 +514,10 @@ class _CustomerServiceState extends State<CustomerService>
                       bottom: ScreenUtil().setHeight(2),
                       right: 0,
                       child: Image.asset(
-                        "assets/images/wode/send_message_right.png",
-                        width: ScreenUtil().setWidth(10),
-                        fit: BoxFit.fitWidth,
-                      )),
+                          "assets/images/wode/send_message_right.png",
+                          width: ScreenUtil().setWidth(10),
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.high)),
                 ],
               )),
               SizedBox(
@@ -605,10 +604,10 @@ class _CustomerServiceState extends State<CustomerService>
                               GestureDetector(
                                 onTap: kIsWeb ? null : showUpimg,
                                 child: Image.asset(
-                                  'assets/images/wode/send_img_icon.png',
-                                  width: ScreenUtil().setWidth(30),
-                                  height: ScreenUtil().setWidth(30),
-                                ),
+                                    'assets/images/wode/send_img_icon.png',
+                                    width: ScreenUtil().setWidth(30),
+                                    height: ScreenUtil().setWidth(30),
+                                    filterQuality: FilterQuality.high),
                               ),
                               kIsWeb
                                   ? Positioned(

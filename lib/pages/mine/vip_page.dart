@@ -235,10 +235,10 @@ class _VipPageState extends State<VipPage> with PayMixin {
                         child: Opacity(
                           opacity: currentTab == e ? 1 : 0,
                           child: Image.asset(
-                            'assets/images/vip_table_active.png',
-                            fit: BoxFit.fitHeight,
-                            height: ScreenUtil().setWidth(7),
-                          ),
+                              'assets/images/vip_table_active.png',
+                              fit: BoxFit.fitHeight,
+                              height: ScreenUtil().setWidth(7),
+                              filterQuality: FilterQuality.high),
                         ),
                       ),
                       Container(
@@ -319,9 +319,10 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                               horizontal:
                                                   ScreenUtil().setWidth(20)),
                                           child: Image.asset(
-                                            "assets/images/wode/vip_icon_header.png",
-                                            fit: BoxFit.fill,
-                                          ),
+                                              "assets/images/wode/vip_icon_header.png",
+                                              fit: BoxFit.fill,
+                                              filterQuality:
+                                                  FilterQuality.high),
                                         )),
                                     Expanded(
                                       child: Container(
@@ -445,7 +446,10 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                                                 .setWidth(24),
                                                             height: ScreenUtil()
                                                                 .setWidth(24),
-                                                            fit: BoxFit.fill),
+                                                            fit: BoxFit.fill,
+                                                            filterQuality:
+                                                                FilterQuality
+                                                                    .high),
                                                         Text('客服',
                                                             style: TextStyle(
                                                                 color: Color(

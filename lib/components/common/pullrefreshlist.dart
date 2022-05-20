@@ -52,6 +52,7 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
             : 'assets/images/downrefresh.png',
         height: ScreenUtil().setWidth(50),
         fit: BoxFit.fitHeight,
+        filterQuality: FilterQuality.high
       ),
     );
   }

@@ -76,6 +76,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
                         'assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(20),
                         height: ScreenUtil().setWidth(20),
+                        filterQuality: FilterQuality.high
                       ),
                     ),
                   ),

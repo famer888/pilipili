@@ -72,10 +72,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                           [DeviceOrientation.portraitUp]);
                       context.pop();
                     },
-                    child: Image.asset(
-                      'assets/images/backarrow.png',
-                      width: ScreenUtil().setWidth(12),
-                    ),
+                    child: Image.asset('assets/images/backarrow.png',
+                        width: ScreenUtil().setWidth(12),
+                        filterQuality: FilterQuality.high),
                   ),
             rightWidget != null ? rightWidget : Container()
           ],
@@ -148,9 +147,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                       left: 0,
                                       right: 0,
                                       child: Image.asset(
-                                        'assets/images/detail/video_buy_bg.png',
-                                        fit: BoxFit.fill,
-                                      )),
+                                          'assets/images/detail/video_buy_bg.png',
+                                          fit: BoxFit.fill,
+                                          filterQuality: FilterQuality.high)),
                                   Container(
                                     height: ScreenUtil().setWidth(100),
                                     width: double.infinity,
@@ -163,9 +162,11 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 right:
                                                     ScreenUtil().setWidth(24)),
                                             child: Image.asset(
-                                              'assets/images/detail/video_buy_coin.png',
-                                              width: ScreenUtil().setWidth(64),
-                                            ),
+                                                'assets/images/detail/video_buy_coin.png',
+                                                width:
+                                                    ScreenUtil().setWidth(64),
+                                                filterQuality:
+                                                    FilterQuality.high),
                                           ),
                                           Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -324,11 +325,12 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                   left: ScreenUtil()
                                                       .setWidth(-12),
                                                   child: Image.asset(
-                                                    'assets/images/detail/vip_zhekou.png',
-                                                    height: ScreenUtil()
-                                                        .setWidth(26),
-                                                    fit: BoxFit.fitHeight,
-                                                  ))
+                                                      'assets/images/detail/vip_zhekou.png',
+                                                      height: ScreenUtil()
+                                                          .setWidth(26),
+                                                      fit: BoxFit.fitHeight,
+                                                      filterQuality:
+                                                          FilterQuality.high))
                                             ],
                                           ),
                                         )),
@@ -400,11 +402,10 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                       onTap: () {
                         context.pop();
                       },
-                      child: Image.asset(
-                        'assets/images/detail/icon_close.png',
-                        width: ScreenUtil().setWidth(24),
-                        height: ScreenUtil().setWidth(24),
-                      ),
+                      child: Image.asset('assets/images/detail/icon_close.png',
+                          width: ScreenUtil().setWidth(24),
+                          height: ScreenUtil().setWidth(24),
+                          filterQuality: FilterQuality.high),
                     ))
               ],
             );

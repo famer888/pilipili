@@ -211,10 +211,9 @@ class _SmallVideoState extends State<SmallVideo> {
                   ? Center(
                       child: Container(
                         width: ScreenUtil().setWidth(120),
-                        child: Image.asset(
-                          'assets/images/loading_pink.gif',
-                          fit: BoxFit.fitWidth,
-                        ),
+                        child: Image.asset('assets/images/loading_pink.gif',
+                            fit: BoxFit.fitWidth,
+                            filterQuality: FilterQuality.high),
                       ),
                     )
                   : Container()
@@ -306,11 +305,10 @@ class _SmallVideoState extends State<SmallVideo> {
                           child: Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: ScreenUtil().setWidth(10)),
-                            child: Image.asset(
-                              'assets/images/backarrow.png',
-                              width: ScreenUtil().setWidth(12),
-                              fit: BoxFit.fitWidth,
-                            ),
+                            child: Image.asset('assets/images/backarrow.png',
+                                width: ScreenUtil().setWidth(12),
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.high),
                           ),
                         ),
                         loading
@@ -742,11 +740,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                       onTap: () {
                         context.pop();
                       },
-                      child: Image.asset(
-                        'assets/images/icon_close_red.png',
-                        width: ScreenUtil().setWidth(24),
-                        height: ScreenUtil().setWidth(24),
-                      ),
+                      child: Image.asset('assets/images/icon_close_red.png',
+                          width: ScreenUtil().setWidth(24),
+                          height: ScreenUtil().setWidth(24),
+                          filterQuality: FilterQuality.high),
                     ))
               ],
             );
@@ -906,9 +903,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                             child: Container(
                                               width: ScreenUtil().setWidth(120),
                                               child: Image.asset(
-                                                'assets/images/loading_pink.gif',
-                                                fit: BoxFit.fitWidth,
-                                              ),
+                                                  'assets/images/loading_pink.gif',
+                                                  fit: BoxFit.fitWidth,
+                                                  filterQuality:
+                                                      FilterQuality.high),
                                             ),
                                           )
                                         : Container())
@@ -929,9 +927,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         child: Container(
                                           width: ScreenUtil().setWidth(120),
                                           child: Image.asset(
-                                            'assets/images/loading_pink.gif',
-                                            fit: BoxFit.fitWidth,
-                                          ),
+                                              'assets/images/loading_pink.gif',
+                                              fit: BoxFit.fitWidth,
+                                              filterQuality:
+                                                  FilterQuality.high),
                                         ),
                                       ))
                                     ],
@@ -955,9 +954,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                               child: Container(
                                 width: ScreenUtil().setWidth(120),
                                 child: Image.asset(
-                                  'assets/images/loading_pink.gif',
-                                  fit: BoxFit.fitWidth,
-                                ),
+                                    'assets/images/loading_pink.gif',
+                                    fit: BoxFit.fitWidth,
+                                    filterQuality: FilterQuality.high),
                               ),
                             ))
                           ],
@@ -1312,10 +1311,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Image.asset(
-                                                  'assets/images/detail/${isLike ? 'icon_like' : 'icon_unlike'}.png',
-                                                  width:
-                                                      ScreenUtil().setWidth(20),
-                                                ),
+                                                    'assets/images/detail/${isLike ? 'icon_like' : 'icon_unlike'}.png',
+                                                    width: ScreenUtil()
+                                                        .setWidth(20),
+                                                    filterQuality:
+                                                        FilterQuality.high),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1352,10 +1352,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Image.asset(
-                                                  'assets/images/detail/icon_share_w.png',
-                                                  width:
-                                                      ScreenUtil().setWidth(20),
-                                                ),
+                                                    'assets/images/detail/icon_share_w.png',
+                                                    width: ScreenUtil()
+                                                        .setWidth(20),
+                                                    filterQuality:
+                                                        FilterQuality.high),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1376,10 +1377,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Image.asset(
-                                                  'assets/images/detail/icon_msg_w.png',
-                                                  width:
-                                                      ScreenUtil().setWidth(20),
-                                                ),
+                                                    'assets/images/detail/icon_msg_w.png',
+                                                    width: ScreenUtil()
+                                                        .setWidth(20),
+                                                    filterQuality:
+                                                        FilterQuality.high),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1528,10 +1530,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Image.asset(
-                                                  'assets/images/detail/icon_down_w.png',
-                                                  width:
-                                                      ScreenUtil().setWidth(20),
-                                                ),
+                                                    'assets/images/detail/icon_down_w.png',
+                                                    width: ScreenUtil()
+                                                        .setWidth(20),
+                                                    filterQuality:
+                                                        FilterQuality.high),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1646,10 +1649,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
                                     child: Image.asset(
-                                      'assets/images/detail/${_controller.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
-                                      width: ScreenUtil().setWidth(80),
-                                      height: ScreenUtil().setWidth(80),
-                                    ),
+                                        'assets/images/detail/${_controller.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
+                                        width: ScreenUtil().setWidth(80),
+                                        height: ScreenUtil().setWidth(80),
+                                        filterQuality: FilterQuality.high),
                                   ),
                                 )),
                       ],

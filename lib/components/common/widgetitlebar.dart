@@ -6,10 +6,7 @@ import 'package:pilipili/theme/default.dart';
 
 // ignore: must_be_immutable
 class WidgetTitleBar extends StatefulWidget {
-  WidgetTitleBar(
-      {Key key,
-      this.title})
-      : super(key: key);
+  WidgetTitleBar({Key key, this.title}) : super(key: key);
   String title;
   @override
   _WidgetTitleBarState createState() => _WidgetTitleBarState();
@@ -28,10 +25,9 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/icon_love_red.png',
-            width: ScreenUtil().setWidth(8),
-          ),
+          Image.asset('assets/images/icon_love_red.png',
+              width: ScreenUtil().setWidth(8),
+              filterQuality: FilterQuality.high),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(8)),
             child: Text(
@@ -39,10 +35,9 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
               style: DefaultStyle.black18bold,
             ),
           ),
-          Image.asset(
-            'assets/images/icon_love_red.png',
-            width: ScreenUtil().setWidth(8),
-          ),
+          Image.asset('assets/images/icon_love_red.png',
+              width: ScreenUtil().setWidth(8),
+              filterQuality: FilterQuality.high),
         ],
       ),
     );

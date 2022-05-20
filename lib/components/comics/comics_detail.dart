@@ -102,6 +102,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                 child: Image.asset(
                   'assets/images/comics/${value == watchLog ? 'comic_btn_active' : 'comic_btn'}.png',
                   fit: BoxFit.fill,
+                  filterQuality: FilterQuality.high
                 )),
             Container(
               width: ScreenUtil().setWidth(83),
@@ -151,6 +152,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
             'assets/images/detail/$icon.png',
             width: ScreenUtil().setWidth(10),
             fit: BoxFit.fitWidth,
+            filterQuality: FilterQuality.high
           ),
           SizedBox(
             height: ScreenUtil().setWidth(3),
@@ -732,6 +734,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                 child: Image.asset(
                   'assets/images/comics_backarrow.png',
                   width: ScreenUtil().setWidth(32),
+                  filterQuality: FilterQuality.high
                 ),
               ),
             ],
@@ -809,6 +812,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                               child: Image.asset(
                                 'assets/pengke/video/${watchLog == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
                                 fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high
                               )),
                           Container(
                             width: ScreenUtil().setWidth(84.5),

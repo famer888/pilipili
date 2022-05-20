@@ -192,6 +192,7 @@ class CertificateModel {
                                                   width:
                                                       ScreenUtil().setWidth(96),
                                                   fit: BoxFit.fill,
+                                                  filterQuality: FilterQuality.high
                                                 ),
                                               ),
                                               SizedBox(
@@ -329,6 +330,7 @@ class CertificateModel {
                                                 width:
                                                     ScreenUtil().setWidth(96),
                                                 fit: BoxFit.fill,
+                                                filterQuality: FilterQuality.high
                                               ),
                                             ),
                                             SizedBox(

@@ -93,6 +93,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   "assets/images/icon_love_red2.png",
                                   width: ScreenUtil().setWidth(6),
                                   fit: BoxFit.fitWidth,
+                                  filterQuality: FilterQuality.high
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
@@ -106,6 +107,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   "assets/images/icon_love_red2.png",
                                   width: ScreenUtil().setWidth(6),
                                   fit: BoxFit.fitWidth,
+                                  filterQuality: FilterQuality.high
                                 ),
                               ],
                             ),
