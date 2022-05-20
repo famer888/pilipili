@@ -82,6 +82,7 @@ class _AtilasListState extends State<AtilasList> {
                         'assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(20),
                         height: ScreenUtil().setWidth(20),
+                        filterQuality: FilterQuality.high
                       ),
                     ),
                     Container()
@@ -264,6 +265,7 @@ class _AtilasListState extends State<AtilasList> {
                           child: Image.asset(
                             'assets/pengke/video/fot_bg.png',
                             fit: BoxFit.fill,
+                            filterQuality: FilterQuality.high
                           ),
                         ),
                         Container(

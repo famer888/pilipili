@@ -128,6 +128,7 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                                 Image.asset(
                                   'assets/images/icon_more.png',
                                   height: ScreenUtil().setWidth(8),
+                                  filterQuality: FilterQuality.high
                                 )
                               ],
                             ),

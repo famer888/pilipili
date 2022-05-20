@@ -198,10 +198,11 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                         Opacity(
                                           opacity: e == currentTab ? 1 : 0,
                                           child: Image.asset(
-                                            "assets/images/icon_love_red2.png",
-                                            width: ScreenUtil().setWidth(6),
-                                            fit: BoxFit.fitWidth,
-                                          ),
+                                              "assets/images/icon_love_red2.png",
+                                              width: ScreenUtil().setWidth(6),
+                                              fit: BoxFit.fitWidth,
+                                              filterQuality:
+                                                  FilterQuality.high),
                                         ),
                                         Text(
                                           _tabs[e]['title'],
@@ -214,10 +215,11 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                         Opacity(
                                           opacity: 0,
                                           child: Image.asset(
-                                            "assets/images/icon_love_red2.png",
-                                            width: ScreenUtil().setWidth(6),
-                                            fit: BoxFit.fitWidth,
-                                          ),
+                                              "assets/images/icon_love_red2.png",
+                                              width: ScreenUtil().setWidth(6),
+                                              fit: BoxFit.fitWidth,
+                                              filterQuality:
+                                                  FilterQuality.high),
                                         ),
                                       ],
                                     ),
@@ -233,14 +235,14 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                 controller: _tabController,
                 children: _tabs.asMap().keys.map((e) {
                   return PageViewMixin(
-                      child: PublicList(
-                        isFlow: false,
-                        contentType: cartType == 'v' ? 7 : 1,
-                        cartType: cartType,
-                        data: _tabs[e]['data'],
-                        api: '/api/mv/getList',
-                        isShow: e == currentTab,
-                      ),
+                    child: PublicList(
+                      isFlow: false,
+                      contentType: cartType == 'v' ? 7 : 1,
+                      cartType: cartType,
+                      data: _tabs[e]['data'],
+                      api: '/api/mv/getList',
+                      isShow: e == currentTab,
+                    ),
                   );
                 }).toList(),
               )),
@@ -279,11 +281,10 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         onTap: () {
                           context.pop();
                         },
-                        child: Image.asset(
-                          'assets/images/backarrow.png',
-                          width: ScreenUtil().setWidth(20),
-                          height: ScreenUtil().setWidth(20),
-                        ),
+                        child: Image.asset('assets/images/backarrow.png',
+                            width: ScreenUtil().setWidth(20),
+                            height: ScreenUtil().setWidth(20),
+                            filterQuality: FilterQuality.high),
                       ),
                       Container()
                     ],

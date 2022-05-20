@@ -53,10 +53,8 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                 bottom: 0,
                 right: 0,
                 left: 0,
-                child: Image.asset(
-                  'assets/images/comics/comic_btn.png',
-                  fit: BoxFit.fill,
-                )),
+                child: Image.asset('assets/images/comics/comic_btn.png',
+                    fit: BoxFit.fill, filterQuality: FilterQuality.high)),
             Container(
               width: ScreenUtil().setWidth(83),
               height: ScreenUtil().setWidth(36),
@@ -101,11 +99,10 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/detail/$icon.png',
-            width: ScreenUtil().setWidth(10),
-            fit: BoxFit.fitWidth,
-          ),
+          Image.asset('assets/images/detail/$icon.png',
+              width: ScreenUtil().setWidth(10),
+              fit: BoxFit.fitWidth,
+              filterQuality: FilterQuality.high),
           SizedBox(
             height: ScreenUtil().setWidth(3),
           ),
@@ -321,15 +318,16 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                                               child: Container(
                                                                 color: Color(
                                                                     0xfffff5f9),
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/images/comics/comics_more.png',
-                                                                  color: Colors
-                                                                      .red,
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          24),
-                                                                ),
+                                                                child: Image.asset(
+                                                                    'assets/images/comics/comics_more.png',
+                                                                    color: Colors
+                                                                        .red,
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            24),
+                                                                    filterQuality:
+                                                                        FilterQuality
+                                                                            .high),
                                                               ),
                                                             )
                                                           : Container())
@@ -379,7 +377,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                             : minWestSeries)
                                         .asMap()
                                         .keys
-                                        .map((e) => selectItem(e+1))
+                                        .map((e) => selectItem(e + 1))
                                         .toList(),
                                   ),
                                   newestSeries.length < 8
@@ -443,10 +441,9 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                 onTap: () {
                   context.pop();
                 },
-                child: Image.asset(
-                  'assets/images/comics_backarrow.png',
-                  width: ScreenUtil().setWidth(32),
-                ),
+                child: Image.asset('assets/images/comics_backarrow.png',
+                    width: ScreenUtil().setWidth(32),
+                    filterQuality: FilterQuality.high),
               ),
             ],
           ))),
@@ -506,9 +503,9 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                           right: 0,
                           bottom: 0,
                           child: Image.asset(
-                            'assets/images/comics/comic_btn.png',
-                            fit: BoxFit.fill,
-                          )),
+                              'assets/images/comics/comic_btn.png',
+                              fit: BoxFit.fill,
+                              filterQuality: FilterQuality.high)),
                       Container(
                         width: ScreenUtil().setWidth(84.5),
                         height: ScreenUtil().setWidth(32),

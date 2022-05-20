@@ -148,11 +148,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/detail/$icon.png',
-            width: ScreenUtil().setWidth(10),
-            fit: BoxFit.fitWidth,
-          ),
+          Image.asset('assets/images/detail/$icon.png',
+              width: ScreenUtil().setWidth(10),
+              fit: BoxFit.fitWidth,
+              filterQuality: FilterQuality.high),
           SizedBox(
             height: ScreenUtil().setWidth(3),
           ),
@@ -199,9 +198,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                   child: Container(
                                     width: ScreenUtil().setWidth(90),
                                     child: Image.asset(
-                                      'assets/images/loading_pink.gif',
-                                      fit: BoxFit.fitWidth,
-                                    ),
+                                        'assets/images/loading_pink.gif',
+                                        fit: BoxFit.fitWidth,
+                                        filterQuality: FilterQuality.high),
                                   ),
                                 )
                               : YyVideo(
@@ -260,9 +259,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                           Opacity(
                                             opacity: currentTab == e ? 1 : 0,
                                             child: Image.asset(
-                                              'assets/images/icon_love_red.png',
-                                              width: ScreenUtil().setWidth(6),
-                                            ),
+                                                'assets/images/icon_love_red.png',
+                                                width: ScreenUtil().setWidth(6),
+                                                filterQuality:
+                                                    FilterQuality.high),
                                           ),
                                           Row(
                                             mainAxisSize: MainAxisSize.min,

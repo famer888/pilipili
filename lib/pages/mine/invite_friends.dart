@@ -107,11 +107,11 @@ class _InviteFriendState extends State<InviteFriend> {
                     ? Container()
                     : Container(
                         child: Image.asset(
-                          'assets/images/wode/invite_header.png',
-                          width: double.infinity,
-                          height: ScreenUtil().setWidth(575),
-                          fit: BoxFit.fill,
-                        ),
+                            'assets/images/wode/invite_header.png',
+                            width: double.infinity,
+                            height: ScreenUtil().setWidth(575),
+                            fit: BoxFit.fill,
+                            filterQuality: FilterQuality.high),
                       ),
                 Column(
                   children: [
@@ -362,7 +362,9 @@ class ActionImage extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Image.asset(url,
-          width: ScreenUtil().setWidth(125), height: ScreenUtil().setWidth(42)),
+          width: ScreenUtil().setWidth(125),
+          height: ScreenUtil().setWidth(42),
+          filterQuality: FilterQuality.high),
     );
   }
 }

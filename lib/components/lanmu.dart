@@ -196,6 +196,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                                       'assets/images/demo_bg.png',
                                       width: double.infinity,
                                       fit: BoxFit.cover,
+                                      filterQuality: FilterQuality.high
                                     )
                                   : Container(
                                       height: ScreenUtil().statusBarHeight +

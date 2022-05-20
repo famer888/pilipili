@@ -287,7 +287,10 @@ class _LoginPageState extends State<LoginPage> {
             left: 0,
             bottom: 0,
             child:
-                Image.asset('assets/images/login/bg_1.png', fit: BoxFit.cover)),
+                Image.asset(
+                  'assets/images/login/bg_1.png', fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                  )),
         Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(

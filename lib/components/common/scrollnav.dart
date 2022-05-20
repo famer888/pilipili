@@ -157,10 +157,12 @@ class _ScrollnavState extends State<Scrollnav> {
                                                               .spaceBetween,
                                                       children: [
                                                         Image.asset(
-                                                          'assets/images/icon_love.png',
-                                                          width: ScreenUtil()
-                                                              .setWidth(6.5),
-                                                        ),
+                                                            'assets/images/icon_love.png',
+                                                            width: ScreenUtil()
+                                                                .setWidth(6.5),
+                                                            filterQuality:
+                                                                FilterQuality
+                                                                    .high),
                                                         Container(
                                                           color:
                                                               Color(0xffFFDCE9),
@@ -231,10 +233,10 @@ class _ScrollnavState extends State<Scrollnav> {
                                   padding: EdgeInsets.only(
                                       left: ScreenUtil().setWidth(6)),
                                   child: Image.asset(
-                                    'assets/images/icon_search.png',
-                                    width: ScreenUtil().setWidth(20.5),
-                                    height: ScreenUtil().setWidth(20.5),
-                                  ),
+                                      'assets/images/icon_search.png',
+                                      width: ScreenUtil().setWidth(20.5),
+                                      height: ScreenUtil().setWidth(20.5),
+                                      filterQuality: FilterQuality.high),
                                 ))
                       ],
                     ),

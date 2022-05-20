@@ -362,6 +362,7 @@ class _ListPageState extends State<ListPage> with CardMixin {
                                       'assets/images/demo_bg.png',
                                       width: double.infinity,
                                       fit: BoxFit.cover,
+                                      filterQuality: FilterQuality.high
                                     )
                                   : Swiper(
                                       autoplayDelay: 3000,

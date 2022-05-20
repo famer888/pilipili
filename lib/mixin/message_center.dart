@@ -170,6 +170,7 @@ class MessageActionItem extends StatelessWidget {
                   icon,
                   width: ScreenUtil().setWidth(50),
                   height: ScreenUtil().setWidth(50),
+                  filterQuality: FilterQuality.high
                 ),
                 SizedBox(
                   width: ScreenUtil().setWidth(15),

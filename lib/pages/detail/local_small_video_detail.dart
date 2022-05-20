@@ -81,11 +81,10 @@ class _LocalSmallVideoState extends State<LocalSmallVideo> {
                           onTap: () {
                             context.pop();
                           },
-                          child: Image.asset(
-                            'assets/pengke/backarrow.png',
-                            width: ScreenUtil().setWidth(22),
-                            fit: BoxFit.fitWidth,
-                          ),
+                          child: Image.asset('assets/pengke/backarrow.png',
+                              width: ScreenUtil().setWidth(22),
+                              fit: BoxFit.fitWidth,
+                              filterQuality: FilterQuality.high),
                         ),
                       ],
                     )
@@ -254,9 +253,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               width:
                                                   ScreenUtil().screenWidth / 5,
                                               child: Image.asset(
-                                                'assets/pengke/loading.gif',
-                                                fit: BoxFit.fitWidth,
-                                              ),
+                                                  'assets/pengke/loading.gif',
+                                                  fit: BoxFit.fitWidth,
+                                                  filterQuality:
+                                                      FilterQuality.high),
                                             ),
                                           )
                                         : Container())
@@ -266,9 +266,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                               ? Container(
                                   width: ScreenUtil().screenWidth / 5,
                                   child: Image.asset(
-                                    'assets/pengke/loading.gif',
-                                    fit: BoxFit.fitWidth,
-                                  ),
+                                      'assets/pengke/loading.gif',
+                                      fit: BoxFit.fitWidth,
+                                      filterQuality: FilterQuality.high),
                                 )
                               : Container(),
                     ),
@@ -283,10 +283,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                 child: Center(
                               child: Container(
                                 width: ScreenUtil().screenWidth / 5,
-                                child: Image.asset(
-                                  'assets/pengke/loading.gif',
-                                  fit: BoxFit.fitWidth,
-                                ),
+                                child: Image.asset('assets/pengke/loading.gif',
+                                    fit: BoxFit.fitWidth,
+                                    filterQuality: FilterQuality.high),
                               ),
                             ))
                           ],
@@ -479,10 +478,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
                                     child: Image.asset(
-                                      'assets/pengke/video/${_controller.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
-                                      width: ScreenUtil().setWidth(80),
-                                      height: ScreenUtil().setWidth(80),
-                                    ),
+                                        'assets/pengke/video/${_controller.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
+                                        width: ScreenUtil().setWidth(80),
+                                        height: ScreenUtil().setWidth(80),
+                                        filterQuality: FilterQuality.high),
                                   ),
                                 ))
                       ],

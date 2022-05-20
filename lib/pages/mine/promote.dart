@@ -118,9 +118,9 @@ class _InviteFriendState extends State<Promote> {
                     Container(
                       width: ScreenUtil().setWidth(327),
                       child: Image.asset(
-                        "assets/images/wode/invite_friends_header_bg.png",
-                        fit: BoxFit.fitWidth,
-                      ),
+                          "assets/images/wode/invite_friends_header_bg.png",
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.high),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -139,10 +139,10 @@ class _InviteFriendState extends State<Promote> {
                             //剪裁为圆角矩形
                             borderRadius: BorderRadius.circular(5.0),
                             child: Image.asset(
-                              "assets/images/wode/invite_friends_content_bg.png",
-                              width: double.infinity,
-                              fit: BoxFit.fitWidth,
-                            ),
+                                "assets/images/wode/invite_friends_content_bg.png",
+                                width: double.infinity,
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.high),
                           ),
                           SizedBox(
                             height: ScreenUtil().setWidth(10),
@@ -196,12 +196,11 @@ class _InviteFriendState extends State<Promote> {
                                           fontWeight: FontWeight.w400))
                                 ],
                               )),
-                              Image.asset(
-                                "assets/images/icon_logo.png",
-                                width: ScreenUtil().setWidth(50),
-                                // height: ScreenUtil().setWidth(40),
-                                fit: BoxFit.fitWidth,
-                              ),
+                              Image.asset("assets/images/icon_logo.png",
+                                  width: ScreenUtil().setWidth(50),
+                                  // height: ScreenUtil().setWidth(40),
+                                  fit: BoxFit.fitWidth,
+                                  filterQuality: FilterQuality.high),
                             ],
                           )
                         ],
@@ -224,12 +223,11 @@ class _InviteFriendState extends State<Promote> {
         Container(
             margin: EdgeInsets.only(
                 top: ScreenUtil().statusBarHeight + DefaultStyle.navbarHegiht),
-            child: Image.asset(
-              'assets/images/wode/invite_header.png',
-              width: double.infinity,
-              height: ScreenUtil().setWidth(575),
-              fit: BoxFit.fitHeight,
-            )),
+            child: Image.asset('assets/images/wode/invite_header.png',
+                width: double.infinity,
+                height: ScreenUtil().setWidth(575),
+                fit: BoxFit.fitHeight,
+                filterQuality: FilterQuality.high)),
         Scaffold(
             body: Column(
               children: [

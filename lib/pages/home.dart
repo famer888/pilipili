@@ -182,11 +182,10 @@ class _HomeState extends State<Home> {
                         ScreenUtil().setWidth(15)),
                 child: Row(
                   children: [
-                    Image.asset(
-                      'assets/images/logo2.png',
-                      width: ScreenUtil().setWidth(40),
-                      height: ScreenUtil().setWidth(40),
-                    ),
+                    Image.asset('assets/images/logo2.png',
+                        width: ScreenUtil().setWidth(40),
+                        height: ScreenUtil().setWidth(40),
+                        filterQuality: FilterQuality.high),
                     SizedBox(
                       width: ScreenUtil().setWidth(15),
                     ),
@@ -451,7 +450,10 @@ class _HomeState extends State<Home> {
                                                               .setWidth(25),
                                                           height: ScreenUtil()
                                                               .setWidth(25),
-                                                          fit: BoxFit.fitWidth)
+                                                          fit: BoxFit.fitWidth,
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high)
                                                       : Container(),
                                                   Text(
                                                     navBarItem[key]['title'],
