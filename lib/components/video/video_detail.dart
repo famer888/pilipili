@@ -560,7 +560,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .affUrlCopy
                                                                         .url,
                                                                     thumb: videoInfo
-                                                                        ?.coverThumbHorizontal,
+                                                                        ?.coverOriginalHorizontal == '' ? videoInfo
+                                                                        ?.coverOriginalVertical : videoInfo
+                                                                        ?.coverOriginalHorizontal,
                                                                     title: videoInfo
                                                                             ?.title ??
                                                                         '--',

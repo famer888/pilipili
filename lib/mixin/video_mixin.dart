@@ -475,7 +475,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                     Provider.of<HomeConfig>(context, listen: false).config;
                 ShareMovieModel.showShareMovie(backButtonBehavior,
                     copyUrl: config.share.affUrlCopy.url,
-                    thumb: data.coverThumbHorizontal,
+                    thumb: data?.coverOriginalHorizontal == ''
+                      ? data?.coverOriginalVertical
+                      : data?.coverOriginalHorizontal,
                     title: data.title,
                     subtitle: data.desc,
                     url: '${config.share.affUrl}');

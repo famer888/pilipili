@@ -68,9 +68,9 @@ class ShareMovieModel {
         // downElement.remove();
       } else {
         BotToast.showLoading();
-        PermissionStatus storageStatus = await Permission.camera.status;
+        PermissionStatus storageStatus = await Permission.storage.status;
         if (storageStatus == PermissionStatus.denied) {
-          storageStatus = await Permission.camera.request();
+          storageStatus = await Permission.storage.request();
           if (storageStatus == PermissionStatus.denied ||
               storageStatus == PermissionStatus.permanentlyDenied) {
             CommonUtils.showText(
@@ -188,7 +188,10 @@ class ShareMovieModel {
                       ],
                     ),
                     child: QrImage(
-                        data: '$url', version: 3, padding: EdgeInsets.all(7)),
+                      data: '$url',
+                      padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+                      version: QrVersions.auto,
+                    ),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -241,14 +244,6 @@ class ShareMovieModel {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "若二维码无法打开，请输入以下网址",
-                              style: TextStyle(
-                                  color: Color(0xff646464),
-                                  fontWeight: FontWeight.normal,
-                                  decoration: TextDecoration.none,
-                                  fontSize: ScreenUtil().setSp(11)),
-                            ),
                             Text(
                               "${url}",
                               style: TextStyle(
@@ -314,36 +309,36 @@ class ShareMovieModel {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: _copyLinkShare,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(10)),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(18),
-                        vertical: ScreenUtil().setWidth(8)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        boxShadow: [
-                          //阴影
-                          BoxShadow(
-                              color: Color.fromRGBO(255, 128, 163, 0.5),
-                              offset: Offset(0, 0),
-                              blurRadius: ScreenUtil().setWidth(4))
-                        ],
-                        gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(255, 132, 169, 1),
-                              Color.fromRGBO(255, 158, 158, 1),
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter)),
-                    child: Text(
-                      '复制分享链接',
-                      style: DefaultStyle.white15bold,
-                    ),
-                  ),
-                )
+                // GestureDetector(
+                //   onTap: _copyLinkShare,
+                //   child: Container(
+                //     margin: EdgeInsets.symmetric(
+                //         horizontal: ScreenUtil().setWidth(10)),
+                //     padding: EdgeInsets.symmetric(
+                //         horizontal: ScreenUtil().setWidth(18),
+                //         vertical: ScreenUtil().setWidth(8)),
+                //     decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(40),
+                //         boxShadow: [
+                //           //阴影
+                //           BoxShadow(
+                //               color: Color.fromRGBO(255, 128, 163, 0.5),
+                //               offset: Offset(0, 0),
+                //               blurRadius: ScreenUtil().setWidth(4))
+                //         ],
+                //         gradient: LinearGradient(
+                //             colors: [
+                //               Color.fromRGBO(255, 132, 169, 1),
+                //               Color.fromRGBO(255, 158, 158, 1),
+                //             ],
+                //             begin: Alignment.topCenter,
+                //             end: Alignment.bottomCenter)),
+                //     child: Text(
+                //       '复制分享链接',
+                //       style: DefaultStyle.white15bold,
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ));

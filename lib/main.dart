@@ -72,7 +72,7 @@ void main() async {
     "oauth_id": AppGlobal.appBox.get('oauth_id') ??
         '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}',
     "bundleId": "com.pwa.pilipili",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "oauth_type": CommonUtils.isAndroidWeb() ? "a-web" : "web",
     "language": 'zh',
     "via": 'pwa',
@@ -93,7 +93,7 @@ void main() async {
       AppGlobal.appinfo = {
         "oauth_id": iosInfo.identifierForVendor,
         "bundleId": packageInfo.packageName,
-        "version": "2.0.0",
+        "version": "2.0.1",
         "oauth_type": "ios",
       };
     }
