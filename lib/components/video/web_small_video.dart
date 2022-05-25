@@ -616,7 +616,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                   Provider.of<HomeConfig>(context, listen: false).config;
               ShareMovieModel.showShareMovie(backButtonBehavior,
                   copyUrl: config.share.affUrlCopy.url,
-                  thumb: widget.data.coverThumbVertical,
+                  thumb: widget.data?.coverOriginalHorizontal == ''
+                      ? widget.data?.coverOriginalVertical
+                      : widget.data?.coverOriginalHorizontal,
                   title: widget.data.title,
                   subtitle: widget.data.desc,
                   url: '${config.share.affUrl}');
@@ -1278,8 +1280,13 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                   backButtonBehavior,
                                                   copyUrl: config
                                                       .share.affUrlCopy.url,
-                                                  thumb: widget
-                                                      .data.coverThumbVertical,
+                                                  thumb: widget.data
+                                                              ?.coverOriginalHorizontal ==
+                                                          ''
+                                                      ? widget.data
+                                                          ?.coverOriginalVertical
+                                                      : widget.data
+                                                          ?.coverOriginalHorizontal,
                                                   title:
                                                       widget.data.title ?? '--',
                                                   subtitle:

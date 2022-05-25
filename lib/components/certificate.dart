@@ -60,9 +60,9 @@ class CertificateModel {
         CommonUtils.showText('请自行截图保存分享哦～');
       } else {
         BotToast.showLoading();
-        PermissionStatus storageStatus = await Permission.camera.status;
+        PermissionStatus storageStatus = await Permission.storage.status;
         if (storageStatus == PermissionStatus.denied) {
-          storageStatus = await Permission.camera.request();
+          storageStatus = await Permission.storage.request();
           if (storageStatus == PermissionStatus.denied ||
               storageStatus == PermissionStatus.permanentlyDenied) {
             CommonUtils.showText(

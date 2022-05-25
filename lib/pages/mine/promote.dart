@@ -36,9 +36,9 @@ class _InviteFriendState extends State<Promote> {
         isSaving = false;
       });
     } else {
-      PermissionStatus storageStatus = await Permission.camera.status;
+      PermissionStatus storageStatus = await Permission.storage.status;
       if (storageStatus == PermissionStatus.denied) {
-        storageStatus = await Permission.camera.request();
+        storageStatus = await Permission.storage.request();
         if (storageStatus == PermissionStatus.denied ||
             storageStatus == PermissionStatus.permanentlyDenied) {
           CommonUtils.showText(
@@ -156,7 +156,9 @@ class _InviteFriendState extends State<Promote> {
                                 color: Colors.white,
                                 child: QrImage(
                                   data: '${config.share.affUrl}',
-                                  version: 3,
+                                  padding:
+                                      EdgeInsets.all(ScreenUtil().setWidth(10)),
+                                  version: QrVersions.auto,
                                 ),
                               ),
                               SizedBox(
@@ -318,7 +320,9 @@ class _InviteFriendState extends State<Promote> {
                                           child: QrImage(
                                             size: ScreenUtil().setWidth(134.5),
                                             data: '${config.share.affUrl}',
-                                            version: 3,
+                                            padding: EdgeInsets.all(
+                                                ScreenUtil().setWidth(10)),
+                                            version: QrVersions.auto,
                                           ),
                                         ),
                                         SizedBox(
@@ -353,7 +357,7 @@ class _InviteFriendState extends State<Promote> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.center,
                                           children: [
                                             ActionShareButton(
                                               text: '保存图片分享',
@@ -371,11 +375,11 @@ class _InviteFriendState extends State<Promote> {
                                                     },
                                               isLoadding: isSaving,
                                             ),
-                                            ActionShareButton(
-                                              text: '复制邀请连接',
-                                              onTap: _copyLinkShare,
-                                              isLoadding: false,
-                                            ),
+                                            // ActionShareButton(
+                                            //   text: '复制邀请连接',
+                                            //   onTap: _copyLinkShare,
+                                            //   isLoadding: false,
+                                            // ),
                                           ],
                                         )
                                       ],
