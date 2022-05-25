@@ -92,9 +92,11 @@ class _ManhuaState extends State<Manhua> {
             emitName: 'manhua',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              EventBus().emit('lanmu-init-view', {
-                'parentName': 'manhua',
-                'currentIndex': index,
+              Future.delayed(Duration(milliseconds: 300), () {
+                EventBus().emit('lanmu-init-view', {
+                  'parentName': 'manhua',
+                  'currentIndex': index,
+                });
               });
               setState(() {
                 currentIndex = index;

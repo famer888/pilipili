@@ -91,9 +91,11 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
             emitName: 'pili_ciyuan',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              EventBus().emit('lanmu-init-view', {
-                'parentName': 'ciyuan',
-                'currentIndex': index,
+              Future.delayed(Duration(milliseconds: 300), () {
+                EventBus().emit('lanmu-init-view', {
+                  'parentName': 'ciyuan',
+                  'currentIndex': index,
+                });
               });
               setState(() {
                 currentIndex = index;
