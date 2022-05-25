@@ -92,14 +92,14 @@ class _DongmanState extends State<Dongman> {
             emitName: 'dongman',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              setState(() {
-                currentIndex = index;
-              });
               Future.delayed(Duration(milliseconds: 300), () {
                 EventBus().emit('lanmu-init-view', {
                   'parentName': 'dongman',
                   'currentIndex': index,
                 });
+              });
+              setState(() {
+                currentIndex = index;
               });
             },
             pages: pages,
