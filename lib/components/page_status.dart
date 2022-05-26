@@ -18,7 +18,7 @@ class PageStatus {
                 child: Image.asset(
                   'assets/images/loading_pink.gif',
                   fit: BoxFit.fitWidth,
-                  filterQuality: FilterQuality.high
+                  filterQuality: FilterQuality.medium
                 ),
               ),
               SizedBox(
@@ -49,7 +49,7 @@ class PageStatus {
               child: Image.asset(
                 'assets/images/loading_pink.gif',
                 fit: BoxFit.fitWidth,
-                filterQuality: FilterQuality.high
+                filterQuality: FilterQuality.medium
               ),
             ),
             SizedBox(
@@ -85,7 +85,7 @@ class PageStatus {
             'assets/images/nodata.png',
             width: ScreenUtil().setWidth(100),
             fit: BoxFit.fitWidth,
-            filterQuality: FilterQuality.high
+            filterQuality: FilterQuality.medium
           ),
           SizedBox(
             height: ScreenUtil().setWidth(9),
@@ -118,7 +118,7 @@ class PageStatus {
               Image.asset(
                 'assets/images/404.png',
                 width: ScreenUtil().setWidth(164),
-                filterQuality: FilterQuality.high
+                filterQuality: FilterQuality.medium
               ),
               SizedBox(
                 height: ScreenUtil().setWidth(9),

@@ -74,7 +74,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                     },
                     child: Image.asset('assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(12),
-                        filterQuality: FilterQuality.high),
+                        filterQuality: FilterQuality.medium),
                   ),
             rightWidget != null ? rightWidget : Container()
           ],
@@ -149,7 +149,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                       child: Image.asset(
                                           'assets/images/detail/video_buy_bg.png',
                                           fit: BoxFit.fill,
-                                          filterQuality: FilterQuality.high)),
+                                          filterQuality: FilterQuality.medium)),
                                   Container(
                                     height: ScreenUtil().setWidth(100),
                                     width: double.infinity,
@@ -166,7 +166,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 width:
                                                     ScreenUtil().setWidth(64),
                                                 filterQuality:
-                                                    FilterQuality.high),
+                                                    FilterQuality.medium),
                                           ),
                                           Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -330,7 +330,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                           .setWidth(26),
                                                       fit: BoxFit.fitHeight,
                                                       filterQuality:
-                                                          FilterQuality.high))
+                                                          FilterQuality.medium))
                                             ],
                                           ),
                                         )),
@@ -405,7 +405,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                       child: Image.asset('assets/images/detail/icon_close.png',
                           width: ScreenUtil().setWidth(24),
                           height: ScreenUtil().setWidth(24),
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                     ))
               ],
             );

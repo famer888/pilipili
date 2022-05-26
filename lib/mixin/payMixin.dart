@@ -116,7 +116,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                     'assets/images/detail/icon_close.png',
                                     width: ScreenUtil().setWidth(18),
                                     height: ScreenUtil().setWidth(18),
-                                    filterQuality: FilterQuality.high),
+                                    filterQuality: FilterQuality.medium),
                               ),
                               Text(
                                 '选择支付方式',
@@ -130,7 +130,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                     'assets/images/detail/icon_close.png',
                                     width: ScreenUtil().setWidth(18),
                                     height: ScreenUtil().setWidth(18),
-                                    filterQuality: FilterQuality.high),
+                                    filterQuality: FilterQuality.medium),
                               )
                             ],
                           )),
@@ -177,7 +177,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                   height:
                                                       ScreenUtil().setSp(40),
                                                   filterQuality:
-                                                      FilterQuality.high),
+                                                      FilterQuality.medium),
                                               SizedBox(
                                                 width: ScreenUtil().setSp(10.5),
                                               ),
@@ -194,7 +194,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                   height:
                                                       ScreenUtil().setSp(16),
                                                   filterQuality:
-                                                      FilterQuality.high)
+                                                      FilterQuality.medium)
                                               : Container(
                                                   decoration: BoxDecoration(
                                                       color: Color(0xffFFD1DF),

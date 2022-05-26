@@ -311,7 +311,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                                 'assets/images/loading_pink.gif',
                                                 fit: BoxFit.fitWidth,
                                                 filterQuality:
-                                                    FilterQuality.high),
+                                                    FilterQuality.medium),
                                           ),
                                         )
                                       : Container())
@@ -327,7 +327,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                         width: ScreenUtil().setWidth(120),
                         child: Image.asset('assets/images/loading_pink.gif',
                             fit: BoxFit.fitWidth,
-                            filterQuality: FilterQuality.high),
+                            filterQuality: FilterQuality.medium),
                       ),
                     )
                   : Container()
@@ -410,7 +410,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                             child: Image.asset('assets/images/backarrow.png',
                                 width: ScreenUtil().setWidth(12),
                                 fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.high),
+                                filterQuality: FilterQuality.medium),
                           ),
                         ),
                         loading
@@ -854,7 +854,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                       child: Image.asset('assets/images/icon_close_red.png',
                           width: ScreenUtil().setWidth(24),
                           height: ScreenUtil().setWidth(24),
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                     ))
               ],
             );
@@ -946,7 +946,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                   child: Image.asset(
                                       'assets/images/loading_pink.gif',
                                       fit: BoxFit.fitWidth,
-                                      filterQuality: FilterQuality.high),
+                                      filterQuality: FilterQuality.medium),
                                 ),
                         ))
                       ],
@@ -1256,7 +1256,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1302,7 +1302,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1327,7 +1327,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1480,7 +1480,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),

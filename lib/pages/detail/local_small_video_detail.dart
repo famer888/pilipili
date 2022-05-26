@@ -84,7 +84,7 @@ class _LocalSmallVideoState extends State<LocalSmallVideo> {
                           child: Image.asset('assets/pengke/backarrow.png',
                               width: ScreenUtil().setWidth(22),
                               fit: BoxFit.fitWidth,
-                              filterQuality: FilterQuality.high),
+                              filterQuality: FilterQuality.medium),
                         ),
                       ],
                     )
@@ -256,7 +256,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                   'assets/pengke/loading.gif',
                                                   fit: BoxFit.fitWidth,
                                                   filterQuality:
-                                                      FilterQuality.high),
+                                                      FilterQuality.medium),
                                             ),
                                           )
                                         : Container())
@@ -268,7 +268,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   child: Image.asset(
                                       'assets/pengke/loading.gif',
                                       fit: BoxFit.fitWidth,
-                                      filterQuality: FilterQuality.high),
+                                      filterQuality: FilterQuality.medium),
                                 )
                               : Container(),
                     ),
@@ -285,7 +285,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                 width: ScreenUtil().screenWidth / 5,
                                 child: Image.asset('assets/pengke/loading.gif',
                                     fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.high),
+                                    filterQuality: FilterQuality.medium),
                               ),
                             ))
                           ],
@@ -481,7 +481,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         'assets/pengke/video/${_controller.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
                                         width: ScreenUtil().setWidth(80),
                                         height: ScreenUtil().setWidth(80),
-                                        filterQuality: FilterQuality.high),
+                                        filterQuality: FilterQuality.medium),
                                   ),
                                 ))
                       ],

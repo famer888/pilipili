@@ -69,7 +69,7 @@ class _NewComicsCardState extends State<NewComicsCard> {
               height: _height,
               child: PlatformAwareNetworkImage(
                 url: widget.cardData == null ? null : widget.cardData.thumb,
-                filterQuality: FilterQuality.high,
+                filterQuality: FilterQuality.medium,
                 fit: BoxFit.cover,
               ),
             ),

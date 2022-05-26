@@ -237,7 +237,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                       ? Image.asset('assets/images/demo_bg.png',
                                           width: double.infinity,
                                           fit: BoxFit.cover,
-                                          filterQuality: FilterQuality.high)
+                                          filterQuality: FilterQuality.medium)
                                       : Swiper(
                                           autoplayDelay: 3000,
                                           autoplay:
@@ -523,7 +523,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                 "assets/images/icon_love_red2.png",
                                 width: ScreenUtil().setWidth(6),
                                 fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.high),
+                                filterQuality: FilterQuality.medium),
                           ),
                           Text(
                             filterNavList[e]['title'],
@@ -541,7 +541,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                 "assets/images/icon_love_red2.png",
                                 width: ScreenUtil().setWidth(6),
                                 fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.high),
+                                filterQuality: FilterQuality.medium),
                           ),
                         ],
                       ),

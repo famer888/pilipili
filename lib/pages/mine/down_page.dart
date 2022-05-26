@@ -130,7 +130,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                                     "assets/images/icon_love_red2.png",
                                     width: ScreenUtil().setWidth(6),
                                     fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.high
+                                    filterQuality: FilterQuality.medium
                                   ),
                                 ),
                                 Text(
@@ -147,7 +147,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                                     "assets/images/icon_love_red2.png",
                                     width: ScreenUtil().setWidth(6),
                                     fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.high
+                                    filterQuality: FilterQuality.medium
                                   ),
                                 ),
                               ],
@@ -224,7 +224,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                     width: ScreenUtil().setWidth(15),
                     height: ScreenUtil().setWidth(15),
                     fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high
+                    filterQuality: FilterQuality.medium
                   ),
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
@@ -415,7 +415,7 @@ class _DownListState extends State<DownList> {
                   width: ScreenUtil().setWidth(17),
                   height: ScreenUtil().setWidth(17),
                   fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high
+                  filterQuality: FilterQuality.medium
                 ),
               ),
             ))

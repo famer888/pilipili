@@ -54,7 +54,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                 right: 0,
                 left: 0,
                 child: Image.asset('assets/images/comics/comic_btn.png',
-                    fit: BoxFit.fill, filterQuality: FilterQuality.high)),
+                    fit: BoxFit.fill, filterQuality: FilterQuality.medium)),
             Container(
               width: ScreenUtil().setWidth(83),
               height: ScreenUtil().setWidth(36),
@@ -102,7 +102,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
           Image.asset('assets/images/detail/$icon.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.high),
+              filterQuality: FilterQuality.medium),
           SizedBox(
             height: ScreenUtil().setWidth(3),
           ),
@@ -443,7 +443,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                 },
                 child: Image.asset('assets/images/comics_backarrow.png',
                     width: ScreenUtil().setWidth(32),
-                    filterQuality: FilterQuality.high),
+                    filterQuality: FilterQuality.medium),
               ),
             ],
           ))),
@@ -505,7 +505,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                           child: Image.asset(
                               'assets/images/comics/comic_btn.png',
                               fit: BoxFit.fill,
-                              filterQuality: FilterQuality.high)),
+                              filterQuality: FilterQuality.medium)),
                       Container(
                         width: ScreenUtil().setWidth(84.5),
                         height: ScreenUtil().setWidth(32),

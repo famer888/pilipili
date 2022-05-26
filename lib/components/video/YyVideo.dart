@@ -179,7 +179,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                                     child: Image.asset(
                                         'assets/images/loading_pink.gif',
                                         fit: BoxFit.fitWidth,
-                                        filterQuality: FilterQuality.high),
+                                        filterQuality: FilterQuality.medium),
                                   ),
                                 ))
                               ],

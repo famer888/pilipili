@@ -667,7 +667,7 @@ class _DownloadApkState extends State<DownloadApk> {
                               'assets/images/loading_1.gif',
                               width: ScreenUtil().setWidth(76),
                               height: ScreenUtil().setWidth(76),
-                              filterQuality: FilterQuality.high
+                              filterQuality: FilterQuality.medium
                             ),
                             Positioned(
                                 top: 0,

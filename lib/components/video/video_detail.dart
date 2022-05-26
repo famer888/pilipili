@@ -151,7 +151,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
           Image.asset('assets/images/detail/$icon.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.high),
+              filterQuality: FilterQuality.medium),
           SizedBox(
             height: ScreenUtil().setWidth(3),
           ),
@@ -200,7 +200,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                     child: Image.asset(
                                         'assets/images/loading_pink.gif',
                                         fit: BoxFit.fitWidth,
-                                        filterQuality: FilterQuality.high),
+                                        filterQuality: FilterQuality.medium),
                                   ),
                                 )
                               : YyVideo(
@@ -262,7 +262,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 'assets/images/icon_love_red.png',
                                                 width: ScreenUtil().setWidth(6),
                                                 filterQuality:
-                                                    FilterQuality.high),
+                                                    FilterQuality.medium),
                                           ),
                                           Row(
                                             mainAxisSize: MainAxisSize.min,

@@ -843,7 +843,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
             'assets/images/comics/reader_icon_$img.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
-            filterQuality: FilterQuality.high,
+            filterQuality: FilterQuality.medium,
             fit: BoxFit.contain,
           ),
           SizedBox(
@@ -890,7 +890,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                   (type == 'left' ? 'left.png' : 'right.png'),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
-              filterQuality: FilterQuality.high,
+              filterQuality: FilterQuality.medium,
               fit: BoxFit.contain,
             ),
             DefaultTextStyle(
@@ -932,7 +932,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                       'assets/images/comics/icon_w_black.png',
                       width: ScreenUtil().setWidth(20),
                       height: ScreenUtil().setWidth(20),
-                      filterQuality: FilterQuality.high,
+                      filterQuality: FilterQuality.medium,
                       fit: BoxFit.contain,
                     )),
               ),

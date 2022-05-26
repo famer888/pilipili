@@ -97,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
               },
               child: Image.asset('assets/images/backarrow.png',
                   height: ScreenUtil().setWidth(22),
-                  filterQuality: FilterQuality.high),
+                  filterQuality: FilterQuality.medium),
             ),
           ),
           Expanded(
@@ -158,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                       child: Image.asset(
                           'assets/images/detail/icon_search_red.png',
                           color: Color(0xffFF84A9),
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                       padding: EdgeInsets.only(
                           left: ScreenUtil().setWidth(10),
                           right: ScreenUtil().setWidth(10)),
@@ -201,7 +201,7 @@ class _SearchPageState extends State<SearchPage> {
                           child: Image.asset(
                               'assets/images/detail/icon_input_clear.png',
                               width: ScreenUtil().setWidth(24),
-                              filterQuality: FilterQuality.high),
+                              filterQuality: FilterQuality.medium),
                         ),
                       )
               ],
@@ -310,7 +310,7 @@ class _SearchPageState extends State<SearchPage> {
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                               )
                                             ],
                                           ),
@@ -630,7 +630,7 @@ class _SearchResultState extends State<SearchResult> {
                         opacity: currentTab == e ? 1 : 0,
                         child: Image.asset('assets/images/icon_love_red.png',
                             width: ScreenUtil().setWidth(6),
-                            filterQuality: FilterQuality.high),
+                            filterQuality: FilterQuality.medium),
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -789,7 +789,7 @@ class _TabHeadState extends State<TabHead> {
                                     child: Image.asset(
                                         'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
                                         fit: BoxFit.fill,
-                                        filterQuality: FilterQuality.high)),
+                                        filterQuality: FilterQuality.medium)),
                                 Container(
                                   width: ScreenUtil().setWidth(79),
                                   height: ScreenUtil().setWidth(36),

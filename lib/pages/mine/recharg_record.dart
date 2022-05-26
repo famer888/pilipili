@@ -180,7 +180,7 @@ class OrderItem extends StatelessWidget {
                       'assets/images/wode/clipboard_icon.png',
                       width: ScreenUtil().setWidth(12),
                       fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.high
+                      filterQuality: FilterQuality.medium
                     ),
                     SizedBox(
                       width: ScreenUtil().setWidth(4),

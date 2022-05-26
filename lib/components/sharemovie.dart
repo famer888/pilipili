@@ -232,7 +232,7 @@ class ShareMovieModel {
                               "assets/images/icon_logo.png",
                               width: ScreenUtil().setWidth(45),
                               fit: BoxFit.fitWidth,
-                              filterQuality: FilterQuality.high
+                              filterQuality: FilterQuality.medium
                             ),
                           )
                         ],
@@ -401,7 +401,7 @@ class ShareMovieModel {
                                               height:
                                                   ScreenUtil().setWidth(140),
                                               fit: BoxFit.fitHeight,
-                                              filterQuality: FilterQuality.high
+                                              filterQuality: FilterQuality.medium
                                             ))
                                       ],
                                     ),

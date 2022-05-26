@@ -185,7 +185,7 @@ class _HomeState extends State<Home> {
                     Image.asset('assets/images/logo2.png',
                         width: ScreenUtil().setWidth(40),
                         height: ScreenUtil().setWidth(40),
-                        filterQuality: FilterQuality.high),
+                        filterQuality: FilterQuality.medium),
                     SizedBox(
                       width: ScreenUtil().setWidth(15),
                     ),

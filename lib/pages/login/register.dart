@@ -386,7 +386,7 @@ class _RegisterState extends State<Register> {
             left: 0,
             bottom: 0,
             child: Image.asset('assets/images/login/bg_2.png',
-                fit: BoxFit.fill, filterQuality: FilterQuality.high)),
+                fit: BoxFit.fill, filterQuality: FilterQuality.medium)),
         Scaffold(
             backgroundColor: Colors.transparent,
             body: SafeArea(

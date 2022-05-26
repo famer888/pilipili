@@ -238,7 +238,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                               'assets/images/vip_table_active.png',
                               fit: BoxFit.fitHeight,
                               height: ScreenUtil().setWidth(7),
-                              filterQuality: FilterQuality.high),
+                              filterQuality: FilterQuality.medium),
                         ),
                       ),
                       Container(
@@ -322,7 +322,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                               "assets/images/wode/vip_icon_header.png",
                                               fit: BoxFit.fill,
                                               filterQuality:
-                                                  FilterQuality.high),
+                                                  FilterQuality.medium),
                                         )),
                                     Expanded(
                                       child: Container(

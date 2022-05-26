@@ -206,7 +206,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                 child: Image.asset(
                                   'assets/images/dazhebaobg.png',
                                   fit: BoxFit.fill,
-                                  filterQuality: FilterQuality.high
+                                  filterQuality: FilterQuality.medium
                                 )),
                             Container(
                               height: ScreenUtil().setWidth(64),

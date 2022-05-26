@@ -118,7 +118,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                     Image.asset("assets/images/wode/balance_bg.png",
                         width: double.infinity,
                         fit: BoxFit.fitWidth,
-                        filterQuality: FilterQuality.high),
+                        filterQuality: FilterQuality.medium),
                     Positioned(
                         top: 0,
                         bottom: 0,
@@ -151,7 +151,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                       (300 / 1029) *
                       1.39),
               fit: BoxFit.fitHeight,
-              filterQuality: FilterQuality.high),
+              filterQuality: FilterQuality.medium),
           Positioned(
               right: ScreenUtil().setWidth(16),
               bottom: ScreenUtil().setWidth(16),
@@ -220,7 +220,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                       Image.asset('assets/images/wode/product_bg_special.png',
                           width: double.infinity,
                           fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                       Positioned(
                           top: 0,
                           right: 0,
@@ -295,7 +295,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                             .setWidth(24),
                                                         fit: BoxFit.fitWidth,
                                                         filterQuality:
-                                                            FilterQuality.high),
+                                                            FilterQuality.medium),
                                                   ),
                                                   Text(
                                                     '${spcard['valid_date'] * spcard['coins']}币',
@@ -491,7 +491,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
             child: Image.asset("assets/images/wode/icon_coin.png",
                 width: ScreenUtil().setWidth(20),
                 fit: BoxFit.fitWidth,
-                filterQuality: FilterQuality.high),
+                filterQuality: FilterQuality.medium),
           ),
           Text(
             product['pname'],
@@ -551,7 +551,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
             Image.asset('assets/images/wode/product_bg.png',
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
-                filterQuality: FilterQuality.high),
+                filterQuality: FilterQuality.medium),
             Positioned(
                 top: ScreenUtil().setWidth(8),
                 bottom: ScreenUtil().setWidth(8),

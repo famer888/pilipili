@@ -120,7 +120,7 @@ class _InviteFriendState extends State<Promote> {
                       child: Image.asset(
                           "assets/images/wode/invite_friends_header_bg.png",
                           fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -142,7 +142,7 @@ class _InviteFriendState extends State<Promote> {
                                 "assets/images/wode/invite_friends_content_bg.png",
                                 width: double.infinity,
                                 fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.high),
+                                filterQuality: FilterQuality.medium),
                           ),
                           SizedBox(
                             height: ScreenUtil().setWidth(10),
@@ -202,7 +202,7 @@ class _InviteFriendState extends State<Promote> {
                                   width: ScreenUtil().setWidth(50),
                                   // height: ScreenUtil().setWidth(40),
                                   fit: BoxFit.fitWidth,
-                                  filterQuality: FilterQuality.high),
+                                  filterQuality: FilterQuality.medium),
                             ],
                           )
                         ],
@@ -229,7 +229,7 @@ class _InviteFriendState extends State<Promote> {
                 width: double.infinity,
                 height: ScreenUtil().setWidth(575),
                 fit: BoxFit.fitHeight,
-                filterQuality: FilterQuality.high)),
+                filterQuality: FilterQuality.medium)),
         Scaffold(
             body: Column(
               children: [

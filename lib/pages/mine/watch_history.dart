@@ -109,7 +109,7 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
                                   'assets/images/vip_table_active.png',
                                   fit: BoxFit.fitHeight,
                                   height: ScreenUtil().setWidth(7),
-                                  filterQuality: FilterQuality.high
+                                  filterQuality: FilterQuality.medium
                                 ),
                               ),
                             ),

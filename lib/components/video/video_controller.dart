@@ -304,7 +304,7 @@ class _VideoControllerState extends State<VideoController>
                       width: ScreenUtil().setWidth(90),
                       child: Image.asset('assets/images/loading_pink.gif',
                           fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                     ),
                   )
                 : Container()),
@@ -341,7 +341,7 @@ class _VideoControllerState extends State<VideoController>
                                   'assets/images/detail/${widget.videoController.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
                                   width: ScreenUtil().setWidth(50),
                                   fit: BoxFit.fitWidth,
-                                  filterQuality: FilterQuality.high),
+                                  filterQuality: FilterQuality.medium),
                             )
                           : Container(),
                     ),

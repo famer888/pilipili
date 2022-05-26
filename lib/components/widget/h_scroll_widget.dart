@@ -128,7 +128,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                                 Image.asset(
                                   'assets/images/icon_more.png',
                                   height: ScreenUtil().setWidth(8),
-                                  filterQuality: FilterQuality.high
+                                  filterQuality: FilterQuality.medium
                                 )
                               ],
                             ),

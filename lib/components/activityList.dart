@@ -100,7 +100,7 @@ class _ActivityListState extends State<ActivityList> {
                       "assets/images/icon_ing.png",
                       width: ScreenUtil().setWidth(50),
                       fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.high
+                      filterQuality: FilterQuality.medium
                     ))
                 : Container()
           ],

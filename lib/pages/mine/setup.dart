@@ -155,7 +155,7 @@ class _SetupPageState extends State<SetupPage> {
                           'assets/images/wode/setup_right.png',
                           width: ScreenUtil().setWidth(16),
                           height: ScreenUtil().setWidth(16),
-                          filterQuality: FilterQuality.high
+                          filterQuality: FilterQuality.medium
                         )
                       ],
                     )
@@ -439,7 +439,7 @@ class _SetupPageState extends State<SetupPage> {
                                 child: Image.asset(
                                   "assets/images/wode/edit_img_icon.png",
                                   width: ScreenUtil().setWidth(30),
-                                  filterQuality: FilterQuality.high
+                                  filterQuality: FilterQuality.medium
                                 ),
                               ))
                         ],
@@ -628,7 +628,7 @@ class UserAvatar extends StatelessWidget {
               'assets/images/wode/setup_avatar.png',
               width: double.infinity,
               fit: BoxFit.fitHeight,
-              filterQuality: FilterQuality.high
+              filterQuality: FilterQuality.medium
             )
           : PlatformAwareNetworkImage(
               fit: BoxFit.cover,

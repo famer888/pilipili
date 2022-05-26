@@ -396,7 +396,7 @@ class _CustomerServiceState extends State<CustomerService>
               Image.asset('assets/images/wode/customer_avatar.png',
                   width: ScreenUtil().setWidth(40),
                   height: ScreenUtil().setWidth(40),
-                  filterQuality: FilterQuality.high),
+                  filterQuality: FilterQuality.medium),
               SizedBox(
                 width: ScreenUtil().setWidth(5),
               ),
@@ -410,7 +410,7 @@ class _CustomerServiceState extends State<CustomerService>
                         "assets/images/wode/send_message_left.png",
                         width: ScreenUtil().setWidth(10),
                         fit: BoxFit.fitWidth,
-                        filterQuality: FilterQuality.high),
+                        filterQuality: FilterQuality.medium),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
@@ -517,7 +517,7 @@ class _CustomerServiceState extends State<CustomerService>
                           "assets/images/wode/send_message_right.png",
                           width: ScreenUtil().setWidth(10),
                           fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.high)),
+                          filterQuality: FilterQuality.medium)),
                 ],
               )),
               SizedBox(
@@ -607,7 +607,7 @@ class _CustomerServiceState extends State<CustomerService>
                                     'assets/images/wode/send_img_icon.png',
                                     width: ScreenUtil().setWidth(30),
                                     height: ScreenUtil().setWidth(30),
-                                    filterQuality: FilterQuality.high),
+                                    filterQuality: FilterQuality.medium),
                               ),
                               kIsWeb
                                   ? Positioned(

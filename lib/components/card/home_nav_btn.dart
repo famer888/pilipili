@@ -38,7 +38,7 @@ class _HomeNavBtnState extends State<HomeNavBtn> with CardMixin {
                 child: Image.asset(
                   'assets/images/btn_bg.png',
                   fit: BoxFit.fill,
-                  filterQuality: FilterQuality.high
+                  filterQuality: FilterQuality.medium
                 )),
             Container(
               width: ScreenUtil().setWidth(79),

@@ -289,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
             child:
                 Image.asset(
                   'assets/images/login/bg_1.png', fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
+                  filterQuality: FilterQuality.medium,
                   )),
         Scaffold(
           backgroundColor: Colors.transparent,

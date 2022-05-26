@@ -213,7 +213,7 @@ class _SmallVideoState extends State<SmallVideo> {
                         width: ScreenUtil().setWidth(120),
                         child: Image.asset('assets/images/loading_pink.gif',
                             fit: BoxFit.fitWidth,
-                            filterQuality: FilterQuality.high),
+                            filterQuality: FilterQuality.medium),
                       ),
                     )
                   : Container()
@@ -308,7 +308,7 @@ class _SmallVideoState extends State<SmallVideo> {
                             child: Image.asset('assets/images/backarrow.png',
                                 width: ScreenUtil().setWidth(12),
                                 fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.high),
+                                filterQuality: FilterQuality.medium),
                           ),
                         ),
                         loading
@@ -743,7 +743,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                       child: Image.asset('assets/images/icon_close_red.png',
                           width: ScreenUtil().setWidth(24),
                           height: ScreenUtil().setWidth(24),
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                     ))
               ],
             );
@@ -906,7 +906,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                   'assets/images/loading_pink.gif',
                                                   fit: BoxFit.fitWidth,
                                                   filterQuality:
-                                                      FilterQuality.high),
+                                                      FilterQuality.medium),
                                             ),
                                           )
                                         : Container())
@@ -930,7 +930,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               'assets/images/loading_pink.gif',
                                               fit: BoxFit.fitWidth,
                                               filterQuality:
-                                                  FilterQuality.high),
+                                                  FilterQuality.medium),
                                         ),
                                       ))
                                     ],
@@ -956,7 +956,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                 child: Image.asset(
                                     'assets/images/loading_pink.gif',
                                     fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.high),
+                                    filterQuality: FilterQuality.medium),
                               ),
                             ))
                           ],
@@ -1315,7 +1315,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1356,7 +1356,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1381,7 +1381,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1534,7 +1534,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
-                                                        FilterQuality.high),
+                                                        FilterQuality.medium),
                                                 SizedBox(
                                                   height: ScreenUtil()
                                                       .setWidth(5.5),
@@ -1652,7 +1652,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         'assets/images/detail/${_controller.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
                                         width: ScreenUtil().setWidth(80),
                                         height: ScreenUtil().setWidth(80),
-                                        filterQuality: FilterQuality.high),
+                                        filterQuality: FilterQuality.medium),
                                   ),
                                 )),
                       ],

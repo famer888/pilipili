@@ -117,7 +117,7 @@ class NoticeItem extends StatelessWidget {
                   "assets/images/wode/official_avatar.png",
                   width: ScreenUtil().setWidth(40),
                   fit: BoxFit.fill,
-                  filterQuality: FilterQuality.high
+                  filterQuality: FilterQuality.medium
                 )),
             Positioned(
                 top: ScreenUtil().setWidth(8),
@@ -126,7 +126,7 @@ class NoticeItem extends StatelessWidget {
                   "assets/images/wode/official_message_left.png",
                   width: ScreenUtil().setWidth(13),
                   fit: BoxFit.fill,
-                  filterQuality: FilterQuality.high
+                  filterQuality: FilterQuality.medium
                 )),
             Column(
               children: [

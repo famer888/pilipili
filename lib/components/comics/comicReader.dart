@@ -865,7 +865,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
             'assets/images/comics/reader_icon_$img.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
-            filterQuality: FilterQuality.high,
+            filterQuality: FilterQuality.medium,
             fit: BoxFit.contain,
           ),
           SizedBox(
@@ -912,7 +912,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
                   (type == 'left' ? 'left.png' : 'right.png'),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
-              filterQuality: FilterQuality.high,
+              filterQuality: FilterQuality.medium,
               fit: BoxFit.contain,
             ),
             DefaultTextStyle(
@@ -954,7 +954,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
                       'assets/images/comics/icon_w_black.png',
                       width: ScreenUtil().setWidth(20),
                       height: ScreenUtil().setWidth(20),
-                      filterQuality: FilterQuality.high,
+                      filterQuality: FilterQuality.medium,
                       fit: BoxFit.contain,
                     )),
               ),

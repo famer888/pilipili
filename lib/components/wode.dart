@@ -169,7 +169,7 @@ class _WodeState extends State<Wode> {
                     width: ScreenUtil().setWidth(190),
                     // height: ScreenUtil().setWidth(164),
                     fit: BoxFit.fill,
-                    filterQuality: FilterQuality.high),
+                    filterQuality: FilterQuality.medium),
                 Positioned(
                   top: ScreenUtil().setWidth(85),
                   left: ScreenUtil().setWidth(20),
@@ -231,7 +231,7 @@ class _WodeState extends State<Wode> {
                           // height: ScreenUtil().setHeight(68),
                           width: double.infinity,
                           fit: BoxFit.fill,
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                       Positioned(
                         left: ScreenUtil().setWidth(20),
                         top: ScreenUtil().setWidth(15),
@@ -280,7 +280,7 @@ class _WodeState extends State<Wode> {
                           width: double.infinity,
                           // height: ScreenUtil().setHeight(68),
                           fit: BoxFit.fill,
-                          filterQuality: FilterQuality.high),
+                          filterQuality: FilterQuality.medium),
                       Positioned(
                         left: ScreenUtil().setWidth(20),
                         top: ScreenUtil().setWidth(15),
@@ -345,7 +345,7 @@ class _WodeState extends State<Wode> {
                     fit: BoxFit.fitWidth,
                     width: ScreenUtil().setWidth(32),
                     // height: ScreenUtil().setWidth(45),
-                    filterQuality: FilterQuality.high),
+                    filterQuality: FilterQuality.medium),
                 SizedBox(
                   height: ScreenUtil().setHeight(2),
                 ),
@@ -379,7 +379,7 @@ class _WodeState extends State<Wode> {
           right: 0,
           bottom: ScreenUtil().setHeight(-10),
           child: Image.asset("assets/images/wode/header_bg.png",
-              fit: BoxFit.fill, filterQuality: FilterQuality.high),
+              fit: BoxFit.fill, filterQuality: FilterQuality.medium),
         ),
         Container(
           padding: EdgeInsets.only(
@@ -404,7 +404,7 @@ class _WodeState extends State<Wode> {
                       child: Image.asset("assets/images/wode/Settings.png",
                           width: ScreenUtil().setWidth(24),
                           fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.high)),
+                          filterQuality: FilterQuality.medium)),
                 ],
               ),
               networkErr
@@ -546,7 +546,7 @@ class SystemNoticeIcon extends StatelessWidget {
                 : 'assets/images/wode/Chat_Circle_Dots.png',
             width: ScreenUtil().setWidth(24),
             fit: BoxFit.fitWidth,
-            filterQuality: FilterQuality.high),
+            filterQuality: FilterQuality.medium),
       );
     });
   }
@@ -562,7 +562,7 @@ class UserAvatar extends StatelessWidget {
           ? Image.asset('assets/images/wode/avatar.png',
               width: ScreenUtil().setWidth(30),
               fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.high)
+              filterQuality: FilterQuality.medium)
           : PlatformAwareNetworkImage(
               width: ScreenUtil().setWidth(30),
               fit: BoxFit.cover,

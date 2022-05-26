@@ -52,7 +52,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
           'assets/pengke/video/$icon.png',
           width: ScreenUtil().setWidth(25),
           fit: BoxFit.fitWidth,
-          filterQuality: FilterQuality.high
+          filterQuality: FilterQuality.medium
         ),
         SizedBox(
           width: ScreenUtil().setWidth(7),
@@ -150,7 +150,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
                                                 child: Image.asset(
                                                   'assets/pengke/video/atlas_boder.png',
                                                   fit: BoxFit.fill,
-                                                  filterQuality: FilterQuality.high
+                                                  filterQuality: FilterQuality.medium
                                                 ),
                                               ))
                                         ],
@@ -205,7 +205,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
                 child: Image.asset(
                   'assets/pengke/video/fot_bg.png',
                   fit: BoxFit.fill,
-                  filterQuality: FilterQuality.high
+                  filterQuality: FilterQuality.medium
                 ),
               ),
               Container(

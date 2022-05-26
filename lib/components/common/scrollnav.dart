@@ -236,7 +236,7 @@ class _ScrollnavState extends State<Scrollnav> {
                                       'assets/images/icon_search.png',
                                       width: ScreenUtil().setWidth(20.5),
                                       height: ScreenUtil().setWidth(20.5),
-                                      filterQuality: FilterQuality.high),
+                                      filterQuality: FilterQuality.medium),
                                 ))
                       ],
                     ),

@@ -111,7 +111,7 @@ class _InviteFriendState extends State<InviteFriend> {
                             width: double.infinity,
                             height: ScreenUtil().setWidth(575),
                             fit: BoxFit.fill,
-                            filterQuality: FilterQuality.high),
+                            filterQuality: FilterQuality.medium),
                       ),
                 Column(
                   children: [
@@ -364,7 +364,7 @@ class ActionImage extends StatelessWidget {
       child: Image.asset(url,
           width: ScreenUtil().setWidth(125),
           height: ScreenUtil().setWidth(42),
-          filterQuality: FilterQuality.high),
+          filterQuality: FilterQuality.medium),
     );
   }
 }

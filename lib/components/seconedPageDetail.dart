@@ -202,7 +202,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                               width: ScreenUtil().setWidth(6),
                                               fit: BoxFit.fitWidth,
                                               filterQuality:
-                                                  FilterQuality.high),
+                                                  FilterQuality.medium),
                                         ),
                                         Text(
                                           _tabs[e]['title'],
@@ -219,7 +219,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                               width: ScreenUtil().setWidth(6),
                                               fit: BoxFit.fitWidth,
                                               filterQuality:
-                                                  FilterQuality.high),
+                                                  FilterQuality.medium),
                                         ),
                                       ],
                                     ),
@@ -284,7 +284,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         child: Image.asset('assets/images/backarrow.png',
                             width: ScreenUtil().setWidth(20),
                             height: ScreenUtil().setWidth(20),
-                            filterQuality: FilterQuality.high),
+                            filterQuality: FilterQuality.medium),
                       ),
                       Container()
                     ],

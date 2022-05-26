@@ -82,7 +82,7 @@ class _AtilasListState extends State<AtilasList> {
                         'assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(20),
                         height: ScreenUtil().setWidth(20),
-                        filterQuality: FilterQuality.high
+                        filterQuality: FilterQuality.medium
                       ),
                     ),
                     Container()
@@ -126,7 +126,7 @@ class _AtilasListState extends State<AtilasList> {
                   (type == 'left' ? 'left.png' : 'right.png'),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
-              filterQuality: FilterQuality.high,
+              filterQuality: FilterQuality.medium,
               fit: BoxFit.contain,
             ),
             DefaultTextStyle(
@@ -265,7 +265,7 @@ class _AtilasListState extends State<AtilasList> {
                           child: Image.asset(
                             'assets/pengke/video/fot_bg.png',
                             fit: BoxFit.fill,
-                            filterQuality: FilterQuality.high
+                            filterQuality: FilterQuality.medium
                           ),
                         ),
                         Container(
