@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/certificate.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -171,13 +172,22 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                           Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Image.asset(
-                                                  payIcons[pays[e]['channel']],
-                                                  width: ScreenUtil().setSp(40),
-                                                  height:
-                                                      ScreenUtil().setSp(40),
-                                                  filterQuality:
-                                                      FilterQuality.medium),
+                                              Container(
+                                                width: 40.w,
+                                                height: 40.w,
+                                                child:
+                                                    PlatformAwareNetworkImage(
+                                                  url: pays[e]['img_url']
+                                                              .indexOf(
+                                                                  'http') ==
+                                                          -1
+                                                      ? AppGlobal
+                                                              .bannerImgBase +
+                                                          pays[e]['img_url']
+                                                      : pays[e]['img_url'],
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
                                               SizedBox(
                                                 width: ScreenUtil().setSp(10.5),
                                               ),
