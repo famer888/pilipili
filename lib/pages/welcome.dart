@@ -160,7 +160,7 @@ class _WelcomeState extends State<Welcome> {
                               ),
                               child: Center(
                                 child: Text(
-                                  '$curTime',
+                                  '广告倒计时: $curTime',
                                   style: TextStyle(
                                       decoration: TextDecoration.none,
                                       fontSize: ScreenUtil().setSp(15),
