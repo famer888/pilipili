@@ -138,30 +138,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void fetchBeforeEnterApp() async {
-    await getHomeConfig(context).then((res) {
-      if (res?.data?.ads == null || res?.data?.ads?.imgUrl == null) {
-        AppGlobal.appBox.delete('ads');
-      } else {
-        dynamic ads = AppGlobal.appBox.get('ads');
-        if (ads == null ||
-            ads['oimg'] == null ||
-            ads['oimg'] != res?.data?.ads?.imgUrl) {
-          Timer(Duration(minutes: 1), () {
-            CommonUtils.getRealImage(
-                url: res?.data?.ads?.imgUrl,
-                setUrl: (urllink) {
-                  AppGlobal.appBox.put('ads', {
-                    'oimg': res?.data?.ads?.imgUrl,
-                    'image': urllink,
-                    'url': res.data.ads.url
-                  });
-                  CommonUtils.debugPrint('广告加载完成');
-                });
-          });
-        }
-      }
-    });
+  void fetchBeforeEnterApp() {
     initDialog();
     loading = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {

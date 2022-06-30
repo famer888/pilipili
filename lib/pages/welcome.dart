@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:pilipili/utils/networkImage.dart';
 import "package:universal_html/html.dart" as html;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
@@ -58,18 +59,7 @@ class _WelcomeState extends State<Welcome> {
   @override
   void initState() {
     super.initState();
-    dynamic ads = AppGlobal.appBox.get('ads');
-    if (ads != null) {
-      setState(() {
-        yyads = ads;
-      });
-    }
-    adsCountDown();
-    
     CommonUtils.checkline(onFailed: () {
-      if (yyads == null) {
-        toHome();
-      }
       BotToast.showText(
           text: '无法连接服务器，请检查手机网络设置',
           textStyle: TextStyle(
@@ -78,9 +68,16 @@ class _WelcomeState extends State<Welcome> {
           duration: new Duration(seconds: 5));
     }, onSuccess: () {
       getClipboardText();
-      if (yyads == null) {
-        toHome();
-      }
+      getHomeConfig(context).then((res) {
+        if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
+          yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};
+          setState(() {});
+          adsCountDown();
+        }
+        if (yyads == null) {
+          toHome();
+        }
+      });
     });
   }
 
@@ -138,11 +135,13 @@ class _WelcomeState extends State<Welcome> {
                                 return;
                               CommonUtils.launchURL(yyads['url']);
                             },
-                            child: Image.memory(
-                              yyads['image'],
-                              fit: BoxFit.cover,
+                            child: Container(
                               width: double.infinity,
                               height: double.infinity,
+                              child: PlatformAwareNetworkImage(
+                                url: yyads['img'],
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           Positioned(
@@ -188,16 +187,6 @@ class _WelcomeState extends State<Welcome> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // Container(
-                              //   width: ScreenUtil().screenWidth / 3,
-                              //   child: Image.asset(
-                              //     'assets/images/loading_pink.gif',
-                              //     fit: BoxFit.fitWidth,
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: ScreenUtil().setWidth(15),
-                              // ),
                               Text('正在检测线路,请稍后～',
                                   style: DefaultStyle.black15bold)
                             ],
