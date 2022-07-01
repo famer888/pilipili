@@ -36,7 +36,7 @@ class _MorePageState extends State<MorePage>
     with AutomaticKeepAliveClientMixin {
   bool loading = true;
   int page = 1;
-  int limit = 14;
+  int limit = 18;
   bool isAll = false;
   int contentType;
   List data;
@@ -113,10 +113,11 @@ class _MorePageState extends State<MorePage>
                                   ScreenUtil().setWidth(16)),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
+                                  crossAxisCount:
+                                      widget.morePageType == 1 ? 2 : 3,
                                   crossAxisSpacing: ScreenUtil().setWidth(7),
                                   childAspectRatio:
-                                      widget.morePageType == 1 ? 1.1 : 0.6),
+                                      widget.morePageType == 1 ? 1.1 : 0.55),
                           children: data
                               .asMap()
                               .keys
@@ -135,7 +136,7 @@ class _MorePageState extends State<MorePage>
                                       page:
                                           ((e + 1) / AppGlobal.smallVideoLimit)
                                               .ceil(),
-                                      width: ScreenUtil().setWidth(171),
+                                      width: ScreenUtil().setWidth(121),
                                       contentType: contentType,
                                       thumbUrl: CommonUtils.getThumb(data[e]),
                                       cardData: data[e],
