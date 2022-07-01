@@ -117,7 +117,7 @@ class _MorePageState extends State<MorePage>
                                       widget.morePageType == 1 ? 2 : 3,
                                   crossAxisSpacing: ScreenUtil().setWidth(7),
                                   childAspectRatio:
-                                      widget.morePageType == 1 ? 1.1 : 0.55),
+                                      widget.morePageType == 1 ? 1.25 : 0.55),
                           children: data
                               .asMap()
                               .keys
