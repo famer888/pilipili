@@ -156,12 +156,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                       ScreenUtil().setWidth(15)),
-                                  gradient: SweepGradient(
-                                      //  begin: Alignment.bottomCenter,
-                                      colors: [
-                                        Color(0XFFff84a9),
-                                        Color(0XFFff9e9e),
-                                      ])),
+                                  gradient:  DefaultStyle.defaluGrandientLine),
                               width: ScreenUtil().setWidth(60),
                               height: ScreenUtil().setWidth(30),
                               alignment: Alignment.center,

@@ -146,11 +146,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                 ),
               )),
           Image.asset("assets/images/wode/balance_tag.png",
-              height: ScreenUtil().setWidth(
-                  (ScreenUtil().screenWidth - DefaultStyle.pagePadding * 2) *
-                      (300 / 1029) *
-                      1.39),
-              fit: BoxFit.fitHeight,
+              width: 97.w,
+              fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
           Positioned(
               right: ScreenUtil().setWidth(16),
@@ -194,7 +191,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
             '充值皮哩币',
             style: TextStyle(
                 color: Color(0xff404040),
-                fontSize: ScreenUtil().setSp(23),
+                fontSize: ScreenUtil().setSp(18),
                 fontWeight: FontWeight.bold),
           ),
         ),

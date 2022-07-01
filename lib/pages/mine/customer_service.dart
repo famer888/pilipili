@@ -663,14 +663,7 @@ class _CustomerServiceState extends State<CustomerService>
                                 width: ScreenUtil().setWidth(64),
                                 height: ScreenUtil().setHeight(30),
                                 decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xffFF84A9),
-                                        Color(0xffFF9E9E)
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    ),
+                                    gradient: DefaultStyle.defaluGrandientLine,
                                     borderRadius: BorderRadius.circular(
                                         ScreenUtil().setWidth(50))),
                                 child: Center(

@@ -102,10 +102,10 @@ class _SetupPageState extends State<SetupPage> {
                 borderRadius: isAllRadius
                     ? BorderRadius.all(Radius.circular(10))
                     : BorderRadius.only(
-                        bottomLeft: Radius.circular(isBottomRadius ? 10 : 0),
-                        bottomRight: Radius.circular(isBottomRadius ? 10 : 0),
-                        topLeft: Radius.circular(isTopRadius ? 10 : 0),
-                        topRight: Radius.circular(isTopRadius ? 10 : 0)),
+                        bottomLeft: Radius.circular(isBottomRadius ? 10.w : 0),
+                        bottomRight: Radius.circular(isBottomRadius ? 10.w : 0),
+                        topLeft: Radius.circular(isTopRadius ? 10.w : 0),
+                        topRight: Radius.circular(isTopRadius ? 10.w : 0)),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
@@ -131,7 +131,11 @@ class _SetupPageState extends State<SetupPage> {
                             : Container(),
                         Text(
                           title,
-                          style: DefaultStyle.black12,
+                          style: TextStyle(
+                              color: Color(0xff6d6d6d),
+                              fontSize: ScreenUtil().setSp(12),
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.none),
                         )
                       ],
                     ),
@@ -143,7 +147,7 @@ class _SetupPageState extends State<SetupPage> {
                                 rightText,
                                 style: rightStyle == null
                                     ? TextStyle(
-                                        color: Color(0xffd7d7d7),
+                                        color: Color(0xff979797),
                                         fontSize: ScreenUtil().setSp(14))
                                     : rightStyle,
                               )
@@ -151,12 +155,10 @@ class _SetupPageState extends State<SetupPage> {
                         SizedBox(
                           width: ScreenUtil().setWidth(8),
                         ),
-                        Image.asset(
-                          'assets/images/wode/setup_right.png',
-                          width: ScreenUtil().setWidth(16),
-                          height: ScreenUtil().setWidth(16),
-                          filterQuality: FilterQuality.medium
-                        )
+                        Image.asset('assets/images/wode/setup_right.png',
+                            width: ScreenUtil().setWidth(16),
+                            height: ScreenUtil().setWidth(16),
+                            filterQuality: FilterQuality.medium)
                       ],
                     )
                   ],
@@ -437,10 +439,9 @@ class _SetupPageState extends State<SetupPage> {
                               child: GestureDetector(
                                 onTap: showUpimg,
                                 child: Image.asset(
-                                  "assets/images/wode/edit_img_icon.png",
-                                  width: ScreenUtil().setWidth(30),
-                                  filterQuality: FilterQuality.medium
-                                ),
+                                    "assets/images/wode/edit_img_icon.png",
+                                    width: ScreenUtil().setWidth(30),
+                                    filterQuality: FilterQuality.medium),
                               ))
                         ],
                       ),
@@ -585,8 +586,8 @@ class _SetupPageState extends State<SetupPage> {
                           height: ScreenUtil().setWidth(35),
                           margin: EdgeInsets.only(
                             bottom: ScreenUtil().bottomBarHeight == 0
-                                ? ScreenUtil().setHeight(24)
-                                : ScreenUtil().bottomBarHeight,
+                                ? ScreenUtil().setHeight(40)
+                                : ScreenUtil().bottomBarHeight + 40.w,
                           ),
                           width: ScreenUtil().setWidth(200),
                           decoration: BoxDecoration(
@@ -608,7 +609,7 @@ class _SetupPageState extends State<SetupPage> {
                         )),
                       ),
                     )
-                  : Container()
+                  : Container(),
             ],
           ),
         )),
@@ -624,12 +625,10 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeConfig>(builder: (ctx, state, child) {
       return state.member?.thumb == null
-          ? Image.asset(
-              'assets/images/wode/setup_avatar.png',
+          ? Image.asset('assets/images/wode/setup_avatar.png',
               width: double.infinity,
               fit: BoxFit.fitHeight,
-              filterQuality: FilterQuality.medium
-            )
+              filterQuality: FilterQuality.medium)
           : PlatformAwareNetworkImage(
               fit: BoxFit.cover,
               url: '${state.member.thumb}',

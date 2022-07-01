@@ -559,10 +559,12 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .share
                                                                         .affUrlCopy
                                                                         .url,
-                                                                    thumb: videoInfo
-                                                                        ?.coverOriginalHorizontal == '' ? videoInfo
-                                                                        ?.coverOriginalVertical : videoInfo
-                                                                        ?.coverOriginalHorizontal,
+                                                                    thumb: videoInfo?.coverOriginalHorizontal ==
+                                                                            ''
+                                                                        ? videoInfo
+                                                                            ?.coverOriginalVertical
+                                                                        : videoInfo
+                                                                            ?.coverOriginalHorizontal,
                                                                     title: videoInfo
                                                                             ?.title ??
                                                                         '--',
@@ -736,10 +738,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           5,
                                                       padding: EdgeInsets.symmetric(
                                                           vertical: DefaultStyle
-                                                              .pagePadding,
-                                                          horizontal:
-                                                              DefaultStyle
-                                                                  .pagePadding),
+                                                              .pagePadding),
                                                       itemCount:
                                                           commentList.length,
                                                       itemBuilder:
@@ -966,6 +965,10 @@ class _ConmentItemState extends State<ConmentItem> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.children == null
+                            ? 0
+                            : DefaultStyle.pagePadding),
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(

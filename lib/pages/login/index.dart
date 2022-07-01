@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 '忘记密码',
                 style: TextStyle(
                     color: Color(0xffffffff),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                     fontSize: ScreenUtil().setSp(12)),
               ),
             ),

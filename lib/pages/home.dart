@@ -435,7 +435,20 @@ class _HomeState extends State<Home> {
                                                   Text(
                                                     navBarItem[key]['title'],
                                                     style: selectedKey == key
-                                                        ? DefaultStyle.zhuti12
+                                                        ? TextStyle(
+                                                            color: Color(
+                                                                0xffFF84A9),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(12),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .none)
                                                         : DefaultStyle.lgray12,
                                                   )
                                                 ],
