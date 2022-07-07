@@ -15,10 +15,8 @@ class PageStatus {
             children: [
               Container(
                 width: ScreenUtil().setWidth(120),
-                child: PlatformAwareAssetImage(
-                    url: 'assets/images/loading_pink1.gif',
-                    fit: BoxFit.fitWidth,
-                    filterQuality: FilterQuality.medium),
+                child: Image.asset('assets/gif/loading_pink.gif',
+                    fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
               ),
               SizedBox(
                 height: ScreenUtil().setWidth(15),
@@ -45,10 +43,8 @@ class PageStatus {
             Container(
               width: ScreenUtil().setWidth(120),
               padding: EdgeInsets.only(top: ScreenUtil().setWidth(50)),
-              child: PlatformAwareAssetImage(
-                  url: 'assets/images/loading_pink1.gif',
-                  fit: BoxFit.fitWidth,
-                  filterQuality: FilterQuality.medium),
+              child: Image.asset('assets/gif/loading_pink.gif',
+                  fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
             ),
             SizedBox(
               height: ScreenUtil().setWidth(15),

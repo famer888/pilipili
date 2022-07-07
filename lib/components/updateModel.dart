@@ -663,10 +663,10 @@ class _DownloadApkState extends State<DownloadApk> {
                             Radius.circular(ScreenUtil().setWidth(38))),
                         child: Stack(
                           children: <Widget>[
-                            PlatformAwareAssetImage(
-                                url: 'assets/images/loading_11.gif',
+                            Image.asset('assets/gif/loading_1.gif',
                                 width: ScreenUtil().setWidth(76),
                                 height: ScreenUtil().setWidth(76),
+                                fit: BoxFit.fill,
                                 filterQuality: FilterQuality.medium),
                             Positioned(
                                 top: 0,

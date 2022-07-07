@@ -307,9 +307,8 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                       ? Center(
                                           child: Container(
                                             width: ScreenUtil().setWidth(120),
-                                            child: PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/loading_pink1.gif',
+                                            child: Image.asset(
+                                                'assets/gif/loading_pink.gif',
                                                 fit: BoxFit.fitWidth,
                                                 filterQuality:
                                                     FilterQuality.medium),
@@ -326,8 +325,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                   ? Center(
                       child: Container(
                         width: ScreenUtil().setWidth(120),
-                        child: PlatformAwareAssetImage(
-                            url: 'assets/images/loading_pink1.gif',
+                        child: Image.asset('assets/gif/loading_pink.gif',
                             fit: BoxFit.fitWidth,
                             filterQuality: FilterQuality.medium),
                       ),
@@ -947,8 +945,8 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                               ? Container()
                               : Container(
                                   width: ScreenUtil().setWidth(120),
-                                  child: PlatformAwareAssetImage(
-                                      url: 'assets/images/loading_pink1.gif',
+                                  child: Image.asset(
+                                      'assets/gif/loading_pink.gif',
                                       fit: BoxFit.fitWidth,
                                       filterQuality: FilterQuality.medium),
                                 ),

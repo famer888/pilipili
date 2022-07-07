@@ -176,8 +176,8 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                                     child: Center(
                                   child: Container(
                                     width: ScreenUtil().setWidth(90),
-                                    child: PlatformAwareAssetImage(
-                                        url: 'assets/images/loading_pink1.gif',
+                                    child: Image.asset(
+                                        'assets/gif/loading_pink.gif',
                                         fit: BoxFit.fitWidth,
                                         filterQuality: FilterQuality.medium),
                                   ),
