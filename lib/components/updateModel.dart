@@ -409,8 +409,9 @@ class UpdateModel {
                                           )),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    DefaultStyle.pagePadding+ScreenUtil().setWidth(10)),
+                                                horizontal: DefaultStyle
+                                                        .pagePadding +
+                                                    ScreenUtil().setWidth(10)),
                                             child: Center(
                                               child: GestureDetector(
                                                   onTap: () {
@@ -531,11 +532,10 @@ class UpdateModel {
                       cancel?.call();
                     },
                     child: PlatformAwareAssetImage(
-                        url: "assets/images/accloseicon.png",
+                        url: "assets/images/detail/icon_close.png",
                         width: ScreenUtil().setWidth(33),
                         height: ScreenUtil().setWidth(33),
-                        alignment: Alignment.center,
-                        fit: BoxFit.cover)),
+                        fit: BoxFit.fill)),
                 SizedBox(height: ScreenUtil().setWidth(20)),
                 Container(
                     constraints: BoxConstraints(
@@ -663,12 +663,11 @@ class _DownloadApkState extends State<DownloadApk> {
                             Radius.circular(ScreenUtil().setWidth(38))),
                         child: Stack(
                           children: <Widget>[
-                            Image.asset(
-                              'assets/images/loading_1.gif',
-                              width: ScreenUtil().setWidth(76),
-                              height: ScreenUtil().setWidth(76),
-                              filterQuality: FilterQuality.medium
-                            ),
+                            PlatformAwareAssetImage(
+                                url: 'assets/images/loading_1.gif',
+                                width: ScreenUtil().setWidth(76),
+                                height: ScreenUtil().setWidth(76),
+                                filterQuality: FilterQuality.medium),
                             Positioned(
                                 top: 0,
                                 bottom: 0,

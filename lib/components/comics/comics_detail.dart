@@ -99,11 +99,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                 bottom: 0,
                 right: 0,
                 left: 0,
-                child: Image.asset(
-                  'assets/images/comics/${value == watchLog ? 'comic_btn_active' : 'comic_btn'}.png',
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.medium
-                )),
+                child: PlatformAwareAssetImage(
+                    url:
+                        'assets/images/comics/${value == watchLog ? 'comic_btn_active' : 'comic_btn'}.png',
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.medium)),
             Container(
               width: ScreenUtil().setWidth(83),
               height: ScreenUtil().setWidth(36),
@@ -148,12 +148,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/detail/$icon.png',
-            width: ScreenUtil().setWidth(10),
-            fit: BoxFit.fitWidth,
-            filterQuality: FilterQuality.medium
-          ),
+          PlatformAwareAssetImage(
+              url: 'assets/images/detail/$icon.png',
+              width: ScreenUtil().setWidth(10),
+              fit: BoxFit.fitWidth,
+              filterQuality: FilterQuality.medium),
           SizedBox(
             height: ScreenUtil().setWidth(3),
           ),
@@ -388,11 +387,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                                         Container(
                                                                       color: Color(
                                                                           0xfffff5f9),
-                                                                      child: Image
-                                                                          .asset(
-                                                                        'assets/images/comics/comics_more.png',
-                                                                        color: Colors
-                                                                            .red,
+                                                                      child:
+                                                                          PlatformAwareAssetImage(
+                                                                        url:
+                                                                            'assets/images/comics/comics_more.png',
                                                                         width: ScreenUtil()
                                                                             .setWidth(24),
                                                                       ),
@@ -731,11 +729,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                 onTap: () {
                   context.pop();
                 },
-                child: Image.asset(
-                  'assets/images/comics_backarrow.png',
-                  width: ScreenUtil().setWidth(32),
-                  filterQuality: FilterQuality.medium
-                ),
+                child: PlatformAwareAssetImage(
+                    url: 'assets/images/comics_backarrow.png',
+                    width: ScreenUtil().setWidth(32),
+                    filterQuality: FilterQuality.medium),
               ),
             ],
           ))),
@@ -809,11 +806,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                               left: 0,
                               right: 0,
                               bottom: 0,
-                              child: Image.asset(
-                                'assets/pengke/video/${watchLog == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
-                                fit: BoxFit.fill,
-                                filterQuality: FilterQuality.medium
-                              )),
+                              child: PlatformAwareAssetImage(
+                                  url:
+                                      'assets/pengke/video/${watchLog == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
+                                  fit: BoxFit.fill,
+                                  filterQuality: FilterQuality.medium)),
                           Container(
                             width: ScreenUtil().setWidth(84.5),
                             height: ScreenUtil().setWidth(32),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 // ignore: must_be_immutable
 class WidgetTitleBar extends StatefulWidget {
@@ -25,7 +26,8 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/icon_love_red.png',
+          PlatformAwareAssetImage(
+              url: 'assets/images/icon_love_red.png',
               width: ScreenUtil().setWidth(8),
               filterQuality: FilterQuality.medium),
           Padding(
@@ -35,7 +37,8 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
               style: DefaultStyle.black18bold,
             ),
           ),
-          Image.asset('assets/images/icon_love_red.png',
+          PlatformAwareAssetImage(
+              url: 'assets/images/icon_love_red.png',
               width: ScreenUtil().setWidth(8),
               filterQuality: FilterQuality.medium),
         ],

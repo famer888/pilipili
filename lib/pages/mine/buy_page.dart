@@ -9,6 +9,7 @@ import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class BuyPage extends StatefulWidget {
@@ -229,12 +230,11 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                           children: [
                             Opacity(
                               opacity: e == currentTab ? 1 : 0,
-                              child: Image.asset(
-                                "assets/images/icon_love_red2.png",
-                                width: ScreenUtil().setWidth(6),
-                                fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.medium
-                              ),
+                              child: PlatformAwareAssetImage(
+                                  url: "assets/images/icon_love_red2.png",
+                                  width: ScreenUtil().setWidth(6),
+                                  fit: BoxFit.fitWidth,
+                                  filterQuality: FilterQuality.medium),
                             ),
                             Text(
                               tabList[e]['name'],
@@ -244,12 +244,11 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                             ),
                             Opacity(
                               opacity: 0,
-                              child: Image.asset(
-                                "assets/images/icon_love_red2.png",
-                                width: ScreenUtil().setWidth(6),
-                                fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.medium
-                              ),
+                              child: PlatformAwareAssetImage(
+                                  url: "assets/images/icon_love_red2.png",
+                                  width: ScreenUtil().setWidth(6),
+                                  fit: BoxFit.fitWidth,
+                                  filterQuality: FilterQuality.medium),
                             ),
                           ],
                         ),

@@ -126,12 +126,11 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                               children: [
                                 Opacity(
                                   opacity: e == currentTab ? 1 : 0,
-                                  child: Image.asset(
-                                    "assets/images/icon_love_red2.png",
-                                    width: ScreenUtil().setWidth(6),
-                                    fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.medium
-                                  ),
+                                  child: PlatformAwareAssetImage(
+                                      url: "assets/images/icon_love_red2.png",
+                                      width: ScreenUtil().setWidth(6),
+                                      fit: BoxFit.fitWidth,
+                                      filterQuality: FilterQuality.medium),
                                 ),
                                 Text(
                                   tabList[e]['name'],
@@ -143,12 +142,11 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                                 ),
                                 Opacity(
                                   opacity: 0,
-                                  child: Image.asset(
-                                    "assets/images/icon_love_red2.png",
-                                    width: ScreenUtil().setWidth(6),
-                                    fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.medium
-                                  ),
+                                  child: PlatformAwareAssetImage(
+                                      url: "assets/images/icon_love_red2.png",
+                                      width: ScreenUtil().setWidth(6),
+                                      fit: BoxFit.fitWidth,
+                                      filterQuality: FilterQuality.medium),
                                 ),
                               ],
                             ),
@@ -219,13 +217,12 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    isAll ? allIcon : allNotIcon,
-                    width: ScreenUtil().setWidth(15),
-                    height: ScreenUtil().setWidth(15),
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.medium
-                  ),
+                  PlatformAwareAssetImage(
+                      url: isAll ? allIcon : allNotIcon,
+                      width: ScreenUtil().setWidth(15),
+                      height: ScreenUtil().setWidth(15),
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.medium),
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                     child: Text(
@@ -410,13 +407,14 @@ class _DownListState extends State<DownList> {
                 padding: EdgeInsets.only(
                     top: ScreenUtil().setWidth(6),
                     left: ScreenUtil().setWidth(6)),
-                child: Image.asset(
-                  data[index]["choosed"] == true ? chooseIcon : chooseNotIcon,
-                  width: ScreenUtil().setWidth(17),
-                  height: ScreenUtil().setWidth(17),
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.medium
-                ),
+                child: PlatformAwareAssetImage(
+                    url: data[index]["choosed"] == true
+                        ? chooseIcon
+                        : chooseNotIcon,
+                    width: ScreenUtil().setWidth(17),
+                    height: ScreenUtil().setWidth(17),
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.medium),
               ),
             ))
         : Container();

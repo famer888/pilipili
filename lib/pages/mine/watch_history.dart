@@ -105,12 +105,11 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
                               top: 0,
                               child: Opacity(
                                 opacity: currentTab == e ? 1 : 0,
-                                child: Image.asset(
-                                  'assets/images/vip_table_active.png',
-                                  fit: BoxFit.fitHeight,
-                                  height: ScreenUtil().setWidth(7),
-                                  filterQuality: FilterQuality.medium
-                                ),
+                                child: PlatformAwareAssetImage(
+                                    url: 'assets/images/vip_table_active.png',
+                                    fit: BoxFit.fitHeight,
+                                    height: ScreenUtil().setWidth(7),
+                                    filterQuality: FilterQuality.medium),
                               ),
                             ),
                             Container(

@@ -72,7 +72,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                           [DeviceOrientation.portraitUp]);
                       context.pop();
                     },
-                    child: Image.asset('assets/images/backarrow.png',
+                    child: PlatformAwareAssetImage(
+                        url: 'assets/images/backarrow.png',
                         width: ScreenUtil().setWidth(12),
                         filterQuality: FilterQuality.medium),
                   ),
@@ -146,8 +147,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                       bottom: 0,
                                       left: 0,
                                       right: 0,
-                                      child: Image.asset(
-                                          'assets/images/detail/video_buy_bg.png',
+                                      child: PlatformAwareAssetImage(
+                                          url:
+                                              'assets/images/detail/video_buy_bg.png',
                                           fit: BoxFit.fill,
                                           filterQuality: FilterQuality.medium)),
                                   Container(
@@ -161,8 +163,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                             padding: EdgeInsets.only(
                                                 right:
                                                     ScreenUtil().setWidth(24)),
-                                            child: Image.asset(
-                                                'assets/images/detail/video_buy_coin.png',
+                                            child: PlatformAwareAssetImage(
+                                                url:
+                                                    'assets/images/detail/video_buy_coin.png',
                                                 width:
                                                     ScreenUtil().setWidth(64),
                                                 filterQuality:
@@ -324,8 +327,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                       .setWidth(-26.4),
                                                   left: ScreenUtil()
                                                       .setWidth(-12),
-                                                  child: Image.asset(
-                                                      'assets/images/detail/vip_zhekou.png',
+                                                  child: PlatformAwareAssetImage(
+                                                      url:
+                                                          'assets/images/detail/vip_zhekou.png',
                                                       height: ScreenUtil()
                                                           .setWidth(26),
                                                       fit: BoxFit.fitHeight,
@@ -402,7 +406,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                       onTap: () {
                         context.pop();
                       },
-                      child: Image.asset('assets/images/detail/icon_close.png',
+                      child: PlatformAwareAssetImage(
+                          url: 'assets/images/detail/icon_close.png',
                           width: ScreenUtil().setWidth(24),
                           height: ScreenUtil().setWidth(24),
                           filterQuality: FilterQuality.medium),
@@ -477,8 +482,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                 ShareMovieModel.showShareMovie(backButtonBehavior,
                     copyUrl: config.share.affUrlCopy.url,
                     thumb: data?.coverOriginalHorizontal == ''
-                      ? data?.coverOriginalVertical
-                      : data?.coverOriginalHorizontal,
+                        ? data?.coverOriginalVertical
+                        : data?.coverOriginalHorizontal,
                     title: data.title,
                     subtitle: data.desc,
                     url: '${config.share.affUrl}');

@@ -113,8 +113,8 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                             children: [
                               Opacity(
                                 opacity: 0,
-                                child: Image.asset(
-                                    'assets/images/detail/icon_close.png',
+                                child: PlatformAwareAssetImage(
+                                    url: 'assets/images/detail/icon_close.png',
                                     width: ScreenUtil().setWidth(18),
                                     height: ScreenUtil().setWidth(18),
                                     filterQuality: FilterQuality.medium),
@@ -127,8 +127,8 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                 onTap: () {
                                   context.pop();
                                 },
-                                child: Image.asset(
-                                    'assets/images/detail/icon_close.png',
+                                child: PlatformAwareAssetImage(
+                                    url: 'assets/images/detail/icon_close.png',
                                     width: ScreenUtil().setWidth(18),
                                     height: ScreenUtil().setWidth(18),
                                     filterQuality: FilterQuality.medium),
@@ -198,8 +198,9 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                             ],
                                           ),
                                           currentPay == e
-                                              ? Image.asset(
-                                                  'assets/images/wode/icon_choosed.png',
+                                              ? PlatformAwareAssetImage(
+                                                  url:
+                                                      'assets/images/wode/icon_choosed.png',
                                                   width: ScreenUtil().setSp(16),
                                                   height:
                                                       ScreenUtil().setSp(16),

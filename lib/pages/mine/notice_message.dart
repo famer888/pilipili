@@ -6,6 +6,7 @@ import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/systemnoticelist.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class NoticeMessage extends StatefulWidget {
   final Map args;
@@ -113,21 +114,19 @@ class NoticeItem extends StatelessWidget {
             Positioned(
                 top: 0,
                 left: 0,
-                child: Image.asset(
-                  "assets/images/wode/official_avatar.png",
-                  width: ScreenUtil().setWidth(40),
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.medium
-                )),
+                child: PlatformAwareAssetImage(
+                    url: "assets/images/wode/official_avatar.png",
+                    width: ScreenUtil().setWidth(40),
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.medium)),
             Positioned(
                 top: ScreenUtil().setWidth(8),
                 left: ScreenUtil().setWidth(43),
-                child: Image.asset(
-                  "assets/images/wode/official_message_left.png",
-                  width: ScreenUtil().setWidth(13),
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.medium
-                )),
+                child: PlatformAwareAssetImage(
+                    url: "assets/images/wode/official_message_left.png",
+                    width: ScreenUtil().setWidth(13),
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.medium)),
             Column(
               children: [
                 Container(

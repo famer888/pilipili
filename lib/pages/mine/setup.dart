@@ -155,7 +155,8 @@ class _SetupPageState extends State<SetupPage> {
                         SizedBox(
                           width: ScreenUtil().setWidth(8),
                         ),
-                        Image.asset('assets/images/wode/setup_right.png',
+                        PlatformAwareAssetImage(
+                            url: 'assets/images/wode/setup_right.png',
                             width: ScreenUtil().setWidth(16),
                             height: ScreenUtil().setWidth(16),
                             filterQuality: FilterQuality.medium)
@@ -438,8 +439,8 @@ class _SetupPageState extends State<SetupPage> {
                               right: 0,
                               child: GestureDetector(
                                 onTap: showUpimg,
-                                child: Image.asset(
-                                    "assets/images/wode/edit_img_icon.png",
+                                child: PlatformAwareAssetImage(
+                                    url: "assets/images/wode/edit_img_icon.png",
                                     width: ScreenUtil().setWidth(30),
                                     filterQuality: FilterQuality.medium),
                               ))
@@ -625,7 +626,8 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeConfig>(builder: (ctx, state, child) {
       return state.member?.thumb == null
-          ? Image.asset('assets/images/wode/setup_avatar.png',
+          ? PlatformAwareAssetImage(
+              url: 'assets/images/wode/setup_avatar.png',
               width: double.infinity,
               fit: BoxFit.fitHeight,
               filterQuality: FilterQuality.medium)

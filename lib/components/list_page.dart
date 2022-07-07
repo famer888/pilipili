@@ -358,12 +358,11 @@ class _ListPageState extends State<ListPage> with CardMixin {
                               fixedBanner == null ||
                                       !(fixedBanner is Map) ||
                                       fixedBanner['value'].length == 0
-                                  ? Image.asset(
-                                      'assets/images/demo_bg.png',
+                                  ? PlatformAwareAssetImage(
+                                      url: 'assets/images/demo_bg.png',
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      filterQuality: FilterQuality.medium
-                                    )
+                                      filterQuality: FilterQuality.medium)
                                   : Swiper(
                                       autoplayDelay: 3000,
                                       autoplay: fixedBanner['value'].length > 1,

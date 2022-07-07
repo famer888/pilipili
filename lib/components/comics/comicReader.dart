@@ -14,6 +14,7 @@ import 'package:pilipili/mixin/watchRecordMixin.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class ComicReader extends StatefulWidget {
   final int id;
@@ -861,8 +862,8 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            'assets/images/comics/reader_icon_$img.png',
+          PlatformAwareAssetImage(
+            url: 'assets/images/comics/reader_icon_$img.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
             filterQuality: FilterQuality.medium,
@@ -907,8 +908,8 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
           textDirection: type == 'left' ? TextDirection.ltr : TextDirection.rtl,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              'assets/images/comics/' +
+            PlatformAwareAssetImage(
+              url: 'assets/images/comics/' +
                   (type == 'left' ? 'left.png' : 'right.png'),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
@@ -950,8 +951,8 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
                 },
                 child: Container(
                     margin: EdgeInsets.only(right: ScreenUtil().setWidth(10)),
-                    child: Image.asset(
-                      'assets/images/comics/icon_w_black.png',
+                    child: PlatformAwareAssetImage(
+                      url: 'assets/images/comics/icon_w_black.png',
                       width: ScreenUtil().setWidth(20),
                       height: ScreenUtil().setWidth(20),
                       filterQuality: FilterQuality.medium,

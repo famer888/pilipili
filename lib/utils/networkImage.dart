@@ -288,7 +288,8 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
         children: [
           _url == null
               ? Center(
-                  child: Image.asset('assets/images/logo.png',
+                  child: PlatformAwareAssetImage(
+                      url: 'assets/images/logo.png',
                       width: widget.width * 0.7,
                       fit: BoxFit.fitWidth,
                       filterQuality: FilterQuality.medium),

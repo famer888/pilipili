@@ -197,8 +197,9 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                       children: [
                                         Opacity(
                                           opacity: e == currentTab ? 1 : 0,
-                                          child: Image.asset(
-                                              "assets/images/icon_love_red2.png",
+                                          child: PlatformAwareAssetImage(
+                                              url:
+                                                  "assets/images/icon_love_red2.png",
                                               width: ScreenUtil().setWidth(6),
                                               fit: BoxFit.fitWidth,
                                               filterQuality:
@@ -214,8 +215,9 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                                         ),
                                         Opacity(
                                           opacity: 0,
-                                          child: Image.asset(
-                                              "assets/images/icon_love_red2.png",
+                                          child: PlatformAwareAssetImage(
+                                              url:
+                                                  "assets/images/icon_love_red2.png",
                                               width: ScreenUtil().setWidth(6),
                                               fit: BoxFit.fitWidth,
                                               filterQuality:
@@ -281,7 +283,8 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         onTap: () {
                           context.pop();
                         },
-                        child: Image.asset('assets/images/backarrow.png',
+                        child: PlatformAwareAssetImage(
+                            url: 'assets/images/backarrow.png',
                             width: ScreenUtil().setWidth(20),
                             height: ScreenUtil().setWidth(20),
                             filterQuality: FilterQuality.medium),

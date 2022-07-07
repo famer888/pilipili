@@ -188,7 +188,7 @@ class CommonUtils {
                 if (isNovel) {
                   decrypted = utf8.decode(decrypted);
                 }
-                if (args[0].toString().indexOf('assets/yy/') != -1) {
+                if (args[0].toString().indexOf('assets/pilipili/') != -1) {
                   AppGlobal.imageAssetBox.put(args[0], decrypted);
                 } else {
                   AppGlobal.imageCacheBox.put(args[0], decrypted);
@@ -217,7 +217,8 @@ class CommonUtils {
     }
 
     var tempUrl = url.toString().indexOf('assets/images/') != -1
-        ? '${AppGlobal.bannerImgBase}new/$url'.replaceAll('images/', 'yy/')
+        ? '${AppGlobal.bannerImgBase}new/$url'
+            .replaceAll('images/', 'pilipili/')
         : url;
 
     tasks.add([tempUrl, imgUrl, setUrl, retryHandler]);

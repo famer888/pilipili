@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
 import 'package:pilipili/components/manhua.dart';
@@ -159,7 +160,8 @@ class _HomeState extends State<Home> {
                         ScreenUtil().setWidth(15)),
                 child: Row(
                   children: [
-                    Image.asset('assets/images/logo2.png',
+                    PlatformAwareAssetImage(
+                        url: 'assets/images/logo2.png',
                         width: ScreenUtil().setWidth(40),
                         height: ScreenUtil().setWidth(40),
                         filterQuality: FilterQuality.medium),
@@ -417,8 +419,9 @@ class _HomeState extends State<Home> {
                                               child: Column(
                                                 children: [
                                                   !loading
-                                                      ? Image.asset(
-                                                          selectedKey == key
+                                                      ? PlatformAwareAssetImage(
+                                                          url: selectedKey ==
+                                                                  key
                                                               ? navBarItem[key]
                                                                   ['activeIcon']
                                                               : navBarItem[key]

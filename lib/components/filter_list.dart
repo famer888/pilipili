@@ -234,7 +234,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                   fixedBanner == null ||
                                           !(fixedBanner is Map) ||
                                           fixedBanner['value'].length == 0
-                                      ? Image.asset('assets/images/demo_bg.png',
+                                      ? PlatformAwareAssetImage(
+                                          url: 'assets/images/demo_bg.png',
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                           filterQuality: FilterQuality.medium)
@@ -519,8 +520,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                         children: [
                           Opacity(
                             opacity: filterNavList[e]['order'] == order ? 1 : 0,
-                            child: Image.asset(
-                                "assets/images/icon_love_red2.png",
+                            child: PlatformAwareAssetImage(
+                                url: "assets/images/icon_love_red2.png",
                                 width: ScreenUtil().setWidth(6),
                                 fit: BoxFit.fitWidth,
                                 filterQuality: FilterQuality.medium),
@@ -537,8 +538,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                           ),
                           Opacity(
                             opacity: 0,
-                            child: Image.asset(
-                                "assets/images/icon_love_red2.png",
+                            child: PlatformAwareAssetImage(
+                                url: "assets/images/icon_love_red2.png",
                                 width: ScreenUtil().setWidth(6),
                                 fit: BoxFit.fitWidth,
                                 filterQuality: FilterQuality.medium),

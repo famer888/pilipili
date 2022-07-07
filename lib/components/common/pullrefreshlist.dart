@@ -46,14 +46,13 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
   Widget buildContent(BuildContext context, RefreshStatus mode) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
-      child: Image.asset(
-        mode == RefreshStatus.refreshing
-            ? 'assets/images/downrefresh.gif'
-            : 'assets/images/downrefresh.png',
-        height: ScreenUtil().setWidth(50),
-        fit: BoxFit.fitHeight,
-        filterQuality: FilterQuality.medium
-      ),
+      child: PlatformAwareAssetImage(
+          url: mode == RefreshStatus.refreshing
+              ? 'assets/images/downrefresh.gif'
+              : 'assets/images/downrefresh.png',
+          height: ScreenUtil().setWidth(50),
+          fit: BoxFit.fitHeight,
+          filterQuality: FilterQuality.medium),
     );
   }
 

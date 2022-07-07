@@ -96,12 +96,11 @@ class _ActivityListState extends State<ActivityList> {
                 ? Positioned(
                     top: 0,
                     right: 0,
-                    child: Image.asset(
-                      "assets/images/icon_ing.png",
-                      width: ScreenUtil().setWidth(50),
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.medium
-                    ))
+                    child: PlatformAwareAssetImage(
+                        url: "assets/images/icon_ing.png",
+                        width: ScreenUtil().setWidth(50),
+                        fit: BoxFit.fitWidth,
+                        filterQuality: FilterQuality.medium))
                 : Container()
           ],
         ),

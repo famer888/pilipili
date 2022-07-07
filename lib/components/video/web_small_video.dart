@@ -307,8 +307,9 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                       ? Center(
                                           child: Container(
                                             width: ScreenUtil().setWidth(120),
-                                            child: Image.asset(
-                                                'assets/images/loading_pink.gif',
+                                            child: PlatformAwareAssetImage(
+                                                url:
+                                                    'assets/images/loading_pink.gif',
                                                 fit: BoxFit.fitWidth,
                                                 filterQuality:
                                                     FilterQuality.medium),
@@ -325,7 +326,8 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                   ? Center(
                       child: Container(
                         width: ScreenUtil().setWidth(120),
-                        child: Image.asset('assets/images/loading_pink.gif',
+                        child: PlatformAwareAssetImage(
+                            url: 'assets/images/loading_pink.gif',
                             fit: BoxFit.fitWidth,
                             filterQuality: FilterQuality.medium),
                       ),
@@ -407,7 +409,8 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                           child: Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: ScreenUtil().setWidth(10)),
-                            child: Image.asset('assets/images/backarrow.png',
+                            child: PlatformAwareAssetImage(
+                                url: 'assets/images/backarrow.png',
                                 width: ScreenUtil().setWidth(12),
                                 fit: BoxFit.fitWidth,
                                 filterQuality: FilterQuality.medium),
@@ -851,7 +854,8 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                       onTap: () {
                         context.pop();
                       },
-                      child: Image.asset('assets/images/icon_close_red.png',
+                      child: PlatformAwareAssetImage(
+                          url: 'assets/images/icon_close_red.png',
                           width: ScreenUtil().setWidth(24),
                           height: ScreenUtil().setWidth(24),
                           filterQuality: FilterQuality.medium),
@@ -943,8 +947,8 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                               ? Container()
                               : Container(
                                   width: ScreenUtil().setWidth(120),
-                                  child: Image.asset(
-                                      'assets/images/loading_pink.gif',
+                                  child: PlatformAwareAssetImage(
+                                      url: 'assets/images/loading_pink.gif',
                                       fit: BoxFit.fitWidth,
                                       filterQuality: FilterQuality.medium),
                                 ),
@@ -1251,8 +1255,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                             child: _itemContainer(Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Image.asset(
-                                                    'assets/images/detail/${isLike ? 'icon_like' : 'icon_unlike'}.png',
+                                                PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/detail/${isLike ? 'icon_like' : 'icon_unlike'}.png',
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
@@ -1297,8 +1302,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                             child: _itemContainer(Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Image.asset(
-                                                    'assets/images/detail/icon_share_w.png',
+                                                PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/detail/icon_share_w.png',
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
@@ -1322,8 +1328,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                             child: _itemContainer(Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Image.asset(
-                                                    'assets/images/detail/icon_msg_w.png',
+                                                PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/detail/icon_msg_w.png',
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
@@ -1475,8 +1482,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                             child: _itemContainer(Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Image.asset(
-                                                    'assets/images/detail/icon_down_w.png',
+                                                PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/detail/icon_down_w.png',
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
@@ -1607,8 +1615,9 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                       : 0,
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
-                                    child: Image.asset(
-                                      'assets/images/detail/${widget.controller.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
+                                    child: PlatformAwareAssetImage(
+                                      url:
+                                          'assets/images/detail/${widget.controller.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
                                       width: ScreenUtil().setWidth(80),
                                       height: ScreenUtil().setWidth(80),
                                     ),

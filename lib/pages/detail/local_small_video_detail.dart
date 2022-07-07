@@ -81,7 +81,8 @@ class _LocalSmallVideoState extends State<LocalSmallVideo> {
                           onTap: () {
                             context.pop();
                           },
-                          child: Image.asset('assets/pengke/backarrow.png',
+                          child: PlatformAwareAssetImage(
+                              url: 'assets/pengke/backarrow.png',
                               width: ScreenUtil().setWidth(22),
                               fit: BoxFit.fitWidth,
                               filterQuality: FilterQuality.medium),
@@ -252,8 +253,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                             child: Container(
                                               width:
                                                   ScreenUtil().screenWidth / 5,
-                                              child: Image.asset(
-                                                  'assets/pengke/loading.gif',
+                                              child: PlatformAwareAssetImage(
+                                                  url:
+                                                      'assets/pengke/loading.gif',
                                                   fit: BoxFit.fitWidth,
                                                   filterQuality:
                                                       FilterQuality.medium),
@@ -265,8 +267,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                           : mounted
                               ? Container(
                                   width: ScreenUtil().screenWidth / 5,
-                                  child: Image.asset(
-                                      'assets/pengke/loading.gif',
+                                  child: PlatformAwareAssetImage(
+                                      url: 'assets/pengke/loading.gif',
                                       fit: BoxFit.fitWidth,
                                       filterQuality: FilterQuality.medium),
                                 )
@@ -283,7 +285,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                 child: Center(
                               child: Container(
                                 width: ScreenUtil().screenWidth / 5,
-                                child: Image.asset('assets/pengke/loading.gif',
+                                child: PlatformAwareAssetImage(
+                                    url: 'assets/pengke/loading.gif',
                                     fit: BoxFit.fitWidth,
                                     filterQuality: FilterQuality.medium),
                               ),
@@ -477,8 +480,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                       : 0,
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
-                                    child: Image.asset(
-                                        'assets/pengke/video/${_controller.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
+                                    child: PlatformAwareAssetImage(
+                                        url:
+                                            'assets/pengke/video/${_controller.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
                                         width: ScreenUtil().setWidth(80),
                                         height: ScreenUtil().setWidth(80),
                                         filterQuality: FilterQuality.medium),

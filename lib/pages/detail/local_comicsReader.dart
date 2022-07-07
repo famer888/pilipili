@@ -15,6 +15,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class LocalComicsReader extends StatefulWidget {
   LocalComicsReader({Key key, this.comicsInfo, this.episode}) : super(key: key);
@@ -839,8 +840,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            'assets/images/comics/reader_icon_$img.png',
+          PlatformAwareAssetImage(
+            url: 'assets/images/comics/reader_icon_$img.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
             filterQuality: FilterQuality.medium,
@@ -885,8 +886,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           textDirection: type == 'left' ? TextDirection.ltr : TextDirection.rtl,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              'assets/images/comics/' +
+            PlatformAwareAssetImage(
+              url: 'assets/images/comics/' +
                   (type == 'left' ? 'left.png' : 'right.png'),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
@@ -928,8 +929,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                 },
                 child: Container(
                     margin: EdgeInsets.only(right: ScreenUtil().setWidth(10)),
-                    child: Image.asset(
-                      'assets/images/comics/icon_w_black.png',
+                    child: PlatformAwareAssetImage(
+                      url: 'assets/images/comics/icon_w_black.png',
                       width: ScreenUtil().setWidth(20),
                       height: ScreenUtil().setWidth(20),
                       filterQuality: FilterQuality.medium,

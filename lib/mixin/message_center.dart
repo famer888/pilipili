@@ -166,12 +166,11 @@ class MessageActionItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  icon,
-                  width: ScreenUtil().setWidth(50),
-                  height: ScreenUtil().setWidth(50),
-                  filterQuality: FilterQuality.medium
-                ),
+                PlatformAwareAssetImage(
+                    url: icon,
+                    width: ScreenUtil().setWidth(50),
+                    height: ScreenUtil().setWidth(50),
+                    filterQuality: FilterQuality.medium),
                 SizedBox(
                   width: ScreenUtil().setWidth(15),
                 ),

@@ -1,14 +1,11 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/routers.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class Scrollnav extends StatefulWidget {
   Scrollnav(
@@ -156,8 +153,9 @@ class _ScrollnavState extends State<Scrollnav> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Image.asset(
-                                                            'assets/images/icon_love.png',
+                                                        PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/icon_love.png',
                                                             width: ScreenUtil()
                                                                 .setWidth(6.5),
                                                             filterQuality:
@@ -232,8 +230,8 @@ class _ScrollnavState extends State<Scrollnav> {
                                 child: Container(
                                   padding: EdgeInsets.only(
                                       left: ScreenUtil().setWidth(6)),
-                                  child: Image.asset(
-                                      'assets/images/icon_search.png',
+                                  child: PlatformAwareAssetImage(
+                                      url: 'assets/images/icon_search.png',
                                       width: ScreenUtil().setWidth(20.5),
                                       height: ScreenUtil().setWidth(20.5),
                                       filterQuality: FilterQuality.medium),

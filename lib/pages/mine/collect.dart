@@ -225,12 +225,11 @@ class _CollectPageState extends State<CollectPage>
                               children: [
                                 Opacity(
                                   opacity: e == currentTab ? 1 : 0,
-                                  child: Image.asset(
-                                    "assets/images/icon_love_red2.png",
-                                    width: ScreenUtil().setWidth(6),
-                                    fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.medium
-                                  ),
+                                  child: PlatformAwareAssetImage(
+                                      url: "assets/images/icon_love_red2.png",
+                                      width: ScreenUtil().setWidth(6),
+                                      fit: BoxFit.fitWidth,
+                                      filterQuality: FilterQuality.medium),
                                 ),
                                 Text(
                                   tabList[e]['name'],
@@ -240,12 +239,11 @@ class _CollectPageState extends State<CollectPage>
                                 ),
                                 Opacity(
                                   opacity: 0,
-                                  child: Image.asset(
-                                    "assets/images/icon_love_red2.png",
-                                    width: ScreenUtil().setWidth(6),
-                                    fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.medium
-                                  ),
+                                  child: PlatformAwareAssetImage(
+                                      url: "assets/images/icon_love_red2.png",
+                                      width: ScreenUtil().setWidth(6),
+                                      fit: BoxFit.fitWidth,
+                                      filterQuality: FilterQuality.medium),
                                 ),
                               ],
                             ),

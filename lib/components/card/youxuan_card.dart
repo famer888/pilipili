@@ -203,11 +203,10 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                 bottom: 0,
                                 right: 0,
                                 left: 0,
-                                child: Image.asset(
-                                  'assets/images/dazhebaobg.png',
-                                  fit: BoxFit.fill,
-                                  filterQuality: FilterQuality.medium
-                                )),
+                                child: PlatformAwareAssetImage(
+                                    url: 'assets/images/dazhebaobg.png',
+                                    fit: BoxFit.fill,
+                                    filterQuality: FilterQuality.medium)),
                             Container(
                               height: ScreenUtil().setWidth(64),
                               padding: EdgeInsets.symmetric(

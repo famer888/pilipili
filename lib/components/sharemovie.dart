@@ -228,12 +228,11 @@ class ShareMovieModel {
                           Padding(
                             padding:
                                 EdgeInsets.only(left: ScreenUtil().setWidth(5)),
-                            child: Image.asset(
-                              "assets/images/icon_logo.png",
-                              width: ScreenUtil().setWidth(45),
-                              fit: BoxFit.fitWidth,
-                              filterQuality: FilterQuality.medium
-                            ),
+                            child: PlatformAwareAssetImage(
+                                url: "assets/images/icon_logo.png",
+                                width: ScreenUtil().setWidth(45),
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.medium),
                           )
                         ],
                       ),
@@ -396,13 +395,14 @@ class ShareMovieModel {
                                         Positioned(
                                             top: 0,
                                             right: 0,
-                                            child: Image.asset(
-                                              "assets/images/share_bg.png",
-                                              height:
-                                                  ScreenUtil().setWidth(140),
-                                              fit: BoxFit.fitHeight,
-                                              filterQuality: FilterQuality.medium
-                                            ))
+                                            child: PlatformAwareAssetImage(
+                                                url:
+                                                    "assets/images/share_bg.png",
+                                                height:
+                                                    ScreenUtil().setWidth(140),
+                                                fit: BoxFit.fitHeight,
+                                                filterQuality:
+                                                    FilterQuality.medium))
                                       ],
                                     ),
                                   ),

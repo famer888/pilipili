@@ -367,7 +367,8 @@ class _ApplicationItemState extends State<ApplicationItem> {
                   //     bottom: 0,
                   //     left: 0,
                   //     right: 0,
-                  //     child: Image.asset(
+                  //     child: PlatformAwareAssetImage(
+                  // url:
                   //       'assets/pengke/video/video_duan_btn.png',
                   //       fit: BoxFit.fill,
                   //     )),

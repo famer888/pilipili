@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class HomeNavBtn extends StatefulWidget {
   HomeNavBtn(
@@ -35,11 +36,10 @@ class _HomeNavBtnState extends State<HomeNavBtn> with CardMixin {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Image.asset(
-                  'assets/images/btn_bg.png',
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.medium
-                )),
+                child: PlatformAwareAssetImage(
+                    url: 'assets/images/btn_bg.png',
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.medium)),
             Container(
               width: ScreenUtil().setWidth(79),
               height: ScreenUtil().setWidth(51),

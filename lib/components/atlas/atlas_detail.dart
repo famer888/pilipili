@@ -48,12 +48,11 @@ class _AtlasDetailState extends State<AtlasDetail> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(
-          'assets/pengke/video/$icon.png',
-          width: ScreenUtil().setWidth(25),
-          fit: BoxFit.fitWidth,
-          filterQuality: FilterQuality.medium
-        ),
+        PlatformAwareAssetImage(
+            url: 'assets/pengke/video/$icon.png',
+            width: ScreenUtil().setWidth(25),
+            fit: BoxFit.fitWidth,
+            filterQuality: FilterQuality.medium),
         SizedBox(
           width: ScreenUtil().setWidth(7),
         ),
@@ -147,11 +146,12 @@ class _AtlasDetailState extends State<AtlasDetail> {
                                               bottom: 0,
                                               top: 0,
                                               child: IgnorePointer(
-                                                child: Image.asset(
-                                                  'assets/pengke/video/atlas_boder.png',
-                                                  fit: BoxFit.fill,
-                                                  filterQuality: FilterQuality.medium
-                                                ),
+                                                child: PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/pengke/video/atlas_boder.png',
+                                                    fit: BoxFit.fill,
+                                                    filterQuality:
+                                                        FilterQuality.medium),
                                               ))
                                         ],
                                       );
@@ -202,11 +202,10 @@ class _AtlasDetailState extends State<AtlasDetail> {
                 top: 0,
                 left: 0,
                 right: 0,
-                child: Image.asset(
-                  'assets/pengke/video/fot_bg.png',
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.medium
-                ),
+                child: PlatformAwareAssetImage(
+                    url: 'assets/pengke/video/fot_bg.png',
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.medium),
               ),
               Container(
                 height: ScreenUtil().setWidth(50),

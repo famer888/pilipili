@@ -187,13 +187,14 @@ class CertificateModel {
                                                     ScreenUtil().setHeight(10),
                                               ),
                                               Center(
-                                                child: Image.asset(
-                                                  "assets/images/wode/user_icon.png",
-                                                  width:
-                                                      ScreenUtil().setWidth(96),
-                                                  fit: BoxFit.fill,
-                                                  filterQuality: FilterQuality.medium
-                                                ),
+                                                child: PlatformAwareAssetImage(
+                                                    url:
+                                                        "assets/images/wode/user_icon.png",
+                                                    width: ScreenUtil()
+                                                        .setWidth(96),
+                                                    fit: BoxFit.fill,
+                                                    filterQuality:
+                                                        FilterQuality.medium),
                                               ),
                                               SizedBox(
                                                 height:
@@ -325,13 +326,14 @@ class CertificateModel {
                                                   ScreenUtil().setHeight(10),
                                             ),
                                             Center(
-                                              child: Image.asset(
-                                                "assets/images/wode/user_icon.png",
-                                                width:
-                                                    ScreenUtil().setWidth(96),
-                                                fit: BoxFit.fill,
-                                                filterQuality: FilterQuality.medium
-                                              ),
+                                              child: PlatformAwareAssetImage(
+                                                  url:
+                                                      "assets/images/wode/user_icon.png",
+                                                  width:
+                                                      ScreenUtil().setWidth(96),
+                                                  fit: BoxFit.fill,
+                                                  filterQuality:
+                                                      FilterQuality.medium),
                                             ),
                                             SizedBox(
                                               height: ScreenUtil().setHeight(5),

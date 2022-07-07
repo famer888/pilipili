@@ -78,12 +78,11 @@ class _AtilasListState extends State<AtilasList> {
                       onTap: () {
                         context.pop();
                       },
-                      child: Image.asset(
-                        'assets/images/backarrow.png',
-                        width: ScreenUtil().setWidth(20),
-                        height: ScreenUtil().setWidth(20),
-                        filterQuality: FilterQuality.medium
-                      ),
+                      child: PlatformAwareAssetImage(
+                          url: 'assets/images/backarrow.png',
+                          width: ScreenUtil().setWidth(20),
+                          height: ScreenUtil().setWidth(20),
+                          filterQuality: FilterQuality.medium),
                     ),
                     Container()
                   ],
@@ -262,11 +261,10 @@ class _AtilasListState extends State<AtilasList> {
                           top: 0,
                           left: 0,
                           right: 0,
-                          child: Image.asset(
-                            'assets/pengke/video/fot_bg.png',
-                            fit: BoxFit.fill,
-                            filterQuality: FilterQuality.medium
-                          ),
+                          child: PlatformAwareAssetImage(
+                              url: 'assets/pengke/video/fot_bg.png',
+                              fit: BoxFit.fill,
+                              filterQuality: FilterQuality.medium),
                         ),
                         Container(
                           height: ScreenUtil().setWidth(50) +

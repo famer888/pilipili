@@ -148,7 +148,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/detail/$icon.png',
+          PlatformAwareAssetImage(
+              url: 'assets/images/detail/$icon.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
@@ -197,8 +198,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                               ? Center(
                                   child: Container(
                                     width: ScreenUtil().setWidth(90),
-                                    child: Image.asset(
-                                        'assets/images/loading_pink.gif',
+                                    child: PlatformAwareAssetImage(
+                                        url: 'assets/images/loading_pink.gif',
                                         fit: BoxFit.fitWidth,
                                         filterQuality: FilterQuality.medium),
                                   ),
@@ -258,8 +259,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                         children: [
                                           Opacity(
                                             opacity: currentTab == e ? 1 : 0,
-                                            child: Image.asset(
-                                                'assets/images/icon_love_red.png',
+                                            child: PlatformAwareAssetImage(
+                                                url:
+                                                    'assets/images/icon_love_red.png',
                                                 width: ScreenUtil().setWidth(6),
                                                 filterQuality:
                                                     FilterQuality.medium),

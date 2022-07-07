@@ -176,12 +176,11 @@ class OrderItem extends StatelessWidget {
                 },
                 child: Row(
                   children: [
-                    Image.asset(
-                      'assets/images/wode/clipboard_icon.png',
-                      width: ScreenUtil().setWidth(12),
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.medium
-                    ),
+                    PlatformAwareAssetImage(
+                        url: 'assets/images/wode/clipboard_icon.png',
+                        width: ScreenUtil().setWidth(12),
+                        fit: BoxFit.fitWidth,
+                        filterQuality: FilterQuality.medium),
                     SizedBox(
                       width: ScreenUtil().setWidth(4),
                     ),

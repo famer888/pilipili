@@ -234,8 +234,8 @@ class _VipPageState extends State<VipPage> with PayMixin {
                         top: 0,
                         child: Opacity(
                           opacity: currentTab == e ? 1 : 0,
-                          child: Image.asset(
-                              'assets/images/vip_table_active.png',
+                          child: PlatformAwareAssetImage(
+                              url: 'assets/images/vip_table_active.png',
                               fit: BoxFit.fitHeight,
                               height: ScreenUtil().setWidth(7),
                               filterQuality: FilterQuality.medium),
@@ -318,8 +318,9 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                           padding: EdgeInsets.symmetric(
                                               horizontal:
                                                   ScreenUtil().setWidth(20)),
-                                          child: Image.asset(
-                                              "assets/images/wode/vip_icon_header.png",
+                                          child: PlatformAwareAssetImage(
+                                              url:
+                                                  "assets/images/wode/vip_icon_header.png",
                                               fit: BoxFit.fill,
                                               filterQuality:
                                                   FilterQuality.medium),
@@ -440,8 +441,9 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        Image.asset(
-                                                            'assets/images/wode/vip_kefu.png',
+                                                        PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/wode/vip_kefu.png',
                                                             width: ScreenUtil()
                                                                 .setWidth(24),
                                                             height: ScreenUtil()

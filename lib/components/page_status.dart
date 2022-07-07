@@ -15,11 +15,10 @@ class PageStatus {
             children: [
               Container(
                 width: ScreenUtil().setWidth(120),
-                child: Image.asset(
-                  'assets/images/loading_pink.gif',
-                  fit: BoxFit.fitWidth,
-                  filterQuality: FilterQuality.medium
-                ),
+                child: PlatformAwareAssetImage(
+                    url: 'assets/images/loading_pink.gif',
+                    fit: BoxFit.fitWidth,
+                    filterQuality: FilterQuality.medium),
               ),
               SizedBox(
                 height: ScreenUtil().setWidth(15),
@@ -46,11 +45,10 @@ class PageStatus {
             Container(
               width: ScreenUtil().setWidth(120),
               padding: EdgeInsets.only(top: ScreenUtil().setWidth(50)),
-              child: Image.asset(
-                'assets/images/loading_pink.gif',
-                fit: BoxFit.fitWidth,
-                filterQuality: FilterQuality.medium
-              ),
+              child: PlatformAwareAssetImage(
+                  url: 'assets/images/loading_pink.gif',
+                  fit: BoxFit.fitWidth,
+                  filterQuality: FilterQuality.medium),
             ),
             SizedBox(
               height: ScreenUtil().setWidth(15),
@@ -81,12 +79,11 @@ class PageStatus {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            'assets/images/nodata.png',
-            width: ScreenUtil().setWidth(100),
-            fit: BoxFit.fitWidth,
-            filterQuality: FilterQuality.medium
-          ),
+          PlatformAwareAssetImage(
+              url: 'assets/images/nodata.png',
+              width: ScreenUtil().setWidth(100),
+              fit: BoxFit.fitWidth,
+              filterQuality: FilterQuality.medium),
           SizedBox(
             height: ScreenUtil().setWidth(9),
           ),
@@ -115,11 +112,10 @@ class PageStatus {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/404.png',
-                width: ScreenUtil().setWidth(164),
-                filterQuality: FilterQuality.medium
-              ),
+              PlatformAwareAssetImage(
+                  url: 'assets/images/404.png',
+                  width: ScreenUtil().setWidth(164),
+                  filterQuality: FilterQuality.medium),
               SizedBox(
                 height: ScreenUtil().setWidth(9),
               ),

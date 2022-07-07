@@ -71,8 +71,8 @@ class _ActivityDetailState extends State<ActivityDetail> {
                           url: '${config.share.affUrl}');
                     },
                     child: Container(
-                      child: Image.asset("assets/images/share_white.png",
-                          color: Colors.white,
+                      child: PlatformAwareAssetImage(
+                          url: "assets/images/share_white.png",
                           width: ScreenUtil().setWidth(20),
                           height: ScreenUtil().setWidth(20)),
                     ),
@@ -89,12 +89,11 @@ class _ActivityDetailState extends State<ActivityDetail> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  "assets/images/icon_love_red2.png",
-                                  width: ScreenUtil().setWidth(6),
-                                  fit: BoxFit.fitWidth,
-                                  filterQuality: FilterQuality.medium
-                                ),
+                                PlatformAwareAssetImage(
+                                    url: "assets/images/icon_love_red2.png",
+                                    width: ScreenUtil().setWidth(6),
+                                    fit: BoxFit.fitWidth,
+                                    filterQuality: FilterQuality.medium),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: ScreenUtil().setWidth(6)),
@@ -103,12 +102,11 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                     style: DefaultStyle.black18bold,
                                   ),
                                 ),
-                                Image.asset(
-                                  "assets/images/icon_love_red2.png",
-                                  width: ScreenUtil().setWidth(6),
-                                  fit: BoxFit.fitWidth,
-                                  filterQuality: FilterQuality.medium
-                                ),
+                                PlatformAwareAssetImage(
+                                    url: "assets/images/icon_love_red2.png",
+                                    width: ScreenUtil().setWidth(6),
+                                    fit: BoxFit.fitWidth,
+                                    filterQuality: FilterQuality.medium),
                               ],
                             ),
                           ),
@@ -219,7 +217,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                             : GestureDetector(
                                 onTap: () {
                                   String linkUrl = activityInfo['link'];
-                                    if(linkUrl==''||linkUrl==null) return;
+                                  if (linkUrl == '' || linkUrl == null) return;
                                   List urlList = linkUrl.split('?');
                                   if (activityInfo['link'].indexOf('http') ==
                                       -1) {

@@ -87,7 +87,8 @@ class _InviteFriendState extends State<InviteFriend> {
         //         margin: EdgeInsets.only(
         //             top: ScreenUtil().statusBarHeight +
         //                 DefaultStyle.navbarHegiht),
-        //         child: Image.asset(
+        //         child: PlatformAwareAssetImage(
+        // url:
         //           'assets/images/wode/invite_header.png',
         //           width: double.infinity,
         //           height: ScreenUtil().setWidth(575),
@@ -106,8 +107,8 @@ class _InviteFriendState extends State<InviteFriend> {
                 channel != 'self'
                     ? Container()
                     : Container(
-                        child: Image.asset(
-                            'assets/images/wode/invite_header.png',
+                        child: PlatformAwareAssetImage(
+                            url: 'assets/images/wode/invite_header.png',
                             width: double.infinity,
                             height: ScreenUtil().setWidth(575),
                             fit: BoxFit.fill,
@@ -361,7 +362,8 @@ class ActionImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Image.asset(url,
+      child: PlatformAwareAssetImage(
+          url: url,
           width: ScreenUtil().setWidth(125),
           height: ScreenUtil().setWidth(42),
           filterQuality: FilterQuality.medium),

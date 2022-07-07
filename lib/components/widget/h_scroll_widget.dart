@@ -7,6 +7,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class HscrollWidget extends StatefulWidget {
   HscrollWidget(
@@ -125,11 +126,10 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                                 SizedBox(
                                   width: ScreenUtil().setWidth(9),
                                 ),
-                                Image.asset(
-                                  'assets/images/icon_more.png',
-                                  height: ScreenUtil().setWidth(8),
-                                  filterQuality: FilterQuality.medium
-                                )
+                                PlatformAwareAssetImage(
+                                    url: 'assets/images/icon_more.png',
+                                    height: ScreenUtil().setWidth(8),
+                                    filterQuality: FilterQuality.medium)
                               ],
                             ),
                           ),

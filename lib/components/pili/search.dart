@@ -9,6 +9,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/primaryScrollContainer.dart';
 
@@ -95,7 +96,8 @@ class _SearchPageState extends State<SearchPage> {
                   searchController.jumpTo(0);
                 }
               },
-              child: Image.asset('assets/images/backarrow.png',
+              child: PlatformAwareAssetImage(
+                  url: 'assets/images/backarrow.png',
                   height: ScreenUtil().setWidth(22),
                   filterQuality: FilterQuality.medium),
             ),
@@ -155,9 +157,8 @@ class _SearchPageState extends State<SearchPage> {
                     contentPadding: EdgeInsets.zero,
                     border: InputBorder.none,
                     prefixIcon: Padding(
-                      child: Image.asset(
-                          'assets/images/detail/icon_search_red.png',
-                          color: Color(0xffFF84A9),
+                      child: PlatformAwareAssetImage(
+                          url: 'assets/images/detail/icon_search_red.png',
                           filterQuality: FilterQuality.medium),
                       padding: EdgeInsets.only(
                           left: ScreenUtil().setWidth(10),
@@ -198,8 +199,8 @@ class _SearchPageState extends State<SearchPage> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: ScreenUtil().setWidth(8)),
-                          child: Image.asset(
-                              'assets/images/detail/icon_input_clear.png',
+                          child: PlatformAwareAssetImage(
+                              url: 'assets/images/detail/icon_input_clear.png',
                               width: ScreenUtil().setWidth(24),
                               filterQuality: FilterQuality.medium),
                         ),
@@ -305,8 +306,9 @@ class _SearchPageState extends State<SearchPage> {
                                                 },
                                                 behavior:
                                                     HitTestBehavior.translucent,
-                                                child: Image.asset(
-                                                    'assets/images/detail/icon_clear.png',
+                                                child: PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/detail/icon_clear.png',
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
@@ -374,8 +376,9 @@ class _SearchPageState extends State<SearchPage> {
                                                           behavior:
                                                               HitTestBehavior
                                                                   .translucent,
-                                                          child: Image.asset(
-                                                              'assets/images/detail/icon_delete.png',
+                                                          child: PlatformAwareAssetImage(
+                                                              url:
+                                                                  'assets/images/detail/icon_delete.png',
                                                               width:
                                                                   ScreenUtil()
                                                                       .setWidth(
@@ -628,7 +631,8 @@ class _SearchResultState extends State<SearchResult> {
                     children: [
                       Opacity(
                         opacity: currentTab == e ? 1 : 0,
-                        child: Image.asset('assets/images/icon_love_red.png',
+                        child: PlatformAwareAssetImage(
+                            url: 'assets/images/icon_love_red.png',
                             width: ScreenUtil().setWidth(6),
                             filterQuality: FilterQuality.medium),
                       ),
@@ -786,8 +790,9 @@ class _TabHeadState extends State<TabHead> {
                                     bottom: 0,
                                     left: 0,
                                     right: 0,
-                                    child: Image.asset(
-                                        'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
+                                    child: PlatformAwareAssetImage(
+                                        url:
+                                            'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
                                         fit: BoxFit.fill,
                                         filterQuality: FilterQuality.medium)),
                                 Container(

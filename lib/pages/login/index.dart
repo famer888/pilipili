@@ -10,6 +10,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 
 import 'login_box.dart';
@@ -286,11 +287,11 @@ class _LoginPageState extends State<LoginPage> {
             right: 0,
             left: 0,
             bottom: 0,
-            child:
-                Image.asset(
-                  'assets/images/login/bg_1.png', fit: BoxFit.cover,
-                  filterQuality: FilterQuality.medium,
-                  )),
+            child: PlatformAwareAssetImage(
+              url: 'assets/images/login/bg_1.png',
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.medium,
+            )),
         Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(

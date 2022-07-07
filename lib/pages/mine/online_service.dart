@@ -71,8 +71,7 @@ class _OnlineServiceState extends State<OnlineService> {
         Expanded(
             child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-              horizontal: DefaultStyle.pagePadding,
-              vertical: 16.w),
+              horizontal: DefaultStyle.pagePadding, vertical: 16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: AppGlobal.helpList
@@ -133,7 +132,8 @@ class _OnlineServiceState extends State<OnlineService> {
                       //     bottom: 0,
                       //     left: 0,
                       //     right: 0,
-                      //     child: Image.asset(
+                      //     child: PlatformAwareAssetImage(
+                      // url:
                       //       'assets/pengke/video/video_duan_btn.png',
                       //       fit: BoxFit.fill,
                       //     )),

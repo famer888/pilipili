@@ -192,12 +192,11 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                                 Stack(clipBehavior: Clip.none, children: [
                               fixedBanner == null ||
                                       fixedBanner['value'].length == 0
-                                  ? Image.asset(
-                                      'assets/images/demo_bg.png',
+                                  ? PlatformAwareAssetImage(
+                                      url: 'assets/images/demo_bg.png',
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      filterQuality: FilterQuality.medium
-                                    )
+                                      filterQuality: FilterQuality.medium)
                                   : Container(
                                       height: ScreenUtil().statusBarHeight +
                                           DefaultStyle.navbarHegiht +

@@ -165,7 +165,8 @@ class _WodeState extends State<Wode> {
             child: Stack(
               alignment: Alignment.topLeft,
               children: <Widget>[
-                Image.asset("assets/images/wode/vip_bg.png",
+                PlatformAwareAssetImage(
+                    url: "assets/images/wode/vip_bg.png",
                     width: ScreenUtil().setWidth(190),
                     // height: ScreenUtil().setWidth(164),
                     fit: BoxFit.fill,
@@ -227,7 +228,8 @@ class _WodeState extends State<Wode> {
                   child: Stack(
                     alignment: Alignment.topLeft,
                     children: <Widget>[
-                      Image.asset("assets/images/wode/glod_bg.png",
+                      PlatformAwareAssetImage(
+                          url: "assets/images/wode/glod_bg.png",
                           // height: ScreenUtil().setHeight(68),
                           width: double.infinity,
                           fit: BoxFit.fill,
@@ -276,7 +278,8 @@ class _WodeState extends State<Wode> {
                   child: Stack(
                     alignment: Alignment.topLeft,
                     children: <Widget>[
-                      Image.asset("assets/images/wode/activity_bg.png",
+                      PlatformAwareAssetImage(
+                          url: "assets/images/wode/activity_bg.png",
                           width: double.infinity,
                           // height: ScreenUtil().setHeight(68),
                           fit: BoxFit.fill,
@@ -341,7 +344,8 @@ class _WodeState extends State<Wode> {
             width: ScreenUtil().screenWidth / 4,
             child: Column(
               children: [
-                Image.asset('assets/images/wode/${item['icon']}.png',
+                PlatformAwareAssetImage(
+                    url: 'assets/images/wode/${item['icon']}.png',
                     fit: BoxFit.fitWidth,
                     width: ScreenUtil().setWidth(32),
                     // height: ScreenUtil().setWidth(45),
@@ -378,8 +382,10 @@ class _WodeState extends State<Wode> {
           top: 0,
           right: 0,
           bottom: ScreenUtil().setHeight(-10),
-          child: Image.asset("assets/images/wode/header_bg.png",
-              fit: BoxFit.fill, filterQuality: FilterQuality.medium),
+          child: PlatformAwareAssetImage(
+              url: "assets/images/wode/header_bg.png",
+              fit: BoxFit.fill,
+              filterQuality: FilterQuality.medium),
         ),
         Container(
           padding: EdgeInsets.only(
@@ -401,7 +407,8 @@ class _WodeState extends State<Wode> {
                       onTap: () {
                         context.push('/${Routes.setup}');
                       },
-                      child: Image.asset("assets/images/wode/Settings.png",
+                      child: PlatformAwareAssetImage(
+                          url: "assets/images/wode/Settings.png",
                           width: ScreenUtil().setWidth(24),
                           fit: BoxFit.fitWidth,
                           filterQuality: FilterQuality.medium)),
@@ -537,13 +544,14 @@ class SystemNoticeIcon extends StatelessWidget {
         onTap: () {
           context.push('/${Routes.messagecenter}');
         },
-        child: Image.asset(
-            // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
-            (state.systemnotice?.data ?? false) != null &&
-                    (state.systemnotice.data.systemNoticeCount != 0 ||
-                        state.systemnotice.data.feedCount != 0)
-                ? 'assets/images/wode/Chat_Circle_Dots_active.png'
-                : 'assets/images/wode/Chat_Circle_Dots.png',
+        child: PlatformAwareAssetImage(
+            url:
+                // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
+                (state.systemnotice?.data ?? false) != null &&
+                        (state.systemnotice.data.systemNoticeCount != 0 ||
+                            state.systemnotice.data.feedCount != 0)
+                    ? 'assets/images/wode/Chat_Circle_Dots_active.png'
+                    : 'assets/images/wode/Chat_Circle_Dots.png',
             width: ScreenUtil().setWidth(24),
             fit: BoxFit.fitWidth,
             filterQuality: FilterQuality.medium),
@@ -559,7 +567,8 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeConfig>(builder: (ctx, state, child) {
       return state.member.thumb == null
-          ? Image.asset('assets/images/wode/avatar.png',
+          ? PlatformAwareAssetImage(
+              url: 'assets/images/wode/avatar.png',
               width: ScreenUtil().setWidth(30),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium)
