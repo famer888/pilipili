@@ -48,8 +48,8 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
       child: PlatformAwareAssetImage(
           url: mode == RefreshStatus.refreshing
-              ? 'assets/images/downrefresh.gif'
-              : 'assets/images/downrefresh.png',
+              ? 'assets/images/downrefresh1.gif.gif'
+              : 'assets/images/downrefresh1.gif.png',
           height: ScreenUtil().setWidth(50),
           fit: BoxFit.fitHeight,
           filterQuality: FilterQuality.medium),

@@ -664,7 +664,7 @@ class _DownloadApkState extends State<DownloadApk> {
                         child: Stack(
                           children: <Widget>[
                             PlatformAwareAssetImage(
-                                url: 'assets/images/loading_1.gif',
+                                url: 'assets/images/loading_11.gif',
                                 width: ScreenUtil().setWidth(76),
                                 height: ScreenUtil().setWidth(76),
                                 filterQuality: FilterQuality.medium),

@@ -16,7 +16,7 @@ class PageStatus {
               Container(
                 width: ScreenUtil().setWidth(120),
                 child: PlatformAwareAssetImage(
-                    url: 'assets/images/loading_pink.gif',
+                    url: 'assets/images/loading_pink1.gif',
                     fit: BoxFit.fitWidth,
                     filterQuality: FilterQuality.medium),
               ),
@@ -46,7 +46,7 @@ class PageStatus {
               width: ScreenUtil().setWidth(120),
               padding: EdgeInsets.only(top: ScreenUtil().setWidth(50)),
               child: PlatformAwareAssetImage(
-                  url: 'assets/images/loading_pink.gif',
+                  url: 'assets/images/loading_pink1.gif',
                   fit: BoxFit.fitWidth,
                   filterQuality: FilterQuality.medium),
             ),

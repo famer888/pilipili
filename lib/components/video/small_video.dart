@@ -212,7 +212,7 @@ class _SmallVideoState extends State<SmallVideo> {
                       child: Container(
                         width: ScreenUtil().setWidth(120),
                         child: PlatformAwareAssetImage(
-                            url: 'assets/images/loading_pink.gif',
+                            url: 'assets/images/loading_pink1.gif',
                             fit: BoxFit.fitWidth,
                             filterQuality: FilterQuality.medium),
                       ),
@@ -907,7 +907,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               width: ScreenUtil().setWidth(120),
                                               child: PlatformAwareAssetImage(
                                                   url:
-                                                      'assets/images/loading_pink.gif',
+                                                      'assets/images/loading_pink1.gif',
                                                   fit: BoxFit.fitWidth,
                                                   filterQuality:
                                                       FilterQuality.medium),
@@ -932,7 +932,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                           width: ScreenUtil().setWidth(120),
                                           child: PlatformAwareAssetImage(
                                               url:
-                                                  'assets/images/loading_pink.gif',
+                                                  'assets/images/loading_pink1.gif',
                                               fit: BoxFit.fitWidth,
                                               filterQuality:
                                                   FilterQuality.medium),
@@ -959,7 +959,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                               child: Container(
                                 width: ScreenUtil().setWidth(120),
                                 child: PlatformAwareAssetImage(
-                                    url: 'assets/images/loading_pink.gif',
+                                    url: 'assets/images/loading_pink1.gif',
                                     fit: BoxFit.fitWidth,
                                     filterQuality: FilterQuality.medium),
                               ),

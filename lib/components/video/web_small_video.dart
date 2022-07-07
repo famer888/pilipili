@@ -309,7 +309,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                             width: ScreenUtil().setWidth(120),
                                             child: PlatformAwareAssetImage(
                                                 url:
-                                                    'assets/images/loading_pink.gif',
+                                                    'assets/images/loading_pink1.gif',
                                                 fit: BoxFit.fitWidth,
                                                 filterQuality:
                                                     FilterQuality.medium),
@@ -327,7 +327,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                       child: Container(
                         width: ScreenUtil().setWidth(120),
                         child: PlatformAwareAssetImage(
-                            url: 'assets/images/loading_pink.gif',
+                            url: 'assets/images/loading_pink1.gif',
                             fit: BoxFit.fitWidth,
                             filterQuality: FilterQuality.medium),
                       ),
@@ -948,7 +948,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                               : Container(
                                   width: ScreenUtil().setWidth(120),
                                   child: PlatformAwareAssetImage(
-                                      url: 'assets/images/loading_pink.gif',
+                                      url: 'assets/images/loading_pink1.gif',
                                       fit: BoxFit.fitWidth,
                                       filterQuality: FilterQuality.medium),
                                 ),
