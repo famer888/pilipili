@@ -11,6 +11,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 
 import 'login_box.dart';
@@ -31,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    CommonUtils.debugPrint('-**********************************${widget.type}');
     if (widget.isExpired) {
       // getHomeConfig(context);
     }
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     Function startTime;
     String code = '86';
     return LoginBox(
-      btnText: loginType == 1 ? ["注册", "登陆"] : "登陆",
+      btnText: loginType == 1 ? [PPString.register, PPString.login] : PPString.login,
       btnMargin: ScreenUtil().setWidth(60),
       topText: Container(
         margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () {
                 // context.push('/${Routes.register}/${1}');
-                context.push(CommonUtils.getRealHash('register/${1}'));
+                context.push(CommonUtils.getRealHash('register/1'));
               },
               child: Text(
                 '忘记密码',
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                   padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
                   child: Text(
-                    loginType == 0 ? '账号密码登录' : '手机验证码登录',
+                    loginType == 0 ? PPString.acountPasswodLogin : PPString.phoneCodeLogin,
                     style: TextStyle(
                         color: Color(0xffffffff),
                         fontWeight: FontWeight.bold,

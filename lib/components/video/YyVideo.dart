@@ -13,6 +13,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/shelf_proxy.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
@@ -272,8 +273,11 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                                       child: Text.rich(TextSpan(children: [
                                     TextSpan(
                                         text: widget.data.isfree == 1
-                                            ? '立即成为VIP解锁全站视频'
-                                            : '支付${widget.data.discountCoins}币即可观看完整版',
+                                            ? PPString.vipNowSeeVideo
+                                            : '支付' +
+                                                widget.data.discountCoins
+                                                    .toString() +
+                                                '币即可观看完整版',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:video_player/video_player.dart';
 import 'package:pilipili/mixin/watchRecordMixin.dart';
 import 'package:pilipili/theme/default.dart';
@@ -145,7 +146,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
       return numb < 10 ? '0$numb' : numb.toString();
     }
 
-    return '${timeStr(s)}:${timeStr(h)}';
+    return timeStr(s).toString()+':'+timeStr(h).toString();
   }
 
   @override
@@ -481,8 +482,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
                                     child: PlatformAwareAssetImage(
-                                        url:
-                                            'assets/pengke/video/${_controller.value.isPlaying ? 'stop-icon' : 'play-icon'}.png',
+                                        url:_controller.value.isPlaying?PPAssetsPath.iconPause:PPAssetsPath.iconPlay,
                                         width: ScreenUtil().setWidth(80),
                                         height: ScreenUtil().setWidth(80),
                                         filterQuality: FilterQuality.medium),

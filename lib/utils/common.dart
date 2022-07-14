@@ -14,6 +14,7 @@ import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pilipili/global.dart';
@@ -196,7 +197,7 @@ class CommonUtils {
               }
             }
           } catch (err) {
-            CommonUtils.debugPrint('图片请求失败${args[0]}');
+            CommonUtils.debugPrint('图片请求失败' + args[0].toString());
             CommonUtils.debugPrint('图片请求失败$err');
           }
         }
@@ -310,7 +311,12 @@ class CommonUtils {
     int m = seconds % (60 * 60) ~/ 60;
     int s = seconds % 60;
     if (h > 0 || m > 0 || s > 0) {
-      return '优惠倒计时 ${h > 9 ? h : '0$h'}:${m > 9 ? m : '0$m'}:${s > 9 ? s : '0$s'}';
+      return '优惠倒计时 ' +
+          (h > 9 ? h.toString() : '0' + h.toString()) +
+          ':' +
+          (m > 9 ? m.toString() : '0' + m.toString()) +
+          ':' +
+          (s > 9 ? s.toString() : '0' + s.toString());
     } else {
       return '';
     }
@@ -321,13 +327,13 @@ class CommonUtils {
     int expireTime = DateTime.parse(time).millisecondsSinceEpoch;
     int timeDiff = ((expireTime - curTime) / 1000).ceil();
     if ((timeDiff ~/ 86400).ceil() > 0) {
-      return '${timeDiff ~/ 86400}天';
+      return (timeDiff ~/ 86400).toString()+'天';
     } else if ((timeDiff ~/ 3600).ceil() > 0) {
-      return '${timeDiff ~/ 3600}小时';
+      return (timeDiff ~/ 3600).toString()+'小时';
     } else if ((timeDiff ~/ 60).ceil() > 0) {
-      return '${timeDiff ~/ 60}分钟';
+      return (timeDiff ~/ 60).toString()+'分钟';
     } else {
-      return isActivity ? '已截止' : '已过期';
+      return isActivity ? PPString.hasExpired : PPString.expired;
     }
   }
 
@@ -340,7 +346,7 @@ class CommonUtils {
 
   static String getRandomThumb() {
     int random = new Random().nextInt(29);
-    return 'assets/images/random/${random + 1}.jpg';
+    return 'assets/images/random/'+(random + 1).toString()+'.jpg';
   }
 
   static String gvSha256(String data) {

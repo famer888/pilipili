@@ -53,7 +53,7 @@ class DownloadComics {
     }
     String _getApplicationDocumentsDirectory = documents.path;
     String _cachePath =
-        '$_getApplicationDocumentsDirectory/comics/$folderName/';
+        _getApplicationDocumentsDirectory + '/comics/' + folderName + '/';
     Directory directory = Directory(_cachePath);
     bool isExists = await directory.exists();
     if (!isExists) {
@@ -211,14 +211,16 @@ class DownloadComics {
           currentImg = tasks_1[taskNum_1]["sets"][finishCount].length;
         }
         // 发送下载初始信息
-        EventBus().emit('DOWNLOADCOMICS_PROGRESS_${taskInfo["id"]}', {
+        EventBus()
+            .emit('DOWNLOADCOMICS_PROGRESS_' + taskInfo["id"].toString(), {
           "id": taskInfo["id"],
           "progress": finishCount,
           'currentImg': tasks_1[taskNum_1]["sets"][finishCount].length + 1,
           'imgTotal': res.data.length
         });
         // 创建单集下载文件夹
-        String setUrl = "${taskInfo["url"]}${finishCount + 1}/";
+        String setUrl =
+            taskInfo["url"].toString() + (finishCount + 1).toString() + "/";
         Directory directory = Directory(setUrl);
         bool isExists = await directory.exists();
         if (!isExists) {
@@ -229,7 +231,6 @@ class DownloadComics {
         if (currentRemove) {
           return;
         }
-        LogUtil.d("已完成章节：${_index}-----所有章节:${taskInfo["allEpisode"]}");
         if (_index >= taskInfo["allEpisode"]) {
           // 完成所有章节
           // 存储完成后的下载任务信息
@@ -253,7 +254,8 @@ class DownloadComics {
         box.put("download_comics_tasks", tasks);
         downloadTasks.removeAt(0);
         startNext();
-        EventBus().emit('DOWNLOADCOMICS_PROGRESS_${taskInfo["id"]}', {
+        EventBus().emit(
+            'DOWNLOADCOMICS_PROGRESS_' + taskInfo["id"].toString(), {
           "id": taskInfo["id"],
           "downloading": false,
           "downloadError": true
@@ -287,8 +289,8 @@ class DownloadComics {
         });
         currentImgIndex++;
         if (url != '') {
-          LogUtil.d(
-              "下载完成----当前图片：${currentImgIndex}/${dataList.data.length}--------当前章节：${finishCount + 1}");
+          // LogUtil.d(
+          //     "下载完成----当前图片：${currentImgIndex}/${dataList.data.length}--------当前章节：${finishCount + 1}");
         } else {
           LogUtil.d("图片为空");
         }
@@ -297,7 +299,7 @@ class DownloadComics {
           finishCount++;
           tasks1[taskNum1]["progress"] = finishCount;
           box.put("download_comics_tasks", tasks1);
-          EventBus().emit('DOWNLOADCOMICS_PROGRESS_${id}', {
+          EventBus().emit('DOWNLOADCOMICS_PROGRESS_' + id.toString(), {
             "id": id,
             "progress": finishCount,
             'currentImg': currentImgIndex,
@@ -305,7 +307,7 @@ class DownloadComics {
           });
           return finishCount;
         } else {
-          EventBus().emit('DOWNLOADCOMICS_PROGRESS_${id}', {
+          EventBus().emit('DOWNLOADCOMICS_PROGRESS_' + id.toString(), {
             "id": id,
             "progress": finishCount,
             'currentImg': currentImgIndex + 1,
@@ -318,8 +320,8 @@ class DownloadComics {
       }
 
       try {
-        LogUtil.d(
-            "开始下载----第${currentImgIndex + 1}张图---共${dataList.data.length}张图---当前章节：${finishCount + 1}");
+        // LogUtil.d(
+        //     "开始下载----第${currentImgIndex + 1}张图---共${dataList.data.length}张图---当前章节：${finishCount + 1}");
         String data = await PlatformAwareHttp.getImage(
             dataList.data[currentImgIndex].imgUrl);
         if (data != '' && data != null) {
@@ -327,10 +329,12 @@ class DownloadComics {
               .run(PlatformAwareCrypto.decryptImage, data);
           if (decrypted != '' && decrypted != null) {
             decrypted = base64Decode(decrypted);
-            File file = File("${savePath}${currentImgIndex + 1}.png");
+            File file =
+                File(savePath + (currentImgIndex + 1).toString() + ".png");
             await file.writeAsBytes(decrypted);
             //
-            return itemFinish("${savePath}${currentImgIndex + 1}.png");
+            return itemFinish(
+                savePath + (currentImgIndex + 1).toString() + ".png");
           } else {
             LogUtil.d("图片解密出错");
             if (errlimit < 5) {

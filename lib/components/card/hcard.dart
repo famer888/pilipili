@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
-import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 // ignore: must_be_immutable
 class Hcard extends StatefulWidget {
@@ -63,7 +63,8 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
       });
     }
     if (widget.isLocal) {
-      EventBus().on('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}', (arg) {
+      EventBus().on(
+          'DOWNLOADVIDEO_PROGRESS_' + widget.cardData["id"].toString(), (arg) {
         if (widget.cardData["id"] == arg["id"]) {
           setState(() {
             progress = arg["progress"] ?? progress;
@@ -94,7 +95,8 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
   @override
   void dispose() {
     super.dispose();
-    EventBus().off('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}');
+    EventBus()
+        .off('DOWNLOADVIDEO_PROGRESS_' + widget.cardData["id"].toString());
   }
 
   String getDownloadText() {
@@ -106,7 +108,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                 ? "点击开始下载"
                 : downloading
                     ? "下载进度:" + (progress * 100).toInt().toString() + "%"
-                    : "暂停下载";
+                    : PPString.pauseDownloads;
     return _text;
   }
 
@@ -225,8 +227,9 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                                 widget.isSubtitle
                                     ? (widget.cardData['second_title'] ??
                                         widget.cardData['title'] ??
-                                        '')
-                                    : widget.cardData['title' ?? ""],
+                                        PPString.isnull)
+                                    : widget
+                                        .cardData['title' ?? PPString.isnull],
                                 maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

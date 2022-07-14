@@ -93,7 +93,7 @@ class _InviteFriendState extends State<Promote> {
   void _copyLinkShare() {
     var config = Provider.of<HomeConfig>(context, listen: false).config;
 
-    Clipboard.setData(ClipboardData(text: '${config.share.affUrlCopy.url}'));
+    Clipboard.setData(ClipboardData(text: config.share.affUrlCopy.url.toString()));
     CommonUtils.showText(
       '复制成功,快去分享吧',
     );
@@ -157,7 +157,7 @@ class _InviteFriendState extends State<Promote> {
                                 height: ScreenUtil().setWidth(96),
                                 color: Colors.white,
                                 child: QrImage(
-                                  data: '${config.share.affUrl}',
+                                  data: config.share.affUrl.toString(),
                                   padding:
                                       EdgeInsets.all(ScreenUtil().setWidth(10)),
                                   version: QrVersions.auto,

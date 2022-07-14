@@ -206,7 +206,7 @@ class CertificateModel {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      '用户ID：$id',
+                                                      '用户ID：' + id.toString(),
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff646464),
@@ -223,7 +223,7 @@ class CertificateModel {
                                                           .setHeight(2),
                                                     ),
                                                     Text(
-                                                      '邀请码：$code',
+                                                      '邀请码：' + code.toString(),
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff646464),
@@ -384,7 +384,7 @@ class CertificateModel {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    '用户ID：$id',
+                                                    '用户ID：' + id.toString(),
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xff646464),
@@ -400,7 +400,7 @@ class CertificateModel {
                                                         .setHeight(2),
                                                   ),
                                                   Text(
-                                                    '邀请码：$code',
+                                                    '邀请码：' + code.toString(),
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xff646464),

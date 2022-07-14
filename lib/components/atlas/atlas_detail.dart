@@ -11,6 +11,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 
 class AtlasDetail extends StatefulWidget {
@@ -49,7 +50,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
       mainAxisSize: MainAxisSize.min,
       children: [
         PlatformAwareAssetImage(
-            url: 'assets/pengke/video/$icon.png',
+            url: 'assets/pengke/video/' + icon + '.png',
             width: ScreenUtil().setWidth(25),
             fit: BoxFit.fitWidth,
             filterQuality: FilterQuality.medium),
@@ -167,7 +168,12 @@ class _AtlasDetailState extends State<AtlasDetail> {
                                     children: [
                                       Text('点击图片看大图',
                                           style: DefaultStyle.gray14),
-                                      Text('共${picDetail['resources'].length}张',
+                                      Text(
+                                          '共' +
+                                              picDetail['resources']
+                                                  .length
+                                                  .toString() +
+                                              '张',
                                           style: DefaultStyle.gray14)
                                     ],
                                   ),
@@ -188,7 +194,8 @@ class _AtlasDetailState extends State<AtlasDetail> {
                                 SizedBox(
                                   height: ScreenUtil().setWidth(16.5),
                                 ),
-                                Text('${picDetail['views_count']}人观看',
+                                Text(
+                                    picDetail['views_count'].toString() + '人观看',
                                     style: DefaultStyle.gray11)
                               ],
                             ),
@@ -228,7 +235,8 @@ class _AtlasDetailState extends State<AtlasDetail> {
                         });
                       },
                       child: _btnItem(
-                          icon: isLike ? 'icon_like' : 'icon_unlike',
+                          icon:
+                              isLike ? PPString.iconLike : PPString.iconunLike,
                           name: likeNum.toString(),
                           color:
                               isLike ? Color(0xff37f4ff) : Color(0xff999999)),
@@ -246,7 +254,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
                             thumb: picDetail['thumb'],
                             title: picDetail['title'] ?? '--',
                             subtitle: picDetail['desc'] ?? '--',
-                            url: '${config.share.affUrl}');
+                            url: config.share.affUrl.toString());
                       },
                       child: _btnItem(icon: 'icon_share', name: '分享'),
                     )
@@ -283,7 +291,7 @@ class _YyTapState extends State<YyTap> {
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(5))),
           child: Center(
             child: Text(
-              '#${widget.text}',
+              '#' + widget.text.toString(),
               style: DefaultStyle.white11,
             ),
           ),

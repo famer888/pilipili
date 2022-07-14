@@ -56,7 +56,7 @@ Future createServer(String url) async {
       current_port++;
       return {
         "origin": domainStr,
-        "localproxy": "http://127.0.0.1:${current_port - 1}"
+        "localproxy": "http://127.0.0.1:"+(current_port - 1).toString()
       };
     } else {
       return {"origin": domainStr, "localproxy": "http://127.0.0.1:$_port"};
@@ -159,7 +159,7 @@ Handler proxyHandler(url, {http.Client client, String proxyName}) {
           requestUrl.resolve(clientResponse.headers['location']).toString();
       if (p.url.isWithin(uri.toString(), location)) {
         clientResponse.headers['location'] =
-            '/${p.url.relative(location, from: uri.toString())}';
+            '/'+p.url.relative(location, from: uri.toString());
       } else {
         clientResponse.headers['location'] = location;
       }

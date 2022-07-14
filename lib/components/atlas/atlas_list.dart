@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 class AtilasList extends StatefulWidget {
   AtilasList({Key key, this.pramas}) : super(key: key);
@@ -122,7 +123,7 @@ class _AtilasListState extends State<AtilasList> {
           children: [
             PlatformAwareAssetImage(
               url: 'assets/images/comics/' +
-                  (type == 'left' ? 'left.png' : 'right.png'),
+                  (type == 'left' ? PPString.iconLeft : PPString.iconRight),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
               filterQuality: FilterQuality.medium,
@@ -134,7 +135,7 @@ class _AtilasListState extends State<AtilasList> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(type == 'left' ? '上' : '下'),
+                    Text(type == 'left' ? PPString.shang : PPString.xia),
                     Text('一'),
                     Text('张'),
                   ],
@@ -278,7 +279,10 @@ class _AtilasListState extends State<AtilasList> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${currentIndex + 1}/${widget.pramas['resources'].length}',
+                                (currentIndex + 1).toString() +
+                                    '/' +
+                                    widget.pramas['resources'].length
+                                        .toString(),
                                 style: DefaultStyle.white18bold,
                               ),
                             ],

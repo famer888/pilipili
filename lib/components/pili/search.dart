@@ -11,6 +11,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/primaryScrollContainer.dart';
 
 class SearchPage extends StatefulWidget {
@@ -791,8 +792,9 @@ class _TabHeadState extends State<TabHead> {
                                     left: 0,
                                     right: 0,
                                     child: PlatformAwareAssetImage(
-                                        url:
-                                            'assets/images/detail/${currentIndex != e ? 'seach_btn' : 'seach_btn_active'}.png',
+                                        url: currentIndex != e
+                                            ? PPAssetsPath.seachBtn
+                                            : PPAssetsPath.seachBtnActive,
                                         fit: BoxFit.fill,
                                         filterQuality: FilterQuality.medium)),
                                 Container(

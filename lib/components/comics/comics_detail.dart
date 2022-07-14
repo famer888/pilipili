@@ -19,6 +19,8 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/logUtil.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import '../../model/comicsDetail.dart';
 import '../../utils/privilege.dart';
@@ -90,7 +92,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
             'allEpisode': data.newestSeries,
             'type': data.finished
           };
-          context.push(CommonUtils.getRealHash('comicReader/$value'));
+          context
+              .push(CommonUtils.getRealHash('comicReader/' + value.toString()));
         },
         child: Stack(
           children: [
@@ -100,8 +103,9 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                 right: 0,
                 left: 0,
                 child: PlatformAwareAssetImage(
-                    url:
-                        'assets/images/comics/${value == watchLog ? 'comic_btn_active' : 'comic_btn'}.png',
+                    url: value == watchLog
+                        ? PPAssetsPath.comicBtnAactive
+                        : PPAssetsPath.comicBtn,
                     fit: BoxFit.fill,
                     filterQuality: FilterQuality.medium)),
             Container(
@@ -118,7 +122,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
               ),
               child: Center(
                 child: Text(
-                  '$value话',
+                  value.toString() + '话',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color(value == watchLog ? 0xffffffff : 0xff828181),
@@ -149,7 +153,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PlatformAwareAssetImage(
-              url: 'assets/images/detail/$icon.png',
+              url: 'assets/images/detail/' + icon.toString() + '.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
@@ -243,7 +247,13 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                         padding: EdgeInsets.symmetric(
                                             vertical: ScreenUtil().setWidth(8)),
                                         child: Text(
-                                          '作者：${data.author == null || data.author == "" ? "--" : data.author}',
+                                          '作者：' +
+                                              (data.author == null ||
+                                                          data.author ==
+                                                              PPString.isnull
+                                                      ? "--"
+                                                      : data.author)
+                                                  .toString(),
                                           style: TextStyle(
                                             color: Color(0xffFF5B8C),
                                             fontWeight: FontWeight.w500,
@@ -252,7 +262,12 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                         ),
                                       ),
                                       Text(
-                                        '${CommonUtils.renderFixedNumber(double.parse(data.viewsCount.toString()))}人看过 - 更新至$newestSeriesNum话',
+                                        (CommonUtils.renderFixedNumber(
+                                                double.parse(data.viewsCount
+                                                    .toString()))) +
+                                            '人看过 - 更新至' +
+                                            newestSeriesNum.toString() +
+                                            '话',
                                         style: TextStyle(
                                           color: Color(0xff979797),
                                           fontWeight: FontWeight.w400,
@@ -419,12 +434,6 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                         CommonUtils.showText(
                                                             '请下载APP使用下载功能！');
                                                       } else {
-                                                        // CommonUtils.showText('漫画下载功能正在开发中，敬请期待！');
-                                                        // LogUtil.d('漫画数据---${data.toJson()}');
-                                                        // LogUtil.d(
-                                                        //     '漫画列表---${recommendList[0].toJson()}');
-                                                        LogUtil.d(
-                                                            "漫画数据----${data}");
                                                         bool canDownload = Privilege
                                                             .isAllowedWithCount(
                                                                 context,
@@ -470,7 +479,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                               );
                                                             },
                                                             cancelText: '取消',
-                                                            btnText: '立即升级',
+                                                            btnText: PPString.upgradeNuw,
                                                             callBack: () {
                                                               context.push(
                                                                   '/${Routes.vip}');
@@ -515,8 +524,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                       },
                                                       child: _btnItem(
                                                           icon: isFavorites
-                                                              ? 'icon_unlike'
-                                                              : 'icon_like',
+                                                              ? PPString
+                                                                  .iconunLike
+                                                              : PPString
+                                                                  .iconLike,
                                                           name: CommonUtils
                                                               .renderFixedNumber(
                                                                   likeCount
@@ -544,8 +555,9 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                           subtitle:
                                                               data.description ??
                                                                   '--',
-                                                          url:
-                                                              '${config.share.affUrl}');
+                                                          url: config
+                                                              .share.affUrl
+                                                              .toString());
                                                     },
                                                     child: _btnItem(
                                                         icon: 'icon_share',
@@ -582,8 +594,12 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                       child: Center(
                                                         child: Text(
                                                           data.watchLog == 0
-                                                              ? '开始阅读'
-                                                              : '从${data.watchLog}话继续看',
+                                                              ? PPString
+                                                                  .startReading
+                                                              : '从' +
+                                                                  data.watchLog
+                                                                      .toString() +
+                                                                  '话继续看',
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -663,7 +679,9 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                         Color(0xffffe4e4)
                                                       ])),
                                               child: Text(
-                                                isOpenAll ? '收起' : '全部章节',
+                                                isOpenAll
+                                                    ? PPString.putAway
+                                                    : PPString.allChapters,
                                                 style: TextStyle(
                                                     color: Color(0xffff84a9),
                                                     fontWeight: FontWeight.bold,
@@ -749,7 +767,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
       'type': data.finished,
       'episode': episode
     };
-    context.push(CommonUtils.getRealHash('comicReader/$episode'));
+    context.push(CommonUtils.getRealHash('comicReader/' + episode.toString()));
   }
 
   //阅读器目录
@@ -770,13 +788,14 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                 horizontal: ScreenUtil().setWidth(14)),
             child: Row(
               children: [
-                Text(data.finished == 0 ? '连载' : '已完结',
+                Text(
+                    data.finished == 0 ? PPString.serialize : PPString.finished,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: ScreenUtil().setSp(18),
                         fontWeight: FontWeight.w700)),
                 SizedBox(width: ScreenUtil().setWidth(10.5)),
-                Text('更新至${data.newestSeries}话',
+                Text('更新至' + data.newestSeries.toString() + '话',
                     style: TextStyle(
                         color: Color(0xff999999),
                         fontSize: ScreenUtil().setSp(13))),
@@ -807,8 +826,9 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                               right: 0,
                               bottom: 0,
                               child: PlatformAwareAssetImage(
-                                  url:
-                                      'assets/pengke/video/${watchLog == e + 1 ? 'comics_btn_active' : 'comics_btn'}.png',
+                                  url: watchLog == e + 1
+                                      ? PPAssetsPath.videoComicBtnAactive
+                                      : PPAssetsPath.videoComicBtn,
                                   fit: BoxFit.fill,
                                   filterQuality: FilterQuality.medium)),
                           Container(

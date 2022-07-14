@@ -11,6 +11,7 @@ import 'package:heic_to_jpg/heic_to_jpg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pilipili/components/certificate.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:universal_html/html.dart' as html;
@@ -308,7 +309,7 @@ class _SetupPageState extends State<SetupPage> {
           );
         },
         cancelText: '取消',
-        btnText: '立即升级',
+        btnText: PPString.upgradeNuw,
         callBack: () {
           context.push('/${Routes.vip}');
         },
@@ -460,7 +461,7 @@ class _SetupPageState extends State<SetupPage> {
               ),
               _setupItem(
                   title: '昵称',
-                  rightText: '${members?.nickname}',
+                  rightText: members?.nickname.toString(),
                   isMarginBottom: true,
                   isAllRadius: true,
                   isBorderBottom: false,
@@ -479,7 +480,7 @@ class _SetupPageState extends State<SetupPage> {
                           );
                         },
                         cancelText: '取消',
-                        btnText: '立即升级',
+                        btnText: PPString.upgradeNuw,
                         callBack: () {
                           context.push('/${Routes.vip}');
                         },
@@ -492,8 +493,8 @@ class _SetupPageState extends State<SetupPage> {
               _line(),
               _setupItem(
                   isTopRadius: true,
-                  title: members?.phone == null ? '绑定手机' : '更换绑定手机',
-                  rightText: members?.phone == null ? '' : '${members.phone}',
+                  title: members?.phone == null ? PPString.bindPhone : PPString.changeBindPhone,
+                  rightText: members?.phone == null ? PPString.isnull : members.phone.toString(),
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'), extra: {
                       'type': members?.phone == null ? 1 : 2,
@@ -509,9 +510,9 @@ class _SetupPageState extends State<SetupPage> {
               AppGlobal.apiToken == '' && AppGlobal.apiToken != null
                   ? Container()
                   : _setupItem(
-                      title: isSetPassword == 0 ? '设置密码' : '更换密码',
+                      title: isSetPassword == 0 ? PPString.setPassword : PPString.changePassword,
                       isTips: isSetPassword == 0,
-                      rightText: isSetPassword == 0 ? '手机号+密码一键登录' : '',
+                      rightText: isSetPassword == 0 ? PPString.phoneAndPasswordLogin : PPString.isnull,
                       onTap: () {
                         context.push(CommonUtils.getRealHash('fillcode'),
                             extra: {'type': isSetPassword == 0 ? 6 : 5});
@@ -520,7 +521,7 @@ class _SetupPageState extends State<SetupPage> {
               _setupItem(
                   title: '输入邀请码',
                   rightText:
-                      '${members?.invitedBy == null ? '' : members.invitedBy}',
+                      (members?.invitedBy == null ? '' : members.invitedBy).toString(),
                   onTap: () {
                     if (members?.invitedBy == null) {
                       context.push(CommonUtils.getRealHash('fillcode'),
@@ -543,9 +544,9 @@ class _SetupPageState extends State<SetupPage> {
                   title: '账号凭证',
                   onTap: () {
                     CertificateModel.showCertificate(backButtonBehavior,
-                        id: '${members?.aff ?? '0000000'}',
-                        code: '${config?.share?.affCode ?? '0000'}',
-                        url: '${config?.share?.affUrl ?? ''}');
+                        id: (members?.aff ?? '0000000').toString(),
+                        code: (config?.share?.affCode ?? '0000').toString(),
+                        url: (config?.share?.affUrl ?? '').toString());
                   }),
               _line(),
               _setupItem(
@@ -559,8 +560,8 @@ class _SetupPageState extends State<SetupPage> {
                   isBottomRadius: true,
                   title: '版本更新',
                   rightText: AppGlobal.isNewVersion
-                      ? '已是最新版本(${AppGlobal.appinfo['version']})'
-                      : '有新版本,去更新？',
+                      ? '已是最新版本('+AppGlobal.appinfo['version'].toString()+')'
+                      : PPString.isNewVersion,
                   rightStyle: TextStyle(
                       color: Color(0xff979797),
                       decoration: TextDecoration.underline,
@@ -633,7 +634,7 @@ class UserAvatar extends StatelessWidget {
               filterQuality: FilterQuality.medium)
           : PlatformAwareNetworkImage(
               fit: BoxFit.cover,
-              url: '${state.member.thumb}',
+              url: state.member.thumb.toString(),
             );
     });
   }

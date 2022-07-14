@@ -13,6 +13,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoController extends StatefulWidget {
@@ -169,10 +170,10 @@ class _VideoControllerState extends State<VideoController>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0$numb' : numb.toString();
+      return numb < 10 ? '0'+numb.toString() : numb.toString();
     }
 
-    return '${timeStr(s)}:${timeStr(h)}';
+    return timeStr(s).toString()+':'+timeStr(h).toString();
   }
 
   Future<void> changeFull() async {
@@ -338,8 +339,7 @@ class _VideoControllerState extends State<VideoController>
                                 }
                               },
                               child: PlatformAwareAssetImage(
-                                  url:
-                                      'assets/images/detail/${widget.videoController.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
+                                  url:widget.videoController.value.isPlaying?PPAssetsPath.iconPause:PPAssetsPath.iconPlay,
                                   width: ScreenUtil().setWidth(50),
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
@@ -377,8 +377,7 @@ class _VideoControllerState extends State<VideoController>
                           }
                         },
                         child: PlatformAwareAssetImage(
-                          url:
-                              'assets/images/volume-icon${widget.videoController.value.volume > 0 ? '-on' : ''}.png',
+                          url:widget.videoController.value.volume > 0 ?PPAssetsPath.volumeon:PPAssetsPath.volumeOff,
                           width: ScreenUtil().setWidth(15),
                           fit: BoxFit.fitWidth,
                         ),

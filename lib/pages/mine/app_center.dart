@@ -226,7 +226,7 @@ class _SwiperContainerState extends State<SwiperContainer> {
             child: _banner.length == 1
                 ? GestureDetector(
                     onTap: () {
-                      CommonUtils.launchURL("${_banner[0].url}");
+                      CommonUtils.launchURL(_banner[0].url.toString());
                     },
                     child: PlatformAwareNetworkImage(
                       url: _banner[0].imgUrl,
@@ -338,21 +338,21 @@ class _ApplicationItemState extends State<ApplicationItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${widget.appname}',
+                          widget.appname.toString(),
                           style: DefaultStyle.black15bold,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '$clickNumber次下载',
+                          clickNumber.toString() + '次下载',
                           style: DefaultStyle.lgray10,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '${widget.des}',
+                          widget.des.toString(),
                           style: DefaultStyle.lgray11,
                         ),
                       ],

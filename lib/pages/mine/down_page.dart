@@ -14,6 +14,7 @@ import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/download_comics.dart';
 
 import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 class DownPage extends StatefulWidget {
   DownPage({Key key}) : super(key: key);
@@ -226,7 +227,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                     child: Text(
-                      isAll ? "全不选" : "全选",
+                      isAll ? PPString.allNoSelecr : PPString.allSelecr,
                       style: TextStyle(
                           color: DefaultStyle.themeColor,
                           fontSize: ScreenUtil().setSp(15)),

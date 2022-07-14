@@ -4,6 +4,7 @@ import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 // ignore: must_be_immutable
 class Vcard extends StatefulWidget {
@@ -69,7 +70,8 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
       setState(() {});
     }
     if (widget.isLocal) {
-      EventBus().on('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}', (arg) {
+      EventBus().on(
+          'DOWNLOADCOMICS_PROGRESS_' + widget.cardData["id"].toString(), (arg) {
         // print(arg);
         if (widget.cardData["id"] == arg["id"]) {
           setState(() {
@@ -106,14 +108,20 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
   }
 
   String getDownloadText() {
-    return "${progress < widget.cardData["sets"].length ? progress + 1 : progress}章:${currentImg}/${imgTotal}";
+    return (progress < widget.cardData["sets"].length ? progress + 1 : progress)
+            .toString() +
+        "章:" +
+        currentImg.toString() +
+        "/" +
+        imgTotal.toString();
   }
 
   @override
   void dispose() {
     super.dispose();
     if (widget.isLocal) {
-      EventBus().off('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}');
+      EventBus()
+          .off('DOWNLOADCOMICS_PROGRESS_' + widget.cardData["id"].toString());
     }
   }
 
@@ -207,12 +215,12 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                               : Center(
                                   child: Text(
                                     downloadError
-                                        ? "下载失���，点击重试"
+                                        ? "下载失败，点击重试"
                                         : isWaiting
                                             ? "等待下载..."
                                             : progress == 0
                                                 ? "点击开始下载"
-                                                : "暂停下载",
+                                                : PPString.pauseDownloads,
                                     style: TextStyle(
                                         color: progress == -1
                                             ? Colors.red

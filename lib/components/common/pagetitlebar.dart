@@ -7,7 +7,6 @@
  * @FilePath: /flutter2021/lib/components/common/pagetitlebar.dart
  */
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
@@ -47,7 +46,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
               height: widget.height ?? DefaultStyle.navbarHegiht,
               width: ScreenUtil().screenWidth * 0.8,
               child: Text(
-                widget.title != null ? widget.title : '二级列表页',
+                widget.title != null ? widget.title : '',
                 style: DefaultStyle.white16bold,
               ),
             )),

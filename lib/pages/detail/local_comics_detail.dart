@@ -1,26 +1,11 @@
-import 'dart:ui';
-
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/components/card/newComicsCard.dart';
-import 'package:pilipili/components/card/vcard.dart';
-import 'package:pilipili/components/common/widgetitlebar.dart';
-import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/components/sharemovie.dart';
-import 'package:pilipili/components/yy_dialog.dart';
-import 'package:pilipili/global.dart';
-import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
-import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/logUtil.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:provider/provider.dart';
-import '../../model/comicsDetail.dart';
-import '../../utils/privilege.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 class LocalComicsDetatl extends StatefulWidget {
   LocalComicsDetatl({Key key, this.comicsInfo}) : super(key: key);
@@ -71,7 +56,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
               ),
               child: Center(
                 child: Text(
-                  '$value话',
+                  value.toString() + '话',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color(0xff828181),
@@ -190,7 +175,14 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                   padding: EdgeInsets.symmetric(
                                       vertical: ScreenUtil().setWidth(8)),
                                   child: Text(
-                                    '作者：${widget.comicsInfo["author"] == null || widget.comicsInfo["author"] == "" ? "--" : widget.comicsInfo["author"]}',
+                                    '作者：' +
+                                        (widget.comicsInfo["author"] == null ||
+                                                    widget.comicsInfo[
+                                                            "author"] ==
+                                                        ""
+                                                ? "--"
+                                                : widget.comicsInfo["author"])
+                                            .toString(),
                                     style: TextStyle(
                                       color: Color(0xffFF5B8C),
                                       fontWeight: FontWeight.w500,
@@ -199,7 +191,10 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                   ),
                                 ),
                                 Text(
-                                  '${CommonUtils.renderFixedNumber(double.parse(widget.comicsInfo["viewsCount"].toString()))}人看过',
+                                  CommonUtils.renderFixedNumber(double.parse(
+                                          widget.comicsInfo["viewsCount"]
+                                              .toString())) +
+                                      '人看过',
                                   style: TextStyle(
                                     color: Color(0xff979797),
                                     fontWeight: FontWeight.w400,
@@ -361,7 +356,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                             width: ScreenUtil().setWidth(144),
                                             child: Center(
                                               child: Text(
-                                                '开始阅读',
+                                                PPString.startReading,
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize:
@@ -415,7 +410,9 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                                       Color(0xffffe4e4)
                                                     ])),
                                             child: Text(
-                                              isOpenAll ? '收起' : '全部章节',
+                                              isOpenAll
+                                                  ? PPString.putAway
+                                                  : PPString.allChapters,
                                               style: TextStyle(
                                                   color: Color(0xffff84a9),
                                                   fontWeight: FontWeight.bold,
@@ -478,7 +475,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                 horizontal: ScreenUtil().setWidth(14)),
             child: Row(
               children: [
-                Text('共${widget.comicsInfo["allEpisode"]}话',
+                Text('共' + widget.comicsInfo["allEpisode"].toString() + '话',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: ScreenUtil().setSp(18),

@@ -82,7 +82,7 @@ class _MorePageState extends State<MorePage>
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: widget.title != null ? widget.title : '二级列表页',
+            title: widget.title != null ? widget.title : '',
           ),
           Expanded(
               child: Padding(

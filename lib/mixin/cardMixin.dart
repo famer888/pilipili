@@ -8,6 +8,7 @@ import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/privilege.dart';
 import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/download_comics.dart';
@@ -128,7 +129,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                 );
               },
               cancelText: '取消',
-              btnText: '立即升级',
+              btnText: PPString.upgradeNuw,
               callBack: () {
                 context.push('/${Routes.vip}');
               },
@@ -220,7 +221,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                 Provider.of<HomeConfig>(context, listen: false).member;
             var aff = members.aff;
             var piliid = members.uuid;
-            CommonUtils.launchURL('${linkUrl.trim()}?aff=$aff&piliid=$piliid');
+            CommonUtils.launchURL(linkUrl.trim()+'?aff=$aff&piliid=$piliid');
           }
         }
       },
@@ -245,7 +246,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                   ? "点击开始下载"
                   : downloading
                       ? "下载进度:" + (progress * 100).toInt().toString() + "%"
-                      : "暂停下载";
+                      : PPString.pauseDownloads;
       return _text;
     }
 

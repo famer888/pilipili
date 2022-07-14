@@ -141,7 +141,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                             style: DefaultStyle.black14,
                             children: [
                               TextSpan(
-                                  text: '${product['promo_price']}元',
+                                  text: product['promo_price'].toString() + '元',
                                   style: TextStyle(
                                       color: Color(0xffFE155B),
                                       fontSize: ScreenUtil().setSp(14)))
@@ -245,8 +245,9 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                 }
                               } else {
                                 if (kIsWeb) {
-                                  winRef = html.window
-                                      .open('${origin}waiting.html', "_blank");
+                                  winRef = html.window.open(
+                                      origin.toString() + 'waiting.html',
+                                      "_blank");
                                 }
                                 try {
                                   Basic res = await onCreatePaying(
@@ -329,12 +330,17 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                       CertificateModel.showCertificate(
                                                           BackButtonBehavior
                                                               .none,
-                                                          id:
-                                                              '${members?.aff ?? '0000000'}',
-                                                          code:
-                                                              '${config?.share?.affCode ?? '0000'}',
-                                                          url:
-                                                              '${config?.share?.affUrl ?? ''}');
+                                                          id: (members?.aff ??
+                                                                  '0000000')
+                                                              .toString(),
+                                                          code: (config?.share
+                                                                      ?.affCode ??
+                                                                  '0000')
+                                                              .toString(),
+                                                          url: (config?.share
+                                                                      ?.affUrl ??
+                                                                  '')
+                                                              .toString());
                                                     },
                                                     child: Text(
                                                       '保存账号凭证',

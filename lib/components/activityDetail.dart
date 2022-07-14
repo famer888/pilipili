@@ -68,7 +68,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   .toString()),
                           title: activityInfo['title'] ?? '--',
                           subtitle: activityInfo['desc'] ?? '--',
-                          url: '${config.share.affUrl}');
+                          url: config.share.affUrl);
                     },
                     child: Container(
                       child: PlatformAwareAssetImage(
@@ -191,14 +191,14 @@ class _ActivityDetailState extends State<ActivityDetail> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text.rich(TextSpan(
-                            text: '${activityInfo['join_num']} ',
+                            text: activityInfo['join_num'].toString(),
                             style: TextStyle(
                                 color: Color(0xffff5b8c),
                                 fontSize: ScreenUtil().setSp(16),
                                 fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
-                                  text: '人已参与活动', style: DefaultStyle.black14)
+                                  text: ' 人已参与活动', style: DefaultStyle.black14)
                             ])),
                         activityInfo['status'] != 1
                             ? Container(
@@ -249,7 +249,11 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                       var aff = members.aff;
                                       var piliid = members.uuid;
                                       CommonUtils.launchURL(
-                                          '${urlList[0]}?aff=$aff&piliid=$piliid');
+                                          urlList[0].toString() +
+                                              '?aff=' +
+                                              aff.toString() +
+                                              '&piliid=' +
+                                              piliid.toString());
                                     } else {
                                       CommonUtils.launchURL(
                                           activityInfo['link']);

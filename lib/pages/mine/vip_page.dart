@@ -14,6 +14,7 @@ import 'package:pilipili/mixin/payMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/privilege.dart';
 
 class VipPage extends StatefulWidget {
@@ -580,7 +581,6 @@ class _MyVipState extends State<MyVip> {
       getUserProductList(page: page, limit: limit).then((res) {
         if (res['status'] != 0) {
           List _data = res['data'] == null ? [] : res['data'];
-          CommonUtils.debugPrint("****************11${_data}");
           if (page == 1) {
             vipList = _data;
           } else {
@@ -604,19 +604,6 @@ class _MyVipState extends State<MyVip> {
       initpage();
     }
   }
-
-  // Color _vipColors(String pname, int showMore) {
-  //   switch (pname) {
-  //     case "年卡":
-  //       return Color(0xffffe0a3);
-  //       break;
-  //     case "全能年卡":
-  //       return Color(0xffffe0a3);
-  //       break;
-  //     default:
-  //       return showMore == 1 ? Color(0XFF23140d) : Colors.white;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -918,7 +905,7 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                                         moreProducts[index][
                                                                 'promo_expire_time'] ==
                                                             ''
-                                                    ? ''
+                                                    ? PPString.isnull
                                                     : CommonUtils
                                                         .getPromotionCountDownTime(
                                                             now)),
@@ -947,7 +934,12 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                              '¥${double.parse(moreProducts[index]['price']).toInt()}',
+                                              '¥' +
+                                                  double.parse(
+                                                          moreProducts[index]
+                                                              ['price'])
+                                                      .toInt()
+                                                      .toString(),
                                               style: TextStyle(
                                                   color: Colors.white54,
                                                   fontSize:
@@ -959,7 +951,11 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                             width: ScreenUtil().setWidth(12.5),
                                           ),
                                           Text(
-                                            '¥${double.parse(moreProducts[index]['promo_price']).toInt()}',
+                                            '¥' +
+                                                double.parse(moreProducts[index]
+                                                        ['promo_price'])
+                                                    .toInt()
+                                                    .toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize:
@@ -990,19 +986,6 @@ class VIPItemContainer extends StatefulWidget {
 }
 
 class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
-  // Color _vipColors(String pname) {
-  //   switch (pname) {
-  //     case "年卡":
-  //       return Color(0xffffe0a3);
-  //       break;
-  //     case "全能年卡":
-  //       return Color(0xffffe0a3);
-  //       break;
-  //     default:
-  //       return Color(0XFF23140d);
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -1045,7 +1028,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                         fontWeight: FontWeight.bold),
                   )),
                   Text(
-                    '${widget.product['valid_date']}天特权时间',
+                    widget.product['valid_date'].toString() + '天特权时间',
                     textAlign: TextAlign.right,
                     style: TextStyle(
                         color: Color(
@@ -1061,7 +1044,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                   child: SingleChildScrollView(
                 padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(30)),
                 child: Text(
-                  '${widget.product['description']}',
+                  widget.product['description'].toString(),
                   style: TextStyle(
                       height: 1.5,
                       color: Color(

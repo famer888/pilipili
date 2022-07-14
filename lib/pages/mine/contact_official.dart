@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -50,13 +52,13 @@ class _ContactOfficialState extends State<ContactOfficial> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          '${itemData['name']}',
+          itemData['name'].toString(),
           style: DefaultStyle.black16bold,
         ),
         SizedBox(
           height: ScreenUtil().setWidth(8),
         ),
-        Text('${itemData['decs']}', style: TextStyle(color: Color(0xff6D6D6D))),
+        Text(itemData['decs'].toString(), style: TextStyle(color: Color(0xff6D6D6D))),
         Container(
           margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(11.5),
@@ -165,8 +167,8 @@ class AppInfo extends StatelessWidget {
                   children: [
                     PlatformAwareAssetImage(
                       url: info['type'] == 'Telegram'
-                          ? 'assets/images/mine/icon_tg.png'
-                          : 'assets/images/mine/icon_pt.png',
+                          ? PPAssetsPath.iconTG
+                          : PPAssetsPath.iconPT,
                       width: ScreenUtil().setWidth(38.8),
                       height: ScreenUtil().setWidth(38.8),
                     ),
@@ -179,14 +181,14 @@ class AppInfo extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          '${info['name']}',
+                          info['name'].toString(),
                           style: DefaultStyle.black13bold,
                         ),
                         SizedBox(
                           height: ScreenUtil().setHeight(5),
                         ),
                         Text(
-                          '${info['decs']}',
+                          info['decs'].toString(),
                           style: DefaultStyle.lgray12,
                         ),
                       ],

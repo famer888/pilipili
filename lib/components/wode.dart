@@ -7,6 +7,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/routers.dart';
@@ -31,7 +32,6 @@ class _WodeState extends State<Wode> {
     // TODO: implement initState
     super.initState();
     EventBus().on('need-update-login-state', (args) {
-      CommonUtils.debugPrint("*********************$args");
       if (args == 'login') {
         setState(() {});
       } else if (args == 'quit') {
@@ -188,7 +188,7 @@ class _WodeState extends State<Wode> {
                         height: ScreenUtil().setHeight(5),
                       ),
                       Text(
-                        "您有${member.level ?? 0}张会员卡",
+                        "您有" + (member.level ?? 0).toString() + "张会员卡",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             color: Colors.white,
@@ -248,7 +248,7 @@ class _WodeState extends State<Wode> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "余额:${member.money ?? 0}",
+                              "余额:" + (member.money ?? 0).toString(),
                               style: TextStyle(
                                   fontSize: ScreenUtil().setSp(12),
                                   color: Colors.white,
@@ -307,17 +307,6 @@ class _WodeState extends State<Wode> {
                           ],
                         ),
                       ),
-                      // Positioned(
-                      //   bottom: ScreenUtil().setWidth(6),
-                      //   left: ScreenUtil().setWidth(12),
-                      //   child: Text(
-                      //     "立即领取",
-                      //     style: TextStyle(
-                      //         fontSize: ScreenUtil().setSp(12),
-                      //         color: Colors.white,
-                      //         fontWeight: FontWeight.bold),
-                      //   ),
-                      // )
                     ],
                   ),
                 ),
@@ -345,7 +334,9 @@ class _WodeState extends State<Wode> {
             child: Column(
               children: [
                 PlatformAwareAssetImage(
-                    url: 'assets/images/wode/${item['icon']}.png',
+                    url: 'assets/images/wode/' +
+                        item['icon'].toString() +
+                        '.png',
                     fit: BoxFit.fitWidth,
                     width: ScreenUtil().setWidth(32),
                     // height: ScreenUtil().setWidth(45),
@@ -473,7 +464,9 @@ class _WodeState extends State<Wode> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'ID:${members?.aff ?? '0000000'}',
+                                            'ID:' +
+                                                (members?.aff ?? '0000000')
+                                                    .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -550,8 +543,8 @@ class SystemNoticeIcon extends StatelessWidget {
                 (state.systemnotice?.data ?? false) != null &&
                         (state.systemnotice.data.systemNoticeCount != 0 ||
                             state.systemnotice.data.feedCount != 0)
-                    ? 'assets/images/wode/Chat_Circle_Dots_active.png'
-                    : 'assets/images/wode/Chat_Circle_Dots.png',
+                    ? PPAssetsPath.chatCircleDotsActive
+                    : PPAssetsPath.chatCircleDots,
             width: ScreenUtil().setWidth(24),
             fit: BoxFit.fitWidth,
             filterQuality: FilterQuality.medium),

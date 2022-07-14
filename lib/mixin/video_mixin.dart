@@ -10,6 +10,7 @@ import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as ui;
 
@@ -175,7 +176,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Text(
-                                                '${data.discountCoins}币',
+                                                data.discountCoins.toString() +
+                                                    '币',
                                                 style: TextStyle(
                                                     color: Colors.yellow,
                                                     shadows: <Shadow>[
@@ -198,7 +200,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                               data.coins == data.discountCoins
                                                   ? Container()
                                                   : Text(
-                                                      '${data.coins}G',
+                                                      data.coins.toString() +
+                                                          'G',
                                                       style: TextStyle(
                                                           color:
                                                               Color(0XFFFF5B8C),
@@ -269,8 +272,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                         child: Center(
                                           child: Text(
                                             isInsufficient
-                                                ? '皮哩币不足，前往充值'
-                                                : '立即购买',
+                                                ? PPString.goldInsufficient
+                                                : PPString.buyNow,
                                             style: TextStyle(
                                                 color: isInsufficient
                                                     ? Color(0xffff84a9)
@@ -373,8 +376,9 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                   child: Center(
                                                     child: Text(
                                                       isInsufficient
-                                                          ? '皮哩币不足，前往充值'
-                                                          : '立即购买',
+                                                          ? PPString
+                                                              .goldInsufficient
+                                                          : PPString.buyNow,
                                                       style: TextStyle(
                                                           color: isInsufficient
                                                               ? Color(
@@ -422,14 +426,12 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text.rich(TextSpan(
-            text: '该视频需要花费',
-            style: DefaultStyle.white15,
-            children: [
-              TextSpan(
-                  text: '${data.discountCoins}GOLD',
-                  style: DefaultStyle.red16bold)
-            ])),
+        Text.rich(
+            TextSpan(text: '该视频需要花费', style: DefaultStyle.white15, children: [
+          TextSpan(
+              text: data.discountCoins.toString() + 'GOLD',
+              style: DefaultStyle.red16bold)
+        ])),
         GestureDetector(
           onTap: () {
             showBuy(data, buyFunction);

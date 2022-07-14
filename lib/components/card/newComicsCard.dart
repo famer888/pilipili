@@ -1,14 +1,11 @@
 import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/model/recommendComics.dart';
-import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:pilipili/utils/pp_string.dart';
 
 class NewComicsCard extends StatefulWidget {
   final Datum cardData;
@@ -27,12 +24,6 @@ class _NewComicsCardState extends State<NewComicsCard> {
   @override
   void initState() {
     super.initState();
-    // if (widget.cardData?.tags != null && widget.cardData?.tags != '') {
-    //   List tagsList = widget.cardData.tags.split(',');
-    //   tagsList.forEach((item) {
-    //     tags += '#$item  ';
-    //   });
-    // }
     _height = (widget.width / 109) * 152;
   }
 
@@ -48,11 +39,11 @@ class _NewComicsCardState extends State<NewComicsCard> {
         if (widget.relace) {
           context.push(
               CommonUtils.getRealHash().replaceAll(RegExp(r"comicsdetail/.*"),
-                  'comicsdetail/${widget.cardData.datumId}'),
+                  'comicsdetail/' + widget.cardData.datumId.toString()),
               replace: widget.relace);
         } else {
           context.push(CommonUtils.getRealHash(
-              'comicsdetail/${widget.cardData.datumId}'));
+              'comicsdetail/' + widget.cardData.datumId.toString()));
         }
       },
       child: Container(
@@ -77,7 +68,9 @@ class _NewComicsCardState extends State<NewComicsCard> {
                 width: widget.width,
                 margin: EdgeInsets.only(top: ScreenUtil().setWidth(4)),
                 child: Text(
-                    widget.cardData == null ? '标题' : widget.cardData.title,
+                    widget.cardData == null
+                        ? PPString.isnull
+                        : widget.cardData.title,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(

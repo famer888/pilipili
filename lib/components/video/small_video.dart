@@ -21,6 +21,8 @@ import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/shelf_proxy.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +78,8 @@ class _SmallVideoState extends State<SmallVideo> {
         if (res.data == null) return;
         if (res.data.length < AppGlobal.smallVideoLimit) {
           isAll = true;
-          CommonUtils.showText('已为您加载完最后${res.data.length}部视频～');
+          CommonUtils.showText(
+              '已为您加载完最后' + res.data.length.toString() + '部视频～');
         }
         loading = false;
         pageLoading = false;
@@ -384,7 +387,6 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
             limit: limit)
         .then((res) {
       if (res['status'] != 0) {
-        CommonUtils.debugPrint('-------------评论：$res');
         commentLoading = false;
         List resdata = res['data'] == null ? [] : res['data'];
         isAll = resdata.length < limit;
@@ -438,10 +440,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0$numb' : numb.toString();
+      return numb < 10 ? '0' + numb.toString() : numb.toString();
     }
 
-    return '${timeStr(s)}:${timeStr(h)}';
+    return timeStr(s).toString() + ':' + timeStr(h).toString();
   }
 
   buySmallVideo(int money) {
@@ -470,7 +472,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
             Provider.of<HomeConfig>(context, listen: false).member.money;
         bool isInsufficient = money < widget.data.discountCoins;
         YyShowDialog.showdialog(context,
-            btnText: isInsufficient ? 'GOLD不足，前往充值' : '购买观看', callBack: () {
+            btnText: isInsufficient
+                ? PPString.goldInsufficient
+                : PPString.buySee, callBack: () {
           if (isInsufficient) {
             context.push('/${Routes.coinRecharge}');
           } else {
@@ -487,7 +491,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                 children: [
                   Text.rich(TextSpan(text: '该视频需要花费', children: [
                     TextSpan(
-                        text: '${widget.data.discountCoins}G',
+                        text: widget.data.discountCoins.toString() + 'G',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xffFF84A9),
@@ -671,7 +675,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         reply: value)
                                     .then((res) {
                                   if (res['status'] != 0) {
-                                    CommonUtils.showText('影评发布成功,请刷新查看������');
+                                    CommonUtils.showText('影评发布成功,请刷新查看');
                                   } else {
                                     CommonUtils.showText(res['msg']);
                                   }
@@ -720,8 +724,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                           context,
                                           RESOURCE_TYPE_SHORT_VIDEO,
                                           PRIVILEGE_TYPE_COMMENT)
-                                      ? '能不能火就靠你啦～'
-                                      : '升级VIP即可发布影评哦～',
+                                      ? PPString.vipCommentHint
+                                      : PPString.noVipCommentHint,
                                   style: TextStyle(
                                       color: Color(0xff999999),
                                       fontSize: ScreenUtil().setSp(14)),
@@ -866,7 +870,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
         _controller == null) {
       videoInit = true;
       CommonUtils.debugPrint(
-          '===============视��地址:${widget.data.source240}==预览视频=${widget.data.preview}================');
+          '===============视频地址:${widget.data.source240}==预览视频=${widget.data.preview}================');
       initVideo(isNovideo ? widget.data.preview : widget.data.source240);
     }
     return GestureDetector(
@@ -1092,8 +1096,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                           context,
                                                           title: 'GOLD视频',
                                                           btnText: isInsufficient
-                                                              ? 'GOLD不足，前往充值'
-                                                              : '购买观看',
+                                                              ? PPString
+                                                                  .goldInsufficient
+                                                              : PPString.buySee,
                                                           callBack: () {
                                                         if (isInsufficient) {
                                                           context.push(
@@ -1124,8 +1129,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                                         '该视频需要花费',
                                                                     children: [
                                                                       TextSpan(
-                                                                          text:
-                                                                              '${widget.data.discountCoins}G',
+                                                                          text: widget.data.discountCoins.toString() +
+                                                                              'G',
                                                                           style: TextStyle(
                                                                               fontWeight: FontWeight.bold,
                                                                               color: Color(0xffFF84A9),
@@ -1193,8 +1198,12 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                                 TextSpan(
                                                                     text: widget.data.isfree ==
                                                                             1
-                                                                        ? '立即成为VIP解锁全站视频'
-                                                                        : '支付${widget.data.discountCoins}币即可观看完整版',
+                                                                        ? PPString
+                                                                            .vipNowSeeVideo
+                                                                        : '支付' +
+                                                                            widget.data.discountCoins
+                                                                                .toString() +
+                                                                            '币即可观看完整版',
                                                                     style: TextStyle(
                                                                         color: Colors
                                                                             .white,
@@ -1313,8 +1322,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 PlatformAwareAssetImage(
-                                                    url:
-                                                        'assets/images/detail/${isLike ? 'icon_like' : 'icon_unlike'}.png',
+                                                    url: isLike
+                                                        ? PPAssetsPath.iconLike
+                                                        : PPAssetsPath
+                                                            .iconUnlike,
                                                     width: ScreenUtil()
                                                         .setWidth(20),
                                                     filterQuality:
@@ -1348,8 +1359,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                       widget.data.title ?? '--',
                                                   subtitle:
                                                       widget.data.desc ?? '--',
-                                                  url:
-                                                      '${config.share.affUrl}');
+                                                  url: config.share.affUrl
+                                                      .toString());
                                             },
                                             child: _itemContainer(Column(
                                               mainAxisSize: MainAxisSize.min,
@@ -1413,8 +1424,8 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                     .then((res) {
                                                   if (res['status'] != 0) {
                                                     Map taskInfo = {
-                                                      "id":
-                                                          "${widget.data.datumId}",
+                                                      "id": widget.data.datumId
+                                                          .toString(),
                                                       "urlPath": res['data']
                                                           ['downloadUrl'],
                                                       "title":
@@ -1442,8 +1453,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                         return Text(
                                                           widget.data.isfree ==
                                                                   2
-                                                              ? '您还未购买本视频,缓存完成随心快进到高潮~'
-                                                              : '您离下载还差一个VIP！缓存完成随心快进到高潮~',
+                                                              ? PPString
+                                                                  .noBuyVideoCacheHint
+                                                              : PPString
+                                                                  .noVipVideoCachHint,
                                                           style: TextStyle(
                                                               color: Color(
                                                                   0xff646464),
@@ -1457,11 +1470,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                         );
                                                       },
                                                       cancelText: '取消',
-                                                      btnText:
-                                                          widget.data.isfree ==
-                                                                  2
-                                                              ? '立即购买'
-                                                              : '立即升级',
+                                                      btnText: widget.data
+                                                                  .isfree ==
+                                                              2
+                                                          ? PPString.buyNow
+                                                          : PPString.upgradeNuw,
                                                       callBack: () {
                                                         if (widget
                                                                 .data.isfree ==
@@ -1479,10 +1492,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                                       .discountCoins;
                                                           YyShowDialog.showdialog(
                                                               context,
-                                                              btnText:
-                                                                  isInsufficient
-                                                                      ? 'GOLD不足，前往充值'
-                                                                      : '购买观看',
+                                                              btnText: isInsufficient
+                                                                  ? PPString
+                                                                      .goldInsufficient
+                                                                  : PPString
+                                                                      .buySee,
                                                               callBack: () {
                                                             if (isInsufficient) {
                                                               context.push(
@@ -1513,7 +1527,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                                             '该视频需要花费',
                                                                         children: [
                                                                           TextSpan(
-                                                                              text: '${widget.data.discountCoins}G',
+                                                                              text: widget.data.discountCoins.toString() + 'G',
                                                                               style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffFF84A9), fontSize: ScreenUtil().setSp(16)))
                                                                         ]))
                                                                   ],
@@ -1655,8 +1669,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
                                     child: PlatformAwareAssetImage(
-                                        url:
-                                            'assets/images/detail/${_controller.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
+                                        url: _controller.value.isPlaying
+                                            ? PPAssetsPath.iconPause
+                                            : PPAssetsPath.iconPlay,
                                         width: ScreenUtil().setWidth(80),
                                         height: ScreenUtil().setWidth(80),
                                         filterQuality: FilterQuality.medium),

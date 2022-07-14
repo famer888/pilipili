@@ -18,7 +18,6 @@ library gesture_zoom_box;
 
 import 'dart:math';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 /// 可缩放/平移的盒子小部件

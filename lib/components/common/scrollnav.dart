@@ -38,7 +38,7 @@ class _ScrollnavState extends State<Scrollnav> {
     _controller = ScrollController();
     _pageController = PageController();
     for (int i = 0; i < widget.navitems.length; i++) {
-      keys.add(GlobalKey(debugLabel: 'navitems-${i.toString()}'));
+      keys.add(GlobalKey(debugLabel: 'navitems-'+i.toString()));
     }
     if (widget.emitName != null) {
       EventBus().on(widget.emitName, (arg) {

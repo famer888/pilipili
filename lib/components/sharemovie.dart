@@ -95,7 +95,7 @@ class ShareMovieModel {
 
     //复制链接分享
     void _copyLinkShare() {
-      Clipboard.setData(ClipboardData(text: '$copyUrl'));
+      Clipboard.setData(ClipboardData(text: copyUrl.toString()));
       CommonUtils.showText(
         '复制成功,快去分享吧',
       );
@@ -122,7 +122,7 @@ class ShareMovieModel {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '$title',
+              title.toString(),
               style: TextStyle(
                   color: Color(0xffffffff),
                   decoration: TextDecoration.none,
@@ -132,7 +132,7 @@ class ShareMovieModel {
               maxLines: 1,
             ),
             Text(
-              '$subtitle',
+              subtitle.toString(),
               style: TextStyle(
                   color: Color(0xffffffff),
                   fontWeight: FontWeight.normal,
@@ -163,7 +163,7 @@ class ShareMovieModel {
                         (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)),
                 child: PlatformAwareNetworkImage(
                   fit: BoxFit.cover,
-                  url: '$thumb',
+                  url: thumb.toString(),
                 ),
               ),
             ),
@@ -245,7 +245,7 @@ class ShareMovieModel {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${url}",
+                              url.toString(),
                               style: TextStyle(
                                   color: Color(0xff646464),
                                   fontWeight: FontWeight.normal,

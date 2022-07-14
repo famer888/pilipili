@@ -19,6 +19,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import '../../components/page_status.dart';
 import '../../utils/common.dart';
@@ -149,7 +150,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PlatformAwareAssetImage(
-              url: 'assets/images/detail/$icon.png',
+              url: 'assets/images/detail/'+icon.toString()+'.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
@@ -366,7 +367,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              '演员：${videoInfo.actors == null || videoInfo.actors == "" ? "--" : videoInfo.actors}',
+                                                              '演员：'+(videoInfo.actors == null || videoInfo.actors == "" ? "--" : videoInfo.actors).toString(),
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xffFF5B8C),
@@ -376,7 +377,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               12)),
                                                             ),
                                                             Text(
-                                                              '${videoInfo.countPlay}人看过 - ${videoInfo.createdAt.split(' ')[0]}更新',
+                                                              videoInfo.countPlay.toString()+'人看过 - '+videoInfo.createdAt.split(' ')[0].toString()+'更新',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xff979797),
@@ -409,8 +410,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         0) {
                                                                       Map taskInfo =
                                                                           {
-                                                                        "id":
-                                                                            "${videoInfo.id}",
+                                                                        "id":videoInfo.id.toString(),
                                                                         "urlPath":
                                                                             res['data']['downloadUrl'],
                                                                         "title":
@@ -438,8 +438,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                             (setDialogState) {
                                                                           return Text(
                                                                             videoInfo.isfree == 2
-                                                                                ? '开通会员才能下载视频哦'
-                                                                                : '收费视频需要先购买才能下载哦！',
+                                                                                ? PPString.noVipSeeVideoHint
+                                                                                : PPString.noBuySeeVideoHint,
                                                                             style: TextStyle(
                                                                                 color: Color(0xff646464),
                                                                                 fontWeight: FontWeight.bold,
@@ -450,8 +450,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                             '取消',
                                                                         btnText: videoInfo.isfree ==
                                                                                 2
-                                                                            ? '立即购买'
-                                                                            : '立即升级',
+                                                                            ? PPString.buyNow
+                                                                            : PPString.upgradeNuw,
                                                                         callBack:
                                                                             () {
                                                                           if (videoInfo.isfree ==
@@ -529,8 +529,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               },
                                                               child: _btnItem(
                                                                   icon: isFavorites
-                                                                      ? 'icon_unlike'
-                                                                      : 'icon_like',
+                                                                      ? PPString.iconunLike
+                                                                      : PPString.iconLike,
                                                                   name: CommonUtils
                                                                       .renderFixedNumber(
                                                                           likeCount
@@ -573,7 +573,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         videoInfo?.desc ??
                                                                             '--',
                                                                     url:
-                                                                        '${config.share.affUrl}');
+                                                                        config.share.affUrl.toString());
                                                               },
                                                               child: _btnItem(
                                                                   icon:
@@ -648,7 +648,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               color: Colors.white),
                                                                       child:
                                                                           Text(
-                                                                        '${tags[e]}',
+                                                                        tags[e].toString(),
                                                                         style: TextStyle(
                                                                             color:
                                                                                 Color(0xff979797),

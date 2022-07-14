@@ -48,7 +48,7 @@ class DownloadUtil {
       documents = await getApplicationDocumentsDirectory();
     }
     String _getApplicationDocumentsDirectory = documents.path;
-    String _cachePath = '$_getApplicationDocumentsDirectory/$folderName/';
+    String _cachePath = _getApplicationDocumentsDirectory+'/'+folderName+'/';
     Directory directory = Directory(_cachePath);
     bool isExists = await directory.exists();
     if (!isExists) {
@@ -218,8 +218,8 @@ class DownloadUtil {
       String m3u8Name = taskInfo["urlPath"].substring(
           taskInfo["urlPath"].lastIndexOf("/") + 1,
           taskInfo["urlPath"].indexOf("m3u8") + 4);
-      await File("$saveDirectory$m3u8Name").writeAsString(localM3u8);
-      taskInfo["url"] = "$saveDirectory$m3u8Name";
+      await File(saveDirectory+m3u8Name).writeAsString(localM3u8);
+      taskInfo["url"] = saveDirectory+m3u8Name;
       if (!downloading) {
         taskInfo["downloading"] = true;
         taskInfo["isWaiting"] = false;
@@ -343,7 +343,7 @@ class DownloadUtil {
         box.put("download_video_tasks", tasks);
         downloadTasks.removeAt(0);
         startNext();
-        EventBus().emit('DOWNLOADVIDEO_PROGRESS_${taskInfo["id"]}', {
+        EventBus().emit('DOWNLOADVIDEO_PROGRESS_'+taskInfo["id"].toString(), {
           "id": taskInfo["id"],
           "downloading": false,
           "downloadError": true
@@ -373,7 +373,7 @@ class DownloadUtil {
             tasks[taskNum]["downloading"] = true;
             tasks[taskNum]["tsListsFinished"].add(urlPath);
             box.put("download_video_tasks", tasks);
-            LogUtil.d("完成单个任务---------${finishCount / tsTotal}");
+            // LogUtil.d("完成单个任务---------${finishCount / tsTotal}");
             // 发送进度数据
             EventBus().emit('DOWNLOADVIDEO_PROGRESS_${id}',
                 {"id": id, "progress": finishCount / tsTotal});

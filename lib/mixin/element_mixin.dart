@@ -17,7 +17,7 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
     }
     Widget yyElement;
     CommonUtils.debugPrint(
-        '-----------------${element['title']}----------------组件类型:${element['type']}---是否有magin:${element['is_margin'] == 1}');
+        '-----------------'+element['title']+'----------------组件类型:'+element['type'].toString()+'---是否有magin:'+(element['is_margin'] == 1).toString());
     switch (element['type']) {
       case 1:
         yyElement = H4Column(

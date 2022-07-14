@@ -170,7 +170,7 @@ class _CollectPageState extends State<CollectPage>
         });
       }
     } else {
-      CommonUtils.showText("已加载全部 ${tabList[index - 1]['name']}");
+      CommonUtils.showText("已加载全部 " + tabList[index - 1]['name'].toString());
     }
   }
 
@@ -257,7 +257,10 @@ class _CollectPageState extends State<CollectPage>
                     children: tabList
                         .map(
                           (e) => PageViewMixin(
-                            key: Key('collectList${e['id']}-${e['name']}'),
+                            key: Key('collectList' +
+                                e['id'].toString() +
+                                '-' +
+                                e['name'].toString()),
                             child: CollectList(
                               index: e['index'],
                               type: e['id'],

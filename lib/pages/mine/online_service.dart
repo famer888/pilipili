@@ -25,7 +25,7 @@ class _OnlineServiceState extends State<OnlineService> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("${index + 1}、 ${data['problem']}",
+          Text((index + 1).toString()+"、 "+data['problem'].toString(),
               style: TextStyle(
                   color: Color(0xff404040),
                   fontWeight: FontWeight.bold,

@@ -420,7 +420,7 @@ class _FillCodePageState extends State<FillCodePage> {
             // margin: EdgeInsets.only(top: ScreenUtil().setWidth(28)),
             child: Center(
               child: Text(
-                '当前手机号:+${widget.args["phonePrefix"]}${widget.args["phone"]}',
+                '当前手机号:+'+widget.args["phonePrefix"].toString()+widget.args["phone"].toString(),
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(15),
                     color: Color(0xff6D6D6D),

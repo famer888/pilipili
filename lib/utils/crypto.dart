@@ -14,10 +14,10 @@ final mediaIv = IV.fromUtf8("97b60394abc2fbe1");
 String getSign(Map obj) {
   String md5Text;
   List keyValues = [];
-  keyValues.add("client=${obj['client']}");
-  keyValues.add("data=${obj['data']}");
-  keyValues.add("timestamp=${obj['timestamp']}");
-  String text = '${keyValues.join('&')}$appkey';
+  keyValues.add("client=" + obj['client'].toString());
+  keyValues.add("data=" + obj['data'].toString());
+  keyValues.add("timestamp=" + obj['timestamp'].toString());
+  String text = keyValues.join('&') + appkey;
   Digest _digest = sha256.convert(utf8.encode(text));
   md5Text = md5.convert(utf8.encode(_digest.toString())).toString();
   return md5Text;

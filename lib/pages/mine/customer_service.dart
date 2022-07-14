@@ -54,8 +54,11 @@ class _CustomerServiceState extends State<CustomerService>
       if (regExp.hasMatch(pathList[i])) {
         var newMsg = regExp.stringMatch(pathList[i]) == null
             ? pathList[i]
-            : pathList[i].replaceAll(regExp.stringMatch(pathList[i]),
-                '[youyu]${regExp.stringMatch(pathList[i])}[youyu]');
+            : pathList[i].replaceAll(
+                regExp.stringMatch(pathList[i]),
+                '[youyu]' +
+                    regExp.stringMatch(pathList[i]).toString() +
+                    '[youyu]');
         textList.addAll(newMsg.split('[youyu]'));
       } else {
         textList.add(pathList[i]);

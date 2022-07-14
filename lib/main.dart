@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isolated_worker/worker_delegator.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/routers.dart';
@@ -44,10 +45,8 @@ void main() async {
             jsDelegate: fooJsDelegate,
           ));
   WorkerDelegator().addAllDelegates(wds);
-  await WorkerDelegator().importScripts(const <String>[
-    'js/aware.js?v=2',
-    'js/crypto-js.min.js?v=3'
-  ]);
+  await WorkerDelegator().importScripts(
+      const <String>['js/aware.js?v=2', 'js/crypto-js.min.js?v=3']);
 
   // 禁用图片缓存
   PaintingBinding.instance.imageCache.maximumSize = 0;
@@ -70,10 +69,12 @@ void main() async {
   AppGlobal.appBox.put('firstVisitTime', DateTime.now());
   AppGlobal.appinfo = {
     "oauth_id": AppGlobal.appBox.get('oauth_id') ??
-        '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}',
+        CommonUtils.randomId(16).toString() +
+            '_' +
+            DateTime.now().millisecondsSinceEpoch.toString().toString(),
     "bundleId": "com.pwa.pilipili",
     "version": "2.0.1",
-    "oauth_type": CommonUtils.isAndroidWeb() ? "a-web" : "web",
+    "oauth_type": CommonUtils.isAndroidWeb() ? PPString.aWeb : PPString.web,
     "language": 'zh',
     "via": 'pwa',
   };

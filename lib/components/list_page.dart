@@ -22,12 +22,7 @@ import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
   ListPage(
-      {Key key,
-      this.title = '列表页',
-      this.id,
-      this.isShow,
-      this.index,
-      this.parentName})
+      {Key key, this.title, this.id, this.isShow, this.index, this.parentName})
       : super(key: key);
   final String title;
   final String id;
@@ -462,7 +457,9 @@ class _ListPageState extends State<ListPage> with CardMixin {
                     data.length == 0
                         ? SliverToBoxAdapter(
                             child: PageStatus.noData(
-                                text: '还没有“${widget.title}”的数据哦～'),
+                                text: '还没有[' +
+                                    widget.title.toString() +
+                                    ']的数据哦～'),
                           )
                         : SliverPadding(
                             padding: EdgeInsets.symmetric(

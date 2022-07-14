@@ -4,7 +4,6 @@ import 'package:app_installer/app_installer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
@@ -22,7 +21,7 @@ class UpdateModel {
       VoidCallback confirmApp,
       BuildContext context,
       String text,
-      String type = "2"}) {
+      String type}) {
     var tipSplit = text.split('#');
     tipWidget(String value) {
       return Text(

@@ -21,7 +21,7 @@ class YyDialog extends StatefulWidget {
       this.callBack,
       this.title,
       this.content,
-      this.btnText = '确定',
+      this.btnText,
       this.toPageCallback,
       this.clickCallBack,
       this.isClick,
@@ -54,7 +54,7 @@ class YyDialogState extends State<YyDialog> {
               cancelBack: widget.cancelBack,
               changeBtnText: widget.changeBtnText,
               callBack: widget.callBack,
-              btnText: widget.btnText);
+              btnText: widget.btnText ?? '确定');
         }
       },
       child: widget.child,
@@ -69,7 +69,7 @@ class YyShowDialog {
       bool clear = false,
       Function callBack,
       Function cancelBack,
-      String btnText = '确定',
+      String btnText,
       String cancelText,
       Function changeBtnText,
       bool prohibitClose = false}) {
@@ -201,7 +201,7 @@ class YyShowDialog {
                                             height: ScreenUtil().setWidth(36),
                                             child: Center(
                                               child: Text(
-                                                btnText,
+                                                btnText ?? '确定',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,

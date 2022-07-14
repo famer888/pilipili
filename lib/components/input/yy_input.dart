@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pilipili/theme/default.dart';
 
 class YyInput extends StatefulWidget {
   YyInput(
@@ -12,7 +11,7 @@ class YyInput extends StatefulWidget {
       this.isPassword = false,
       this.onSubmit,
       this.isLogin = true,
-      this.hintText = '请输入内容',
+      this.hintText,
       this.autofocus = false,
       this.onChangeCountryCode,
       this.isGetCode = false,
@@ -167,7 +166,7 @@ class _YyInputState extends State<YyInput> {
                       color: Color(0XFF6D6D6D)),
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                      hintText: widget.hintText,
+                      hintText: widget.hintText??'请输入内容',
                       hintStyle: TextStyle(color: Color(0xff979797)),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
