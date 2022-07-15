@@ -101,7 +101,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   swichComic(int episode, {bool replace = false}) {
     context.push(
         CommonUtils.getRealHash()
-            .replaceAll(RegExp(r"localComicsReader"), 'localComicsReader'),
+            .replaceAll(RegExp("${PPString.test}localComicsReader"), 'localComicsReader'),
         extra: {'comicsInfo': widget.comicsInfo, 'episode': episode},
         replace: replace);
   }

@@ -120,7 +120,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
     };
     context.push(
         CommonUtils.getRealHash().replaceAll(
-            RegExp(r"comicReader/.*"), 'comicReader/' + episode.toString()),
+            RegExp("${PPString.test}comicReader/.*"), 'comicReader/' + episode.toString()),
         replace: replace);
   }
 

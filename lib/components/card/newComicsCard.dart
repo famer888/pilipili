@@ -38,7 +38,7 @@ class _NewComicsCardState extends State<NewComicsCard> {
       onTap: () {
         if (widget.relace) {
           context.push(
-              CommonUtils.getRealHash().replaceAll(RegExp(r"comicsdetail/.*"),
+              CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}comicsdetail/.*"),
                   'comicsdetail/' + widget.cardData.datumId.toString()),
               replace: widget.relace);
         } else {

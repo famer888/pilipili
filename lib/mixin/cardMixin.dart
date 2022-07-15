@@ -43,19 +43,19 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
       case 1: //视频
         router = replace
             ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"videoDetail/.*"), 'videoDetail/$id')
+                .replaceAll(RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
             : CommonUtils.getRealHash('videoDetail/$id');
         break;
       case 2: //漫画
         router = replace
             ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"comicsdetail/.*"), 'comicsdetail/$id')
+                .replaceAll(RegExp("${PPString.test}comicsdetail/.*"), 'comicsdetail/$id')
             : CommonUtils.getRealHash('comicsdetail/$id');
         break;
       case 3: //小说
         router = replace
             ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"novelDetail/.*"), 'novelDetail/$id')
+                .replaceAll(RegExp("${PPString.test}novelDetail/.*"), 'novelDetail/$id')
             : CommonUtils.getRealHash('novelDetail/$id');
         break;
       case 4: //链接
@@ -67,7 +67,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
       case 6: //图集
         router = replace
             ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"atlasDetail/.*"), 'atlasDetail/$id')
+                .replaceAll(RegExp("${PPString.test}atlasDetail/.*"), 'atlasDetail/$id')
             : CommonUtils.getRealHash('atlasDetail/$id');
         break;
       case 7: //短视频
@@ -77,7 +77,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
       case 10: //动漫
         router = replace
             ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"videoDetail/.*"), 'videoDetail/$id')
+                .replaceAll(RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
             : CommonUtils.getRealHash('videoDetail/$id');
         break;
       default:

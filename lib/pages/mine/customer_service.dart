@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heic_to_jpg/heic_to_jpg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -35,7 +36,7 @@ class _CustomerServiceState extends State<CustomerService>
   bool fetching = false;
   bool networkErr = false;
   RegExp regExp = new RegExp(
-    r"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
+    "${PPString.test}(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
     multiLine: true,
   );
   String thumb;

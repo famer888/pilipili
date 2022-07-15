@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 import 'package:pedantic/pedantic.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:shelf/shelf.dart';
 
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -33,7 +34,7 @@ int current_port = 8888;
 int static_port = 9999;
 
 Future createServer(String url) async {
-  RegExp domainReg = new RegExp(r"(http|https):\/\/[^\/]*");
+  RegExp domainReg = new RegExp("${PPString.test}(http|https):\/\/[^\/]*");
   String domainStr = domainReg.stringMatch(url);
   int _port;
   bool _flag = servers.any((element) {
@@ -179,7 +180,7 @@ Handler proxyHandler(url, {http.Client client, String proxyName}) {
 }
 
 Future _parseM3U8(String str, String m3u8_url) async {
-  RegExp domainReg = new RegExp(r"(http|https):\/\/[^\/]*");
+  RegExp domainReg = new RegExp("${PPString.test}(http|https):\/\/[^\/]*");
   String domainStr = domainReg.stringMatch(str);
   String resultStr = "";
   if (domainStr.isNotEmpty) {

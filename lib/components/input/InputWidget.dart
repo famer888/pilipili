@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 // 返回的内容去除所有空格
 
@@ -144,7 +145,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                           GestureDetector(
                             onTap: (() {
                               var text = editingController.text?.replaceAll(
-                                      new RegExp(r"\s+\b|\b\s"), "") ??
+                                      new RegExp("${PPString.test}\s+\b|\b\s"), "") ??
                                   "";
                               if (text.isNotEmpty) {
                                 context.pop(text);
