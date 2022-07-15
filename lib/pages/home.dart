@@ -210,7 +210,10 @@ class _HomeState extends State<Home> {
           CommonUtils.launchURL(apkurl);
         }
       }
-    }, version: "Pilipiliv."+version.toString(), mustupdate: must == 1, text: '$tips');
+    },
+        version: "Pilipiliv." + version.toString(),
+        mustupdate: must == 1,
+        text: '$tips');
 
     showUpdateStatus = true;
     setState(() {});
@@ -265,37 +268,28 @@ class _HomeState extends State<Home> {
       BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
       return;
     }
-
-    switch (types) {
-      case "1":
-        // 内部路由
-        String linkUrl = _adsUrl;
-        List urlList = linkUrl.split('?');
-        Map<String, dynamic> pramas = {};
-        if (urlList.length > 1) {
-          urlList[1].split("&").forEach((item) {
-            List stringText = item.split('=');
-            pramas[stringText[0]] =
-                stringText.length > 1 ? stringText[1] : null;
-          });
-        }
-        Map<String, dynamic> pramasObj = {};
-        if (pramas['pramaskey'] != null) {
-          pramasObj[pramas['pramaskey']] = pramas;
-        } else {
-          pramasObj = pramas;
-        }
-        context.push(urlList[0], extra: pramasObj);
-        break;
-      case "3":
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl?aff=$aff&piliid=$piliid");
-        break;
-      case "2":
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-      default:
+    if (types == '1') {
+      // 内部路由
+      String linkUrl = _adsUrl;
+      List urlList = linkUrl.split('?');
+      Map<String, dynamic> pramas = {};
+      if (urlList.length > 1) {
+        urlList[1].split("&").forEach((item) {
+          List stringText = item.split('=');
+          pramas[stringText[0]] = stringText.length > 1 ? stringText[1] : null;
+        });
+      }
+      Map<String, dynamic> pramasObj = {};
+      if (pramas['pramaskey'] != null) {
+        pramasObj[pramas['pramaskey']] = pramas;
+      } else {
+        pramasObj = pramas;
+      }
+      context.push(urlList[0], extra: pramasObj);
+    } else if (types == "3") {
+      CommonUtils.launchURL("$_adsUrl?aff=$aff&piliid=$piliid");
+    } else if (types == "2") {
+      CommonUtils.launchURL("$_adsUrl");
     }
   }
 
