@@ -28,7 +28,7 @@ class PublicList extends StatefulWidget {
       this.data,
       this.limit = 20,
       this.isFlow = true,
-      this.cartType = 'h',
+      this.cartType,
       this.contentType,
       this.noRefresh = false})
       : super(key: key);
@@ -65,7 +65,7 @@ class _PublicListState extends State<PublicList> {
         CommonUtils.showText(res.data['msg']);
       }
     } catch (e) {
-      CommonUtils.debugPrint('错误:'+e.toString());
+      CommonUtils.debugPrint('错误:' + e.toString());
     }
   }
 
@@ -184,10 +184,11 @@ class _PublicListState extends State<PublicList> {
                           crossAxisCount: 2,
                           mainAxisSpacing: ScreenUtil().setWidth(7),
                           crossAxisSpacing: ScreenUtil().setWidth(7),
-                          childAspectRatio: widget.cartType == 'h' ? 1.2 : 0.61,
+                          childAspectRatio:
+                              (widget.cartType ?? 'h') == 'h' ? 1.2 : 0.61,
                         ),
                         itemBuilder: (context, index) {
-                          return widget.cartType == 'h'
+                          return (widget.cartType ?? 'h') == 'h'
                               ? Hcard(
                                   maxLines: 1,
                                   width: ScreenUtil().setWidth(175),
