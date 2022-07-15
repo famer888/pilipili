@@ -104,12 +104,12 @@ class _FillCodePageState extends State<FillCodePage> {
         bindPhone(code: phoneCode.text, phonePrefix: code, phone: phone.text)
             .then((result) {
           if (result.status != 0) {
-            CommonUtils.showText('手机绑定 '+result.msg.toString());
+            CommonUtils.showText('手机绑定 ' + result.msg.toString());
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机绑定 '+result.msg.toString());
+            CommonUtils.showText('手机绑定 ' + result.msg.toString());
           }
         });
         PageStatus.closeLoading();
@@ -137,12 +137,12 @@ class _FillCodePageState extends State<FillCodePage> {
                 code: newphoneCode.text)
             .then((res) {
           if (res.status != 0) {
-            CommonUtils.showText('手机换绑 '+res.msg.toString());
+            CommonUtils.showText('手机换绑 ' + res.msg.toString());
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机换绑 '+res.msg.toString());
+            CommonUtils.showText('手机换绑 ' + res.msg.toString());
           }
         });
         PageStatus.closeLoading();
@@ -237,7 +237,7 @@ class _FillCodePageState extends State<FillCodePage> {
           passwordConfirm: newpassword.text,
         ).then((res) {
           if (res.status != 0) {
-            CommonUtils.showText('密码设置成功');
+            CommonUtils.showText('密码设���成功');
             Future.delayed(Duration(seconds: 2), () {
               context.pop();
             });
@@ -252,14 +252,14 @@ class _FillCodePageState extends State<FillCodePage> {
     }
   }
 
-  void showText({status, msg, word = '修改'}) {
+  void showText({status, msg, word}) {
     if (status == 1) {
-      CommonUtils.showText(word.toString()+'成功 '+msg.toString());
+      CommonUtils.showText((word ?? '修改').toString() + '成功 ' + msg.toString());
       Future.delayed(Duration(seconds: 2), () {
         context.pop();
       });
     } else {
-      CommonUtils.showText(word.toString()+'失败 '+msg.toString());
+      CommonUtils.showText((word ?? '修改').toString() + '失败 ' + msg.toString());
     }
   }
 
@@ -420,7 +420,9 @@ class _FillCodePageState extends State<FillCodePage> {
             // margin: EdgeInsets.only(top: ScreenUtil().setWidth(28)),
             child: Center(
               child: Text(
-                '当前手机号:+'+widget.args["phonePrefix"].toString()+widget.args["phone"].toString(),
+                '当前手机号:+' +
+                    widget.args["phonePrefix"].toString() +
+                    widget.args["phone"].toString(),
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(15),
                     color: Color(0xff6D6D6D),
