@@ -21,9 +21,9 @@ class AppGlobal {
   static String apiBaseURL = "";
   static int smallVideoLimit = 18;
   static List<String> apiLines = [
-    'https://apiv2.hichatapi.me${PPString.test}',
-    'https://apiv2.hichatapi.net${PPString.test}',
-    'https://apiv2.hichatapi.org${PPString.test}'
+    'https://apiv2.hichatapi.me',
+    'https://apiv2.hichatapi.net',
+    'https://apiv2.hichatapi.org'
   ];
   static Widget bannerWidget;
   static String uploadImgUrl;
