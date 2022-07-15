@@ -646,7 +646,7 @@ class _DownloadApkState extends State<DownloadApk> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "正在更新 v.${widget.version}",
+                        "正在更新 v."+widget.version.toString(),
                         style: TextStyle(
                             color: Color(0xFF646464),
                             fontSize: ScreenUtil().setSp(18),

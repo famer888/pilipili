@@ -65,7 +65,7 @@ class _PublicListState extends State<PublicList> {
         CommonUtils.showText(res.data['msg']);
       }
     } catch (e) {
-      CommonUtils.debugPrint('错误:$e');
+      CommonUtils.debugPrint('错误:'+e.toString());
     }
   }
 

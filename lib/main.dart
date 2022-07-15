@@ -40,7 +40,7 @@ void main() async {
   List<WorkerDelegate<dynamic, dynamic>> wds = List.generate(
       AppGlobal.decryptProcessLimit,
       (index) => WorkerDelegate(
-            key: 'decryptImage$index',
+            key: 'decryptImage'+index.toString(),
             defaultDelegate: fooDelegate,
             jsDelegate: fooJsDelegate,
           ));

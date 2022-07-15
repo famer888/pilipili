@@ -55,7 +55,6 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
     int currentPay;
     List pays;
     pays = List.from(product['pay']);
-    print("pay--------$pays");
 
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,

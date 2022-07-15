@@ -143,7 +143,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0$numb' : numb.toString();
+      return numb < 10 ? '0'+numb.toString() : numb.toString();
     }
 
     return timeStr(s).toString()+':'+timeStr(h).toString();
@@ -209,7 +209,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   }
 
   initVideo(url) {
-    CommonUtils.debugPrint('===============视频地址:$url===================');
+    CommonUtils.debugPrint('===============视频地址:'+url.toString()+'===================');
     // 创建本地播放服务
     createStaticServer(widget.data["url"]).then((url) => createVideo(url));
   }

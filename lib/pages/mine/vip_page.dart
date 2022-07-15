@@ -28,7 +28,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
   PageController tabController;
 
   String _assetsPath(String name) {
-    return 'assets/images/pment/$name.png';
+    return 'assets/images/pment/'+name.toString()+'.png';
   }
 
   List tabList = [
@@ -1065,7 +1065,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('¥${widget.promoPrice}',
+                      Text('¥'+widget.promoPrice.toString(),
                           style: TextStyle(
                               color: Colors.white54,
                               fontSize: ScreenUtil().setSp(16.8),
@@ -1075,7 +1075,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                         width: ScreenUtil().setWidth(12.5),
                       ),
                       Text(
-                        '¥${widget.currentPrice}',
+                        '¥'+widget.currentPrice.toString(),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: ScreenUtil().setSp(24.8),

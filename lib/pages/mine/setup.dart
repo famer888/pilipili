@@ -50,7 +50,7 @@ class _SetupPageState extends State<SetupPage> {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
         uploadInput.setAttribute('style',
-            'width: ${ScreenUtil().setWidth(90)}px; height: ${ScreenUtil().setWidth(120)}px; opacity: 0');
+            'width: '+ScreenUtil().setWidth(90).toString()+'px; height: '+ScreenUtil().setWidth(120).toString()+'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;

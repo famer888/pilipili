@@ -455,7 +455,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
       if (res.status != 0) {
         CommonUtils.showText('购买成功');
         isNovideo = false;
-        CommonUtils.debugPrint('购买视频地址:${res.data}');
+        CommonUtils.debugPrint('购买视频地址:'+res.data.toString());
         widget.data.source240 = res.data;
         setState(() {});
         initVideo(res.data);
@@ -818,7 +818,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
         videoPlayErr = true;
         setState(() {});
         CommonUtils.debugPrint(url);
-        CommonUtils.debugPrint('【播放资源时出错】:$error');
+        CommonUtils.debugPrint('【播放资源时出错】:'+error.toString());
         CommonUtils.showText('视频资源播放错误');
       }
     }).timeout(Duration(seconds: 30), onTimeout: () {
@@ -870,7 +870,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
         _controller == null) {
       videoInit = true;
       CommonUtils.debugPrint(
-          '===============视频地址:${widget.data.source240}==预览视频=${widget.data.preview}================');
+          '===============视频地址:'+widget.data.source240.toString()+'==预览视频='+widget.data.preview.toString()+'================');
       initVideo(isNovideo ? widget.data.preview : widget.data.source240);
     }
     return GestureDetector(

@@ -104,12 +104,12 @@ class _FillCodePageState extends State<FillCodePage> {
         bindPhone(code: phoneCode.text, phonePrefix: code, phone: phone.text)
             .then((result) {
           if (result.status != 0) {
-            CommonUtils.showText('手机绑定 ${result.msg}');
+            CommonUtils.showText('手机绑定 '+result.msg.toString());
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机绑定 ${result.msg}');
+            CommonUtils.showText('手机绑定 '+result.msg.toString());
           }
         });
         PageStatus.closeLoading();
@@ -137,12 +137,12 @@ class _FillCodePageState extends State<FillCodePage> {
                 code: newphoneCode.text)
             .then((res) {
           if (res.status != 0) {
-            CommonUtils.showText('手机换绑 ${res.msg}');
+            CommonUtils.showText('手机换绑 '+res.msg.toString());
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机换绑 ${res.msg}');
+            CommonUtils.showText('手机换绑 '+res.msg.toString());
           }
         });
         PageStatus.closeLoading();
@@ -254,12 +254,12 @@ class _FillCodePageState extends State<FillCodePage> {
 
   void showText({status, msg, word = '修改'}) {
     if (status == 1) {
-      CommonUtils.showText('$word成功 $msg');
+      CommonUtils.showText(word.toString()+'成功 '+msg.toString());
       Future.delayed(Duration(seconds: 2), () {
         context.pop();
       });
     } else {
-      CommonUtils.showText('$word失败 $msg');
+      CommonUtils.showText(word.toString()+'失败 '+msg.toString());
     }
   }
 

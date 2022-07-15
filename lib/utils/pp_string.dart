@@ -57,5 +57,6 @@ class PPString {
   static String isNewVersion ='有新版本,去更新？';
   static String hasExpired ='已截止';
   static String expired ='已过期';
+  static String test ='';
 
 }

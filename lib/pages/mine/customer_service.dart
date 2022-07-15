@@ -185,7 +185,7 @@ class _CustomerServiceState extends State<CustomerService>
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
         uploadInput.setAttribute('style',
-            'width: ${ScreenUtil().setWidth(25)}px; height: ${ScreenUtil().setWidth(23)}px; opacity: 0');
+            'width: '+ScreenUtil().setWidth(25).toString()+'px; height: '+ScreenUtil().setWidth(23).toString()+'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;

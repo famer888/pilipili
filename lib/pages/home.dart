@@ -210,7 +210,7 @@ class _HomeState extends State<Home> {
           CommonUtils.launchURL(apkurl);
         }
       }
-    }, version: "Pilipiliv.$version", mustupdate: must == 1, text: '$tips');
+    }, version: "Pilipiliv."+version.toString(), mustupdate: must == 1, text: '$tips');
 
     showUpdateStatus = true;
     setState(() {});

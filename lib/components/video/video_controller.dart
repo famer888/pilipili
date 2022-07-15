@@ -143,7 +143,7 @@ class _VideoControllerState extends State<VideoController>
           videoPlayErr = true;
           setState(() {});
           CommonUtils.debugPrint(widget.videoUrl);
-          CommonUtils.debugPrint('【播放资源时出错】:$error');
+          CommonUtils.debugPrint('【播放资源时出错】:'+error.toString());
           CommonUtils.showText('视频资源播放错误');
         }
       }).timeout(Duration(seconds: 30), onTimeout: () {
@@ -647,7 +647,7 @@ class _VideoControllerState extends State<VideoController>
                       widget.isPreview ||
                       widget.videoController == null ||
                       !widget.videoController.value.isInitialized) return;
-                  CommonUtils.debugPrint('panStart:${e.localPosition.dx}');
+                  CommonUtils.debugPrint('panStart:'+e.localPosition.dx.toString());
                   usecheck = true;
                   showControl = false;
                   showUpTime = true;

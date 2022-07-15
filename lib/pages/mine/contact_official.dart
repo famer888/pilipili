@@ -122,7 +122,7 @@ class AppInfo extends StatelessWidget {
     return Column(
       children: [
         PlatformAwareAssetImage(
-          url: 'assets/images/mine/icon_$type.png',
+          url: 'assets/images/mine/icon_'+type.toString()+'.png',
           width: ScreenUtil().setWidth(38.8),
           height: ScreenUtil().setWidth(38.8),
         ),

@@ -569,7 +569,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('自动翻页间隔${timeList[defaultTime]}秒'),
+                        Text('自动翻页间隔'+timeList[defaultTime].toString()+'秒'),
                         gestureWidget(_keyb, 'timeLeft', defaultTime,
                             timeList.length - 1),
                         Row(
@@ -840,7 +840,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
         mainAxisSize: MainAxisSize.min,
         children: [
           PlatformAwareAssetImage(
-            url: 'assets/images/comics/reader_icon_$img.png',
+            url: 'assets/images/comics/reader_icon_'+img.toString()+'.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
             filterQuality: FilterQuality.medium,

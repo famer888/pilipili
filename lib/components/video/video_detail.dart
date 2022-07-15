@@ -90,7 +90,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   initVideoPage() {
     getVideoDetail(id: widget.id).then((res) {
       CommonUtils.debugPrint(
-          "---------视频地址------${res.data.source240}-------------预览视频地址---${res.data.preview}");
+          "---------视频地址------"+res.data.source240.toString()+"-------------预览视频地址---"+res.data.preview.toString());
       if (res.status != 0) {
         isPreview = res.data.source240 == null;
         videoUrl = res.data.source240 == null

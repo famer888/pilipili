@@ -180,7 +180,7 @@ class _InviteFriendState extends State<Promote> {
                                           fontSize: ScreenUtil().setSp(14),
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: ScreenUtil().setWidth(8)),
-                                  Text('推广码:${config.share.affCode}',
+                                  Text('推广码:'+config.share.affCode.toString(),
                                       style: TextStyle(
                                           color: Color(0xff646464),
                                           decoration: TextDecoration.none,
@@ -192,7 +192,7 @@ class _InviteFriendState extends State<Promote> {
                                           decoration: TextDecoration.none,
                                           fontSize: ScreenUtil().setSp(11),
                                           fontWeight: FontWeight.w400)),
-                                  Text('${config.officeSite}',
+                                  Text(config.officeSite.toString(),
                                       style: TextStyle(
                                           color: Color(0xff646464),
                                           decoration: TextDecoration.none,
@@ -323,7 +323,7 @@ class _InviteFriendState extends State<Promote> {
                                           ),
                                           child: QrImage(
                                             size: ScreenUtil().setWidth(134.5),
-                                            data: '${config.share.affUrl}',
+                                            data: config.share.affUrl.toString(),
                                             padding: EdgeInsets.all(
                                                 ScreenUtil().setWidth(10)),
                                             version: QrVersions.auto,
@@ -347,7 +347,7 @@ class _InviteFriendState extends State<Promote> {
                                               height: ScreenUtil().setWidth(8),
                                             ),
                                             Text(
-                                              '${config.share.affCode}',
+                                              config.share.affCode.toString(),
                                               style: TextStyle(
                                                   color: Color(0xff7A3C04),
                                                   fontSize:

@@ -175,7 +175,7 @@ class _ListPageState extends State<ListPage> with CardMixin {
                     ? GestureDetector(
                         onTap: () {
                           context.push(CommonUtils.getRealHash(
-                              'activeDetail/${data[index]['id']}'));
+                              'activeDetail/'+data[index]['id'].toString()));
                         },
                         child: LayoutBuilder(builder:
                             (BuildContext context, BoxConstraints constraints) {

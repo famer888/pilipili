@@ -568,7 +568,7 @@ class UserAvatar extends StatelessWidget {
           : PlatformAwareNetworkImage(
               width: ScreenUtil().setWidth(30),
               fit: BoxFit.cover,
-              url: '${state.member.thumb}',
+              url: state.member.thumb.toString(),
             );
     });
   }

@@ -75,7 +75,7 @@ class _YyInputState extends State<YyInput> {
         timer = null;
       } else {
         codeStatus = 1;
-        codeText = '${timers}S';
+        codeText = timers.toString()+'S';
       }
       setState(() {});
     });

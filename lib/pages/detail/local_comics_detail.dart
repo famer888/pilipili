@@ -87,7 +87,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PlatformAwareAssetImage(
-              url: 'assets/images/detail/$icon.png',
+              url: 'assets/images/detail/'+icon.toString()+'.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),

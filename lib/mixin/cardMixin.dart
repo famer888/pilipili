@@ -37,7 +37,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
 
   String getRouter(int contentType, {String id, bool replace}) {
     CommonUtils.debugPrint(
-        '----------------------------------当前ContentType--$contentType');
+        '----------------------------------当前ContentType--'+contentType.toString());
     String router;
     switch (contentType) {
       case 1: //视频

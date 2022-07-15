@@ -32,7 +32,7 @@ mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
       int current, //小说  当前章节index
       dynamic offset}) {
     CommonUtils.debugPrint('startWatchRecordTimer');
-    CommonUtils.debugPrint('-----上次播放至:$offset');
+    CommonUtils.debugPrint('-----上次播放至:'+offset.toString()+'');
     CommonUtils.debugPrint('send record_watch');
     EventBus().emit('record_watch', [
       theBox,

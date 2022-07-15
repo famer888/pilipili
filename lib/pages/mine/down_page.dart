@@ -371,7 +371,7 @@ class _DownListState extends State<DownList> {
   Future getComicsDownloadInfo() async {
     Box box = await Hive.openBox('HiveBox');
     data = box.get('download_comics_tasks') ?? [];
-    LogUtil.d("漫画信息-----${data}");
+    LogUtil.d("漫画信息-----"+data.toString());
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;
     }

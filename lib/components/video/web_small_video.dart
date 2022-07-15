@@ -549,7 +549,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0$numb' : numb.toString();
+      return numb < 10 ? '0'+numb.toString() : numb.toString();
     }
 
     return timeStr(s).toString() + ':' + timeStr(h).toString();
@@ -565,7 +565,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
         CommonUtils.showText('购买成功');
         isNovideo = false;
         changeFlag = false;
-        CommonUtils.debugPrint('购买视频地址:${res.data}');
+        CommonUtils.debugPrint('购买视频地址:'+res.data.toString());
         widget.data.source240 = res.data;
         widget.initVideo(res.data);
         setState(() {});
