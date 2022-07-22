@@ -438,8 +438,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                             (setDialogState) {
                                                                           return Text(
                                                                             videoInfo.isfree == 2
-                                                                                ? PPString.noVipSeeVideoHint
-                                                                                : PPString.noBuySeeVideoHint,
+                                                                                ? PPString.noBuySeeVideoHint
+                                                                                : PPString.noVipSeeVideoHint,
                                                                             style: TextStyle(
                                                                                 color: Color(0xff646464),
                                                                                 fontWeight: FontWeight.bold,
