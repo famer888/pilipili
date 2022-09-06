@@ -34,7 +34,7 @@ class _WelcomeState extends State<Welcome> {
     if (cliptextList.length > 1) {
       if (cliptextList[0] == 'sq_aff') {
         if (cliptextList[1] != '') {
-          // toInvitation(affCode: cliptextList[1]);
+          toInvitation(affCode: cliptextList[1]);
         }
       }
     }
@@ -45,7 +45,7 @@ class _WelcomeState extends State<Welcome> {
       Uri u = Uri.parse(html.window.location.href);
       String aff = u.queryParameters['sq_aff'];
       if (aff != null) {
-        // toInvitation(affCode: aff);
+        toInvitation(affCode: aff);
       }
     } else {
       Clipboard.getData(Clipboard.kTextPlain).then((value) {
@@ -160,7 +160,7 @@ class _WelcomeState extends State<Welcome> {
                               ),
                               child: Center(
                                 child: Text(
-                                  '广告倒计时: '+curTime.toString(),
+                                  '广告倒计时: ' + curTime.toString(),
                                   style: TextStyle(
                                       decoration: TextDecoration.none,
                                       fontSize: ScreenUtil().setSp(15),
