@@ -16,6 +16,8 @@ class PublicList extends StatefulWidget {
   final bool isShow; //是否展示
   final String api; //接口地址
   final Map data; //传递参数
+  final int width;
+  final int crossAxisCount;
   final int limit;
   final bool isFlow; //是否瀑布流
   final String cartType; //  "h" 横向card  "v"竖向card
@@ -26,6 +28,8 @@ class PublicList extends StatefulWidget {
       this.isShow,
       this.api,
       this.data,
+      this.width,
+      this.crossAxisCount = 2,
       this.limit = 20,
       this.isFlow = true,
       this.cartType,
@@ -148,14 +152,14 @@ class _PublicListState extends State<PublicList> {
                         itemCount: searchData.length,
                         gridDelegate:
                             SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+                                crossAxisCount: widget.crossAxisCount,
                                 mainAxisSpacing: ScreenUtil().setWidth(10),
                                 crossAxisSpacing: ScreenUtil().setWidth(10)),
                         itemBuilder: (BuildContext context, int index) {
                           return searchData[index]['mv_type'] == 1
                               ? Hcard(
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil().setWidth(widget.width??175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),
@@ -164,7 +168,7 @@ class _PublicListState extends State<PublicList> {
                                   showField: 'title')
                               : Vcard(
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil().setWidth(widget.width??175),
                                   isSearch: true,
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
@@ -181,7 +185,7 @@ class _PublicListState extends State<PublicList> {
                             vertical: ScreenUtil().setWidth(20)),
                         itemCount: searchData.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount: widget.crossAxisCount,
                           mainAxisSpacing: ScreenUtil().setWidth(7),
                           crossAxisSpacing: ScreenUtil().setWidth(7),
                           childAspectRatio:
@@ -191,7 +195,7 @@ class _PublicListState extends State<PublicList> {
                           return (widget.cartType ?? 'h') == 'h'
                               ? Hcard(
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil().setWidth(widget.width??175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),
@@ -200,7 +204,7 @@ class _PublicListState extends State<PublicList> {
                                   showField: 'title')
                               : Vcard(
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil().setWidth(widget.width??175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),

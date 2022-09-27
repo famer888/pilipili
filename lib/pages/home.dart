@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/yuemei.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
@@ -48,6 +49,11 @@ class _HomeState extends State<Home> {
       "title": "漫画",
       "activeIcon": "assets/images/bottomTab/comics_active.png",
       "icon": "assets/images/bottomTab/comics.png",
+    },
+    {
+      "title": "约妹",
+      "activeIcon": "assets/images/pili_12/yuemei_active.png",
+      "icon": "assets/images/pili_12/yuemei.png",
     },
     {
       "title": "我的",
@@ -219,7 +225,7 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  // 公告提示
+  // ���告提示
   void showAnnouncement(String message) {
     if (showAnnouncementStatus == true) return;
     bool isSelf = false;
@@ -362,8 +368,18 @@ class _HomeState extends State<Home> {
                             child: Container(
                                 width: ScreenUtil().screenWidth,
                                 height: double.infinity,
-                                child: Wode(
+                                child: YuemeiPage(
                                   isShow: selectedKey == 3,
+                                ))),
+                        Positioned(
+                            left: (-selectedKey + 4) * ScreenUtil().screenWidth,
+                            top: 0,
+                            bottom: 0,
+                            child: Container(
+                                width: ScreenUtil().screenWidth,
+                                height: double.infinity,
+                                child: Wode(
+                                  isShow: selectedKey == 4,
                                 ))),
                         Positioned(
                           right: 0,

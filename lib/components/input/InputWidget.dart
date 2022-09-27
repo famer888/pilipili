@@ -17,12 +17,14 @@ class InputWidget extends StatefulWidget {
   final int limitingText;
   final TextInputType boardType;
   final String btnText;
+  final String value;
   InputWidget(
       {Key key,
       this.tips,
       this.limitingText = 30,
       this.boardType = TextInputType.text,
-      this.btnText})
+      this.btnText,
+      this.value})
       : super(key: key);
 
   @override
@@ -35,6 +37,9 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    if (widget.value != null) {
+      editingController.text = widget.value;
+    }
     if (kIsWeb) {
       WidgetsBinding.instance.addObserver(this);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -145,7 +150,8 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                           GestureDetector(
                             onTap: (() {
                               var text = editingController.text?.replaceAll(
-                                      new RegExp("${PPString.test}\s+\b|\b\s"), "") ??
+                                      new RegExp("${PPString.test}\s+\b|\b\s"),
+                                      "") ??
                                   "";
                               if (text.isNotEmpty) {
                                 context.pop(text);
@@ -157,7 +163,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                       ScreenUtil().setWidth(15)),
-                                  gradient:  DefaultStyle.defaluGrandientLine),
+                                  gradient: DefaultStyle.defaluGrandientLine),
                               width: ScreenUtil().setWidth(60),
                               height: ScreenUtil().setWidth(30),
                               alignment: Alignment.center,

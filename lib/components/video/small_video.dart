@@ -1416,7 +1416,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                             onTap: () {
                                               if (kIsWeb) {
                                                 CommonUtils.showText(
-                                                    '请下载APP使用下载功能��');
+                                                    '请下载APP使用下载功能～');
                                               } else {
                                                 PageStatus.showLoading();
                                                 getDownloadUrl(

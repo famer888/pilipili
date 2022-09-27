@@ -9,15 +9,14 @@ import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/card/youxuan_card.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/tansuoList.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
-import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
@@ -43,9 +42,10 @@ class _ListPageState extends State<ListPage> with CardMixin {
   List data = [];
   ScrollController _scrollController = ScrollController();
   bool isHorizontal = false;
-  bool isListView = false;
-  bool isActivity = false;
-  bool isFall = false;
+  bool isListView = false; //是否是listview列表
+  bool isActivity = false; //是否是活动
+  bool isFall = false; //是否瀑布流
+  bool isTansuo = false; //是否是探索栏目
   dynamic fixedBanner;
   int elementID;
   String listType;
@@ -62,10 +62,12 @@ class _ListPageState extends State<ListPage> with CardMixin {
       }
     });
     listType = _pramsMap['type'];
-    try {
-      elementID = int.parse(_pramsMap['element_id']);
-    } catch (e) {
-      CommonUtils.showText('element_id必须是数字');
+    if (listType != 'tansuo') {
+      try {
+        elementID = int.parse(_pramsMap['element_id']);
+      } catch (e) {
+        CommonUtils.showText('element_id必须是数字');
+      }
     }
     if (widget.isShow && pageStatus == 0) {
       pageStatus = 1;
@@ -137,6 +139,8 @@ class _ListPageState extends State<ListPage> with CardMixin {
       res = await activityList();
       isListView = true;
       isActivity = true;
+    } else if (listType == 'tansuo') {
+      isTansuo = true;
     }
 
     if (res == null) {
@@ -278,191 +282,205 @@ class _ListPageState extends State<ListPage> with CardMixin {
   @override
   Widget build(BuildContext context) {
     double navHeight = 24;
-    return (networkErr || data == null)
-        ? PageStatus.noNetWork(onTap: () {
-            networkErr = false;
-            setState(() {});
-            getPageData();
-          })
-        : (pageStatus != 2
-            ? PageStatus.loading(true)
-            : PullRefreshList(
-                color: Color.fromRGBO(130, 26, 70, 0.44),
-                offset:
-                    DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
-                onLoading: () {
-                  if (isAll) return;
-                  page++;
-                  getPageData();
-                },
-                onRefresh: () async {
-                  page = 1;
-                  isAll = false;
-                  networkErr = false;
-                  page = 1;
-                  getPageData();
-                },
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  cacheExtent: ScreenUtil().screenHeight * 5,
-                  slivers: [
-                    SliverAppBar(
-                        backgroundColor: Colors.transparent,
-                        primary: false,
-                        leading: Container(),
-                        pinned: false,
-                        elevation: 0,
-                        forceElevated: true,
-                        expandedHeight: ScreenUtil().statusBarHeight +
-                            DefaultStyle.navbarHegiht +
-                            ScreenUtil().setWidth(160) +
-                            ScreenUtil().setWidth(24),
-                        bottom: PreferredSize(
-                          preferredSize:
-                              Size(double.infinity, ScreenUtil().setWidth(24)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight:
-                                    Radius.circular(ScreenUtil().setWidth(24)),
-                                topLeft:
-                                    Radius.circular(ScreenUtil().setWidth(24))),
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(255, 244, 249, 1),
+    return isTansuo
+        ? TansuoList()
+        : (networkErr || data == null)
+            ? PageStatus.noNetWork(onTap: () {
+                networkErr = false;
+                setState(() {});
+                getPageData();
+              })
+            : (pageStatus != 2
+                ? PageStatus.loading(true)
+                : PullRefreshList(
+                    color: Color.fromRGBO(130, 26, 70, 0.44),
+                    offset: DefaultStyle.navbarHegiht +
+                        ScreenUtil().statusBarHeight,
+                    onLoading: () {
+                      if (isAll) return;
+                      page++;
+                      getPageData();
+                    },
+                    onRefresh: () async {
+                      page = 1;
+                      isAll = false;
+                      networkErr = false;
+                      page = 1;
+                      getPageData();
+                    },
+                    child: CustomScrollView(
+                      controller: _scrollController,
+                      cacheExtent: ScreenUtil().screenHeight * 5,
+                      slivers: [
+                        SliverAppBar(
+                            backgroundColor: Colors.transparent,
+                            primary: false,
+                            leading: Container(),
+                            pinned: false,
+                            elevation: 0,
+                            forceElevated: true,
+                            expandedHeight: ScreenUtil().statusBarHeight +
+                                DefaultStyle.navbarHegiht +
+                                ScreenUtil().setWidth(160) +
+                                ScreenUtil().setWidth(24),
+                            bottom: PreferredSize(
+                              preferredSize: Size(
+                                  double.infinity, ScreenUtil().setWidth(24)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(
+                                        ScreenUtil().setWidth(24)),
+                                    topLeft: Radius.circular(
+                                        ScreenUtil().setWidth(24))),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 244, 249, 1),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: ScreenUtil().setWidth(12)),
+                                ),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setWidth(12)),
                             ),
-                          ),
-                        ),
-                        flexibleSpace: FlexibleSpaceBar(
-                            collapseMode: CollapseMode.parallax,
-                            background:
-                                Stack(clipBehavior: Clip.none, children: [
-                              fixedBanner == null ||
-                                      !(fixedBanner is Map) ||
-                                      fixedBanner['value'].length == 0
-                                  ? PlatformAwareAssetImage(
-                                      url: 'assets/images/demo_bg.png',
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      filterQuality: FilterQuality.medium)
-                                  : Swiper(
-                                      autoplayDelay: 3000,
-                                      autoplay: fixedBanner['value'].length > 1,
-                                      physics: fixedBanner['value'].length > 1
-                                          ? null
-                                          : new NeverScrollableScrollPhysics(),
-                                      onIndexChanged: (e) {
-                                        // CommonUtils.debugPrint('-------------------$e---------------------');
-                                      },
-                                      pagination: SwiperPagination(
-                                          margin: EdgeInsets.only(
-                                              bottom:
-                                                  ScreenUtil().setWidth(40)),
-                                          alignment: Alignment.bottomCenter,
-                                          builder: SwiperCustomPagination(
-                                              builder: (BuildContext context,
-                                                  SwiperPluginConfig config) {
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: fixedBanner['value']
-                                                  .asMap()
-                                                  .keys
-                                                  .map<Widget>((e) {
-                                                return AnimatedContainer(
-                                                  duration: Duration(
-                                                      milliseconds: 250),
-                                                  width:
-                                                      ScreenUtil().setWidth(6),
-                                                  height:
-                                                      ScreenUtil().setWidth(6),
-                                                  margin: EdgeInsets.only(
-                                                      left: ScreenUtil()
-                                                          .setWidth(16)),
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          config.activeIndex ==
-                                                                  e
-                                                              ? Colors.white
-                                                              : Colors.white54,
-                                                      borderRadius: BorderRadius
-                                                          .circular(ScreenUtil()
-                                                              .setWidth(3))),
+                            flexibleSpace: FlexibleSpaceBar(
+                                collapseMode: CollapseMode.parallax,
+                                background:
+                                    Stack(clipBehavior: Clip.none, children: [
+                                  fixedBanner == null ||
+                                          !(fixedBanner is Map) ||
+                                          fixedBanner['value'].length == 0
+                                      ? PlatformAwareAssetImage(
+                                          url: 'assets/images/demo_bg.png',
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          filterQuality: FilterQuality.medium)
+                                      : Swiper(
+                                          autoplayDelay: 3000,
+                                          autoplay:
+                                              fixedBanner['value'].length > 1,
+                                          physics: fixedBanner['value'].length >
+                                                  1
+                                              ? null
+                                              : new NeverScrollableScrollPhysics(),
+                                          onIndexChanged: (e) {
+                                            // CommonUtils.debugPrint('-------------------$e---------------------');
+                                          },
+                                          pagination: SwiperPagination(
+                                              margin: EdgeInsets.only(
+                                                  bottom: ScreenUtil()
+                                                      .setWidth(40)),
+                                              alignment: Alignment.bottomCenter,
+                                              builder: SwiperCustomPagination(
+                                                  builder:
+                                                      (BuildContext context,
+                                                          SwiperPluginConfig
+                                                              config) {
+                                                return Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: fixedBanner['value']
+                                                      .asMap()
+                                                      .keys
+                                                      .map<Widget>((e) {
+                                                    return AnimatedContainer(
+                                                      duration: Duration(
+                                                          milliseconds: 250),
+                                                      width: ScreenUtil()
+                                                          .setWidth(6),
+                                                      height: ScreenUtil()
+                                                          .setWidth(6),
+                                                      margin: EdgeInsets.only(
+                                                          left: ScreenUtil()
+                                                              .setWidth(16)),
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              config.activeIndex ==
+                                                                      e
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .white54,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          3))),
+                                                    );
+                                                  }).toList(),
                                                 );
-                                              }).toList(),
-                                            );
-                                          })),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return callDetail(
-                                          cardData: fixedBanner['value'][index],
-                                          contentType: 4,
-                                          child: Container(
-                                            clipBehavior: Clip.hardEdge,
-                                            decoration: ShapeDecoration(
-                                                shape:
-                                                    BeveledRectangleBorder()),
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                  height: ScreenUtil()
-                                                          .setWidth(260) +
-                                                      ScreenUtil()
-                                                          .statusBarHeight,
+                                              })),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return callDetail(
+                                              cardData: fixedBanner['value']
+                                                  [index],
+                                              contentType: 4,
+                                              child: Container(
+                                                clipBehavior: Clip.hardEdge,
+                                                decoration: ShapeDecoration(
+                                                    shape:
+                                                        BeveledRectangleBorder()),
+                                                child: Stack(
+                                                  children: [
+                                                    Container(
+                                                      height: ScreenUtil()
+                                                              .setWidth(260) +
+                                                          ScreenUtil()
+                                                              .statusBarHeight,
+                                                    ),
+                                                    Positioned(
+                                                        top: 0,
+                                                        bottom: 0,
+                                                        right: 0,
+                                                        left: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(0),
+                                                          child: Container(
+                                                            width:
+                                                                double.infinity,
+                                                            child:
+                                                                PlatformAwareNetworkImage(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              noVisibilityDetector:
+                                                                  true,
+                                                              url: fixedBanner[
+                                                                          'value']
+                                                                      [index][
+                                                                  'resource_url'],
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ))
+                                                  ],
                                                 ),
-                                                Positioned(
-                                                    top: 0,
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    left: 0,
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.all(0),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        child:
-                                                            PlatformAwareNetworkImage(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          noVisibilityDetector:
-                                                              true,
-                                                          url: fixedBanner[
-                                                                      'value']
-                                                                  [index]
-                                                              ['resource_url'],
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ))
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      itemCount: fixedBanner['value'].length,
-                                    )
-                            ]))),
-                    data.length == 0
-                        ? SliverToBoxAdapter(
-                            child: PageStatus.noData(
-                                text: '还没有[' +
-                                    widget.title.toString() +
-                                    ']的数据哦～'),
-                          )
-                        : SliverPadding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: DefaultStyle.pagePadding),
-                            sliver: _listView(),
+                                              ),
+                                            );
+                                          },
+                                          itemCount:
+                                              fixedBanner['value'].length,
+                                        )
+                                ]))),
+                        data.length == 0
+                            ? SliverToBoxAdapter(
+                                child: PageStatus.noData(
+                                    text: '还没有[' +
+                                        widget.title.toString() +
+                                        ']的数据哦～'),
+                              )
+                            : SliverPadding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: DefaultStyle.pagePadding),
+                                sliver: _listView(),
+                              ),
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: MediaQuery.of(context).padding.bottom +
+                                ScreenUtil().bottomBarHeight,
                           ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).padding.bottom +
-                            ScreenUtil().bottomBarHeight,
-                      ),
-                    )
-                  ],
-                )));
+                        )
+                      ],
+                    )));
   }
 }

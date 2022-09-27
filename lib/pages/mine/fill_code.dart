@@ -237,7 +237,7 @@ class _FillCodePageState extends State<FillCodePage> {
           passwordConfirm: newpassword.text,
         ).then((res) {
           if (res.status != 0) {
-            CommonUtils.showText('密码设���成功');
+            CommonUtils.showText('密码设置成功');
             Future.delayed(Duration(seconds: 2), () {
               context.pop();
             });

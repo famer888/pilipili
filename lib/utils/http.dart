@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -167,7 +166,7 @@ class PlatformAwareHttp {
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
   static Future post(String path, {Map data, CancelToken cancelToken}) {
-    // print(AppGlobal.apiBaseURL + path);
+    // AppGlobal.apiBaseURL='https://squid.yesebo.net/api.php';
     return _apiDio.post(AppGlobal.apiBaseURL + path,
         data: data, cancelToken: cancelToken);
   }

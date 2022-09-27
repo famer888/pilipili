@@ -1031,7 +1031,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                           context,
                                                           title: 'GOLD视频',
                                                           btnText: isInsufficient
-                                                              ? 'GOLD不足���前往充值'
+                                                              ? 'GOLD不足请前往充值'
                                                               : PPString.buySee,
                                                           callBack: () {
                                                         if (isInsufficient) {

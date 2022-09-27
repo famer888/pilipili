@@ -8,15 +8,11 @@ import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/mixin/element_mixin.dart';
 import 'package:pilipili/model/construct.dart';
-import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:provider/provider.dart';
 
 class Lanmu extends StatefulWidget {
   Lanmu(

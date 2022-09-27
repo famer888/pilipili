@@ -6,8 +6,9 @@ import 'package:pilipili/utils/networkImage.dart';
 
 // ignore: must_be_immutable
 class WidgetTitleBar extends StatefulWidget {
-  WidgetTitleBar({Key key, this.title}) : super(key: key);
+  WidgetTitleBar({Key key, this.title, this.bottom}) : super(key: key);
   String title;
+  double bottom;
   @override
   _WidgetTitleBarState createState() => _WidgetTitleBarState();
 }
@@ -21,7 +22,7 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(16)),
+      padding: EdgeInsets.only(bottom: widget.bottom ?? 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

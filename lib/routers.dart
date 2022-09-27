@@ -10,6 +10,7 @@ import 'package:pilipili/components/pili/search.dart';
 import 'package:pilipili/components/video/small_video.dart';
 import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/components/video/web_small_video.dart';
+import 'package:pilipili/components/yuemei/yuemei_detail.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
@@ -69,6 +70,7 @@ class Routes {
   static String noticemessage = 'noticemessage'; // 系统消息
   static String customerService = 'customerService'; //客服
   static String atlasDetail = 'atlasDetail/:id'; //图集详情
+  static String yuemeiDetail = 'yuemeiDetail/:id'; //约妹详情
   static String atlasList = 'atlasList/:index'; //图集列表展示
   static String onlineService = 'onlineService'; //在线客服
   static String contactOfficial = 'contactOfficial'; //联系官方
@@ -98,6 +100,14 @@ class Routes {
 
   static List<GoRoute> getDetailRoutes() {
     return [
+      GoRoute(
+          path: yuemeiDetail,
+          builder: (context, state) {
+            return YuemeiDetail(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id'].toString()));
+          }),
       GoRoute(
           path: packageDetail,
           builder: (context, state) {

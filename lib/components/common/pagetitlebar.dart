@@ -15,12 +15,18 @@ import 'package:pilipili/utils/networkImage.dart';
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
   PageTitleBar(
-      {Key key, this.title, this.rightWidget, this.height, this.paddingTop = 0})
+      {Key key,
+      this.title,
+      this.rightWidget,
+      this.height,
+      this.paddingTop = 0,
+      this.bgColor})
       : super(key: key);
   String title;
   Widget rightWidget;
   double height;
   double paddingTop;
+  Color bgColor;
   @override
   _PageTitleBarState createState() => _PageTitleBarState();
 }
@@ -38,7 +44,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
       children: [
         Container(
             padding: EdgeInsets.only(top: widget.paddingTop),
-            color: DefaultStyle.themeColor,
+            color: widget.bgColor ?? DefaultStyle.themeColor,
             alignment: Alignment.center,
             width: ScreenUtil().screenWidth,
             child: Container(

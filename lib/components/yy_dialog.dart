@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class YyDialog extends StatefulWidget {
   final Widget child; //子Widget
@@ -229,5 +232,78 @@ class YyShowDialog {
         cancelBack();
       }
     });
+  }
+
+  static Future showButtom(context,
+      {String title, double height, Function callback, dynamic content,Function onClose}) {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setBottomSheetState) {
+            return Stack(
+              children: [
+                Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: Color(0xfffff4f9),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(ScreenUtil().setWidth(12)),
+                        topRight: Radius.circular(ScreenUtil().setWidth(12)),
+                      )),
+                  width: double.infinity,
+                  height: height ??
+                      370.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: ScreenUtil().setWidth(64),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                end: Alignment.bottomCenter,
+                                begin: Alignment.topCenter,
+                                colors: [
+                              Color(0XFFFF89AC),
+                              Color(0XFFFF5B8C),
+                              Color(0XFFFA437A),
+                            ])),
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: DefaultStyle.white18bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: content is Widget
+                              ? content
+                              : content(setBottomSheetState)),
+                    ],
+                  ),
+                ),
+                Positioned(
+                    top: ScreenUtil().setWidth(19.5),
+                    right: ScreenUtil().setWidth(19.5),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.pop();
+                      },
+                      child: PlatformAwareAssetImage(
+                          url: 'assets/images/detail/icon_close.png',
+                          width: ScreenUtil().setWidth(24),
+                          height: ScreenUtil().setWidth(24),
+                          filterQuality: FilterQuality.medium),
+                    ))
+              ],
+            );
+          });
+        }).then((value){
+          if(onClose!=null){
+            onClose();
+          }
+        });
   }
 }
