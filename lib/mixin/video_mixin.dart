@@ -301,8 +301,11 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                         BorderRadius.circular(
                                                             ScreenUtil()
                                                                 .setWidth(20)),
-                                                    gradient: SweepGradient(
-                                                        //  begin: Alignment.bottomCenter,
+                                                    gradient: LinearGradient(
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
                                                         colors: [
                                                           Color(0XFFff84a9),
                                                           Color(0XFFff9e9e),
@@ -360,8 +363,11 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                       borderRadius: BorderRadius
                                                           .circular(ScreenUtil()
                                                               .setWidth(20)),
-                                                      gradient: SweepGradient(
-                                                          //  begin: Alignment.bottomCenter,
+                                                      gradient: LinearGradient(
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
                                                           colors: [
                                                             Color(isInsufficient
                                                                 ? 0xffffccdb
