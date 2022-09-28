@@ -28,21 +28,25 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       'id': 1,
       'name': '次元精选',
       'index': 1,
+      'api':'/api/user/getUserBuy'
     },
     {
       'id': 11,
       'name': '次元竖屏',
       'index': 2,
+      'api':'/api/user/getUserBuy'
     },
     {
       'id': 1,
       'name': '动漫',
       'index': 3,
+      'api':'/api/user/getUserBuy'
     },
     {
       'id': 99,
       'name': '合集包',
       'index': 4,
+      'api':'/api/user/getUserBuy'
     },
   ];
 

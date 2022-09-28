@@ -4,6 +4,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/cityPickers.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -49,185 +50,13 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
     });
   }
 
-  Widget yuepaoCard({double h, double w}) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Positioned(
-            right: -4.w,
-            top: 0,
-            child: Image.asset(
-              'assets/images/pili_12/yuemei_red.png',
-              width: 65.w,
-              fit: BoxFit.fitWidth,
-            )),
-        Container(
-          height: h ?? 140.w,
-          width: w ?? 118.w,
-          decoration: BoxDecoration(
-            color: Color(0xffffebd3),
-            boxShadow: [
-              BoxShadow(
-                  color: Color.fromRGBO(255, 128, 163, 0.5),
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
-                  spreadRadius: 0)
-            ],
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18.w),
-                topRight: Radius.circular(78.w),
-                bottomRight: Radius.circular(10.w),
-                bottomLeft: Radius.circular(38.w)),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Padding(
-            padding: EdgeInsets.all(1.8.w),
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(18.w),
-                  topRight: Radius.circular(78.w),
-                  bottomRight: Radius.circular(10.w),
-                  bottomLeft: Radius.circular(38.w)),
-              child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDgYIIBTmgiykVmVA6KjNFumB8WHcm9Mu_0Ftsi5GcSo-Xbz4af6H_dwmhmjjiNBRQXb4&usqp=CAU',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
   Widget _listView() {
     return isListView
         ? SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    context.push(CommonUtils.getRealHash('yuemeiDetail/14'));
-                  },
-                  child: Padding(
-                  padding: EdgeInsets.only(bottom: 10.w),
-                  child: Row(
-                    children: [
-                      yuepaoCard(h: 145.w, w: 118.w),
-                      Expanded(
-                          child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 20.w, left: 1.w, right: 4.w),
-                            decoration: BoxDecoration(
-                              color: Color(0xffffebd3),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Color.fromRGBO(255, 128, 163, 0.5),
-                                    offset: Offset(0, 2),
-                                    blurRadius: 3,
-                                    spreadRadius: 0)
-                              ],
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(10.w),
-                                bottomRight: Radius.circular(10.w),
-                              ),
-                            ),
-                            height: 112.w,
-                            width: double.infinity,
-                            padding: EdgeInsets.only(
-                                right: 2.w, top: 2.w, bottom: 2.w),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 14.w, vertical: 12.w),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10.w),
-                                  bottomRight: Radius.circular(10.w),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'C圈小萌妹',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Color(0xff6d6d6d),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 4.w),
-                                    child: Text(
-                                      '19岁/158cm/C杯',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Color(0xffff5b8c),
-                                        fontSize: 12.sp,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                      ',萌音，雷姆cos服，护士服，黑丝OL口萌音，雷姆cos服，护士服，黑丝OL口',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Color(0xff979797),
-                                        fontSize: 11.sp,
-                                      )),
-                                  Expanded(child: Container()),
-                                  DefaultTextStyle(
-                                      style: TextStyle(
-                                          color: Color(0xff979797),
-                                          fontSize: 11.sp),
-                                      child: Row(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/pili_12/icon_location_red.png',
-                                                width: 18.w,
-                                                fit: BoxFit.fitWidth,
-                                              ),
-                                              Text('南京')
-                                            ],
-                                          ),
-                                          SizedBox(width: 32.w),
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/pili_12/icon_lock.png',
-                                                width: 18.w,
-                                                fit: BoxFit.fitWidth,
-                                              ),
-                                              Text('2999')
-                                            ],
-                                          )
-                                        ],
-                                      ))
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              right: -4.w,
-                              child: Image.asset(
-                                'assets/images/pili_12/yuemei_jingpin.png',
-                                width: 54.w,
-                                fit: BoxFit.fitWidth,
-                              ))
-                        ],
-                      ))
-                    ],
-                  ),
-                ),
-                );
+                return YuemeiCard(
+                    w: 118.w, h: 145.w, isShowInfo: true, data: {});
               },
               childCount: data.length,
               addSemanticIndexes: false,
@@ -241,7 +70,9 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
             crossAxisSpacing: 12.w,
             childAspectRatio: 0.843,
             children: data.asMap().keys.map((e) {
-              return yuepaoCard();
+              return YuemeiCard(
+                  w: 118.w, h: 145.w, isShowInfo: false, data: {});
+              ;
             }).toList(),
           );
   }
@@ -551,6 +382,9 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                         )),
                     GestureDetector(
                         onTap: () {
+                          context
+                              .push(CommonUtils.getRealHash('seriesDetail/1'));
+                          return;
                           // 打开搜索
                           context.push('/${Routes.search}');
                         },

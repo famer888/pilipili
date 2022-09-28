@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/newComicsCard.dart';
+import 'package:pilipili/components/card/series_card.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/sharemovie.dart';
@@ -169,6 +171,81 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     );
   }
 
+  Future showButtom() {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setBottomSheetState) {
+            return Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(color: Color(0xfffff4f9)),
+              width: double.infinity,
+              height: 452.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: ScreenUtil().setWidth(40),
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                          color: Color(0XFFffd3e6),
+                          offset: Offset(0, 2),
+                          blurRadius: 4,
+                          spreadRadius: 0)
+                    ]),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 24.w,
+                        ),
+                        Expanded(
+                            child: Center(
+                          child: Text(
+                            '系列名称',
+                            style: TextStyle(
+                                color: Color(0xffff5b8c),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )),
+                        GestureDetector(
+                          onTap: () {
+                            context.pop();
+                          },
+                          behavior: HitTestBehavior.translucent,
+                          child: Image.asset(
+                            'assets/images/pili_12/icon_close_red.png',
+                            width: 24.w,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 16.w),
+                          itemCount: 15,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 8.w),
+                              child: SeriesCard(),
+                            );
+                          })),
+                ],
+              ),
+            );
+          });
+        });
+  }
+
   ScrollController scrollController = ScrollController();
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
   @override
@@ -220,9 +297,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                       color: Colors.white,
                                       boxShadow: [
                                         BoxShadow(
-                                          blurStyle: BlurStyle.outer,
                                           color:
                                               Color.fromRGBO(255, 91, 140, 0.2),
+                                          blurRadius: 4,
+                                          spreadRadius: 0,
                                           offset: Offset(
                                               0, ScreenUtil().setWidth(6)),
                                         )
@@ -477,7 +555,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                               );
                                                             },
                                                             cancelText: '取消',
-                                                            btnText: PPString.upgradeNuw,
+                                                            btnText: PPString
+                                                                .upgradeNuw,
                                                             callBack: () {
                                                               context.push(
                                                                   '/${Routes.vip}');
@@ -636,7 +715,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                               SliverPadding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: DefaultStyle.pagePadding,
-                                      vertical: ScreenUtil().setWidth(16)),
+                                      vertical: ScreenUtil().setWidth(newestSeries.length < 8?0:16)),
                                   sliver: SliverToBoxAdapter(
                                     child: newestSeries.length < 8
                                         ? Container()
@@ -689,6 +768,101 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                             ),
                                           ),
                                   )),
+                                  SliverToBoxAdapter(
+                                    child: Container(
+                                      height: 0.5.w,
+                                      width: double.infinity,
+                                      margin: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 16.w,
+                                        bottom: 16.w
+                                      ),
+                                      color: Color(0xffffd1df),
+                                    ),
+                                  ),
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 18.w),
+                                  child: WidgetTitleBar(
+                                    title: '系列详情',
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    style: TextStyle(
+                                        color: Color(0xffff5b8c),
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              SliverToBoxAdapter(
+                                  child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: DefaultStyle.pagePadding),
+                                child: Row(
+                                  children: [
+                                    Row(
+                                      children: List(6).asMap().keys.map((e) {
+                                        return Container(
+                                          color: Colors.red,
+                                          margin: EdgeInsets.only(right: 8.w),
+                                          width: 85.w,
+                                          height: 125.w,
+                                        );
+                                      }).toList(),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        showButtom();
+                                        // context.push(
+                                        //     '/morePage/'+widget.id.toString()+'/'+widget.title.toString()+'/'+(widget.morePageType ?? 1).toString());
+                                      },
+                                      child: Container(
+                                        width: ScreenUtil().setWidth(70),
+                                        height: ScreenUtil().setWidth(39),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color.fromRGBO(
+                                                      255, 128, 163, 0.5),
+                                                  offset: Offset(0, 2),
+                                                  blurRadius: 3,
+                                                  spreadRadius: 0)
+                                            ],
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenUtil().setWidth(50)),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [
+                                                  Color(0xffff8b8b),
+                                                  Color(0xffff7696),
+                                                  Color(0xffff7299),
+                                                ])),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              '更多',
+                                              style: DefaultStyle.white14,
+                                            ),
+                                            SizedBox(
+                                              width: ScreenUtil().setWidth(9),
+                                            ),
+                                            PlatformAwareAssetImage(
+                                                url:
+                                                    'assets/images/icon_more.png',
+                                                height:
+                                                    ScreenUtil().setWidth(8),
+                                                filterQuality:
+                                                    FilterQuality.medium)
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
                               SliverPadding(
                                 padding: EdgeInsets.only(
                                     bottom: ScreenUtil().setWidth(16),

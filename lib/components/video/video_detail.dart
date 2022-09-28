@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
+import 'package:pilipili/components/card/series_card.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
@@ -89,8 +90,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
 
   initVideoPage() {
     getVideoDetail(id: widget.id).then((res) {
-      CommonUtils.debugPrint(
-          "---------视频地址------"+res.data.source240.toString()+"-------------预览视频地址---"+res.data.preview.toString());
+      CommonUtils.debugPrint("---------视频地址------" +
+          res.data.source240.toString() +
+          "-------------预览视频地址---" +
+          res.data.preview.toString());
       if (res.status != 0) {
         isPreview = res.data.source240 == null;
         videoUrl = res.data.source240 == null
@@ -150,7 +153,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PlatformAwareAssetImage(
-              url: 'assets/images/detail/'+icon.toString()+'.png',
+              url: 'assets/images/detail/' + icon.toString() + '.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
@@ -166,6 +169,81 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
         ],
       ),
     );
+  }
+
+  Future showButtom() {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setBottomSheetState) {
+            return Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(color: Color(0xfffff4f9)),
+              width: double.infinity,
+              height: 452.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: ScreenUtil().setWidth(40),
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                          color: Color(0XFFffd3e6),
+                          offset: Offset(0, 2),
+                          blurRadius: 4,
+                          spreadRadius: 0)
+                    ]),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 24.w,
+                        ),
+                        Expanded(
+                            child: Center(
+                          child: Text(
+                            '系列名称',
+                            style: TextStyle(
+                                color: Color(0xffff5b8c),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )),
+                        GestureDetector(
+                          onTap: () {
+                            context.pop();
+                          },
+                          behavior: HitTestBehavior.translucent,
+                          child: Image.asset(
+                            'assets/images/pili_12/icon_close_red.png',
+                            width: 24.w,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 16.w),
+                          itemCount: 15,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 8.w),
+                              child: SeriesCard(),
+                            );
+                          })),
+                ],
+              ),
+            );
+          });
+        });
   }
 
   @override
@@ -199,7 +277,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                               ? Center(
                                   child: Container(
                                     width: ScreenUtil().setWidth(90),
-                                    child: Image.asset('assets/gif/loading_pink.gif',
+                                    child: Image.asset(
+                                        'assets/gif/loading_pink.gif',
                                         fit: BoxFit.fitWidth,
                                         filterQuality: FilterQuality.medium),
                                   ),
@@ -367,7 +446,14 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              '演员：'+(videoInfo.actors == null || videoInfo.actors == "" ? "--" : videoInfo.actors).toString(),
+                                                              '演员：' +
+                                                                  (videoInfo.actors == null ||
+                                                                              videoInfo.actors ==
+                                                                                  ""
+                                                                          ? "--"
+                                                                          : videoInfo
+                                                                              .actors)
+                                                                      .toString(),
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xffFF5B8C),
@@ -377,7 +463,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               12)),
                                                             ),
                                                             Text(
-                                                              videoInfo.countPlay.toString()+'人看过 - '+videoInfo.createdAt.split(' ')[0].toString()+'更新',
+                                                              videoInfo
+                                                                      .countPlay
+                                                                      .toString() +
+                                                                  '人看过 - ' +
+                                                                  videoInfo
+                                                                      .createdAt
+                                                                      .split(
+                                                                          ' ')[0]
+                                                                      .toString() +
+                                                                  '更新',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xff979797),
@@ -410,7 +505,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         0) {
                                                                       Map taskInfo =
                                                                           {
-                                                                        "id":videoInfo.id.toString(),
+                                                                        "id": videoInfo
+                                                                            .id
+                                                                            .toString(),
                                                                         "urlPath":
                                                                             res['data']['downloadUrl'],
                                                                         "title":
@@ -529,8 +626,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               },
                                                               child: _btnItem(
                                                                   icon: isFavorites
-                                                                      ? PPString.iconunLike
-                                                                      : PPString.iconLike,
+                                                                      ? PPString
+                                                                          .iconunLike
+                                                                      : PPString
+                                                                          .iconLike,
                                                                   name: CommonUtils
                                                                       .renderFixedNumber(
                                                                           likeCount
@@ -572,8 +671,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     subtitle:
                                                                         videoInfo?.desc ??
                                                                             '--',
-                                                                    url:
-                                                                        config.share.affUrl.toString());
+                                                                    url: config
+                                                                        .share
+                                                                        .affUrl
+                                                                        .toString());
                                                               },
                                                               child: _btnItem(
                                                                   icon:
@@ -648,7 +749,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               color: Colors.white),
                                                                       child:
                                                                           Text(
-                                                                        tags[e].toString(),
+                                                                        tags[e]
+                                                                            .toString(),
                                                                         style: TextStyle(
                                                                             color:
                                                                                 Color(0xff979797),
@@ -664,6 +766,116 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   height: ScreenUtil()
                                                       .setWidth(0.5),
                                                 ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 0.5.w,
+                                            width: double.infinity,
+                                            margin: EdgeInsets.only(
+                                                left: 16.w,
+                                                right: 16.w,
+                                                bottom: 16.w),
+                                            color: Color(0xffffd1df),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 18.w),
+                                            child: WidgetTitleBar(
+                                              title: '系列详情',
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              style: TextStyle(
+                                                  color: Color(0xffff5b8c),
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    DefaultStyle.pagePadding),
+                                            child: Row(
+                                              children: [
+                                                Row(
+                                                  children: List(6)
+                                                      .asMap()
+                                                      .keys
+                                                      .map((e) {
+                                                    return Container(
+                                                      color: Colors.red,
+                                                      margin: EdgeInsets.only(
+                                                          right: 8.w),
+                                                      width: 160.w,
+                                                      height: 90.w,
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    showButtom();
+                                                  },
+                                                  child: Container(
+                                                    width: ScreenUtil()
+                                                        .setWidth(70),
+                                                    height: ScreenUtil()
+                                                        .setWidth(39),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      255,
+                                                                      128,
+                                                                      163,
+                                                                      0.5),
+                                                              offset:
+                                                                  Offset(0, 2),
+                                                              blurRadius: 3,
+                                                              spreadRadius: 0)
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        50)),
+                                                        gradient: LinearGradient(
+                                                            begin: Alignment
+                                                                .topLeft,
+                                                            end: Alignment
+                                                                .bottomRight,
+                                                            colors: [
+                                                              Color(0xffff8b8b),
+                                                              Color(0xffff7696),
+                                                              Color(0xffff7299),
+                                                            ])),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          '更多',
+                                                          style: DefaultStyle
+                                                              .white14,
+                                                        ),
+                                                        SizedBox(
+                                                          width: ScreenUtil()
+                                                              .setWidth(9),
+                                                        ),
+                                                        PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/icon_more.png',
+                                                            height: ScreenUtil()
+                                                                .setWidth(8),
+                                                            filterQuality:
+                                                                FilterQuality
+                                                                    .medium)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
                                               ],
                                             ),
                                           ),

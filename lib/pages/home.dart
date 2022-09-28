@@ -34,6 +34,13 @@ class _HomeState extends State<Home> {
   bool showAnnouncementStatus = false;
   bool showActivety = false;
   bool initPage = false;
+  List<Map> webTypeList = [
+    {'w': 428, 'h': 926, 'r': 3}, // iphone13 pro max
+    {'w': 390, 'h': 844, 'r': 3}, // iphone 13 and pro
+    {'w': 375, 'h': 812, 'r': 3}, //iphoneX、iphoneXs
+    {'w': 414, 'h': 896, 'r': 3}, //iphone Xs Max
+    {'w': 414, 'h': 896, 'r': 2} //iphone XR
+  ];
   List navBarItem = [
     {
       "title": "pili次元",
@@ -64,6 +71,14 @@ class _HomeState extends State<Home> {
   int selectedKey = 0;
   bool loading = true;
 
+  getWebType(int h, int w, double r) {
+    webTypeList.forEach((item) {
+      if (item['h'] == h && item['w'] == w && item['r'] == r) {
+        AppGlobal.webBottomHeight = 15.w;
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +87,13 @@ class _HomeState extends State<Home> {
       _initDownloadStastu();
     }
     fetchBeforeEnterApp();
+    if (kIsWeb) {
+      int _h = html.window.screen.height;
+      int _w = html.window.screen.width;
+      double _ratio = html.window.devicePixelRatio;
+      getWebType(_h, _w, _ratio);
+      // webBottomHeight
+    }
   }
 
   // 初始化下载状态

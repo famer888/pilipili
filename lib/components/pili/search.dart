@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/pili/public_list.dart';
+import 'package:pilipili/components/pili/publish_biuld_list.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -596,6 +598,13 @@ class _SearchResultState extends State<SearchResult> {
       'api': '/api/book/search',
       'pramas': {},
       'isFlow': false,
+    },
+    {
+      'title': '约妹',
+      'cardType': 'yuemei',
+      'api': '/api/book/search',
+      'pramas': {},
+      'isFlow': false,
     }
   ];
   @override
@@ -674,14 +683,33 @@ class _SearchResultState extends State<SearchResult> {
             };
             pramas.addAll(tabList[e]['pramas']);
             return PageViewMixin(
-              child: PublicList(
-                isFlow: tabList[e]['isFlow'],
-                contentType: e == 2 ? 2 : null,
-                data: pramas,
-                cartType: tabList[e]['cardType'],
-                api: tabList[e]['api'],
-                isShow: e == currentTab,
-              ),
+              child: tabList[e]['cardType'] == 'yuemei'
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 18.w),
+                      child: PublicBuildList(
+                          api: tabList[e]['api'],
+                          isFlow: true,
+                          isShow: true,
+                          data: pramas,
+                          nullText: '还没有约炮信息哦～',
+                          itemBuild:
+                              (context, index, data, page, limit, getListData) {
+                            return YuemeiCard(
+                              w: 118.w,
+                              h: 145.w,
+                              isShowInfo: true,
+                              data: {},
+                            );
+                          }),
+                    )
+                  : PublicList(
+                      isFlow: tabList[e]['isFlow'],
+                      data: pramas,
+                      cartType: tabList[e]['cardType'],
+                      api: tabList[e]['api'],
+                      isShow: e == currentTab,
+                    ),
             );
           }).toList(),
         ))

@@ -7,6 +7,7 @@ import 'package:pilipili/components/comics/comicReader.dart';
 import 'package:pilipili/components/comics/comics_detail.dart';
 import 'package:pilipili/components/package_detail.dart';
 import 'package:pilipili/components/pili/search.dart';
+import 'package:pilipili/components/series_detail.dart';
 import 'package:pilipili/components/video/small_video.dart';
 import 'package:pilipili/components/video/video_detail.dart';
 import 'package:pilipili/components/video/web_small_video.dart';
@@ -33,7 +34,6 @@ import 'package:pilipili/pages/mine/collect.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
 import 'package:pilipili/pages/mine/coinRecharge.dart';
 import 'package:pilipili/pages/mine/coin_detail.dart';
-import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/detail/local_video_detail.dart';
 import 'package:pilipili/pages/detail/local_small_video_detail.dart';
 import 'package:pilipili/pages/detail/local_comics_detail.dart';
@@ -71,6 +71,7 @@ class Routes {
   static String customerService = 'customerService'; //客服
   static String atlasDetail = 'atlasDetail/:id'; //图集详情
   static String yuemeiDetail = 'yuemeiDetail/:id'; //约妹详情
+  static String seriesDetail = 'seriesDetail/:id'; //系列详情
   static String atlasList = 'atlasList/:index'; //图集列表展示
   static String onlineService = 'onlineService'; //在线客服
   static String contactOfficial = 'contactOfficial'; //联系官方
@@ -100,6 +101,58 @@ class Routes {
 
   static List<GoRoute> getDetailRoutes() {
     return [
+      GoRoute(
+          path: seriesDetail,
+          builder: (context, state) {
+            return SeriesDetail(
+                id: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['id'].toString()));
+          },
+          routes: [
+            GoRoute(
+              path: videoDetail,
+              builder: (context, state) {
+                return VideoDetail(
+                    id: state.params == null || state.params['id'] == null
+                        ? null
+                        : int.parse(state.params['id'].toString()));
+              },
+            ),
+            GoRoute(
+                path: comicsdetail,
+                builder: (context, state) {
+                  return ComicsDetatl(
+                      id: state.params == null || state.params['id'] == null
+                          ? null
+                          : int.parse(state.params['id'].toString()));
+                },
+                routes: [
+                  GoRoute(
+                    path: comicReader,
+                    builder: (context, state) {
+                      final args = AppGlobal.currentReaderRouteExtra;
+                      return ComicReader(
+                        id: args == null || args['id'] == null
+                            ? null
+                            : int.parse(args['id'].toString()),
+                        episode: args == null || args['episode'] == null
+                            ? null
+                            : int.parse(args['episode'].toString()),
+                        allEpisode: args == null || args['allEpisode'] == null
+                            ? null
+                            : int.parse(args['allEpisode'].toString()),
+                        title: args == null || args['title'] == null
+                            ? null
+                            : args['title'],
+                        type: args == null || args['type'] == null
+                            ? null
+                            : int.parse(args['type'].toString()),
+                      );
+                    },
+                  ),
+                ]),
+          ]),
       GoRoute(
           path: yuemeiDetail,
           builder: (context, state) {

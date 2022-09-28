@@ -210,6 +210,15 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                               )),
                         )
                       : Container(),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Image.asset(
+                      'assets/images/pili_12/icon_series.png',
+                      width: thumbWidth * 0.444,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
                 ],
               ),
               Stack(

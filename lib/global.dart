@@ -63,4 +63,5 @@ class AppGlobal {
   static Map seconedPagePramas; //页面参数
   static String smallVideoApi;
   static Map smallVideoPramas;
+  static num webBottomHeight=0;
 }

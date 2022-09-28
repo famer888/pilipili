@@ -6,9 +6,17 @@ import 'package:pilipili/utils/networkImage.dart';
 
 // ignore: must_be_immutable
 class WidgetTitleBar extends StatefulWidget {
-  WidgetTitleBar({Key key, this.title, this.bottom}) : super(key: key);
-  String title;
-  double bottom;
+  WidgetTitleBar(
+      {Key key,
+      this.title,
+      this.bottom,
+      this.mainAxisAlignment = MainAxisAlignment.center,
+      this.style})
+      : super(key: key);
+  final String title;
+  final double bottom;
+  final MainAxisAlignment mainAxisAlignment;
+  final TextStyle style;
   @override
   _WidgetTitleBarState createState() => _WidgetTitleBarState();
 }
@@ -24,7 +32,7 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
     return Padding(
       padding: EdgeInsets.only(bottom: widget.bottom ?? 16.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: widget.mainAxisAlignment,
         children: [
           PlatformAwareAssetImage(
               url: 'assets/images/icon_love_red.png',
@@ -34,7 +42,7 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
             padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(8)),
             child: Text(
               widget.title,
-              style: DefaultStyle.black18bold,
+              style: widget.style ?? DefaultStyle.black18bold,
             ),
           ),
           PlatformAwareAssetImage(

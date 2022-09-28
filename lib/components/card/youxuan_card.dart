@@ -317,7 +317,21 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                                               FontWeight.bold,
                                                         )),
                                                     TextSpan(text: '】'),
-                                                  ]))
+                                                  ])),
+                                                  SizedBox(
+                                                    height: 8.w,
+                                                  ),
+                                                  Text(
+                                                    '总计' +
+                                                        widget.data['total_num']
+                                                            .toString() +
+                                                        '部影片',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0XFFFE155B),
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12)),
+                                                  )
                                                 ],
                                               ));
                                         });

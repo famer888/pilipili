@@ -230,7 +230,16 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                                     textAlign: TextAlign.center,
                                   ),
                                 ))
-                      : Container()
+                      : Container(),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Image.asset(
+                      'assets/images/pili_12/icon_series.png',
+                      width: widget.width * 0.807,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
                 ],
               ),
               Stack(

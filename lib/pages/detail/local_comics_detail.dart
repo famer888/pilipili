@@ -87,7 +87,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PlatformAwareAssetImage(
-              url: 'assets/images/detail/'+icon.toString()+'.png',
+              url: 'assets/images/detail/' + icon.toString() + '.png',
               width: ScreenUtil().setWidth(10),
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
@@ -153,8 +153,9 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                             decoration:
                                 BoxDecoration(color: Colors.white, boxShadow: [
                               BoxShadow(
-                                blurStyle: BlurStyle.outer,
                                 color: Color.fromRGBO(255, 91, 140, 0.2),
+                                blurRadius: 4,
+                                spreadRadius: 0,
                                 offset: Offset(0, ScreenUtil().setWidth(6)),
                               )
                             ]),
