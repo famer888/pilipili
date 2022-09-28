@@ -13,7 +13,6 @@ typedef BuildWidgetData = Function(BuildContext context, int index,
     dynamic data, int page, int limit, Function getListData);
 
 class PublicBuildList extends StatefulWidget {
-  @required
   final bool isShow; //是否展示
   final BuildWidgetData itemBuild;
   final String api; //接口地址
