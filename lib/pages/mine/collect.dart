@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilipili/components/card/yuemei_card.dart';
 
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +45,7 @@ class _CollectPageState extends State<CollectPage>
       'aspectRatio': 0.61
     },
     {
-      'id': 3,
+      'id': 1,
       'name': '动漫',
       'index': 3,
       'api': '/api/user/getUserFavor',
@@ -59,6 +60,14 @@ class _CollectPageState extends State<CollectPage>
       'row': 3,
       'aspectRatio': 0.61
     },
+    {
+      'id': 1,
+      'name': '约妹',
+      'index': 5,
+      'api': '/api/user/getUserBuy',
+      'row': 1,
+      'aspectRatio': null
+    }
   ];
 
   Map<int, dynamic> dataList = {
@@ -211,6 +220,9 @@ class _CollectPageState extends State<CollectPage>
                     children: tabList.asMap().keys.map<Widget>((e) {
                       return PageViewMixin(
                         child: PublicBuildList(
+                            paddingLeft: tabList[e]['index'] == 5 ? 16.w : 0,
+                            paddingTop: tabList[e]['index'] == 5 ? 16.w : 0,
+                            paddingRight: tabList[e]['index'] == 5 ? 16.w : 0,
                             api: tabList[e]['api'],
                             isFlow: false,
                             isShow: true,
@@ -222,7 +234,13 @@ class _CollectPageState extends State<CollectPage>
                             },
                             itemBuild: (context, index, data, page, limit,
                                 getListData) {
-                              return getCardType(tabList[e]['id'], data);
+                              return tabList[e]['index'] == 5
+                                  ? YuemeiCard(
+                                      isShowInfo: true,
+                                      w: 118.w,
+                                      h: 145.w,
+                                    )
+                                  : getCardType(tabList[e]['id'], data);
                             }),
                       );
                     }).toList()),

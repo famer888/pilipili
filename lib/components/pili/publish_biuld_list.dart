@@ -25,6 +25,9 @@ class PublicBuildList extends StatefulWidget {
   final double aspectRatio;
   final String nullText;
   final bool isController;
+  final double paddingTop;
+  final double paddingLeft;
+  final double paddingRight;
   PublicBuildList({
     Key key,
     this.isShow,
@@ -39,6 +42,9 @@ class PublicBuildList extends StatefulWidget {
     this.row = 1,
     this.nullText,
     this.isController = true,
+    this.paddingTop,
+    this.paddingLeft,
+    this.paddingRight,
   }) : super(key: key);
 
   @override
@@ -178,8 +184,11 @@ class _PublicBuildListState extends State<PublicBuildList> {
                         ? ListView.builder(
                             physics: const ClampingScrollPhysics(),
                             padding: EdgeInsets.only(
+                              top: widget.paddingTop,
+                              left: widget.paddingLeft,
+                              right: widget.paddingRight,
                               bottom: MediaQuery.of(context).padding.bottom +
-                                  AppGlobal.webBottomHeight ,
+                                  AppGlobal.webBottomHeight,
                             ),
                             shrinkWrap: true,
                             cacheExtent: 10.sh,
