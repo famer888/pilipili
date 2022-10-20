@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/newComicsCard.dart';
 import 'package:pilipili/components/card/series_card.dart';
+import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/sharemovie.dart';
@@ -47,6 +48,12 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
   int likeCount = 0;
   bool textmore = false;
   double scrollto;
+
+  Map seriesList;
+  List firstSeriesList = [];
+  int spage = 1;
+  int slimit = 15;
+  bool sisAll = false;
   getPageData() {
     newestSeries.clear();
     getComicDetail(id: widget.id).then((res) {
@@ -76,9 +83,39 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     });
   }
 
+  getSeriesListVideo({Function setBottomSheetState}) {
+    getSeriesList(id: widget.id, type: 2, page: spage, limit: slimit)
+        .then((res) {
+      if (res['status'] != 0) {
+        List resdata = res['data'] == null || res['data']['resource'] == null
+            ? []
+            : res['data']['resource'];
+        sisAll = resdata.length < slimit;
+        if (spage == 1) {
+          seriesList = res['data'];
+          if (resdata.length < 6) {
+            firstSeriesList = resdata;
+          } else {
+            firstSeriesList = resdata.sublist(0, 6);
+          }
+        } else {
+          seriesList['resource'].addAll(res['data']['resource']);
+        }
+        if (setBottomSheetState == null) {
+          setState(() {});
+        } else {
+          setBottomSheetState();
+        }
+      } else {
+        CommonUtils.showText(res['msg']);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getSeriesListVideo();
     getPageData();
   }
 
@@ -205,7 +242,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                         Expanded(
                             child: Center(
                           child: Text(
-                            '系列名称',
+                            seriesList['title'],
                             style: TextStyle(
                                 color: Color(0xffff5b8c),
                                 fontSize: 14.sp,
@@ -229,16 +266,30 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                     ),
                   ),
                   Expanded(
-                      child: ListView.builder(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 16.w),
-                          itemCount: 15,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 8.w),
-                              child: SeriesCard(),
-                            );
-                          })),
+                      child: PullRefreshList(
+                          onLoading: () {
+                            if (sisAll) return;
+                            spage++;
+                            getSeriesListVideo(
+                                setBottomSheetState: setBottomSheetState);
+                          },
+                          child: ListView.builder(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w, vertical: 16.w),
+                              itemCount: seriesList['resource'].length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 8.w),
+                                  child: SeriesCard(
+                                    data: seriesList['resource'][index],
+                                    type: seriesList['type'],
+                                    replace: true,
+                                    onTap: () {
+                                      context.pop();
+                                    },
+                                  ),
+                                );
+                              }))),
                 ],
               ),
             );
@@ -715,7 +766,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                               SliverPadding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: DefaultStyle.pagePadding,
-                                      vertical: ScreenUtil().setWidth(newestSeries.length < 8?0:16)),
+                                      vertical: ScreenUtil().setWidth(
+                                          newestSeries.length < 8 ? 0 : 16)),
                                   sliver: SliverToBoxAdapter(
                                     child: newestSeries.length < 8
                                         ? Container()
@@ -768,101 +820,141 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                             ),
                                           ),
                                   )),
-                                  SliverToBoxAdapter(
-                                    child: Container(
-                                      height: 0.5.w,
-                                      width: double.infinity,
-                                      margin: EdgeInsets.only(
-                                        left: 16.w,
-                                        right: 16.w,
-                                        bottom: 16.w
-                                      ),
-                                      color: Color(0xffffd1df),
-                                    ),
-                                  ),
                               SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 18.w),
-                                  child: WidgetTitleBar(
-                                    title: '系列详情',
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    style: TextStyle(
-                                        color: Color(0xffff5b8c),
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                child: Container(
+                                  height: 0.5.w,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.only(
+                                      left: 16.w, right: 16.w, bottom: 16.w),
+                                  color: Color(0xffffd1df),
                                 ),
                               ),
                               SliverToBoxAdapter(
-                                  child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: DefaultStyle.pagePadding),
-                                child: Row(
-                                  children: [
-                                    Row(
-                                      children: List(6).asMap().keys.map((e) {
-                                        return Container(
-                                          color: Colors.red,
-                                          margin: EdgeInsets.only(right: 8.w),
-                                          width: 85.w,
-                                          height: 125.w,
-                                        );
-                                      }).toList(),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        showButtom();
-                                        // context.push(
-                                        //     '/morePage/'+widget.id.toString()+'/'+widget.title.toString()+'/'+(widget.morePageType ?? 1).toString());
-                                      },
-                                      child: Container(
-                                        width: ScreenUtil().setWidth(70),
-                                        height: ScreenUtil().setWidth(39),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Color.fromRGBO(
-                                                      255, 128, 163, 0.5),
-                                                  offset: Offset(0, 2),
-                                                  blurRadius: 3,
-                                                  spreadRadius: 0)
-                                            ],
-                                            borderRadius: BorderRadius.circular(
-                                                ScreenUtil().setWidth(50)),
-                                            gradient: LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: [
-                                                  Color(0xffff8b8b),
-                                                  Color(0xffff7696),
-                                                  Color(0xffff7299),
-                                                ])),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              '更多',
-                                              style: DefaultStyle.white14,
-                                            ),
-                                            SizedBox(
-                                              width: ScreenUtil().setWidth(9),
-                                            ),
-                                            PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/icon_more.png',
-                                                height:
-                                                    ScreenUtil().setWidth(8),
-                                                filterQuality:
-                                                    FilterQuality.medium)
-                                          ],
+                                child: firstSeriesList.length == 0
+                                    ? Container()
+                                    : Padding(
+                                        padding: EdgeInsets.only(left: 18.w),
+                                        child: WidgetTitleBar(
+                                          title: '系列详情',
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          style: TextStyle(
+                                              color: Color(0xffff5b8c),
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              )),
+                              ),
+                              SliverToBoxAdapter(
+                                  child: firstSeriesList.length == 0
+                                      ? Container()
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  DefaultStyle.pagePadding),
+                                          child: Row(
+                                            children: [
+                                              Row(
+                                                children: firstSeriesList
+                                                    .asMap()
+                                                    .keys
+                                                    .map((e) {
+                                                  return GestureDetector(
+                                                      onTap: () {
+                                                        context.push(
+                                                            CommonUtils.getRealHash().replaceAll(
+                                                                RegExp(
+                                                                    "${PPString.test}comicsdetail/.*"),
+                                                                'comicsdetail/' +
+                                                                    firstSeriesList[e]
+                                                                            [
+                                                                            'id']
+                                                                        .toString()),
+                                                            replace: true);
+                                                      },
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            right: 8.w),
+                                                        width: 85.w,
+                                                        height: 125.w,
+                                                        child:
+                                                            PlatformAwareNetworkImage(
+                                                          url:
+                                                              firstSeriesList[e]
+                                                                  ['thumb'],
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ));
+                                                }).toList(),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  showButtom();
+                                                  // context.push(
+                                                  //     '/morePage/'+widget.id.toString()+'/'+widget.title.toString()+'/'+(widget.morePageType ?? 1).toString());
+                                                },
+                                                child: Container(
+                                                  width:
+                                                      ScreenUtil().setWidth(70),
+                                                  height:
+                                                      ScreenUtil().setWidth(39),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    128,
+                                                                    163,
+                                                                    0.5),
+                                                            offset:
+                                                                Offset(0, 2),
+                                                            blurRadius: 3,
+                                                            spreadRadius: 0)
+                                                      ],
+                                                      borderRadius: BorderRadius
+                                                          .circular(ScreenUtil()
+                                                              .setWidth(50)),
+                                                      gradient: LinearGradient(
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                          colors: [
+                                                            Color(0xffff8b8b),
+                                                            Color(0xffff7696),
+                                                            Color(0xffff7299),
+                                                          ])),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        '更多',
+                                                        style: DefaultStyle
+                                                            .white14,
+                                                      ),
+                                                      SizedBox(
+                                                        width: ScreenUtil()
+                                                            .setWidth(9),
+                                                      ),
+                                                      PlatformAwareAssetImage(
+                                                          url:
+                                                              'assets/images/icon_more.png',
+                                                          height: ScreenUtil()
+                                                              .setWidth(8),
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .medium)
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )),
                               SliverPadding(
                                 padding: EdgeInsets.only(
                                     bottom: ScreenUtil().setWidth(16),

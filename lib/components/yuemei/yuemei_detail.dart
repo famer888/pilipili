@@ -8,13 +8,19 @@ import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/input/InputDailog.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/video/YyVideo.dart';
 import 'package:pilipili/components/yuemei/yuemei_score.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/pp_string.dart';
+import 'package:provider/provider.dart';
 
 class YuemeiDetail extends StatefulWidget {
   YuemeiDetail({Key key, this.id}) : super(key: key);
@@ -24,18 +30,164 @@ class YuemeiDetail extends StatefulWidget {
 }
 
 class _YuemeiDetailState extends State<YuemeiDetail> {
-  List data = [1, 2, 3, 4, 5];
   TextEditingController scoreText = TextEditingController();
   ScrollController _scrollController = ScrollController();
+  Map girlInfo;
   String scoreString = '';
-  dynamic fixedBanner;
+  bool loading = true;
   bool isListView = true;
   bool networkErr = false;
-  int pageStatus = 2;
   bool isAll = false;
   int page = 1;
+  List commentList = [];
   int limit = 30;
-  getPageData() {}
+  bool isFavorites = false;
+  bool onFavorites = false; //点击收藏
+  int currentIndex = 0;
+  num money = 0;
+  getPageData() {
+    getYuepaoDetail(widget.id).then((res) {
+      if (res == null) {
+        return CommonUtils.showText('出现错误,请稍后再试');
+      }
+      if (res['status'] != 0) {
+        loading = false;
+        girlInfo = res['data'];
+        isFavorites = res['data']['favorites'] == 1;
+        setState(() {});
+        getComment();
+      } else {
+        CommonUtils.showText(res['msg']);
+      }
+    });
+  }
+
+  getComment() {
+    getYuepaoComment(widget.id, page, limit).then((res) {
+      print('***********************$res');
+      if (res == null) {
+        return CommonUtils.showText('获取评价失败');
+      }
+      if (res['status'] != 0) {
+        List _comment = res['data'] == null ? [] : res['data'];
+        isAll = _comment.length == 0;
+        if (page == 1) {
+          commentList = _comment;
+        } else {
+          commentList.addAll(_comment);
+        }
+        setState(() {});
+      } else {
+        CommonUtils.showText(res['msg']);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPageData();
+  }
+
+  showGirlInfo() {
+    Map connectMap = {};
+    List _connect = girlInfo['phone'].split('|');
+    _connect.forEach((item) {
+      var _p = item.split(':');
+      if (_p.length == 2) {
+        connectMap[_p[0]] = _p[1];
+      }
+    });
+    YyShowDialog.showButtom(context,
+        title: '联系方式',
+        height: 354.w,
+        content: Container(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 24.w),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
+                width: 311.w,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.w),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color(0XFFffd3e6),
+                          offset: Offset(0, 2),
+                          blurRadius: 4,
+                          spreadRadius: 0)
+                    ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    infoItem(title: '解锁信息', text: girlInfo['title']),
+                    _connect.length == 1
+                        ? infoItem(title: '联系方式', text: girlInfo['phone'])
+                        : Container(),
+                    connectMap['wechat'] != null
+                        ? infoItem(title: '微信', text: connectMap['wechat'])
+                        : Container(),
+                    connectMap['qq'] != null
+                        ? infoItem(title: 'QQ', text: connectMap['qq'])
+                        : Container(),
+                    connectMap['phone'] != null
+                        ? infoItem(title: '电话', text: connectMap['phone'])
+                        : Container(),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 24.w),
+                alignment: Alignment.center,
+                child: Text(
+                  '因行业特殊，联系方式可能更改，请尽快联系对方',
+                  style: TextStyle(
+                    color: Color(0xfffe155b),
+                    fontSize: 12.w,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.pop();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.w),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color.fromRGBO(255, 128, 163, 0.5),
+                            offset: Offset(0, 2),
+                            blurRadius: 4,
+                            spreadRadius: 0)
+                      ],
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xffFF9E9E),
+                            Color(0xffFF84A9),
+                          ])),
+                  width: 327.w,
+                  height: 40.w,
+                  child: Text(
+                    '确定',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+
   Widget serverItem({String title, String text}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.w),
@@ -108,9 +260,22 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
     );
   }
 
+  payUnlock() {
+    yuepaoUnlock(widget.id).then((res) {
+      if (res['status'] != 0) {
+        Provider.of<HomeConfig>(context, listen: false)
+            .setMoney(money - girlInfo['buy_price']);
+        getPageData();
+      } else {
+        CommonUtils.showText(res['msg']);
+      }
+      context.pop();
+    });
+  }
+
   Future showBuy(Function buyFunction) {
-    // int money = Provider.of<HomeConfig>(context, listen: false).member.money;
-    bool isInsufficient = false; //money < data.discountCoins;
+    money = Provider.of<HomeConfig>(context, listen: false).member.money;
+    bool isInsufficient = money < girlInfo['buy_price'];
     bool isVip = AppGlobal.vipLevel > 0;
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
@@ -199,7 +364,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Text(
-                                                '20币',
+                                                girlInfo['buy_price']
+                                                        .toString() +
+                                                    '币',
                                                 style: TextStyle(
                                                     color: Colors.yellow,
                                                     shadows: <Shadow>[
@@ -236,7 +403,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                             SizedBox(
                               height: ScreenUtil().setSp(8),
                             ),
-                            Text('C圈小萌妹',
+                            Text(girlInfo['title'],
                                 style: TextStyle(
                                     color: Color(0xff646464),
                                     fontSize: ScreenUtil().setSp(14),
@@ -303,67 +470,67 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                       ))
                                   : Row(
                                       children: [
-                                        Expanded(
-                                            child: GestureDetector(
-                                          onTap: () {
-                                            context.pop();
-                                            context.push('/${Routes.vip}');
-                                          },
-                                          child: Stack(
-                                            clipBehavior: Clip.none,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            ScreenUtil()
-                                                                .setWidth(20)),
-                                                    gradient: LinearGradient(
-                                                        begin:
-                                                            Alignment.topLeft,
-                                                        end: Alignment
-                                                            .bottomRight,
-                                                        colors: [
-                                                          Color(0XFFff84a9),
-                                                          Color(0XFFff9e9e),
-                                                        ])),
-                                                width: double.infinity,
-                                                height:
-                                                    ScreenUtil().setWidth(40),
-                                                child: Center(
-                                                  child: Text(
-                                                    '升级会员',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(
-                                                                isInsufficient
-                                                                    ? 14
-                                                                    : 16)),
-                                                  ),
-                                                ),
-                                              ),
-                                              // Positioned(
-                                              //     top: ScreenUtil()
-                                              //         .setWidth(-26.4),
-                                              //     left: ScreenUtil()
-                                              //         .setWidth(-12),
-                                              //     child: PlatformAwareAssetImage(
-                                              //         url:
-                                              //             'assets/images/detail/vip_zhekou.png',
-                                              //         height: ScreenUtil()
-                                              //             .setWidth(26),
-                                              //         fit: BoxFit.fitHeight,
-                                              //         filterQuality:
-                                              //             FilterQuality.medium))
-                                            ],
-                                          ),
-                                        )),
-                                        SizedBox(
-                                          width: ScreenUtil().setWidth(15),
-                                        ),
+                                        // Expanded(
+                                        //     child: GestureDetector(
+                                        //   onTap: () {
+                                        //     context.pop();
+                                        //     context.push('/${Routes.vip}');
+                                        //   },
+                                        //   child: Stack(
+                                        //     clipBehavior: Clip.none,
+                                        //     children: [
+                                        //       Container(
+                                        //         decoration: BoxDecoration(
+                                        //             borderRadius:
+                                        //                 BorderRadius.circular(
+                                        //                     ScreenUtil()
+                                        //                         .setWidth(20)),
+                                        //             gradient: LinearGradient(
+                                        //                 begin:
+                                        //                     Alignment.topLeft,
+                                        //                 end: Alignment
+                                        //                     .bottomRight,
+                                        //                 colors: [
+                                        //                   Color(0XFFff84a9),
+                                        //                   Color(0XFFff9e9e),
+                                        //                 ])),
+                                        //         width: double.infinity,
+                                        //         height:
+                                        //             ScreenUtil().setWidth(40),
+                                        //         child: Center(
+                                        //           child: Text(
+                                        //             '升级会员',
+                                        //             style: TextStyle(
+                                        //                 color: Colors.white,
+                                        //                 fontWeight:
+                                        //                     FontWeight.bold,
+                                        //                 fontSize: ScreenUtil()
+                                        //                     .setSp(
+                                        //                         isInsufficient
+                                        //                             ? 14
+                                        //                             : 16)),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //       // Positioned(
+                                        //       //     top: ScreenUtil()
+                                        //       //         .setWidth(-26.4),
+                                        //       //     left: ScreenUtil()
+                                        //       //         .setWidth(-12),
+                                        //       //     child: PlatformAwareAssetImage(
+                                        //       //         url:
+                                        //       //             'assets/images/detail/vip_zhekou.png',
+                                        //       //         height: ScreenUtil()
+                                        //       //             .setWidth(26),
+                                        //       //         fit: BoxFit.fitHeight,
+                                        //       //         filterQuality:
+                                        //       //             FilterQuality.medium))
+                                        //     ],
+                                        //   ),
+                                        // )),
+                                        // SizedBox(
+                                        //   width: ScreenUtil().setWidth(15),
+                                        // ),
                                         Expanded(
                                             child: GestureDetector(
                                                 onTap: () {
@@ -454,13 +621,13 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
           Expanded(
               child: Stack(
             children: [
-              (networkErr || data == null)
+              networkErr
                   ? PageStatus.noNetWork(onTap: () {
                       networkErr = false;
                       setState(() {});
                       getPageData();
                     })
-                  : (pageStatus != 2
+                  : (loading || girlInfo == null
                       ? PageStatus.loading(true)
                       : PullRefreshList(
                           color: Color.fromRGBO(130, 26, 70, 0.44),
@@ -469,7 +636,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                           onLoading: () {
                             if (isAll) return;
                             page++;
-                            getPageData();
+                            getComment();
                           },
                           child: CustomScrollView(
                             controller: _scrollController,
@@ -506,117 +673,138 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                   ),
                                   flexibleSpace: FlexibleSpaceBar(
                                       collapseMode: CollapseMode.parallax,
-                                      background: Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            fixedBanner == null ||
-                                                    !(fixedBanner is Map) ||
-                                                    fixedBanner['value']
-                                                            .length ==
-                                                        0
-                                                ? Container(
-                                                    height: double.infinity,
-                                                    child: PlatformAwareAssetImage(
-                                                        url:
-                                                            'assets/images/demo_bg.png',
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                        filterQuality:
-                                                            FilterQuality
-                                                                .medium),
-                                                  )
-                                                : Swiper(
-                                                    autoplayDelay: 3000,
-                                                    autoplay:
-                                                        fixedBanner['value']
-                                                                .length >
-                                                            1,
-                                                    physics: fixedBanner[
-                                                                    'value']
-                                                                .length >
-                                                            1
-                                                        ? null
-                                                        : new NeverScrollableScrollPhysics(),
-                                                    onIndexChanged: (e) {
-                                                      // CommonUtils.debugPrint('-------------------$e---------------------');
-                                                    },
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return Container(
-                                                        clipBehavior:
-                                                            Clip.hardEdge,
-                                                        decoration: ShapeDecoration(
-                                                            shape:
-                                                                BeveledRectangleBorder()),
-                                                        child: Stack(
-                                                          children: [
-                                                            Container(
-                                                              height: 500.w,
-                                                            ),
-                                                            Positioned(
-                                                                top: 0,
-                                                                bottom: 0,
-                                                                right: 0,
-                                                                left: 0,
-                                                                child: Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              0),
-                                                                  child:
-                                                                      Container(
-                                                                    width: double
-                                                                        .infinity,
+                                      background: StatefulBuilder(
+                                          builder: (contex, setSwiperState) {
+                                        return Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              girlInfo['resource'] == null ||
+                                                      girlInfo['resource']
+                                                              .length ==
+                                                          0
+                                                  ? Container(
+                                                      height: double.infinity,
+                                                      child: PlatformAwareAssetImage(
+                                                          url:
+                                                              'assets/images/demo_bg.png',
+                                                          width:
+                                                              double.infinity,
+                                                          fit: BoxFit.cover,
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .medium),
+                                                    )
+                                                  : Swiper(
+                                                      // autoplayDelay: 3000,
+                                                      // loop: true,
+                                                      // autoplay:
+                                                      //     girlInfo['resource']
+                                                      //             .length >
+                                                      //         1,
+                                                      physics: girlInfo[
+                                                                      'resource']
+                                                                  .length >
+                                                              1
+                                                          ? null
+                                                          : new NeverScrollableScrollPhysics(),
+                                                      onIndexChanged: (e) {
+                                                        currentIndex = e;
+                                                        setSwiperState(() {});
+                                                      },
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        List picList = girlInfo[
+                                                                'resource']
+                                                            .where((item) =>
+                                                                item['type'] ==
+                                                                1)
+                                                            .toList();
+                                                        return Container(
+                                                          clipBehavior:
+                                                              Clip.hardEdge,
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                                  shape:
+                                                                      BeveledRectangleBorder()),
+                                                          child: PageViewMixin(
+                                                            child: Stack(
+                                                              children: [
+                                                                Container(
+                                                                  height: 500.w,
+                                                                ),
+                                                                Positioned(
+                                                                    top: 0,
+                                                                    bottom: 0,
+                                                                    right: 0,
+                                                                    left: 0,
                                                                     child:
-                                                                        PlatformAwareNetworkImage(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      noVisibilityDetector:
-                                                                          true,
-                                                                      url: fixedBanner['value']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'resource_url'],
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
-                                                                  ),
-                                                                ))
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                    itemCount:
-                                                        fixedBanner['value']
-                                                            .length,
-                                                  ),
-                                            Positioned(
-                                                right: 12.w,
-                                                bottom: 27.w,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Color.fromRGBO(
-                                                          255, 203, 219, 0.5),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.w)),
-                                                  alignment: Alignment.center,
-                                                  height: 28.w,
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 8.w),
-                                                  child: Text(
-                                                    '1/10',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ))
-                                          ]))),
+                                                                        Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              0),
+                                                                      child:
+                                                                          Container(
+                                                                        width: double
+                                                                            .infinity,
+                                                                        child: girlInfo['resource'][index]['type'] ==
+                                                                                1
+                                                                            ? PlatformAwareNetworkImage(
+                                                                                alignment: Alignment.center,
+                                                                                noVisibilityDetector: true,
+                                                                                url: girlInfo['resource'][index]['url'],
+                                                                                fit: BoxFit.cover,
+                                                                              )
+                                                                            : Center(
+                                                                                child: YyVideo(
+                                                                                  loop: true,
+                                                                                  noBack: true,
+                                                                                  videoUrl: girlInfo['resource'][index]['url'],
+                                                                                ),
+                                                                              ),
+                                                                      ),
+                                                                    ))
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      itemCount:
+                                                          girlInfo['resource']
+                                                              .length,
+                                                    ),
+                                              Positioned(
+                                                  right: 12.w,
+                                                  bottom: 27.w,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Color.fromRGBO(
+                                                            255, 203, 219, 0.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    15.w)),
+                                                    alignment: Alignment.center,
+                                                    height: 28.w,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8.w),
+                                                    child: Text(
+                                                      (currentIndex + 1)
+                                                              .toString() +
+                                                          '/' +
+                                                          girlInfo['resource']
+                                                              .length
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ))
+                                            ]);
+                                      }))),
                               SliverToBoxAdapter(
                                 child: Container(
                                   padding: EdgeInsets.all(16.w),
@@ -649,7 +837,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               Row(
                                                 children: [
                                                   Text(
-                                                    'C圈小萌妹',
+                                                    girlInfo['title'] ?? '',
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xff6d6d6d),
@@ -660,11 +848,17 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                   SizedBox(
                                                     width: 4.w,
                                                   ),
-                                                  Image.asset(
-                                                    'assets/images/pili_12/yuemei_jingpin.png',
-                                                    width: 54.w,
-                                                    fit: BoxFit.fitWidth,
-                                                  )
+                                                  girlInfo['buy_count'] !=
+                                                              null &&
+                                                          girlInfo[
+                                                                  'buy_count'] >
+                                                              10
+                                                      ? Image.asset(
+                                                          'assets/images/pili_12/yuemei_jingpin.png',
+                                                          width: 54.w,
+                                                          fit: BoxFit.fitWidth,
+                                                        )
+                                                      : Container()
                                                 ],
                                               ),
                                               SizedBox(width: 7.5.w),
@@ -682,7 +876,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             fit:
                                                                 BoxFit.fitWidth,
                                                           ),
-                                                          Text('南京')
+                                                          Text(girlInfo[
+                                                                  'cityName'] ??
+                                                              '未知')
                                                         ],
                                                       ),
                                                       SizedBox(width: 32.w),
@@ -694,49 +890,78 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             fit:
                                                                 BoxFit.fitWidth,
                                                           ),
-                                                          Text('2999')
+                                                          Text((girlInfo[
+                                                                      'buy_count'] ??
+                                                                  '0')
+                                                              .toString())
                                                         ],
                                                       )
                                                     ],
                                                   ))
                                             ],
                                           ),
-                                          Container(
-                                            width: 40.w,
-                                            height: 40.w,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5.5.w),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(11.w),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Color.fromRGBO(
-                                                        255, 128, 163, 0.5),
-                                                    offset: Offset(0, 2),
-                                                    blurRadius: 4,
-                                                    spreadRadius: 0)
-                                              ],
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                PlatformAwareAssetImage(
-                                                  url:
-                                                      'assets/images/detail/icon_like.png',
-                                                  width: 12.w,
-                                                  fit: BoxFit.fitWidth,
-                                                ),
-                                                Text(
-                                                  '收藏',
-                                                  style: TextStyle(
-                                                      color: Color(0xffff84a9),
-                                                      fontSize: 12.sp),
-                                                )
-                                              ],
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (onFavorites) return;
+                                              onFavorites = true;
+                                              userFavorites(
+                                                      type: 9, id: widget.id)
+                                                  .then((res) {
+                                                if (res != null &&
+                                                    res.status != 0) {
+                                                  isFavorites = !isFavorites;
+                                                  setState(() {});
+                                                } else {
+                                                  CommonUtils.showText(res.msg);
+                                                }
+                                                onFavorites = false;
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 40.w,
+                                              height: 40.w,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5.5.w),
+                                              decoration: BoxDecoration(
+                                                color: isFavorites
+                                                    ? Color(0xffFF84A9)
+                                                    : Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(11.w),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          255, 128, 163, 0.5),
+                                                      offset: Offset(0, 2),
+                                                      blurRadius: 4,
+                                                      spreadRadius: 0)
+                                                ],
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  PlatformAwareAssetImage(
+                                                    url:
+                                                        'assets/images/detail/' +
+                                                            (isFavorites
+                                                                ? 'icon_unlike'
+                                                                : 'icon_like') +
+                                                            '.png',
+                                                    width: 12.w,
+                                                    fit: BoxFit.fitWidth,
+                                                  ),
+                                                  Text(
+                                                    isFavorites ? '已收藏' : '收藏',
+                                                    style: TextStyle(
+                                                        color: isFavorites
+                                                            ? Colors.white
+                                                            : Color(0xffff84a9),
+                                                        fontSize: 12.sp),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           )
                                         ],
@@ -750,14 +975,25 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                       ),
                                       serverItem(
                                           title: '服务: ',
-                                          text: '萌音，雷姆cos服，护士服，黑丝OL，口交，口爆，乳交'),
+                                          text: girlInfo['girl_service_type'] ??
+                                              '--'),
                                       serverItem(
-                                          title: '资料: ', text: '19岁/158cm/C杯'),
+                                          title: '资料: ',
+                                          text: (girlInfo['girl_age'] ?? '--')
+                                                  .toString() +
+                                              '岁/' +
+                                              (girlInfo['girl_height'] ?? '--')
+                                                  .toString() +
+                                              'cm/' +
+                                              (girlInfo['girl_cup'] ?? '--')
+                                                  .toString() +
+                                              '杯'),
                                       serverItem(
-                                          title: '价格: ', text: '1500-3000 皮哩币'),
+                                          title: '价格: ',
+                                          text: girlInfo['girl_price'] ?? '--'),
                                       serverItem(
                                           title: '简介: ',
-                                          text: '个人兼职，诚信服务。聊骚的不要加我，可以视频语音验证'),
+                                          text: girlInfo['desc'] ?? '--'),
                                       Stack(
                                         children: [
                                           Positioned(
@@ -780,37 +1016,54 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      '1500皮哩币',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xfffe155b),
-                                                          fontSize: 16.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text('解锁联系方式',
+                                                girlInfo['userBuy'] == 0
+                                                    ? Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            girlInfo['buy_price']
+                                                                    .toString() +
+                                                                '皮哩币',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xfffe155b),
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Text('解锁联系方式',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xffff5b8c),
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold))
+                                                        ],
+                                                      )
+                                                    : Text('解锁成功!',
                                                         style: TextStyle(
                                                             color: Color(
-                                                                0xffff5b8c),
-                                                            fontSize: 14.sp,
+                                                                0xfffe155b),
+                                                            fontSize: 16.sp,
                                                             fontWeight:
                                                                 FontWeight
-                                                                    .bold))
-                                                  ],
-                                                ),
+                                                                    .bold)),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    showBuy(() {
-                                                      print('购买');
-                                                    });
+                                                    if (girlInfo['userBuy'] ==
+                                                        0) {
+                                                      showBuy(payUnlock);
+                                                    } else {
+                                                      showGirlInfo();
+                                                    }
                                                   },
                                                   child: Container(
                                                     padding:
@@ -830,10 +1083,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                               Color(0xffFF9E9E),
                                                               Color(0xffff84a9),
                                                             ])),
-                                                    width: 96.w,
                                                     height: 34.w,
                                                     child: Text(
-                                                      '立即解锁',
+                                                      girlInfo['userBuy'] == 0
+                                                          ? '立即解锁'
+                                                          : '查看联系方式',
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -855,12 +1109,14 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 24.w),
                                   child: WidgetTitleBar(
-                                    title: '320人评价',
+                                    title: (girlInfo['comment_count'] ?? '0')
+                                            .toString() +
+                                        '人评价',
                                     bottom: 12.w,
                                   ),
                                 ),
                               ),
-                              data.length == 0
+                              commentList.length == 0
                                   ? SliverToBoxAdapter(
                                       child: PageStatus.noData(text: '没有找到评价～'),
                                     )
@@ -881,6 +1137,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               margin:
                                                   EdgeInsets.only(bottom: 12.5),
                                               child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
                                                     crossAxisAlignment:
@@ -894,7 +1152,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                         child: Container(
                                                           width: 40.w,
                                                           height: 40.w,
-                                                          color: Colors.red,
+                                                          child:
+                                                              PlatformAwareNetworkImage(
+                                                            url: commentList[
+                                                                index]['thumb'],
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -906,7 +1169,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            '天天都要看',
+                                                            commentList[index][
+                                                                    'nickname'] ??
+                                                                '--',
                                                             style: TextStyle(
                                                                 height: 1,
                                                                 fontWeight:
@@ -920,7 +1185,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             height: 8.w,
                                                           ),
                                                           Text(
-                                                            '体验时间：2022.03.04',
+                                                            '体验时间：' +
+                                                                    commentList[
+                                                                            index]
+                                                                        [
+                                                                        'updated_at'] ??
+                                                                '--',
                                                             style: TextStyle(
                                                                 height: 1,
                                                                 fontSize: 14.w,
@@ -942,7 +1212,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                               ),
                                                               YuemeiScore(
                                                                 isSet: false,
-                                                                defaultScore: 5,
+                                                                defaultScore:
+                                                                    commentList[
+                                                                            index]
+                                                                        [
+                                                                        'service'],
                                                               )
                                                             ],
                                                           ),
@@ -961,7 +1235,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                               ),
                                                               YuemeiScore(
                                                                 isSet: false,
-                                                                defaultScore: 4,
+                                                                defaultScore:
+                                                                    commentList[
+                                                                            index]
+                                                                        [
+                                                                        'face'],
                                                               )
                                                             ],
                                                           )
@@ -978,7 +1256,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     color: Color(0XFFffdae4),
                                                   ),
                                                   Text(
-                                                    '评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容',
+                                                    commentList[index]
+                                                            ['comment'] ??
+                                                        '--',
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xff6d6d6d),
@@ -988,7 +1268,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               ),
                                             );
                                           },
-                                          childCount: data.length,
+                                          childCount: commentList.length,
                                           addSemanticIndexes: false,
                                           addRepaintBoundaries: true,
                                           addAutomaticKeepAlives: true,
@@ -1014,147 +1294,232 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                       bgColor: Color.fromRGBO(130, 56, 78, 0.44)))
             ],
           )),
-          Container(
-            color: Colors.white,
-            height: 48.w + ScreenUtil().bottomBarHeight,
-            padding: EdgeInsets.only(
-                left: 20.w, right: 20.w, bottom: ScreenUtil().bottomBarHeight),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Row(
-                //   children: [
-                //     Image.asset(
-                //       'assets/images/pili_12/icon_big_lock.png',
-                //       width: 16.w,
-                //       fit: BoxFit.fitWidth,
-                //     ),
-                //     SizedBox(
-                //       width: 12.w,
-                //     ),
-                //     Text(
-                //       '联系方式已隐藏',
-                //       style:
-                //           TextStyle(color: Color(0xff979797), fontSize: 14.sp),
-                //     )
-                //   ],
-                // ),
-                GestureDetector(
-                  onTap: () {
-                    YyShowDialog.showButtom(context,
-                        title: '体验评价', height: 380.w, onClose: () {
-                      scoreString = '';
-                    }, content: (setButtom) {
-                      return Container(
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 24.w, bottom: 24.w),
-                              padding: EdgeInsets.only(
-                                  left: 16.w,
-                                  right: 16.w,
-                                  bottom: 16.w,
-                                  top: 24.w),
-                              width: 311.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.w),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Color(0XFFffd3e6),
-                                        offset: Offset(0, 2),
-                                        blurRadius: 4,
-                                        spreadRadius: 0)
-                                  ]),
-                              child: DefaultTextStyle(
+          girlInfo == null
+              ? Container()
+              : Container(
+                  color: Colors.white,
+                  height: 48.w + ScreenUtil().bottomBarHeight,
+                  padding: EdgeInsets.only(
+                      left: 20.w,
+                      right: 20.w,
+                      bottom: ScreenUtil().bottomBarHeight),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      girlInfo['userBuy'] == 0
+                          ? Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/pili_12/icon_big_lock.png',
+                                  width: 16.w,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                                SizedBox(
+                                  width: 12.w,
+                                ),
+                                Text(
+                                  '联系方式已隐藏',
                                   style: TextStyle(
-                                      color: Color(0xffff5b8c),
+                                      color: Color(0xff979797),
                                       fontSize: 14.sp),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text('服务 ：'),
-                                          YuemeiScore(
-                                            scoreFunction: (score) {
-                                              print(score);
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 16.w,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text('颜值 ：'),
-                                          YuemeiScore(
-                                            scoreFunction: (score) {
-                                              print(score);
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          InputDialog.show(
-                                                  context, '可以描述下服务过程（选填）',
-                                                  btnText: '完成',
-                                                  value: scoreString)
-                                              .then((value) {
-                                            if (value != null && value != '') {
-                                              scoreString = value;
-                                              setButtom(() {});
-                                            }
-                                          });
-                                        },
-                                        child: Container(
-                                            height: 96.w,
-                                            width: double.infinity,
-                                            margin: EdgeInsets.only(top: 16.w),
-                                            decoration: BoxDecoration(
-                                                color: Color(0xFFffe6eb),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: scoreString == ''
-                                                    ? Text(
-                                                        '可以描述下服务过程（选填）',
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            color: Color(
-                                                                0xff6d6d6d)),
-                                                      )
-                                                    : SingleChildScrollView(
-                                                        child: Text(
-                                                          scoreString,
-                                                          style: TextStyle(
-                                                            fontSize: 14.w,
-                                                            color: Color(
-                                                                0xfffe155b),
-                                                          ),
-                                                        ),
-                                                      ))),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            GestureDetector(
+                                )
+                              ],
+                            )
+                          : GestureDetector(
                               onTap: () {
-                                context.pop();
+                                if (girlInfo['userBuy'] == 2) {
+                                  return publishComment();
+                                }
+                                Map _comment = {};
+                                YyShowDialog.showButtom(context,
+                                    title: '体验评价', height: 380.w, onClose: () {
+                                  scoreString = '';
+                                }, content: (setButtom) {
+                                  return Container(
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              top: 24.w, bottom: 24.w),
+                                          padding: EdgeInsets.only(
+                                              left: 16.w,
+                                              right: 16.w,
+                                              bottom: 16.w,
+                                              top: 24.w),
+                                          width: 311.w,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(10.w),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Color(0XFFffd3e6),
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 0)
+                                              ]),
+                                          child: DefaultTextStyle(
+                                              style: TextStyle(
+                                                  color: Color(0xffff5b8c),
+                                                  fontSize: 14.sp),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text('服务 ：'),
+                                                      YuemeiScore(
+                                                        scoreFunction: (score) {
+                                                          _comment['service'] =
+                                                              score;
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 16.w,
+                                                  ),
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text('颜值 ：'),
+                                                      YuemeiScore(
+                                                        scoreFunction: (score) {
+                                                          _comment['face'] =
+                                                              score;
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      InputDialog.show(context,
+                                                              '可以描述下服务过程（选填）',
+                                                              btnText: '完成',
+                                                              value:
+                                                                  scoreString)
+                                                          .then((value) {
+                                                        if (value != null &&
+                                                            value != '') {
+                                                          scoreString = value;
+                                                          setButtom(() {});
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                        height: 96.w,
+                                                        width: double.infinity,
+                                                        margin: EdgeInsets.only(
+                                                            top: 16.w),
+                                                        decoration: BoxDecoration(
+                                                            color: Color(
+                                                                0xFFffe6eb),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    8.0),
+                                                            child: scoreString ==
+                                                                    ''
+                                                                ? Text(
+                                                                    '可以描述下服务过程（选填）',
+                                                                    style: TextStyle(
+                                                                        fontSize: 14
+                                                                            .sp,
+                                                                        color: Color(
+                                                                            0xff6d6d6d)),
+                                                                  )
+                                                                : SingleChildScrollView(
+                                                                    child: Text(
+                                                                      scoreString,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            14.w,
+                                                                        color: Color(
+                                                                            0xfffe155b),
+                                                                      ),
+                                                                    ),
+                                                                  ))),
+                                                  )
+                                                ],
+                                              )),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (_comment['face'] == null ||
+                                                _comment['service'] == null) {
+                                              return CommonUtils.showText(
+                                                  '请对本次体验进行评分');
+                                            }
+                                            yuepaoComment(
+                                                    girlMeetId: girlInfo['id'],
+                                                    comment: scoreString,
+                                                    face: _comment['face'],
+                                                    service:
+                                                        _comment['service'])
+                                                .then((res) {
+                                              if (res['status'] != 0) {
+                                                getPageData();
+                                                CommonUtils.showText('发表评价成功');
+                                              } else {
+                                                CommonUtils.showText(
+                                                    res['msg']);
+                                              }
+                                            });
+                                            context.pop();
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.w),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          255, 128, 163, 0.5),
+                                                      offset: Offset(0, 2),
+                                                      blurRadius: 4,
+                                                      spreadRadius: 0)
+                                                ],
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      Color(0xffFF9E9E),
+                                                      Color(0xffFF84A9),
+                                                    ])),
+                                            width: 327.w,
+                                            height: 40.w,
+                                            child: Text(
+                                              '发表评价',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.sp),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                });
                               },
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.w),
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setWidth(15)),
                                     boxShadow: [
                                       BoxShadow(
                                           color: Color.fromRGBO(
-                                              255, 128, 163, 0.5),
+                                              255, 128, 163, 0.3),
                                           offset: Offset(0, 2),
                                           blurRadius: 4,
                                           spreadRadius: 0)
@@ -1163,177 +1528,63 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
                                         colors: [
-                                          Color(0xffFF9E9E),
-                                          Color(0xffFF84A9),
+                                          Color(0xffffe4e4),
+                                          Color(0xffffccdb),
                                         ])),
-                                width: 327.w,
-                                height: 40.w,
+                                width: 102.w,
+                                height: 30.w,
                                 child: Text(
-                                  '发表评价',
+                                  '体验评价', //查看联系方式
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Color(0xffff84a9),
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp),
+                                      fontSize: 12.sp),
                                 ),
                               ),
-                            )
-                          ],
+                            ),
+                      GestureDetector(
+                        onTap: () {
+                          if (girlInfo['userBuy'] == 0) {
+                            showBuy(payUnlock);
+                          } else {
+                            showGirlInfo();
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  ScreenUtil().setWidth(15)),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromRGBO(255, 128, 163, 0.5),
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0)
+                              ],
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xffFF9E9E),
+                                    Color(0xffFF84A9),
+                                  ])),
+                          width: 96.w,
+                          height: 30.w,
+                          child: Text(
+                            girlInfo['userBuy'] == 0
+                                ? '解锁联系方式'
+                                : '查看联系方式', //查看联系方式
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12.sp),
+                          ),
                         ),
-                      );
-                    });
-                    // YyShowDialog.showButtom(context,
-                    //     title: '联系方式',
-                    //     height: 354.w,
-                    //     content: Container(
-                    //       width: double.infinity,
-                    //       child: Column(
-                    //         children: [
-                    //           Container(
-                    //             margin: EdgeInsets.only(top: 24.w),
-                    //             padding: EdgeInsets.symmetric(
-                    //                 horizontal: 16.w, vertical: 12.w),
-                    //             width: 311.w,
-                    //             decoration: BoxDecoration(
-                    //                 color: Colors.white,
-                    //                 borderRadius: BorderRadius.circular(10.w),
-                    //                 boxShadow: [
-                    //                   BoxShadow(
-                    //                       color: Color(0XFFffd3e6),
-                    //                       offset: Offset(0, 2),
-                    //                       blurRadius: 4,
-                    //                       spreadRadius: 0)
-                    //                 ]),
-                    //             child: Column(
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 infoItem(title: '解锁信息', text: 'C圈小萌妹'),
-                    //                 infoItem(
-                    //                     title: '微信', text: 'asdfsfvvd3234v'),
-                    //                 infoItem(
-                    //                     title: 'QQ', text: 'asdfsfvvd3234v'),
-                    //                 infoItem(title: '电话', text: '123456789'),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           Container(
-                    //             padding: EdgeInsets.symmetric(vertical: 24.w),
-                    //             alignment: Alignment.center,
-                    //             child: Text(
-                    //               '因行业特殊，联系方式可能更改，请尽快联系对方',
-                    //               style: TextStyle(
-                    //                 color: Color(0xfffe155b),
-                    //                 fontSize: 12.w,
-                    //                 fontWeight: FontWeight.bold,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           GestureDetector(
-                    //             onTap: () {
-                    //               context.pop();
-                    //             },
-                    //             child: Container(
-                    //               alignment: Alignment.center,
-                    //               decoration: BoxDecoration(
-                    //                   borderRadius: BorderRadius.circular(20.w),
-                    //                   boxShadow: [
-                    //                     BoxShadow(
-                    //                         color: Color.fromRGBO(
-                    //                             255, 128, 163, 0.5),
-                    //                         offset: Offset(0, 2),
-                    //                         blurRadius: 4,
-                    //                         spreadRadius: 0)
-                    //                   ],
-                    //                   gradient: LinearGradient(
-                    //                       begin: Alignment.topCenter,
-                    //                       end: Alignment.bottomCenter,
-                    //                       colors: [
-                    //                         Color(0xffFF9E9E),
-                    //                         Color(0xffFF84A9),
-                    //                       ])),
-                    //               width: 327.w,
-                    //               height: 40.w,
-                    //               child: Text(
-                    //                 '确定',
-                    //                 style: TextStyle(
-                    //                     color: Colors.white,
-                    //                     fontWeight: FontWeight.bold,
-                    //                     fontSize: 16.sp),
-                    //               ),
-                    //             ),
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ));
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().setWidth(15)),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Color.fromRGBO(255, 128, 163, 0.3),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ],
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xffffe4e4),
-                              Color(0xffffccdb),
-                            ])),
-                    width: 102.w,
-                    height: 30.w,
-                    child: Text(
-                      '体验评价', //查看联系方式
-                      style: TextStyle(
-                          color: Color(0xffff84a9),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.sp),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showBuy(() {
-                      print('购买');
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().setWidth(15)),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Color.fromRGBO(255, 128, 163, 0.5),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ],
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xffFF9E9E),
-                              Color(0xffFF84A9),
-                            ])),
-                    width: 96.w,
-                    height: 30.w,
-                    child: Text(
-                      '解锁联系方式', //查看联系方式
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.sp),
-                    ),
+                      )
+                    ],
                   ),
                 )
-              ],
-            ),
-          )
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,7 @@ import 'package:pilipili/components/video/YyVideo.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/mixin/video_mixin.dart';
 import 'package:pilipili/model/animationDetail.dart';
+import 'package:pilipili/pages/mine/app_center.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -54,6 +56,12 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   bool isAll = false;
   bool videoLoading = false;
   int likeCount = 0;
+  List _banner = [];
+  Map seriesList;
+  List firstSeriesList = [];
+  int spage = 1;
+  int slimit = 15;
+  bool sisAll = false;
   List tabList = [
     {
       'id': 1,
@@ -79,7 +87,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
         if (page == 1) {
           commentList = resdata;
         } else {
-          commentList.add(resdata);
+          commentList.addAll(resdata);
         }
         setState(() {});
       } else {
@@ -88,7 +96,37 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     });
   }
 
+  getSeriesListVideo({Function setBottomSheetState}) {
+    getSeriesList(id: widget.id, type: 1, page: spage, limit: slimit)
+        .then((res) {
+      if (res['status'] != 0) {
+        List resdata = res['data'] == null || res['data']['resource'] == null
+            ? []
+            : res['data']['resource'];
+        sisAll = resdata.length < slimit;
+        if (spage == 1) {
+          seriesList = res['data'];
+          if (resdata.length < 6) {
+            firstSeriesList = resdata;
+          } else {
+            firstSeriesList = resdata.sublist(0, 6);
+          }
+        } else {
+          seriesList['resource'].addAll(res['data']['resource']);
+        }
+        if (setBottomSheetState == null) {
+          setState(() {});
+        } else {
+          setBottomSheetState();
+        }
+      } else {
+        CommonUtils.showText(res['msg']);
+      }
+    });
+  }
+
   initVideoPage() {
+    getSeriesListVideo();
     getVideoDetail(id: widget.id).then((res) {
       CommonUtils.debugPrint("---------视频地址------" +
           res.data.source240.toString() +
@@ -171,6 +209,33 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     );
   }
 
+  _onTapSwiper(int index) {
+    if (_banner.length == 0) return;
+    var item = _banner[index];
+    var type = item.type;
+    var _adsUrl = item.url;
+    if (['', null, false].contains(_adsUrl)) {
+      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
+      return;
+    }
+    switch (type) {
+      case 1:
+        // 外部浏览器
+        CommonUtils.launchURL("$_adsUrl");
+        break;
+      case 3:
+        // 外部浏览器
+        CommonUtils.launchURL("$_adsUrl");
+        break;
+      case 4:
+        // 外部浏览器
+        CommonUtils.launchURL("$_adsUrl");
+        break;
+        break;
+      default:
+    }
+  }
+
   Future showButtom() {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
@@ -205,7 +270,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                         Expanded(
                             child: Center(
                           child: Text(
-                            '系列名称',
+                            seriesList['title'],
                             style: TextStyle(
                                 color: Color(0xffff5b8c),
                                 fontSize: 14.sp,
@@ -229,16 +294,31 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                     ),
                   ),
                   Expanded(
-                      child: ListView.builder(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 16.w),
-                          itemCount: 15,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 8.w),
-                              child: SeriesCard(),
-                            );
-                          })),
+                      child: PullRefreshList(
+                    onLoading: () {
+                      if (sisAll) return;
+                      spage++;
+                      getSeriesListVideo(
+                          setBottomSheetState: setBottomSheetState);
+                    },
+                    child: ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 16.w),
+                        itemCount: seriesList['resource'].length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 8.w),
+                            child: SeriesCard(
+                              data: seriesList['resource'][index],
+                              type: seriesList['type'],
+                              replace: true,
+                              onTap: () {
+                                context.pop();
+                              },
+                            ),
+                          );
+                        }),
+                  )),
                 ],
               ),
             );
@@ -769,6 +849,65 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                               ],
                                             ),
                                           ),
+                                          Center(
+                                              child: _banner.length > 1
+                                                  ? SizedBox(
+                                                      height: ScreenUtil()
+                                                          .setWidth(160),
+                                                      child: Swiper(
+                                                        onTap: (index) {
+                                                          _onTapSwiper(index);
+                                                        },
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return Container(
+                                                            height: 126.w,
+                                                            width: 343.w,
+                                                            child: ClipRRect(
+                                                              borderRadius: BorderRadius
+                                                                  .circular(ScreenUtil()
+                                                                      .setWidth(
+                                                                          10)),
+                                                              child:
+                                                                  PlatformAwareNetworkImage(
+                                                                url: _banner[
+                                                                        index]
+                                                                    .imgUrl,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        itemCount:
+                                                            _banner.length,
+                                                        autoplay:
+                                                            _banner.length > 1,
+                                                        viewportFraction: 0.8,
+                                                        scale: 0.9,
+                                                      ))
+                                                  : Container(
+                                                      height:
+                                                          _banner.length == 1
+                                                              ? 126.w
+                                                              : 0,
+                                                      width: 343.w,
+                                                      child: _banner.length == 1
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                CommonUtils.launchURL(
+                                                                    _banner[0]
+                                                                        .url
+                                                                        .toString());
+                                                              },
+                                                              child:
+                                                                  PlatformAwareNetworkImage(
+                                                                url: _banner[0]
+                                                                    .imgUrl,
+                                                              ),
+                                                            )
+                                                          : SizedBox(),
+                                                    )),
                                           Container(
                                             height: 0.5.w,
                                             width: double.infinity,
@@ -778,107 +917,148 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 bottom: 16.w),
                                             color: Color(0xffffd1df),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 18.w),
-                                            child: WidgetTitleBar(
-                                              title: '系列详情',
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              style: TextStyle(
-                                                  color: Color(0xffff5b8c),
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    DefaultStyle.pagePadding),
-                                            child: Row(
-                                              children: [
-                                                Row(
-                                                  children: List(6)
-                                                      .asMap()
-                                                      .keys
-                                                      .map((e) {
-                                                    return Container(
-                                                      color: Colors.red,
-                                                      margin: EdgeInsets.only(
-                                                          right: 8.w),
-                                                      width: 160.w,
-                                                      height: 90.w,
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showButtom();
-                                                  },
-                                                  child: Container(
-                                                    width: ScreenUtil()
-                                                        .setWidth(70),
-                                                    height: ScreenUtil()
-                                                        .setWidth(39),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      255,
-                                                                      128,
-                                                                      163,
-                                                                      0.5),
-                                                              offset:
-                                                                  Offset(0, 2),
-                                                              blurRadius: 3,
-                                                              spreadRadius: 0)
-                                                        ],
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        50)),
-                                                        gradient: LinearGradient(
-                                                            begin: Alignment
-                                                                .topLeft,
-                                                            end: Alignment
-                                                                .bottomRight,
-                                                            colors: [
-                                                              Color(0xffff8b8b),
-                                                              Color(0xffff7696),
-                                                              Color(0xffff7299),
-                                                            ])),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          '更多',
-                                                          style: DefaultStyle
-                                                              .white14,
-                                                        ),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(9),
-                                                        ),
-                                                        PlatformAwareAssetImage(
-                                                            url:
-                                                                'assets/images/icon_more.png',
-                                                            height: ScreenUtil()
-                                                                .setWidth(8),
-                                                            filterQuality:
-                                                                FilterQuality
-                                                                    .medium)
-                                                      ],
-                                                    ),
+                                          firstSeriesList.length == 0
+                                              ? Container()
+                                              : Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 18.w),
+                                                  child: WidgetTitleBar(
+                                                    title: '系列详情',
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xffff5b8c),
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
+                                                ),
+                                          firstSeriesList.length == 0
+                                              ? Container()
+                                              : SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: DefaultStyle
+                                                          .pagePadding),
+                                                  child: Row(
+                                                    children: [
+                                                      Row(
+                                                        children:
+                                                            firstSeriesList
+                                                                .asMap()
+                                                                .keys
+                                                                .map((e) {
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              context.push(
+                                                                  CommonUtils.getRealHash().replaceAll(
+                                                                      RegExp(
+                                                                          "${PPString.test}videoDetail/.*"),
+                                                                      'videoDetail/' +
+                                                                          firstSeriesList[e]['id']
+                                                                              .toString()),
+                                                                  replace:
+                                                                      true);
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      right:
+                                                                          8.w),
+                                                              width: 160.w,
+                                                              height: 90.w,
+                                                              child:
+                                                                  PlatformAwareNetworkImage(
+                                                                url: firstSeriesList[
+                                                                    e]['thumb'],
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }).toList(),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          showButtom();
+                                                        },
+                                                        child: Container(
+                                                          width: ScreenUtil()
+                                                              .setWidth(70),
+                                                          height: ScreenUtil()
+                                                              .setWidth(39),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  boxShadow: [
+                                                                BoxShadow(
+                                                                    color:
+                                                                        Color.fromRGBO(
+                                                                            255,
+                                                                            128,
+                                                                            163,
+                                                                            0.5),
+                                                                    offset:
+                                                                        Offset(0,
+                                                                            2),
+                                                                    blurRadius:
+                                                                        3,
+                                                                    spreadRadius:
+                                                                        0)
+                                                              ],
+                                                                  borderRadius: BorderRadius.circular(
+                                                                      ScreenUtil()
+                                                                          .setWidth(
+                                                                              50)),
+                                                                  gradient: LinearGradient(
+                                                                      begin: Alignment
+                                                                          .topLeft,
+                                                                      end: Alignment
+                                                                          .bottomRight,
+                                                                      colors: [
+                                                                        Color(
+                                                                            0xffff8b8b),
+                                                                        Color(
+                                                                            0xffff7696),
+                                                                        Color(
+                                                                            0xffff7299),
+                                                                      ])),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Text(
+                                                                '更多',
+                                                                style:
+                                                                    DefaultStyle
+                                                                        .white14,
+                                                              ),
+                                                              SizedBox(
+                                                                width:
+                                                                    ScreenUtil()
+                                                                        .setWidth(
+                                                                            9),
+                                                              ),
+                                                              PlatformAwareAssetImage(
+                                                                  url:
+                                                                      'assets/images/icon_more.png',
+                                                                  height: ScreenUtil()
+                                                                      .setWidth(
+                                                                          8),
+                                                                  filterQuality:
+                                                                      FilterQuality
+                                                                          .medium)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
                                           SizedBox(
                                             height: ScreenUtil().setWidth(11),
                                           ),

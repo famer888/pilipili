@@ -945,3 +945,109 @@ Future<Basic> setPassword({String password, String passwordConfirm}) async {
     return null;
   }
 }
+
+// 约炮城市列表
+Future getCities() async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getCities");
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮列表
+Future getYuepaoList(int page, int limit, String cityName) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getList",
+        data: {
+          'page': page,
+          'limit': limit,
+          'cityName': cityName == '全国' ? '' : cityName
+        });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮详情
+Future getYuepaoDetail(id) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/girl/getDetail", data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮详情
+Future getYuepaoComment(dynamic id, int page, int limit) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getComment",
+        data: {'id': id, 'page': page, 'limit': limit});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮解锁
+Future yuepaoUnlock(id) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/girl/unlock", data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮评价
+Future yuepaoComment(
+    {dynamic girlMeetId, String comment, int face, int service}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/comment",
+        data: {
+          'girlMeetId': girlMeetId,
+          'comment': comment,
+          'face': face,
+          'service': service
+        });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮评价
+Future getSeriesDetail({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/series/detail", data: {
+      'id': id,
+      'page': page,
+      'limit': limit,
+    });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 获取系列列表
+Future getSeriesList({int id, int page, int limit, int type}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/series/getSeriesByTypeAndIdWithPagination", data: {
+      'id': id,
+      'page': page,
+      'limit': limit,
+      'type': type,
+    });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}

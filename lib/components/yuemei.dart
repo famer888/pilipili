@@ -5,38 +5,66 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
-import 'package:pilipili/components/cityPickers.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/routers.dart';
+import 'package:pilipili/store/globle_value.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:provider/provider.dart';
 
 class YuemeiPage extends StatefulWidget {
   final bool isShow;
-  YuemeiPage({Key key, this.isShow}) : super(key: key);
+  YuemeiPage({Key key, this.isShow = false}) : super(key: key);
 
   @override
   _YuemeiPageState createState() => _YuemeiPageState();
 }
 
 class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
-  List data = [1, 2, 3, 4, 5];
+  List yuepaoList = [];
+
   ScrollController _scrollController = ScrollController();
   dynamic fixedBanner;
+  String location = '全国';
   bool isListView = true;
   bool networkErr = false;
-  int pageStatus = 2;
+  int pageStatus = 0;
+  bool loading = true;
   bool isAll = false;
-  String cityName = '全国';
   int page = 1;
   int limit = 30;
-  getPageData() {}
+  getPageData(String _city) {
+    if (page == 1 && !loading) {
+      loading = true;
+      _scrollController.jumpTo(0);
+      setState(() {});
+    }
+    getYuepaoList(page, limit, _city).then((res) {
+      if (res['status'] != 0) {
+        var resData = res['data'] == null ? [] : res['data'];
+        if (res['status'] != 0) {
+          pageStatus = 2;
+          loading = false;
+          isAll = resData.length == 0;
+          if (page == 1) {
+            yuepaoList = resData;
+          } else {
+            yuepaoList.addAll(resData);
+          }
+          setState(() {});
+        } else {
+          CommonUtils.showText(res['msg']);
+        }
+      }
+    });
+  }
+
   void getBanner() async {
     getElementById(id: 137, page: 1, limit: AppGlobal.smallVideoLimit)
         .then((res) {
@@ -46,7 +74,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
         return;
       }
       fixedBanner = res['data'];
-      getPageData();
+      getPageData(location);
     });
   }
 
@@ -56,9 +84,12 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return YuemeiCard(
-                    w: 118.w, h: 145.w, isShowInfo: true, data: {});
+                    w: 118.w,
+                    h: 145.w,
+                    isShowInfo: true,
+                    data: yuepaoList[index]);
               },
-              childCount: data.length,
+              childCount: yuepaoList.length,
               addSemanticIndexes: false,
               addRepaintBoundaries: true,
               addAutomaticKeepAlives: true,
@@ -69,9 +100,9 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
             mainAxisSpacing: 12.w,
             crossAxisSpacing: 12.w,
             childAspectRatio: 0.843,
-            children: data.asMap().keys.map((e) {
+            children: yuepaoList.asMap().keys.map((e) {
               return YuemeiCard(
-                  w: 118.w, h: 145.w, isShowInfo: false, data: {});
+                  w: 118.w, h: 145.w, isShowInfo: false, data: yuepaoList[e]);
               ;
             }).toList(),
           );
@@ -81,18 +112,42 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getBanner();
+    EventBus().on('change_city', (arg) {
+      page = 1;
+      _scrollController.jumpTo(0);
+      location = arg;
+      getPageData(arg);
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventBus().off('change_city');
+  }
+
+  @override
+  void didUpdateWidget(covariant YuemeiPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isShow && pageStatus == 0) {
+      setState(() {
+        pageStatus = 1;
+      });
+      getBanner();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // location = Provider.of<GlobleValue>(context, listen: false).yplocation;
     return Stack(
       children: [
-        (networkErr || data == null)
+        (networkErr || yuepaoList == null)
             ? PageStatus.noNetWork(onTap: () {
                 networkErr = false;
                 setState(() {});
-                getPageData();
+                getPageData(location);
               })
             : (pageStatus != 2
                 ? PageStatus.loading(true)
@@ -103,14 +158,8 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                     onLoading: () {
                       if (isAll) return;
                       page++;
-                      getPageData();
+                      getPageData(location);
                     },
-                    // onRefresh: () async {
-                    //   page = 1;
-                    //   isAll = false;
-                    //   networkErr = false;
-                    //   page = 1;
-                    //   getPageData();
                     // },
                     child: CustomScrollView(
                       controller: _scrollController,
@@ -288,16 +337,20 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                               fixedBanner['value'].length,
                                         )
                                 ]))),
-                        data.length == 0
+                        loading
                             ? SliverToBoxAdapter(
-                                child: PageStatus.noData(text: '没有约妹资源哟～'),
+                                child: PageStatus.loading(true),
                               )
-                            : SliverPadding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 17.w,
-                                    horizontal: DefaultStyle.pagePadding),
-                                sliver: _listView(),
-                              ),
+                            : (yuepaoList.length == 0
+                                ? SliverToBoxAdapter(
+                                    child: PageStatus.noData(text: '没有约妹资源哟～'),
+                                  )
+                                : SliverPadding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 17.w,
+                                        horizontal: DefaultStyle.pagePadding),
+                                    sliver: _listView(),
+                                  )),
                         SliverToBoxAdapter(
                           child: SizedBox(
                             height: MediaQuery.of(context).padding.bottom +
@@ -327,18 +380,8 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => CityPicker()))
-                                    .then((value) {
-                                  if (value != null) {
-                                    EventBus().emit(
-                                        'loufeng_select_city', value.name);
-                                    cityName = value.name;
-                                    setState(() {});
-                                  }
-                                });
+                                context.push(
+                                    CommonUtils.getRealHash('cityPicker'));
                               },
                               behavior: HitTestBehavior.translucent,
                               child: Row(
@@ -351,7 +394,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                   SizedBox(
                                     width: 4.w,
                                   ),
-                                  Text('全国')
+                                  Text(location)
                                 ],
                               ),
                             ),
@@ -361,6 +404,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                             GestureDetector(
                               onTap: () {
                                 isListView = !isListView;
+                                _scrollController.jumpTo(0);
                                 setState(() {});
                               },
                               behavior: HitTestBehavior.translucent,
@@ -382,9 +426,6 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                         )),
                     GestureDetector(
                         onTap: () {
-                          context
-                              .push(CommonUtils.getRealHash('seriesDetail/1'));
-                          return;
                           // 打开搜索
                           context.push('/${Routes.search}');
                         },

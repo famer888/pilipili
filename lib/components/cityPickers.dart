@@ -5,7 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/store/globle_value.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/index.dart';
+import 'package:provider/provider.dart';
 
 typedef AlphaChanged = void Function(String alpha);
 typedef OnTouchStart = void Function();
@@ -44,11 +48,16 @@ class _CityPickerState extends State<CityPicker> {
       hotCityData.add(City(name: value, id: int.parse(key)));
     });
     List<City> allCity = [];
-    citiesData.forEach((key, value) {
-      value.forEach((k, v) {
-        allCity.add(City(name: v['name'], id: int.parse(k)));
+    dynamic res = await getCities();
+    if (res['status'] != 0) {
+      res['data'].forEach((cityitem) {
+        allCity.add(City(
+            name: cityitem['cityName'],
+            id: int.parse(cityitem['cityCode'].toString())));
       });
-    });
+    } else {
+      return CommonUtils.showText(res['msg']);
+    }
 
     allCityData = allCity;
     // 根据城市首字母构建新城市列表
@@ -206,9 +215,12 @@ class _CityPickerState extends State<CityPicker> {
         GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
+            Provider.of<GlobleValue>(context, listen: false)
+                .setYpLocation(hotCityData[i].name);
             Navigator.of(context).pop(
               hotCityData[i],
             );
+            EventBus().emit('change_city', hotCityData[i].name);
           },
           child: Container(
             width: 100.w,
@@ -298,9 +310,13 @@ class _CityPickerState extends State<CityPicker> {
                       ),
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
+                        Provider.of<GlobleValue>(context, listen: false)
+                            .setYpLocation(data[index].listData[index2].name);
                         Navigator.of(context).pop(
                           data[index].listData[index2],
                         );
+                        EventBus()
+                            .emit('change_city', data[index].listData[index2].name);
                       },
                     ),
                   );
@@ -782,7 +798,7 @@ Map<String, dynamic> citiesData = {
   },
   "230000": {
     "230100": {"name": "哈尔滨市", "alpha": "h"},
-    "230200": {"name": "齐齐哈尔市", "alpha": "q"},
+    "230200": {"name": "���齐哈尔市", "alpha": "q"},
     "230300": {"name": "鸡西市", "alpha": "j"},
     "230400": {"name": "鹤岗市", "alpha": "h"},
     "230500": {"name": "双鸭山市", "alpha": "s"},

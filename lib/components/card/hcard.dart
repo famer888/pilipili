@@ -213,11 +213,13 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                   Positioned(
                     right: 0,
                     bottom: 0,
-                    child: Image.asset(
-                      'assets/images/pili_12/icon_series.png',
-                      width: thumbWidth * 0.444,
-                      fit: BoxFit.fitWidth,
-                    ),
+                    child: widget.contentType == 11 || widget.contentType == 12
+                        ? Image.asset(
+                            'assets/images/pili_12/icon_series.png',
+                            width: thumbWidth * 0.444,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : Container(),
                   )
                 ],
               ),

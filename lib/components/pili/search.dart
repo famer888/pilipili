@@ -397,7 +397,7 @@ class _SearchPageState extends State<SearchPage> {
                                               }).toList(),
                                             ),
                                           ),
-                                    hotTags.isEmpty
+                                    hotTags == null || hotTags.isEmpty
                                         ? Container()
                                         : Text(
                                             '热门标签',
@@ -407,7 +407,7 @@ class _SearchPageState extends State<SearchPage> {
                                                     ScreenUtil().setSp(14),
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                    hotTags.isEmpty
+                                    hotTags == null || hotTags.isEmpty
                                         ? Container()
                                         : Container(
                                             margin: EdgeInsets.only(

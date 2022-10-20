@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/atlas/atlas_detail.dart';
 import 'package:pilipili/components/atlas/atlas_list.dart';
+import 'package:pilipili/components/cityPickers.dart';
 import 'package:pilipili/components/comics/comicReader.dart';
 import 'package:pilipili/components/comics/comics_detail.dart';
 import 'package:pilipili/components/package_detail.dart';
@@ -71,7 +72,7 @@ class Routes {
   static String customerService = 'customerService'; //客服
   static String atlasDetail = 'atlasDetail/:id'; //图集详情
   static String yuemeiDetail = 'yuemeiDetail/:id'; //约妹详情
-  static String seriesDetail = 'seriesDetail/:id'; //系列详情
+  static String seriesDetail = 'seriesDetail/:id/:type'; //系列详情
   static String atlasList = 'atlasList/:index'; //图集列表展示
   static String onlineService = 'onlineService'; //在线客服
   static String contactOfficial = 'contactOfficial'; //联系官方
@@ -98,6 +99,7 @@ class Routes {
   static String inviterecored = 'inviterecored'; // 邀请记录
   static String promoteActionList = 'promoteActionList'; //推广方法;
   static String buy = 'buy'; //我的购买记录
+  static String cityPicker = 'cityPicker'; //我的购买记录
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -107,7 +109,10 @@ class Routes {
             return SeriesDetail(
                 id: state.params == null || state.params['id'] == null
                     ? null
-                    : int.parse(state.params['id'].toString()));
+                    : int.parse(state.params['id'].toString()),
+                type: state.params == null || state.params['id'] == null
+                    ? null
+                    : int.parse(state.params['type'].toString()));
           },
           routes: [
             GoRoute(
@@ -492,6 +497,12 @@ class Routes {
 
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
+      GoRoute(
+        path: cityPicker,
+        builder: (context, state) {
+          return CityPicker();
+        },
+      ),
       GoRoute(path: vip, builder: (context, state) => VipPage(), routes: [
         GoRoute(
             path: rechargeRecord,

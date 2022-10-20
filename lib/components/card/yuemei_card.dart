@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class YuemeiCard extends StatefulWidget {
-  YuemeiCard({Key key, this.isShowInfo=true, this.w, this.h, this.data})
+  YuemeiCard({Key key, this.isShowInfo = true, this.w, this.h, this.data})
       : super(key: key);
   final bool isShowInfo;
   final double w;
@@ -54,8 +55,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                   topRight: Radius.circular(78.w),
                   bottomRight: Radius.circular(10.w),
                   bottomLeft: Radius.circular(38.w)),
-              child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDgYIIBTmgiykVmVA6KjNFumB8WHcm9Mu_0Ftsi5GcSo-Xbz4af6H_dwmhmjjiNBRQXb4&usqp=CAU',
+              child: PlatformAwareNetworkImage(
+                url: widget.data['cover'],
                 fit: BoxFit.cover,
               ),
             ),
@@ -69,15 +70,32 @@ class _YuemeiCardState extends State<YuemeiCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push(CommonUtils.getRealHash('yuemeiDetail/14'));
+        context.push(CommonUtils.getRealHash(
+            'yuemeiDetail/' + widget.data['id'].toString()));
       },
       child: !widget.isShowInfo
-          ? yuepaoCard(h: widget.h??145.w, w: widget.w??118.w)
+          ? Stack(
+              clipBehavior: Clip.none,
+              children: [
+                yuepaoCard(h: widget.h ?? 145.w, w: widget.w ?? 118.w),
+                Positioned(
+                    bottom: 0,
+                    right: -4.w,
+                    child: widget.data['buy_count'] != null &&
+                            widget.data['buy_count'] > 10
+                        ? Image.asset(
+                            'assets/images/pili_12/yuemei_jingpin.png',
+                            width: 54.w,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : Container())
+              ],
+            )
           : Padding(
               padding: EdgeInsets.only(bottom: 10.w),
               child: Row(
                 children: [
-                  yuepaoCard(h:  widget.h??145.w, w: widget.w??118.w),
+                  yuepaoCard(h: widget.h ?? 145.w, w: widget.w ?? 118.w),
                   Expanded(
                       child: Stack(
                     clipBehavior: Clip.none,
@@ -117,7 +135,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'C圈小萌妹',
+                                widget.data['title'].toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -128,7 +146,15 @@ class _YuemeiCardState extends State<YuemeiCard> {
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 4.w),
                                 child: Text(
-                                  '19岁/158cm/C杯',
+                                  (widget.data['girl_age'] ?? '- -')
+                                          .toString() +
+                                      '岁/' +
+                                      (widget.data['girl_height'] ?? '- -')
+                                          .toString() +
+                                      'cm/' +
+                                      (widget.data['girl_cup'] ?? '- -')
+                                          .toString() +
+                                      '杯',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -137,7 +163,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                   ),
                                 ),
                               ),
-                              Text(',萌音，雷姆cos服，护士服，黑丝OL口萌音，雷姆cos服，护士服，黑丝OL口',
+                              Text(widget.data['girl_tags'].toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -158,7 +184,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                             width: 18.w,
                                             fit: BoxFit.fitWidth,
                                           ),
-                                          Text('南京')
+                                          Text((widget.data['cityName'] ?? '未知')
+                                              .toString())
                                         ],
                                       ),
                                       SizedBox(width: 32.w),
@@ -169,7 +196,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                             width: 18.w,
                                             fit: BoxFit.fitWidth,
                                           ),
-                                          Text('2999')
+                                          Text((widget.data['buy_count'] ?? 0)
+                                              .toString())
                                         ],
                                       )
                                     ],
@@ -181,11 +209,14 @@ class _YuemeiCardState extends State<YuemeiCard> {
                       Positioned(
                           bottom: 0,
                           right: -4.w,
-                          child: Image.asset(
-                            'assets/images/pili_12/yuemei_jingpin.png',
-                            width: 54.w,
-                            fit: BoxFit.fitWidth,
-                          ))
+                          child: widget.data['buy_count'] != null &&
+                                  widget.data['buy_count'] > 10
+                              ? Image.asset(
+                                  'assets/images/pili_12/yuemei_jingpin.png',
+                                  width: 54.w,
+                                  fit: BoxFit.fitWidth,
+                                )
+                              : Container())
                     ],
                   ))
                 ],

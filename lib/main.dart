@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isolated_worker/worker_delegator.dart';
+import 'package:pilipili/store/globle_value.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/global.dart';
@@ -40,7 +41,7 @@ void main() async {
   List<WorkerDelegate<dynamic, dynamic>> wds = List.generate(
       AppGlobal.decryptProcessLimit,
       (index) => WorkerDelegate(
-            key: 'decryptImage'+index.toString(),
+            key: 'decryptImage' + index.toString(),
             defaultDelegate: fooDelegate,
             jsDelegate: fooJsDelegate,
           ));
@@ -104,6 +105,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => HomeConfig()),
+      ChangeNotifierProvider(create: (_) => GlobleValue())
     ],
     child: pilipili(),
   ));

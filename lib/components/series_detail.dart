@@ -5,11 +5,14 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class SeriesDetail extends StatefulWidget {
-  SeriesDetail({Key key, this.id}) : super(key: key);
+  SeriesDetail({Key key, this.id, this.type}) : super(key: key);
   final int id;
-
+  final int type; //type  11 视频  12 漫画
   @override
   _SeriesDetailState createState() => _SeriesDetailState();
 }
@@ -20,10 +23,35 @@ class _SeriesDetailState extends State<SeriesDetail> {
   dynamic fixedBanner;
   bool isListView = true;
   bool networkErr = false;
-  int pageStatus = 2;
+  int pageStatus = 0;
   bool isAll = false;
   int page = 1;
   int limit = 30;
+  Map seriesInfo;
+  getPageData() {
+    getSeriesDetail(id: widget.id, page: page, limit: limit).then((res) {
+      if (res['status'] != 0) {
+        pageStatus = 2;
+        isAll = res['data']['resource'].length == 0;
+        if (page == 1) {
+          seriesInfo = res['data'];
+        } else {
+          seriesInfo['resource'].addAll(res['data']['resource']);
+        }
+        setState(() {});
+      } else {
+        CommonUtils.showText(res['msg']);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPageData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +59,7 @@ class _SeriesDetailState extends State<SeriesDetail> {
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: '系列名称',
+            title: seriesInfo == null ? '' : seriesInfo['title'].toString(),
           ),
           Expanded(
             child: (networkErr || data == null)
@@ -49,7 +77,7 @@ class _SeriesDetailState extends State<SeriesDetail> {
                         onLoading: () {
                           if (isAll) return;
                           page++;
-                          // getPageData();
+                          getPageData();
                         },
                         // onRefresh: () async {
                         //   page = 1;
@@ -76,8 +104,11 @@ class _SeriesDetailState extends State<SeriesDetail> {
                                       children: [
                                         Container(
                                           height: 210.w,
-                                          color: Colors.red,
                                           width: double.infinity,
+                                          child: PlatformAwareNetworkImage(
+                                            url: seriesInfo['thumb'],
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                         Positioned(
                                           right: 0,
@@ -104,9 +135,10 @@ class _SeriesDetailState extends State<SeriesDetail> {
                                     ]),
                                 padding: EdgeInsets.all(16.w),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '童颜巨乳丽子，想要洗面奶吗，视频标题视频标题，标题两行',
+                                      seriesInfo['title'].toString(),
                                       style: TextStyle(
                                         color: Color(0xff404040),
                                         fontSize: 16.sp,
@@ -119,7 +151,7 @@ class _SeriesDetailState extends State<SeriesDetail> {
                                       height: 8.w,
                                     ),
                                     Text(
-                                      '简介：简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介',
+                                      '简介：' + seriesInfo['desc'].toString(),
                                       style: TextStyle(
                                         color: Color(0xff979797),
                                         fontSize: 11.sp,
@@ -132,18 +164,22 @@ class _SeriesDetailState extends State<SeriesDetail> {
                             SliverPadding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 16.w, vertical: 16.w),
-                              sliver: SliverList(
+                              sliver:seriesInfo['resource'].length==0?
+                              SliverToBoxAdapter(
+                                child: PageStatus.noData(text:'暂无数据'),
+                              )
+                              : SliverList(
                                 delegate: SliverChildBuilderDelegate(
                                   (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {},
-                                      child: Padding(
-                                        padding: EdgeInsets.only(bottom: 8.w),
-                                        child: SeriesCard(),
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 8.w),
+                                      child: SeriesCard(
+                                        data: seriesInfo['resource'][index],
+                                        type: seriesInfo['type'],
                                       ),
                                     );
                                   },
-                                  childCount: data.length,
+                                  childCount: seriesInfo['resource'].length,
                                   addSemanticIndexes: false,
                                   addRepaintBoundaries: true,
                                   addAutomaticKeepAlives: true,
