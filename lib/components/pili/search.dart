@@ -602,7 +602,7 @@ class _SearchResultState extends State<SearchResult> {
     {
       'title': '约妹',
       'cardType': 'yuemei',
-      'api': '/api/book/search',
+      'api': '/api/girl/search',
       'pramas': {},
       'isFlow': false,
     }
@@ -689,7 +689,6 @@ class _SearchResultState extends State<SearchResult> {
                           horizontal: 16.w, vertical: 18.w),
                       child: PublicBuildList(
                           api: tabList[e]['api'],
-                          isFlow: true,
                           isShow: true,
                           data: pramas,
                           nullText: '还没有约炮信息哦～',
@@ -699,7 +698,7 @@ class _SearchResultState extends State<SearchResult> {
                               w: 118.w,
                               h: 145.w,
                               isShowInfo: true,
-                              data: {},
+                              data: data,
                             );
                           }),
                     )

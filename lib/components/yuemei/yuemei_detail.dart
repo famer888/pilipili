@@ -64,7 +64,6 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
 
   getComment() {
     getYuepaoComment(widget.id, page, limit).then((res) {
-      print('***********************$res');
       if (res == null) {
         return CommonUtils.showText('获取评价失败');
       }

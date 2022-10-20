@@ -56,7 +56,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       'aspectRatio': null
     },
     {
-      'id': 1,
+      'id': 10,
       'name': '约妹',
       'index': 5,
       'api': '/api/user/getUserBuy',
@@ -219,6 +219,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                                     isShowInfo: true,
                                     w: 118.w,
                                     h: 145.w,
+                                    data: data,
                                   )
                                 : getCardType(tabList[e]['id'], data);
                           }),

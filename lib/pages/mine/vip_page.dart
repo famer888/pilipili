@@ -28,7 +28,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
   PageController tabController;
 
   String _assetsPath(String name) {
-    return 'assets/images/pment/'+name.toString()+'.png';
+    return 'assets/images/pment/' + name.toString() + '.png';
   }
 
   List tabList = [
@@ -673,48 +673,54 @@ class _MyVipState extends State<MyVip> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Container(
-                                                    margin: EdgeInsets.only(
-                                                        right: ScreenUtil()
-                                                            .setWidth(8)),
-                                                    width: ScreenUtil()
-                                                        .setWidth(24),
-                                                    height: ScreenUtil()
-                                                        .setWidth(24),
-                                                    child:
-                                                        PlatformAwareNetworkImage(
-                                                      noVisibilityDetector:
-                                                          true,
-                                                      url: vipList[index]
-                                                          ['second_img'],
-                                                      fit: BoxFit.fill,
-                                                    )),
-                                                Expanded(
-                                                  child: Text(
-                                                    vipList[index]['pname'],
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(20)),
-                                                  ),
-                                                ),
+                                                Container(),
+                                                // Container(
+                                                //     margin: EdgeInsets.only(
+                                                //         right: ScreenUtil()
+                                                //             .setWidth(8)),
+                                                //     width: ScreenUtil()
+                                                //         .setWidth(24),
+                                                //     height: ScreenUtil()
+                                                //         .setWidth(24),
+                                                //     child:
+                                                //         PlatformAwareNetworkImage(
+                                                //       noVisibilityDetector:
+                                                //           true,
+                                                //       url: vipList[index]
+                                                //           ['second_img'],
+                                                //       fit: BoxFit.fill,
+                                                //     )),
+                                                // Expanded(
+                                                //   child: Text(
+                                                //     vipList[index]['pname'],
+                                                //     style: TextStyle(
+                                                //         color: Colors.white,
+                                                //         fontWeight:
+                                                //             FontWeight.bold,
+                                                //         fontSize: ScreenUtil()
+                                                //             .setSp(20)),
+                                                //   ),
+                                                // ),
                                                 Text(
                                                   '剩余时间:' +
-                                                      (vipList[index]['expired_time'] ==
-                                                                  null ||
-                                                              vipList[index][
-                                                                      'expired_time'] ==
-                                                                  ''
-                                                          ? '--'
-                                                          : CommonUtils
-                                                              .getExpireTime(
+                                                      (vipList[index]
+                                                                  ['forever'] ==
+                                                              1
+                                                          ? '永久会员'
+                                                          : (vipList[index][
+                                                                          'expired_time'] ==
+                                                                      null ||
+                                                                  vipList[index]
+                                                                          [
+                                                                          'expired_time'] ==
+                                                                      ''
+                                                              ? '--'
+                                                              : CommonUtils.getExpireTime(
                                                                   vipList[index]
                                                                       [
                                                                       'expired_time'],
                                                                   isActivity:
-                                                                      false)),
+                                                                      false))),
                                                   style: TextStyle(
                                                       color: Colors.white
                                                       //  _vipColors(
@@ -872,32 +878,33 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Container(
-                                                  margin: EdgeInsets.only(
-                                                      right: ScreenUtil()
-                                                          .setWidth(8)),
-                                                  width:
-                                                      ScreenUtil().setWidth(24),
-                                                  height:
-                                                      ScreenUtil().setWidth(24),
-                                                  child:
-                                                      PlatformAwareNetworkImage(
-                                                    noVisibilityDetector: true,
-                                                    url: moreProducts[index]
-                                                        ['second_img_url'],
-                                                    fit: BoxFit.fill,
-                                                  )),
-                                              Expanded(
-                                                child: Text(
-                                                  moreProducts[index]['pname'],
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(20)),
-                                                ),
-                                              ),
+                                              Container(),
+                                              // Container(
+                                              //     margin: EdgeInsets.only(
+                                              //         right: ScreenUtil()
+                                              //             .setWidth(8)),
+                                              //     width:
+                                              //         ScreenUtil().setWidth(24),
+                                              //     height:
+                                              //         ScreenUtil().setWidth(24),
+                                              //     child:
+                                              //         PlatformAwareNetworkImage(
+                                              //       noVisibilityDetector: true,
+                                              //       url: moreProducts[index]
+                                              //           ['second_img_url'],
+                                              //       fit: BoxFit.fill,
+                                              //     )),
+                                              // Expanded(
+                                              //   child: Text(
+                                              //     moreProducts[index]['pname'],
+                                              //     style: TextStyle(
+                                              //         color: Colors.white,
+                                              //         fontWeight:
+                                              //             FontWeight.bold,
+                                              //         fontSize: ScreenUtil()
+                                              //             .setSp(20)),
+                                              //   ),
+                                              // ),
                                               Text(
                                                 (moreProducts[index][
                                                                 'promo_expire_time'] ==
@@ -1009,24 +1016,26 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-                      width: ScreenUtil().setWidth(20),
-                      height: ScreenUtil().setWidth(20),
-                      child: PlatformAwareNetworkImage(
-                        noVisibilityDetector: true,
-                        url: widget.product['second_img_url'],
-                        fit: BoxFit.fill,
-                      )),
-                  Expanded(
-                      child: Text(
-                    widget.product['pname'],
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(20),
-                        fontWeight: FontWeight.bold),
-                  )),
+                  Container(),
+                  // Container(
+                  //     margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                  //     width: ScreenUtil().setWidth(20),
+                  //     height: ScreenUtil().setWidth(20),
+                  //     child: PlatformAwareNetworkImage(
+                  //       noVisibilityDetector: true,
+                  //       url: widget.product['second_img_url'],
+                  //       fit: BoxFit.fill,
+                  //     )),
+                  // Expanded(
+                  //     child: Text(
+                  //   widget.product['pname'],
+                  //   style: TextStyle(
+                  //       color: Colors.white,
+                  //       fontSize: ScreenUtil().setSp(20),
+                  //       fontWeight: FontWeight.bold),
+                  // )),
                   Text(
                     widget.product['valid_date'].toString() + '天特权时间',
                     textAlign: TextAlign.right,
@@ -1065,7 +1074,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('¥'+widget.promoPrice.toString(),
+                      Text('¥' + widget.promoPrice.toString(),
                           style: TextStyle(
                               color: Colors.white54,
                               fontSize: ScreenUtil().setSp(16.8),
@@ -1075,7 +1084,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                         width: ScreenUtil().setWidth(12.5),
                       ),
                       Text(
-                        '¥'+widget.currentPrice.toString(),
+                        '¥' + widget.currentPrice.toString(),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: ScreenUtil().setSp(24.8),

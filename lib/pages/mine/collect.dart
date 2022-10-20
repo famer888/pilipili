@@ -5,11 +5,8 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
-import 'package:pilipili/components/common/pullrefreshlist.dart';
-import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
 import 'package:pilipili/theme/default.dart';
-import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -61,21 +58,14 @@ class _CollectPageState extends State<CollectPage>
       'aspectRatio': 0.61
     },
     {
-      'id': 1,
+      'id': 9,
       'name': '约妹',
       'index': 5,
-      'api': '/api/user/getUserBuy',
+      'api': '/api/user/getUserFavor',
       'row': 1,
       'aspectRatio': null
     }
   ];
-
-  Map<int, dynamic> dataList = {
-    1: {"page": 1, "data": [], "isall": false, "isloading": true},
-    2: {"page": 1, "data": [], "isall": false, "isloading": true},
-    3: {"page": 1, "data": [], "isall": false, "isloading": true},
-    4: {"page": 1, "data": [], "isall": false, "isloading": true},
-  };
 
   @override
   void initState() {
@@ -239,6 +229,7 @@ class _CollectPageState extends State<CollectPage>
                                       isShowInfo: true,
                                       w: 118.w,
                                       h: 145.w,
+                                      data: data,
                                     )
                                   : getCardType(tabList[e]['id'], data);
                             }),

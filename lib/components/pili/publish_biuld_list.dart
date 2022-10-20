@@ -42,9 +42,9 @@ class PublicBuildList extends StatefulWidget {
     this.row = 1,
     this.nullText,
     this.isController = true,
-    this.paddingTop,
-    this.paddingLeft,
-    this.paddingRight,
+    this.paddingTop=0,
+    this.paddingLeft=0,
+    this.paddingRight=0,
   }) : super(key: key);
 
   @override
@@ -71,7 +71,7 @@ class _PublicBuildListState extends State<PublicBuildList> {
       Response<dynamic> res =
           await PlatformAwareHttp.post(widget.api, data: reqData);
       List resdata;
-      CommonUtils.debugPrint("请求的返回${res.data['data']}");
+      CommonUtils.debugPrint("--${widget.api}------请求的返回${res.data}");
       if (res.data['status'] != 0) {
         if (res.data['data'] != null && res.data['data'] is List) {
           resdata = (res.data['data'] == null ? [] : res.data['data']);
@@ -205,71 +205,7 @@ class _PublicBuildListState extends State<PublicBuildList> {
                                 return searchData;
                               });
                             })
-                        : (widget.isFlow
-                            ? WaterfallFlow.builder(
-                                shrinkWrap: true,
-                                controller:
-                                    widget.isController ? _controller : null,
-                                cacheExtent: 5.sh,
-                                physics: ClampingScrollPhysics(),
-                                padding: EdgeInsets.only(
-                                    top: 10.w,
-                                    bottom:
-                                        MediaQuery.of(context).padding.bottom +
-                                            AppGlobal.webBottomHeight +
-                                            widget.bottomPadding,
-                                    left: 10.w,
-                                    right: 10.w),
-                                itemCount: searchData.length,
-                                gridDelegate:
-                                    SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: widget.row,
-                                        mainAxisSpacing:
-                                            ScreenUtil().setWidth(10),
-                                        crossAxisSpacing:
-                                            ScreenUtil().setWidth(10)),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return widget.itemBuild(
-                                      context,
-                                      index,
-                                      searchData[index],
-                                      reqData['page'],
-                                      reqData['limit'], () {
-                                    return searchData;
-                                  });
-                                })
-                            : GridView.builder(
-                                controller:
-                                    widget.isController ? _controller : null,
-                                cacheExtent: 5.sh,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                padding: EdgeInsets.only(
-                                    left: 10.w,
-                                    right: 10.w,
-                                    bottom:
-                                        MediaQuery.of(context).padding.bottom +
-                                            AppGlobal.webBottomHeight +
-                                            widget.bottomPadding,
-                                    top: 20.w),
-                                itemCount: searchData.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: widget.row,
-                                  mainAxisSpacing: ScreenUtil().setWidth(7),
-                                  crossAxisSpacing: ScreenUtil().setWidth(7),
-                                  childAspectRatio: widget.aspectRatio,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return widget.itemBuild(
-                                      context,
-                                      index,
-                                      searchData[index],
-                                      reqData['page'],
-                                      reqData['limit'], () {
-                                    return searchData;
-                                  });
-                                })),
+                        : Container(),
               );
   }
 }
