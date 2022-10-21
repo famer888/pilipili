@@ -969,6 +969,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                           8.w),
                                                               width: 160.w,
                                                               height: 90.w,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(3.w)
+                                                              ),
                                                               child:
                                                                   PlatformAwareNetworkImage(
                                                                 url: firstSeriesList[

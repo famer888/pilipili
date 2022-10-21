@@ -46,17 +46,17 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(2);
     loading = false;
-    data.value.insert(0, {
-      'id': 123,
-      'related_id': 0,
-      'element_id': 123,
-      'link_url': 'type:tansuo',
-      'resource_url': '',
-      'redirect_type': 2,
-      'name': '探索',
-      'desc': '',
-      'sort': 999
-    });
+    // data.value.insert(0, {
+    //   'id': 123,
+    //   'related_id': 0,
+    //   'element_id': 123,
+    //   'link_url': 'type:tansuo',
+    //   'resource_url': '',
+    //   'redirect_type': 2,
+    //   'name': '探索',
+    //   'desc': '',
+    //   'sort': 999
+    // });
     navitems = data.value.asMap().keys.map((e) {
       return LinkModel.fromJson(data.value[e]);
     }).toList();

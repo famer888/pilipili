@@ -197,11 +197,13 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                           'C圈嫩妹 制服COS 官方认证',
                                           style: TextStyle(
                                               color: Color(0xffc2c2c2),
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 14.sp),
                                         ),
                                         Text(' 包赔付',
                                             style: TextStyle(
                                                 color: Color(0xffff84a9),
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 14.sp)),
                                       ],
                                     ),

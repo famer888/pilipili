@@ -43,14 +43,19 @@ class _SeriesCardState extends State<SeriesCard> {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
-              width: 80.w,
-              height: 110.w,
-              margin: EdgeInsets.only(right: 8.w),
-              child: PlatformAwareNetworkImage(
-                url: CommonUtils.getThumb(widget.data),
-                fit: BoxFit.cover,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(2.2.w),
+              child: Container(
+                width: 80.w,
+                height: 110.w,
+                child: PlatformAwareNetworkImage(
+                  url: CommonUtils.getThumb(widget.data),
+                  fit: BoxFit.cover,
+                ),
               ),
+            ),
+            SizedBox(
+              width: 8.w,
             ),
             Expanded(
                 child: Container(

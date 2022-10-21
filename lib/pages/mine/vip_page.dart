@@ -673,34 +673,33 @@ class _MyVipState extends State<MyVip> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Container(),
-                                                // Container(
-                                                //     margin: EdgeInsets.only(
-                                                //         right: ScreenUtil()
-                                                //             .setWidth(8)),
-                                                //     width: ScreenUtil()
-                                                //         .setWidth(24),
-                                                //     height: ScreenUtil()
-                                                //         .setWidth(24),
-                                                //     child:
-                                                //         PlatformAwareNetworkImage(
-                                                //       noVisibilityDetector:
-                                                //           true,
-                                                //       url: vipList[index]
-                                                //           ['second_img'],
-                                                //       fit: BoxFit.fill,
-                                                //     )),
-                                                // Expanded(
-                                                //   child: Text(
-                                                //     vipList[index]['pname'],
-                                                //     style: TextStyle(
-                                                //         color: Colors.white,
-                                                //         fontWeight:
-                                                //             FontWeight.bold,
-                                                //         fontSize: ScreenUtil()
-                                                //             .setSp(20)),
-                                                //   ),
-                                                // ),
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: ScreenUtil()
+                                                            .setWidth(8)),
+                                                    width: ScreenUtil()
+                                                        .setWidth(24),
+                                                    height: ScreenUtil()
+                                                        .setWidth(24),
+                                                    child:
+                                                        PlatformAwareNetworkImage(
+                                                      noVisibilityDetector:
+                                                          true,
+                                                      url: vipList[index]
+                                                          ['second_img'],
+                                                      fit: BoxFit.fill,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                    vipList[index]['pname'],
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(20)),
+                                                  ),
+                                                ),
                                                 Text(
                                                   '剩余时间:' +
                                                       (vipList[index]
@@ -878,33 +877,32 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Container(),
-                                              // Container(
-                                              //     margin: EdgeInsets.only(
-                                              //         right: ScreenUtil()
-                                              //             .setWidth(8)),
-                                              //     width:
-                                              //         ScreenUtil().setWidth(24),
-                                              //     height:
-                                              //         ScreenUtil().setWidth(24),
-                                              //     child:
-                                              //         PlatformAwareNetworkImage(
-                                              //       noVisibilityDetector: true,
-                                              //       url: moreProducts[index]
-                                              //           ['second_img_url'],
-                                              //       fit: BoxFit.fill,
-                                              //     )),
-                                              // Expanded(
-                                              //   child: Text(
-                                              //     moreProducts[index]['pname'],
-                                              //     style: TextStyle(
-                                              //         color: Colors.white,
-                                              //         fontWeight:
-                                              //             FontWeight.bold,
-                                              //         fontSize: ScreenUtil()
-                                              //             .setSp(20)),
-                                              //   ),
-                                              // ),
+                                              Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: ScreenUtil()
+                                                          .setWidth(8)),
+                                                  width:
+                                                      ScreenUtil().setWidth(24),
+                                                  height:
+                                                      ScreenUtil().setWidth(24),
+                                                  child:
+                                                      PlatformAwareNetworkImage(
+                                                    noVisibilityDetector: true,
+                                                    url: moreProducts[index]
+                                                        ['second_img_url'],
+                                                    fit: BoxFit.fill,
+                                                  )),
+                                              Expanded(
+                                                child: Text(
+                                                  moreProducts[index]['pname'],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(20)),
+                                                ),
+                                              ),
                                               Text(
                                                 (moreProducts[index][
                                                                 'promo_expire_time'] ==
@@ -1018,24 +1016,23 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(),
-                  // Container(
-                  //     margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-                  //     width: ScreenUtil().setWidth(20),
-                  //     height: ScreenUtil().setWidth(20),
-                  //     child: PlatformAwareNetworkImage(
-                  //       noVisibilityDetector: true,
-                  //       url: widget.product['second_img_url'],
-                  //       fit: BoxFit.fill,
-                  //     )),
-                  // Expanded(
-                  //     child: Text(
-                  //   widget.product['pname'],
-                  //   style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontSize: ScreenUtil().setSp(20),
-                  //       fontWeight: FontWeight.bold),
-                  // )),
+                  Container(
+                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                      width: ScreenUtil().setWidth(20),
+                      height: ScreenUtil().setWidth(20),
+                      child: PlatformAwareNetworkImage(
+                        noVisibilityDetector: true,
+                        url: widget.product['second_img_url'],
+                        fit: BoxFit.fill,
+                      )),
+                  Expanded(
+                      child: Text(
+                    widget.product['pname'],
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtil().setSp(20),
+                        fontWeight: FontWeight.bold),
+                  )),
                   Text(
                     widget.product['valid_date'].toString() + '天特权时间',
                     textAlign: TextAlign.right,

@@ -550,9 +550,7 @@ class AlphaState extends State<Alpha> {
                     blurRadius: 4,
                     spreadRadius: 0)
               ],
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5.w),
-                  bottomLeft: Radius.circular(5.w))),
+              borderRadius: BorderRadius.circular(5.w)),
           alignment: Alignment.center,
           // padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Column(

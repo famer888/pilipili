@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/input/InputDailog.dart';
+import 'package:pilipili/components/yuemei/yuemei_score.dart';
+import 'package:pilipili/components/yy_dialog.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class YuemeiCard extends StatefulWidget {
-  YuemeiCard({Key key, this.isShowInfo = true, this.w, this.h, this.data})
+  YuemeiCard(
+      {Key key,
+      this.isShowInfo = true,
+      this.w,
+      this.h,
+      this.data,
+      this.isBuy = false})
       : super(key: key);
   final bool isShowInfo;
   final double w;
   final double h;
-  final Map data;
+  Map data;
+  final bool isBuy;
   @override
   _YuemeiCardState createState() => _YuemeiCardState();
 }
 
 class _YuemeiCardState extends State<YuemeiCard> {
+  String scoreString = '';
   Widget yuepaoCard({double h, double w}) {
     return Stack(
       clipBehavior: Clip.none,
@@ -63,6 +75,22 @@ class _YuemeiCardState extends State<YuemeiCard> {
           ),
         )
       ],
+    );
+  }
+
+  publishComment() {
+    return YyShowDialog.showdialog(
+      context,
+      content: (setDialogState) {
+        return Text(
+          '您已发表过评价了',
+          style: TextStyle(
+              color: Color(0xff646464),
+              fontWeight: FontWeight.bold,
+              fontSize: ScreenUtil().setSp(16)),
+        );
+      },
+      btnText: '朕知道了',
     );
   }
 
@@ -140,8 +168,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Color(0xff6d6d6d),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 14.sp),
                               ),
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 4.w),
@@ -171,37 +198,303 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                     fontSize: 11.sp,
                                   )),
                               Expanded(child: Container()),
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      color: Color(0xff979797),
-                                      fontSize: 11.sp),
-                                  child: Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/pili_12/icon_location_red.png',
-                                            width: 18.w,
-                                            fit: BoxFit.fitWidth,
+                              widget.isBuy && widget.data['is_comment'] == 0
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (widget.data['is_comment'] !=
+                                                0) {
+                                              return publishComment();
+                                            }
+                                            Map _comment = {};
+                                            YyShowDialog.showButtom(context,
+                                                title: '体验评价',
+                                                height: 380.w, onClose: () {
+                                              scoreString = '';
+                                            }, content: (setButtom) {
+                                              return Container(
+                                                width: double.infinity,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 24.w,
+                                                          bottom: 24.w),
+                                                      padding: EdgeInsets.only(
+                                                          left: 16.w,
+                                                          right: 16.w,
+                                                          bottom: 16.w,
+                                                          top: 24.w),
+                                                      width: 311.w,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.w),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: Color(
+                                                                    0XFFffd3e6),
+                                                                offset: Offset(
+                                                                    0, 2),
+                                                                blurRadius: 4,
+                                                                spreadRadius: 0)
+                                                          ]),
+                                                      child: DefaultTextStyle(
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xffff5b8c),
+                                                              fontSize: 14.sp),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text('服务 ：'),
+                                                                  YuemeiScore(
+                                                                    scoreFunction:
+                                                                        (score) {
+                                                                      _comment[
+                                                                              'service'] =
+                                                                          score;
+                                                                    },
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 16.w,
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text('颜值 ：'),
+                                                                  YuemeiScore(
+                                                                    scoreFunction:
+                                                                        (score) {
+                                                                      _comment[
+                                                                              'face'] =
+                                                                          score;
+                                                                    },
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  InputDialog.show(
+                                                                          context,
+                                                                          '可以描述下服务过程（选填）',
+                                                                          btnText:
+                                                                              '完成',
+                                                                          value:
+                                                                              scoreString)
+                                                                      .then(
+                                                                          (value) {
+                                                                    if (value !=
+                                                                            null &&
+                                                                        value !=
+                                                                            '') {
+                                                                      scoreString =
+                                                                          value;
+                                                                      setButtom(
+                                                                          () {});
+                                                                    }
+                                                                  });
+                                                                },
+                                                                child: Container(
+                                                                    height: 96.w,
+                                                                    width: double.infinity,
+                                                                    margin: EdgeInsets.only(top: 16.w),
+                                                                    decoration: BoxDecoration(color: Color(0xFFffe6eb), borderRadius: BorderRadius.circular(10)),
+                                                                    child: Padding(
+                                                                        padding: EdgeInsets.all(8.0),
+                                                                        child: scoreString == ''
+                                                                            ? Text(
+                                                                                '可以描述下服务过程（选填）',
+                                                                                style: TextStyle(fontSize: 14.sp, color: Color(0xff6d6d6d)),
+                                                                              )
+                                                                            : SingleChildScrollView(
+                                                                                child: Text(
+                                                                                  scoreString,
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 14.w,
+                                                                                    color: Color(0xfffe155b),
+                                                                                  ),
+                                                                                ),
+                                                                              ))),
+                                                              )
+                                                            ],
+                                                          )),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        if (_comment['face'] ==
+                                                                null ||
+                                                            _comment[
+                                                                    'service'] ==
+                                                                null) {
+                                                          return CommonUtils
+                                                              .showText(
+                                                                  '请对本次体验进行评分');
+                                                        }
+                                                        yuepaoComment(
+                                                                girlMeetId:
+                                                                    widget.data[
+                                                                        'id'],
+                                                                comment:
+                                                                    scoreString,
+                                                                face: _comment[
+                                                                    'face'],
+                                                                service: _comment[
+                                                                    'service'])
+                                                            .then((res) {
+                                                          if (res['status'] !=
+                                                              0) {
+                                                            widget.data[
+                                                                'is_comment'] = 1;
+                                                            setState(() {});
+                                                            CommonUtils
+                                                                .showText(
+                                                                    '发表评价成功');
+                                                          } else {
+                                                            CommonUtils
+                                                                .showText(
+                                                                    res['msg']);
+                                                          }
+                                                        });
+                                                        context.pop();
+                                                      },
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(20
+                                                                            .w),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                      color: Color.fromRGBO(
+                                                                          255,
+                                                                          128,
+                                                                          163,
+                                                                          0.5),
+                                                                      offset:
+                                                                          Offset(0,
+                                                                              2),
+                                                                      blurRadius:
+                                                                          4,
+                                                                      spreadRadius:
+                                                                          0)
+                                                                ],
+                                                                gradient: LinearGradient(
+                                                                    begin: Alignment
+                                                                        .topCenter,
+                                                                    end: Alignment
+                                                                        .bottomCenter,
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xffFF9E9E),
+                                                                      Color(
+                                                                          0xffFF84A9),
+                                                                    ])),
+                                                        width: 327.w,
+                                                        height: 40.w,
+                                                        child: Text(
+                                                          '发表评价',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 16.sp),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            });
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        ScreenUtil()
+                                                            .setWidth(12)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          255, 128, 163, 0.3),
+                                                      offset: Offset(0, 2),
+                                                      blurRadius: 4,
+                                                      spreadRadius: 0)
+                                                ],
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      Color(0xffffe4e4),
+                                                      Color(0xffffccdb),
+                                                    ])),
+                                            width: 90.w,
+                                            height: 25.w,
+                                            child: Text(
+                                              '体验评价', //查看联系方式
+                                              style: TextStyle(
+                                                  color: Color(0xffff84a9),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12.sp),
+                                            ),
                                           ),
-                                          Text((widget.data['cityName'] ?? '未知')
-                                              .toString())
-                                        ],
-                                      ),
-                                      SizedBox(width: 32.w),
-                                      Row(
+                                        )
+                                      ],
+                                    )
+                                  : DefaultTextStyle(
+                                      style: TextStyle(
+                                          color: Color(0xff979797),
+                                          fontSize: 11.sp),
+                                      child: Row(
                                         children: [
-                                          Image.asset(
-                                            'assets/images/pili_12/icon_lock.png',
-                                            width: 18.w,
-                                            fit: BoxFit.fitWidth,
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/pili_12/icon_location_red.png',
+                                                width: 18.w,
+                                                
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                              Text((widget.data['cityName'] ??
+                                                      '未知')
+                                                  .toString())
+                                            ],
                                           ),
-                                          Text((widget.data['buy_count'] ?? 0)
-                                              .toString())
+                                          SizedBox(width: 16.w),
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/pili_12/icon_lock.png',
+                                                width: 18.w,
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                              Text((widget.data['buy_count'] ??
+                                                      0)
+                                                  .toString())
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
-                                  ))
+                                      ))
                             ],
                           ),
                         ),

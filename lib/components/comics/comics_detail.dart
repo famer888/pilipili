@@ -874,6 +874,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                             replace: true);
                                                       },
                                                       child: Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        3.w)),
                                                         margin: EdgeInsets.only(
                                                             right: 8.w),
                                                         width: 85.w,

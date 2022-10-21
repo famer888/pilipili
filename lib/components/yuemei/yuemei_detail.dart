@@ -53,7 +53,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
       if (res['status'] != 0) {
         loading = false;
         girlInfo = res['data'];
-        isFavorites = res['data']['favorites'] == 1;
+        isFavorites = res['data']['userFavorites'] == 1;
         setState(() {});
         getComment();
       } else {
@@ -367,7 +367,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                         .toString() +
                                                     '币',
                                                 style: TextStyle(
-                                                    color: Colors.yellow,
+                                                    color: Color(0xffFFCD6B),
                                                     shadows: <Shadow>[
                                                       Shadow(
                                                         offset: Offset(
@@ -829,13 +829,15 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
+                                          Expanded(
+                                              child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
-                                                  Text(
+                                                  Flexible(
+                                                      child: Text(
                                                     girlInfo['title'] ?? '',
                                                     style: TextStyle(
                                                         color:
@@ -843,7 +845,10 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                         fontSize: 18.sp,
                                                         fontWeight:
                                                             FontWeight.bold),
-                                                  ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  )),
                                                   SizedBox(
                                                     width: 4.w,
                                                   ),
@@ -860,7 +865,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       : Container()
                                                 ],
                                               ),
-                                              SizedBox(width: 7.5.w),
+                                              SizedBox(height: 8.w),
                                               DefaultTextStyle(
                                                   style: TextStyle(
                                                       color: Color(0xff979797),
@@ -898,7 +903,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     ],
                                                   ))
                                             ],
-                                          ),
+                                          )),
                                           GestureDetector(
                                             onTap: () {
                                               if (onFavorites) return;
@@ -922,20 +927,22 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 5.5.w),
                                               decoration: BoxDecoration(
-                                                color: isFavorites
-                                                    ? Color(0xffFF84A9)
-                                                    : Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(11.w),
-                                                boxShadow: [
-                                                  BoxShadow(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.w),
+                                                  color: isFavorites
+                                                      ? Color(0xffFF84A9)
+                                                      : Colors.white,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 5.0,
+                                                      blurStyle:
+                                                          BlurStyle.outer,
                                                       color: Color.fromRGBO(
-                                                          255, 128, 163, 0.5),
-                                                      offset: Offset(0, 2),
-                                                      blurRadius: 4,
-                                                      spreadRadius: 0)
-                                                ],
-                                              ),
+                                                          255, 91, 140, 0.2),
+                                                      offset: Offset(0, 3.w),
+                                                    )
+                                                  ]),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -1029,6 +1036,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                                     .toString() +
                                                                 '皮哩币',
                                                             style: TextStyle(
+                                                                height: 1,
                                                                 color: Color(
                                                                     0xfffe155b),
                                                                 fontSize: 16.sp,
@@ -1042,6 +1050,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                                       0xffff5b8c),
                                                                   fontSize:
                                                                       14.sp,
+                                                                  height: 1,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold))

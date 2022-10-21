@@ -217,6 +217,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                             return tabList[e]['index'] == 5
                                 ? YuemeiCard(
                                     isShowInfo: true,
+                                    isBuy:true,
                                     w: 118.w,
                                     h: 145.w,
                                     data: data,
