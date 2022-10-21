@@ -284,7 +284,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                             context.pop();
                           },
                           behavior: HitTestBehavior.translucent,
-                          child: Image.asset(
+                          child:  PlatformAwareAssetImage(
+                                url:
                             'assets/images/pili_12/icon_close_red.png',
                             width: 24.w,
                             fit: BoxFit.fitWidth,
@@ -963,21 +964,53 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                       true);
                                                             },
                                                             child: Container(
+                                                              width: 160.w,
                                                               margin: EdgeInsets
                                                                   .only(
                                                                       right:
                                                                           8.w),
-                                                              width: 160.w,
-                                                              height: 90.w,
-                                                              decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.circular(3.w)
-                                                              ),
-                                                              child:
-                                                                  PlatformAwareNetworkImage(
-                                                                url: firstSeriesList[
-                                                                    e]['thumb'],
-                                                                fit: BoxFit
-                                                                    .cover,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(3
+                                                                              .w),
+                                                                      child:
+                                                                          Container(
+                                                                        width: double
+                                                                            .infinity,
+                                                                        height:
+                                                                            90.w,
+                                                                        child:
+                                                                            PlatformAwareNetworkImage(
+                                                                          url: firstSeriesList[e]
+                                                                              [
+                                                                              'thumb'],
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      )),
+                                                                  SizedBox(
+                                                                    height: 8.w,
+                                                                  ),
+                                                                  Text(
+                                                                    firstSeriesList[
+                                                                            e][
+                                                                        'title'],
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0xff646464),
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                    maxLines: 1,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  )
+                                                                ],
                                                               ),
                                                             ),
                                                           );

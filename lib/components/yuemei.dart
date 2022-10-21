@@ -211,7 +211,8 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                   Positioned(
                                       left: 0,
                                       bottom: 0,
-                                      child: Image.asset(
+                                      child:  PlatformAwareAssetImage(
+                                url:
                                         'assets/images/pili_12/gfrz.png',
                                         width: 151.w,
                                         fit: BoxFit.fitWidth,
@@ -388,7 +389,8 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                               behavior: HitTestBehavior.translucent,
                               child: Row(
                                 children: [
-                                  Image.asset(
+                                   PlatformAwareAssetImage(
+                                url:
                                     'assets/images/pili_12/icon_location.png',
                                     width: 24.w,
                                     fit: BoxFit.fitWidth,
@@ -412,7 +414,8 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                               behavior: HitTestBehavior.translucent,
                               child: Row(
                                 children: [
-                                  Image.asset(
+                                   PlatformAwareAssetImage(
+                                url:
                                     'assets/images/pili_12/icon_filter.png',
                                     width: 24.w,
                                     fit: BoxFit.fitWidth,

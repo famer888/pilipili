@@ -502,6 +502,11 @@ class Routes {
         builder: (context, state) {
           return CityPicker();
         },
+        routes: [
+          GoRoute(
+            path: customerService,
+            builder: (context, state) => CustomerService(),
+          )]
       ),
       GoRoute(path: vip, builder: (context, state) => VipPage(), routes: [
         GoRoute(

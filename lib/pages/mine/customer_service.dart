@@ -35,8 +35,7 @@ class _CustomerServiceState extends State<CustomerService>
   bool isInit = true;
   bool fetching = false;
   bool networkErr = false;
-  RegExp regExp = new RegExp(
-    "${PPString.test}(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
+  RegExp regExp = new RegExp(r"${PPString.test}(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
     multiLine: true,
   );
   String thumb;

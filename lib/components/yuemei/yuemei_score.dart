@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 typedef ScoreFunction = void Function(int score);
 
@@ -48,8 +49,8 @@ class _YuemeiScoreState extends State<YuemeiScore> {
           },
           child: Padding(
             padding: EdgeInsets.only(left: widget.interval ?? 5.w),
-            child: Image.asset(
-              'assets/images/pili_12/' +
+            child: PlatformAwareAssetImage(
+              url: 'assets/images/pili_12/' +
                   (curentScore >= e + 1
                       ? 'icon_rate_heart.png'
                       : 'icon_rate_heart_un.png'),

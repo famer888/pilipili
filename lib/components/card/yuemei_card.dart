@@ -35,8 +35,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
         Positioned(
             right: -4.w,
             top: 0,
-            child: Image.asset(
-              'assets/images/pili_12/yuemei_red.png',
+            child: PlatformAwareAssetImage(
+              url: 'assets/images/pili_12/yuemei_red.png',
               width: 65.w,
               fit: BoxFit.fitWidth,
             )),
@@ -111,8 +111,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                     right: -4.w,
                     child: widget.data['buy_count'] != null &&
                             widget.data['buy_count'] > 10
-                        ? Image.asset(
-                            'assets/images/pili_12/yuemei_jingpin.png',
+                        ? PlatformAwareAssetImage(
+                            url: 'assets/images/pili_12/yuemei_jingpin.png',
                             width: 54.w,
                             fit: BoxFit.fitWidth,
                           )
@@ -167,8 +167,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: Color(0xff6d6d6d),
-                                    fontSize: 14.sp),
+                                    color: Color(0xff6d6d6d), fontSize: 14.sp),
                               ),
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 4.w),
@@ -469,10 +468,10 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                         children: [
                                           Row(
                                             children: [
-                                              Image.asset(
-                                                'assets/images/pili_12/icon_location_red.png',
+                                              PlatformAwareAssetImage(
+                                                url:
+                                                    'assets/images/pili_12/icon_location_red.png',
                                                 width: 18.w,
-                                                
                                                 fit: BoxFit.fitWidth,
                                               ),
                                               Text((widget.data['cityName'] ??
@@ -483,8 +482,9 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                           SizedBox(width: 16.w),
                                           Row(
                                             children: [
-                                              Image.asset(
-                                                'assets/images/pili_12/icon_lock.png',
+                                              PlatformAwareAssetImage(
+                                                url:
+                                                    'assets/images/pili_12/icon_lock.png',
                                                 width: 18.w,
                                                 fit: BoxFit.fitWidth,
                                               ),
@@ -504,8 +504,9 @@ class _YuemeiCardState extends State<YuemeiCard> {
                           right: -4.w,
                           child: widget.data['buy_count'] != null &&
                                   widget.data['buy_count'] > 10
-                              ? Image.asset(
-                                  'assets/images/pili_12/yuemei_jingpin.png',
+                              ? PlatformAwareAssetImage(
+                                  url:
+                                      'assets/images/pili_12/yuemei_jingpin.png',
                                   width: 54.w,
                                   fit: BoxFit.fitWidth,
                                 )

@@ -113,7 +113,8 @@ class _SeriesDetailState extends State<SeriesDetail> {
                                         Positioned(
                                           right: 0,
                                           bottom: 12.w,
-                                          child: Image.asset(
+                                          child:  PlatformAwareAssetImage(
+                                url:
                                             'assets/images/pili_12/icon_series.png',
                                             width: 113.w,
                                             fit: BoxFit.fitWidth,

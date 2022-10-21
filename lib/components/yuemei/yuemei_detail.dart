@@ -857,7 +857,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                           girlInfo[
                                                                   'buy_count'] >
                                                               10
-                                                      ? Image.asset(
+                                                      ?  PlatformAwareAssetImage(
+                                url:
                                                           'assets/images/pili_12/yuemei_jingpin.png',
                                                           width: 54.w,
                                                           fit: BoxFit.fitWidth,
@@ -874,7 +875,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     children: [
                                                       Row(
                                                         children: [
-                                                          Image.asset(
+                                                           PlatformAwareAssetImage(
+                                url:
                                                             'assets/images/pili_12/icon_location_red.png',
                                                             width: 18.w,
                                                             fit:
@@ -888,7 +890,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       SizedBox(width: 32.w),
                                                       Row(
                                                         children: [
-                                                          Image.asset(
+                                                           PlatformAwareAssetImage(
+                                url:
                                                             'assets/images/pili_12/icon_lock.png',
                                                             width: 18.w,
                                                             fit:
@@ -1317,7 +1320,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                       girlInfo['userBuy'] == 0
                           ? Row(
                               children: [
-                                Image.asset(
+                                 PlatformAwareAssetImage(
+                                url:
                                   'assets/images/pili_12/icon_big_lock.png',
                                   width: 16.w,
                                   fit: BoxFit.fitWidth,

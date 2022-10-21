@@ -256,7 +256,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                             context.pop();
                           },
                           behavior: HitTestBehavior.translucent,
-                          child: Image.asset(
+                          child:  PlatformAwareAssetImage(
+                                url:
                             'assets/images/pili_12/icon_close_red.png',
                             width: 24.w,
                             fit: BoxFit.fitWidth,
@@ -874,21 +875,48 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                             replace: true);
                                                       },
                                                       child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        3.w)),
                                                         margin: EdgeInsets.only(
                                                             right: 8.w),
                                                         width: 85.w,
-                                                        height: 125.w,
-                                                        child:
-                                                            PlatformAwareNetworkImage(
-                                                          url:
+                                                        child: Column(
+                                                          children: [
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          3.w),
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 125.w,
+                                                                child:
+                                                                    PlatformAwareNetworkImage(
+                                                                  url: firstSeriesList[
+                                                                          e]
+                                                                      ['thumb'],
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 8.w,
+                                                            ),
+                                                            Text(
                                                               firstSeriesList[e]
-                                                                  ['thumb'],
-                                                          fit: BoxFit.cover,
+                                                                  ['title'],
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xff646464),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            )
+                                                          ],
                                                         ),
                                                       ));
                                                 }).toList(),

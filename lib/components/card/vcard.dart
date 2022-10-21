@@ -235,7 +235,8 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                     right: 0,
                     bottom: 0,
                     child: widget.contentType == 11 || widget.contentType == 12
-                        ? Image.asset(
+                        ?  PlatformAwareAssetImage(
+                                url:
                             'assets/images/pili_12/icon_series.png',
                             width: widget.width * 0.807,
                             fit: BoxFit.fitWidth,

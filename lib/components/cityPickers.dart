@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -9,6 +10,7 @@ import 'package:pilipili/store/globle_value.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 typedef AlphaChanged = void Function(String alpha);
@@ -149,9 +151,19 @@ class _CityPickerState extends State<CityPicker> {
           ),
           PageTitleBar(
             title: '城市选择',
-            rightWidget: Text(
-              '联系运营',
-              style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            rightWidget: GestureDetector(
+              onTap: () {
+                if (Privilege.isAllowed(
+                    context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
+                  context.push(CommonUtils.getRealHash('customerService'));
+                } else {
+                  CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
+                }
+              },
+              child: Text(
+                '联系运营',
+                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+              ),
             ),
           ),
           Container(
@@ -315,8 +327,8 @@ class _CityPickerState extends State<CityPicker> {
                         Navigator.of(context).pop(
                           data[index].listData[index2],
                         );
-                        EventBus()
-                            .emit('change_city', data[index].listData[index2].name);
+                        EventBus().emit(
+                            'change_city', data[index].listData[index2].name);
                       },
                     ),
                   );
@@ -784,7 +796,7 @@ Map<String, dynamic> citiesData = {
     "211400": {"name": "葫芦岛市", "alpha": "h"}
   },
   "220000": {
-    "220100": {"name": "长春市", "alpha": "c"},
+    "220100": {"name": "长春��", "alpha": "c"},
     "220200": {"name": "吉林市", "alpha": "j"},
     "220300": {"name": "四平市", "alpha": "s"},
     "220400": {"name": "辽源市", "alpha": "l"},
