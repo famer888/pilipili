@@ -66,7 +66,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
   }
 
   void getBanner() async {
-    getElementById(id: 137, page: 1, limit: AppGlobal.smallVideoLimit)
+    getElementById(id: 139, page: 1, limit: AppGlobal.smallVideoLimit)
         .then((res) {
       if (res == null) {
         networkErr = true;
