@@ -166,7 +166,7 @@ class PlatformAwareHttp {
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
   static Future post(String path, {Map data, CancelToken cancelToken}) {
-    AppGlobal.apiBaseURL='https://pili.yesebo.net';
+    // AppGlobal.apiBaseURL='https://pili.yesebo.net';
     return _apiDio.post(AppGlobal.apiBaseURL + path,
         data: data, cancelToken: cancelToken);
   }

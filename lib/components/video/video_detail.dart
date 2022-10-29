@@ -163,6 +163,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   void initState() {
     super.initState();
     initVideoPage();
+    getAdForCoin(pos: 701).then((res) {
+      if (res != null && res['data'] != null && res['data'].length > 0) {
+        setState(() {
+          _banner = res['data'];
+        });
+      }
+    });
   }
 
   @override
@@ -212,8 +219,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   _onTapSwiper(int index) {
     if (_banner.length == 0) return;
     var item = _banner[index];
-    var type = item.type;
-    var _adsUrl = item.url;
+    var type = item['type'];
+    var _adsUrl = item['url'];
     if (['', null, false].contains(_adsUrl)) {
       BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
       return;
@@ -284,9 +291,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                             context.pop();
                           },
                           behavior: HitTestBehavior.translucent,
-                          child:  PlatformAwareAssetImage(
-                                url:
-                            'assets/images/pili_12/icon_close_red.png',
+                          child: PlatformAwareAssetImage(
+                            url: 'assets/images/pili_12/icon_close_red.png',
                             width: 24.w,
                             fit: BoxFit.fitWidth,
                           ),
@@ -855,6 +861,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   ? SizedBox(
                                                       height: ScreenUtil()
                                                           .setWidth(160),
+                                                      width: 343.w,
                                                       child: Swiper(
                                                         onTap: (index) {
                                                           _onTapSwiper(index);
@@ -863,19 +870,21 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             (BuildContext
                                                                     context,
                                                                 int index) {
-                                                          return Container(
-                                                            height: 126.w,
-                                                            width: 343.w,
-                                                            child: ClipRRect(
-                                                              borderRadius: BorderRadius
-                                                                  .circular(ScreenUtil()
-                                                                      .setWidth(
-                                                                          10)),
-                                                              child:
-                                                                  PlatformAwareNetworkImage(
-                                                                url: _banner[
-                                                                        index]
-                                                                    .imgUrl,
+                                                          return PageViewMixin(
+                                                            child: Container(
+                                                              height: 126.w,
+                                                              child: ClipRRect(
+                                                                borderRadius: BorderRadius.circular(
+                                                                    ScreenUtil()
+                                                                        .setWidth(
+                                                                            10)),
+                                                                child: PlatformAwareNetworkImage(
+                                                                    url: _banner[
+                                                                            index]
+                                                                        [
+                                                                        'img_url'],
+                                                                    noVisibilityDetector:
+                                                                        true),
                                                               ),
                                                             ),
                                                           );
@@ -884,8 +893,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             _banner.length,
                                                         autoplay:
                                                             _banner.length > 1,
-                                                        viewportFraction: 0.8,
-                                                        scale: 0.9,
                                                       ))
                                                   : Container(
                                                       height:

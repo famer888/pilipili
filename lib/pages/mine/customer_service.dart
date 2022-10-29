@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heic_to_jpg/heic_to_jpg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pilipili/utils/pp_string.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -35,7 +34,8 @@ class _CustomerServiceState extends State<CustomerService>
   bool isInit = true;
   bool fetching = false;
   bool networkErr = false;
-  RegExp regExp = new RegExp(r"${PPString.test}(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
+  RegExp regExp = new RegExp(
+    r"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
     multiLine: true,
   );
   String thumb;
@@ -184,8 +184,13 @@ class _CustomerServiceState extends State<CustomerService>
       platformViewRegistry.registerViewFactory('FileInput', (viewId) {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
-        uploadInput.setAttribute('style',
-            'width: '+ScreenUtil().setWidth(25).toString()+'px; height: '+ScreenUtil().setWidth(23).toString()+'px; opacity: 0');
+        uploadInput.setAttribute(
+            'style',
+            'width: ' +
+                ScreenUtil().setWidth(25).toString() +
+                'px; height: ' +
+                ScreenUtil().setWidth(23).toString() +
+                'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;

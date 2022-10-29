@@ -905,11 +905,11 @@ Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
 }
 
 // 购买金币广告
-Future getAdForCoin() async {
+Future getAdForCoin({int pos = 601}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post(
         "/api/home/getADsByPosition",
-        data: {'pos': 601});
+        data: {'pos': pos});
     return res.data;
   } catch (e) {
     return null;
@@ -1039,13 +1039,14 @@ Future getSeriesDetail({int id, int page, int limit}) async {
 // 获取系列列表
 Future getSeriesList({int id, int page, int limit, int type}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post("/api/series/getSeriesByTypeAndIdWithPagination", data: {
-      'id': id,
-      'page': page,
-      'limit': limit,
-      'type': type,
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        "/api/series/getSeriesByTypeAndIdWithPagination",
+        data: {
+          'id': id,
+          'page': page,
+          'limit': limit,
+          'type': type,
+        });
     return res.data;
   } catch (e) {
     return null;
