@@ -46,8 +46,8 @@ class _SeriesCardState extends State<SeriesCard> {
             ClipRRect(
               borderRadius: BorderRadius.circular(2.2.w),
               child: Container(
-                width: 80.w,
-                height: 110.w,
+                width: widget.type == 1 ? 167.w : 80.w,
+                height: widget.type == 1 ? 100.w : 110.w,
                 child: PlatformAwareNetworkImage(
                   url: CommonUtils.getThumb(widget.data),
                   fit: BoxFit.cover,

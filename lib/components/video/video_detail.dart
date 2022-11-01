@@ -191,7 +191,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
               blurRadius: 5.0,
               blurStyle: BlurStyle.outer,
               color: Color.fromRGBO(255, 91, 140, 0.2),
-              offset: Offset(0, ScreenUtil().setWidth(3)),
+              offset: Offset(0, 3.w),
             )
           ]),
       child: Column(

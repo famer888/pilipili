@@ -1018,7 +1018,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       FilterQuality.medium)),
                                           Container(
                                             padding: EdgeInsets.symmetric(
-                                                vertical: 10.w),
+                                                vertical: 15.w),
                                             width: double.infinity,
                                             height: 64.w,
                                             child: Row(
