@@ -33,7 +33,7 @@ android {
         applicationId "com.tbone.pilipili"
         multiDexEnabled true
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 22
         versionName "2.0.2"
     }
