@@ -278,6 +278,7 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                     BotToast.showText(text: '创建订单失败，请稍后重试');
                                   }
                                 } catch (err) {
+                                  print('错误：${err}');
                                   if (kIsWeb) {
                                     winRef.close();
                                     payErr();

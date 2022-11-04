@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -584,6 +581,7 @@ class _SearchResultState extends State<SearchResult> {
       'api': '/api/mv/search',
       'pramas': {},
       'isFlow': true,
+      'contentType': 1
     },
     {
       'title': '动漫',
@@ -591,6 +589,7 @@ class _SearchResultState extends State<SearchResult> {
       'cardType': 'h',
       'pramas': {'category': 1},
       'isFlow': false,
+      'contentType': 10
     },
     {
       'title': '漫画',
@@ -598,6 +597,7 @@ class _SearchResultState extends State<SearchResult> {
       'api': '/api/book/search',
       'pramas': {},
       'isFlow': false,
+      'contentType': 2
     },
     {
       'title': '约妹',
@@ -705,9 +705,11 @@ class _SearchResultState extends State<SearchResult> {
                   : PublicList(
                       isFlow: tabList[e]['isFlow'],
                       data: pramas,
+                      contentType: tabList[e]['contentType'],
                       cartType: tabList[e]['cardType'],
                       api: tabList[e]['api'],
                       isShow: e == currentTab,
+                      isSearch: true,
                     ),
             );
           }).toList(),
