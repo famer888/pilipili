@@ -12,8 +12,6 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
-import 'package:provider/provider.dart';
-
 import 'login_box.dart';
 
 class LoginPage extends StatefulWidget {

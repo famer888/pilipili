@@ -158,7 +158,7 @@ class _PublicListState extends State<PublicList> {
                                 mainAxisSpacing: ScreenUtil().setWidth(10),
                                 crossAxisSpacing: ScreenUtil().setWidth(10)),
                         itemBuilder: (BuildContext context, int index) {
-                          return (widget.cartType ?? 'h') == 'h'
+                          return searchData[index]['mv_type']==1
                               ? Hcard(
                                   isSearch: widget.isSearch,
                                   maxLines: 1,

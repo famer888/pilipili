@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pilipili/components/widget/h4_widget.dart';
 import 'package:pilipili/components/widget/h_scroll_widget.dart';
+import 'package:pilipili/components/widget/swbanner.dart';
 import 'package:pilipili/components/widget/three_v_column.dart';
 import 'package:pilipili/components/widget/v4_widget.dart';
 import 'package:pilipili/components/widget/v_onebig.dart';
@@ -16,8 +17,12 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
       elementValue = element['value'].sublist(0, element['max_num'] - 1);
     }
     Widget yyElement;
-    CommonUtils.debugPrint(
-        '-----------------'+element['title']+'----------------组件类型:'+element['type'].toString()+'---是否有magin:'+(element['is_margin'] == 1).toString());
+    CommonUtils.debugPrint('-----------------' +
+        element['title'] +
+        '----------------组件类型:' +
+        element['type'].toString() +
+        '---是否有magin:' +
+        (element['is_margin'] == 1).toString());
     switch (element['type']) {
       case 1:
         yyElement = H4Column(
@@ -113,7 +118,9 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
           showField: element['show_field'],
           element: element,
         );
-        ;
+        break;
+      case 11:
+        yyElement = SwBanner(data: elementValue, element: element);
         break;
       default:
         yyElement = Container();

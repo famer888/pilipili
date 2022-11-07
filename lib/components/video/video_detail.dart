@@ -524,51 +524,50 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              '演员：' +
-                                                                  (videoInfo.actors == null ||
-                                                                              videoInfo.actors ==
-                                                                                  ""
-                                                                          ? "--"
-                                                                          : videoInfo
-                                                                              .actors)
-                                                                      .toString(),
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xffFF5B8C),
-                                                                  fontSize:
-                                                                      ScreenUtil()
-                                                                          .setSp(
-                                                                              12)),
-                                                            ),
-                                                            Text(
-                                                              videoInfo
-                                                                      .countPlay
-                                                                      .toString() +
-                                                                  '人看过 - ' +
-                                                                  videoInfo
-                                                                      .createdAt
-                                                                      .split(
-                                                                          ' ')[0]
-                                                                      .toString() +
-                                                                  '更新',
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xff979797),
-                                                                  fontSize:
-                                                                      ScreenUtil()
-                                                                          .setSp(
-                                                                              11)),
-                                                            )
-                                                          ],
+                                                        Container(
+                                                          height: 40.w,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                '演员：' +
+                                                                    (videoInfo.actors == null ||
+                                                                                videoInfo.actors == ""
+                                                                            ? "--"
+                                                                            : videoInfo.actors)
+                                                                        .toString(),
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xffFF5B8C),
+                                                                    fontSize: ScreenUtil()
+                                                                        .setSp(
+                                                                            12)),
+                                                              ),
+                                                              Text(
+                                                                videoInfo
+                                                                        .countPlay
+                                                                        .toString() +
+                                                                    '人看过 - ' +
+                                                                    videoInfo
+                                                                        .createdAt
+                                                                        .split(
+                                                                            ' ')[0]
+                                                                        .toString() +
+                                                                    '更新',
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xff979797),
+                                                                    fontSize: ScreenUtil()
+                                                                        .setSp(
+                                                                            11)),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
                                                         Row(
                                                           mainAxisSize:
@@ -772,17 +771,15 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         )
                                                       ],
                                                     )),
-                                                SizedBox(
-                                                  height:
-                                                      ScreenUtil().setWidth(11),
-                                                ),
                                                 tags == null || tags.isEmpty
-                                                    ? Container()
+                                                    ? Container(
+                                                      height: 10.w,
+                                                    )
                                                     : Container(
                                                         color: Colors.white54,
                                                         margin: EdgeInsets.only(
                                                             bottom: ScreenUtil()
-                                                                .setWidth(19)),
+                                                                .setWidth(8)),
                                                         height: ScreenUtil()
                                                             .setWidth(0.5),
                                                       ),
@@ -795,20 +792,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     DefaultStyle
                                                                         .pagePadding),
                                                         child: Container(
-                                                            padding: EdgeInsets.only(
-                                                                bottom:
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            22)),
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    bottom:
+                                                                        18.w),
                                                             child: Wrap(
-                                                              spacing:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          4),
-                                                              runSpacing:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          14),
+                                                              spacing: 4.w,
+                                                              runSpacing: 4.w,
                                                               children: tags
                                                                   .asMap()
                                                                   .keys
@@ -831,9 +821,11 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         horizontal:
                                                                             ScreenUtil().setWidth(16.5),
                                                                       ),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                              color: Colors.white),
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(5
+                                                                              .w),
+                                                                          color:
+                                                                              Colors.white),
                                                                       child:
                                                                           Text(
                                                                         tags[e]

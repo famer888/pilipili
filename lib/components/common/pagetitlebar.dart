@@ -64,28 +64,26 @@ class _PageTitleBarState extends State<PageTitleBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: DefaultStyle.pagePadding,
-                      vertical: ScreenUtil().setWidth(5)),
-                  child: InkWell(
-                    onTap: () {
-                      context.pop();
-                    },
-                    borderRadius:
-                        BorderRadius.circular(ScreenUtil().setWidth(20)),
-                    child: Container(
-                      alignment: Alignment.center,
-                      // width: ScreenUtil().setWidth(40),
-                      // height: ScreenUtil().setWidth(40),
-                      child: PlatformAwareAssetImage(
-                          url: 'assets/images/backarrow.png',
-                          fit: BoxFit.fitHeight,
-                          width: ScreenUtil().setWidth(20),
-                          height: ScreenUtil().setWidth(20),
-                          filterQuality: FilterQuality.medium),
-                    ),
-                  ),
+                GestureDetector(
+                  onTap: () {
+                    context.pop();
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: DefaultStyle.pagePadding,
+                          vertical: ScreenUtil().setWidth(5)),
+                      child: Container(
+                        alignment: Alignment.center,
+                        // width: ScreenUtil().setWidth(40),
+                        // height: ScreenUtil().setWidth(40),
+                        child: PlatformAwareAssetImage(
+                            url: 'assets/images/backarrow.png',
+                            fit: BoxFit.fitHeight,
+                            width: ScreenUtil().setWidth(20),
+                            height: ScreenUtil().setWidth(20),
+                            filterQuality: FilterQuality.medium),
+                      )),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(

@@ -222,7 +222,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                     .indexWhere((item) => item.name == urlList[1]);
                 //跳转结构
                 try {
-                  EventBus().emit('video_nav', _cindex == null ? 0 : _cindex);
+                  EventBus().emit('pili_ciyuan', _cindex == null ? 0 : _cindex);
                 } catch (e) {}
                 return;
               }

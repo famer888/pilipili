@@ -20,6 +20,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/pp_string.dart';
+import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class YuemeiDetail extends StatefulWidget {
@@ -44,7 +45,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
   bool isFavorites = false;
   bool onFavorites = false; //点击收藏
   int currentIndex = 0;
+  int freeCount = 0;
   num money = 0;
+  String unlimited = '无限解锁';
+  String jstext = '解锁联系方式';
+  String ljtext = '立即解锁';
   getPageData() {
     getYuepaoDetail(widget.id).then((res) {
       if (res == null) {
@@ -122,7 +127,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     infoItem(title: '解锁信息', text: girlInfo['title']),
-                    _connect.length == 1
+                    connectMap.length == 0
                         ? infoItem(title: '联系方式', text: girlInfo['phone'])
                         : Container(),
                     connectMap['wechat'] != null
@@ -262,8 +267,17 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
   payUnlock() {
     yuepaoUnlock(widget.id).then((res) {
       if (res['status'] != 0) {
-        Provider.of<HomeConfig>(context, listen: false)
-            .setMoney(money - girlInfo['buy_price']);
+        if (freeCount > 0) {
+          Map _privilege =
+              Provider.of<HomeConfig>(context, listen: false).privilege;
+          _privilege['data'][RESOURCE_TYPE_GIRL.toString()]
+              [PRIVILEGE_TYPE_UNLOCK.toString()]['value'] = (freeCount - 1);
+          Provider.of<HomeConfig>(context, listen: false)
+              .setPrivilege(_privilege);
+        } else {
+          Provider.of<HomeConfig>(context, listen: false)
+              .setMoney(money - girlInfo['buy_price']);
+        }
         getPageData();
       } else {
         CommonUtils.showText(res['msg']);
@@ -428,7 +442,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                               child: isVip
                                   ? GestureDetector(
                                       onTap: () {
-                                        if (isInsufficient) {
+                                        if (isInsufficient && freeCount <= 0) {
                                           context.pop();
                                           context
                                               .push('/${Routes.coinRecharge}');
@@ -454,9 +468,14 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         height: ScreenUtil().setWidth(40),
                                         child: Center(
                                           child: Text(
-                                            isInsufficient
-                                                ? PPString.goldInsufficient
-                                                : PPString.buyNow,
+                                            freeCount > 9999
+                                                ? unlimited
+                                                : (freeCount > 0
+                                                    ? '立即免费解锁(剩余$freeCount次)'
+                                                    : (isInsufficient
+                                                        ? PPString
+                                                            .goldInsufficient
+                                                        : PPString.buyNow)),
                                             style: TextStyle(
                                                 color: isInsufficient
                                                     ? Color(0xffff84a9)
@@ -533,7 +552,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         Expanded(
                                             child: GestureDetector(
                                                 onTap: () {
-                                                  if (isInsufficient) {
+                                                  if (isInsufficient &&
+                                                      freeCount <= 0) {
                                                     context.pop();
                                                     context.push(
                                                         '/${Routes.coinRecharge}');
@@ -564,10 +584,15 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       ScreenUtil().setWidth(40),
                                                   child: Center(
                                                     child: Text(
-                                                      isInsufficient
-                                                          ? PPString
-                                                              .goldInsufficient
-                                                          : PPString.buyNow,
+                                                      freeCount > 9999
+                                                          ? unlimited
+                                                          : (freeCount > 0
+                                                              ? '立即免费解锁(剩余$freeCount次)'
+                                                              : (isInsufficient
+                                                                  ? PPString
+                                                                      .goldInsufficient
+                                                                  : PPString
+                                                                      .buyNow)),
                                                       style: TextStyle(
                                                           color: isInsufficient
                                                               ? Color(
@@ -613,6 +638,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
 
   @override
   Widget build(BuildContext context) {
+    freeCount =
+        Privilege.getCount(context, RESOURCE_TYPE_GIRL, PRIVILEGE_TYPE_UNLOCK);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -857,9 +884,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                           girlInfo[
                                                                   'buy_count'] >
                                                               10
-                                                      ?  PlatformAwareAssetImage(
-                                url:
-                                                          'assets/images/pili_12/yuemei_jingpin.png',
+                                                      ? PlatformAwareAssetImage(
+                                                          url:
+                                                              'assets/images/pili_12/yuemei_jingpin.png',
                                                           width: 54.w,
                                                           fit: BoxFit.fitWidth,
                                                         )
@@ -875,9 +902,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     children: [
                                                       Row(
                                                         children: [
-                                                           PlatformAwareAssetImage(
-                                url:
-                                                            'assets/images/pili_12/icon_location_red.png',
+                                                          PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/pili_12/icon_location_red.png',
                                                             width: 18.w,
                                                             fit:
                                                                 BoxFit.fitWidth,
@@ -890,9 +917,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       SizedBox(width: 32.w),
                                                       Row(
                                                         children: [
-                                                           PlatformAwareAssetImage(
-                                url:
-                                                            'assets/images/pili_12/icon_lock.png',
+                                                          PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/pili_12/icon_lock.png',
                                                             width: 18.w,
                                                             fit:
                                                                 BoxFit.fitWidth,
@@ -1097,7 +1124,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     height: 34.w,
                                                     child: Text(
                                                       girlInfo['userBuy'] == 0
-                                                          ? '立即解锁'
+                                                          ? (freeCount > 9999
+                                                              ? unlimited
+                                                              : (freeCount > 0
+                                                                  ? '免费解锁(剩余$freeCount次)'
+                                                                  : ljtext))
                                                           : '查看联系方式',
                                                       style: TextStyle(
                                                           color: Colors.white,
@@ -1320,9 +1351,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                       girlInfo['userBuy'] == 0
                           ? Row(
                               children: [
-                                 PlatformAwareAssetImage(
-                                url:
-                                  'assets/images/pili_12/icon_big_lock.png',
+                                PlatformAwareAssetImage(
+                                  url:
+                                      'assets/images/pili_12/icon_big_lock.png',
                                   width: 16.w,
                                   fit: BoxFit.fitWidth,
                                 ),
@@ -1581,11 +1612,15 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                     Color(0xffFF9E9E),
                                     Color(0xffFF84A9),
                                   ])),
-                          width: 96.w,
                           height: 30.w,
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
                             girlInfo['userBuy'] == 0
-                                ? '解锁联系方式'
+                                ? freeCount > 9999
+                                    ? unlimited
+                                    : (freeCount > 0
+                                        ? '免费解锁(剩余$freeCount次)'
+                                        : jstext)
                                 : '查看联系方式', //查看联系方式
                             style: TextStyle(
                                 color: Colors.white,

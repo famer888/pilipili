@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:pilipili/utils/index.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -219,6 +220,17 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   String linkUrl = activityInfo['link'];
                                   if (linkUrl == '' || linkUrl == null) return;
                                   List urlList = linkUrl.split('?');
+                                  if (linkUrl.indexOf('toTab') != -1) {
+                                    context.go('/');
+                                    int _tab;
+                                    try {
+                                      _tab = int.parse(linkUrl.split('?')[1]);
+                                    } catch (e) {
+                                      _tab = null;
+                                    }
+                                    EventBus().emit('pili_ciyuan', _tab ?? 0);
+                                    return;
+                                  }
                                   if (activityInfo['link'].indexOf('http') ==
                                       -1) {
                                     Map<String, dynamic> pramas = {};
