@@ -377,9 +377,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Text(
-                                                girlInfo['buy_price']
-                                                        .toString() +
-                                                    '币',
+                                                freeCount > 0
+                                                    ? '免费解锁'
+                                                    : (girlInfo['buy_price']
+                                                            .toString() +
+                                                        '币'),
                                                 style: TextStyle(
                                                     color: Color(0xffFFCD6B),
                                                     shadows: <Shadow>[

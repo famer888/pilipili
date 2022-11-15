@@ -509,6 +509,7 @@ class _SearchPageState extends State<SearchPage> {
                             data: tabList[e]['pramas'],
                             api: tabList[e]['api'],
                             isShow: e == tabIndex,
+                            isSearch: true,
                           )
                           // PageGridView(
                           //   id: e,

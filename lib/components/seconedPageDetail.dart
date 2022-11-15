@@ -22,7 +22,10 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   Map<int, Map> apiMap = {
     1: {'api': '/api/mv/getList', 'data': {}},
     7: {'api': '/api/mv/getList', 'data': {}},
-    2: {'api': '/api/book/getList', 'data': {}},
+    2: {
+      'api': '/api/book/getList',
+      'data': {'type': 1}
+    },
     10: {
       'api': '/api/mv/getList',
       'data': {'category': 1}

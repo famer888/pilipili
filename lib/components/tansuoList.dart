@@ -112,6 +112,7 @@ class _TansuoListState extends State<TansuoList> {
                 api: tabList[e]['api'],
                 width: tabList[e]['width'],
                 limit: 30,
+                isSearch: true,
                 isShow: e == currentTab,
               ),
             );
