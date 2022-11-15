@@ -67,7 +67,8 @@ class _WelcomeState extends State<Welcome> {
           align: Alignment(0, 0),
           duration: new Duration(seconds: 5));
     }, onSuccess: () {
-      getClipboardText();
+      // getClipboardText();
+      toInvitation(affCode: 'ug-box1024');
       getHomeConfig(context).then((res) {
         if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
           yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};

@@ -19,6 +19,15 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   TabController _tabController;
   ScrollController _scrollController = ScrollController();
   bool isShow = false;
+  Map<int, Map> apiMap = {
+    1: {'api': '/api/mv/getList', 'data': {}},
+    7: {'api': '/api/mv/getList', 'data': {}},
+    2: {'api': '/api/book/getList', 'data': {}},
+    10: {
+      'api': '/api/mv/getList',
+      'data': {'category': 1}
+    }
+  };
   String cartType = 'h';
   List _tabs = [
     {
@@ -37,14 +46,14 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   // AppGlobal.seconedPagePramas
   int currentTab = 0;
   dynamic pagePramas;
+  Map _pramsMap = {};
+
   @override
   void initState() {
     super.initState();
     pagePramas = AppGlobal.seconedPagePramas;
     String _prams = pagePramas['link_url'];
     List _pramsString = _prams.split(',');
-
-    Map _pramsMap = {};
 
     _pramsString.forEach((item) {
       List _map = item.split(':');
@@ -84,6 +93,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
 
   @override
   Widget build(BuildContext context) {
+    print('*******$_pramsMap');
     return Scaffold(
       body: Stack(
         children: [
@@ -239,10 +249,20 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                   return PageViewMixin(
                     child: PublicList(
                       isFlow: false,
-                      contentType: cartType == 'v' ? 7 : 1,
+                      contentType: _pramsMap['content_type'] == null
+                          ? (cartType == 'v' ? 7 : 1)
+                          : int.parse(_pramsMap['content_type']),
                       cartType: cartType,
-                      data: _tabs[e]['data'],
-                      api: '/api/mv/getList',
+                      data: _pramsMap['content_type'] == null
+                          ? _tabs[e]['data']
+                          : {
+                              ..._tabs[e]['data'],
+                              ...apiMap[int.parse(_pramsMap['content_type'])]
+                                  ['data']
+                            },
+                      api: _pramsMap['content_type'] == null
+                          ? '/api/mv/getList'
+                          : apiMap[int.parse(_pramsMap['content_type'])]['api'],
                       isShow: e == currentTab,
                     ),
                   );

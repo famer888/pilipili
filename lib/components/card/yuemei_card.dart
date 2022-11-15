@@ -503,7 +503,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                           bottom: 0,
                           right: -4.w,
                           child: widget.data['buy_count'] != null &&
-                                  widget.data['buy_count'] > 10
+                                  widget.data['buy_count'] > 10&&!widget.isBuy
                               ? PlatformAwareAssetImage(
                                   url:
                                       'assets/images/pili_12/yuemei_jingpin.png',

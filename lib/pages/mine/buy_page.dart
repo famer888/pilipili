@@ -138,7 +138,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
                     color: Color.fromRGBO(255, 91, 140, 0.1),
-                    offset: Offset(0, 10),
+                    offset: Offset(0, 5.w),
                     blurRadius: 10,
                     spreadRadius: 0)
               ]),
