@@ -128,7 +128,6 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
   @override
   Widget build(BuildContext context) {
     double thumbHeight = (widget.width / 140) * 194;
-    String desc = getCardDesc(widget);
     return callDetail(
         cardData: widget.cardData,
         widget: widget,

@@ -45,7 +45,6 @@ class _SwBannerState extends State<SwBanner> {
                       ? SwiperPagination(
                           margin: EdgeInsets.all(0),
                           alignment: Alignment.bottomRight,
-
                           builder: SwiperCustomPagination(builder:
                               (BuildContext context,
                                   SwiperPluginConfig config) {
@@ -112,10 +111,10 @@ class _SwBannerState extends State<SwBanner> {
                               Provider.of<HomeConfig>(context, listen: false)
                                   .member;
                           var aff = members.aff;
-                          var yyid = members.uuid;
+                          var piliid = members.uuid;
                           CommonUtils.launchURL(
                               widget.data[index]['link_url'].trim() +
-                                  '?aff=$aff&yyid=$yyid');
+                                  '?aff=$aff&piliid=$piliid');
                         }
                       },
                       child: Padding(

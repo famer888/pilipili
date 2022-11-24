@@ -236,7 +236,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
         break;
       case 4:
         // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
+        var members = Provider.of<HomeConfig>(context, listen: false).member;
+        var aff = members.aff;
+        var piliid = members.uuid;
+        CommonUtils.launchURL(_adsUrl + '?aff=$aff&piliid=$piliid');
         break;
         break;
       default:
@@ -773,8 +776,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                     )),
                                                 tags == null || tags.isEmpty
                                                     ? Container(
-                                                      height: 10.w,
-                                                    )
+                                                        height: 10.w,
+                                                      )
                                                     : Container(
                                                         color: Colors.white54,
                                                         margin: EdgeInsets.only(
