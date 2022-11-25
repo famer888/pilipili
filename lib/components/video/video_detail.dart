@@ -898,15 +898,12 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       child: _banner.length == 1
                                                           ? GestureDetector(
                                                               onTap: () {
-                                                                CommonUtils.launchURL(
-                                                                    _banner[0]
-                                                                        .url
-                                                                        .toString());
+                                                                _onTapSwiper(0);
                                                               },
                                                               child:
                                                                   PlatformAwareNetworkImage(
                                                                 url: _banner[0]
-                                                                    .imgUrl,
+                                                                    ['img_url'],
                                                               ),
                                                             )
                                                           : SizedBox(),
