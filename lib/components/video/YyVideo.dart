@@ -331,7 +331,7 @@ class VideoContainer extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return useMemo(() {
-      return (isSmallVideo && kIsWeb)
+      return kIsWeb
           ? Container(
               width: double.infinity,
               height: double.infinity,

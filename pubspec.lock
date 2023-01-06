@@ -1228,10 +1228,12 @@ packages:
   video_player_web_hls:
     dependency: "direct main"
     description:
-      name: video_player_web_hls
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.11+5"
+      path: "."
+      ref: fe05017
+      resolved-ref: fe050177140e5a6df62f415ecb9a8494a9396bbb
+      url: "git@172.105.200.120:rn/video_player_web_hls-0.1.11_6.git"
+    source: git
+    version: "0.1.11+6"
   visibility_detector:
     dependency: "direct main"
     description:
