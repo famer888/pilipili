@@ -189,7 +189,8 @@ class _ScrollnavState extends State<Scrollnav> {
                                                     horizontal: ScreenUtil()
                                                         .setWidth(3)),
                                                 child: Text(
-                                                  widget.navitems[index].name,
+                                                  widget.navitems[index].name ??
+                                                      "",
                                                   style: TextStyle(
                                                       color:
                                                           selectedIndex == index

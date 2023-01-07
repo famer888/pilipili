@@ -1,0 +1,30 @@
+{
+    // 使用 IntelliSense 以得知可用的屬性。
+    // 暫留以檢視現有屬性的描述。
+    // 如需詳細資訊，請瀏覽: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cartoonnew",
+            "request": "launch",
+            "type": "dart",
+            //手机 Debug 
+            //取消注释,并在终端输入flutter devices确认要执行的手机,填入手机Id
+            // "args": ["-d","45F5EF7E-7139-4ADD-A378-8BF1EC3D8B0A"]
+            //CHROME Debug 
+            "args": ["-d","chrome","--web-renderer html","--web-port=9999"] 
+        },
+        {
+            "name": "cartoonnew (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "cartoonnew (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
