@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/theme/default.dart';
@@ -72,19 +73,43 @@ class _WodeState extends State<Wode> {
     });
   }
 
-  List MenuList = [
-    {'name': "观看记录", 'icon': "record", 'router': '/${Routes.watchhistory}'},
-    {'name': "我购买的", 'icon': "buy", "router": '/${Routes.buy}'},
-    {'name': "我的收藏", 'icon': "collect", "router": '/${Routes.collect}'},
-    {'name': "我的下载", 'icon': "download", 'router': '/${Routes.down_page}'},
-    {'name': "在线客服", 'icon': "customer", 'router': '/${Routes.onlineService}'},
+  List menuList = [
+    {
+      'name': "观看记录",
+      'iconUrl': PPAssetsPath.record,
+      'router': '/${Routes.watchhistory}'
+    },
+    {'name': "我购买的", 'iconUrl': PPAssetsPath.buy, "router": '/${Routes.buy}'},
+    {
+      'name': "我的收藏",
+      'iconUrl': PPAssetsPath.collect,
+      "router": '/${Routes.collect}'
+    },
+    {
+      'name': "我的下载",
+      'iconUrl': PPAssetsPath.download,
+      'router': '/${Routes.down_page}'
+    },
+    {
+      'name': "在线客服",
+      'iconUrl': PPAssetsPath.customer,
+      'router': '/${Routes.onlineService}'
+    },
     {
       'name': "联系官方",
-      'icon': "official",
+      'iconUrl': PPAssetsPath.official,
       'router': '/${Routes.contactOfficial}'
     },
-    {'name': "邀请好友", 'icon': "invite", 'router': '/${Routes.invitefriend}'},
-    {'name': "应用推荐", 'icon': "app_recommen", 'router': '/${Routes.appCenter}'},
+    {
+      'name': "邀请好友",
+      'iconUrl': PPAssetsPath.invite,
+      'router': '/${Routes.invitefriend}'
+    },
+    {
+      'name': "应用推荐",
+      'iconUrl': PPAssetsPath.appRecommend,
+      'router': '/${Routes.appCenter}'
+    },
   ];
 
   @override
@@ -321,7 +346,7 @@ class _WodeState extends State<Wode> {
   Widget setHandleList() {
     Member members = Provider.of<HomeConfig>(context, listen: false).member;
     List<Widget> tempList = [];
-    for (var item in MenuList) {
+    for (var item in menuList) {
       tempList.add(
         new GestureDetector(
           onTap: () {
@@ -333,13 +358,9 @@ class _WodeState extends State<Wode> {
             width: ScreenUtil().screenWidth / 4,
             child: Column(
               children: [
-                PlatformAwareAssetImage(
-                    url: 'assets/images/wode/' +
-                        item['icon'].toString() +
-                        '.png',
+                getImage(item['iconUrl'],
+                    width: 32.w,
                     fit: BoxFit.fitWidth,
-                    width: ScreenUtil().setWidth(32),
-                    // height: ScreenUtil().setWidth(45),
                     filterQuality: FilterQuality.medium),
                 SizedBox(
                   height: ScreenUtil().setHeight(2),

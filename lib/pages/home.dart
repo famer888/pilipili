@@ -5,8 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/yuemei.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
 import 'package:pilipili/components/manhua.dart';
@@ -44,28 +46,28 @@ class _HomeState extends State<Home> {
   List navBarItem = [
     {
       "title": "pili次元",
-      "activeIcon": "assets/images/bottomTab/pili_active.png",
-      "icon": "assets/images/bottomTab/pili.png",
+      "activeIcon": PPAssetsPath.piliActive,
+      "icon": PPAssetsPath.pili,
     },
     {
       "title": "动漫",
-      "activeIcon": "assets/images/bottomTab/cartoon_active.png",
-      "icon": "assets/images/bottomTab/cartoon.png",
+      "activeIcon": PPAssetsPath.cartoonActive,
+      "icon": PPAssetsPath.cartoon,
     },
     {
       "title": "漫画",
-      "activeIcon": "assets/images/bottomTab/comics_active.png",
-      "icon": "assets/images/bottomTab/comics.png",
+      "activeIcon": PPAssetsPath.comicsActive,
+      "icon": PPAssetsPath.comics,
     },
     {
       "title": "约妹",
-      "activeIcon": "assets/images/pili_12/yuemei_active.png",
-      "icon": "assets/images/pili_12/yuemei.png",
+      "activeIcon": PPAssetsPath.yuemeiActive,
+      "icon": PPAssetsPath.yuemei,
     },
     {
       "title": "我的",
-      "activeIcon": "assets/images/bottomTab/user_active.png",
-      "icon": "assets/images/bottomTab/user.png",
+      "activeIcon": PPAssetsPath.userActive,
+      "icon": PPAssetsPath.user
     },
   ];
   int selectedKey = 0;
@@ -449,17 +451,14 @@ class _HomeState extends State<Home> {
                                               child: Column(
                                                 children: [
                                                   !loading
-                                                      ? PlatformAwareAssetImage(
-                                                          url: selectedKey ==
-                                                                  key
+                                                      ? getImage(
+                                                          selectedKey == key
                                                               ? navBarItem[key]
                                                                   ['activeIcon']
                                                               : navBarItem[key]
                                                                   ['icon'],
-                                                          width: ScreenUtil()
-                                                              .setWidth(25),
-                                                          height: ScreenUtil()
-                                                              .setWidth(25),
+                                                          width: 25.w,
+                                                          height: 25.w,
                                                           fit: BoxFit.fitWidth,
                                                           filterQuality:
                                                               FilterQuality
@@ -468,20 +467,8 @@ class _HomeState extends State<Home> {
                                                   Text(
                                                     navBarItem[key]['title'],
                                                     style: selectedKey == key
-                                                        ? TextStyle(
-                                                            color: Color(
-                                                                0xffFF84A9),
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(12),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .none)
+                                                        ? DefaultStyle
+                                                            .bottomNavStyle
                                                         : DefaultStyle.lgray12,
                                                   )
                                                 ],

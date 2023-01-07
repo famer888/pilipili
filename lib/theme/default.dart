@@ -10,6 +10,13 @@ class DefaultStyle {
   static double get pagePadding => ScreenUtil().setWidth(12.5);
   // 主题色
   static Color themeColor = Color(0xffFF84A9);
+  // 导览页样式
+  static TextStyle bottomNavStyle = TextStyle(
+      color: Color(0xffF72426),
+      fontWeight: FontWeight.w500,
+      fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
   // 字体样式
   static TextStyle zhuti10 = TextStyle(
       color: Color(0xffFF84A9),
