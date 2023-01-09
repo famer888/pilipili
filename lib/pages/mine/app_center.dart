@@ -40,6 +40,44 @@ class _AppCenterState extends State<AppCenter> {
     }
   }
 
+  Widget applicationColumn() {
+    return Expanded(
+      child: appList.length == 0
+          ? Container(
+              color: Color(0xFFEEEEEE),
+              child: Center(
+                child: Text(
+                  "应用列表为空",
+                  style: DefaultStyle.black15bold,
+                ),
+              ),
+            )
+          : ListView.builder(
+              addRepaintBoundaries: false,
+              padding: EdgeInsets.zero,
+              itemCount: appList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.w)),
+                    child: ApplicationItem(
+                      id: appList[index].id,
+                      appname: appList[index].title,
+                      iconurl: appList[index].imgUrl,
+                      des: appList[index].description,
+                      clicked: appList[index].clicked,
+                      link: appList[index].linkUrl,
+                    ),
+                  ),
+                );
+              }),
+    );
+  }
+
   onRefreshPost() {
     banner = [];
     appList = [];
@@ -80,43 +118,7 @@ class _AppCenterState extends State<AppCenter> {
                               fontSize: 16.sp),
                         ),
                       ),
-                      Expanded(
-                        child: appList.length == 0
-                            ? Container(
-                                color: Color(0xFFEEEEEE),
-                                child: Center(
-                                  child: Text(
-                                    "应用列表为空",
-                                    style: DefaultStyle.black15bold,
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                addRepaintBoundaries: false,
-                                padding: EdgeInsets.zero,
-                                itemCount: appList.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8.w),
-                                    child: Container(
-                                      padding: EdgeInsets.all(16.w),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(12.w)),
-                                      child: ApplicationItem(
-                                        id: appList[index].id,
-                                        appname: appList[index].title,
-                                        iconurl: appList[index].imgUrl,
-                                        des: appList[index].description,
-                                        clicked: appList[index].clicked,
-                                        link: appList[index].linkUrl,
-                                      ),
-                                    ),
-                                  );
-                                }),
-                      ),
+                      applicationColumn(),
                       SizedBox(
                         height: ScreenUtil().bottomBarHeight,
                       )
