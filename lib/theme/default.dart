@@ -12,6 +12,10 @@ class DefaultStyle {
   static Color themeColor = Color(0xffFF84A9);
   // 主题线性渐层色
   static Color linerThemeColor = Color(0xffFF9E9E);
+  // 按鈕主題色
+  static Color btnThemeColor = Color(0xffFFCCDB);
+  // 按鈕線性漸層色
+  static Color btnLinerThemeColor = Color(0xffFFE4E4);
   // 导览页样式
   static TextStyle bottomNavStyle = TextStyle(
       color: Color(0xffF72426),

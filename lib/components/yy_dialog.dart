@@ -146,8 +146,9 @@ class YyShowDialog {
                                                             .setWidth(18)),
                                                 gradient: LinearGradient(
                                                   colors: [
-                                                    Color(0xffFFCCDB),
-                                                    Color(0xffFFE4E4)
+                                                    DefaultStyle.btnThemeColor,
+                                                    DefaultStyle
+                                                        .btnLinerThemeColor
                                                   ],
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
