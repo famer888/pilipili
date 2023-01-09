@@ -194,8 +194,8 @@ class YyShowDialog {
                                                             .setWidth(18)),
                                                 gradient: LinearGradient(
                                                   colors: [
-                                                    Color(0xffFF84A9),
-                                                    Color(0xffFF9E9E)
+                                                    DefaultStyle.themeColor,
+                                                    DefaultStyle.linerThemeColor
                                                   ],
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
@@ -235,7 +235,11 @@ class YyShowDialog {
   }
 
   static Future showButtom(context,
-      {String title, double height, Function callback, dynamic content,Function onClose}) {
+      {String title,
+      double height,
+      Function callback,
+      dynamic content,
+      Function onClose}) {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -300,10 +304,10 @@ class YyShowDialog {
               ],
             );
           });
-        }).then((value){
-          if(onClose!=null){
-            onClose();
-          }
-        });
+        }).then((value) {
+      if (onClose != null) {
+        onClose();
+      }
+    });
   }
 }

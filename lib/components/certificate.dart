@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -435,8 +436,8 @@ class CertificateModel {
                                         ScreenUtil().setWidth(17.5)),
                                     gradient: LinearGradient(
                                       colors: [
-                                        Color(0xffFF84A9),
-                                        Color(0xffFF9E9E)
+                                        DefaultStyle.themeColor,
+                                        DefaultStyle.linerThemeColor
                                       ],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,

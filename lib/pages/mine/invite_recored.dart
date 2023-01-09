@@ -154,7 +154,7 @@ class RecoredItem extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: item.register == "未注册"
-                        ? Color(0xffFF84A9)
+                        ? DefaultStyle.themeColor
                         : Color(0xffFE155B),
                     fontSize: ScreenUtil().setSp(14),
                   ))

@@ -97,7 +97,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
           Text(
             name,
             style: TextStyle(
-                color: color == null ? Color(0xffFF84A9) : Colors.white,
+                color: color == null ? DefaultStyle.themeColor : Colors.white,
                 fontSize: ScreenUtil().setSp(12)),
           )
         ],

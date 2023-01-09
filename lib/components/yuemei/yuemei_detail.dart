@@ -173,8 +173,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Color(0xffFF9E9E),
-                            Color(0xffFF84A9),
+                            DefaultStyle.linerThemeColor,
+                            DefaultStyle.themeColor,
                           ])),
                   width: 327.w,
                   height: 40.w,
@@ -963,7 +963,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       BorderRadius.circular(
                                                           8.w),
                                                   color: isFavorites
-                                                      ? Color(0xffFF84A9)
+                                                      ? DefaultStyle.themeColor
                                                       : Colors.white,
                                                   boxShadow: [
                                                     BoxShadow(
@@ -1120,7 +1120,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             end: Alignment
                                                                 .bottomCenter,
                                                             colors: [
-                                                              Color(0xffFF9E9E),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
                                                               Color(0xffff84a9),
                                                             ])),
                                                     height: 34.w,
@@ -1537,8 +1538,9 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                     colors: [
-                                                      Color(0xffFF9E9E),
-                                                      Color(0xffFF84A9),
+                                                      DefaultStyle
+                                                          .linerThemeColor,
+                                                      DefaultStyle.themeColor,
                                                     ])),
                                             width: 327.w,
                                             height: 40.w,
@@ -1611,8 +1613,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    Color(0xffFF9E9E),
-                                    Color(0xffFF84A9),
+                                    DefaultStyle.linerThemeColor,
+                                    DefaultStyle.themeColor,
                                   ])),
                           height: 30.w,
                           padding: EdgeInsets.symmetric(horizontal: 12.w),

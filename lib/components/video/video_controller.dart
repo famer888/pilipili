@@ -143,7 +143,7 @@ class _VideoControllerState extends State<VideoController>
           videoPlayErr = true;
           setState(() {});
           CommonUtils.debugPrint(widget.videoUrl);
-          CommonUtils.debugPrint('【播放资源时出错】:'+error.toString());
+          CommonUtils.debugPrint('【播放资源时出错】:' + error.toString());
           CommonUtils.showText('视频资源播放错误');
         }
       }).timeout(Duration(seconds: 30), onTimeout: () {
@@ -170,10 +170,10 @@ class _VideoControllerState extends State<VideoController>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0'+numb.toString() : numb.toString();
+      return numb < 10 ? '0' + numb.toString() : numb.toString();
     }
 
-    return timeStr(s).toString()+':'+timeStr(h).toString();
+    return timeStr(s).toString() + ':' + timeStr(h).toString();
   }
 
   Future<void> changeFull() async {
@@ -339,7 +339,9 @@ class _VideoControllerState extends State<VideoController>
                                 }
                               },
                               child: PlatformAwareAssetImage(
-                                  url:widget.videoController.value.isPlaying?PPAssetsPath.iconPause:PPAssetsPath.iconPlay,
+                                  url: widget.videoController.value.isPlaying
+                                      ? PPAssetsPath.iconPause
+                                      : PPAssetsPath.iconPlay,
                                   width: ScreenUtil().setWidth(50),
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
@@ -377,7 +379,9 @@ class _VideoControllerState extends State<VideoController>
                           }
                         },
                         child: PlatformAwareAssetImage(
-                          url:widget.videoController.value.volume > 0 ?PPAssetsPath.volumeon:PPAssetsPath.volumeOff,
+                          url: widget.videoController.value.volume > 0
+                              ? PPAssetsPath.volumeon
+                              : PPAssetsPath.volumeOff,
                           width: ScreenUtil().setWidth(15),
                           fit: BoxFit.fitWidth,
                         ),
@@ -622,7 +626,10 @@ class _VideoControllerState extends State<VideoController>
                           width: ScreenUtil().setWidth(118.5),
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                colors: [
+                                  DefaultStyle.themeColor,
+                                  DefaultStyle.linerThemeColor
+                                ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),
@@ -647,7 +654,8 @@ class _VideoControllerState extends State<VideoController>
                       widget.isPreview ||
                       widget.videoController == null ||
                       !widget.videoController.value.isInitialized) return;
-                  CommonUtils.debugPrint('panStart:'+e.localPosition.dx.toString());
+                  CommonUtils.debugPrint(
+                      'panStart:' + e.localPosition.dx.toString());
                   usecheck = true;
                   showControl = false;
                   showUpTime = true;

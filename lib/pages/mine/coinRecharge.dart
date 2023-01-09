@@ -160,8 +160,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           colors: [
-                            Color(0xffFF9E9E),
-                            Color(0xffFF84A9),
+                            DefaultStyle.linerThemeColor,
+                            DefaultStyle.themeColor,
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter),
@@ -409,8 +409,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                       194, 194, 194, 0.5),
                                                 ]
                                               : [
-                                                  Color(0xffFF9E9E),
-                                                  Color(0xffFF84A9),
+                                                  DefaultStyle.linerThemeColor,
+                                                  DefaultStyle.themeColor,
                                                 ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter),

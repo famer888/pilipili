@@ -80,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
     return Container(
       height: ScreenUtil().setWidth(50) + ScreenUtil().statusBarHeight,
       padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
-      color: Color(0xffFF84A9),
+      color: DefaultStyle.themeColor,
       child: Row(
         children: [
           Padding(

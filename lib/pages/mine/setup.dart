@@ -49,8 +49,13 @@ class _SetupPageState extends State<SetupPage> {
       platformViewRegistry.registerViewFactory('AvatarFileInput', (viewId) {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
-        uploadInput.setAttribute('style',
-            'width: '+ScreenUtil().setWidth(90).toString()+'px; height: '+ScreenUtil().setWidth(120).toString()+'px; opacity: 0');
+        uploadInput.setAttribute(
+            'style',
+            'width: ' +
+                ScreenUtil().setWidth(90).toString() +
+                'px; height: ' +
+                ScreenUtil().setWidth(120).toString() +
+                'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;
@@ -493,8 +498,12 @@ class _SetupPageState extends State<SetupPage> {
               _line(),
               _setupItem(
                   isTopRadius: true,
-                  title: members?.phone == null ? PPString.bindPhone : PPString.changeBindPhone,
-                  rightText: members?.phone == null ? PPString.isnull : members.phone.toString(),
+                  title: members?.phone == null
+                      ? PPString.bindPhone
+                      : PPString.changeBindPhone,
+                  rightText: members?.phone == null
+                      ? PPString.isnull
+                      : members.phone.toString(),
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'), extra: {
                       'type': members?.phone == null ? 1 : 2,
@@ -510,9 +519,13 @@ class _SetupPageState extends State<SetupPage> {
               AppGlobal.apiToken == '' && AppGlobal.apiToken != null
                   ? Container()
                   : _setupItem(
-                      title: isSetPassword == 0 ? PPString.setPassword : PPString.changePassword,
+                      title: isSetPassword == 0
+                          ? PPString.setPassword
+                          : PPString.changePassword,
                       isTips: isSetPassword == 0,
-                      rightText: isSetPassword == 0 ? PPString.phoneAndPasswordLogin : PPString.isnull,
+                      rightText: isSetPassword == 0
+                          ? PPString.phoneAndPasswordLogin
+                          : PPString.isnull,
                       onTap: () {
                         context.push(CommonUtils.getRealHash('fillcode'),
                             extra: {'type': isSetPassword == 0 ? 6 : 5});
@@ -521,7 +534,8 @@ class _SetupPageState extends State<SetupPage> {
               _setupItem(
                   title: '输入邀请码',
                   rightText:
-                      (members?.invitedBy == null ? '' : members.invitedBy).toString(),
+                      (members?.invitedBy == null ? '' : members.invitedBy)
+                          .toString(),
                   onTap: () {
                     if (members?.invitedBy == null) {
                       context.push(CommonUtils.getRealHash('fillcode'),
@@ -560,7 +574,9 @@ class _SetupPageState extends State<SetupPage> {
                   isBottomRadius: true,
                   title: '版本更新',
                   rightText: AppGlobal.isNewVersion
-                      ? '已是最新版本('+AppGlobal.appinfo['version'].toString()+')'
+                      ? '已是最新版本(' +
+                          AppGlobal.appinfo['version'].toString() +
+                          ')'
                       : PPString.isNewVersion,
                   rightStyle: TextStyle(
                       color: Color(0xff979797),
@@ -596,7 +612,10 @@ class _SetupPageState extends State<SetupPage> {
                               borderRadius: BorderRadius.circular(
                                   ScreenUtil().setWidth(17.5)),
                               gradient: LinearGradient(
-                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                colors: [
+                                  DefaultStyle.themeColor,
+                                  DefaultStyle.linerThemeColor
+                                ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               )),

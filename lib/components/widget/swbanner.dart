@@ -61,7 +61,7 @@ class _SwBannerState extends State<SwBanner> {
                                   margin: EdgeInsets.only(
                                       left: ScreenUtil().setWidth(3)),
                                   decoration: BoxDecoration(
-                                      color: Color(0xffFF84A9),
+                                      color: DefaultStyle.themeColor,
                                       borderRadius: BorderRadius.circular(
                                           ScreenUtil().setWidth(0.8))),
                                 );

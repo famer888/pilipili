@@ -422,7 +422,7 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                                 height: ScreenUtil().setWidth(22),
                                 width: ScreenUtil().setWidth(22),
                                 child: CircularProgressIndicator(
-                                  color: Color(0xffFF84A9),
+                                  color: DefaultStyle.themeColor,
                                 ),
                               )
                             : Container()
@@ -549,7 +549,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0'+numb.toString() : numb.toString();
+      return numb < 10 ? '0' + numb.toString() : numb.toString();
     }
 
     return timeStr(s).toString() + ':' + timeStr(h).toString();
@@ -565,7 +565,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
         CommonUtils.showText('购买成功');
         isNovideo = false;
         changeFlag = false;
-        CommonUtils.debugPrint('购买视频地址:'+res.data.toString());
+        CommonUtils.debugPrint('购买视频地址:' + res.data.toString());
         widget.data.source240 = res.data;
         widget.initVideo(res.data);
         setState(() {});
@@ -604,7 +604,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                         text: widget.data.discountCoins.toString() + 'G',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffFF84A9),
+                            color: DefaultStyle.themeColor,
                             fontSize: ScreenUtil().setSp(16)))
                   ]))
                 ],
@@ -1067,7 +1067,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                                               'G',
                                                                           style: TextStyle(
                                                                               fontWeight: FontWeight.bold,
-                                                                              color: Color(0xffFF84A9),
+                                                                              color: DefaultStyle.themeColor,
                                                                               fontSize: ScreenUtil().setSp(16)))
                                                                     ]))
                                                               ],
@@ -1471,7 +1471,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                                         children: [
                                                                           TextSpan(
                                                                               text: widget.data.discountCoins.toString() + 'G',
-                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffFF84A9), fontSize: ScreenUtil().setSp(16)))
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: DefaultStyle.themeColor, fontSize: ScreenUtil().setSp(16)))
                                                                         ]))
                                                                   ],
                                                                 ));

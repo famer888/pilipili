@@ -10,6 +10,8 @@ class DefaultStyle {
   static double get pagePadding => ScreenUtil().setWidth(12.5);
   // 主题色
   static Color themeColor = Color(0xffFF84A9);
+  // 主题线性渐层色
+  static Color linerThemeColor = Color(0xffFF9E9E);
   // 导览页样式
   static TextStyle bottomNavStyle = TextStyle(
       color: Color(0xffF72426),

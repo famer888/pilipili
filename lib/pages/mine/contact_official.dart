@@ -58,7 +58,8 @@ class _ContactOfficialState extends State<ContactOfficial> {
         SizedBox(
           height: ScreenUtil().setWidth(8),
         ),
-        Text(itemData['decs'].toString(), style: TextStyle(color: Color(0xff6D6D6D))),
+        Text(itemData['decs'].toString(),
+            style: TextStyle(color: Color(0xff6D6D6D))),
         Container(
           margin: EdgeInsets.only(
               top: ScreenUtil().setWidth(11.5),
@@ -122,7 +123,7 @@ class AppInfo extends StatelessWidget {
     return Column(
       children: [
         PlatformAwareAssetImage(
-          url: 'assets/images/mine/icon_'+type.toString()+'.png',
+          url: 'assets/images/mine/icon_' + type.toString() + '.png',
           width: ScreenUtil().setWidth(38.8),
           height: ScreenUtil().setWidth(38.8),
         ),
@@ -294,7 +295,7 @@ class AppInfo extends StatelessWidget {
                       child: Text(
                         'TG群打不开?看这里',
                         style: TextStyle(
-                            color: Color(0xffFF84A9),
+                            color: DefaultStyle.themeColor,
                             decoration: TextDecoration.underline,
                             fontSize: ScreenUtil().setSp(12)),
                       ),

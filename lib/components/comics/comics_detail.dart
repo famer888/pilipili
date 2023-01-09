@@ -200,7 +200,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
           Text(
             name,
             style: TextStyle(
-                color: color == null ? Color(0xffFF84A9) : Colors.white,
+                color: color == null ? DefaultStyle.themeColor : Colors.white,
                 fontSize: ScreenUtil().setSp(12)),
           )
         ],
@@ -256,9 +256,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                             context.pop();
                           },
                           behavior: HitTestBehavior.translucent,
-                          child:  PlatformAwareAssetImage(
-                                url:
-                            'assets/images/pili_12/icon_close_red.png',
+                          child: PlatformAwareAssetImage(
+                            url: 'assets/images/pili_12/icon_close_red.png',
                             width: 24.w,
                             fit: BoxFit.fitWidth,
                           ),

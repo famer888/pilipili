@@ -387,8 +387,8 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
-                                        Color(0xffFF84A9),
-                                        Color(0xffFF9E9E)
+                                        DefaultStyle.themeColor,
+                                        DefaultStyle.linerThemeColor
                                       ],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,

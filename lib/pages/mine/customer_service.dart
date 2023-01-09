@@ -495,8 +495,8 @@ class _CustomerServiceState extends State<CustomerService>
                       decoration: BoxDecoration(
                           border: Border.all(
                               width: ScreenUtil().setWidth(0.5),
-                              color: Color(0xffFF84A9)),
-                          color: Color(0xffFF84A9),
+                              color: DefaultStyle.themeColor),
+                          color: DefaultStyle.themeColor,
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
                           horizontal: ScreenUtil().setWidth(10.5),

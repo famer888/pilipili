@@ -194,8 +194,8 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
                                         colors: [
-                                          Color(0xffFF9E9E),
-                                          Color(0xffFF84A9),
+                                          DefaultStyle.linerThemeColor,
+                                          DefaultStyle.themeColor,
                                         ])),
                                 height: ScreenUtil().setWidth(32),
                                 width: ScreenUtil().setWidth(96),
@@ -344,8 +344,8 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                                 begin: Alignment.topCenter,
                                                 end: Alignment.bottomCenter,
                                                 colors: [
-                                                  Color(0xffFF9E9E),
-                                                  Color(0xffFF84A9),
+                                                  DefaultStyle.linerThemeColor,
+                                                  DefaultStyle.themeColor,
                                                 ])),
                                         height: ScreenUtil().setWidth(32),
                                         width: ScreenUtil().setWidth(96),

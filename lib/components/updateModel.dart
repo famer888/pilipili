@@ -143,8 +143,10 @@ class UpdateModel {
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
-                                                              Color(0xffFF9E9E),
-                                                              Color(0xffFF84A9),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,
@@ -201,8 +203,10 @@ class UpdateModel {
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
-                                                              Color(0xffFF9E9E),
-                                                              Color(0xffFF84A9),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,
@@ -262,8 +266,10 @@ class UpdateModel {
                                                         gradient:
                                                             LinearGradient(
                                                           colors: [
-                                                            Color(0xffFF9E9E),
-                                                            Color(0xffFF84A9),
+                                                            DefaultStyle
+                                                                .linerThemeColor,
+                                                            DefaultStyle
+                                                                .themeColor,
                                                           ],
                                                           begin: Alignment
                                                               .topCenter,
@@ -447,8 +453,10 @@ class UpdateModel {
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
-                                                              Color(0xffFF9E9E),
-                                                              Color(0xffFF84A9),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,
@@ -646,7 +654,7 @@ class _DownloadApkState extends State<DownloadApk> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "正在更新 v."+widget.version.toString(),
+                        "正在更新 v." + widget.version.toString(),
                         style: TextStyle(
                             color: Color(0xFF646464),
                             fontSize: ScreenUtil().setSp(18),
