@@ -81,30 +81,41 @@ class _AppCenterState extends State<AppCenter> {
                         ),
                       ),
                       Expanded(
-                        child: ListView.builder(
-                            addRepaintBoundaries: false,
-                            padding: EdgeInsets.zero,
-                            itemCount: appList.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                                child: Container(
-                                  padding: EdgeInsets.all(16.w),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.circular(12.w)),
-                                  child: ApplicationItem(
-                                    id: appList[index].id,
-                                    appname: appList[index].title,
-                                    iconurl: appList[index].imgUrl,
-                                    des: appList[index].description,
-                                    clicked: appList[index].clicked,
-                                    link: appList[index].linkUrl,
+                        child: appList.length == 0
+                            ? Container(
+                                color: Color(0xFFEEEEEE),
+                                child: Center(
+                                  child: Text(
+                                    "应用列表为空",
+                                    style: DefaultStyle.black15bold,
                                   ),
                                 ),
-                              );
-                            }),
+                              )
+                            : ListView.builder(
+                                addRepaintBoundaries: false,
+                                padding: EdgeInsets.zero,
+                                itemCount: appList.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.w),
+                                    child: Container(
+                                      padding: EdgeInsets.all(16.w),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(12.w)),
+                                      child: ApplicationItem(
+                                        id: appList[index].id,
+                                        appname: appList[index].title,
+                                        iconurl: appList[index].imgUrl,
+                                        des: appList[index].description,
+                                        clicked: appList[index].clicked,
+                                        link: appList[index].linkUrl,
+                                      ),
+                                    ),
+                                  );
+                                }),
                       ),
                       SizedBox(
                         height: ScreenUtil().bottomBarHeight,
