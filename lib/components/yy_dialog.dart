@@ -159,7 +159,8 @@ class YyShowDialog {
                                               child: Text(
                                                 cancelText,
                                                 style: TextStyle(
-                                                    color: Color(0xffff84a9),
+                                                    color:
+                                                        DefaultStyle.themeColor,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize:
                                                         ScreenUtil().setSp(14)),

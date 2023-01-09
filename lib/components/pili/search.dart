@@ -778,7 +778,7 @@ class _TabHeadState extends State<TabHead> {
                 Container(
                   margin: EdgeInsets.only(top: ScreenUtil().setWidth(38)),
                   decoration: BoxDecoration(
-                    color: Color(0xffff84a9),
+                    color: DefaultStyle.themeColor,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(ScreenUtil().setWidth(12)),
                         topRight: Radius.circular(ScreenUtil().setWidth(12))),

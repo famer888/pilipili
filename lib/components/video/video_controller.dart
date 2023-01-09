@@ -445,7 +445,8 @@ class _VideoControllerState extends State<VideoController>
                                       data: SliderTheme.of(context).copyWith(
                                           trackHeight: ScreenUtil().setWidth(2),
                                           inactiveTrackColor: Colors.white24,
-                                          activeTrackColor: Color(0xffff84a9),
+                                          activeTrackColor:
+                                              DefaultStyle.themeColor,
                                           overlayColor: Colors.white54,
                                           thumbShape: RoundSliderThumbShape(
                                               enabledThumbRadius:
@@ -454,7 +455,7 @@ class _VideoControllerState extends State<VideoController>
                                             overlayRadius:
                                                 ScreenUtil().setWidth(9),
                                           ),
-                                          thumbColor: Color(0xffff84a9)),
+                                          thumbColor: DefaultStyle.themeColor),
                                       child: Slider(
                                           value: videoValue > videoMaxTime
                                               ? videoMaxTime

@@ -276,7 +276,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 : PPString.buyNow,
                                             style: TextStyle(
                                                 color: isInsufficient
-                                                    ? Color(0xffff84a9)
+                                                    ? DefaultStyle.themeColor
                                                     : Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize:

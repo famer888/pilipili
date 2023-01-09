@@ -7,6 +7,7 @@ import 'package:lpinyin/lpinyin.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/store/globle_value.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
@@ -541,7 +542,7 @@ class AlphaState extends State<Alpha> {
             alpha,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: widget.alphaItemSize, color: Color(0xffff84a9)),
+                fontSize: widget.alphaItemSize, color: DefaultStyle.themeColor),
           ),
         ),
       ));

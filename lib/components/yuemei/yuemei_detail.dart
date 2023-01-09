@@ -480,7 +480,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                         : PPString.buyNow)),
                                             style: TextStyle(
                                                 color: isInsufficient
-                                                    ? Color(0xffff84a9)
+                                                    ? DefaultStyle.themeColor
                                                     : Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize:
@@ -995,7 +995,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     style: TextStyle(
                                                         color: isFavorites
                                                             ? Colors.white
-                                                            : Color(0xffff84a9),
+                                                            : DefaultStyle
+                                                                .themeColor,
                                                         fontSize: 12.sp),
                                                   )
                                                 ],
@@ -1122,7 +1123,8 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             colors: [
                                                               DefaultStyle
                                                                   .linerThemeColor,
-                                                              Color(0xffff84a9),
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ])),
                                                     height: 34.w,
                                                     child: Text(
@@ -1583,7 +1585,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                 child: Text(
                                   '体验评价', //查看联系方式
                                   style: TextStyle(
-                                      color: Color(0xffff84a9),
+                                      color: DefaultStyle.themeColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.sp),
                                 ),

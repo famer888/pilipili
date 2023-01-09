@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
@@ -137,7 +138,8 @@ class _SeriesCardState extends State<SeriesCard> {
                               CommonUtils.renderFixedNumber(double.parse(
                                   (widget.data['favorites'] ?? 0).toString())),
                               style: TextStyle(
-                                  color: Color(0xffff84a9), fontSize: 12.sp),
+                                  color: DefaultStyle.themeColor,
+                                  fontSize: 12.sp),
                             )
                           ],
                         ),

@@ -812,7 +812,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                     ? PPString.putAway
                                                     : PPString.allChapters,
                                                 style: TextStyle(
-                                                    color: Color(0xffff84a9),
+                                                    color:
+                                                        DefaultStyle.themeColor,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize:
                                                         ScreenUtil().setSp(14)),

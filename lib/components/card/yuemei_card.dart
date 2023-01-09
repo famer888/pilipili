@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/input/InputDailog.dart';
 import 'package:pilipili/components/yuemei/yuemei_score.dart';
 import 'package:pilipili/components/yy_dialog.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -452,7 +453,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                             child: Text(
                                               '体验评价', //查看联系方式
                                               style: TextStyle(
-                                                  color: Color(0xffff84a9),
+                                                  color:
+                                                      DefaultStyle.themeColor,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12.sp),
                                             ),
@@ -503,7 +505,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                           bottom: 0,
                           right: -4.w,
                           child: widget.data['buy_count'] != null &&
-                                  widget.data['buy_count'] > 10&&!widget.isBuy
+                                  widget.data['buy_count'] > 10 &&
+                                  !widget.isBuy
                               ? PlatformAwareAssetImage(
                                   url:
                                       'assets/images/pili_12/yuemei_jingpin.png',

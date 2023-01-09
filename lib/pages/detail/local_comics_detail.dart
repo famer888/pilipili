@@ -350,7 +350,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                                             .setWidth(20)),
                                                 gradient: SweepGradient(
                                                     colors: [
-                                                      Color(0xffff84a9),
+                                                      DefaultStyle.themeColor,
                                                       Color(0xffff9e9e)
                                                     ])),
                                             height: ScreenUtil().setWidth(40),
@@ -415,7 +415,8 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                                   ? PPString.putAway
                                                   : PPString.allChapters,
                                               style: TextStyle(
-                                                  color: Color(0xffff84a9),
+                                                  color:
+                                                      DefaultStyle.themeColor,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize:
                                                       ScreenUtil().setSp(14)),

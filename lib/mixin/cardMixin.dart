@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -134,7 +135,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                 return Text(
                   privilegeMap[contentType]['text'],
                   style: TextStyle(
-                      color: Color(0xffff84a9),
+                      color: DefaultStyle.themeColor,
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(16),
                       decoration: TextDecoration.none),
