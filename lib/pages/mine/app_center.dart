@@ -307,7 +307,10 @@ class _ApplicationItemState extends State<ApplicationItem> {
                     width: 64.w,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.w),
-                      child: PlatformAwareNetworkImage(url: widget.iconurl),
+                      child: PlatformAwareNetworkImage(
+                        url: widget.iconurl,
+                        noVisibilityDetector: true,
+                      ),
                     ),
                   ),
                   Expanded(
