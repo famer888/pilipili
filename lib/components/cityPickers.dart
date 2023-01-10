@@ -78,6 +78,12 @@ class _CityPickerState extends State<CityPicker> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     getData();
@@ -270,6 +276,8 @@ class _CityPickerState extends State<CityPicker> {
         padding: EdgeInsets.zero,
         controller: _scrollController,
         itemCount: data.length,
+        //预设渲染高度设定为手机屏幕高度
+        cacheExtent: 1.sh,
         itemBuilder: (
           BuildContext context,
           int index,
@@ -286,6 +294,8 @@ class _CityPickerState extends State<CityPicker> {
                 ],
               ),
               ListView.builder(
+                //预设渲染高度设定为手机屏幕高度
+                cacheExtent: 1.sh,
                 padding: EdgeInsets.zero,
                 itemBuilder: (
                   BuildContext context,
