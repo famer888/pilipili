@@ -215,48 +215,46 @@ class _CityPickerState extends State<CityPicker> {
 
   /// 渲染热门城市
   Widget renderHotCity() {
-    return Container(
-      height: 68.w,
-      child: GridView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          itemCount: hotCityData.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              childAspectRatio: 100 / 26),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                Provider.of<GlobleValue>(context, listen: false)
-                    .setYpLocation(hotCityData[index].name);
-                Navigator.of(context).pop(
-                  hotCityData[index],
-                );
-                EventBus().emit('change_city', hotCityData[index].name);
-              },
-              child: Container(
-                width: 100.w,
-                height: 28.w,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.w)),
-                child: Text(
-                  hotCityData[index].name,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: const Color(0xff6d6d6d),
-                    fontSize: 14.sp,
-                  ),
+    return GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: hotCityData.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 100 / 26),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              Provider.of<GlobleValue>(context, listen: false)
+                  .setYpLocation(hotCityData[index].name);
+              Navigator.of(context).pop(
+                hotCityData[index],
+              );
+              EventBus().emit('change_city', hotCityData[index].name);
+            },
+            child: Container(
+              width: 100.w,
+              height: 28.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5.w)),
+              child: Text(
+                hotCityData[index].name,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: TextStyle(
+                  color: const Color(0xff6d6d6d),
+                  fontSize: 14.sp,
                 ),
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 
   /// 全部城市列表
@@ -296,8 +294,8 @@ class _CityPickerState extends State<CityPicker> {
                   return Container(
                     color: Colors.white,
                     padding: EdgeInsets.only(
-                      left: ScreenUtil().setWidth(16),
-                      right: ScreenUtil().setWidth(47),
+                      left: 16.w,
+                      right: 47.w,
                     ),
                     child: GestureDetector(
                       child: Container(
@@ -311,7 +309,7 @@ class _CityPickerState extends State<CityPicker> {
                           Text(
                             data[index].listData[index2].name,
                             style: TextStyle(
-                                fontSize: ScreenUtil().setSp(15),
+                                fontSize: 15.sp,
                                 color: Color(0xff6d6d6d),
                                 fontWeight: FontWeight.bold),
                           )
@@ -347,12 +345,12 @@ class _CityPickerState extends State<CityPicker> {
           color: Colors.black38,
           child: Container(
             alignment: Alignment.center,
-            width: 80.0,
-            height: 80.0,
+            width: 80.w,
+            height: 80.w,
             child: Text(
               _tagName,
-              style: const TextStyle(
-                fontSize: 32.0,
+              style: TextStyle(
+                fontSize: 32.sp,
                 color: Colors.white,
               ),
             ),
@@ -366,7 +364,7 @@ class _CityPickerState extends State<CityPicker> {
         tempTouchBar,
         Positioned(
           top: 0,
-          right: ScreenUtil().setWidth(4),
+          right: 4.w,
           bottom: 0,
           child: Alpha(
             alphas: letters,
@@ -530,7 +528,7 @@ class AlphaState extends State<Alpha> {
     List<Widget> result = [];
     for (var alpha in widget.alphas) {
       result.add(Padding(
-        padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: alphaPading),
+        padding: EdgeInsets.symmetric(vertical: alphaPading),
         child: SizedBox(
           key: Key(alpha),
           height: widget.alphaItemSize,
