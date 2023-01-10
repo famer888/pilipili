@@ -182,6 +182,7 @@ class _CityPickerState extends State<CityPicker> {
                     TextSpan(text: ' 为您安排！'),
                   ]))),
           loading ? Container() : hotCityBox(),
+          SizedBox(height: 20.w),
           Expanded(child: loading ? PageStatus.loading(true) : allCityBox())
         ],
       ),
@@ -192,26 +193,19 @@ class _CityPickerState extends State<CityPicker> {
   Widget hotCityBox() {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(
-        top: 0,
-        left: ScreenUtil().setWidth(16),
-        right: ScreenUtil().setWidth(16),
-        bottom: ScreenUtil().setWidth(16),
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-              bottom: 8.w,
-            ),
-            child: Text(
-              '热门城市',
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(14),
-                  color: Color(0xff6d6d6d),
-                  fontWeight: FontWeight.bold),
-            ),
+          Text(
+            '热门城市',
+            style: TextStyle(
+                fontSize: 14.sp,
+                color: Color(0xff6d6d6d),
+                fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 8.w,
           ),
           renderHotCity()
         ],
@@ -221,47 +215,48 @@ class _CityPickerState extends State<CityPicker> {
 
   /// 渲染热门城市
   Widget renderHotCity() {
-    List<Widget> tiles = [];
-    Widget content;
-    for (int i = 0; i < hotCityData.length; i++) {
-      tiles.add(
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            Provider.of<GlobleValue>(context, listen: false)
-                .setYpLocation(hotCityData[i].name);
-            Navigator.of(context).pop(
-              hotCityData[i],
-            );
-            EventBus().emit('change_city', hotCityData[i].name);
-          },
-          child: Container(
-            width: 100.w,
-            height: 26.w,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(5.w)),
-            child: Text(
-              hotCityData[i].name,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: TextStyle(
-                color: const Color(0xff6d6d6d),
-                fontSize: ScreenUtil().setSp(14),
+    return Container(
+      height: 68.w,
+      child: GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemCount: hotCityData.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 100 / 26),
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                Provider.of<GlobleValue>(context, listen: false)
+                    .setYpLocation(hotCityData[index].name);
+                Navigator.of(context).pop(
+                  hotCityData[index],
+                );
+                EventBus().emit('change_city', hotCityData[index].name);
+              },
+              child: Container(
+                width: 100.w,
+                height: 28.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5.w)),
+                child: Text(
+                  hotCityData[index].name,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: const Color(0xff6d6d6d),
+                    fontSize: 14.sp,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      );
-    }
-    content = Wrap(
-      alignment: WrapAlignment.center,
-      runAlignment: WrapAlignment.center,
-      spacing: 14.5.w,
-      runSpacing: 18.5.w,
-      children: tiles,
+            );
+          }),
     );
-    return content;
   }
 
   /// 全部城市列表
@@ -284,12 +279,13 @@ class _CityPickerState extends State<CityPicker> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  left: ScreenUtil().setWidth(16),
-                  right: ScreenUtil().setWidth(47),
-                ),
-                child: CityIndexName(data[index].letter.toUpperCase()),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  CityIndexName(data[index].letter.toUpperCase())
+                ],
               ),
               ListView.builder(
                 padding: EdgeInsets.zero,
@@ -615,15 +611,12 @@ class CityIndexName extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       height: 36.w,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Text(
-          indexName,
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(14),
-            color: const Color(0xFF6d6d6d),
-            fontWeight: FontWeight.bold,
-          ),
+      child: Text(
+        indexName,
+        style: TextStyle(
+          fontSize: 14.sp,
+          color: const Color(0xFF6d6d6d),
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
