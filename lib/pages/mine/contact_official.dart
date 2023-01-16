@@ -34,12 +34,22 @@ class _ContactOfficialState extends State<ContactOfficial> {
     var result = await getContactList();
     if (result != null && result['data'] != null) {
       CommonUtils.debugPrint(result['data']);
-      dataList = result['data']['office_contact']['data'];
-      result['data']['download_link'].forEach((item) {
-        downloadLink[item['name']] = item['value'];
-      });
-      isLoading = false;
-      setState(() {});
+      if (result['data']['download_link'] == null &&
+          result['data']['office_contact'] == null) {
+        context.pop();
+        CommonUtils.showText('返回数据为空,请稍后再试～');
+      } else {
+        if (result['data']['office_contact'] != null) {
+          dataList = result['data']['office_contact']['data'];
+        }
+        if (result['data']['download_link'] != null) {
+          result['data']['download_link'].forEach((item) {
+            downloadLink[item['name']] = item['value'];
+          });
+          isLoading = false;
+          setState(() {});
+        }
+      }
     } else {
       context.pop();
       CommonUtils.showText('返回数据为空,请稍后再试～');
