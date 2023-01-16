@@ -89,7 +89,9 @@ class _RegisterState extends State<Register> {
                 setState(() {});
               },
               child: Text(
-                loginType == 0 ? PPString.acountPasswodRegister : PPString.phoneCodRegister,
+                loginType == 0
+                    ? PPString.acountPasswodRegister
+                    : PPString.phoneCodRegister,
                 style: TextStyle(
                     color: Color(0xffffffff),
                     fontWeight: FontWeight.bold,
@@ -426,7 +428,9 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                               Text(
-                                currentIndex == 0 ? PPString.registerLoin : PPString.forgoPassword,
+                                currentIndex == 0
+                                    ? PPString.registerLogin
+                                    : PPString.forgoPassword,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
