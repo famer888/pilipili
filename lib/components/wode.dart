@@ -88,7 +88,7 @@ class _WodeState extends State<Wode> {
     {
       'name': "我的下载",
       'iconUrl': PPAssetsPath.download,
-      'router': '/${Routes.down_page}'
+      'router': '/${Routes.downPage}'
     },
     {
       'name': "在线客服",
