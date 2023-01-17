@@ -57,6 +57,20 @@ class _FillCodePageState extends State<FillCodePage> {
       "btnname": "确认",
     },
   ];
+  @override
+  void dispose() {
+    username.dispose();
+    phone.dispose();
+    phoneCode.dispose();
+    exchange.dispose();
+    invite.dispose();
+    password.dispose();
+    newpassword.dispose();
+    cnewpassword.dispose();
+    newphone.dispose();
+    newphoneCode.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -79,12 +93,14 @@ class _FillCodePageState extends State<FillCodePage> {
         }
         if (username.text.length > 10) {
           CommonUtils.showText('昵称最大长度10个字符');
+          // username.text = username.text.substring(0, 10);
+          username.clear();
+          return;
         }
         PageStatus.loading(mounted);
         var result = await updateUserInfo(nickname: username.text);
         if (result.status == 1) {
-          Provider.of<HomeConfig>(context, listen: false)
-              .setNickname(username.text);
+          context.read<HomeConfig>().setNickname(username.text);
           showText(status: result.status, msg: result.msg);
         } else {
           showText(status: result.status, msg: result.msg);
@@ -165,8 +181,7 @@ class _FillCodePageState extends State<FillCodePage> {
         PageStatus.showLoading();
         var result = await toInvitation(affCode: invite.text);
         if (result.status == 1) {
-          Provider.of<HomeConfig>(context, listen: false)
-              .setInviteBy(invite.text);
+          context.read<HomeConfig>().setInviteBy(invite.text);
         }
         showText(status: result.status, msg: result.msg, word: '填写');
         PageStatus.closeLoading();
@@ -514,7 +529,6 @@ class _FillCodePageState extends State<FillCodePage> {
               title: typeList[currentIndex]["name"],
               rightWidget: TextButton(
                 onPressed: onSubmit,
-                // child: Text("123123"),
                 child: Text(
                   typeList[currentIndex]["btnname"],
                   style: TextStyle(color: Colors.white),
