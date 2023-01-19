@@ -119,7 +119,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
 
   @override
   Widget build(BuildContext context) {
-    return videoBuild();
+    return RepaintBoundary(child: videoBuild());
   }
 
   buySmallVideo() {
@@ -190,34 +190,36 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
           widget.videoUrl == null && widget.controller == null ||
                   videoController == null
               ? Container()
-              : VideoController(
-                  setPreviewShow: (bool show) {
-                    if (show != previewShow) {
-                      previewShow = show;
-                      setState(() {});
-                    }
-                  },
-                  isPreview: widget.isPreview,
-                  videoController: videoController,
-                  isCardAuto: widget.isCardAuto,
-                  hideControl: widget.hideControl,
-                  previewShow: previewShow,
-                  initShow:
-                      widget.controller == null && widget.videoUrl == null,
-                  data: widget.data,
-                  autoPlay: widget.autoPlay,
-                  id: widget.id,
-                  loop: widget.loop,
-                  noVolume: widget.noVolume,
-                  noBack: widget.noBack,
-                  isFull: widget.isFull,
-                  setController: widget.setController,
-                  videoUrl: widget.videoUrl,
-                  setVideoUrl: widget.setVideoUrl,
-                  uploadVideo: () {
-                    setState(() {});
-                  },
-                  isLocal: widget.isLocal),
+              : RepaintBoundary(
+                  child: VideoController(
+                      setPreviewShow: (bool show) {
+                        if (show != previewShow) {
+                          previewShow = show;
+                          setState(() {});
+                        }
+                      },
+                      isPreview: widget.isPreview,
+                      videoController: videoController,
+                      isCardAuto: widget.isCardAuto,
+                      hideControl: widget.hideControl,
+                      previewShow: previewShow,
+                      initShow:
+                          widget.controller == null && widget.videoUrl == null,
+                      data: widget.data,
+                      autoPlay: widget.autoPlay,
+                      id: widget.id,
+                      loop: widget.loop,
+                      noVolume: widget.noVolume,
+                      noBack: widget.noBack,
+                      isFull: widget.isFull,
+                      setController: widget.setController,
+                      videoUrl: widget.videoUrl,
+                      setVideoUrl: widget.setVideoUrl,
+                      uploadVideo: () {
+                        setState(() {});
+                      },
+                      isLocal: widget.isLocal),
+                ),
           widget.isLocal || widget.videoUrl != null
               ? Container()
               : Positioned(

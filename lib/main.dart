@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,6 +21,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 
 void main() async {
+   debugRepaintRainbowEnabled = true;
   // 初始化数据库，必须放在最前面
   await Hive.initFlutter();
   AppGlobal.appBox = await Hive.openBox('HiveBox'); // 用于存储一些简单的键值对

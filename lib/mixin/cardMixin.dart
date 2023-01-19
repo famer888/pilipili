@@ -238,7 +238,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
           }
         }
       },
-      child: child,
+      child: RepaintBoundary(child: child),
     );
   }
 
