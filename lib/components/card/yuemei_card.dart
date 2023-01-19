@@ -151,8 +151,8 @@ class _YuemeiCardState extends State<YuemeiCard> {
                         padding:
                             EdgeInsets.only(right: 2.w, top: 2.w, bottom: 2.w),
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 14.w, vertical: 12.w),
+                          padding: EdgeInsets.only(
+                              left: 14.w, right: 14.w, top: 12.w),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
@@ -171,7 +171,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                     color: Color(0xff6d6d6d), fontSize: 14.sp),
                               ),
                               Container(
-                                margin: EdgeInsets.symmetric(vertical: 4.w),
+                                margin: EdgeInsets.symmetric(vertical: 2.w),
                                 child: Text(
                                   (widget.data['girl_age'] ?? '- -')
                                           .toString() +
@@ -190,20 +190,20 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                   ),
                                 ),
                               ),
-                              Text(widget.data['girl_tags'].toString(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Color(0xff979797),
-                                    fontSize: 11.sp,
-                                  )),
-                              Expanded(child: Container()),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 4.w),
+                                child: Text(widget.data['girl_tags'].toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Color(0xff979797),
+                                      fontSize: 11.sp,
+                                    )),
+                              ),
                               widget.isBuy && widget.data['is_comment'] == 0
                                   ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Container(),
                                         GestureDetector(
                                           onTap: () {
                                             if (widget.data['is_comment'] !=

@@ -88,7 +88,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       case 1:
         return Hcard(
             maxLines: 1,
-            width: ScreenUtil().setWidth(171.5),
+            width: 171.5.w,
             thumbUrl: CommonUtils.getThumb(data),
             contentType: 1,
             cardData: data,
@@ -97,7 +97,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       case 2:
         return Hcard(
             maxLines: 1,
-            width: ScreenUtil().setWidth(171.5),
+            width: 171.5.w,
             thumbUrl: CommonUtils.getThumb(data),
             contentType: 1,
             cardData: data,
@@ -110,13 +110,14 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
         return Vcard(
             maxLines: 1,
             isSearch: true,
-            width: ScreenUtil().setWidth(110.5),
+            width: 110.5.w,
             thumbUrl: CommonUtils.getThumb(data),
             contentType: 7,
             cardData: data,
             showField: 'title');
         break;
       default:
+        return SizedBox();
     }
   }
 
@@ -153,15 +154,12 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                     labelColor: Colors.black,
                     controller: _tabController,
                     unselectedLabelColor: Colors.transparent,
-                    labelPadding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setWidth(0),
-                        horizontal: ScreenUtil().setWidth(6)),
+                    labelPadding: EdgeInsets.symmetric(horizontal: 6.w),
                     // labelStyle: GVStyle.ts14_gray,
                     tabs: tabList.asMap().keys.map((e) {
                       return Container(
-                        height: ScreenUtil().setWidth(44),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(10)),
+                        height: 44.w,
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -170,7 +168,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                               opacity: e == currentTab ? 1 : 0,
                               child: PlatformAwareAssetImage(
                                   url: "assets/images/icon_love_red2.png",
-                                  width: ScreenUtil().setWidth(6),
+                                  width: 6.w,
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
                             ),
@@ -184,7 +182,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                               opacity: 0,
                               child: PlatformAwareAssetImage(
                                   url: "assets/images/icon_love_red2.png",
-                                  width: ScreenUtil().setWidth(6),
+                                  width: 6.w,
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
                             ),
@@ -217,7 +215,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                             return tabList[e]['index'] == 5
                                 ? YuemeiCard(
                                     isShowInfo: true,
-                                    isBuy:true,
+                                    isBuy: true,
                                     w: 118.w,
                                     h: 145.w,
                                     data: data,
