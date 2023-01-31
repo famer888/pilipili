@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
@@ -78,10 +79,10 @@ class _PageTitleBarState extends State<PageTitleBar> {
                         // width: ScreenUtil().setWidth(40),
                         // height: ScreenUtil().setWidth(40),
                         child: PlatformAwareAssetImage(
-                            url: 'assets/images/backarrow.png',
+                            url: PPAssetsPath.backArrow,
                             fit: BoxFit.fitHeight,
-                            width: ScreenUtil().setWidth(20),
-                            height: ScreenUtil().setWidth(20),
+                            width: 20.w,
+                            height: 20.w,
                             filterQuality: FilterQuality.medium),
                       )),
                 ),

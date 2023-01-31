@@ -10,6 +10,7 @@ import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as ui;
@@ -74,8 +75,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                       context.pop();
                     },
                     child: PlatformAwareAssetImage(
-                        url: 'assets/images/backarrow.png',
-                        width: ScreenUtil().setWidth(12),
+                        url: PPAssetsPath.backArrow,
+                        width: 12.w,
                         filterQuality: FilterQuality.medium),
                   ),
             rightWidget != null ? rightWidget : Container()

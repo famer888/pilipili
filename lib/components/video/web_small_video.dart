@@ -411,8 +411,8 @@ class _WebSmallVideoState extends State<WebSmallVideo> {
                             padding: EdgeInsets.symmetric(
                                 vertical: ScreenUtil().setWidth(10)),
                             child: PlatformAwareAssetImage(
-                                url: 'assets/images/backarrow.png',
-                                width: ScreenUtil().setWidth(12),
+                                url: PPAssetsPath.backArrow,
+                                width: 12.w,
                                 fit: BoxFit.fitWidth,
                                 filterQuality: FilterQuality.medium),
                           ),

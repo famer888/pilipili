@@ -78,15 +78,14 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _searchHead() {
     return Container(
-      height: ScreenUtil().setWidth(50) + ScreenUtil().statusBarHeight,
+      height: 50.w + ScreenUtil().statusBarHeight,
       padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
       color: DefaultStyle.themeColor,
       child: Row(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: DefaultStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(5)),
+                horizontal: DefaultStyle.pagePadding, vertical: 5.w),
             child: GestureDetector(
               onTap: () {
                 if (cureentPage == 0) {
@@ -97,17 +96,16 @@ class _SearchPageState extends State<SearchPage> {
                 }
               },
               child: PlatformAwareAssetImage(
-                  url: 'assets/images/backarrow.png',
-                  height: ScreenUtil().setWidth(22),
+                  url: PPAssetsPath.backArrow,
+                  height: 22.w,
                   filterQuality: FilterQuality.medium),
             ),
           ),
           Expanded(
               child: Container(
-            height: ScreenUtil().setWidth(36),
+            height: 36.w,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(8)),
-                color: Colors.white),
+                borderRadius: BorderRadius.circular(8.w), color: Colors.white),
             child: Row(
               children: [
                 Expanded(
@@ -160,13 +158,11 @@ class _SearchPageState extends State<SearchPage> {
                       child: PlatformAwareAssetImage(
                           url: 'assets/images/detail/icon_search_red.png',
                           filterQuality: FilterQuality.medium),
-                      padding: EdgeInsets.only(
-                          left: ScreenUtil().setWidth(10),
-                          right: ScreenUtil().setWidth(10)),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                     ),
                     prefixIconConstraints: BoxConstraints(
-                      maxHeight: ScreenUtil().setWidth(30),
-                      maxWidth: ScreenUtil().setWidth(40),
+                      maxHeight: 30.w,
+                      maxWidth: 40.w,
                     ),
                     disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -183,7 +179,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   style: TextStyle(
                     color: Color(0xff000000),
-                    fontSize: ScreenUtil().setSp(14),
+                    fontSize: 14.sp,
                   ),
                 )),
                 hideClear
@@ -197,11 +193,10 @@ class _SearchPageState extends State<SearchPage> {
                         },
                         behavior: HitTestBehavior.translucent,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: ScreenUtil().setWidth(8)),
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
                           child: PlatformAwareAssetImage(
                               url: 'assets/images/detail/icon_input_clear.png',
-                              width: ScreenUtil().setWidth(24),
+                              width: 24.w,
                               filterQuality: FilterQuality.medium),
                         ),
                       )
@@ -209,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           )),
           SizedBox(
-            width: ScreenUtil().setWidth(8),
+            width: 8.w,
           )
         ],
       ),

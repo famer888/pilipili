@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 
 class SeconedPageDetail extends StatefulWidget {
   SeconedPageDetail({Key key}) : super(key: key);
@@ -307,9 +308,9 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                           context.pop();
                         },
                         child: PlatformAwareAssetImage(
-                            url: 'assets/images/backarrow.png',
-                            width: ScreenUtil().setWidth(20),
-                            height: ScreenUtil().setWidth(20),
+                            url: PPAssetsPath.backArrow,
+                            width: 20.w,
+                            height: 20.w,
                             filterQuality: FilterQuality.medium),
                       ),
                       Container()

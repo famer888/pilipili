@@ -309,7 +309,7 @@ class _SmallVideoState extends State<SmallVideo> {
                             padding: EdgeInsets.symmetric(
                                 vertical: ScreenUtil().setWidth(10)),
                             child: PlatformAwareAssetImage(
-                                url: 'assets/images/backarrow.png',
+                                url: PPAssetsPath.backArrow,
                                 width: ScreenUtil().setWidth(12),
                                 fit: BoxFit.fitWidth,
                                 filterQuality: FilterQuality.medium),

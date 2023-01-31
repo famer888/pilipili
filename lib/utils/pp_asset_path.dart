@@ -19,6 +19,7 @@ class PPAssetsPath {
       'assets/images/wode/Chat_Circle_Dots_active.png';
   static String iconTG = 'assets/images/mine/icon_tg.png';
   static String iconPT = 'assets/images/mine/icon_pt.png';
+  static String backArrow = 'assets/images/backarrow.png';
   static String piliActive = "assets/images/2023/bottomTab/pili_active.png";
   static String pili = "assets/images/2023/bottomTab/pili.png";
   static String cartoonActive =
