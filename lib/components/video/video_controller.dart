@@ -280,16 +280,16 @@ class _VideoControllerState extends State<VideoController>
   }
 
   Widget controlShow() {
-    if (bytes == null) {
-      CommonUtils.getRealImage(
-          url: 'assets/images/card_video_shadow.png',
-          imgUrl: bytes,
-          setUrl: (e) {
-            if (!mounted) return;
-            bytes = e;
-            setState(() {});
-          });
-    }
+    // if (bytes == null) {
+    //   CommonUtils.getRealImage(
+    //       url: 'assets/images/card_video_shadow.png',
+    //       imgUrl: bytes,
+    //       setUrl: (e) {
+    //         if (!mounted) return;
+    //         bytes = e;
+    //         setState(() {});
+    //       });
+    // }
     return Stack(
       children: [
         Positioned(
@@ -359,11 +359,11 @@ class _VideoControllerState extends State<VideoController>
                 child: Container(
                   height: ScreenUtil().setWidth(38),
                   width: double.infinity,
-                  decoration: bytes != null
-                      ? BoxDecoration(
-                          image: DecorationImage(
-                              image: MemoryImage(bytes), fit: BoxFit.fill))
-                      : null,
+                  // decoration: bytes != null
+                  //     ? BoxDecoration(
+                  //         image: DecorationImage(
+                  //             image: MemoryImage(bytes), fit: BoxFit.fill))
+                  //     : null,
                   padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(13),
                   ),
