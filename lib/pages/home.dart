@@ -274,12 +274,15 @@ class _HomeState extends State<Home> {
   }
 
   // 活动弹窗
-  void showActivetyDialog(
-      String content, String type, String title, double height, double width) {
+  void showActivetyDialog(String content, String type, String title,
+      double height, double width, VersionMsg version, Config config) {
     if (showActivety == true) return;
     if (AppGlobal.showActivity == false) return;
     UpdateModel.showAvtivetysDialog(backButtonBehavior, url: title, cancel: () {
       AppGlobal.showActivity = false;
+      if (version != null) {
+        checkUpdateAnnouncement(version, config);
+      }
     }, confirm: () {
       AppGlobal.showActivity = false;
       _onTapSwiper(type, content);
@@ -326,18 +329,18 @@ class _HomeState extends State<Home> {
   initDialog() {
     if (!initPage) {
       initPage = true;
-      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
-        var version =
-            Provider.of<HomeConfig>(context, listen: false).versionMsg;
-        var config = Provider.of<HomeConfig>(context, listen: false).config;
-        checkUpdateAnnouncement(version, config);
-      }
-      if (Provider.of<HomeConfig>(context, listen: false).notice != null ??
-          true) {
-        var notice = Provider.of<HomeConfig>(context, listen: false).notice;
+      var version = Provider.of<HomeConfig>(context, listen: false).versionMsg;
+      var config = Provider.of<HomeConfig>(context, listen: false).config;
+      var notice = Provider.of<HomeConfig>(context, listen: false).notice;
+
+      if (notice != null ?? true) {
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
         showActivetyDialog(notice.content, notice.type, notice.imgUrl,
-            notice.imgHeight, notice.imgWidth);
+            notice.imgHeight, notice.imgWidth, version, config);
+      } else {
+        if (version != null) {
+          checkUpdateAnnouncement(version, config);
+        }
       }
     }
   }
