@@ -62,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             GestureDetector(
               onTap: () {
-                // context.push('/${Routes.register}/${1}');
                 context.push(CommonUtils.getRealHash('register/1'));
               },
               child: Text(

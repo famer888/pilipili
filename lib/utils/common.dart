@@ -137,21 +137,10 @@ class CommonUtils {
     if (kIsWeb) {
       var currentHash = html.window.location.hash.replaceAll('#', '');
       if (value == null) return currentHash;
-      if (currentHash.lastIndexOf('/') == currentHash.length - 1) {
-        return '$currentHash$value';
-      } else {
-        return '$currentHash/$value';
-      }
     } else {
-      var location = '${AppGlobal.appRouter.location}/$value';
       if (value == null) return AppGlobal.appRouter.location;
-      if (location.contains('//')) {
-        var current = location.replaceAll('//', '/');
-        return current;
-      } else {
-        return location;
-      }
     }
+    return '/' + value ?? '';
   }
 
   static void debugPrint(value) {
@@ -190,7 +179,6 @@ class CommonUtils {
                   decrypted = utf8.decode(decrypted);
                 }
                 if (args[0].toString().indexOf('assets/pilipili/') != -1) {
-                  
                   AppGlobal.imageAssetBox.put(args[0], decrypted);
                 } else {
                   AppGlobal.imageCacheBox.put(args[0], decrypted);
@@ -222,9 +210,9 @@ class CommonUtils {
         ? '${AppGlobal.bannerImgBase}new/$url'
             .replaceAll('images/', 'pilipili/')
         : url;
-  // if(url.toString().indexOf('assets/images/') != -1){
-  //   print('*****************************$tempUrl');
-  // }
+    // if(url.toString().indexOf('assets/images/') != -1){
+    //   print('*****************************$tempUrl');
+    // }
     tasks.add([tempUrl, imgUrl, setUrl, retryHandler]);
 
     int freeIndex = wdsRuningStatuses.indexWhere((element) => !element);
@@ -330,11 +318,11 @@ class CommonUtils {
     int expireTime = DateTime.parse(time).millisecondsSinceEpoch;
     int timeDiff = ((expireTime - curTime) / 1000).ceil();
     if ((timeDiff ~/ 86400).ceil() > 0) {
-      return (timeDiff ~/ 86400).toString()+'天';
+      return (timeDiff ~/ 86400).toString() + '天';
     } else if ((timeDiff ~/ 3600).ceil() > 0) {
-      return (timeDiff ~/ 3600).toString()+'小时';
+      return (timeDiff ~/ 3600).toString() + '小时';
     } else if ((timeDiff ~/ 60).ceil() > 0) {
-      return (timeDiff ~/ 60).toString()+'分钟';
+      return (timeDiff ~/ 60).toString() + '分钟';
     } else {
       return isActivity ? PPString.hasExpired : PPString.expired;
     }
@@ -349,7 +337,7 @@ class CommonUtils {
 
   static String getRandomThumb() {
     int random = new Random().nextInt(29);
-    return 'assets/images/random/'+(random + 1).toString()+'.jpg';
+    return 'assets/images/random/' + (random + 1).toString() + '.jpg';
   }
 
   static String gvSha256(String data) {

@@ -447,7 +447,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         if (isInsufficient && freeCount <= 0) {
                                           context.pop();
                                           context
-                                              .push('/${Routes.coinRecharge}');
+                                              .push('/coinRecharge');
                                         } else {
                                           buyFunction();
                                         }
@@ -490,67 +490,6 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                       ))
                                   : Row(
                                       children: [
-                                        // Expanded(
-                                        //     child: GestureDetector(
-                                        //   onTap: () {
-                                        //     context.pop();
-                                        //     context.push('/${Routes.vip}');
-                                        //   },
-                                        //   child: Stack(
-                                        //     clipBehavior: Clip.none,
-                                        //     children: [
-                                        //       Container(
-                                        //         decoration: BoxDecoration(
-                                        //             borderRadius:
-                                        //                 BorderRadius.circular(
-                                        //                     ScreenUtil()
-                                        //                         .setWidth(20)),
-                                        //             gradient: LinearGradient(
-                                        //                 begin:
-                                        //                     Alignment.topLeft,
-                                        //                 end: Alignment
-                                        //                     .bottomRight,
-                                        //                 colors: [
-                                        //                   Color(0XFFff84a9),
-                                        //                   Color(0XFFff9e9e),
-                                        //                 ])),
-                                        //         width: double.infinity,
-                                        //         height:
-                                        //             ScreenUtil().setWidth(40),
-                                        //         child: Center(
-                                        //           child: Text(
-                                        //             '升级会员',
-                                        //             style: TextStyle(
-                                        //                 color: Colors.white,
-                                        //                 fontWeight:
-                                        //                     FontWeight.bold,
-                                        //                 fontSize: ScreenUtil()
-                                        //                     .setSp(
-                                        //                         isInsufficient
-                                        //                             ? 14
-                                        //                             : 16)),
-                                        //           ),
-                                        //         ),
-                                        //       ),
-                                        //       // Positioned(
-                                        //       //     top: ScreenUtil()
-                                        //       //         .setWidth(-26.4),
-                                        //       //     left: ScreenUtil()
-                                        //       //         .setWidth(-12),
-                                        //       //     child: PlatformAwareAssetImage(
-                                        //       //         url:
-                                        //       //             'assets/images/detail/vip_zhekou.png',
-                                        //       //         height: ScreenUtil()
-                                        //       //             .setWidth(26),
-                                        //       //         fit: BoxFit.fitHeight,
-                                        //       //         filterQuality:
-                                        //       //             FilterQuality.medium))
-                                        //     ],
-                                        //   ),
-                                        // )),
-                                        // SizedBox(
-                                        //   width: ScreenUtil().setWidth(15),
-                                        // ),
                                         Expanded(
                                             child: GestureDetector(
                                                 onTap: () {
@@ -558,7 +497,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       freeCount <= 0) {
                                                     context.pop();
                                                     context.push(
-                                                        '/${Routes.coinRecharge}');
+                                                        '/coinRecharge');
                                                   } else {
                                                     buyFunction();
                                                   }

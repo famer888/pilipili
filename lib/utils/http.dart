@@ -69,7 +69,6 @@ Dio _apiDio = new Dio(new BaseOptions(
       if (AppGlobal.routerReplace) {
         AppGlobal.appContext.pop();
       }
-      // AppGlobal.appContext.go('/${Routes.login}', extra: {'is_expired': true});
       Future.delayed(Duration(seconds: 3), () {
         isJump = false;
       });

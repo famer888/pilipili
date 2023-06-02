@@ -586,7 +586,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                 ? PPString.goldInsufficient
                 : PPString.buySee, callBack: () {
           if (isInsufficient) {
-            context.push('/${Routes.coinRecharge}');
+            context.push('/coinRecharge');
           } else {
             buySmallVideo(money);
           }
@@ -627,7 +627,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
             },
             cancelText: '分享无限看',
             callBack: () {
-              context.push('/${Routes.vip}');
+              context.push('/vip');
             },
             content: (setDialogState) {
               return DefaultTextStyle(
@@ -796,7 +796,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                             YyShowDialog.showdialog(context,
                                 btnText: '升级VIP',
                                 cancelText: '取消', callBack: () {
-                              context.push('/${Routes.vip}');
+                              context.push('/vip');
                             }, content: (setDialogState) {
                               return DefaultTextStyle(
                                   style: TextStyle(
@@ -1036,7 +1036,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                           callBack: () {
                                                         if (isInsufficient) {
                                                           context.push(
-                                                              '/${Routes.coinRecharge}');
+                                                              '/coinRecharge');
                                                         } else {
                                                           buySmallVideo(money);
                                                         }
@@ -1074,8 +1074,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                             ));
                                                       });
                                                     } else {
-                                                      context.push(
-                                                          '/${Routes.vip}');
+                                                      context.push('/vip');
                                                     }
                                                   },
                                                   child: Row(
@@ -1443,7 +1442,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                               callBack: () {
                                                             if (isInsufficient) {
                                                               context.push(
-                                                                  '/${Routes.coinRecharge}');
+                                                                  '/coinRecharge');
                                                             } else {
                                                               buySmallVideo(
                                                                   money);
@@ -1477,8 +1476,7 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                                                 ));
                                                           });
                                                         } else {
-                                                          context.push(
-                                                              '/${Routes.vip}');
+                                                          context.push('/vip');
                                                         }
                                                       },
                                                     );

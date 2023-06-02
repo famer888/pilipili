@@ -74,41 +74,25 @@ class _WodeState extends State<Wode> {
   }
 
   final List menuList = [
-    {
-      'name': "观看记录",
-      'iconUrl': PPAssetsPath.record,
-      'router': '/${Routes.watchhistory}'
-    },
-    {'name': "我购买的", 'iconUrl': PPAssetsPath.buy, "router": '/${Routes.buy}'},
-    {
-      'name': "我的收藏",
-      'iconUrl': PPAssetsPath.collect,
-      "router": '/${Routes.collect}'
-    },
-    {
-      'name': "我的下载",
-      'iconUrl': PPAssetsPath.download,
-      'router': '/${Routes.downPage}'
-    },
+    {'name': "观看记录", 'iconUrl': PPAssetsPath.record, 'router': '/watchhistory'},
+    {'name': "我购买的", 'iconUrl': PPAssetsPath.buy, "router": '/buy'},
+    {'name': "我的收藏", 'iconUrl': PPAssetsPath.collect, "router": '/collect'},
+    {'name': "我的下载", 'iconUrl': PPAssetsPath.download, 'router': '/downPage'},
     {
       'name': "在线客服",
       'iconUrl': PPAssetsPath.customer,
-      'router': '/${Routes.onlineService}'
+      'router': '/onlineService'
     },
     {
       'name': "联系官方",
       'iconUrl': PPAssetsPath.official,
-      'router': '/${Routes.contactOfficial}'
+      'router': '/contactOfficial'
     },
-    {
-      'name': "邀请好友",
-      'iconUrl': PPAssetsPath.invite,
-      'router': '/${Routes.invitefriend}'
-    },
+    {'name': "邀请好友", 'iconUrl': PPAssetsPath.invite, 'router': '/invitefriend'},
     {
       'name': "应用推荐",
       'iconUrl': PPAssetsPath.appRecommend,
-      'router': '/${Routes.appCenter}'
+      'router': '/appCenter'
     },
   ];
 
@@ -191,7 +175,7 @@ class SystemNoticeIcon extends StatelessWidget {
       CommonUtils.debugPrint(state.systemnotice?.data?.systemNoticeCount != 0);
       return GestureDetector(
         onTap: () {
-          context.push('/${Routes.messagecenter}');
+          context.push('/messagecenter');
         },
         child: PlatformAwareAssetImage(
             url:
@@ -267,7 +251,7 @@ class Header extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: () {
-                        context.push('/${Routes.setup}');
+                        context.push('/setup');
                       },
                       child: PlatformAwareAssetImage(
                           url: "assets/images/wode/Settings.png",
@@ -353,7 +337,7 @@ class Header extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        context.push('/${Routes.login}');
+                                        context.push('/login');
                                       },
                                       child: Row(
                                         crossAxisAlignment:
@@ -457,7 +441,7 @@ class CardList extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              context.push('/${Routes.vip}');
+              context.push('/vip');
             },
             child: Stack(
               alignment: Alignment.topLeft,
@@ -520,7 +504,7 @@ class CardList extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.push('/${Routes.coinRecharge}');
+                    context.push('/coinRecharge');
                   },
                   child: Stack(
                     alignment: Alignment.topLeft,
@@ -570,7 +554,7 @@ class CardList extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.push('/${Routes.invitefriend}');
+                    context.push('/invitefriend');
                   },
                   child: Stack(
                     alignment: Alignment.topLeft,

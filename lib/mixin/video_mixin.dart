@@ -248,8 +248,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                       onTap: () {
                                         if (isInsufficient) {
                                           context.pop();
-                                          context
-                                              .push('/${Routes.coinRecharge}');
+                                          context.push('/coinRecharge');
                                         } else {
                                           buyFunction();
                                         }
@@ -291,7 +290,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                             child: GestureDetector(
                                           onTap: () {
                                             context.pop();
-                                            context.push('/${Routes.vip}');
+                                            context.push('/vip');
                                           },
                                           child: Stack(
                                             clipBehavior: Clip.none,
@@ -353,8 +352,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                                                 onTap: () {
                                                   if (isInsufficient) {
                                                     context.pop();
-                                                    context.push(
-                                                        '/${Routes.coinRecharge}');
+                                                    context
+                                                        .push('/coinRecharge');
                                                   } else {
                                                     buyFunction();
                                                   }
@@ -521,7 +520,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
             ),
             GestureDetector(
               onTap: () {
-                context.push('/${Routes.vip}');
+                context.push('/vip');
               },
               child: Container(
                   width: ScreenUtil().setWidth(119),

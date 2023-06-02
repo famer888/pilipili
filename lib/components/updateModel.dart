@@ -123,7 +123,7 @@ class UpdateModel {
                                                   onTap: () {
                                                     cancelFunc();
                                                     context.push(
-                                                        '/${Routes.appCenter}');
+                                                        '/appCenter');
                                                   },
                                                   child: Container(
                                                       decoration: BoxDecoration(

@@ -194,7 +194,7 @@ class _SetupPageState extends State<SetupPage> {
         cancelText: '取消',
         btnText: PPString.upgradeNuw,
         callBack: () {
-          context.push('/${Routes.vip}');
+          context.push('/vip');
         },
       );
       return;
@@ -360,7 +360,7 @@ class _SetupPageState extends State<SetupPage> {
                         cancelText: '取消',
                         btnText: PPString.upgradeNuw,
                         callBack: () {
-                          context.push('/${Routes.vip}');
+                          context.push('/vip');
                         },
                       );
                       return;
@@ -383,8 +383,6 @@ class _SetupPageState extends State<SetupPage> {
                       'phone': members?.phone,
                       "phonePrefix": members?.phonePrefix
                     });
-                    // context.push('/${Routes.login}',
-                    //     extra: {'type': members?.phone == null ? 5 : 4});
                   }),
               AppGlobal.apiToken == '' && AppGlobal.apiToken != null
                   ? Container()

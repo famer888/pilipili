@@ -662,7 +662,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               });
                                                                             });
                                                                           } else {
-                                                                            context.push('/${Routes.vip}');
+                                                                            context.push('/vip');
                                                                           }
                                                                         },
                                                                       );
@@ -1248,8 +1248,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         btnText: '升级VIP',
                                                         cancelText: '取消',
                                                         callBack: () {
-                                                      context.push(
-                                                          '/${Routes.vip}');
+                                                      context.push('/vip');
                                                     }, content:
                                                             (setDialogState) {
                                                       return DefaultTextStyle(
@@ -1376,7 +1375,7 @@ class _ConmentItemState extends State<ConmentItem> {
               } else {
                 YyShowDialog.showdialog(context,
                     btnText: '升级VIP', cancelText: '取消', callBack: () {
-                  context.push('/${Routes.vip}');
+                  context.push('/vip');
                 }, content: (setDialogState) {
                   return DefaultTextStyle(
                       style: TextStyle(

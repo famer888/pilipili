@@ -226,7 +226,7 @@ class _ScrollnavState extends State<Scrollnav> {
                             : GestureDetector(
                                 onTap: () {
                                   // 打开搜索
-                                  context.push('/${Routes.search}');
+                                  context.push('/search');
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(

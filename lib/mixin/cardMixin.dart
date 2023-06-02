@@ -144,7 +144,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
               cancelText: '取消',
               btnText: PPString.upgradeNuw,
               callBack: () {
-                context.push('/${Routes.vip}');
+                context.push('/vip');
               },
             );
             return;

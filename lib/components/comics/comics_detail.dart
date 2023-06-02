@@ -610,7 +610,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                                 .upgradeNuw,
                                                             callBack: () {
                                                               context.push(
-                                                                  '/${Routes.vip}');
+                                                                  '/vip');
                                                             },
                                                           );
                                                         }

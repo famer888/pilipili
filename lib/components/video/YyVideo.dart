@@ -247,7 +247,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                       : GestureDetector(
                           onTap: () {
                             if (widget.data.isfree == 1) {
-                              context.push('/${Routes.vip}');
+                              context.push('/vip');
                             } else {
                               showBuy(widget.data, buySmallVideo);
                             }

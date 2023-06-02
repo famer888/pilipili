@@ -431,7 +431,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                     GestureDetector(
                         onTap: () {
                           // 打开搜索
-                          context.push('/${Routes.search}');
+                          context.push('/search');
                         },
                         child: Container(
                           padding:
