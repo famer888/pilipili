@@ -309,738 +309,608 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
       // endDrawer: loading || data == null ? Container() : comicDrawer(),
       body: Stack(
         children: [
-          Positioned(
-            child: Column(
-              children: [
-                Expanded(
-                  child: loading || data == null
-                      ? PageStatus.loading(mounted)
-                      : CustomScrollView(
-                          cacheExtent: ScreenUtil().screenHeight * 5,
-                          controller: scrollController,
-                          slivers: [
-                              SliverAppBar(
-                                  automaticallyImplyLeading: false,
-                                  actions: <Widget>[Container()],
-                                  backgroundColor: Colors.transparent,
-                                  primary: false,
-                                  leading: Container(),
-                                  pinned: false,
-                                  elevation: 0,
-                                  forceElevated: true,
-                                  expandedHeight: ScreenUtil().setWidth(210),
-                                  flexibleSpace: FlexibleSpaceBar(
-                                      collapseMode: CollapseMode.parallax,
-                                      background: Stack(
-                                        children: [
-                                          Container(
-                                            height: ScreenUtil().setWidth(210),
-                                            child: PlatformAwareNetworkImage(
-                                              url: data.thumb,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          )
-                                        ],
-                                      ))),
-                              SliverToBoxAdapter(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color:
-                                              Color.fromRGBO(255, 91, 140, 0.2),
-                                          blurRadius: 4,
-                                          spreadRadius: 0,
-                                          offset: Offset(
-                                              0, ScreenUtil().setWidth(6)),
-                                        )
-                                      ]),
-                                  padding: EdgeInsets.all(
-                                    ScreenUtil().setWidth(16),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+          Container(
+              padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
+              width: 1.sw,
+              height: 1.sh,
+              child: loading || data == null
+                  ? PageStatus.loading(mounted)
+                  : NestedScrollView(
+                      controller: scrollController,
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return [
+                          SliverAppBar(
+                              automaticallyImplyLeading: false,
+                              actions: <Widget>[Container()],
+                              backgroundColor: Colors.transparent,
+                              primary: false,
+                              leading: Container(),
+                              pinned: false,
+                              elevation: 0,
+                              forceElevated: true,
+                              expandedHeight: ScreenUtil().setWidth(210),
+                              flexibleSpace: FlexibleSpaceBar(
+                                  collapseMode: CollapseMode.parallax,
+                                  background: Stack(
                                     children: [
-                                      Text(
-                                        data.title,
-                                        style: TextStyle(
-                                            color: Color(0xff404040),
-                                            fontSize: ScreenUtil().setSp(16),
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: ScreenUtil().setWidth(8)),
-                                        child: Text(
-                                          '作者：' +
-                                              (data.author == null ||
-                                                          data.author ==
-                                                              PPString.isnull
-                                                      ? "--"
-                                                      : data.author)
-                                                  .toString(),
-                                          style: TextStyle(
-                                            color: Color(0xffFF5B8C),
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: ScreenUtil().setSp(12),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        (CommonUtils.renderFixedNumber(
-                                                double.parse(data.viewsCount
-                                                    .toString()))) +
-                                            '人看过 - 更新至' +
-                                            newestSeriesNum.toString() +
-                                            '话',
-                                        style: TextStyle(
-                                          color: Color(0xff979797),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: ScreenUtil().setSp(11),
-                                        ),
-                                      ),
                                       Container(
-                                        margin: EdgeInsets.only(
-                                            top: ScreenUtil().setWidth(8)),
-                                        child: Wrap(
-                                            spacing: ScreenUtil().setWidth(4),
-                                            runSpacing:
-                                                ScreenUtil().setWidth(8),
-                                            children: tags
-                                                .asMap()
-                                                .keys
-                                                .map((e) => Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          height: ScreenUtil()
-                                                              .setWidth(21),
-                                                          decoration: BoxDecoration(
-                                                              color: Color(
-                                                                  0XFFFFF5F9),
-                                                              borderRadius: BorderRadius
-                                                                  .circular(ScreenUtil()
-                                                                      .setWidth(
-                                                                          5))),
-                                                          padding: EdgeInsets.symmetric(
-                                                              horizontal:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          12)),
-                                                          child: Text(
-                                                            tags[e],
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xffffadc6),
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          12),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ))
-                                                .toList()),
+                                        height: ScreenUtil().setWidth(210),
+                                        child: PlatformAwareNetworkImage(
+                                          url: data.thumb,
+                                          fit: BoxFit.cover,
+                                        ),
                                       )
                                     ],
+                                  )))
+                        ];
+                      },
+                      body: ListView(
+                        padding: EdgeInsets.all(0),
+                        children: [
+                          Container(
+                            decoration:
+                                BoxDecoration(color: Colors.white, boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(255, 91, 140, 0.2),
+                                blurRadius: 4,
+                                spreadRadius: 0,
+                                offset: Offset(0, 1.w),
+                              )
+                            ]),
+                            padding: EdgeInsets.all(
+                              ScreenUtil().setWidth(16),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  data.title,
+                                  style: TextStyle(
+                                      color: Color(0xff404040),
+                                      fontSize: ScreenUtil().setSp(16),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: ScreenUtil().setWidth(8)),
+                                  child: Text(
+                                    '作者：' +
+                                        (data.author == null ||
+                                                    data.author ==
+                                                        PPString.isnull
+                                                ? "--"
+                                                : data.author)
+                                            .toString(),
+                                    style: TextStyle(
+                                      color: Color(0xffFF5B8C),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: ScreenUtil().setSp(12),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SliverPadding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: DefaultStyle.pagePadding,
-                                      vertical: ScreenUtil().setWidth(16)),
-                                  sliver: SliverToBoxAdapter(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        data.description == null ||
-                                                data.description == ''
-                                            ? Container()
-                                            : Container(
-                                                padding: EdgeInsets.only(
-                                                    bottom: ScreenUtil()
-                                                        .setWidth(16)),
-                                                decoration: BoxDecoration(
-                                                    border: Border(
-                                                        bottom: BorderSide(
-                                                            color: Color(
-                                                                0xffffd1df),
-                                                            width: ScreenUtil()
-                                                                .setWidth(
-                                                                    0.5)))),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text('漫画简介',
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff404040),
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(
-                                                                        14))),
-                                                    SizedBox(
-                                                      height: ScreenUtil()
-                                                          .setWidth(8),
-                                                    ),
-                                                    Stack(
-                                                      children: [
-                                                        Text(
-                                                          data.description,
-                                                          maxLines: textmore
-                                                              ? null
-                                                              : 2,
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xff6d6d6d),
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          14)),
-                                                        ),
-                                                        Positioned(
-                                                            bottom: 0,
-                                                            right: 0,
-                                                            child: !textmore
-                                                                ? GestureDetector(
-                                                                    onTap: () {
-                                                                      textmore =
-                                                                          !textmore;
-                                                                      setState(
-                                                                          () {});
-                                                                    },
-                                                                    behavior:
-                                                                        HitTestBehavior
-                                                                            .translucent,
-                                                                    child:
-                                                                        Container(
-                                                                      color: Color(
-                                                                          0xfffff5f9),
-                                                                      child:
-                                                                          PlatformAwareAssetImage(
-                                                                        url:
-                                                                            'assets/images/comics/comics_more.png',
-                                                                        width: ScreenUtil()
-                                                                            .setWidth(24),
-                                                                      ),
-                                                                    ),
-                                                                  )
-                                                                : Container())
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  ScreenUtil().setWidth(16)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
+                                Text(
+                                  (CommonUtils.renderFixedNumber(double.parse(
+                                          data.viewsCount.toString()))) +
+                                      '人看过 - 更新至' +
+                                      newestSeriesNum.toString() +
+                                      '话',
+                                  style: TextStyle(
+                                    color: Color(0xff979797),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: ScreenUtil().setSp(11),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: ScreenUtil().setWidth(8)),
+                                  child: Wrap(
+                                      spacing: ScreenUtil().setWidth(4),
+                                      runSpacing: ScreenUtil().setWidth(8),
+                                      children: tags
+                                          .asMap()
+                                          .keys
+                                          .map((e) => Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      if (kIsWeb) {
-                                                        CommonUtils.showText(
-                                                            '请下载APP使用下载功能！');
-                                                      } else {
-                                                        bool canDownload = Privilege
-                                                            .isAllowedWithCount(
-                                                                context,
-                                                                RESOURCE_TYPE_BOOK,
-                                                                PRIVILEGE_TYPE_DOWNLOAD);
-                                                        if (canDownload) {
-                                                          DownloadComics
-                                                              .createDownloadTask({
-                                                            'id': widget.id,
-                                                            'title': data.title,
-                                                            "description": data
-                                                                .description,
-                                                            "author":
-                                                                data.author,
-                                                            "tags": data.tags,
-                                                            "viewsCount":
-                                                                data.viewsCount,
-                                                            'thumb': data.thumb,
-                                                            'allEpisode': data
-                                                                .newestSeries,
-                                                            "downloading":
-                                                                false,
-                                                            "isWaiting": true,
-                                                            "sets": []
-                                                          });
-                                                        } else {
-                                                          YyShowDialog
-                                                              .showdialog(
-                                                            context,
-                                                            content:
-                                                                (setDialogState) {
-                                                              return Text(
-                                                                "您没有开启漫画下载权限哦！二次元的天堂等您开启~",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xff646464),
-                                                                    fontSize: ScreenUtil()
-                                                                        .setSp(
-                                                                            16),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              );
-                                                            },
-                                                            cancelText: '取消',
-                                                            btnText: PPString
-                                                                .upgradeNuw,
-                                                            callBack: () {
-                                                              context.push(
-                                                                  '/vip');
-                                                            },
-                                                          );
-                                                        }
-                                                      }
-                                                    },
-                                                    child: _btnItem(
-                                                        icon: 'icon_down',
-                                                        name: '下载'),
-                                                  ),
-                                                  Padding(
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    height: ScreenUtil()
+                                                        .setWidth(21),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0XFFFFF5F9),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                ScreenUtil()
+                                                                    .setWidth(
+                                                                        5))),
                                                     padding:
                                                         EdgeInsets.symmetric(
                                                             horizontal:
                                                                 ScreenUtil()
                                                                     .setWidth(
-                                                                        4)),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        userFavorites(
-                                                                type: 2,
-                                                                id: data.dataId)
-                                                            .then((res) {
-                                                          if (res != null &&
-                                                              res.status != 0) {
-                                                            if (isFavorites) {
-                                                              likeCount--;
-                                                            } else {
-                                                              likeCount++;
-                                                            }
-                                                            isFavorites =
-                                                                !isFavorites;
-                                                            setState(() {});
-                                                          } else {
-                                                            CommonUtils
-                                                                .showText(
-                                                                    res.msg);
-                                                          }
-                                                        });
-                                                      },
-                                                      child: _btnItem(
-                                                          icon: isFavorites
-                                                              ? PPString
-                                                                  .iconunLike
-                                                              : PPString
-                                                                  .iconLike,
-                                                          name: CommonUtils
-                                                              .renderFixedNumber(
-                                                                  likeCount
-                                                                      .toDouble()),
-                                                          color: isFavorites
-                                                              ? Color(
-                                                                  0xffFF84A9)
-                                                              : null),
+                                                                        12)),
+                                                    child: Text(
+                                                      tags[e],
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xffffadc6),
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      var config = Provider.of<
-                                                                  HomeConfig>(
-                                                              context,
-                                                              listen: false)
-                                                          .config;
-                                                      ShareMovieModel.showShareMovie(
-                                                          backButtonBehavior,
-                                                          copyUrl: config.share
-                                                              .affUrlCopy.url,
-                                                          thumb: data.thumb,
-                                                          title: data.title ??
-                                                              '--',
-                                                          subtitle:
-                                                              data.description ??
-                                                                  '--',
-                                                          url: config
-                                                              .share.affUrl
-                                                              .toString());
-                                                    },
-                                                    child: _btnItem(
-                                                        icon: 'icon_share',
-                                                        name: '分享'),
                                                   )
                                                 ],
-                                              ),
-                                              GestureDetector(
-                                                  onTap: () {
-                                                    swichComic(
-                                                        data.watchLog == 0
-                                                            ? 1
-                                                            : data.watchLog);
-                                                  },
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          20)),
-                                                          gradient:
-                                                              SweepGradient(
-                                                                  colors: [
-                                                                Color(
-                                                                    0xffff84a9),
-                                                                Color(
-                                                                    0xffff9e9e)
-                                                              ])),
-                                                      height: ScreenUtil()
-                                                          .setWidth(40),
-                                                      width: ScreenUtil()
-                                                          .setWidth(144),
-                                                      child: Center(
-                                                        child: Text(
-                                                          data.watchLog == 0
-                                                              ? PPString
-                                                                  .startReading
-                                                              : '从' +
-                                                                  data.watchLog
-                                                                      .toString() +
-                                                                  '话继续看',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          14),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      )))
-                                            ],
-                                          ),
+                                              ))
+                                          .toList()),
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: DefaultStyle.pagePadding,
+                                vertical: ScreenUtil().setWidth(16)),
+                            child: data.description == null ||
+                                    data.description == ''
+                                ? Container()
+                                : Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil().setWidth(16)),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Color(0xffffd1df),
+                                                width: ScreenUtil()
+                                                    .setWidth(0.5)))),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('漫画简介',
+                                            style: TextStyle(
+                                                color: Color(0xff404040),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    ScreenUtil().setSp(14))),
+                                        SizedBox(
+                                          height: ScreenUtil().setWidth(8),
                                         ),
+                                        Stack(
+                                          children: [
+                                            Text(
+                                              data.description,
+                                              maxLines: textmore ? null : 2,
+                                              style: TextStyle(
+                                                  color: Color(0xff6d6d6d),
+                                                  fontSize:
+                                                      ScreenUtil().setSp(14)),
+                                            ),
+                                            Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                child: !textmore
+                                                    ? GestureDetector(
+                                                        onTap: () {
+                                                          textmore = !textmore;
+                                                          setState(() {});
+                                                        },
+                                                        behavior:
+                                                            HitTestBehavior
+                                                                .translucent,
+                                                        child: Container(
+                                                          color:
+                                                              Color(0xfffff5f9),
+                                                          child:
+                                                              PlatformAwareAssetImage(
+                                                            url:
+                                                                'assets/images/comics/comics_more.png',
+                                                            width: ScreenUtil()
+                                                                .setWidth(24),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container())
+                                          ],
+                                        )
                                       ],
                                     ),
-                                  )),
-                              SliverPadding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: DefaultStyle.pagePadding,
-                                      vertical: ScreenUtil().setWidth(16)),
-                                  sliver: SliverGrid.count(
-                                    crossAxisCount: 4,
-                                    mainAxisSpacing: ScreenUtil().setWidth(3),
-                                    crossAxisSpacing: ScreenUtil().setWidth(4),
-                                    childAspectRatio: 2.3,
-                                    children: (isOpenAll
-                                            ? newestSeries
-                                            : minWestSeries)
-                                        .asMap()
-                                        .keys
-                                        .map((e) => selectItem(newestSeries[e]))
-                                        .toList(),
-                                  )),
-                              SliverPadding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: DefaultStyle.pagePadding,
-                                      vertical: ScreenUtil().setWidth(
-                                          newestSeries.length < 8 ? 0 : 16)),
-                                  sliver: SliverToBoxAdapter(
-                                    child: newestSeries.length < 8
-                                        ? Container()
-                                        : GestureDetector(
-                                            onTap: () {
-                                              if (!isOpenAll) {
-                                                scrollto =
-                                                    scrollController.offset.h;
+                                  ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (kIsWeb) {
+                                          CommonUtils.showText('请下载APP使用下载功能！');
+                                        } else {
+                                          bool canDownload =
+                                              Privilege.isAllowedWithCount(
+                                                  context,
+                                                  RESOURCE_TYPE_BOOK,
+                                                  PRIVILEGE_TYPE_DOWNLOAD);
+                                          if (canDownload) {
+                                            DownloadComics.createDownloadTask({
+                                              'id': widget.id,
+                                              'title': data.title,
+                                              "description": data.description,
+                                              "author": data.author,
+                                              "tags": data.tags,
+                                              "viewsCount": data.viewsCount,
+                                              'thumb': data.thumb,
+                                              'allEpisode': data.newestSeries,
+                                              "downloading": false,
+                                              "isWaiting": true,
+                                              "sets": []
+                                            });
+                                          } else {
+                                            YyShowDialog.showdialog(
+                                              context,
+                                              content: (setDialogState) {
+                                                return Text(
+                                                  "您没有开启漫画下载权限哦！二次元的天堂等您开启~",
+                                                  style: TextStyle(
+                                                      color: Color(0xff646464),
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(16),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                );
+                                              },
+                                              cancelText: '取消',
+                                              btnText: PPString.upgradeNuw,
+                                              callBack: () {
+                                                context.push('/vip');
+                                              },
+                                            );
+                                          }
+                                        }
+                                      },
+                                      child: _btnItem(
+                                          icon: 'icon_down', name: '下载'),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: ScreenUtil().setWidth(4)),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          userFavorites(
+                                                  type: 2, id: data.dataId)
+                                              .then((res) {
+                                            if (res != null &&
+                                                res.status != 0) {
+                                              if (isFavorites) {
+                                                likeCount--;
                                               } else {
-                                                scrollController.animateTo(
-                                                    scrollto,
-                                                    duration: Duration(
-                                                        milliseconds: 200),
-                                                    curve: Curves.easeIn);
+                                                likeCount++;
                                               }
-                                              isOpenAll = !isOpenAll;
+                                              isFavorites = !isFavorites;
                                               setState(() {});
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                top: ScreenUtil().setWidth(16),
-                                                bottom:
-                                                    ScreenUtil().setWidth(8),
-                                              ),
-                                              alignment: Alignment.center,
-                                              height: ScreenUtil().setWidth(36),
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          ScreenUtil()
-                                                              .setWidth(18)),
-                                                  gradient: SweepGradient(
-                                                      center:
-                                                          Alignment.topCenter,
-                                                      colors: [
-                                                        Color(0xffffccdb),
-                                                        Color(0xffffe4e4)
-                                                      ])),
-                                              child: Text(
-                                                isOpenAll
-                                                    ? PPString.putAway
-                                                    : PPString.allChapters,
-                                                style: TextStyle(
-                                                    color:
-                                                        DefaultStyle.themeColor,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14)),
-                                              ),
-                                            ),
-                                          ),
-                                  )),
-                              SliverToBoxAdapter(
-                                child: Container(
-                                  height: 0.5.w,
-                                  width: double.infinity,
-                                  margin: EdgeInsets.only(
-                                      left: 16.w, right: 16.w, bottom: 16.w),
-                                  color: Color(0xffffd1df),
-                                ),
-                              ),
-                              SliverToBoxAdapter(
-                                child: firstSeriesList.length == 0
-                                    ? Container()
-                                    : Padding(
-                                        padding: EdgeInsets.only(left: 18.w),
-                                        child: WidgetTitleBar(
-                                          title: '系列详情',
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          style: TextStyle(
-                                              color: Color(0xffff5b8c),
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                            } else {
+                                              CommonUtils.showText(res.msg);
+                                            }
+                                          });
+                                        },
+                                        child: _btnItem(
+                                            icon: isFavorites
+                                                ? PPString.iconunLike
+                                                : PPString.iconLike,
+                                            name: CommonUtils.renderFixedNumber(
+                                                likeCount.toDouble()),
+                                            color: isFavorites
+                                                ? Color(0xffFF84A9)
+                                                : null),
                                       ),
-                              ),
-                              SliverToBoxAdapter(
-                                  child: firstSeriesList.length == 0
-                                      ? Container()
-                                      : SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  DefaultStyle.pagePadding),
-                                          child: Row(
-                                            children: [
-                                              Row(
-                                                children: firstSeriesList
-                                                    .asMap()
-                                                    .keys
-                                                    .map((e) {
-                                                  return GestureDetector(
-                                                      onTap: () {
-                                                        context.push(
-                                                            CommonUtils.getRealHash().replaceAll(
-                                                                RegExp(
-                                                                    "${PPString.test}comicsdetail/.*"),
-                                                                'comicsdetail/' +
-                                                                    firstSeriesList[e]
-                                                                            [
-                                                                            'id']
-                                                                        .toString()),
-                                                            replace: true);
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            right: 8.w),
-                                                        width: 85.w,
-                                                        child: Column(
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          3.w),
-                                                              child: Container(
-                                                                width: double
-                                                                    .infinity,
-                                                                height: 125.w,
-                                                                child:
-                                                                    PlatformAwareNetworkImage(
-                                                                  url: firstSeriesList[
-                                                                          e]
-                                                                      ['thumb'],
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 8.w,
-                                                            ),
-                                                            Text(
-                                                              firstSeriesList[e]
-                                                                  ['title'],
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xff646464),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  showButtom();
-                                                  // context.push(
-                                                  //     '/morePage/'+widget.id.toString()+'/'+widget.title.toString()+'/'+(widget.morePageType ?? 1).toString());
-                                                },
-                                                child: Container(
-                                                  width:
-                                                      ScreenUtil().setWidth(70),
-                                                  height:
-                                                      ScreenUtil().setWidth(39),
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    255,
-                                                                    128,
-                                                                    163,
-                                                                    0.5),
-                                                            offset:
-                                                                Offset(0, 2),
-                                                            blurRadius: 3,
-                                                            spreadRadius: 0)
-                                                      ],
-                                                      borderRadius: BorderRadius
-                                                          .circular(ScreenUtil()
-                                                              .setWidth(50)),
-                                                      gradient: LinearGradient(
-                                                          begin:
-                                                              Alignment.topLeft,
-                                                          end: Alignment
-                                                              .bottomRight,
-                                                          colors: [
-                                                            Color(0xffff8b8b),
-                                                            Color(0xffff7696),
-                                                            Color(0xffff7299),
-                                                          ])),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        '更多',
-                                                        style: DefaultStyle
-                                                            .white14,
-                                                      ),
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(9),
-                                                      ),
-                                                      PlatformAwareAssetImage(
-                                                          url:
-                                                              'assets/images/icon_more.png',
-                                                          height: ScreenUtil()
-                                                              .setWidth(8),
-                                                          filterQuality:
-                                                              FilterQuality
-                                                                  .medium)
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                              SliverPadding(
-                                padding: EdgeInsets.only(
-                                    bottom: ScreenUtil().setWidth(16),
-                                    top: ScreenUtil().setWidth(16)),
-                                sliver: SliverToBoxAdapter(
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        var config = Provider.of<HomeConfig>(
+                                                context,
+                                                listen: false)
+                                            .config;
+                                        ShareMovieModel.showShareMovie(
+                                            backButtonBehavior,
+                                            copyUrl:
+                                                config.share.affUrlCopy.url,
+                                            thumb: data.thumb,
+                                            title: data.title ?? '--',
+                                            subtitle: data.description ?? '--',
+                                            url:
+                                                config.share.affUrl.toString());
+                                      },
+                                      child: _btnItem(
+                                          icon: 'icon_share', name: '分享'),
+                                    )
+                                  ],
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      swichComic(data.watchLog == 0
+                                          ? 1
+                                          : data.watchLog);
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenUtil().setWidth(20)),
+                                            gradient: LinearGradient(
+                                                colors: [
+                                                  Color(0xffff84a9),
+                                                  Color(0xffff9e9e),
+                                                ],
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight)),
+                                        height: ScreenUtil().setWidth(40),
+                                        width: ScreenUtil().setWidth(144),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          data.watchLog == 0
+                                              ? PPString.startReading
+                                              : '从' +
+                                                  data.watchLog.toString() +
+                                                  '话继续看',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(14),
+                                              fontWeight: FontWeight.bold),
+                                        )))
+                              ],
+                            ),
+                          ),
+                          GridView.count(
+                            padding: EdgeInsets.all(15.w),
+                            physics: new NeverScrollableScrollPhysics(),
+                            crossAxisCount: 4,
+                            shrinkWrap: true,
+                            mainAxisSpacing: ScreenUtil().setWidth(3),
+                            crossAxisSpacing: ScreenUtil().setWidth(4),
+                            childAspectRatio: 2.3,
+                            children: (isOpenAll ? newestSeries : minWestSeries)
+                                .asMap()
+                                .keys
+                                .map((e) => selectItem(newestSeries[e]))
+                                .toList(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: DefaultStyle.pagePadding,
+                                vertical: ScreenUtil().setWidth(
+                                    newestSeries.length < 8 ? 0 : 16)),
+                            child: newestSeries.length < 8
+                                ? Container()
+                                : GestureDetector(
+                                    onTap: () {
+                                      if (!isOpenAll) {
+                                        scrollto = scrollController.offset.h;
+                                      } else {
+                                        scrollController.animateTo(scrollto,
+                                            duration:
+                                                Duration(milliseconds: 200),
+                                            curve: Curves.easeIn);
+                                      }
+                                      isOpenAll = !isOpenAll;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: ScreenUtil().setWidth(16),
+                                        bottom: ScreenUtil().setWidth(8),
+                                      ),
+                                      alignment: Alignment.center,
+                                      height: ScreenUtil().setWidth(36),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setWidth(18)),
+                                          gradient: SweepGradient(
+                                              center: Alignment.topCenter,
+                                              colors: [
+                                                Color(0xffffccdb),
+                                                Color(0xffffe4e4)
+                                              ])),
+                                      child: Text(
+                                        isOpenAll
+                                            ? PPString.putAway
+                                            : PPString.allChapters,
+                                        style: TextStyle(
+                                            color: DefaultStyle.themeColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: ScreenUtil().setSp(14)),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                          Container(
+                            height: 0.5.w,
+                            width: double.infinity,
+                            margin: EdgeInsets.only(
+                                left: 16.w, right: 16.w, bottom: 16.w),
+                            color: Color(0xffffd1df),
+                          ),
+                          firstSeriesList.length == 0
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.only(left: 18.w),
                                   child: WidgetTitleBar(
-                                    title: '为您推荐',
+                                    title: '系列详情',
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    style: TextStyle(
+                                        color: Color(0xffff5b8c),
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                              ),
-                              recommendList.length == 0
-                                  ? SliverToBoxAdapter(
-                                      child: Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: ScreenUtil().setWidth(150),
-                                      ),
-                                      child:
-                                          PageStatus.noData(text: '没有推荐漫画哟～'),
-                                    ))
-                                  : SliverPadding(
-                                      padding: EdgeInsets.only(
-                                          bottom: ScreenUtil().setWidth(50.5) +
-                                              (kIsWeb
-                                                  ? 0
-                                                  : ScreenUtil()
-                                                      .bottomBarHeight),
-                                          right: DefaultStyle.pagePadding,
-                                          left: DefaultStyle.pagePadding),
-                                      sliver: SliverGrid.count(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing:
-                                            ScreenUtil().setWidth(7),
-                                        childAspectRatio: 0.58,
-                                        children:
-                                            recommendList.asMap().keys.map((e) {
-                                          return NewComicsCard(
-                                            width: ScreenUtil().setWidth(109),
-                                            relace: true,
-                                            cardData: recommendList[e],
-                                          );
+                          firstSeriesList.length == 0
+                              ? Container()
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: DefaultStyle.pagePadding),
+                                  child: Row(
+                                    children: [
+                                      Row(
+                                        children: firstSeriesList
+                                            .asMap()
+                                            .keys
+                                            .map((e) {
+                                          return GestureDetector(
+                                              onTap: () {
+                                                context.push(
+                                                    CommonUtils.getRealHash()
+                                                        .replaceAll(
+                                                            RegExp(
+                                                                "${PPString.test}comicsdetail/.*"),
+                                                            'comicsdetail/' +
+                                                                firstSeriesList[
+                                                                        e]['id']
+                                                                    .toString()),
+                                                    replace: true);
+                                              },
+                                              child: Container(
+                                                margin:
+                                                    EdgeInsets.only(right: 8.w),
+                                                width: 85.w,
+                                                child: Column(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3.w),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        height: 125.w,
+                                                        child:
+                                                            PlatformAwareNetworkImage(
+                                                          url:
+                                                              firstSeriesList[e]
+                                                                  ['thumb'],
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8.w,
+                                                    ),
+                                                    Text(
+                                                      firstSeriesList[e]
+                                                          ['title'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff646464),
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    )
+                                                  ],
+                                                ),
+                                              ));
                                         }).toList(),
-                                      ))
-                            ]),
-                ),
-              ],
-            ),
-          ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showButtom();
+                                          // context.push(
+                                          //     '/morePage/'+widget.id.toString()+'/'+widget.title.toString()+'/'+(widget.morePageType ?? 1).toString());
+                                        },
+                                        child: Container(
+                                          width: ScreenUtil().setWidth(70),
+                                          height: ScreenUtil().setWidth(39),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Color.fromRGBO(
+                                                        255, 128, 163, 0.5),
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 3,
+                                                    spreadRadius: 0)
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      ScreenUtil()
+                                                          .setWidth(50)),
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [
+                                                    Color(0xffff8b8b),
+                                                    Color(0xffff7696),
+                                                    Color(0xffff7299),
+                                                  ])),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                '更多',
+                                                style: DefaultStyle.white14,
+                                              ),
+                                              SizedBox(
+                                                width: ScreenUtil().setWidth(9),
+                                              ),
+                                              PlatformAwareAssetImage(
+                                                  url:
+                                                      'assets/images/icon_more.png',
+                                                  height:
+                                                      ScreenUtil().setWidth(8),
+                                                  filterQuality:
+                                                      FilterQuality.medium)
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                          WidgetTitleBar(
+                            title: '为您推荐',
+                          ),
+                          recommendList.length == 0
+                              ? Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: ScreenUtil().setWidth(150),
+                                  ),
+                                  child: PageStatus.noData(text: '没有推荐漫画哟～'),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: ScreenUtil().setWidth(50.5) +
+                                          (kIsWeb
+                                              ? 0
+                                              : ScreenUtil().bottomBarHeight),
+                                      right: DefaultStyle.pagePadding,
+                                      left: DefaultStyle.pagePadding),
+                                  child: GridView.count(
+                                    physics: new NeverScrollableScrollPhysics(),
+                                    crossAxisCount: 3,
+                                    shrinkWrap: true,
+                                    crossAxisSpacing: ScreenUtil().setWidth(7),
+                                    childAspectRatio: 0.58,
+                                    children:
+                                        recommendList.asMap().keys.map((e) {
+                                      return NewComicsCard(
+                                        width: ScreenUtil().setWidth(109),
+                                        relace: true,
+                                        cardData: recommendList[e],
+                                      );
+                                    }).toList(),
+                                  ))
+                        ],
+                      ),
+                    )),
           Positioned(
-              child: SafeArea(
-                  child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
+              top: ScreenUtil().statusBarHeight,
+              child: GestureDetector(
                 onTap: () {
                   context.pop();
                 },
@@ -1048,9 +918,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                     url: 'assets/images/comics_backarrow.png',
                     width: ScreenUtil().setWidth(32),
                     filterQuality: FilterQuality.medium),
-              ),
-            ],
-          ))),
+              )),
         ],
       ),
     );
