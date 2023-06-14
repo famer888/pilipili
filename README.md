@@ -163,7 +163,7 @@ samples, guidance on mobile development, and a full API reference.
 fvm flutter run -d chrome --web-renderer html
 fvm flutter build web --web-renderer html --release 打包web
 adb devices
-fvm flutter build apk --target-platform  android-arm --split-per-abi --no-tree-shake-icons 打包安卓
+fvm flutter build apk --target-platform  android-arm --split-per-abi --no-tree-shake-icons --obfuscate --split-debug-info=./symbols 打包安卓
 fvm flutter build ios-framework --output=build/framework --no-tree-shake-icons --no-debug --no-profile --obfuscate --split-debug-info=./symbols 打包iOSSDK
 
 IOS需修改版本
