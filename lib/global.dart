@@ -64,4 +64,5 @@ class AppGlobal {
   static String smallVideoApi;
   static Map smallVideoPramas;
   static num webBottomHeight=0;
+  static List popAds = [];
 }

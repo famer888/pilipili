@@ -49,6 +49,7 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       });
     }
     AppGlobal.shouApp = res.data['data']['showApp'] == 1;
+    AppGlobal.popAds = res.data['data']['popAds'];
     HomeData result = HomeData.fromJson(res.data);
     if (result.status != 0) {
       Provider.of<HomeConfig>(context, listen: false)
@@ -1048,6 +1049,17 @@ Future getSeriesList({int id, int page, int limit, int type}) async {
           'type': type,
         });
     return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//广告点击统计
+Future<Map> popAdsChick(String id) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/home/popAdsChick", data: {"id": id});
+    return data.data;
   } catch (e) {
     return null;
   }

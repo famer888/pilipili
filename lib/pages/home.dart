@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/yuemei.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:provider/provider.dart';
@@ -274,22 +275,38 @@ class _HomeState extends State<Home> {
   }
 
   // 活动弹窗
-  void showActivetyDialog(String content, String type, String title,
-      double height, double width, VersionMsg version, Config config) {
-    if (showActivety == true) return;
-    if (AppGlobal.showActivity == false) return;
-    UpdateModel.showAvtivetysDialog(backButtonBehavior, url: title, cancel: () {
-      AppGlobal.showActivity = false;
-      if (version != null) {
-        checkUpdateAnnouncement(version, config);
-      }
-    }, confirm: () {
-      AppGlobal.showActivity = false;
-      _onTapSwiper(type, content);
-    }, height: height, width: width);
-    setState(() {
-      showActivety = true;
-    });
+  void showActivetyDialog(Config config, VersionMsg version) {
+    int activeLength = AppGlobal.popAds.length - 1;
+    int activeIndex = 0;
+    showIndexActive(int index) {
+      UpdateModel.showAvtivetysDialog(backButtonBehavior,
+          width: AppGlobal.popAds[index]['img_width'].toDouble(),
+          height: AppGlobal.popAds[index]['img_height'].toDouble(),
+          url: AppGlobal.popAds[index]['img_url'], cancel: () {
+        activeIndex++;
+        if (activeIndex <= activeLength) {
+          showIndexActive(activeIndex);
+        } else {
+          if (version != null) {
+            checkUpdateAnnouncement(version, config);
+          }
+        }
+      }, confirm: () {
+        _onTapSwiper(AppGlobal.popAds[index]['type'],
+            AppGlobal.popAds[index]['content']);
+        popAdsChick(AppGlobal.popAds[index]['id'].toString());
+        activeIndex++;
+        if (activeIndex <= activeLength) {
+          showIndexActive(activeIndex);
+        } else {
+          if (version != null) {
+            checkUpdateAnnouncement(version, config);
+          }
+        }
+      });
+    }
+
+    showIndexActive(activeIndex);
   }
 
   _onTapSwiper(String type, String _adsUrl) {
@@ -331,12 +348,10 @@ class _HomeState extends State<Home> {
       initPage = true;
       var version = Provider.of<HomeConfig>(context, listen: false).versionMsg;
       var config = Provider.of<HomeConfig>(context, listen: false).config;
-      var notice = Provider.of<HomeConfig>(context, listen: false).notice;
 
-      if (notice != null ?? true) {
+      if (AppGlobal.popAds.isNotEmpty) {
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
-        showActivetyDialog(notice.content, notice.type, notice.imgUrl,
-            notice.imgHeight, notice.imgWidth, version, config);
+        showActivetyDialog(config, version);
       } else {
         if (version != null) {
           checkUpdateAnnouncement(version, config);
