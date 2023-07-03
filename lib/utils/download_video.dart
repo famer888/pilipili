@@ -74,9 +74,10 @@ class DownloadUtil {
     List<String> lists = decrypted.split("#EXTINF:");
     List<String> tsLists = [];
     lists.forEach((e) {
+      print(e);
       // 提取key
       if (e.indexOf("URI=") != -1 && e.indexOf(".key") != -1) {
-        String keyUri = e.substring(e.indexOf("URI=") + 5, e.indexOf("\","));
+        String keyUri = e.substring(e.indexOf("URI=") + 5, e.lastIndexOf("\""));
         tsLists.add(keyUri);
         // 替换key为本地链接
         localM3u8 = localM3u8.replaceAll(
