@@ -656,54 +656,57 @@ class _TabHeadState extends State<TabHead> {
                     right: 0,
                     bottom: 9.w,
                     child: Container(
-                      height: 36.w,
                       padding: EdgeInsets.only(left: 16.w),
-                      child: Wrap(
-                        alignment: WrapAlignment.start,
-                        spacing: 4.w,
-                        children: tabList.asMap().keys.map((e) {
-                          return GestureDetector(
-                            onTap: () {
-                              currentIndex = e;
-                              widget.changeHead(e);
-                              setState(() {});
-                            },
-                            behavior: HitTestBehavior.translucent,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                    top: 0,
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: PlatformAwareAssetImage(
-                                        url: currentIndex != e
-                                            ? PPAssetsPath.seachBtn
-                                            : PPAssetsPath.seachBtnActive,
-                                        fit: BoxFit.fill,
-                                        filterQuality: FilterQuality.medium)),
-                                Container(
-                                  width: 79.w,
-                                  height: 36.w,
-                                  alignment: Alignment.center,
-                                  padding: currentIndex != e
-                                      ? null
-                                      : EdgeInsets.only(top: 2.w, right: 3.w),
-                                  child: Text(
-                                    tabList[e]['title'],
-                                    style: TextStyle(
-                                        color: currentIndex != e
-                                            ? Colors.white
-                                            : Color(0xff6d6567),
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                      height: 36.w,
+                      child: ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(
+                                width: 4.w,
+                              ),
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.zero,
+                          itemCount: tabList.length,
+                          itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  currentIndex = index;
+                                  widget.changeHead(index);
+                                  setState(() {});
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                        top: 0,
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: PlatformAwareAssetImage(
+                                            url: currentIndex != index
+                                                ? PPAssetsPath.seachBtn
+                                                : PPAssetsPath.seachBtnActive,
+                                            fit: BoxFit.fill,
+                                            filterQuality:
+                                                FilterQuality.medium)),
+                                    Container(
+                                      width: 79.w,
+                                      height: 36.w,
+                                      alignment: Alignment.center,
+                                      padding: currentIndex != index
+                                          ? null
+                                          : EdgeInsets.only(
+                                              top: 2.w, right: 3.w),
+                                      child: Text(
+                                        tabList[index]['title'],
+                                        style: TextStyle(
+                                            color: currentIndex != index
+                                                ? Colors.white
+                                                : Color(0xff6d6567),
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
                     ))
               ],
             ),
