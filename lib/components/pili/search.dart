@@ -22,7 +22,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController myController = TextEditingController();
-  String prevText;
+
   bool hideClear = true;
   List<GlobalKey<PrimaryScrollContainerState>> scrollChildKeys = [];
 
@@ -66,139 +66,6 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void clickSearchBoxClearIcon() {
-    myController.clear();
-    searchController.jumpTo(0);
-    hideClearNotifier.value = true;
-  }
-
-  Widget _searchHead() {
-    return Container(
-      height: 50.w + ScreenUtil().statusBarHeight,
-      padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
-      color: DefaultStyle.themeColor,
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (currentPage == 0) {
-                context.pop();
-              } else {
-                clickSearchBoxClearIcon();
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.only(left: 15.w, right: 13.w),
-              child: PlatformAwareAssetImage(
-                  url: PPAssetsPath.backArrow,
-                  height: 22.w,
-                  width: 12.w,
-                  filterQuality: FilterQuality.medium),
-            ),
-          ),
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.only(right: 8.w),
-            child: Container(
-              height: 36.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.w),
-                  color: Colors.white),
-              child: ValueListenableBuilder(
-                  valueListenable: hideClearNotifier,
-                  builder: (context, hideClear, child) {
-                    return TextField(
-                      autofocus: true,
-                      onChanged: (value) {
-                        if (!hideClear && value.isEmpty) {
-                          searchController.jumpToPage(0);
-                          hideClearNotifier.value = true;
-                        }
-                        if (hideClear && value.isNotEmpty) {
-                          hideClearNotifier.value = false;
-                        }
-                      },
-                      controller: myController,
-                      textInputAction: TextInputAction.search,
-                      onSubmitted: (e) {
-                        if (myController.text.isEmpty) {
-                          CommonUtils.showText('请输入搜索关键字～');
-                          return;
-                        }
-                        if (prevText == myController.text && tabIndex == 1)
-                          return;
-                        searchController.jumpToPage(1);
-                        prevText = myController.text;
-                        if (!searchProvider.historyTags
-                            .contains(myController.text)) {
-                          if (searchProvider.historyTags.length >= 3) {
-                            searchProvider.historyTags.removeAt(0);
-                          }
-                          searchProvider.addHistoryTag(myController.text);
-                        }
-
-                        // Timer(Duration(milliseconds: 200), () {
-                        //   loading = false;
-                        //   setState(() {});
-                        // });
-                      },
-                      decoration: InputDecoration(
-                        hintText: '请输入搜索内容',
-                        hintStyle: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff6D6D6D)),
-                        contentPadding: EdgeInsets.zero,
-                        border: InputBorder.none,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.w, vertical: 6.w),
-                          child: PlatformAwareAssetImage(
-                            url: 'assets/images/detail/icon_search_red.png',
-                            filterQuality: FilterQuality.medium,
-                            width: 24.w,
-                            height: 24.w,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        suffixIcon: hideClear
-                            ? const SizedBox()
-                            : Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w, vertical: 6.w),
-                                child: GestureDetector(
-                                  onTap: clickSearchBoxClearIcon,
-                                  behavior: HitTestBehavior.translucent,
-                                  child: PlatformAwareAssetImage(
-                                    url:
-                                        'assets/images/detail/icon_input_clear.png',
-                                    filterQuality: FilterQuality.medium,
-                                    width: 24.w,
-                                    height: 24.w,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                        disabledBorder:
-                            OutlineInputBorder(borderSide: BorderSide.none),
-                        focusedBorder:
-                            OutlineInputBorder(borderSide: BorderSide.none),
-                        enabledBorder:
-                            OutlineInputBorder(borderSide: BorderSide.none),
-                      ),
-                      style: TextStyle(
-                        color: Color(0xff000000),
-                        fontSize: 14.sp,
-                      ),
-                    );
-                  }),
-            ),
-          )),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,7 +77,13 @@ class _SearchPageState extends State<SearchPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _searchHead(),
+          SearchHeader(
+            pageController: searchController,
+            hideClearIconNotifier: hideClearNotifier,
+            textController: myController,
+            tabIndex: tabIndex,
+            currentPage: currentPage,
+          ),
           Expanded(
               child: PageView(
             controller: searchController,
@@ -835,6 +708,170 @@ class _TabHeadState extends State<TabHead> {
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class SearchHeader extends StatefulWidget {
+  const SearchHeader(
+      {Key key,
+      this.pageController,
+      this.hideClearIconNotifier,
+      this.textController,
+      this.currentPage,
+      this.tabIndex})
+      : super(key: key);
+  final PageController pageController;
+  final ValueNotifier hideClearIconNotifier;
+  final TextEditingController textController;
+  final int currentPage;
+  final int tabIndex;
+  @override
+  State<SearchHeader> createState() => _SearchHeaderState();
+}
+
+class _SearchHeaderState extends State<SearchHeader> {
+  Search searchProvider;
+  String prevText;
+  @override
+  void initState() {
+    searchProvider = context.read<Search>();
+    super.initState();
+  }
+
+  void clickSearchBoxClearIcon() {
+    widget.textController.clear();
+    widget.pageController.jumpTo(0);
+    widget.hideClearIconNotifier.value = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50.w + ScreenUtil().statusBarHeight,
+      padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
+      color: DefaultStyle.themeColor,
+      child: Row(
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              if (widget.currentPage == 0) {
+                context.pop();
+              } else {
+                clickSearchBoxClearIcon();
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.only(left: 15.w, right: 13.w),
+              child: PlatformAwareAssetImage(
+                  url: PPAssetsPath.backArrow,
+                  height: 22.w,
+                  width: 12.w,
+                  filterQuality: FilterQuality.medium),
+            ),
+          ),
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.only(right: 8.w),
+            child: Container(
+              height: 36.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.w),
+                  color: Colors.white),
+              child: ValueListenableBuilder(
+                  valueListenable: widget.hideClearIconNotifier,
+                  builder: (context, hideClear, child) {
+                    return TextField(
+                      autofocus: true,
+                      onChanged: (value) {
+                        if (!hideClear && value.isEmpty) {
+                          widget.pageController.jumpToPage(0);
+                          widget.hideClearIconNotifier.value = true;
+                        }
+                        if (hideClear && value.isNotEmpty) {
+                          widget.hideClearIconNotifier.value = false;
+                        }
+                      },
+                      controller: widget.textController,
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (e) {
+                        if (widget.textController.text.isEmpty) {
+                          CommonUtils.showText('请输入搜索关键字～');
+                          return;
+                        }
+                        if (prevText == widget.textController.text &&
+                            widget.tabIndex == 1) return;
+                        widget.pageController.jumpToPage(1);
+                        prevText = widget.textController.text;
+                        if (!searchProvider.historyTags
+                            .contains(widget.textController.text)) {
+                          if (searchProvider.historyTags.length >= 3) {
+                            searchProvider.historyTags.removeAt(0);
+                          }
+                          searchProvider
+                              .addHistoryTag(widget.textController.text);
+                        }
+
+                        // Timer(Duration(milliseconds: 200), () {
+                        //   loading = false;
+                        //   setState(() {});
+                        // });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '请输入搜索内容',
+                        hintStyle: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff6D6D6D)),
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.w, vertical: 6.w),
+                          child: PlatformAwareAssetImage(
+                            url: 'assets/images/detail/icon_search_red.png',
+                            filterQuality: FilterQuality.medium,
+                            width: 24.w,
+                            height: 24.w,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        suffixIcon: hideClear
+                            ? const SizedBox()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 6.w),
+                                child: GestureDetector(
+                                  onTap: clickSearchBoxClearIcon,
+                                  behavior: HitTestBehavior.translucent,
+                                  child: PlatformAwareAssetImage(
+                                    url:
+                                        'assets/images/detail/icon_input_clear.png',
+                                    filterQuality: FilterQuality.medium,
+                                    width: 24.w,
+                                    height: 24.w,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                        disabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                        focusedBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                        enabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                      style: TextStyle(
+                        color: Color(0xff000000),
+                        fontSize: 14.sp,
+                      ),
+                    );
+                  }),
+            ),
+          )),
         ],
       ),
     );
