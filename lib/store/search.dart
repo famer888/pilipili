@@ -1,0 +1,44 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/utils/api.dart';
+
+class Search with ChangeNotifier {
+  List<dynamic> get historyTags => _historyTags;
+  List<dynamic> _historyTags;
+  List<dynamic> get hotTags => _hotTags;
+  List<dynamic> _hotTags;
+
+  int get currentPage => _currentPage;
+  int _currentPage;
+  int get tabIndex => _tabIndex;
+  int _tabIndex;
+
+  Future<void> init() async {
+    _tabIndex = 0;
+    _currentPage = 0;
+    _historyTags = AppGlobal.appBox.get('search_history') ?? [];
+    var res = await gethotTags();
+    if (res['status'] != 0) {
+      _hotTags = res['data'] ?? [];
+    }
+  }
+
+  void addHistoryTag(dynamic tag) {
+    _historyTags.add(tag);
+    AppGlobal.appBox.put('search_history', _historyTags);
+    notifyListeners();
+  }
+
+  void removeHistoryTag(dynamic tag) {
+    _historyTags.remove(tag);
+    AppGlobal.appBox.put('search_history', _historyTags);
+    notifyListeners();
+  }
+
+  void clearHistoryTag() {
+    _historyTags.clear();
+    AppGlobal.appBox.put('search_history', _historyTags);
+    notifyListeners();
+  }
+}

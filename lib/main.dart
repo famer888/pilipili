@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:pilipili/store/globle_value.dart';
+import 'package:pilipili/store/search.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/global.dart';
@@ -107,21 +108,22 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => HomeConfig()),
-      ChangeNotifierProvider(create: (_) => GlobleValue())
+      ChangeNotifierProvider(create: (_) => GlobleValue()),
+      ChangeNotifierProvider(create: (_) => Search()),
     ],
-    child: pilipili(),
+    child: Pilipili(),
   ));
 }
 
 final _router = AppGlobal.appRouter = Routes.init();
 
-class pilipili extends StatefulWidget {
-  pilipili({Key key}) : super(key: key);
+class Pilipili extends StatefulWidget {
+  Pilipili({Key key}) : super(key: key);
   @override
-  _pilipiliState createState() => _pilipiliState();
+  _PilipiliState createState() => _PilipiliState();
 }
 
-class _pilipiliState extends State<pilipili> {
+class _PilipiliState extends State<Pilipili> {
   @override
   void initState() {
     super.initState();

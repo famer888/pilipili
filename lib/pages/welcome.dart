@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:pilipili/store/search.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:provider/provider.dart';
 import "package:universal_html/html.dart" as html;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
@@ -68,7 +70,7 @@ class _WelcomeState extends State<Welcome> {
           duration: new Duration(seconds: 5));
     }, onSuccess: () {
       getHomeConfig(context).then((res) {
-         getClipboardText();
+        getClipboardText();
         if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
           yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};
           setState(() {});
@@ -78,6 +80,7 @@ class _WelcomeState extends State<Welcome> {
           toHome();
         }
       });
+      context.read<Search>().init();
     });
   }
 

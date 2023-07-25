@@ -5,13 +5,14 @@ import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/store/search.dart';
 import 'package:pilipili/theme/default.dart';
-import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/primaryScrollContainer.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key key}) : super(key: key);
@@ -24,7 +25,6 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController myController = TextEditingController();
   String prevText;
   bool hideClear = true;
-  List historyTags = [];
   List<GlobalKey<PrimaryScrollContainerState>> scrollChildKeys = [];
   bool loading = false;
 
@@ -53,27 +53,25 @@ class _SearchPageState extends State<SearchPage> {
       'isFlow': false,
     }
   ];
-  List hotTags = [];
   int tabIndex = 0;
-  int cureentPage = 0;
+  int currentPage = 0;
   PageController pageController = PageController();
   PageController searchController = PageController();
+  Search searchProvider;
+  ValueNotifier<bool> hideClearNotifier = ValueNotifier<bool>(true);
   @override
   void initState() {
     super.initState();
-    var searchTag = AppGlobal.appBox.get('search_history');
-    if (searchTag != null) {
-      historyTags = searchTag;
-    }
+    searchProvider = context.read<Search>();
     tabList.forEach((item) {
       scrollChildKeys.add(GlobalKey());
     });
-    gethotTags().then((res) {
-      if (res['status'] != 0) {
-        hotTags = res['data'];
-        setState(() {});
-      }
-    });
+  }
+
+  void clickSearchBoxClearIcon() {
+    myController.clear();
+    searchController.jumpTo(0);
+    hideClearNotifier.value = true;
   }
 
   Widget _searchHead() {
@@ -83,129 +81,122 @@ class _SearchPageState extends State<SearchPage> {
       color: DefaultStyle.themeColor,
       child: Row(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: DefaultStyle.pagePadding, vertical: 5.w),
-            child: GestureDetector(
-              onTap: () {
-                if (cureentPage == 0) {
-                  context.pop();
-                } else {
-                  myController.clear();
-                  searchController.jumpTo(0);
-                }
-              },
+          GestureDetector(
+            onTap: () {
+              if (currentPage == 0) {
+                context.pop();
+              } else {
+                clickSearchBoxClearIcon();
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.only(left: 15.w, right: 13.w),
               child: PlatformAwareAssetImage(
                   url: PPAssetsPath.backArrow,
                   height: 22.w,
+                  width: 12.w,
                   filterQuality: FilterQuality.medium),
             ),
           ),
           Expanded(
-              child: Container(
-            height: 36.w,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.w), color: Colors.white),
-            child: Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    if (!hideClear && value.isEmpty) {
-                      searchController.jumpToPage(0);
-                      hideClear = true;
-                      setState(() {});
-                    }
-                    if (hideClear && value.isNotEmpty) {
-                      hideClear = false;
-                      setState(() {});
-                    }
-                  },
-                  controller: myController,
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (e) {
-                    if (myController.text.isEmpty) {
-                      CommonUtils.showText('请输入搜索关键字～');
-                      return;
-                    }
-                    if (prevText == myController.text && tabIndex == 1) return;
-                    searchController.jumpToPage(1);
-                    prevText = myController.text;
-                    loading = true;
-                    if (historyTags.indexOf(myController.text) == -1) {
-                      if (historyTags.length >= 3) {
-                        historyTags.removeAt(0);
-                      }
-                      historyTags.add(myController.text);
-                      AppGlobal.appBox.put('search_history', historyTags);
-                    }
-                    setState(() {});
-                    // Timer(Duration(milliseconds: 200), () {
-                    //   loading = false;
-                    //   setState(() {});
-                    // });
-                  },
-                  decoration: InputDecoration(
-                    hintText: '请输入搜索内容',
-                    hintStyle: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff6D6D6D)),
-                    contentPadding: EdgeInsets.zero,
-                    border: InputBorder.none,
-                    prefixIcon: Padding(
-                      child: PlatformAwareAssetImage(
-                          url: 'assets/images/detail/icon_search_red.png',
-                          filterQuality: FilterQuality.medium),
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    ),
-                    prefixIconConstraints: BoxConstraints(
-                      maxHeight: 30.w,
-                      maxWidth: 40.w,
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide:
-                            BorderSide(color: Colors.transparent, width: 0)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide:
-                            BorderSide(color: Colors.transparent, width: 0)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide:
-                            BorderSide(color: Colors.transparent, width: 0)),
-                  ),
-                  style: TextStyle(
-                    color: Color(0xff000000),
-                    fontSize: 14.sp,
-                  ),
-                )),
-                hideClear
-                    ? Container()
-                    : GestureDetector(
-                        onTap: () {
-                          myController.clear();
-                          hideClear = true;
+              child: Padding(
+            padding: EdgeInsets.only(right: 8.w),
+            child: Container(
+              height: 36.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.w),
+                  color: Colors.white),
+              child: ValueListenableBuilder(
+                  valueListenable: hideClearNotifier,
+                  builder: (context, hideClear, child) {
+                    return TextField(
+                      autofocus: true,
+                      onChanged: (value) {
+                        if (!hideClear && value.isEmpty) {
                           searchController.jumpToPage(0);
-                          setState(() {});
-                        },
-                        behavior: HitTestBehavior.translucent,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          hideClearNotifier.value = true;
+                        }
+                        if (hideClear && value.isNotEmpty) {
+                          hideClearNotifier.value = false;
+                        }
+                      },
+                      controller: myController,
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (e) {
+                        if (myController.text.isEmpty) {
+                          CommonUtils.showText('请输入搜索关键字～');
+                          return;
+                        }
+                        if (prevText == myController.text && tabIndex == 1)
+                          return;
+                        searchController.jumpToPage(1);
+                        prevText = myController.text;
+                        loading = true;
+                        if (!searchProvider.historyTags
+                            .contains(myController.text)) {
+                          if (searchProvider.historyTags.length >= 3) {
+                            searchProvider.historyTags.removeAt(0);
+                          }
+                          searchProvider.addHistoryTag(myController.text);
+                        }
+
+                        // Timer(Duration(milliseconds: 200), () {
+                        //   loading = false;
+                        //   setState(() {});
+                        // });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '请输入搜索内容',
+                        hintStyle: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff6D6D6D)),
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.w, vertical: 6.w),
                           child: PlatformAwareAssetImage(
-                              url: 'assets/images/detail/icon_input_clear.png',
-                              width: 24.w,
-                              filterQuality: FilterQuality.medium),
+                            url: 'assets/images/detail/icon_search_red.png',
+                            filterQuality: FilterQuality.medium,
+                            width: 24.w,
+                            height: 24.w,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                      )
-              ],
+                        suffixIcon: hideClear
+                            ? const SizedBox()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 6.w),
+                                child: GestureDetector(
+                                  onTap: clickSearchBoxClearIcon,
+                                  behavior: HitTestBehavior.translucent,
+                                  child: PlatformAwareAssetImage(
+                                    url:
+                                        'assets/images/detail/icon_input_clear.png',
+                                    filterQuality: FilterQuality.medium,
+                                    width: 24.w,
+                                    height: 24.w,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                        disabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                        focusedBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                        enabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                      style: TextStyle(
+                        color: Color(0xff000000),
+                        fontSize: 14.sp,
+                      ),
+                    );
+                  }),
             ),
           )),
-          SizedBox(
-            width: 8.w,
-          )
         ],
       ),
     );
@@ -228,7 +219,7 @@ class _SearchPageState extends State<SearchPage> {
             controller: searchController,
             physics: NeverScrollableScrollPhysics(),
             onPageChanged: (e) {
-              cureentPage = e;
+              currentPage = e;
               setState(() {});
             },
             children: [
@@ -244,16 +235,14 @@ class _SearchPageState extends State<SearchPage> {
                         pinned: true,
                         elevation: 0,
                         forceElevated: true,
-                        expandedHeight: ScreenUtil().setWidth(444),
+                        expandedHeight: 444.w,
                         flexibleSpace: FlexibleSpaceBar(
                             collapseMode: CollapseMode.parallax,
                             background: Container(
-                              padding: EdgeInsets.only(
-                                  bottom: ScreenUtil().setWidth(114)),
+                              padding: EdgeInsets.only(bottom: 114.w),
                               child: Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: ScreenUtil().setWidth(16),
-                                    vertical: ScreenUtil().setWidth(8)),
+                                    horizontal: 16.w, vertical: 8.w),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   boxShadow: [
@@ -261,22 +250,21 @@ class _SearchPageState extends State<SearchPage> {
                                       blurRadius: 10,
                                       blurStyle: BlurStyle.outer,
                                       color: Color.fromRGBO(255, 91, 140, 0.2),
-                                      offset:
-                                          Offset(0, ScreenUtil().setWidth(6)),
+                                      offset: Offset(0, 6.w),
                                     )
                                   ],
                                   borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(
-                                        ScreenUtil().setWidth(30),
+                                        30.w,
                                       ),
                                       bottomRight: Radius.circular(
-                                        ScreenUtil().setWidth(30),
+                                        30.w,
                                       )),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    historyTags.isEmpty
+                                    searchProvider.historyTags.isEmpty
                                         ? Container()
                                         : Row(
                                             mainAxisAlignment:
@@ -286,17 +274,14 @@ class _SearchPageState extends State<SearchPage> {
                                                 '搜索记录',
                                                 style: TextStyle(
                                                     color: Color(0xff6D6D6D),
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14),
+                                                    fontSize: 14.sp,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  historyTags.clear();
-                                                  AppGlobal.appBox.put(
-                                                      'search_history',
-                                                      historyTags);
+                                                  searchProvider
+                                                      .clearHistoryTag();
                                                   setState(() {});
                                                 },
                                                 behavior:
@@ -304,163 +289,154 @@ class _SearchPageState extends State<SearchPage> {
                                                 child: PlatformAwareAssetImage(
                                                     url:
                                                         'assets/images/detail/icon_clear.png',
-                                                    width: ScreenUtil()
-                                                        .setWidth(20),
+                                                    width: 20.w,
                                                     filterQuality:
                                                         FilterQuality.medium),
                                               )
                                             ],
                                           ),
-                                    historyTags.isEmpty
-                                        ? Container()
-                                        : Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom:
-                                                    ScreenUtil().setWidth(24)),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: historyTags
-                                                  .asMap()
-                                                  .keys
-                                                  .map((e) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    myController.text =
-                                                        historyTags[e];
-                                                    hideClear = false;
-                                                    setState(() {});
-                                                    searchController
-                                                        .jumpToPage(1);
-                                                  },
-                                                  behavior: HitTestBehavior
-                                                      .translucent,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: ScreenUtil()
-                                                            .setWidth(8),
-                                                        top: ScreenUtil()
-                                                            .setWidth(8),
-                                                        left: ScreenUtil()
-                                                            .setWidth(8)),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          historyTags[e],
+                                    searchProvider.historyTags.isEmpty
+                                        ? const SizedBox()
+                                        : ListView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            padding:
+                                                EdgeInsets.only(bottom: 24.w),
+                                            itemCount: searchProvider
+                                                .historyTags.length,
+                                            itemBuilder: (context, index) =>
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        myController.text =
+                                                            searchProvider
+                                                                    .historyTags[
+                                                                index];
+                                                        hideClearNotifier
+                                                            .value = false;
+                                                        setState(() {});
+                                                        searchController
+                                                            .jumpToPage(1);
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 8.w,
+                                                                top: 8.w,
+                                                                bottom: 8.w),
+                                                        child: Text(
+                                                          searchProvider
+                                                                  .historyTags[
+                                                              index],
                                                           style: TextStyle(
                                                               color: Color(
                                                                   0xff979797),
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          14)),
+                                                              fontSize: 14.sp),
                                                         ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            historyTags
-                                                                .removeAt(e);
-                                                            AppGlobal.appBox.put(
-                                                                'search_history',
-                                                                historyTags);
-                                                            setState(() {});
-                                                          },
-                                                          behavior:
-                                                              HitTestBehavior
-                                                                  .translucent,
-                                                          child: PlatformAwareAssetImage(
-                                                              url:
-                                                                  'assets/images/detail/icon_delete.png',
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          20),
-                                                              filterQuality:
-                                                                  FilterQuality
-                                                                      .high),
-                                                        )
-                                                      ],
+                                                      ),
                                                     ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        searchProvider
+                                                            .historyTags
+                                                            .removeAt(index);
+                                                        AppGlobal.appBox.put(
+                                                            'search_history',
+                                                            searchProvider
+                                                                .historyTags);
+                                                        setState(() {});
+                                                      },
+                                                      behavior: HitTestBehavior
+                                                          .translucent,
+                                                      child: PlatformAwareAssetImage(
+                                                          url:
+                                                              'assets/images/detail/icon_delete.png',
+                                                          width: 20.w,
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high),
+                                                    )
+                                                  ],
+                                                )),
+                                    searchProvider.hotTags.isEmpty
+                                        ? const SizedBox()
+                                        : Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '热门标签',
+                                                  style: TextStyle(
+                                                      color: Color(0xff6D6D6D),
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 12.w),
+                                                  child: Wrap(
+                                                    spacing: 8.w,
+                                                    runSpacing: 12.w,
+                                                    children:
+                                                        searchProvider.hotTags
+                                                            .map((e) =>
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    myController
+                                                                        .text = e;
+                                                                    hideClearNotifier
+                                                                            .value =
+                                                                        false;
+                                                                    setState(
+                                                                        () {});
+                                                                    searchController
+                                                                        .jumpToPage(
+                                                                            1);
+                                                                  },
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        height:
+                                                                            28.w,
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(horizontal: 14.w),
+                                                                        decoration: BoxDecoration(
+                                                                            color:
+                                                                                Color(0xffFFF5F9),
+                                                                            borderRadius: BorderRadius.circular(14.w)),
+                                                                        child:
+                                                                            Text(
+                                                                          e,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Color(0xffFFADC6),
+                                                                            fontSize:
+                                                                                14.sp,
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ))
+                                                            .toList(),
                                                   ),
-                                                );
-                                              }).toList(),
-                                            ),
-                                          ),
-                                    hotTags == null || hotTags.isEmpty
-                                        ? Container()
-                                        : Text(
-                                            '热门标签',
-                                            style: TextStyle(
-                                                color: Color(0xff6D6D6D),
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                    hotTags == null || hotTags.isEmpty
-                                        ? Container()
-                                        : Container(
-                                            margin: EdgeInsets.only(
-                                                top: ScreenUtil().setWidth(12)),
-                                            child: Wrap(
-                                              spacing: ScreenUtil().setWidth(8),
-                                              runSpacing:
-                                                  ScreenUtil().setWidth(12),
-                                              children: hotTags
-                                                  .asMap()
-                                                  .keys
-                                                  .map((e) => GestureDetector(
-                                                        onTap: () {
-                                                          myController.text =
-                                                              hotTags[e];
-                                                          hideClear = false;
-                                                          setState(() {});
-                                                          searchController
-                                                              .jumpToPage(1);
-                                                        },
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          28),
-                                                              padding: EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      ScreenUtil()
-                                                                          .setWidth(
-                                                                              14)),
-                                                              decoration: BoxDecoration(
-                                                                  color: Color(
-                                                                      0xffFFF5F9),
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          ScreenUtil()
-                                                                              .setWidth(14))),
-                                                              child: Text(
-                                                                hotTags[e],
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFADC6),
-                                                                  fontSize:
-                                                                      ScreenUtil()
-                                                                          .setSp(
-                                                                              14),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ))
-                                                  .toList(),
+                                                ),
+                                              ],
                                             ),
                                           )
                                   ],
@@ -468,8 +444,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             )),
                         bottom: PreferredSize(
-                          preferredSize:
-                              Size.fromHeight(ScreenUtil().setWidth(44.5)),
+                          preferredSize: Size.fromHeight(44.5.w),
                           child: TabHead(
                               index: tabIndex,
                               changeHead: (e) {
@@ -514,9 +489,9 @@ class _SearchPageState extends State<SearchPage> {
                   }).toList(),
                 ),
               ),
-              cureentPage == 1
+              currentPage == 1
                   ? SearchResult(word: myController.text)
-                  : Container()
+                  : const SizedBox()
             ],
           ))
         ],
@@ -536,16 +511,15 @@ class _PageGridViewState extends State<PageGridView> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      cacheExtent: ScreenUtil().screenHeight * 5,
+      cacheExtent: 1.sh * 5,
       physics: ClampingScrollPhysics(),
       padding: EdgeInsets.symmetric(
-          horizontal: DefaultStyle.pagePadding,
-          vertical: ScreenUtil().setWidth(20)),
+          horizontal: DefaultStyle.pagePadding, vertical: 20.w),
       itemCount: 20,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        mainAxisSpacing: ScreenUtil().setWidth(7),
-        crossAxisSpacing: ScreenUtil().setWidth(7),
+        mainAxisSpacing: 7.w,
+        crossAxisSpacing: 7.w,
         childAspectRatio: 1.11,
       ),
       itemBuilder: (context, index) {
@@ -570,7 +544,8 @@ class SearchResult extends StatefulWidget {
 
 class _SearchResultState extends State<SearchResult> {
   PageController controller = PageController();
-  int currentTab = 0;
+  ValueNotifier<int> currentTabNotifier = ValueNotifier<int>(0);
+
   List tabList = [
     {
       'title': '次元',
@@ -604,114 +579,120 @@ class _SearchResultState extends State<SearchResult> {
     }
   ];
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: ScreenUtil().setWidth(40),
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(9)),
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(
-              blurStyle: BlurStyle.outer,
-              color: Color(0xffFFD3E6),
-              blurRadius: 2,
-              offset: Offset(0, ScreenUtil().setWidth(4)),
-            )
-          ]),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: tabList.asMap().keys.map((e) {
-              return GestureDetector(
-                onTap: () {
-                  controller.jumpToPage(e);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(
-                      right: e == tabList.length - 1
-                          ? 0
-                          : ScreenUtil().setWidth(20)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Opacity(
-                        opacity: currentTab == e ? 1 : 0,
-                        child: PlatformAwareAssetImage(
-                            url: 'assets/images/icon_love_red.png',
-                            width: ScreenUtil().setWidth(6),
-                            filterQuality: FilterQuality.medium),
-                      ),
-                      Row(
+    return ValueListenableBuilder(
+        valueListenable: currentTabNotifier,
+        builder: (context, currentTab, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  height: 40.w,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 9.w),
+                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                    BoxShadow(
+                      blurStyle: BlurStyle.outer,
+                      color: Color(0xffFFD3E6),
+                      blurRadius: 2,
+                      offset: Offset(0, 4.w),
+                    )
+                  ]),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        index == tabList.length - 1
+                            ? null
+                            : SizedBox(
+                                width: 20.w,
+                              ),
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.zero,
+                    itemCount: tabList.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        controller.jumpToPage(index);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Opacity(
+                            opacity: currentTab == index ? 1 : 0,
+                            child: PlatformAwareAssetImage(
+                                url: 'assets/images/icon_love_red.png',
+                                width: 6.27.w,
+                                height: 5.w,
+                                filterQuality: FilterQuality.medium),
+                          ),
                           Text(
-                            tabList[e]['title'],
-                            style: currentTab == e
+                            tabList[index]['title'],
+                            style: currentTab == index
                                 ? TextStyle(
                                     color: Color(0xffFF5B8C),
                                     fontWeight: FontWeight.w700,
-                                    fontSize: ScreenUtil().setSp(14))
+                                    fontSize: 14.sp)
                                 : TextStyle(
                                     color: Color(0xffC2C2C2),
                                     fontWeight: FontWeight.w700,
-                                    fontSize: ScreenUtil().setSp(14)),
-                          ),
+                                    fontSize: 14.sp),
+                          )
                         ],
-                      )
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-        Expanded(
-            child: PageView(
-          controller: controller,
-          onPageChanged: (e) {
-            currentTab = e;
-            setState(() {});
-          },
-          children: tabList.asMap().keys.map((e) {
-            Map pramas = {
-              'word': widget.word,
-            };
-            pramas.addAll(tabList[e]['pramas']);
-            return PageViewMixin(
-              child: tabList[e]['cardType'] == 'yuemei'
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 18.w),
-                      child: PublicBuildList(
-                          api: tabList[e]['api'],
-                          isShow: true,
-                          data: pramas,
-                          nullText: '还没有约炮信息哦～',
-                          itemBuild:
-                              (context, index, data, page, limit, getListData) {
-                            return YuemeiCard(
-                              w: 118.w,
-                              h: 145.w,
-                              isShowInfo: true,
-                              data: data,
-                            );
-                          }),
-                    )
-                  : PublicList(
-                      isFlow: tabList[e]['isFlow'],
-                      data: pramas,
-                      contentType: tabList[e]['contentType'],
-                      cartType: tabList[e]['cardType'],
-                      api: tabList[e]['api'],
-                      isShow: e == currentTab,
-                      isSearch: true,
+                      ),
                     ),
-            );
-          }).toList(),
-        ))
-      ],
-    );
+                  )),
+              Expanded(
+                  child: PageView(
+                controller: controller,
+                onPageChanged: (e) {
+                  currentTabNotifier.value = e;
+                },
+                children: tabList.map((tab) {
+                  Map pramas = {
+                    'word': widget.word,
+                  };
+                  pramas.addAll(tab['pramas']);
+                  return PageViewMixin(
+                    child: tab['cardType'] == 'yuemei'
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 18.w),
+                            child: PublicBuildList(
+                                api: tab['api'],
+                                isShow: true,
+                                data: pramas,
+                                nullText: '还没有约炮信息哦～',
+                                itemBuild: (context, index, data, page, limit,
+                                    getListData) {
+                                  return YuemeiCard(
+                                    w: 118.w,
+                                    h: 145.w,
+                                    isShowInfo: true,
+                                    data: data,
+                                  );
+                                }),
+                          )
+                        : PublicList(
+                            isFlow: tab['isFlow'],
+                            data: pramas,
+                            contentType: tab['contentType'],
+                            cartType: tab['cardType'],
+                            api: tab['api'],
+                            isShow: tabList.indexOf(tab) == currentTab,
+                            isSearch: true,
+                          ),
+                  );
+                }).toList(),
+              ))
+            ],
+          );
+        });
   }
 }
 
@@ -753,8 +734,7 @@ class _TabHeadState extends State<TabHead> {
             width: double.infinity,
             alignment: Alignment.center,
             child: Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(16)),
+              padding: EdgeInsets.symmetric(vertical: 16.w),
               child: Text(
                 '最近更新',
                 style: TextStyle(
@@ -766,41 +746,38 @@ class _TabHeadState extends State<TabHead> {
           ),
           Container(
             alignment: Alignment.bottomCenter,
-            height: ScreenUtil().setWidth(50),
+            height: 50.w,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: ScreenUtil().setWidth(38)),
+                  margin: EdgeInsets.only(top: 38.w),
                   decoration: BoxDecoration(
                     color: DefaultStyle.themeColor,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(ScreenUtil().setWidth(12)),
-                        topRight: Radius.circular(ScreenUtil().setWidth(12))),
+                        topLeft: Radius.circular(12.w),
+                        topRight: Radius.circular(12.w)),
                   ),
                   child: Container(
-                    margin: EdgeInsets.only(
-                        top: ScreenUtil().setWidth(2),
-                        left: ScreenUtil().setWidth(2),
-                        right: ScreenUtil().setWidth(2)),
+                    margin: EdgeInsets.only(top: 2.w, left: 2.w, right: 2.w),
                     decoration: BoxDecoration(
                       color: Color(0xfffff4f9),
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(ScreenUtil().setWidth(8)),
-                          topRight: Radius.circular(ScreenUtil().setWidth(8))),
+                          topLeft: Radius.circular(8.w),
+                          topRight: Radius.circular(8.w)),
                     ),
                   ),
                 ),
                 Positioned(
                     left: 0,
                     right: 0,
-                    bottom: ScreenUtil().setWidth(9),
+                    bottom: 9.w,
                     child: Container(
-                      height: ScreenUtil().setWidth(36),
-                      padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
+                      height: 36.w,
+                      padding: EdgeInsets.only(left: 16.w),
                       child: Wrap(
                         alignment: WrapAlignment.start,
-                        spacing: ScreenUtil().setWidth(4),
+                        spacing: 4.w,
                         children: tabList.asMap().keys.map((e) {
                           return GestureDetector(
                             onTap: () {
@@ -823,21 +800,19 @@ class _TabHeadState extends State<TabHead> {
                                         fit: BoxFit.fill,
                                         filterQuality: FilterQuality.medium)),
                                 Container(
-                                  width: ScreenUtil().setWidth(79),
-                                  height: ScreenUtil().setWidth(36),
+                                  width: 79.w,
+                                  height: 36.w,
                                   alignment: Alignment.center,
                                   padding: currentIndex != e
                                       ? null
-                                      : EdgeInsets.only(
-                                          top: ScreenUtil().setWidth(2),
-                                          right: ScreenUtil().setWidth(3)),
+                                      : EdgeInsets.only(top: 2.w, right: 3.w),
                                   child: Text(
                                     tabList[e]['title'],
                                     style: TextStyle(
                                         color: currentIndex != e
                                             ? Colors.white
                                             : Color(0xff6d6567),
-                                        fontSize: ScreenUtil().setSp(16),
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                 )
