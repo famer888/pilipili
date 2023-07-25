@@ -6,8 +6,8 @@ import 'package:pilipili/utils/api.dart';
 class Search with ChangeNotifier {
   List<dynamic> get historyTags => _historyTags;
   List<dynamic> _historyTags;
-  List<dynamic> get hotTags => _hotTags;
-  List<dynamic> _hotTags;
+  List<String> get hotTags => _hotTags;
+  List<String> _hotTags;
 
   int get currentPage => _currentPage;
   int _currentPage;
@@ -20,17 +20,17 @@ class Search with ChangeNotifier {
     _historyTags = AppGlobal.appBox.get('search_history') ?? [];
     var res = await gethotTags();
     if (res['status'] != 0) {
-      _hotTags = res['data'] ?? [];
+      _hotTags = List<String>.from(res['data'] ?? []);
     }
   }
 
-  void addHistoryTag(dynamic tag) {
+  void addHistoryTag(String tag) {
     _historyTags.add(tag);
     AppGlobal.appBox.put('search_history', _historyTags);
     notifyListeners();
   }
 
-  void removeHistoryTag(dynamic tag) {
+  void removeHistoryTag(String tag) {
     _historyTags.remove(tag);
     AppGlobal.appBox.put('search_history', _historyTags);
     notifyListeners();
