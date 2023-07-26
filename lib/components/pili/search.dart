@@ -488,12 +488,9 @@ class _SearchResultState extends State<SearchResult> {
                     )
                   ]),
                   child: ListView.separated(
-                    separatorBuilder: (context, index) =>
-                        index == tabList.length - 1
-                            ? null
-                            : SizedBox(
-                                width: 20.w,
-                              ),
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 20.w,
+                    ),
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.zero,
                     itemCount: tabList.length,
