@@ -790,7 +790,6 @@ class _SearchHeaderState extends State<SearchHeader> {
                         if (!hideClear && value.isEmpty) {
                           widget.pageController.jumpToPage(0);
                           widget.hideClearIconNotifier.value = true;
-                          setState(() {});
                         }
                         if (hideClear && value.isNotEmpty) {
                           widget.hideClearIconNotifier.value = false;
