@@ -104,43 +104,54 @@ class _ListPageState extends State<ListPage> with CardMixin {
 
   Future<void> getPageData() async {
     var res;
-    if (listType == 'manhua') {
-      res = await getComicsList(type: 3, limit: limit, page: page);
-      isHorizontal = false;
-      cardType = 2;
-    } else if (listType == 'image') {
-      res = await getPicList(limit: limit, page: page);
-      isHorizontal = false;
-      cardType = 6;
-    } else if (listType == 'gold') {
-      res = await getChangVideoList(limit: limit, page: page, isfree: 2);
-      isHorizontal = true;
-      isFall = true;
-      cardType = 1;
-    } else if (listType == 'vip') {
-      res = await getChangVideoList(limit: limit, page: page, isfree: 1);
-      isHorizontal = true;
-      isFall = true;
-      cardType = 1;
-    } else if (listType == 'new') {
-      res = await getChangVideoList(limit: limit, page: page);
-      isHorizontal = true;
-      isFall = true;
-      cardType = 1;
-    } else if (listType == 'dongman') {
-      res = await getChangVideoList(
-          type: 1, limit: limit, page: page, category: 1);
-      isHorizontal = true;
-      cardType = 1;
-    } else if (listType == 'dazhebao') {
-      res = await getPackageList(limit: limit, page: page);
-      isListView = true;
-    } else if (listType == 'huodong') {
-      res = await activityList();
-      isListView = true;
-      isActivity = true;
-    } else if (listType == 'tansuo') {
-      isTansuo = true;
+    switch (listType) {
+      case 'manhua':
+        res = await getComicsList(type: 3, limit: limit, page: page);
+        isHorizontal = false;
+        cardType = 2;
+        break;
+      case 'image':
+        res = await getPicList(limit: limit, page: page);
+        isHorizontal = false;
+        cardType = 6;
+        break;
+      case 'gold':
+        res = await getChangVideoList(limit: limit, page: page, isfree: 2);
+        isHorizontal = true;
+        isFall = true;
+        cardType = 1;
+        break;
+      case 'vip':
+        res = await getChangVideoList(limit: limit, page: page, isfree: 1);
+        isHorizontal = true;
+        isFall = true;
+        cardType = 1;
+        break;
+      case 'new':
+        res = await getChangVideoList(limit: limit, page: page);
+        isHorizontal = true;
+        isFall = true;
+        cardType = 1;
+        break;
+      case 'dongman':
+        res = await getChangVideoList(
+            type: 1, limit: limit, page: page, category: 1);
+        isHorizontal = true;
+        cardType = 1;
+        break;
+      case 'dazhebao':
+        res = await getPackageList(limit: limit, page: page);
+        isListView = true;
+        break;
+      case 'huodong':
+        res = await activityList();
+        isListView = true;
+        isActivity = true;
+        break;
+      case 'tansuo':
+        isTansuo = true;
+        break;
+      default:
     }
 
     if (res == null) {
