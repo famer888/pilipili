@@ -151,124 +151,137 @@ class _SearchPageState extends State<SearchPage> {
                                               shouldRebuild: (_, __) => true,
                                               builder: (context, historyTags,
                                                   child) {
-                                                return historyTags.isEmpty
-                                                    ? const SizedBox()
-                                                    : Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
+                                                return Visibility(
+                                                  visible:
+                                                      historyTags.isNotEmpty,
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                '搜索记录',
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xff6D6D6D),
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  searchProvider
-                                                                      .clearHistoryTag();
-                                                                },
-                                                                behavior:
-                                                                    HitTestBehavior
-                                                                        .translucent,
-                                                                child: PlatformAwareAssetImage(
-                                                                    url:
-                                                                        'assets/images/detail/icon_clear.png',
-                                                                    width: 20.w,
-                                                                    filterQuality:
-                                                                        FilterQuality
-                                                                            .medium),
-                                                              )
-                                                            ],
+                                                          Text(
+                                                            '搜索记录',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xff6D6D6D),
+                                                                fontSize: 14.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
                                                           ),
-                                                          ListView.builder(
-                                                              shrinkWrap: true,
-                                                              physics:
-                                                                  NeverScrollableScrollPhysics(),
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          24.w),
-                                                              itemCount:
-                                                                  historyTags
-                                                                      .length,
-                                                              itemBuilder:
-                                                                  (context,
-                                                                          index) =>
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          GestureDetector(
-                                                                            onTap:
-                                                                                () {
-                                                                              myController.text = historyTags[index];
-                                                                              hideClearNotifier.value = false;
-                                                                              searchController.jumpToPage(1);
-                                                                            },
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              searchProvider
+                                                                  .clearHistoryTag();
+                                                            },
+                                                            behavior:
+                                                                HitTestBehavior
+                                                                    .translucent,
+                                                            child: PlatformAwareAssetImage(
+                                                                url:
+                                                                    'assets/images/detail/icon_clear.png',
+                                                                width: 20.w,
+                                                                filterQuality:
+                                                                    FilterQuality
+                                                                        .medium),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      ListView.builder(
+                                                          shrinkWrap: true,
+                                                          physics:
+                                                              NeverScrollableScrollPhysics(),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  bottom: 24.w),
+                                                          itemCount: historyTags
+                                                              .length,
+                                                          itemBuilder:
+                                                              (context,
+                                                                      index) =>
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Expanded(
+                                                                        child:
+                                                                            GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            myController.text =
+                                                                                historyTags[index];
+                                                                            hideClearNotifier.value =
+                                                                                false;
+                                                                            searchController.jumpToPage(1);
+                                                                          },
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: EdgeInsets.only(
+                                                                                left: 8.w,
+                                                                                top: 8.w,
+                                                                                bottom: 8.w),
                                                                             child:
-                                                                                Padding(
-                                                                              padding: EdgeInsets.only(left: 8.w, top: 8.w, bottom: 8.w),
-                                                                              child: Text(
-                                                                                historyTags[index],
-                                                                                style: TextStyle(color: Color(0xff979797), fontSize: 14.sp),
-                                                                              ),
+                                                                                Text(
+                                                                              historyTags[index],
+                                                                              style: TextStyle(color: Color(0xff979797), fontSize: 14.sp),
                                                                             ),
                                                                           ),
-                                                                          GestureDetector(
-                                                                            onTap:
-                                                                                () {
-                                                                              searchProvider.removeHistoryTag(historyTags[index]);
-                                                                            },
-                                                                            behavior:
-                                                                                HitTestBehavior.translucent,
-                                                                            child: PlatformAwareAssetImage(
-                                                                                url: 'assets/images/detail/icon_delete.png',
-                                                                                width: 20.w,
-                                                                                filterQuality: FilterQuality.high),
-                                                                          )
-                                                                        ],
-                                                                      )),
-                                                        ],
-                                                      );
+                                                                        ),
+                                                                      ),
+                                                                      GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          searchProvider
+                                                                              .removeHistoryTag(historyTags[index]);
+                                                                        },
+                                                                        behavior:
+                                                                            HitTestBehavior.translucent,
+                                                                        child: PlatformAwareAssetImage(
+                                                                            url:
+                                                                                'assets/images/detail/icon_delete.png',
+                                                                            width:
+                                                                                20.w,
+                                                                            filterQuality: FilterQuality.high),
+                                                                      )
+                                                                    ],
+                                                                  )),
+                                                    ],
+                                                  ),
+                                                );
                                               }),
-                                          searchProvider.hotTags.isEmpty
-                                              ? const SizedBox()
-                                              : Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      '热门标签',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xff6D6D6D),
-                                                          fontSize: 14.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 12.w),
-                                                      child: Wrap(
-                                                        spacing: 8.w,
-                                                        runSpacing: 12.w,
-                                                        children: searchProvider
-                                                            .hotTags
+                                          Visibility(
+                                            visible: searchProvider
+                                                .hotTags.isNotEmpty,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '热门标签',
+                                                  style: TextStyle(
+                                                      color: Color(0xff6D6D6D),
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 12.w),
+                                                  child: Wrap(
+                                                    spacing: 8.w,
+                                                    runSpacing: 12.w,
+                                                    children:
+                                                        searchProvider.hotTags
                                                             .map((e) =>
                                                                 GestureDetector(
                                                                   onTap: () {
@@ -313,10 +326,11 @@ class _SearchPageState extends State<SearchPage> {
                                                                   ),
                                                                 ))
                                                             .toList(),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
