@@ -73,12 +73,12 @@ class _ListPageState extends State<ListPage> with CardMixin {
       pageStatus = 1;
       getBanner();
     }
-    EventBus().on('lanmu-init-view', (arg) {
+    EventBus().on('lanmu-init-view', (arg) async {
       if (arg['parentName'] == widget.parentName &&
           arg['currentIndex'] == widget.index &&
           pageStatus == 0) {
         pageStatus = 1;
-        getPageData();
+        await getPageData();
       }
     });
   }
@@ -102,7 +102,7 @@ class _ListPageState extends State<ListPage> with CardMixin {
     });
   }
 
-  getPageData() async {
+  Future<void> getPageData() async {
     var res;
     if (listType == 'manhua') {
       res = await getComicsList(type: 3, limit: limit, page: page);

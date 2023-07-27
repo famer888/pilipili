@@ -4,6 +4,7 @@ import 'package:pilipili/components/common/scrollnav.dart';
 import 'package:pilipili/components/filter_list.dart';
 import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
+import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -87,16 +88,14 @@ class _DongmanState extends State<Dongman> {
   @override
   Widget build(BuildContext context) {
     return navitems == null
-        ? Container()
+        ? PageStatus.loading(true)
         : Scrollnav(
             emitName: 'dongman',
             navitems: navitems,
             onNavIndexChanged: (index) {
-              Future.delayed(Duration(milliseconds: 300), () {
-                EventBus().emit('lanmu-init-view', {
-                  'parentName': 'dongman',
-                  'currentIndex': index,
-                });
+              EventBus().emit('lanmu-init-view', {
+                'parentName': 'dongman',
+                'currentIndex': index,
               });
               setState(() {
                 currentIndex = index;

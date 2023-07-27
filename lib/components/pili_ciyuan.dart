@@ -106,11 +106,9 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
               setState(() {
                 currentIndex = index;
               });
-              Future.delayed(Duration(milliseconds: 300), () {
-                EventBus().emit('lanmu-init-view', {
-                  'parentName': 'ciyuan',
-                  'currentIndex': index,
-                });
+              EventBus().emit('lanmu-init-view', {
+                'parentName': 'ciyuan',
+                'currentIndex': index,
               });
             },
             pages: pages,

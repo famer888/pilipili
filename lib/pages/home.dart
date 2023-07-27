@@ -367,56 +367,59 @@ class _HomeState extends State<Home> {
           ? PageStatus.loading(mounted)
           : [
               Positioned(
-                  left: -selectedKey * ScreenUtil().screenWidth,
+                  left: -selectedKey * 1.sw,
                   top: 0,
                   bottom: 0,
-                  child: Container(
-                    width: ScreenUtil().screenWidth,
-                    height: double.infinity,
+                  child: SizedBox(
+                    width: 1.sw,
+                    height: 1.sh,
                     child: PiliCiyuan(
                       isShow: selectedKey == 0,
                     ),
                   )),
               Positioned(
-                  left: (-selectedKey + 1) * ScreenUtil().screenWidth,
+                  left: (-selectedKey + 1) * 1.sw,
                   top: 0,
                   bottom: 0,
-                  child: Container(
-                      width: ScreenUtil().screenWidth,
-                      height: double.infinity,
-                      child: Dongman(
-                        isShow: selectedKey == 1,
-                      ))),
+                  child: SizedBox(
+                    width: 1.sw,
+                    height: 1.sh,
+                    child: Dongman(
+                      isShow: selectedKey == 1,
+                    ),
+                  )),
               Positioned(
-                  left: (-selectedKey + 2) * ScreenUtil().screenWidth,
+                  left: (-selectedKey + 2) * 1.sw,
                   top: 0,
                   bottom: 0,
-                  child: Container(
-                      width: ScreenUtil().screenWidth,
-                      height: double.infinity,
+                  child: SizedBox(
+                      width: 1.sw,
+                      height: 1.sh,
                       child: Manhua(
                         isShow: selectedKey == 2,
                       ))),
               Positioned(
-                  left: (-selectedKey + 3) * ScreenUtil().screenWidth,
+                  left: (-selectedKey + 3) * 1.sw,
                   top: 0,
                   bottom: 0,
-                  child: Container(
-                      width: ScreenUtil().screenWidth,
-                      height: double.infinity,
-                      child: YuemeiPage(
-                        isShow: selectedKey == 3,
-                      ))),
+                  child: SizedBox(
+                    width: 1.sw,
+                    height: 1.sh,
+                    child: YuemeiPage(
+                      isShow: selectedKey == 3,
+                    ),
+                  )),
               Positioned(
-                  left: (-selectedKey + 4) * ScreenUtil().screenWidth,
+                  left: (-selectedKey + 4) * 1.sw,
                   top: 0,
                   bottom: 0,
-                  child: Container(
-                      width: ScreenUtil().screenWidth,
-                      height: double.infinity,
-                      child: Wode(
-                        isShow: selectedKey == 4,
-                      ))),
+                  child: SizedBox(
+                    width: 1.sw,
+                    height: 1.sh,
+                    child: Wode(
+                      isShow: selectedKey == 4,
+                    ),
+                  )),
               Positioned(
                 right: 0,
                 left: 0,
@@ -429,65 +432,55 @@ class _HomeState extends State<Home> {
                         blurRadius: 10,
                         spreadRadius: 5)
                   ]),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: DefaultStyle.bottomnavbarHegiht +
-                            MediaQuery.of(context).padding.bottom,
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).padding.bottom),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: navBarItem
-                              .asMap()
-                              .keys
-                              .map((key) => GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedKey = key;
-                                      });
+                  child: Container(
+                    width: 1.sw,
+                    height: DefaultStyle.bottomnavbarHegiht +
+                        ScreenUtil().bottomBarHeight,
+                    padding:
+                        EdgeInsets.only(bottom: ScreenUtil().bottomBarHeight),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: navBarItem
+                          .asMap()
+                          .keys
+                          .map((key) => GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedKey = key;
+                                  });
 
-                                      if (key == 3) {
-                                        CommonUtils.updateSystemNotice(context);
-                                      }
-                                    },
-                                    child: Column(
-                                      children: [
-                                        !loading
-                                            ? getImage(
-                                                selectedKey == key
-                                                    ? navBarItem[key]
-                                                        ['activeIcon']
-                                                    : navBarItem[key]['icon'],
-                                                width: 25.w,
-                                                height: 25.w,
-                                                fit: BoxFit.fitWidth,
-                                                filterQuality:
-                                                    FilterQuality.high)
-                                            : Container(),
-                                        Text(
-                                          navBarItem[key]['title'],
-                                          style: selectedKey == key
-                                              ? DefaultStyle.bottomNavStyle
-                                              : DefaultStyle.lgray12,
-                                        )
-                                      ],
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      )
-                    ],
+                                  if (key == 3) {
+                                    CommonUtils.updateSystemNotice(context);
+                                  }
+                                },
+                                child: Column(
+                                  children: [
+                                    !loading
+                                        ? getImage(
+                                            selectedKey == key
+                                                ? navBarItem[key]['activeIcon']
+                                                : navBarItem[key]['icon'],
+                                            width: 25.w,
+                                            height: 25.w,
+                                            fit: BoxFit.fitWidth,
+                                            filterQuality: FilterQuality.high)
+                                        : const SizedBox(),
+                                    Text(
+                                      navBarItem[key]['title'],
+                                      style: selectedKey == key
+                                          ? DefaultStyle.bottomNavStyle
+                                          : DefaultStyle.lgray12,
+                                    )
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                ),
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ),
               ),
-              Container(
-                height: double.infinity,
-              )
             ],
     );
   }

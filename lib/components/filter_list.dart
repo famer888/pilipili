@@ -81,12 +81,12 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       pageStatus = 1;
       getPageData();
     }
-    EventBus().on('lanmu-init-view', (arg) {
+    EventBus().on('lanmu-init-view', (arg) async {
       if (arg['parentName'] == widget.parentName &&
           arg['currentIndex'] == widget.index &&
           pageStatus == 0) {
         pageStatus = 1;
-        getPageData();
+        await getPageData();
       }
     });
   }
@@ -147,8 +147,9 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
     setState(() {});
   }
 
-  void getPageData() async {
-    getElementById(id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
+  Future<void> getPageData() async {
+    await getElementById(
+            id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
         .then((res) {
       if (res == null) {
         networkErr = true;

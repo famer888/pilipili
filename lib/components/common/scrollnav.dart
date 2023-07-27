@@ -242,6 +242,6 @@ class _ScrollnavState extends State<Scrollnav> {
                   ))
             ],
           )
-        : Container();
+        : const SizedBox();
   }
 }

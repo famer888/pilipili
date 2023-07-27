@@ -49,12 +49,12 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    EventBus().on('lanmu-init-view', (arg) {
+    EventBus().on('lanmu-init-view', (arg) async {
       if (arg['parentName'] == widget.parentName &&
           arg['currentIndex'] == widget.index &&
           pageStatus == 0) {
         pageStatus = 1;
-        getPageData();
+        await getPageData();
       }
     });
     if (widget.isShow && pageStatus == 0) {
@@ -63,8 +63,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
     }
   }
 
-  void getPageData() async {
-    getConstructById(id: widget.id, page: page, limit: limit).then((res) {
+  Future<void> getPageData() async {
+    await getConstructById(id: widget.id, page: page, limit: limit).then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
