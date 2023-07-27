@@ -19,9 +19,9 @@ class Dongman extends StatefulWidget {
 }
 
 class _DongmanState extends State<Dongman> {
-  List<LinkModel> navitems;
+  List<LinkModel> navitems = [];
   int currentIndex = 0;
-  List pages = [];
+  List<Widget> pages = [];
   bool initPage = false;
   @override
   void initState() {
@@ -49,45 +49,43 @@ class _DongmanState extends State<Dongman> {
       setState(() {});
       return;
     }
-    navitems = data.value.asMap().keys.map((e) {
-      return LinkModel.fromJson(data.value[e]);
-    }).toList();
-    pages = data.value.asMap().keys.map((e) {
-      LinkModel _link = LinkModel.fromJson(data.value[e]);
-      if (_link.redirectType == 3) {
+    data.value.asMap().forEach((index, data) {
+      LinkModel item = LinkModel.fromJson(data);
+      navitems.add(item);
+      if (item.redirectType == 3) {
         // 模块化栏目页
-        return PageViewMixin(
+        pages.add(PageViewMixin(
           child: Lanmu(
-              isShow: currentIndex == e,
-              id: int.parse(navitems[e].linkUrl),
+              isShow: currentIndex == index,
+              id: int.parse(item.linkUrl),
               parentName: 'dongman',
-              index: e),
-        );
-      } else if (_link.redirectType == 6) {
+              index: index),
+        ));
+      } else if (item.redirectType == 6) {
         //筛选
-        return PageViewMixin(
+        pages.add(PageViewMixin(
           child: FilterList(
               parentName: 'dongman',
-              isShow: currentIndex == e,
-              data: navitems[e].linkUrl,
-              index: e),
-        );
+              isShow: currentIndex == index,
+              data: item.linkUrl,
+              index: index),
+        ));
       } else {
-        return ListPage(
+        pages.add(ListPage(
           parentName: 'dongman',
-          isShow: currentIndex == e,
-          title: navitems[e].name,
-          id: navitems[e].linkUrl,
-          index: e,
-        );
+          isShow: currentIndex == index,
+          title: item.name,
+          id: item.linkUrl,
+          index: index,
+        ));
       }
-    }).toList();
+    });
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return navitems == null
+    return navitems.isEmpty
         ? PageStatus.loading(true)
         : Scrollnav(
             emitName: 'dongman',
