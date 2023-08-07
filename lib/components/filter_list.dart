@@ -46,7 +46,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   int elementID;
   int dataType;
   int order = 1;
-  int cardType;
+  int cardType; //内容类型 1-7
+  String cardStyle = 'h'; //h 横向2列  v 竖向三列
   ScrollController _scrollController = ScrollController();
   bool navShow = true;
   List filterNavList = [
@@ -76,6 +77,15 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       dataType = int.parse(_pramsMap['type']);
     } catch (e) {
       CommonUtils.showText('type 必须是数字');
+    }
+    try {
+       cardStyle = 'h';
+    } catch (e) {
+      if (dataType == 1 || cardType == 3) {
+        cardStyle = 'h';
+      } else {
+        cardStyle = 'v';
+      }
     }
     if (widget.isShow && pageStatus == 0) {
       pageStatus = 1;
@@ -309,38 +319,6 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                                         BeveledRectangleBorder()),
                                                 child: Stack(
                                                   children: [
-                                                    // Positioned(
-                                                    //   right: 0,
-                                                    //   left: 0,
-                                                    //   bottom: 0,
-                                                    //   top: 0,
-                                                    //   child: Stack(
-                                                    //     children: [
-                                                    //       Opacity(
-                                                    //         opacity: 0.7,
-                                                    //         child:
-                                                    //             PlatformAwareNetworkImage(
-                                                    //           noVisibilityDetector:
-                                                    //               true,
-                                                    //           url: fixedBanner[
-                                                    //                       'value']
-                                                    //                   [index]
-                                                    //               ['resource_url'],
-                                                    //           fit: BoxFit.fill,
-                                                    //         ),
-                                                    //       ),
-                                                    //       BackdropFilter(
-                                                    //         filter:
-                                                    //             ImageFilter.blur(
-                                                    //                 sigmaX: 15,
-                                                    //                 sigmaY: 15),
-                                                    //         child: Container(
-                                                    //           color: Colors.black38,
-                                                    //         ),
-                                                    //       )
-                                                    //     ],
-                                                    //   ),
-                                                    // ),
                                                     Container(
                                                       height: ScreenUtil()
                                                               .setWidth(260) +
@@ -355,12 +333,6 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                                         child: Padding(
                                                           padding:
                                                               EdgeInsets.all(0),
-                                                          // EdgeInsets.only(
-                                                          //     top: ScreenUtil()
-                                                          //             .statusBarHeight +
-                                                          //         DefaultStyle
-                                                          //             .navbarHegiht
-                                                          //             ),
                                                           child: Container(
                                                             width:
                                                                 double.infinity,
@@ -400,19 +372,14 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: DefaultStyle.pagePadding),
                                     sliver: SliverGrid.count(
-                                      crossAxisCount:
-                                          dataType == 1 || cardType == 3
-                                              ? 2
-                                              : 3,
+                                      crossAxisCount: cardStyle == 'h' ? 2 : 3,
                                       crossAxisSpacing:
                                           ScreenUtil().setWidth(7),
                                       childAspectRatio:
-                                          dataType == 1 || cardType == 3
-                                              ? 1.2
-                                              : 0.61,
+                                          cardStyle == 'h' ? 1.2 : 0.61,
                                       children:
                                           filterList.asMap().keys.map((e) {
-                                        return dataType == 1 || cardType == 3
+                                        return cardStyle == 'h'
                                             ? Hcard(
                                                 onTap: () {
                                                   AppGlobal.smallVideoApi =
