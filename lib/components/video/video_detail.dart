@@ -1281,7 +1281,7 @@ class _CommentItemState extends State<CommentItem> {
                       style: TextStyle(
                           color: Color(0xffFF5B8C),
                           fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil().setSp(16)),
+                          fontSize: 16.sp),
                       child: Text('升级VIP即可发布影评哦～'));
                 });
               }
@@ -1389,10 +1389,10 @@ class ButtonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ScreenUtil().setWidth(40),
-      height: ScreenUtil().setWidth(40),
+      width: 40.w,
+      height: 40.w,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(8)),
+          borderRadius: BorderRadius.circular(8.w),
           color: color == null ? Colors.white : Color(0XFFFF84A9),
           boxShadow: [
             BoxShadow(
@@ -1406,18 +1406,18 @@ class ButtonItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PlatformAwareAssetImage(
-              url: 'assets/images/detail/' + icon.toString() + '.png',
-              width: ScreenUtil().setWidth(10),
+              url: "assets/images/detail/$icon.png",
+              width: 10.w,
               fit: BoxFit.fitWidth,
               filterQuality: FilterQuality.medium),
           SizedBox(
-            height: ScreenUtil().setWidth(3),
+            height: 3.w,
           ),
           Text(
             name,
             style: TextStyle(
                 color: color == null ? DefaultStyle.themeColor : Colors.white,
-                fontSize: ScreenUtil().setSp(12)),
+                fontSize: 12.sp),
           )
         ],
       ),
