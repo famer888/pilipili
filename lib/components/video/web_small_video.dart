@@ -748,22 +748,19 @@ class _WebSmallVideoPlayerState extends State<WebSmallVideoPlayer>
                                               ScreenUtil().screenHeight * 5,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            return ConmentItem(
+                                            return CommentItem(
                                               souceType:
                                                   RESOURCE_TYPE_SHORT_VIDEO,
                                               id: widget.data.datumId,
                                               data: commentList[index],
                                               children: commentList[index]
                                                       ['child_comment']
-                                                  .asMap()
-                                                  .keys
-                                                  .map<Widget>((f) {
-                                                return ConmentItem(
+                                                  .map<Widget>((childComment) {
+                                                return CommentItem(
                                                     souceType:
                                                         RESOURCE_TYPE_SHORT_VIDEO,
                                                     id: widget.data.datumId,
-                                                    data: commentList[index]
-                                                        ['child_comment'][f]);
+                                                    data: childComment);
                                               }).toList(),
                                             );
                                           }),

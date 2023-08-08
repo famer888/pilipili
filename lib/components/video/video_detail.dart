@@ -15,7 +15,6 @@ import 'package:pilipili/components/video/YyVideo.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/mixin/video_mixin.dart';
 import 'package:pilipili/model/animationDetail.dart';
-import 'package:pilipili/pages/mine/app_center.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -27,7 +26,6 @@ import 'package:provider/provider.dart';
 import '../../components/page_status.dart';
 import '../../utils/common.dart';
 import '../../utils/privilege.dart';
-import 'package:pilipili/routers.dart';
 
 class VideoDetail extends StatefulWidget {
   VideoDetail({Key key, this.id}) : super(key: key);
@@ -72,104 +70,98 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       'name': '评论',
     }
   ];
-  getVideoComment() {
+  Future<void> getVideoComment() async {
     if (isAll) {
       CommonUtils.showText('已经没有评论啦～');
       return;
     }
-    getCommentList(
-            contentId: widget.id, contentType: 1, page: page, limit: limit)
-        .then((res) {
-      if (res['status'] != 0) {
-        commentLoadingStatus = 2;
-        List resdata = res['data'] == null ? [] : res['data'];
-        isAll = resdata.length < limit;
-        if (page == 1) {
-          commentList = resdata;
-        } else {
-          commentList.addAll(resdata);
-        }
-        setState(() {});
+    var res = await getCommentList(
+        contentId: widget.id, contentType: 1, page: page, limit: limit);
+    if (res['status'] != 0) {
+      commentLoadingStatus = 2;
+      List resdata = res['data'] == null ? [] : res['data'];
+      isAll = resdata.length < limit;
+      if (page == 1) {
+        commentList = resdata;
       } else {
-        CommonUtils.showText(res['msg']);
+        commentList.addAll(resdata);
       }
-    });
+      setState(() {});
+    } else {
+      CommonUtils.showText(res['msg']);
+    }
   }
 
-  getSeriesListVideo({Function setBottomSheetState}) {
-    getSeriesList(id: widget.id, type: 1, page: spage, limit: slimit)
-        .then((res) {
-      if (res['status'] != 0) {
-        List resdata = res['data'] == null || res['data']['resource'] == null
-            ? []
-            : res['data']['resource'];
-        sisAll = resdata.length < slimit;
-        if (spage == 1) {
-          seriesList = res['data'];
-          if (resdata.length < 6) {
-            firstSeriesList = resdata;
-          } else {
-            firstSeriesList = resdata.sublist(0, 6);
-          }
+  Future<void> getSeriesListVideo({Function setBottomSheetState}) async {
+    var res =
+        await getSeriesList(id: widget.id, type: 1, page: spage, limit: slimit);
+
+    if (res['status'] != 0) {
+      List resdata = res['data'] == null || res['data']['resource'] == null
+          ? []
+          : res['data']['resource'];
+      sisAll = resdata.length < slimit;
+      if (spage == 1) {
+        seriesList = res['data'];
+        if (resdata.length < 6) {
+          firstSeriesList = resdata;
         } else {
-          seriesList['resource'].addAll(res['data']['resource']);
-        }
-        if (setBottomSheetState == null) {
-          setState(() {});
-        } else {
-          setBottomSheetState();
+          firstSeriesList = resdata.sublist(0, 6);
         }
       } else {
-        CommonUtils.showText(res['msg']);
+        seriesList['resource'].addAll(res['data']['resource']);
       }
-    });
+      if (setBottomSheetState == null) {
+        setState(() {});
+      } else {
+        setBottomSheetState();
+      }
+    } else {
+      CommonUtils.showText(res['msg']);
+    }
   }
 
-  initVideoPage() {
-    getSeriesListVideo();
-    getVideoDetail(id: widget.id).then((res) {
-      CommonUtils.debugPrint("---------视频地址------" +
-          res.data.source240.toString() +
-          "-------------预览视频地址---" +
-          res.data.preview.toString());
-      if (res.status != 0) {
-        isPreview = res.data.source240 == null;
-        videoUrl = res.data.source240 == null
-            ? res?.data?.preview
-            : res.data.source240;
-        isFavorites = res.data.userFavorites == 1;
-        tags = res.data.tags == '' || res.data.tags == null
-            ? []
-            : res.data.tags.split(',');
-        likeCount = res.data.favorites;
-        videoInfo = res.data;
-        setState(() {});
-        getDetailRecommendList(
-                id: res.data.id, page: 1, limit: 20, tags: res.data.tags)
-            .then((recommend) {
-          if (recommend['status'] != 0) {
-            recommendList = recommend['data'];
-          }
-          setState(() {});
-        });
-      } else {
-        CommonUtils.showText(res.msg);
-        context.pop();
+  Future<dynamic> getAdCoin() async {
+    var adBanner = await getAdForCoin(pos: 701);
+    if (adBanner != null &&
+        adBanner['data'] != null &&
+        adBanner['data'].length > 0) {
+      _banner = adBanner['data'];
+    }
+  }
+
+  Future<void> initVideoPage() async {
+    await getSeriesListVideo();
+    await getAdCoin();
+    AnimationDetail res = await getVideoDetail(id: widget.id);
+    if (res.status != 0) {
+      CommonUtils.debugPrint(
+          "---------视频地址------${res.data.source240}-------------预览视频地址---${res.data?.preview}");
+      isPreview = res.data.source240 == null;
+      videoUrl = res.data.source240 ??= res.data.preview;
+      isFavorites = res.data.userFavorites == 1;
+      tags = res.data.tags == '' || res.data.tags == null
+          ? []
+          : res.data.tags.split(',');
+      likeCount = res.data.favorites;
+      videoInfo = res.data;
+      var recommend = await getDetailRecommendList(
+          id: res.data.id, page: 1, limit: 20, tags: res.data.tags);
+      if (recommend['status'] != 0) {
+        recommendList = recommend['data'];
       }
-    });
+    } else {
+      CommonUtils.showText(res.msg);
+      context.pop();
+    }
+
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     initVideoPage();
-    getAdForCoin(pos: 701).then((res) {
-      if (res != null && res['data'] != null && res['data'].length > 0) {
-        setState(() {
-          _banner = res['data'];
-        });
-      }
-    });
   }
 
   @override
@@ -177,43 +169,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     controller?.dispose();
     commentController?.dispose();
     super.dispose();
-  }
-
-  Widget _btnItem({String icon, String name, Color color}) {
-    return Container(
-      width: ScreenUtil().setWidth(40),
-      height: ScreenUtil().setWidth(40),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(8)),
-          color: color == null ? Colors.white : Color(0XFFFF84A9),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5.0,
-              blurStyle: BlurStyle.outer,
-              color: Color.fromRGBO(255, 91, 140, 0.2),
-              offset: Offset(0, 3.w),
-            )
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          PlatformAwareAssetImage(
-              url: 'assets/images/detail/' + icon.toString() + '.png',
-              width: ScreenUtil().setWidth(10),
-              fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.medium),
-          SizedBox(
-            height: ScreenUtil().setWidth(3),
-          ),
-          Text(
-            name,
-            style: TextStyle(
-                color: color == null ? DefaultStyle.themeColor : Colors.white,
-                fontSize: ScreenUtil().setSp(12)),
-          )
-        ],
-      ),
-    );
   }
 
   _onTapSwiper(int index) {
@@ -262,7 +217,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: ScreenUtil().setWidth(40),
+                    height: 40.w,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     decoration: BoxDecoration(color: Colors.white, boxShadow: [
@@ -360,13 +315,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          height: ScreenUtil().setWidth(210),
+                          height: 210.w,
                           width: double.infinity,
                           color: Colors.black45,
                           child: videoLoading
                               ? Center(
                                   child: Container(
-                                    width: ScreenUtil().setWidth(90),
+                                    width: 90.w,
                                     child: Image.asset(
                                         'assets/gif/loading_pink.gif',
                                         fit: BoxFit.fitWidth,
@@ -404,13 +359,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                     blurRadius: 0.5,
                                     blurStyle: BlurStyle.outer,
                                     color: Color.fromRGBO(255, 91, 140, 0.2),
-                                    offset: Offset(0, ScreenUtil().setWidth(2)),
+                                    offset: Offset(0, 2.w),
                                   )
                                 ],
                               ),
                               padding: EdgeInsets.symmetric(
                                   horizontal: DefaultStyle.pagePadding,
-                                  vertical: ScreenUtil().setWidth(8)),
+                                  vertical: 8.w),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: tabList.asMap().keys.map((e) {
@@ -422,7 +377,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                       margin: EdgeInsets.only(
                                           right: e == tabList.length - 1
                                               ? 0
-                                              : ScreenUtil().setWidth(20)),
+                                              : 20.w),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -431,7 +386,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                             child: PlatformAwareAssetImage(
                                                 url:
                                                     'assets/images/icon_love_red.png',
-                                                width: ScreenUtil().setWidth(6),
+                                                width: 6.w,
                                                 filterQuality:
                                                     FilterQuality.medium),
                                           ),
@@ -446,15 +401,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             Color(0xffFF5B8C),
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14))
+                                                        fontSize: 14.sp)
                                                     : TextStyle(
                                                         color:
                                                             Color(0xffC2C2C2),
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14)),
+                                                        fontSize: 14.sp),
                                               ),
                                             ],
                                           )
@@ -483,7 +436,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                 PageViewMixin(
                                     child: CustomScrollView(
                                   controller: _scrollController,
-                                  cacheExtent: ScreenUtil().screenHeight * 5,
+                                  cacheExtent: 1.sh * 5,
                                   slivers: [
                                     SliverToBoxAdapter(
                                       child: Column(
@@ -492,8 +445,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                         children: [
                                           Container(
                                             width: double.infinity,
-                                            margin: EdgeInsets.only(
-                                                top: ScreenUtil().setWidth(16)),
+                                            margin: EdgeInsets.only(top: 16.w),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -510,13 +462,11 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             Color(0xff404040),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16)),
+                                                        fontSize: 16.sp),
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  height:
-                                                      ScreenUtil().setWidth(17),
+                                                  height: 17.w,
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.symmetric(
@@ -547,27 +497,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                 style: TextStyle(
                                                                     color: Color(
                                                                         0xffFF5B8C),
-                                                                    fontSize: ScreenUtil()
-                                                                        .setSp(
-                                                                            12)),
+                                                                    fontSize:
+                                                                        12.sp),
                                                               ),
                                                               Text(
-                                                                videoInfo
-                                                                        .countPlay
-                                                                        .toString() +
-                                                                    '人看过 - ' +
-                                                                    videoInfo
-                                                                        .createdAt
-                                                                        .split(
-                                                                            ' ')[0]
-                                                                        .toString() +
-                                                                    '更新',
+                                                                "${videoInfo.countPlay}人看过 - ${videoInfo.createdAt.split(' ')[0]}更新",
                                                                 style: TextStyle(
                                                                     color: Color(
                                                                         0xff979797),
-                                                                    fontSize: ScreenUtil()
-                                                                        .setSp(
-                                                                            11)),
+                                                                    fontSize:
+                                                                        11.sp),
                                                               )
                                                             ],
                                                           ),
@@ -629,7 +568,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                             style: TextStyle(
                                                                                 color: Color(0xff646464),
                                                                                 fontWeight: FontWeight.bold,
-                                                                                fontSize: ScreenUtil().setSp(16)),
+                                                                                fontSize: 16.sp),
                                                                           );
                                                                         },
                                                                         cancelText:
@@ -674,16 +613,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   });
                                                                 }
                                                               },
-                                                              child: _btnItem(
+                                                              child: ButtonItem(
                                                                   icon:
                                                                       'icon_down',
                                                                   name: '下载'),
                                                             ),
                                                             SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          20),
+                                                              width: 20.w,
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
@@ -713,7 +649,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   }
                                                                 });
                                                               },
-                                                              child: _btnItem(
+                                                              child: ButtonItem(
                                                                   icon: isFavorites
                                                                       ? PPString
                                                                           .iconunLike
@@ -729,10 +665,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                       : null),
                                                             ),
                                                             SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          20),
+                                                              width: 20.w,
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
@@ -765,7 +698,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .affUrl
                                                                         .toString());
                                                               },
-                                                              child: _btnItem(
+                                                              child: ButtonItem(
                                                                   icon:
                                                                       'icon_share',
                                                                   name: '分享'),
@@ -775,19 +708,17 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       ],
                                                     )),
                                                 tags == null || tags.isEmpty
-                                                    ? Container(
+                                                    ? SizedBox(
                                                         height: 10.w,
                                                       )
                                                     : Container(
                                                         color: Colors.white54,
                                                         margin: EdgeInsets.only(
-                                                            bottom: ScreenUtil()
-                                                                .setWidth(8)),
-                                                        height: ScreenUtil()
-                                                            .setWidth(0.5),
+                                                            bottom: 8.w),
+                                                        height: 0.5.w,
                                                       ),
                                                 tags == null || tags.isEmpty
-                                                    ? Container()
+                                                    ? const SizedBox()
                                                     : Padding(
                                                         padding: EdgeInsets
                                                             .symmetric(
@@ -803,9 +734,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               spacing: 4.w,
                                                               runSpacing: 4.w,
                                                               children: tags
-                                                                  .asMap()
-                                                                  .keys
-                                                                  .map((e) {
+                                                                  .map((tag) {
                                                                 return Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
@@ -815,14 +744,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                       alignment:
                                                                           Alignment
                                                                               .center,
-                                                                      height: ScreenUtil()
-                                                                          .setWidth(
-                                                                              21),
+                                                                      height:
+                                                                          21.w,
                                                                       padding:
                                                                           EdgeInsets
                                                                               .symmetric(
                                                                         horizontal:
-                                                                            ScreenUtil().setWidth(16.5),
+                                                                            16.5.w,
                                                                       ),
                                                                       decoration: BoxDecoration(
                                                                           borderRadius: BorderRadius.circular(5
@@ -831,22 +759,23 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               Colors.white),
                                                                       child:
                                                                           Text(
-                                                                        tags[e]
-                                                                            .toString(),
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Color(0xff979797),
-                                                                            fontSize: ScreenUtil().setSp(12)),
+                                                                        "$tag",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Color(0xff979797),
+                                                                          fontSize:
+                                                                              12.sp,
+                                                                        ),
                                                                       ),
-                                                                    )
+                                                                    ),
                                                                   ],
                                                                 );
                                                               }).toList(),
                                                             ))),
                                                 Container(
                                                   color: Colors.white54,
-                                                  height: ScreenUtil()
-                                                      .setWidth(0.5),
+                                                  height: 0.5.w,
                                                 ),
                                               ],
                                             ),
@@ -854,8 +783,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                           Center(
                                               child: _banner.length > 1
                                                   ? SizedBox(
-                                                      height: ScreenUtil()
-                                                          .setWidth(160),
+                                                      height: 160.w,
                                                       width: 343.w,
                                                       child: Swiper(
                                                         onTap: (index) {
@@ -869,10 +797,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             child: Container(
                                                               height: 126.w,
                                                               child: ClipRRect(
-                                                                borderRadius: BorderRadius.circular(
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            10)),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.w),
                                                                 child: PlatformAwareNetworkImage(
                                                                     url: _banner[
                                                                             index]
@@ -889,7 +817,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         autoplay:
                                                             _banner.length > 1,
                                                       ))
-                                                  : Container(
+                                                  : SizedBox(
                                                       height:
                                                           _banner.length == 1
                                                               ? 126.w
@@ -906,7 +834,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     ['img_url'],
                                                               ),
                                                             )
-                                                          : SizedBox(),
+                                                          : const SizedBox(),
                                                     )),
                                           Container(
                                             height: 0.5.w,
@@ -918,7 +846,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                             color: Color(0xffffd1df),
                                           ),
                                           firstSeriesList.length == 0
-                                              ? Container()
+                                              ? const SizedBox()
                                               : Padding(
                                                   padding: EdgeInsets.only(
                                                       left: 18.w),
@@ -935,7 +863,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   ),
                                                 ),
                                           firstSeriesList.length == 0
-                                              ? Container()
+                                              ? const SizedBox()
                                               : SingleChildScrollView(
                                                   scrollDirection:
                                                       Axis.horizontal,
@@ -947,8 +875,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       Row(
                                                         children:
                                                             firstSeriesList
-                                                                .asMap()
-                                                                .keys
                                                                 .map((e) {
                                                           return GestureDetector(
                                                             onTap: () {
@@ -957,7 +883,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                       RegExp(
                                                                           "${PPString.test}videoDetail/.*"),
                                                                       'videoDetail/' +
-                                                                          firstSeriesList[e]['id']
+                                                                          e['id']
                                                                               .toString()),
                                                                   replace:
                                                                       true);
@@ -985,8 +911,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                             90.w,
                                                                         child:
                                                                             PlatformAwareNetworkImage(
-                                                                          url: firstSeriesList[e]
-                                                                              [
+                                                                          url: e[
                                                                               'thumb'],
                                                                           fit: BoxFit
                                                                               .cover,
@@ -996,9 +921,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     height: 8.w,
                                                                   ),
                                                                   Text(
-                                                                    firstSeriesList[
-                                                                            e][
-                                                                        'title'],
+                                                                    e['title'],
                                                                     style: TextStyle(
                                                                         color: Color(
                                                                             0xff646464),
@@ -1020,10 +943,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           showButtom();
                                                         },
                                                         child: Container(
-                                                          width: ScreenUtil()
-                                                              .setWidth(70),
-                                                          height: ScreenUtil()
-                                                              .setWidth(39),
+                                                          width: 70.w,
+                                                          height: 39.w,
                                                           alignment:
                                                               Alignment.center,
                                                           decoration:
@@ -1044,10 +965,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     spreadRadius:
                                                                         0)
                                                               ],
-                                                                  borderRadius: BorderRadius.circular(
-                                                                      ScreenUtil()
-                                                                          .setWidth(
-                                                                              50)),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(50
+                                                                              .w),
                                                                   gradient: LinearGradient(
                                                                       begin: Alignment
                                                                           .topLeft,
@@ -1073,17 +994,12 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .white14,
                                                               ),
                                                               SizedBox(
-                                                                width:
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            9),
+                                                                width: 9.w,
                                                               ),
                                                               PlatformAwareAssetImage(
                                                                   url:
                                                                       'assets/images/icon_more.png',
-                                                                  height: ScreenUtil()
-                                                                      .setWidth(
-                                                                          8),
+                                                                  height: 8.w,
                                                                   filterQuality:
                                                                       FilterQuality
                                                                           .medium)
@@ -1095,7 +1011,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   ),
                                                 ),
                                           SizedBox(
-                                            height: ScreenUtil().setWidth(11),
+                                            height: 11.w,
                                           ),
                                           WidgetTitleBar(
                                             title: '为您推荐',
@@ -1106,24 +1022,19 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                     SliverPadding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: DefaultStyle.pagePadding,
-                                          vertical: ScreenUtil().setWidth(11)),
+                                          vertical: 11.w),
                                       sliver: SliverGrid.count(
                                           crossAxisCount: 2,
-                                          crossAxisSpacing:
-                                              ScreenUtil().setWidth(7),
+                                          crossAxisSpacing: 7.w,
                                           childAspectRatio: 1.2,
                                           children: recommendList
-                                              .asMap()
-                                              .keys
                                               .map((e) => Hcard(
                                                     maxLines: 1,
                                                     replace: true,
-                                                    width: ScreenUtil()
-                                                        .setWidth(171),
+                                                    width: 171.w,
                                                     thumbUrl:
-                                                        CommonUtils.getThumb(
-                                                            recommendList[e]),
-                                                    cardData: recommendList[e],
+                                                        CommonUtils.getThumb(e),
+                                                    cardData: e,
                                                     showField: 'title',
                                                     contentType: 1,
                                                   ))
@@ -1131,10 +1042,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                     )
                                   ],
                                 )),
-                                commentLoadingStatus != 2
-                                    ? commentLoadingStatus == 1
-                                        ? PageStatus.loading(mounted)
-                                        : Container()
+                                commentLoadingStatus != 2 &&
+                                        commentLoadingStatus == 1
+                                    ? PageStatus.loading(mounted)
                                     : PageViewMixin(
                                         child: Container(
                                         child: Column(
@@ -1161,9 +1071,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       ],
                                                     )
                                                   : ListView.builder(
-                                                      cacheExtent: ScreenUtil()
-                                                              .screenHeight *
-                                                          5,
+                                                      cacheExtent: 1.sh * 5,
                                                       padding: EdgeInsets.symmetric(
                                                           vertical: DefaultStyle
                                                               .pagePadding),
@@ -1172,7 +1080,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       itemBuilder:
                                                           (BuildContext context,
                                                               int index) {
-                                                        return ConmentItem(
+                                                        return CommentItem(
                                                           souceType: videoInfo
                                                                       .category ==
                                                                   '1'
@@ -1184,19 +1092,17 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           children: commentList[
                                                                       index][
                                                                   'child_comment']
-                                                              .asMap()
-                                                              .keys
-                                                              .map<Widget>((f) {
-                                                            return ConmentItem(
+                                                              .map<Widget>(
+                                                                  (childComment) {
+                                                            return CommentItem(
                                                                 souceType: videoInfo
                                                                             .category ==
                                                                         '1'
                                                                     ? RESOURCE_TYPE_CARTOON_VIDEO
                                                                     : RESOURCE_TYPE_LONG_VIDEO,
                                                                 id: widget.id,
-                                                                data: commentList[
-                                                                        index][
-                                                                    'child_comment'][f]);
+                                                                data:
+                                                                    childComment);
                                                           }).toList(),
                                                         );
                                                       }),
@@ -1204,8 +1110,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                             Container(
                                               color: Colors.white,
                                               padding: EdgeInsets.symmetric(
-                                                  vertical:
-                                                      ScreenUtil().setWidth(9),
+                                                  vertical: 9.w,
                                                   horizontal:
                                                       DefaultStyle.pagePadding),
                                               child: GestureDetector(
@@ -1267,9 +1172,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
-                                                                    fontSize: ScreenUtil()
-                                                                        .setSp(
-                                                                            16)),
+                                                                    fontSize:
+                                                                        16.sp),
                                                               ),
                                                             ],
                                                           ));
@@ -1278,10 +1182,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 },
                                                 child: Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      horizontal: ScreenUtil()
-                                                          .setWidth(16)),
-                                                  height:
-                                                      ScreenUtil().setWidth(36),
+                                                      horizontal: 16.w),
+                                                  height: 36.w,
                                                   child: Row(
                                                     children: [
                                                       Text(
@@ -1297,9 +1199,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xff979797),
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(14)),
+                                                            fontSize: 14.sp),
                                                       )
                                                     ],
                                                   ),
@@ -1321,18 +1221,18 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   }
 }
 
-class ConmentItem extends StatefulWidget {
-  ConmentItem({Key key, this.data, this.id, this.children, this.souceType})
+class CommentItem extends StatefulWidget {
+  CommentItem({Key key, this.data, this.id, this.children, this.souceType})
       : super(key: key);
   final List<Widget> children;
   final int souceType;
   final dynamic data;
   final int id;
   @override
-  _ConmentItemState createState() => _ConmentItemState();
+  _CommentItemState createState() => _CommentItemState();
 }
 
-class _ConmentItemState extends State<ConmentItem> {
+class _CommentItemState extends State<CommentItem> {
   String inputText = '';
   String getCreateTime() {
     DateTime timeint = DateTime.parse(widget.data['created_at']);
@@ -1348,10 +1248,10 @@ class _ConmentItemState extends State<ConmentItem> {
   @override
   Widget build(BuildContext context) {
     return widget.data['userInfo'] == null
-        ? Container()
+        ? const SizedBox()
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
+            onTap: () async {
               if (widget.children == null) return;
               if (Privilege.isAllowed(
                   context, widget.souceType, PRIVILEGE_TYPE_COMMENT)) {
@@ -1387,7 +1287,7 @@ class _ConmentItemState extends State<ConmentItem> {
               }
             },
             child: Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setWidth(7.5)),
+              padding: EdgeInsets.only(top: 7.5.w),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -1399,22 +1299,19 @@ class _ConmentItemState extends State<ConmentItem> {
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                                width: ScreenUtil().setWidth(0.5),
-                                color: Color(0xffffd1df)))),
+                                width: 0.5.w, color: Color(0xffffd1df)))),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: ScreenUtil().setWidth(30),
-                          height: ScreenUtil().setWidth(30),
-                          margin:
-                              EdgeInsets.only(right: ScreenUtil().setWidth(11)),
+                          width: 30.w,
+                          height: 30.w,
+                          margin: EdgeInsets.only(right: 11.w),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                ScreenUtil().setWidth(15)),
+                            borderRadius: BorderRadius.circular(15.w),
                             child: PlatformAwareNetworkImage(
-                                width: ScreenUtil().setWidth(30),
-                                height: ScreenUtil().setWidth(30),
+                                width: 30.w,
+                                height: 30.w,
                                 fit: BoxFit.fill,
                                 url: widget.data['userInfo']['thumb']),
                           ),
@@ -1424,36 +1321,34 @@ class _ConmentItemState extends State<ConmentItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              height: ScreenUtil().setWidth(35),
+                              height: 35.w,
                               child: Row(
                                 children: [
                                   Text(
                                     widget.data['userInfo']['nickname'],
                                     style: TextStyle(
                                         color: Color(0xff646464),
-                                        fontSize: ScreenUtil().setSp(14),
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    width: ScreenUtil().setWidth(8),
+                                    width: 8.w,
                                   ),
                                   Text(
                                     getCreateTime(),
                                     style: TextStyle(
                                         color: Color(0xffC2C2C2),
-                                        fontSize: ScreenUtil().setSp(12)),
+                                        fontSize: 12.sp),
                                   ),
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: ScreenUtil().setWidth(13)),
+                              padding: EdgeInsets.only(bottom: 13.w),
                               child: Text(
                                 widget.data['reply'],
                                 style: TextStyle(
-                                    color: Color(0xff646464),
-                                    fontSize: ScreenUtil().setSp(12)),
+                                    color: Color(0xff646464), fontSize: 12.sp),
                               ),
                             )
                           ],
@@ -1464,21 +1359,17 @@ class _ConmentItemState extends State<ConmentItem> {
                   Row(
                     children: [
                       Container(
-                        width: ScreenUtil().setWidth(30),
-                        margin:
-                            EdgeInsets.only(right: ScreenUtil().setWidth(11)),
+                        width: 30.w,
+                        margin: EdgeInsets.only(right: 11.w),
                       ),
                       Expanded(
                           child: widget.children == null ||
                                   widget.children.length == 0
-                              ? SizedBox()
-                              : Container(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: widget.children,
-                                  ),
+                              ? const SizedBox()
+                              : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: widget.children,
                                 ))
                     ],
                   )
@@ -1486,5 +1377,50 @@ class _ConmentItemState extends State<ConmentItem> {
               ),
             ),
           );
+  }
+}
+
+class ButtonItem extends StatelessWidget {
+  const ButtonItem({Key key, this.name, this.icon, this.color})
+      : super(key: key);
+  final String name;
+  final String icon;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: ScreenUtil().setWidth(40),
+      height: ScreenUtil().setWidth(40),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(8)),
+          color: color == null ? Colors.white : Color(0XFFFF84A9),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 5.0,
+              blurStyle: BlurStyle.outer,
+              color: Color.fromRGBO(255, 91, 140, 0.2),
+              offset: Offset(0, 3.w),
+            )
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          PlatformAwareAssetImage(
+              url: 'assets/images/detail/' + icon.toString() + '.png',
+              width: ScreenUtil().setWidth(10),
+              fit: BoxFit.fitWidth,
+              filterQuality: FilterQuality.medium),
+          SizedBox(
+            height: ScreenUtil().setWidth(3),
+          ),
+          Text(
+            name,
+            style: TextStyle(
+                color: color == null ? DefaultStyle.themeColor : Colors.white,
+                fontSize: ScreenUtil().setSp(12)),
+          )
+        ],
+      ),
+    );
   }
 }
