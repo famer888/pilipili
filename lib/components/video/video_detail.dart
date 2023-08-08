@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,7 +41,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   String videoUrl;
   int currentTab = 0;
   DetailData videoInfo;
-  bool isFavorites = false;
+
   List recommendList = [];
   List commentList = [];
   int commentLoadingStatus = 0;
@@ -60,6 +61,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   int spage = 1;
   int slimit = 15;
   bool sisAll = false;
+  ValueNotifier<bool> isFavoriteNotifier = ValueNotifier<bool>(false);
   List tabList = [
     {
       'id': 1,
@@ -139,7 +141,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
           "---------视频地址------${res.data.source240}-------------预览视频地址---${res.data?.preview}");
       isPreview = res.data.source240 == null;
       videoUrl = res.data.source240 ??= res.data.preview;
-      isFavorites = res.data.userFavorites == 1;
+      isFavoriteNotifier.value = res.data.userFavorites == 1;
       tags = res.data.tags == '' || res.data.tags == null
           ? []
           : res.data.tags.split(',');
@@ -515,7 +517,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           mainAxisSize:
                                                               MainAxisSize.min,
                                                           children: [
-                                                            GestureDetector(
+                                                            ButtonItem(
+                                                              icon: 'icon_down',
+                                                              name: '下载',
                                                               onTap: () async {
                                                                 if (kIsWeb) {
                                                                   CommonUtils
@@ -613,62 +617,62 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   });
                                                                 }
                                                               },
-                                                              child: ButtonItem(
-                                                                  icon:
-                                                                      'icon_down',
-                                                                  name: '下载'),
                                                             ),
                                                             SizedBox(
                                                               width: 20.w,
                                                             ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                userFavorites(
-                                                                        type: 1,
-                                                                        id: videoInfo
-                                                                            .id)
-                                                                    .then(
-                                                                        (res) {
-                                                                  if (res !=
-                                                                          null &&
-                                                                      res.status !=
-                                                                          0) {
-                                                                    if (isFavorites) {
-                                                                      likeCount--;
-                                                                    } else {
-                                                                      likeCount++;
-                                                                    }
-                                                                    isFavorites =
-                                                                        !isFavorites;
-                                                                    setState(
-                                                                        () {});
-                                                                  } else {
-                                                                    CommonUtils
-                                                                        .showText(
+                                                            ValueListenableBuilder(
+                                                                valueListenable:
+                                                                    isFavoriteNotifier,
+                                                                builder: (context,
+                                                                    isFavorite,
+                                                                    child) {
+                                                                  return ButtonItem(
+                                                                    icon: isFavorite
+                                                                        ? PPString
+                                                                            .iconunLike
+                                                                        : PPString
+                                                                            .iconLike,
+                                                                    name: CommonUtils.renderFixedNumber(
+                                                                        likeCount
+                                                                            .toDouble()),
+                                                                    color: isFavorite
+                                                                        ? Color(
+                                                                            0xffFF84A9)
+                                                                        : null,
+                                                                    onTap:
+                                                                        () async {
+                                                                      var res = await userFavorites(
+                                                                          type:
+                                                                              1,
+                                                                          id: videoInfo
+                                                                              .id);
+                                                                      if (res !=
+                                                                              null &&
+                                                                          res.status !=
+                                                                              0) {
+                                                                        if (isFavorite) {
+                                                                          likeCount--;
+                                                                        } else {
+                                                                          likeCount++;
+                                                                        }
+                                                                        isFavoriteNotifier.value =
+                                                                            !isFavorite;
+                                                                      } else {
+                                                                        CommonUtils.showText(
                                                                             res.msg);
-                                                                  }
-                                                                });
-                                                              },
-                                                              child: ButtonItem(
-                                                                  icon: isFavorites
-                                                                      ? PPString
-                                                                          .iconunLike
-                                                                      : PPString
-                                                                          .iconLike,
-                                                                  name: CommonUtils
-                                                                      .renderFixedNumber(
-                                                                          likeCount
-                                                                              .toDouble()),
-                                                                  color: isFavorites
-                                                                      ? Color(
-                                                                          0xffFF84A9)
-                                                                      : null),
-                                                            ),
+                                                                      }
+                                                                    },
+                                                                  );
+                                                                }),
                                                             SizedBox(
                                                               width: 20.w,
                                                             ),
-                                                            GestureDetector(
-                                                              onTap: () {
+                                                            ButtonItem(
+                                                              icon:
+                                                                  'icon_share',
+                                                              name: '分享',
+                                                              onTap: () async {
                                                                 var config = Provider.of<
                                                                             HomeConfig>(
                                                                         context,
@@ -698,10 +702,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .affUrl
                                                                         .toString());
                                                               },
-                                                              child: ButtonItem(
-                                                                  icon:
-                                                                      'icon_share',
-                                                                  name: '分享'),
                                                             )
                                                           ],
                                                         )
@@ -1380,46 +1380,80 @@ class _CommentItemState extends State<CommentItem> {
   }
 }
 
-class ButtonItem extends StatelessWidget {
-  const ButtonItem({Key key, this.name, this.icon, this.color})
+class ButtonItem extends StatefulWidget {
+  const ButtonItem({Key key, this.name, this.icon, this.color, this.onTap})
       : super(key: key);
   final String name;
   final String icon;
   final Color color;
+  final Future Function() onTap;
+
+  @override
+  State<ButtonItem> createState() => _ButtonItemState();
+}
+
+class _ButtonItemState extends State<ButtonItem> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40.w,
-      height: 40.w,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.w),
-          color: color == null ? Colors.white : Color(0XFFFF84A9),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5.0,
-              blurStyle: BlurStyle.outer,
-              color: Color.fromRGBO(255, 91, 140, 0.2),
-              offset: Offset(0, 3.w),
-            )
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          PlatformAwareAssetImage(
-              url: "assets/images/detail/$icon.png",
-              width: 10.w,
-              fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.medium),
-          SizedBox(
-            height: 3.w,
-          ),
-          Text(
-            name,
-            style: TextStyle(
-                color: color == null ? DefaultStyle.themeColor : Colors.white,
-                fontSize: 12.sp),
-          )
-        ],
+    return GestureDetector(
+      onTap: widget.onTap == null
+          ? null
+          : () async {
+              if (isLoading) {
+                return;
+              } else {
+                isLoading = true;
+                if (mounted) {
+                  setState(() {});
+                }
+                await widget.onTap?.call();
+                isLoading = false;
+                if (mounted) {
+                  setState(() {});
+                }
+              }
+            },
+      child: Container(
+        width: 40.w,
+        height: 40.w,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.w),
+            color:
+                widget.color == null ? Colors.white : DefaultStyle.themeColor,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5.0,
+                blurStyle: BlurStyle.outer,
+                color: Color.fromRGBO(255, 91, 140, 0.2),
+                offset: Offset(0, 3.w),
+              )
+            ]),
+        child: isLoading
+            ? const CupertinoActivityIndicator()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PlatformAwareAssetImage(
+                      url: "assets/images/detail/${widget.icon}.png",
+                      width: 10.w,
+                      height: 10.w,
+                      fit: BoxFit.fitWidth,
+                      filterQuality: FilterQuality.medium),
+                  SizedBox(
+                    height: 3.w,
+                  ),
+                  Text(
+                    widget.name,
+                    style: TextStyle(
+                        color: widget.color == null
+                            ? DefaultStyle.themeColor
+                            : Colors.white,
+                        fontSize: 12.sp),
+                  )
+                ],
+              ),
       ),
     );
   }
