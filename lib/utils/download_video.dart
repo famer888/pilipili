@@ -14,7 +14,7 @@ import 'package:pilipili/utils/crypto.dart';
 import 'package:hive/hive.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Dio dio = Dio();

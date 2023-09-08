@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
@@ -20,12 +22,77 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:convert/convert.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'api.dart';
 
 class CommonUtils {
+  //特殊字符处理
+  static Widget getContentSpan(
+    String text, {
+    bool isCopy = false,
+    TextStyle style,
+    TextStyle lightStyle,
+  }) {
+    style = style ??
+        TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp);
+    lightStyle = lightStyle ??
+        TextStyle(color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
+    List<InlineSpan> _contentList = [];
+    RegExp exp = RegExp(
+        r'(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?');
+    Iterable<RegExpMatch> matches = exp.allMatches(text);
+
+    int index = 0;
+    for (var match in matches) {
+      /// start 0  end 8
+      /// start 10 end 12
+      String c = text.substring(match.start, match.end);
+      if (match.start == index) {
+        index = match.end;
+      }
+      if (index < match.start) {
+        String a = text.substring(index, match.start);
+        index = match.end;
+        _contentList.add(
+          TextSpan(text: a, style: style),
+        );
+      }
+      if (RegexUtil.isURL(c)) {
+        _contentList.add(TextSpan(
+            text: c,
+            style: lightStyle,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                CommonUtils.launchURL(text.substring(match.start, match.end));
+              }));
+      } else {
+        _contentList.add(
+          TextSpan(text: c, style: style),
+        );
+      }
+    }
+    if (index < text.length) {
+      String a = text.substring(index, text.length);
+      _contentList.add(
+        TextSpan(text: a, style: style),
+      );
+    }
+    if (isCopy) {
+      return SelectableText.rich(
+        TextSpan(children: _contentList),
+        strutStyle:
+            const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5),
+      );
+    }
+    return RichText(
+        textAlign: TextAlign.left,
+        text: TextSpan(children: _contentList),
+        strutStyle:
+            const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5));
+  }
+  
   static bool isAndroidWeb() {
     return kIsWeb &&
         (html.window.navigator.userAgent.indexOf('Android') > -1 ||
@@ -146,7 +213,7 @@ class CommonUtils {
   static void debugPrint(value) {
     const bool inProduction = const bool.fromEnvironment("dart.vm.product");
     if (!inProduction) {
-      LogUtil.d(value);
+      LogUtilS.d(value);
     }
   }
 

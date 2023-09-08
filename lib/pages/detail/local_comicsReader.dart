@@ -11,7 +11,7 @@ import 'package:pilipili/components/scrollablePositionedList/scrollable_position
 import 'package:pilipili/mixin/watchRecordMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 

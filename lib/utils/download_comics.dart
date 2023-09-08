@@ -14,7 +14,7 @@ import 'package:pilipili/utils/crypto.dart';
 import 'package:hive/hive.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pilipili/model/comicReading.dart';
 import 'package:pilipili/utils/api.dart';
@@ -152,7 +152,7 @@ class DownloadComics {
       }
       creating = false;
     } catch (e) {
-      LogUtil.d('创建下载任务失败----${e}');
+      LogUtilS.d('创建下载任务失败----${e}');
       CommonUtils.showText('创建下载任务失败');
       creating = false;
     }
@@ -169,7 +169,7 @@ class DownloadComics {
 
   // 开始下个任务
   static startNext() async {
-    LogUtil.d('开始下个任务----${downloadTasks}');
+    LogUtilS.d('开始下个任务----${downloadTasks}');
     if (downloadTasks.length > 0) {
       // LogUtil.d("${downloadTasks[0]["taskInfo"]["title"]}");
       Box box = await Hive.openBox('HiveBox');
@@ -245,7 +245,7 @@ class DownloadComics {
           start();
         }
       } catch (e) {
-        LogUtil.d("下载集报错----${e}");
+        LogUtilS.d("下载集报错----${e}");
         // 下载失败，开始下个任务
         Map taskBox = await getTask(taskInfo["id"]);
         List tasks = taskBox["tasks"];
@@ -292,7 +292,7 @@ class DownloadComics {
           // LogUtil.d(
           //     "下载完成----当前图片：${currentImgIndex}/${dataList.data.length}--------当前章节：${finishCount + 1}");
         } else {
-          LogUtil.d("图片为空");
+          LogUtilS.d("图片为空");
         }
         errlimit = 0;
         if (currentImgIndex >= dataList.data.length) {
@@ -336,7 +336,7 @@ class DownloadComics {
             return itemFinish(
                 savePath + (currentImgIndex + 1).toString() + ".png");
           } else {
-            LogUtil.d("图片解密出错");
+            LogUtilS.d("图片解密出错");
             if (errlimit < 5) {
               errlimit++;
               return start();
@@ -344,7 +344,7 @@ class DownloadComics {
             return itemFinish('');
           }
         } else {
-          LogUtil.d("获取图片地址出错");
+          LogUtilS.d("获取图片地址出错");
           if (errlimit < 5) {
             errlimit++;
             return start();
@@ -370,7 +370,7 @@ class DownloadComics {
         //   }
         // });
       } catch (e) {
-        LogUtil.d("下载单图报错-------$e");
+        LogUtilS.d("下载单图报错-------$e");
         if (errlimit < 5) {
           errlimit++;
           return start();

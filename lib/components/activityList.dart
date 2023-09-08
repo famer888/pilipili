@@ -6,7 +6,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import '../utils/api.dart';
 
@@ -27,7 +27,7 @@ class _ActivityListState extends State<ActivityList> {
 
   getData() {
     getActivityList().then((res) {
-      LogUtil.d(res['data']);
+      LogUtilS.d(res['data']);
       if (res != null && res['data'] != null) {
         setState(() {
           listData = res['data'];

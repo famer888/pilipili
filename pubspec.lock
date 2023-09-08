@@ -190,6 +190,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  common_utils:
+    dependency: "direct main"
+    description:
+      name: common_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   connectivity_plus:
     dependency: "direct main"
     description:
@@ -288,6 +295,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.1"
+  decimal:
+    dependency: transitive
+    description:
+      name: decimal
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.3"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -926,6 +940,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1+1"
+  rational:
+    dependency: transitive
+    description:
+      name: rational
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1228,12 +1249,10 @@ packages:
   video_player_web_hls:
     dependency: "direct main"
     description:
-      path: "."
-      ref: fe05017
-      resolved-ref: fe050177140e5a6df62f415ecb9a8494a9396bbb
-      url: "git@172.105.200.120:rn/video_player_web_hls-0.1.11_6.git"
-    source: git
-    version: "0.1.11+6"
+      path: "plugins/video_player_web_hls-1.0.0+2"
+      relative: true
+    source: path
+    version: "1.0.0+2"
   visibility_detector:
     dependency: "direct main"
     description:

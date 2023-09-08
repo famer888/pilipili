@@ -24,6 +24,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:hive/hive.dart';
 import 'package:universal_html/html.dart' as html;
+import "package:universal_html/js.dart" as js;
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -252,7 +253,10 @@ class _HomeState extends State<Home> {
 
   // ���告提示
   void showAnnouncement(String message) {
-    if (showAnnouncementStatus == true) return;
+    if (showAnnouncementStatus == true) {
+      _addMainScreen();
+      return;
+      }
     bool isSelf = false;
     isSelf = Provider.of<HomeConfig>(context, listen: false).member.channel ==
         "self";
@@ -261,17 +265,111 @@ class _HomeState extends State<Home> {
       context: context,
       cancel: () {
         AppGlobal.yyShow = false;
+        _addMainScreen();
       },
       confirm: () {
         AppGlobal.yyShow = false;
+        _addMainScreen();
       },
-      confirmApp: () {},
+      confirmApp: () {
+        // _addMainScreen();
+      },
       text: "$message",
       type: isSelf ? "2" : "1",
     );
     setState(() {
       showAnnouncementStatus = true;
     });
+  }
+
+
+  //加载添加到主屏幕功能
+  void _addMainScreen() async {
+    if (!kIsWeb) return;
+    final bool isInstall =
+        (js.context.callMethod("getInstallValue") as String) == "1";
+    final bool isSafari = js.context.callMethod("checkSafari") as bool;
+    if (!isSafari && !isInstall) {
+      showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, setBottomSheetState) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5.w),
+                      topLeft: Radius.circular(5.w)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 20.w),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(width: 20.w, height: 20.w),
+                        Text(
+                          "添加PiliPili到主屏幕？[如已添加请忽略]",
+                          style: TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp),
+                        ),
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(
+                            Icons.close,
+                            size: 20.w,
+                            color: Color.fromRGBO(30, 30, 30, 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30.w),
+                    CommonUtils.getContentSpan(
+                      "如无法正常添加到主屏幕，请下载最新版本的Google浏览器https://www.google.cn/intl/zh-CN/chrome，打开Google浏览器，输入本站网址000，点击右上角的【菜单】然后选择【添加到主屏幕】即可完成WEB版APP"
+                          .replaceAll("000", html.window.location.href),
+                      style: TextStyle(color: const Color.fromRGBO(245, 28, 88, 1).withOpacity(0.5), fontSize: 12.sp),
+                      lightStyle: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color.fromRGBO(25, 103, 210, 1)),
+                    ),
+                    SizedBox(height: 20.w),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        final bool isDeferredNotNull =
+                            js.context.callMethod("isDeferredNotNull") as bool;
+                        if (isDeferredNotNull) {
+                          js.context.callMethod("presentAddToHome");
+                        } else {
+                          CommonUtils.showText("当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作", time: 2);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(245, 28, 88, 1),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.w))),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                        height: 32.w,
+                        alignment: Alignment.center,
+                        child: Text("添加到主屏幕",
+                            style: TextStyle(color: Colors.white, fontSize: 13.sp)),
+                      ),
+                    ),
+                    SizedBox(height: 30.w),
+                  ],
+                ),
+              );
+            });
+          });
+    }
   }
 
   // 活动弹窗

@@ -13,7 +13,7 @@ import 'dart:io';
 import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/download_comics.dart';
 
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class DownPage extends StatefulWidget {
@@ -371,7 +371,7 @@ class _DownListState extends State<DownList> {
   Future getComicsDownloadInfo() async {
     Box box = await Hive.openBox('HiveBox');
     data = box.get('download_comics_tasks') ?? [];
-    LogUtil.d("漫画信息-----"+data.toString());
+    LogUtilS.d("漫画信息-----"+data.toString());
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;
     }

@@ -9,7 +9,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
-class LogUtil {
+class LogUtilS {
   static var _separator = "=";
   static var _split =
       "$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator";
