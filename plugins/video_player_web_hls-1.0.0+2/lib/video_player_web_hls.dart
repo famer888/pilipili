@@ -131,6 +131,23 @@ class VideoPlayerPluginHls extends VideoPlayerPlatform {
     return _player(textureId).seekTo(position);
   }
 
+  
+  @override
+  void requestFullScreen(int textureId) {
+    _player(textureId).requestFullScreen();
+  }
+
+  @override
+  void exitFullScreen(int textureId) {
+    _player(textureId).exitFullScreen();
+  }
+
+  @override
+  Future<void> changeVideo(int textureId, String newUri) async {
+    await _player(textureId).changeVideo(newUri);
+  }
+
+
   @override
   Future<Duration> getPosition(int textureId) async {
     return _player(textureId).getPosition();

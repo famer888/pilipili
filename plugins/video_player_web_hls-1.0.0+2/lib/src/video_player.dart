@@ -54,7 +54,7 @@ class VideoPlayer {
 
   final StreamController<VideoEvent> _eventController;
   final html.VideoElement _videoElement;
-  final String uri;
+  String uri;
   final Map<String, String> headers;
 
   bool _isInitialized = false;
@@ -178,7 +178,55 @@ class VideoPlayer {
       _eventController.add(VideoEvent(eventType: VideoEventType.completed));
     });
   }
+  void requestFullScreen() {
+    _videoElement.enterFullscreen();
+  }
 
+  void exitFullScreen() {
+    _videoElement.exitFullscreen();
+  }
+
+  Future<void> changeVideo(String newUri) async {
+    uri = newUri;
+    _isInitialized = false;
+    if (isSupported() &&
+        (uri.toString().contains("m3u8") || await _testIfM3u8())) {
+      _hls?.stopLoad();
+      _hls = new Hls(
+        HlsConfig(
+          xhrSetup: allowInterop(
+            (HttpRequest xhr, url) {
+              if (headers.length == 0) return;
+
+              if (headers.containsKey("useCookies")) {
+                xhr.withCredentials = true;
+              }
+              headers.forEach((key, value) {
+                if (key != "useCookies") {
+                  xhr.setRequestHeader(key, value);
+                }
+              });
+            },
+          ),
+        ),
+      );
+      _hls.attachMedia(_videoElement);
+      // print(hls.config.runtimeType);
+      _hls.on('hlsMediaAttached', allowInterop((_, __) {
+        _hls.loadSource(uri.toString());
+      }));
+      // _hls!.on('hlsError', allowInterop((_, dynamic data) {
+      //   eventController.addError(PlatformException(
+      //     code: _kErrorValueToErrorName[2]!,
+      //     message: _kDefaultErrorMessage,
+      //     details: _kErrorValueToErrorDescription[5],
+      //   ));
+      // }));
+    } else {
+      _videoElement.src = uri.toString();
+      _videoElement.load();
+    }
+  }
   /// Attempts to play the video.
   ///
   /// If this method is called programmatically (without user interaction), it
