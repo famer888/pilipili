@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/common.dart';
@@ -138,22 +139,152 @@ class PlatformAwareHttp {
     } catch (e) {
       return null;
     }
+  }
 
-//     if (response.statusCode >= 200 && response.statusCode < 300) {
-//       var responseData = response.data;
-//       if (responseData == null || responseData == "") return {};
-//       // // debugPrint('response data: ${response.data}');
-//       var encryptData = jsonDecode(responseData);
-//       if ('${encryptData['code']}' == '1') {
-//         return encryptData;
-//       }
-// //    // debugPrint('---------------------------------------------');
-//       var strDecryptData =
-//           await FlutterEncryptPlugin.getDecryptData(encryptData);
-// //      // debugPrint('uploadImage data: $strDecryptData');
-//       var decryptData = jsonDecode(strDecryptData);
-//       return decryptData;
-//     }
+  static Future xfileUploadImage({
+    XFile file,
+    String id,
+    String position = 'head',
+    ProgressCallback progressCallback,
+  }) async {
+    try {
+      id ??= DateTime.now().millisecondsSinceEpoch.toString();
+      var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
+      var newKey = 'id=$id&position=$position$imgKey';
+      var tmpSha256 = CommonUtils.gvSha256(newKey);
+      var sign = CommonUtils.gvMD5(tmpSha256);
+      var ext = file?.name.split(".").last;
+
+      FormData formData = FormData.fromMap({
+        'id': id,
+        'position': position,
+        'sign': sign,
+        'cover': await MultipartFile.fromFile(
+          file?.path ?? "",
+          filename: file?.name ?? "",
+          contentType: MediaType.parse('image/$ext'),
+        ),
+      });
+      Response response = await _uploadDio.post(
+        AppGlobal.uploadImgUrl,
+        data: formData,
+        onSendProgress: progressCallback,
+        options: Options(contentType: 'multipart/form-data'),
+      );
+      return jsonDecode(response.data);
+    } catch (e) {
+      CommonUtils.debugPrint(e);
+      return null;
+    }
+  }
+
+  static Future xfileHtmlUploadImage(
+      {XFile file,
+      String id,
+      String position = 'head',
+      Function(html.ProgressEvent) progressCallback}) async {
+    try {
+      id ??= DateTime.now().millisecondsSinceEpoch.toString();
+      var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
+      var newKey = 'id=$id&position=$position$imgKey';
+      var tmpSha256 = CommonUtils.gvSha256(newKey);
+      var sign = CommonUtils.gvMD5(tmpSha256);
+      var ext = file?.name.split(".").last;
+
+      html.Blob blob = html.Blob([await file?.readAsBytes()], "image/$ext");
+      String url = html.Url.createObjectUrl(blob);
+      final html.FormData formData = html.FormData()
+        ..append('id', id)
+        ..append('position', position)
+        ..append('sign', sign)
+        ..appendBlob(
+          "cover",
+          blob,
+        );
+
+      html.HttpRequest httpRequest = await html.HttpRequest.request(
+          AppGlobal.uploadImgUrl,
+          method: "POST",
+          mimeType: "image/$ext",
+          sendData: formData,
+          onProgress: progressCallback);
+      html.Url.revokeObjectUrl(url);
+      return jsonDecode(httpRequest.response);
+    } catch (e) {
+      CommonUtils.debugPrint(e);
+      return null;
+    }
+  }
+
+  static Future xfileBytesUploadMp4(
+      {XFile file,
+      String position = 'head',
+      CancelToken cancelToken,
+      ProgressCallback progressCallback}) async {
+    try {
+      String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+      var videoKey = AppGlobal.uploadMp4Key.replaceFirst('head', '');
+      var newKey = '$timeStamp$videoKey';
+      var sign = CommonUtils.gvMD5(newKey);
+
+      FormData formData = FormData.fromMap({
+        'timestamp': timeStamp,
+        'uuid': AppGlobal.uuid,
+        'sign': sign,
+        'video': MultipartFile.fromBytes(
+          await file?.readAsBytes() ?? [],
+          filename: file?.name,
+          contentType: MediaType.parse('video/mp4'),
+        ),
+      });
+
+      Response response = await _uploadDio.post(
+        AppGlobal.uploadMp4Url,
+        data: formData,
+        onSendProgress: progressCallback,
+        options: Options(contentType: 'multipart/form-data'),
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } catch (e) {
+      CommonUtils.debugPrint(e);
+      return null;
+    }
+  }
+
+  static Future xfileUploadMp4(
+      {XFile file,
+      String position = 'head',
+      CancelToken cancelToken,
+      ProgressCallback progressCallback}) async {
+    try {
+      String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+      var videoKey = AppGlobal.uploadMp4Key.replaceFirst('head', '');
+      var newKey = '$timeStamp$videoKey';
+      var sign = CommonUtils.gvMD5(newKey);
+      var imageName = CommonUtils.gvMD5(timeStamp);
+
+      var filename = '$imageName.mp4';
+      FormData formData = FormData.fromMap({
+        'timestamp': timeStamp,
+        'uuid': AppGlobal.uuid,
+        'sign': sign,
+        'video': await MultipartFile.fromFile(
+          file?.path ?? "",
+          filename: filename,
+          contentType: MediaType.parse('video/mp4'),
+        ),
+      });
+      Response response = await _uploadDio.post(AppGlobal.uploadMp4Url,
+          data: formData,
+          onSendProgress: progressCallback,
+          cancelToken: cancelToken,
+          options: Options(contentType: 'multipart/form-data'));
+      return response.data;
+    } catch (e) {
+      CommonUtils.debugPrint(e);
+      return null;
+    }
   }
 
   static Future<Response> download(String urlPath, String savePath,

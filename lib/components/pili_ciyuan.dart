@@ -21,8 +21,7 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class PiliCiyuan extends StatefulWidget {
-  PiliCiyuan({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  PiliCiyuan({Key key}) : super(key: key);
   @override
   _PiliCiyuanState createState() => _PiliCiyuanState();
 }
@@ -37,10 +36,8 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.isShow && !initPage) {
-      initPage = true;
-      getPageData();
-    }
+    initPage = true;
+    getPageData();
   }
 
   void getPageData() async {

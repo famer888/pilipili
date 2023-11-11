@@ -67,7 +67,10 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       CommonUtils.debugPrint(AppGlobal.bannerImgBase);
       AppGlobal.uploadImgKey = result.data.config.uploadImgKey;
       AppGlobal.uploadImgUrl = result.data.config.imgUploadUrl;
+      AppGlobal.uploadMp4Key = result.data.config.uploadMp4Key;
+      AppGlobal.uploadMp4Url = result.data.config.mp4UploadUrl;
       AppGlobal.m3u8_encrypt = result.data.config.m3u8_encrypt;
+      AppGlobal.uuid=result.data.member.uuid;
     }
     if (res2.data != null) {
       Provider.of<HomeConfig>(context, listen: false).setPrivilege(res2.data);

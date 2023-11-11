@@ -12,8 +12,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/pp_string.dart';
@@ -28,6 +30,16 @@ import 'package:universal_html/html.dart' as html;
 import 'api.dart';
 
 class CommonUtils {
+  static Future<bool> pngLimitSize(XFile file,
+      {int size = 5, String tips}) async {
+    int length = await file.length();
+    if (length / (1024 * 1024) > size) {
+      CommonUtils.showText(tips ?? '上传文件最大${size}M');
+      return true;
+    }
+    return false;
+  }
+
   //特殊字符处理
   static Widget getContentSpan(
     String text, {
@@ -38,7 +50,8 @@ class CommonUtils {
     style = style ??
         TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp);
     lightStyle = lightStyle ??
-        TextStyle(color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
+        TextStyle(
+            color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
     List<InlineSpan> _contentList = [];
     RegExp exp = RegExp(
         r'(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?');
@@ -92,7 +105,7 @@ class CommonUtils {
         strutStyle:
             const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5));
   }
-  
+
   static bool isAndroidWeb() {
     return kIsWeb &&
         (html.window.navigator.userAgent.indexOf('Android') > -1 ||
@@ -360,6 +373,71 @@ class CommonUtils {
       str += arr[pos];
     }
     return str;
+  }
+
+  static Widget shadowBtn(String icon,
+      {String text = '', bool isActive = false, double size}) {
+    return Container(
+      margin: EdgeInsets.only(left: 4.w),
+      alignment: Alignment.center,
+      width: 40.w,
+      height: 40.w,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.w),
+          color: isActive ? Color(0xffFF84A9) : Colors.white,
+          boxShadow: [
+            isActive
+                ? BoxShadow(
+                    color: Color(0xffA82118).withOpacity(0.26),
+                    offset: Offset(0, 2.w),
+                    blurRadius: 3.w,
+                    spreadRadius: 0)
+                : BoxShadow(
+                    color: Color(0xffFFD3E6),
+                    offset: Offset(0, 2.w),
+                    blurRadius: 4.w,
+                    spreadRadius: 0)
+          ]),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          getImage(icon,
+              height: size ?? 12.w,
+              width: size ?? 12.w,
+              fit: BoxFit.contain,
+              isAssets: true),
+          Text(
+            text,
+            style: TextStyle(
+                color: isActive ? Colors.white : Color(0xffFF84A9),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400),
+          )
+        ],
+      ),
+    );
+  }
+
+  static Widget vipLevel({String text = '會員等級'}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      height: 18.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(9.w),
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xffFFD875),
+                Color(0XFFFF6915),
+              ])),
+      child: Text(
+        text,
+        style: TextStyle(
+            color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w700),
+      ),
+    );
   }
 
   static String getPromotionCountDownTime(DateTime now) {

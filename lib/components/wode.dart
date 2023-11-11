@@ -20,8 +20,7 @@ import '../global.dart';
 import 'common/pullrefreshlist.dart';
 
 class Wode extends StatefulWidget {
-  Wode({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  Wode({Key key}) : super(key: key);
   @override
   _WodeState createState() => _WodeState();
 }
@@ -32,6 +31,8 @@ class _WodeState extends State<Wode> {
 
   void initState() {
     super.initState();
+    pageStatus = 1;
+    initInfo();
     EventBus().on('need-update-login-state', (args) {
       if (args == 'login') {
         setState(() {});
@@ -47,16 +48,16 @@ class _WodeState extends State<Wode> {
     EventBus().off('need-update-login-state');
   }
 
-  @override
-  void didUpdateWidget(covariant Wode oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && pageStatus == 0) {
-      setState(() {
-        pageStatus = 1;
-      });
-      initInfo();
-    }
-  }
+  // @override
+  // void didUpdateWidget(covariant Wode oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (widget.isShow && pageStatus == 0) {
+  //     setState(() {
+  //       pageStatus = 1;
+  //     });
+  //     initInfo();
+  //   }
+  // }
 
   void initInfo() async {
     UpdateNumModel getUpdateNum = await apiGetUpdateNum();
@@ -93,6 +94,24 @@ class _WodeState extends State<Wode> {
       'name': "应用推荐",
       'iconUrl': PPAssetsPath.appRecommend,
       'router': '/appCenter'
+    },
+    {
+      'name': "我的帖子",
+      'iconUrl': 'assets/images/2023/icon_post.png',
+      'assets': true,
+      'router': '/myPost'
+    },
+    {
+      'name': "我的关注",
+      'iconUrl': 'assets/images/2023/icon_myfollow.png',
+      'assets': true,
+      'router': '/myFollow'
+    },
+    {
+      'name': "申请原创入驻",
+      'iconUrl': 'assets/images/2023/icon_myadd.png',
+      'assets': true,
+      'router': '/othersPost'
     },
   ];
 
@@ -396,6 +415,7 @@ class HandleList extends StatelessWidget {
             child: Column(
               children: [
                 getImage(item['iconUrl'],
+                    isAssets: item['assets'] != null,
                     width: 32.w,
                     fit: BoxFit.fitWidth,
                     filterQuality: FilterQuality.medium),

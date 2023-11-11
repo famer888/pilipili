@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -291,11 +292,8 @@ class AppItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PlatformAwareAssetImage(
-          url: 'assets/images/mine/icon_' + type.toString() + '.png',
-          width: 38.8.w,
-          height: 38.8.w,
-        ),
+        getImage('assets/images/2023/icon_' + type.toString() + '.png',
+            width: 38.8.w, height: 38.8.w, isAssets: true),
         Container(
           margin: EdgeInsets.only(top: 14.w),
           width: 83.w,

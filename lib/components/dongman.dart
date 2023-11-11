@@ -12,8 +12,7 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class Dongman extends StatefulWidget {
-  Dongman({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  Dongman({Key key}) : super(key: key);
   @override
   _DongmanState createState() => _DongmanState();
 }
@@ -27,19 +26,8 @@ class _DongmanState extends State<Dongman> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.isShow && !initPage) {
-      initPage = true;
-      getPageData();
-    }
-  }
-
-  @override
-  void didUpdateWidget(Dongman oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && !initPage) {
-      initPage = true;
-      getPageData();
-    }
+    initPage = true;
+    getPageData();
   }
 
   void getPageData() async {

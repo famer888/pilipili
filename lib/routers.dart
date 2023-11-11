@@ -20,6 +20,8 @@ import 'package:pilipili/components/xianmian.dart';
 import 'package:pilipili/components/yuemei/yuemei_detail.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/message_center.dart';
+import 'package:pilipili/pages/community/community_detail.dart';
+import 'package:pilipili/pages/community/community_publish.dart';
 import 'package:pilipili/pages/detail/local_comicsReader.dart';
 import 'package:pilipili/pages/detail/local_comics_detail.dart';
 import 'package:pilipili/pages/detail/local_small_video_detail.dart';
@@ -37,8 +39,11 @@ import 'package:pilipili/pages/mine/down_page.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
 import 'package:pilipili/pages/mine/invite_friends.dart';
 import 'package:pilipili/pages/mine/invite_recored.dart';
+import 'package:pilipili/pages/mine/my_follow.dart';
+import 'package:pilipili/pages/mine/my_post.dart';
 import 'package:pilipili/pages/mine/notice_message.dart';
 import 'package:pilipili/pages/mine/online_service.dart';
+import 'package:pilipili/pages/mine/others_post.dart';
 import 'package:pilipili/pages/mine/promote.dart';
 import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/mine/setup.dart';
@@ -405,6 +410,33 @@ class Routes {
 //城市选择
   static GoRouterModel cityPicker = GoRouterModel(
       key: 'cityPicker', builder: (context, state) => CityPicker());
+
+  //我的关注
+  static GoRouterModel myFollow = GoRouterModel(
+      key: 'myFollow', builder: (context, state) => MyFollowPage());
+
+  //我的帖子
+  static GoRouterModel myPost =
+      GoRouterModel(key: 'myPost', builder: (context, state) => MyPostPage());
+
+  //他人帖子
+  static GoRouterModel othersPost = GoRouterModel(
+      key: 'othersPost/:aff',
+      builder: (context, state) =>
+          OthersPostPage(aff: int.parse(state.params['aff'] ?? '0')));
+
+  //帖子详情
+  static GoRouterModel communityDetail = GoRouterModel(
+      key: 'communityDetail/:id',
+      builder: (context, state) => CommunityDetail(
+            id: int.parse(state.params['id'] ?? '0'),
+          ));
+
+  //帖子发布/编辑
+  static GoRouterModel communityPushlish = GoRouterModel(
+      key: 'communityPushlish',
+      builder: (context, state) => CommunityPushlish());
+
   static GoRouter init() {
     List<GoRoute> pages = [
       xianmian.toGoRouter(),
@@ -450,7 +482,12 @@ class Routes {
       inviterecored.toGoRouter(),
       promoteActionList.toGoRouter(),
       buy.toGoRouter(),
-      cityPicker.toGoRouter()
+      cityPicker.toGoRouter(),
+      myFollow.toGoRouter(),
+      myPost.toGoRouter(),
+      othersPost.toGoRouter(),
+      communityDetail.toGoRouter(),
+      communityPushlish.toGoRouter()
     ];
     List<GoRoute> rootPages = [
       xianmian.toGoRouter(routes: pages),
@@ -496,7 +533,12 @@ class Routes {
       inviterecored.toGoRouter(routes: pages),
       promoteActionList.toGoRouter(routes: pages),
       buy.toGoRouter(routes: pages),
-      cityPicker.toGoRouter(routes: pages)
+      cityPicker.toGoRouter(routes: pages),
+      myFollow.toGoRouter(routes: pages),
+      myPost.toGoRouter(routes: pages),
+      othersPost.toGoRouter(routes: pages),
+      communityDetail.toGoRouter(routes: pages),
+      communityPushlish.toGoRouter(routes: pages)
     ];
     return GoRouter(
       // errorBuilder: (context, state) => ErrorScreen(path: state.location),

@@ -112,7 +112,7 @@ class YyShowDialog {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color(0xff646464),
-                                        fontSize: ScreenUtil().setSp(24),
+                                        fontSize: 16.w,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),

@@ -28,7 +28,10 @@ class AppGlobal {
   static Widget bannerWidget;
   static String uploadImgUrl;
   static String uploadImgKey;
+  static String uploadMp4Key;
+  static String uploadMp4Url;
   static String bannerImgBase;
+  static String uuid;
   static String apiToken;
   static int visibilityDetectorIndex = 0;
   static bool yyShow = true;
@@ -65,4 +68,5 @@ class AppGlobal {
   static Map smallVideoPramas;
   static num webBottomHeight=0;
   static List popAds = [];
+  static Map postInfo = {};
 }

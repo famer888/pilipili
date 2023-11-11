@@ -18,7 +18,7 @@ class DefaultStyle {
   static Color btnLinerThemeColor = Color(0xffFFE4E4);
   // 导览页样式
   static TextStyle bottomNavStyle = TextStyle(
-      color: Color(0xffF72426),
+      color: Color(0xffFF5B8C),
       fontWeight: FontWeight.w500,
       fontSize: 12.sp,
       overflow: TextOverflow.ellipsis,
@@ -329,15 +329,22 @@ class DefaultStyle {
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static LinearGradient defaluGrandientLine = LinearGradient(
-    colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
+
   static TextStyle pink14bold = TextStyle(
       color: Color(0xffFF5B8C),
       fontSize: ScreenUtil().setSp(14),
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+
+  static LinearGradient defaluGrandientLine = LinearGradient(
+    colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+  static LinearGradient whiteGrandientLine = LinearGradient(
+    colors: [Color(0xffFFCCDB), Color(0xffFFE4E4)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
 }

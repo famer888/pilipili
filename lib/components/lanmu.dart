@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/components/FlexibleBanner.dart';
 import 'package:pilipili/components/card/home_nav_btn.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -21,14 +22,12 @@ class Lanmu extends StatefulWidget {
       this.id,
       this.isShow,
       this.index,
-      this.tabList,
       this.parentName})
       : super(key: key);
   final dynamic data;
   final int id;
   final bool isShow;
   final int index;
-  final List tabList;
   final String parentName;
   @override
   _LanmuState createState() => _LanmuState();
@@ -186,128 +185,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                               ),
                             ),
                           ),
-                          flexibleSpace: FlexibleSpaceBar(
-                              collapseMode: CollapseMode.parallax,
-                              background:
-                                  Stack(clipBehavior: Clip.none, children: [
-                                fixedBanner == null ||
-                                        fixedBanner['value'].length == 0
-                                    ? PlatformAwareAssetImage(
-                                        url: 'assets/images/demo_bg.png',
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        filterQuality: FilterQuality.medium)
-                                    : Container(
-                                        height: ScreenUtil().statusBarHeight +
-                                            DefaultStyle.navbarHegiht +
-                                            ScreenUtil().setWidth(160) +
-                                            ScreenUtil().setWidth(30),
-                                        child: RepaintBoundary(
-                                          child: Swiper(
-                                            autoplayDelay: 3000,
-                                            autoplay:
-                                                fixedBanner['value'].length > 1,
-                                            physics: fixedBanner['value']
-                                                        .length >
-                                                    1
-                                                ? null
-                                                : new NeverScrollableScrollPhysics(),
-                                            pagination: SwiperPagination(
-                                                margin: EdgeInsets.only(
-                                                    bottom: ScreenUtil()
-                                                        .setWidth(40)),
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                builder: SwiperCustomPagination(
-                                                    builder:
-                                                        (BuildContext context,
-                                                            SwiperPluginConfig
-                                                                config) {
-                                                  return Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children:
-                                                        fixedBanner['value']
-                                                            .asMap()
-                                                            .keys
-                                                            .map<Widget>((e) {
-                                                      return AnimatedContainer(
-                                                        duration: Duration(
-                                                            milliseconds: 250),
-                                                        width: ScreenUtil()
-                                                            .setWidth(6),
-                                                        height: ScreenUtil()
-                                                            .setWidth(6),
-                                                        margin: EdgeInsets.only(
-                                                            left: ScreenUtil()
-                                                                .setWidth(16)),
-                                                        decoration: BoxDecoration(
-                                                            color: config
-                                                                        .activeIndex ==
-                                                                    e
-                                                                ? Colors.white
-                                                                : Colors
-                                                                    .white54,
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            3))),
-                                                      );
-                                                    }).toList(),
-                                                  );
-                                                })),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return callDetail(
-                                                  cardData: fixedBanner['value']
-                                                      [index],
-                                                  contentType: 4,
-                                                  child: Stack(
-                                                    children: [
-                                                      Container(
-                                                        height: ScreenUtil()
-                                                                .setWidth(260) +
-                                                            ScreenUtil()
-                                                                .statusBarHeight,
-                                                      ),
-                                                      Positioned(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          right: 0,
-                                                          left: 0,
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    0),
-                                                            child: Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              child:
-                                                                  PlatformAwareNetworkImage(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                noVisibilityDetector:
-                                                                    true,
-                                                                url: fixedBanner[
-                                                                            'value']
-                                                                        [index][
-                                                                    'resource_url'],
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                          ))
-                                                    ],
-                                                  ));
-                                            },
-                                            itemCount:
-                                                fixedBanner['value'].length,
-                                          ),
-                                        ),
-                                      ),
-                              ]))),
+                          flexibleSpace: HomeTopBanner(fixedBanner:fixedBanner)),
                       cm_data?.elements == null
                           ? SliverToBoxAdapter()
                           : SliverList(

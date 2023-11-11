@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/FlexibleBanner.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -17,10 +19,10 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
-
 class YuemeiPage extends StatefulWidget {
   final bool isShow;
-  YuemeiPage({Key key, this.isShow = false}) : super(key: key);
+  final Function scrollDirection;
+  YuemeiPage({Key key, this.isShow = false,this.scrollDirection}) : super(key: key);
 
   @override
   _YuemeiPageState createState() => _YuemeiPageState();
@@ -39,6 +41,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
   bool isAll = false;
   int page = 1;
   int limit = 30;
+
   getPageData(String _city) {
     if (page == 1 && !loading) {
       loading = true;
@@ -103,11 +106,22 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
             children: yuepaoList.asMap().keys.map((e) {
               return YuemeiCard(
                   w: 118.w, h: 145.w, isShowInfo: false, data: yuepaoList[e]);
-              ;
             }).toList(),
           );
   }
 
+  scorllAdd() {
+    widget.scrollDirection(_scrollController.position.userScrollDirection);
+    // if (_scrollController.position.userScrollDirection ==
+    //     ScrollDirection.forward) {
+    //   // 用户向上滑动
+    //   print("Scrolling Up");
+    // } else if (_scrollController.position.userScrollDirection ==
+    //     ScrollDirection.reverse) {
+    //   // 用户向下滑动
+    //   print("Scrolling Down");
+    // }
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -118,24 +132,18 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
       location = arg;
       getPageData(arg);
     });
+    _scrollController.addListener(scorllAdd);
+    pageStatus = 1;
+    getBanner();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _scrollController.removeListener(scorllAdd);
+    _scrollController.dispose();
     EventBus().off('change_city');
-  }
-
-  @override
-  void didUpdateWidget(covariant YuemeiPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && pageStatus == 0) {
-      setState(() {
-        pageStatus = 1;
-      });
-      getBanner();
-    }
   }
 
   @override
@@ -219,126 +227,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                 ],
                               ),
                             ),
-                            flexibleSpace: FlexibleSpaceBar(
-                                collapseMode: CollapseMode.parallax,
-                                background:
-                                    Stack(clipBehavior: Clip.none, children: [
-                                  fixedBanner == null ||
-                                          !(fixedBanner is Map) ||
-                                          fixedBanner['value'].length == 0
-                                      ? PlatformAwareAssetImage(
-                                          url: 'assets/images/demo_bg.png',
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          filterQuality: FilterQuality.medium)
-                                      : Swiper(
-                                          autoplayDelay: 3000,
-                                          autoplay:
-                                              fixedBanner['value'].length > 1,
-                                          physics: fixedBanner['value'].length >
-                                                  1
-                                              ? null
-                                              : new NeverScrollableScrollPhysics(),
-                                          onIndexChanged: (e) {
-                                            // CommonUtils.debugPrint('-------------------$e---------------------');
-                                          },
-                                          pagination: SwiperPagination(
-                                              margin: EdgeInsets.only(
-                                                  bottom: ScreenUtil()
-                                                      .setWidth(40)),
-                                              alignment: Alignment.bottomCenter,
-                                              builder: SwiperCustomPagination(
-                                                  builder:
-                                                      (BuildContext context,
-                                                          SwiperPluginConfig
-                                                              config) {
-                                                return Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: fixedBanner['value']
-                                                      .asMap()
-                                                      .keys
-                                                      .map<Widget>((e) {
-                                                    return AnimatedContainer(
-                                                      duration: Duration(
-                                                          milliseconds: 250),
-                                                      width: ScreenUtil()
-                                                          .setWidth(6),
-                                                      height: ScreenUtil()
-                                                          .setWidth(6),
-                                                      margin: EdgeInsets.only(
-                                                          left: ScreenUtil()
-                                                              .setWidth(16)),
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                              config.activeIndex ==
-                                                                      e
-                                                                  ? Colors.white
-                                                                  : Colors
-                                                                      .white54,
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          3))),
-                                                    );
-                                                  }).toList(),
-                                                );
-                                              })),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return callDetail(
-                                              cardData: fixedBanner['value']
-                                                  [index],
-                                              contentType: 4,
-                                              child: Container(
-                                                clipBehavior: Clip.hardEdge,
-                                                decoration: ShapeDecoration(
-                                                    shape:
-                                                        BeveledRectangleBorder()),
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                      height: ScreenUtil()
-                                                              .setWidth(260) +
-                                                          ScreenUtil()
-                                                              .statusBarHeight,
-                                                    ),
-                                                    Positioned(
-                                                        top: 0,
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        left: 0,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(0),
-                                                          child: Container(
-                                                            width:
-                                                                double.infinity,
-                                                            child:
-                                                                PlatformAwareNetworkImage(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              noVisibilityDetector:
-                                                                  true,
-                                                              url: fixedBanner[
-                                                                          'value']
-                                                                      [index][
-                                                                  'resource_url'],
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          itemCount:
-                                              fixedBanner['value'].length,
-                                        )
-                                ]))),
+                            flexibleSpace: HomeTopBanner(fixedBanner:fixedBanner)),
                         loading
                             ? SliverToBoxAdapter(
                                 child: PageStatus.loading(true),
@@ -369,6 +258,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
               padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
               color: Color.fromRGBO(130, 56, 78, 0.44),
               child: Container(
+                height: DefaultStyle.navbarHegiht,
                 padding:
                     EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.5.w),
                 child: Row(

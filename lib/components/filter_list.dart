@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/components/FlexibleBanner.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -79,7 +80,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       CommonUtils.showText('type 必须是数字');
     }
     try {
-       cardStyle = 'h';
+      cardStyle = 'h';
     } catch (e) {
       if (dataType == 1 || cardType == 3) {
         cardStyle = 'h';
@@ -236,130 +237,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                 ),
                               ),
                             ),
-                            flexibleSpace: FlexibleSpaceBar(
-                                collapseMode: CollapseMode.parallax,
-                                background:
-                                    Stack(clipBehavior: Clip.none, children: [
-                                  fixedBanner == null ||
-                                          !(fixedBanner is Map) ||
-                                          fixedBanner['value'].length == 0
-                                      ? PlatformAwareAssetImage(
-                                          url: 'assets/images/demo_bg.png',
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          filterQuality: FilterQuality.medium)
-                                      : Swiper(
-                                          autoplayDelay: 3000,
-                                          autoplay:
-                                              fixedBanner['value'].length > 1,
-                                          physics: fixedBanner['value'].length >
-                                                  1
-                                              ? null
-                                              : new NeverScrollableScrollPhysics(),
-                                          onIndexChanged: (e) {
-                                            // CommonUtils.debugPrint('-------------------$e---------------------');
-                                          },
-                                          pagination: SwiperPagination(
-                                              margin: EdgeInsets.only(
-                                                  bottom: ScreenUtil()
-                                                      .setWidth(40)),
-                                              alignment: Alignment.bottomCenter,
-                                              builder: SwiperCustomPagination(
-                                                  builder:
-                                                      (BuildContext context,
-                                                          SwiperPluginConfig
-                                                              config) {
-                                                return Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: fixedBanner['value']
-                                                      .asMap()
-                                                      .keys
-                                                      .map<Widget>((e) {
-                                                    return AnimatedContainer(
-                                                      duration: Duration(
-                                                          milliseconds: 250),
-                                                      width: ScreenUtil()
-                                                          .setWidth(6),
-                                                      height: ScreenUtil()
-                                                          .setWidth(6),
-                                                      margin: EdgeInsets.only(
-                                                          left: ScreenUtil()
-                                                              .setWidth(16)),
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                              config.activeIndex ==
-                                                                      e
-                                                                  ? Colors.white
-                                                                  : Colors
-                                                                      .white54,
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          3))),
-                                                    );
-                                                  }).toList(),
-                                                );
-                                              })),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return callDetail(
-                                              cardData: fixedBanner['value']
-                                                  [index],
-                                              contentType: 4,
-                                              child: Container(
-                                                clipBehavior: Clip.hardEdge,
-                                                padding: EdgeInsets.only(
-                                                    bottom: ScreenUtil()
-                                                        .setWidth(
-                                                            navHeight - 32)),
-                                                decoration: ShapeDecoration(
-                                                    shape:
-                                                        BeveledRectangleBorder()),
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                      height: ScreenUtil()
-                                                              .setWidth(260) +
-                                                          ScreenUtil()
-                                                              .statusBarHeight,
-                                                    ),
-                                                    Positioned(
-                                                        top: 0,
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        left: 0,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(0),
-                                                          child: Container(
-                                                            width:
-                                                                double.infinity,
-                                                            child:
-                                                                PlatformAwareNetworkImage(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              noVisibilityDetector:
-                                                                  true,
-                                                              url: fixedBanner[
-                                                                          'value']
-                                                                      [index][
-                                                                  'resource_url'],
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          itemCount:
-                                              fixedBanner['value'].length,
-                                        ),
-                                ]))),
+                            flexibleSpace:
+                                HomeTopBanner(fixedBanner: fixedBanner)),
                         filterList == null
                             ? SliverToBoxAdapter(
                                 child: PageStatus.loading(true),

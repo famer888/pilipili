@@ -12,8 +12,7 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class Manhua extends StatefulWidget {
-  Manhua({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  Manhua({Key key}) : super(key: key);
   @override
   _ManhuaState createState() => _ManhuaState();
 }
@@ -27,21 +26,9 @@ class _ManhuaState extends State<Manhua> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.isShow && !initPage) {
-      initPage = true;
-      getPageData();
-    }
+    initPage = true;
+    getPageData();
   }
-
-  @override
-  void didUpdateWidget(Manhua oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && !initPage) {
-      initPage = true;
-      getPageData();
-    }
-  }
-
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(4);
     if (data == null) {

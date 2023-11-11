@@ -7,8 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/yuemei.dart';
+import 'package:pilipili/pages/anwang.dart';
+import 'package:pilipili/pages/yuemei_shequ.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
@@ -38,6 +41,7 @@ class _HomeState extends State<Home> {
   bool showAnnouncementStatus = false;
   bool showActivety = false;
   bool initPage = false;
+  PageController _controller = PageController();
   List<Map> webTypeList = [
     {'w': 428, 'h': 926, 'r': 3}, // iphone13 pro max
     {'w': 390, 'h': 844, 'r': 3}, // iphone 13 and pro
@@ -45,34 +49,53 @@ class _HomeState extends State<Home> {
     {'w': 414, 'h': 896, 'r': 3}, //iphone Xs Max
     {'w': 414, 'h': 896, 'r': 2} //iphone XR
   ];
+
   List navBarItem = [
     {
+      "keepAlive": false,
+      "page": PiliCiyuan(),
       "title": "pili次元",
       "activeIcon": PPAssetsPath.piliActive,
       "icon": PPAssetsPath.pili,
     },
     {
+      "keepAlive": false,
+      "page": Dongman(),
       "title": "动漫",
       "activeIcon": PPAssetsPath.cartoonActive,
       "icon": PPAssetsPath.cartoon,
     },
     {
+      "keepAlive": false,
+      "page": Manhua(),
       "title": "漫画",
       "activeIcon": PPAssetsPath.comicsActive,
       "icon": PPAssetsPath.comics,
     },
     {
-      "title": "约妹",
+      "keepAlive": false,
+      "page": YuemeiShequ(),
+      "title": "约妹/社区",
       "activeIcon": PPAssetsPath.yuemeiActive,
       "icon": PPAssetsPath.yuemei,
     },
     {
+      "keepAlive": false,
+      "page": AnwangPage(),
+      "title": "暗網",
+      "activeIcon": 'assets/images/2023/bottomTab/anwang_active.png',
+      "icon": 'assets/images/2023/bottomTab/anwang.png',
+      "asset": true
+    },
+    {
+      "keepAlive": true,
+      "page": Wode(),
       "title": "我的",
       "activeIcon": PPAssetsPath.userActive,
       "icon": PPAssetsPath.user
     },
   ];
-  int selectedKey = 0;
+  ValueNotifier<int> selectedKey = ValueNotifier(0);
   bool loading = true;
 
   getWebType(int h, int w, double r) {
@@ -256,7 +279,7 @@ class _HomeState extends State<Home> {
     if (showAnnouncementStatus == true) {
       _addMainScreen();
       return;
-      }
+    }
     bool isSelf = false;
     isSelf = Provider.of<HomeConfig>(context, listen: false).member.channel ==
         "self";
@@ -282,7 +305,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
   //加载添加到主屏幕功能
   void _addMainScreen() async {
     if (!kIsWeb) return;
@@ -297,7 +319,8 @@ class _HomeState extends State<Home> {
           builder: (BuildContext context) {
             return StatefulBuilder(builder: (context, setBottomSheetState) {
               return Container(
-                padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                padding:
+                    EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -314,7 +337,9 @@ class _HomeState extends State<Home> {
                         SizedBox(width: 20.w, height: 20.w),
                         Text(
                           "添加PiliPili到主屏幕？[如已添加请忽略]",
-                          style: TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp),
+                          style: TextStyle(
+                              color: Color.fromRGBO(30, 30, 30, 1),
+                              fontSize: 14.sp),
                         ),
                         GestureDetector(
                           behavior: HitTestBehavior.translucent,
@@ -333,7 +358,10 @@ class _HomeState extends State<Home> {
                     CommonUtils.getContentSpan(
                       "如无法正常添加到主屏幕，请下载最新版本的Google浏览器https://www.google.cn/intl/zh-CN/chrome，打开Google浏览器，输入本站网址000，点击右上角的【菜单】然后选择【添加到主屏幕】即可完成WEB版APP"
                           .replaceAll("000", html.window.location.href),
-                      style: TextStyle(color: const Color.fromRGBO(245, 28, 88, 1).withOpacity(0.5), fontSize: 12.sp),
+                      style: TextStyle(
+                          color: const Color.fromRGBO(245, 28, 88, 1)
+                              .withOpacity(0.5),
+                          fontSize: 12.sp),
                       lightStyle: TextStyle(
                           fontSize: 12.sp,
                           color: const Color.fromRGBO(25, 103, 210, 1)),
@@ -347,7 +375,9 @@ class _HomeState extends State<Home> {
                         if (isDeferredNotNull) {
                           js.context.callMethod("presentAddToHome");
                         } else {
-                          CommonUtils.showText("当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作", time: 2);
+                          CommonUtils.showText(
+                              "当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作",
+                              time: 2);
                         }
                       },
                       child: Container(
@@ -355,12 +385,13 @@ class _HomeState extends State<Home> {
                             color: const Color.fromRGBO(245, 28, 88, 1),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(3.w))),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: DefaultStyle.pagePadding),
                         height: 32.w,
                         alignment: Alignment.center,
                         child: Text("添加到主屏幕",
-                            style: TextStyle(color: Colors.white, fontSize: 13.sp)),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 13.sp)),
                       ),
                     ),
                     SizedBox(height: 30.w),
@@ -464,60 +495,31 @@ class _HomeState extends State<Home> {
       children: loading
           ? PageStatus.loading(mounted)
           : [
-              Positioned(
-                  left: -selectedKey * 1.sw,
-                  top: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    width: 1.sw,
-                    height: 1.sh,
-                    child: PiliCiyuan(
-                      isShow: selectedKey == 0,
-                    ),
-                  )),
-              Positioned(
-                  left: (-selectedKey + 1) * 1.sw,
-                  top: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    width: 1.sw,
-                    height: 1.sh,
-                    child: Dongman(
-                      isShow: selectedKey == 1,
-                    ),
-                  )),
-              Positioned(
-                  left: (-selectedKey + 2) * 1.sw,
-                  top: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                      width: 1.sw,
-                      height: 1.sh,
-                      child: Manhua(
-                        isShow: selectedKey == 2,
-                      ))),
-              Positioned(
-                  left: (-selectedKey + 3) * 1.sw,
-                  top: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    width: 1.sw,
-                    height: 1.sh,
-                    child: YuemeiPage(
-                      isShow: selectedKey == 3,
-                    ),
-                  )),
-              Positioned(
-                  left: (-selectedKey + 4) * 1.sw,
-                  top: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    width: 1.sw,
-                    height: 1.sh,
-                    child: Wode(
-                      isShow: selectedKey == 4,
-                    ),
-                  )),
+              Positioned.fill(
+                  child: PageView.builder(
+                controller: _controller,
+                onPageChanged: (index) {
+                  selectedKey.value = index;
+                },
+                itemCount: navBarItem.length,
+                itemBuilder: (context, index) {
+                  if (navBarItem[index]['keepAlive']) {
+                    return PageViewMixin(
+                      child: navBarItem[index]['page'],
+                    );
+                  } else {
+                    return ValueListenableBuilder(
+                      valueListenable: selectedKey,
+                      builder: (context, _value, child) {
+                        return _value == index
+                            ? child
+                            : PageStatus.loading(mounted);
+                      },
+                      child: navBarItem[index]['page'],
+                    );
+                  }
+                },
+              )),
               Positioned(
                 right: 0,
                 left: 0,
@@ -530,55 +532,63 @@ class _HomeState extends State<Home> {
                         blurRadius: 10,
                         spreadRadius: 5)
                   ]),
-                  child: Container(
-                    width: 1.sw,
-                    height: DefaultStyle.bottomnavbarHegiht +
-                        ScreenUtil().bottomBarHeight,
-                    padding:
-                        EdgeInsets.only(bottom: ScreenUtil().bottomBarHeight),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: navBarItem
-                          .asMap()
-                          .keys
-                          .map((key) => GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedKey = key;
-                                  });
-
-                                  if (key == 3) {
-                                    CommonUtils.updateSystemNotice(context);
-                                  }
-                                },
-                                child: Column(
-                                  children: [
-                                    !loading
-                                        ? getImage(
-                                            selectedKey == key
-                                                ? navBarItem[key]['activeIcon']
-                                                : navBarItem[key]['icon'],
-                                            width: 25.w,
-                                            height: 25.w,
-                                            fit: BoxFit.fitWidth,
-                                            filterQuality: FilterQuality.high)
-                                        : const SizedBox(),
-                                    Text(
-                                      navBarItem[key]['title'],
-                                      style: selectedKey == key
-                                          ? DefaultStyle.bottomNavStyle
-                                          : DefaultStyle.lgray12,
-                                    )
-                                  ],
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                ),
-                              ))
-                          .toList(),
-                    ),
+                  child: ValueListenableBuilder(
+                    valueListenable: selectedKey,
+                    builder: (context, _value, child) {
+                      return Container(
+                        width: 1.sw,
+                        height: DefaultStyle.bottomnavbarHegiht +
+                            ScreenUtil().bottomBarHeight,
+                        padding: EdgeInsets.only(
+                            bottom: ScreenUtil().bottomBarHeight),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: navBarItem
+                              .asMap()
+                              .keys
+                              .map((key) => GestureDetector(
+                                    onTap: () {
+                                      _controller.jumpToPage(key);
+                                      if (key == 3) {
+                                        CommonUtils.updateSystemNotice(context);
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        !loading
+                                            ? getImage(
+                                                _value == key
+                                                    ? navBarItem[key]
+                                                        ['activeIcon']
+                                                    : navBarItem[key]['icon'],
+                                                isAssets: navBarItem[key]
+                                                        ['asset'] !=
+                                                    null,
+                                                width: 25.w,
+                                                height: 25.w,
+                                                fit: BoxFit.fitWidth,
+                                                filterQuality:
+                                                    FilterQuality.high)
+                                            : const SizedBox(),
+                                        Text(
+                                          navBarItem[key]['title'],
+                                          style: _value == key
+                                              ? DefaultStyle.bottomNavStyle
+                                              : DefaultStyle.lgray12,
+                                        )
+                                      ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
+              )
             ],
     );
   }
