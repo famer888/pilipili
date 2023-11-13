@@ -37,6 +37,7 @@ import 'package:pilipili/pages/mine/contact_official.dart';
 import 'package:pilipili/pages/mine/customer_service.dart';
 import 'package:pilipili/pages/mine/down_page.dart';
 import 'package:pilipili/pages/mine/fill_code.dart';
+import 'package:pilipili/pages/mine/income_detail.dart';
 import 'package:pilipili/pages/mine/invite_friends.dart';
 import 'package:pilipili/pages/mine/invite_recored.dart';
 import 'package:pilipili/pages/mine/my_follow.dart';
@@ -49,7 +50,9 @@ import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/mine/vip_page.dart';
 import 'package:pilipili/pages/mine/watch_history.dart';
+import 'package:pilipili/pages/mine/withdrawals_page.dart';
 import 'package:pilipili/pages/welcome.dart';
+import 'package:pilipili/pages/withdrawals_record.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 
@@ -437,6 +440,19 @@ class Routes {
       key: 'communityPushlish',
       builder: (context, state) => CommunityPushlish());
 
+  //收益明細
+  static GoRouterModel incomeDetail = GoRouterModel(
+      key: 'incomeDetail', builder: (context, state) => IncomeDetail());
+
+  //提現申請
+  static GoRouterModel withdrawalsPage = GoRouterModel(
+      key: 'withdrawalsPage', builder: (context, state) => WithdrawalsPage());
+
+  //提現记录
+  static GoRouterModel withdrawalsRecord = GoRouterModel(
+      key: 'withdrawalsRecord',
+      builder: (context, state) => WithdrawalsRecord());
+
   static GoRouter init() {
     List<GoRoute> pages = [
       xianmian.toGoRouter(),
@@ -487,7 +503,10 @@ class Routes {
       myPost.toGoRouter(),
       othersPost.toGoRouter(),
       communityDetail.toGoRouter(),
-      communityPushlish.toGoRouter()
+      communityPushlish.toGoRouter(),
+      incomeDetail.toGoRouter(),
+      withdrawalsRecord.toGoRouter(),
+      withdrawalsPage.toGoRouter()
     ];
     List<GoRoute> rootPages = [
       xianmian.toGoRouter(routes: pages),
@@ -538,7 +557,10 @@ class Routes {
       myPost.toGoRouter(routes: pages),
       othersPost.toGoRouter(routes: pages),
       communityDetail.toGoRouter(routes: pages),
-      communityPushlish.toGoRouter(routes: pages)
+      communityPushlish.toGoRouter(routes: pages),
+      incomeDetail.toGoRouter(routes: pages),
+      withdrawalsPage.toGoRouter(routes: pages),
+      withdrawalsRecord.toGoRouter(routes: pages)
     ];
     return GoRouter(
       // errorBuilder: (context, state) => ErrorScreen(path: state.location),
