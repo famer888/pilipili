@@ -45,23 +45,24 @@ class HomeData {
 }
 
 class Data {
-  Data({
-    this.versionMsg,
-    this.timestamp,
-    this.config,
-    this.notice,
-    this.ads,
-    this.member,
-  });
+  Data(
+      {this.versionMsg,
+      this.timestamp,
+      this.config,
+      this.notice,
+      this.ads,
+      this.member,
+      this.darkPrivilege,
+      this.darkprivilegeTips});
 
   VersionMsg versionMsg;
   int timestamp;
   Notice notice;
-
   Config config;
   Ads ads;
   Member member;
-
+  bool darkPrivilege;
+  String darkprivilegeTips;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         versionMsg: json["versionMsg"] == null
             ? null
@@ -71,6 +72,8 @@ class Data {
         config: json["config"] == null ? null : Config.fromJson(json["config"]),
         ads: json["ads"] == null ? null : Ads.fromJson(json["ads"]),
         member: json["member"] == null ? null : Member.fromJson(json["member"]),
+        darkPrivilege: json["dark_privilege"] ?? false,
+        darkprivilegeTips: json["dark_privilege_tips"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,6 +83,8 @@ class Data {
         "config": config == null ? null : config.toJson(),
         "ads": ads == null ? null : ads.toJson(),
         "member": member == null ? null : member.toJson(),
+        "dark_privilege": darkPrivilege ?? false,
+        "dark_privilege_tips": darkprivilegeTips ?? false,
       };
 }
 

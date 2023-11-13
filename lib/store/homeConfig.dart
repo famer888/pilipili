@@ -15,6 +15,8 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   Notice _notice;
   Config _config;
   Member _member;
+  bool _darkPrivilege;
+  String _darkprivilegeTips;
   SystemNotice _systemNotice;
   Map _privilege;
 
@@ -25,11 +27,21 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   Ads get ads => _ads;
   VersionMsg get versionMsg => _versionMsg;
   Map get privilege => _privilege;
+  bool get darkPrivilege => _darkPrivilege;
+  String get darkprivilegeTips => _darkprivilegeTips;
+
+  void setDarkPrivilegeTips(String text) {
+    _darkprivilegeTips = text;
+    notifyListeners();
+  }
+
+  void setDarkPrivilege(bool isDark) {
+    _darkPrivilege = isDark;
+    notifyListeners();
+  }
 
   void setPrivilege(Map data) {
     _privilege = data;
-    CommonUtils.debugPrint('setPrivilege');
-    CommonUtils.debugPrint(data);
     notifyListeners();
   }
 

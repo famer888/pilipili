@@ -8,11 +8,13 @@ import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/element.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:provider/provider.dart';
 
 class AnwangPage extends StatefulWidget {
   const AnwangPage({Key key}) : super(key: key);
@@ -44,7 +46,7 @@ class _AnwangPageState extends State<AnwangPage> {
   // }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig(2);
+    ElementModel data = await getFisrtTopNavConfig(15);
     loading = false;
     data.value.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
@@ -55,21 +57,21 @@ class _AnwangPageState extends State<AnwangPage> {
           child: Lanmu(
               isShow: currentIndex == index,
               id: int.parse(item.linkUrl),
-              parentName: 'ciyuan',
+              parentName: 'anwang',
               index: index),
         ));
       } else if (item.redirectType == 6) {
         //筛选
         pages.add(PageViewMixin(
           child: FilterList(
-              parentName: 'ciyuan',
+              parentName: 'anwang',
               isShow: currentIndex == index,
               data: item.linkUrl,
               index: index),
         ));
       } else {
         pages.add(ListPage(
-          parentName: 'ciyuan',
+          parentName: 'anwang',
           isShow: currentIndex == index,
           title: item.name,
           id: item.linkUrl,
@@ -82,6 +84,8 @@ class _AnwangPageState extends State<AnwangPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool darkPrivilege =
+        Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
     return Stack(
       children: [
         navitems.isEmpty || loading
@@ -100,99 +104,105 @@ class _AnwangPageState extends State<AnwangPage> {
                 },
                 pages: pages,
               ),
-        Positioned.fill(
-            child: ClipRect(
-                child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Opacity(
-            opacity: 0.6,
-            child: Container(
-              color: Color(0xff6E1D35),
-            ),
-          ),
-        ))),
-        Positioned.fill(
-            child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 27.5.w),
-          child: DefaultTextStyle(
-              style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('因內涵全球禁止流出暗網真實事件和稀缺資源 n號房,戰爭,變態,恐怖,緬北輪姦等百萬資源'),
-                  SizedBox(
-                    height: 10.w,
+        darkPrivilege
+            ? SizedBox()
+            : Positioned.fill(
+                child: ClipRect(
+                    child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Opacity(
+                  opacity: 0.6,
+                  child: Container(
+                    color: Color(0xff6E1D35),
                   ),
-                  Text('警告：唔承受能力誤入，僅對少量用戶開放'),
-                  Text(
-                    '禁止傳播與分享',
-                    style: TextStyle(color: Color(0xffFF5B8C)),
-                  ),
-                  SizedBox(
-                    height: 10.w,
-                  ),
-                  Stack(
-                    children: [
-                      Positioned.fill(
-                          child: PlatformAwareAssetImage(
-                              url: 'assets/images/dazhebaobg.png',
-                              fit: BoxFit.fill,
-                              filterQuality: FilterQuality.medium)),
-                      Container(
-                        width: 311.w,
-                        height: 64.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ))),
+        darkPrivilege
+            ? SizedBox()
+            : Positioned.fill(
+                child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 27.5.w),
+                child: DefaultTextStyle(
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('因內涵全球禁止流出暗網真實事件和稀缺資源 n號房,戰爭,變態,恐怖,緬北輪姦等百萬資源'),
+                        SizedBox(
+                          height: 10.w,
+                        ),
+                        Text('警告：唔承受能力誤入，僅對少量用戶開放'),
+                        Text(
+                          '禁止傳播與分享',
+                          style: TextStyle(color: Color(0xffFF5B8C)),
+                        ),
+                        SizedBox(
+                          height: 10.w,
+                        ),
+                        Stack(
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  '點擊開通',
-                                  style: TextStyle(
-                                      color: Color(0xffFE155B),
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Text('開啟無限觀影',
-                                    style: TextStyle(
-                                        color: Color(0xffffffff),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w700)),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 31.w,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.push('/vip');
-                              },
-                              child: Container(
-                                width: 96.w,
-                                height: 34.w,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50.w),
-                                    gradient: DefaultStyle.defaluGrandientLine),
-                                child: Text('立即解锁',
-                                    style: TextStyle(
-                                        color: Color(0xffffffff),
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w700)),
+                            Positioned.fill(
+                                child: PlatformAwareAssetImage(
+                                    url: 'assets/images/dazhebaobg.png',
+                                    fit: BoxFit.fill,
+                                    filterQuality: FilterQuality.medium)),
+                            Container(
+                              width: 311.w,
+                              height: 64.w,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        '點擊開通',
+                                        style: TextStyle(
+                                            color: Color(0xffFE155B),
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Text('開啟無限觀影',
+                                          style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w700)),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 31.w,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.push('/vip');
+                                    },
+                                    child: Container(
+                                      width: 96.w,
+                                      height: 34.w,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50.w),
+                                          gradient:
+                                              DefaultStyle.defaluGrandientLine),
+                                      child: Text('立即解锁',
+                                          style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w700)),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
                           ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              )),
-        ))
+                        )
+                      ],
+                    )),
+              ))
       ],
     );
   }

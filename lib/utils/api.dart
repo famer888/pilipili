@@ -33,6 +33,7 @@ import 'http.dart';
 Future<HomeData> getHomeConfig(BuildContext context) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/home/config');
+    CommonUtils.debugPrint(res);
     Response<dynamic> res2 =
         await PlatformAwareHttp.post('/api/privilege/getUserPrivilege');
     if (res.data['data']['help'] != null) {
@@ -55,6 +56,10 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       Provider.of<HomeConfig>(context, listen: false)
           .setMember(result.data.member);
       Provider.of<HomeConfig>(context, listen: false)
+          .setDarkPrivilege(result.data.darkPrivilege);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setDarkPrivilegeTips(result.data.darkprivilegeTips);
+      Provider.of<HomeConfig>(context, listen: false)
           .setNotice(result.data.notice);
       Provider.of<HomeConfig>(context, listen: false).setAbs(result.data.ads);
       Provider.of<HomeConfig>(context, listen: false)
@@ -63,14 +68,12 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
           .setVersionMsg(result.data.versionMsg);
       AppGlobal.vipLevel = result.data.member.vipLevel;
       AppGlobal.bannerImgBase = result.data.config.imgBase;
-      CommonUtils.debugPrint('============AppGlobal.bannerImgBase===========');
-      CommonUtils.debugPrint(AppGlobal.bannerImgBase);
       AppGlobal.uploadImgKey = result.data.config.uploadImgKey;
       AppGlobal.uploadImgUrl = result.data.config.imgUploadUrl;
       AppGlobal.uploadMp4Key = result.data.config.uploadMp4Key;
       AppGlobal.uploadMp4Url = result.data.config.mp4UploadUrl;
       AppGlobal.m3u8_encrypt = result.data.config.m3u8_encrypt;
-      AppGlobal.uuid=result.data.member.uuid;
+      AppGlobal.uuid = result.data.member.uuid;
     }
     if (res2.data != null) {
       Provider.of<HomeConfig>(context, listen: false).setPrivilege(res2.data);
