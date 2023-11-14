@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/store/search.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
@@ -64,6 +65,19 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    bool darkPrivilege =
+        Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
+    if (darkPrivilege) {
+      tabList.add({
+        {
+          'title': '暗网',
+          'api': '/api/mv/search',
+          'pramas': {'isDark': 1},
+          'isFlow': true,
+          'contentType': 1
+        }
+      });
+    }
     searchProvider = context.read<Search>();
     tabList.forEach((item) {
       scrollChildKeys.add(GlobalKey());
@@ -463,8 +477,16 @@ class _SearchResultState extends State<SearchResult> {
       'api': '/api/girl/search',
       'pramas': {},
       'isFlow': false,
+    },
+    {
+      'title': '暗网',
+      'api': '/api/mv/search',
+      'pramas': {'isDark': 1},
+      'isFlow': true,
+      'contentType': 1
     }
   ];
+
   @override
   void dispose() {
     controller.dispose();

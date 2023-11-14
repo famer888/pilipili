@@ -74,18 +74,18 @@ class _HomeState extends State<Home> {
     },
     {
       "keepAlive": false,
-      "page": YuemeiShequ(),
-      "title": "约妹/社区",
-      "activeIcon": PPAssetsPath.yuemeiActive,
-      "icon": PPAssetsPath.yuemei,
-    },
-    {
-      "keepAlive": false,
       "page": AnwangPage(),
       "title": "暗網",
       "activeIcon": 'assets/images/2023/bottomTab/anwang_active.png',
       "icon": 'assets/images/2023/bottomTab/anwang.png',
       "asset": true
+    },
+    {
+      "keepAlive": false,
+      "page": YuemeiShequ(),
+      "title": "妹圈",
+      "activeIcon": PPAssetsPath.yuemeiActive,
+      "icon": PPAssetsPath.yuemei,
     },
     {
       "keepAlive": true,

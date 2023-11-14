@@ -740,6 +740,7 @@ Future getChangVideoList(
     int limit,
     int isfree,
     int category,
+    int isDark = 0,
     int day,
     String filter,
     int order}) async {
@@ -748,6 +749,7 @@ Future getChangVideoList(
         await PlatformAwareHttp.post('/api/mv/getList', data: {
       'type': type,
       'page': page,
+      'isDark': isDark,
       'limit': limit,
       'isfree': isfree,
       'category': category,

@@ -20,6 +20,7 @@ class FilterList extends StatefulWidget {
   FilterList(
       {Key key,
       this.data,
+      this.isDark = 0,
       this.id,
       this.isShow,
       this.index,
@@ -32,6 +33,7 @@ class FilterList extends StatefulWidget {
   final int index;
   final List tabList;
   final String parentName;
+  final int isDark;
   @override
   _FilterListState createState() => _FilterListState();
 }
@@ -108,6 +110,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       case 1:
         res = await getChangVideoList(
             type: 1,
+            isDark: widget.isDark,
             filter: widget.data,
             order: order,
             page: page,
@@ -117,6 +120,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       case 2:
         res = await getChangVideoList(
             type: 2,
+            isDark: widget.isDark,
             filter: widget.data,
             order: order,
             page: page,
@@ -126,6 +130,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       case 3:
         res = await getChangVideoList(
             type: 1,
+            isDark: widget.isDark,
             category: 1,
             filter: widget.data,
             order: order,

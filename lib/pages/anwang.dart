@@ -66,12 +66,14 @@ class _AnwangPageState extends State<AnwangPage> {
           child: FilterList(
               parentName: 'anwang',
               isShow: currentIndex == index,
+              isDark: 1,
               data: item.linkUrl,
               index: index),
         ));
       } else {
         pages.add(ListPage(
           parentName: 'anwang',
+          isDark: 1,
           isShow: currentIndex == index,
           title: item.name,
           id: item.linkUrl,

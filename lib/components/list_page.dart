@@ -22,11 +22,18 @@ import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
   ListPage(
-      {Key key, this.title, this.id, this.isShow, this.index, this.parentName})
+      {Key key,
+      this.title,
+      this.id,
+      this.isShow,
+      this.index,
+      this.parentName,
+      this.isDark = 0})
       : super(key: key);
   final String title;
   final String id;
   final bool isShow;
+  final int isDark;
   final int index;
   final String parentName;
   @override
@@ -117,26 +124,33 @@ class _ListPageState extends State<ListPage> with CardMixin {
         cardType = 6;
         break;
       case 'gold':
-        res = await getChangVideoList(limit: limit, page: page, isfree: 2);
+        res = await getChangVideoList(
+            limit: limit, page: page, isfree: 2, isDark: widget.isDark);
         isHorizontal = true;
         isFall = true;
         cardType = 1;
         break;
       case 'vip':
-        res = await getChangVideoList(limit: limit, page: page, isfree: 1);
+        res = await getChangVideoList(
+            limit: limit, page: page, isfree: 1, isDark: widget.isDark);
         isHorizontal = true;
         isFall = true;
         cardType = 1;
         break;
       case 'new':
-        res = await getChangVideoList(limit: limit, page: page);
+        res = await getChangVideoList(
+            limit: limit, page: page, isDark: widget.isDark);
         isHorizontal = true;
         isFall = true;
         cardType = 1;
         break;
       case 'dongman':
         res = await getChangVideoList(
-            type: 1, limit: limit, page: page, category: 1);
+            type: 1,
+            limit: limit,
+            page: page,
+            category: 1,
+            isDark: widget.isDark);
         isHorizontal = true;
         cardType = 1;
         break;
