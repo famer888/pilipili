@@ -11,6 +11,7 @@ import 'package:pilipili/model/element.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -46,7 +47,7 @@ class _AnwangPageState extends State<AnwangPage> {
   // }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig(15);
+    ElementModel data = await getFisrtTopNavConfig(213);
     loading = false;
     data.value.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
