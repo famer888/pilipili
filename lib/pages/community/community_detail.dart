@@ -213,7 +213,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                           Text(
                             '#破處回憶',
                             style: TextStyle(
-                                color: Color(0xffFE155B),
+                                color: Color(0xffFF5B8C),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14.sp),
                           )

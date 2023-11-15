@@ -1,4 +1,7 @@
 //获取精选顶部导航
+import 'dart:convert';
+
+import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
@@ -1067,6 +1070,61 @@ Future<Map> popAdsChick(String id) async {
   try {
     Response data =
         await PlatformAwareHttp.post("/api/home/popAdsChick", data: {"id": id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//所有圈子/发帖规则
+Future<Map> prePostData() async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/community/pre_post_data");
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//社区发帖
+Future<Map> createPost(
+    {int topicId,
+    String coins,
+    String title,
+    String content,
+    List medias}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/post", data: {
+      "topic_id": topicId,
+      "coins": coins == '' ? 0 : int.parse(coins),
+      "title": title,
+      "content": content,
+      "medias": jsonEncode(medias)
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//圈子分页
+Future<Map> getHomeTopics(
+    {String tag = 'recommend', String more = 'no'}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/topics",
+        data: {'tag': tag, 'more': more});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子列表
+Future<Map> getPostList({String tag = 'recommend', int limit, int page}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/list_post",
+        data: {'tag': tag, 'limit': limit, 'page': page});
     return data.data;
   } catch (e) {
     return null;

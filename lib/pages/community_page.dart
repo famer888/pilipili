@@ -13,8 +13,8 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key key,this.scrollDirection}) : super(key: key);
-final Function scrollDirection;
+  const CommunityPage({Key key, this.scrollDirection}) : super(key: key);
+  final Function scrollDirection;
   @override
   State<CommunityPage> createState() => _CommunityPageState();
 }
@@ -22,7 +22,7 @@ final Function scrollDirection;
 class _CommunityPageState extends State<CommunityPage> {
   List postList = [];
 
-  ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController;
   dynamic fixedBanner;
   bool isListView = true;
   bool networkErr = false;
@@ -30,18 +30,21 @@ class _CommunityPageState extends State<CommunityPage> {
   bool loading = true;
   bool isAll = false;
   int page = 1;
-  int limit = 30;
+  int limit = 15;
+  ValueNotifier<int> selectTab = ValueNotifier(0);
+  String type = 'attention';
+  List topics = [];
   ValueNotifier<bool> showTab = ValueNotifier(false);
-  //选择图片
-  getPageData(String _city) {
-    if (page == 1 && !loading) {
+
+  getPageData() {
+    if (page == 1) {
+      showTab.value = false;
       loading = true;
-      _scrollController.jumpTo(0);
       setState(() {});
     }
-    getYuepaoList(page, limit, _city).then((res) {
+    getPostList(page: page, limit: limit, tag: type).then((res) {
       if (res['status'] != 0) {
-        var resData = res['data'] == null ? [] : res['data'];
+        var resData = res['data'] ?? [];
         if (res['status'] != 0) {
           pageStatus = 2;
           loading = false;
@@ -68,7 +71,15 @@ class _CommunityPageState extends State<CommunityPage> {
         return;
       }
       fixedBanner = res['data'];
-      // getPageData(location);
+    });
+  }
+
+  getTopics() {
+    getHomeTopics().then((value) {
+      if (value['status'] != 0) {
+        topics = value['data']['list'] ?? [];
+        setState(() {});
+      }
     });
   }
 
@@ -76,9 +87,9 @@ class _CommunityPageState extends State<CommunityPage> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return PostCard();
+          return PostCard(data: postList[index]);
         },
-        childCount: 20,
+        childCount: postList.length,
         addSemanticIndexes: false,
         addRepaintBoundaries: true,
         addAutomaticKeepAlives: true,
@@ -103,8 +114,11 @@ class _CommunityPageState extends State<CommunityPage> {
     // TODO: implement initState
     super.initState();
     pageStatus = 1;
+    _scrollController = ScrollController();
     _scrollController.addListener(scorllAdd);
     getBanner();
+    getTopics();
+    getPageData();
   }
 
   @override
@@ -112,6 +126,7 @@ class _CommunityPageState extends State<CommunityPage> {
     // TODO: implement dispose
     super.dispose();
     showTab.dispose();
+    selectTab.dispose();
     _scrollController.removeListener(scorllAdd);
     _scrollController.dispose();
   }
@@ -164,46 +179,72 @@ class _CommunityPageState extends State<CommunityPage> {
     );
   }
 
+  List tabList = [
+    {'title': '關注', 'id': 0, 'type': 'attention'},
+    {'title': '推薦', 'id': 1, 'type': 'recommend'},
+    {'title': '最新', 'id': 2, 'type': 'new'},
+    {'title': '最熱', 'id': 3, 'type': 'trending'},
+    {'title': '精華', 'id': 4, 'type': 'featured'},
+    {'title': '視頻', 'id': 5, 'type': 'videos'},
+  ];
   Widget _postTab() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.w),
-        boxShadow: [
-          BoxShadow(
-              color: Color(0xffFF80A3).withOpacity(0.5),
-              offset: Offset(0, 2),
-              blurRadius: 4,
-              spreadRadius: 0)
-        ],
-      ),
-      height: 40.w,
-      padding: EdgeInsets.only(left: 8.w, right: 8.w),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                PlatformAwareAssetImage(
-                  url: 'assets/images/icon_love_red.png',
-                  height: 5.w,
-                  fit: BoxFit.fitHeight,
-                ),
-                Text(
-                  '關注',
-                  style: TextStyle(
-                      color: Color(0xffFF5B8C),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14.sp),
-                )
+    return ValueListenableBuilder(
+        valueListenable: selectTab,
+        builder: (context, value, child) {
+          return Container(
+            width: 343.w,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.w),
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0xffFF80A3).withOpacity(0.5),
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                    spreadRadius: 0)
               ],
             ),
-          )
-        ],
-      ),
-    );
+            height: 40.w,
+            padding: EdgeInsets.only(left: 8.w, right: 8.w),
+            child: Row(
+                children: tabList.map((e) {
+              return Expanded(
+                flex: 1,
+                child: GestureDetector(
+                    onTap: () {
+                      selectTab.value = e['id'];
+                      page = 1;
+                      isAll = false;
+                      type = e['type'];
+                      getPageData();
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Opacity(
+                          opacity: value == e['id'] ? 1 : 0,
+                          child: PlatformAwareAssetImage(
+                            url: 'assets/images/icon_love_red.png',
+                            width: 6.w,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                        Text(
+                          e['title'],
+                          style: TextStyle(
+                              color: value == e['id']
+                                  ? Color(0xffFF5B8C)
+                                  : Color(0xffC2C2C2),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    )),
+              );
+            }).toList()),
+          );
+        });
   }
 
   @override
@@ -216,9 +257,13 @@ class _CommunityPageState extends State<CommunityPage> {
             onLoading: () {
               if (isAll) return;
               page++;
-              // getPageData(location);
+              getPageData();
             },
-            // },
+            onRefresh: () {
+              page = 1;
+              isAll = false;
+              getPageData();
+            },
             child: CustomScrollView(
               controller: _scrollController,
               cacheExtent: ScreenUtil().screenHeight * 5,
@@ -248,20 +293,24 @@ class _CommunityPageState extends State<CommunityPage> {
                     ),
                     flexibleSpace: HomeTopBanner(fixedBanner: fixedBanner)),
                 SliverToBoxAdapter(
-                  child: GridView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 6,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 8.w,
-                        mainAxisSpacing: 8.w,
-                        childAspectRatio: 109 / 71,
-                      ),
-                      itemBuilder: (context, index) {
-                        return topBtn('成熟御姐', 201);
-                      }),
+                  child: topics.isEmpty
+                      ? Container()
+                      : GridView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: topics.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 8.w,
+                            mainAxisSpacing: 8.w,
+                            childAspectRatio: 109 / 71,
+                          ),
+                          itemBuilder: (context, index) {
+                            return topBtn(topics[index]['name'],
+                                topics[index]['post_num']);
+                          }),
                 ),
                 SliverPadding(
                   padding: EdgeInsets.only(top: 16.w),
@@ -272,9 +321,17 @@ class _CommunityPageState extends State<CommunityPage> {
                   ),
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 17.w, horizontal: 8.w),
-                  sliver: _listView(),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 17.w, horizontal: 8.w),
+                  sliver: loading
+                      ? SliverToBoxAdapter(
+                          child: PageStatus.loading(mounted),
+                        )
+                      : (postList.isEmpty
+                          ? SliverToBoxAdapter(
+                              child: PageStatus.noData(),
+                            )
+                          : _listView()),
                 ),
                 SliverToBoxAdapter(
                   child: SizedBox(

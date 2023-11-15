@@ -37,15 +37,6 @@ class _AnwangPageState extends State<AnwangPage> {
     getPageData();
   }
 
-  // @override
-  // void didUpdateWidget(AnwangPage oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (widget.isShow && !initPage) {
-  //     initPage = true;
-  //     getPageData();
-  //   }
-  // }
-
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(213);
     loading = false;
@@ -94,14 +85,14 @@ class _AnwangPageState extends State<AnwangPage> {
         navitems.isEmpty || loading
             ? PageStatus.loading(true)
             : Scrollnav(
-                emitName: 'pili_ciyuan',
+                emitName: 'pili_anwang',
                 navitems: navitems,
                 onNavIndexChanged: (index) {
                   setState(() {
                     currentIndex = index;
                   });
                   EventBus().emit('lanmu-init-view', {
-                    'parentName': 'ciyuan',
+                    'parentName': 'anwang',
                     'currentIndex': index,
                   });
                 },

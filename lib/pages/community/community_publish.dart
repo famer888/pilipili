@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -11,6 +12,7 @@ import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/community/xfile_progress_toast.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -24,18 +26,21 @@ class CommunityPushlish extends StatefulWidget {
 
 class _CommunityPushlishState extends State<CommunityPushlish> {
   ValueNotifier<bool> showCoinInput = ValueNotifier(false);
-  String coin = '';
+  String coin = '0';
   String title = '';
   String content = '';
+  List topics = [];
   ValueNotifier<List> imageList = ValueNotifier([]);
   ValueNotifier<List> videoList = ValueNotifier([]);
   final ImagePicker _picker = ImagePicker();
-  int maxLength = 10;
-  int selectIndex = 0;
+  int maxLength = 9;
+  int videoMaxLength = 1;
+  int selectId = 0;
+  String selectText;
 //选择视频
   Future<void> videoPickerAssets() async {
-    if (imageList.value.length >= maxLength) {
-      CommonUtils.showText('最多上传$maxLength张图片');
+    if (imageList.value.length >= videoMaxLength) {
+      CommonUtils.showText('最多上传$videoMaxLength张图片');
       return;
     }
     final XFile file = await _picker.pickVideo(source: ImageSource.gallery);
@@ -176,8 +181,67 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     );
   }
 
+  getCircle() {
+    //所有圈子/发帖规则
+    prePostData().then((res) {
+      if (res['status'] != 0) {
+        CommonUtils.debugPrint(res['data']);
+        topics = res['data']['topic'] ?? [];
+        selectId = topics[0]['topic_id'];
+        setState(() {});
+      } else {
+        CommonUtils.showText(res['msg'] ?? '接口异常');
+      }
+    });
+  }
+
+  publishPost() {
+    if (selectText == null) {
+      CommonUtils.showText('请选择圈子');
+      return;
+    }
+    try {
+      if (coin.trim() != "") {
+        int _coins = int.parse(coin);
+      }
+    } catch (e) {
+      CommonUtils.showText('帖子价格请输入正确金额');
+      return;
+    }
+    if (title.isEmpty) {
+      CommonUtils.showText('请输入帖子标题');
+      return;
+    }
+    if (content.isEmpty) {
+      CommonUtils.showText('请输入帖子内容');
+      return;
+    }
+    if (videoList.value.isEmpty && imageList.value.isEmpty) {
+      CommonUtils.showText('请上传图片或视频');
+      return;
+    }
+    PageStatus.showLoading(text: '发布中...');
+    createPost(
+        coins: coin,
+        title: title,
+        topicId: selectId,
+        content: content,
+        medias: [...imageList.value, ...videoList.value]).then((value) {
+      if (value['status'] != 0) {
+        CommonUtils.showText(value['msg'] ?? '上传成功,请耐心等待审核');
+        context.pop();
+      } else {
+        print(value['msg']);
+        CommonUtils.showText(value['msg'] ?? '接口异常');
+      }
+    }).whenComplete(() {
+      PageStatus.closeLoading();
+    });
+  }
+
   @override
   void initState() {
+    getCircle();
     super.initState();
     if (AppGlobal.postInfo.isNotEmpty) {
       print('编辑');
@@ -217,54 +281,61 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   }
 
   showQuanzi() {
+    String tags;
     YyShowDialog.showdialog(context,
-        title: '选择圈子',
-        btnText: '确定',
-        cancelText: '取消',
-        callBack: () {}, content: (setDialogState) {
-      return GridView.builder(
-          itemCount: 6,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            mainAxisSpacing: 4.w,
-            crossAxisSpacing: 4.w,
-            childAspectRatio: 83 / 36,
-          ),
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: (){
-                selectIndex=index;
-                setDialogState((){});
-              },
-              child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.w),
-                  color:
-                      selectIndex == index ? Color(0xffFF84A9) : Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: selectIndex == index
-                            ? Color(0xffA82118).withOpacity(0.26)
-                            : Color(0xffFFD3E6),
-                        offset: Offset(0, 2),
-                        blurRadius: 4,
-                        spreadRadius: 0)
-                  ]),
-              child: Text(
-                '破處回憶',
-                style: TextStyle(
-                    color:
-                        selectIndex == index ? Colors.white : Color(0xff828181),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w700),
-              ),
+        title: '选择圈子', btnText: '确定', cancelText: '取消', callBack: () {
+      selectText = tags;
+      setState(() {});
+    }, content: (setDialogState) {
+      return SizedBox(
+        height: 200.w,
+        child: GridView.builder(
+            itemCount: topics.length,
+            padding: EdgeInsets.zero,
+            // physics: const NeverScrollableScrollPhysics(),
+            // shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 4.w,
+              crossAxisSpacing: 4.w,
+              childAspectRatio: 83 / 36,
             ),
-            );
-          });
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  selectId = topics[index]['topic_id'];
+                  tags = topics[index]['topic_name_formate'];
+                  setDialogState(() {});
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.w),
+                      color: selectId == topics[index]['topic_id']
+                          ? Color(0xffFF84A9)
+                          : Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: selectId == topics[index]['topic_id']
+                                ? Color(0xffA82118).withOpacity(0.26)
+                                : Color(0xffFFD3E6),
+                            offset: Offset(0, 2),
+                            blurRadius: 4,
+                            spreadRadius: 0)
+                      ]),
+                  child: Text(
+                    topics[index]['topic_name'],
+                    style: TextStyle(
+                        color: selectId == topics[index]['topic_id']
+                            ? Colors.white
+                            : Color(0xff828181),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              );
+            }),
+      );
     });
   }
 
@@ -301,7 +372,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '#選擇圈子',
+                          selectText ?? '#選擇圈子',
                           style: TextStyle(
                               color: Color(0xff6d6d6d),
                               fontSize: 14.sp,
@@ -334,7 +405,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                     width: 8.w,
                                   ),
                                   Text(
-                                    '0/10',
+                                    '0/$videoMaxLength',
                                     style: subtitleStyle,
                                   ),
                                 ],
@@ -370,9 +441,9 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                     ),
                                     itemBuilder: (context, index) {
                                       return mediaItem(
-                                          child: PlatformAwareNetworkImage(
-                                            url: videos[index]['cover'],
-                                            fit: BoxFit.cover,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text('视频文件'),
                                           ),
                                           onClose: () {
                                             List _videos = videoList.value;
@@ -405,7 +476,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                     width: 8.w,
                                   ),
                                   Text(
-                                    '0/10',
+                                    '0/$maxLength',
                                     style: subtitleStyle,
                                   ),
                                 ],
@@ -594,7 +665,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.w),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: publishPost,
                     child: Container(
                       width: 327.w,
                       height: 40.w,
