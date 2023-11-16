@@ -35,7 +35,14 @@ class _CommunityPageState extends State<CommunityPage> {
   String type = 'attention';
   List topics = [];
   ValueNotifier<bool> showTab = ValueNotifier(false);
-
+  List tabList = [
+    {'title': '關注', 'id': 0, 'type': 'attention'},
+    {'title': '推薦', 'id': 1, 'type': 'recommend'},
+    {'title': '最新', 'id': 2, 'type': 'new'},
+    {'title': '最熱', 'id': 3, 'type': 'trending'},
+    {'title': '精華', 'id': 4, 'type': 'featured'},
+    {'title': '視頻', 'id': 5, 'type': 'videos'},
+  ];
   getPageData() {
     if (page == 1) {
       showTab.value = false;
@@ -179,14 +186,6 @@ class _CommunityPageState extends State<CommunityPage> {
     );
   }
 
-  List tabList = [
-    {'title': '關注', 'id': 0, 'type': 'attention'},
-    {'title': '推薦', 'id': 1, 'type': 'recommend'},
-    {'title': '最新', 'id': 2, 'type': 'new'},
-    {'title': '最熱', 'id': 3, 'type': 'trending'},
-    {'title': '精華', 'id': 4, 'type': 'featured'},
-    {'title': '視頻', 'id': 5, 'type': 'videos'},
-  ];
   Widget _postTab() {
     return ValueListenableBuilder(
         valueListenable: selectTab,
@@ -311,7 +310,8 @@ class _CommunityPageState extends State<CommunityPage> {
                             return GestureDetector(
                               onTap: () {
                                 context.push(
-                                    '/topicDetail/${topics[index]['id']}',isNoRepeat: true);
+                                    '/topicDetail/${topics[index]['id']}',
+                                    isNoRepeat: true);
                               },
                               child: topBtn(topics[index]['name'],
                                   topics[index]['post_num']),

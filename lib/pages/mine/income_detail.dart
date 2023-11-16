@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
+import 'package:pilipili/components/pili/publish_biuld_list.dart';
 
 class IncomeDetail extends StatefulWidget {
   const IncomeDetail({Key key}) : super(key: key);
@@ -15,15 +16,13 @@ class _IncomeDetailState extends State<IncomeDetail> {
     return Scaffold(
       body: Column(
         children: [
-          PageTitleBar(
-            paddingTop: ScreenUtil().statusBarHeight,
-            title: '收益明細'
-          ),
+          PageTitleBar(paddingTop: ScreenUtil().statusBarHeight, title: '收益明細'),
           Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
+              child: PublicBuildList(
+                  api: '/api/community/revenue_list',
+                  isShow: true,
+                  data: {},
+                  itemBuild: (context, index, data, page, limit, getListData) {
                     return Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
@@ -40,7 +39,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '帖子名稱帖子名稱帖子名稱帖子名稱帖子名稱帖子名稱',
+                                data['source_str'],
                                 style: TextStyle(
                                     color: Color(0xff404040),
                                     fontSize: 16.sp,
@@ -57,7 +56,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                                 children: [
                                   Text('日期'),
                                   Text(
-                                    '2019-03-02',
+                                    data['created_at'].split('')[0],
                                     style: TextStyle(color: Color(0xff979797)),
                                   ),
                                 ],
@@ -65,17 +64,31 @@ class _IncomeDetailState extends State<IncomeDetail> {
                               SizedBox(
                                 height: 6.w,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('販售金額'),
-                                  Text(
-                                    '500',
-                                    style: TextStyle(color: Color(0xff979797)),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Text('金額'),
+                              //     Text(
+                              //       data['coinCnt'],
+                              //       style: TextStyle(color: Color(0xff979797)),
+                              //     ),
+                              //   ],
+                              // ),
+                              // SizedBox(
+                              //   height: 6.w,
+                              // ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Text('平台費'),
+                              //     Text(
+                              //       '-250',
+                              //       style: TextStyle(color: Color(0xff979797)),
+                              //     ),
+                              //   ],
+                              // ),
                               SizedBox(
                                 height: 6.w,
                               ),
@@ -83,23 +96,9 @@ class _IncomeDetailState extends State<IncomeDetail> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('平台費'),
+                                  Text(data['type_str']),
                                   Text(
-                                    '-250',
-                                    style: TextStyle(color: Color(0xff979797)),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 6.w,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('淨收益'),
-                                  Text(
-                                    '-250',
+                                    data['coinCnt'],
                                     style: TextStyle(
                                         color: Color(0xffFF84A9),
                                         fontWeight: FontWeight.w700),

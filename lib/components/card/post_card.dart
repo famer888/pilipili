@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/store/community.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -289,20 +290,26 @@ class _PostCardState extends State<PostCard> {
                       fontWeight: FontWeight.w700),
                 )),
                 widget.showEdit
-                    ? Container(
-                        margin: EdgeInsets.only(left: 8.w),
-                        width: 48.w,
-                        height: 30.w,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.w),
-                            gradient: DefaultStyle.defaluGrandientLine),
-                        child: Text(
-                          '编辑',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w700),
+                    ? GestureDetector(
+                        onTap: () {
+                          AppGlobal.postInfo = data;
+                          context.push('/communityPushlish');
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 8.w),
+                          width: 48.w,
+                          height: 30.w,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.w),
+                              gradient: DefaultStyle.defaluGrandientLine),
+                          child: Text(
+                            '编辑',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
                       )
                     : SizedBox()
