@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,11 +71,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
             String orgURL = data['msg'] ?? '';
             videoList.value = [
               ...videoList.value,
-              {
-                'media_url': orgURL,
-                'cover': '',
-                'type': 2,
-              }
+              {'media_url': orgURL, 'cover': '', 'type': 2, 'w': 0, 'h': 0}
             ];
           } else {
             CommonUtils.showText(data['msg'] ?? "failed");
@@ -103,6 +101,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   void uploadFileImg(XFile file) async {
     PageStatus.showLoading(text: '上传中...');
     var data;
+    Uint8List bytes = await file.readAsBytes();
+    final image = img.decodeImage(bytes.toList());
+    int imageWidth = image.width;
+    int imageHeight = image.height;
     if (kIsWeb) {
       data = await PlatformAwareHttp.xfileHtmlUploadImage(
           file: file, position: 'upload');
@@ -119,6 +121,8 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
           'media_url': orgURL,
           'cover': AppGlobal.bannerImgBase + orgURL,
           'type': 1,
+          'w': imageWidth,
+          'h': imageHeight
         }
       ];
     } else {
@@ -220,13 +224,21 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       CommonUtils.showText('请上传图片或视频');
       return;
     }
+    List fileList = [...imageList.value, ...videoList.value].map((e) {
+      return {
+        'media_url': e['media_url'],
+        'thumb_height': e['h'],
+        'thumb_width': e['w']
+      };
+    }).toList();
     PageStatus.showLoading(text: '发布中...');
     createPost(
-        coins: coin,
-        title: title,
-        topicId: selectId,
-        content: content,
-        medias: [...imageList.value, ...videoList.value]).then((value) {
+            coins: coin,
+            title: title,
+            topicId: selectId,
+            content: content,
+            medias: fileList)
+        .then((value) {
       if (value['status'] != 0) {
         CommonUtils.showText(value['msg'] ?? '上传成功,请耐心等待审核');
         context.pop();
@@ -281,7 +293,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   }
 
   showQuanzi() {
-    String tags;
+    String tags=topics[0]['topic_name_formate'];
     YyShowDialog.showdialog(context,
         title: '选择圈子', btnText: '确定', cancelText: '取消', callBack: () {
       selectText = tags;

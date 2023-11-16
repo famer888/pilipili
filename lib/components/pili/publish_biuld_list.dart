@@ -28,6 +28,7 @@ class PublicBuildList extends StatefulWidget {
   final double paddingTop;
   final double paddingLeft;
   final double paddingRight;
+  final Widget head;
   PublicBuildList({
     Key key,
     this.isShow,
@@ -45,6 +46,7 @@ class PublicBuildList extends StatefulWidget {
     this.paddingTop = 0,
     this.paddingLeft = 0,
     this.paddingRight = 0,
+    this.head,
   }) : super(key: key);
 
   @override
@@ -178,88 +180,32 @@ class _PublicBuildListState extends State<PublicBuildList> {
                   setState(() {});
                   getSearchResult();
                 },
-                child: searchData.isEmpty
-                    ? PageStatus.noData(text: widget.nullText)
-                    : widget.row == 1
-                        ? ListView.builder(
-                            physics: const ClampingScrollPhysics(),
-                            padding: EdgeInsets.only(
-                              top: widget.paddingTop,
-                              left: widget.paddingLeft,
-                              right: widget.paddingRight,
-                              bottom: MediaQuery.of(context).padding.bottom +
-                                  AppGlobal.webBottomHeight,
-                            ),
-                            shrinkWrap: true,
-                            cacheExtent: 10.sh,
-                            controller:
-                                widget.isController ? _controller : null,
-                            itemCount: searchData.length,
-                            itemBuilder: (context, index) {
-                              return widget.itemBuild(
-                                  context,
-                                  index,
-                                  searchData[index],
-                                  reqData['page'],
-                                  reqData['limit'], () {
-                                return searchData;
-                              });
-                            })
-                        : (widget.isFlow
-                            ? WaterfallFlow.builder(
-                                shrinkWrap: true,
-                                controller:
-                                    widget.isController ? _controller : null,
-                                cacheExtent: 5.sh,
-                                physics: ClampingScrollPhysics(),
+                child: NestedScrollView(
+                    headerSliverBuilder: (context, innerBoxIsScrolled) {
+                      return [
+                        SliverToBoxAdapter(
+                          child: widget.head ?? SizedBox(),
+                        )
+                      ];
+                    },
+                    body: searchData.isEmpty
+                        ? PageStatus.noData(text: widget.nullText)
+                        : widget.row == 1
+                            ? ListView.builder(
+                                physics: const ClampingScrollPhysics(),
                                 padding: EdgeInsets.only(
-                                    top: 10.w,
-                                    bottom:
-                                        MediaQuery.of(context).padding.bottom +
-                                            AppGlobal.webBottomHeight +
-                                            widget.bottomPadding,
-                                    left: 10.w,
-                                    right: 10.w),
-                                itemCount: searchData.length,
-                                gridDelegate:
-                                    SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: widget.row,
-                                        mainAxisSpacing:
-                                            ScreenUtil().setWidth(10),
-                                        crossAxisSpacing:
-                                            ScreenUtil().setWidth(10)),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return widget.itemBuild(
-                                      context,
-                                      index,
-                                      searchData[index],
-                                      reqData['page'],
-                                      reqData['limit'], () {
-                                    return searchData;
-                                  });
-                                })
-                            : GridView.builder(
-                                controller:
-                                    widget.isController ? _controller : null,
-                                cacheExtent: 5.sh,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                padding: EdgeInsets.only(
-                                    left: 10.w,
-                                    right: 10.w,
-                                    bottom:
-                                        MediaQuery.of(context).padding.bottom +
-                                            AppGlobal.webBottomHeight +
-                                            widget.bottomPadding,
-                                    top: 20.w),
-                                itemCount: searchData.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: widget.row,
-                                  mainAxisSpacing: ScreenUtil().setWidth(7),
-                                  crossAxisSpacing: ScreenUtil().setWidth(7),
-                                  childAspectRatio: widget.aspectRatio,
+                                  top: widget.paddingTop,
+                                  left: widget.paddingLeft,
+                                  right: widget.paddingRight,
+                                  bottom:
+                                      MediaQuery.of(context).padding.bottom +
+                                          AppGlobal.webBottomHeight,
                                 ),
+                                shrinkWrap: true,
+                                cacheExtent: 10.sh,
+                                controller:
+                                    widget.isController ? _controller : null,
+                                itemCount: searchData.length,
                                 itemBuilder: (context, index) {
                                   return widget.itemBuild(
                                       context,
@@ -269,7 +215,78 @@ class _PublicBuildListState extends State<PublicBuildList> {
                                       reqData['limit'], () {
                                     return searchData;
                                   });
-                                })),
+                                })
+                            : (widget.isFlow
+                                ? WaterfallFlow.builder(
+                                    shrinkWrap: true,
+                                    controller: widget.isController
+                                        ? _controller
+                                        : null,
+                                    cacheExtent: 5.sh,
+                                    physics: ClampingScrollPhysics(),
+                                    padding: EdgeInsets.only(
+                                        top: 10.w,
+                                        bottom: MediaQuery.of(context)
+                                                .padding
+                                                .bottom +
+                                            AppGlobal.webBottomHeight +
+                                            widget.bottomPadding,
+                                        left: 10.w,
+                                        right: 10.w),
+                                    itemCount: searchData.length,
+                                    gridDelegate:
+                                        SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: widget.row,
+                                            mainAxisSpacing:
+                                                ScreenUtil().setWidth(10),
+                                            crossAxisSpacing:
+                                                ScreenUtil().setWidth(10)),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return widget.itemBuild(
+                                          context,
+                                          index,
+                                          searchData[index],
+                                          reqData['page'],
+                                          reqData['limit'], () {
+                                        return searchData;
+                                      });
+                                    })
+                                : GridView.builder(
+                                    controller: widget.isController
+                                        ? _controller
+                                        : null,
+                                    cacheExtent: 5.sh,
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    padding: EdgeInsets.only(
+                                        left: 10.w,
+                                        right: 10.w,
+                                        bottom: MediaQuery.of(context)
+                                                .padding
+                                                .bottom +
+                                            AppGlobal.webBottomHeight +
+                                            widget.bottomPadding,
+                                        top: 20.w),
+                                    itemCount: searchData.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: widget.row,
+                                      mainAxisSpacing: ScreenUtil().setWidth(7),
+                                      crossAxisSpacing:
+                                          ScreenUtil().setWidth(7),
+                                      childAspectRatio: widget.aspectRatio,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return widget.itemBuild(
+                                          context,
+                                          index,
+                                          searchData[index],
+                                          reqData['page'],
+                                          reqData['limit'], () {
+                                        return searchData;
+                                      });
+                                    }))),
               );
   }
 }

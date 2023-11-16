@@ -41,15 +41,15 @@ class UserInfo {
 }
 
 class Data {
-  Data({
-    this.money,
-    this.exp,
-    this.level,
-    this.thumb,
-    this.nickname,
-    this.shortMvFreeTime,
-    this.longMvFreeTime,
-  });
+  Data(
+      {this.money,
+      this.exp,
+      this.level,
+      this.thumb,
+      this.nickname,
+      this.shortMvFreeTime,
+      this.longMvFreeTime,
+      this.chatMoney});
 
   int money;
   int exp;
@@ -58,18 +58,19 @@ class Data {
   String nickname;
   int shortMvFreeTime;
   int longMvFreeTime;
+  int chatMoney;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        money: json["money"] == null ? null : json["money"],
-        exp: json["exp"] == null ? null : json["exp"],
-        level: json["level"] == null ? null : json["level"],
-        thumb: json["thumb"] == null ? null : json["thumb"],
-        nickname: json["nickname"] == null ? null : json["nickname"],
-        shortMvFreeTime:
-            json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
-        longMvFreeTime:
-            json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
-      );
+      money: json["money"] == null ? null : json["money"],
+      exp: json["exp"] == null ? null : json["exp"],
+      level: json["level"] == null ? null : json["level"],
+      thumb: json["thumb"] == null ? null : json["thumb"],
+      nickname: json["nickname"] == null ? null : json["nickname"],
+      shortMvFreeTime:
+          json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
+      longMvFreeTime:
+          json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
+      chatMoney: json['chat_money'] ?? 0);
 
   Map<String, dynamic> toJson() => {
         "money": money == null ? null : money,
@@ -79,5 +80,6 @@ class Data {
         "nickname": nickname == null ? null : nickname,
         "shortMvFreeTime": shortMvFreeTime == null ? null : shortMvFreeTime,
         "longMvFreeTime": longMvFreeTime == null ? null : longMvFreeTime,
+        "chat_money": chatMoney ?? 0
       };
 }

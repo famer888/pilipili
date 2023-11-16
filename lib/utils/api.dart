@@ -1130,3 +1130,80 @@ Future<Map> getPostList({String tag = 'recommend', int limit, int page}) async {
     return null;
   }
 }
+
+//帖子详情
+Future<Map> postDetail(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/post_detail",
+        data: {'id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子评论
+Future<Map> getPostComments(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/post_comments",
+        data: {'id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子二级评论
+Future<Map> getPostCommentsChild(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/comments",
+        data: {'comment_id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子评论点赞
+Future<Map> communityLike(int id, String type) async {
+  //类型 post 帖子 comment 评论
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/like",
+        data: {'id': id, 'type': type});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//他人主页
+Future<Map> otherHomeInfo(int aff) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/peer_center",
+        data: {'aff': aff});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注
+Future<Map> toggleFollow(int aff) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/user/toggle_follow",
+        data: {'aff': aff});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注列表
+Future<Map> myFollowList(int page,int limit) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/user/list_follows",data: {'page':page,'limit':limit});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}

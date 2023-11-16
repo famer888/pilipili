@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,12 +7,18 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/comment_item.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
+import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/input/InputDailog.dart';
+import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
+import 'package:pilipili/store/community.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
+import 'package:provider/provider.dart';
 
 class CommunityDetail extends StatefulWidget {
   const CommunityDetail({Key key, this.id}) : super(key: key);
@@ -21,6 +29,86 @@ class CommunityDetail extends StatefulWidget {
 
 class _CommunityDetailState extends State<CommunityDetail> {
   bool isFollow = false;
+  bool loading = true;
+  bool loadFollow = false;
+  String tag = '';
+  Map detailData = {};
+  int limit = 15;
+  int page = 1;
+  Map picMap = {};
+  bool isAll = false;
+  bool isLike = false;
+  ValueNotifier<List> commentList = ValueNotifier([]);
+  getComentList(int id) {
+    getPostComments(id).then((res) {
+      if (isAll) return;
+      List newComments = commentList.value;
+      if (res['status'] != 0) {
+        if (page == 1) {
+          newComments = res['data'];
+        } else {
+          newComments = [...newComments, ...res['data']];
+        }
+        isAll = res['data'].length < limit;
+        commentList.value = newComments;
+      } else {
+        CommonUtils.showText(res['msg'] ?? '接口异常,请稍后再试');
+      }
+    });
+  }
+
+  String getCover(Map item) {
+    String path = '';
+    if (item['cover'] != '' && item['cover'] != null) {
+      path = item['cover'];
+    } else if (item['media_url'] != '' && item['media_url'] != null) {
+      path = item['media_url'];
+    } else {
+      path = item['media_url_full'];
+    }
+    return path;
+  }
+
+  getDetailData() {
+    postDetail(widget.id).then((res) {
+      CommonUtils.debugPrint(res);
+      if (res['status'] != 0) {
+        detailData = res['data']['detail'];
+        isLike = detailData['is_like'] == 1;
+        List topics = detailData['topics'].split(',');
+        tag = topics.isEmpty ? '' : topics[0];
+        loading = false;
+        setState(() {});
+        picMap = {
+          'resources': List.from(detailData['medias']).map((e) {
+            return getCover(e);
+          }).toList(),
+          'index': 0
+        };
+        getComentList(detailData['id']);
+      } else {
+        CommonUtils.showText(res['msg'] ?? '接口异常,稍后再试');
+      }
+    });
+  }
+
+  String getCreateTime() {
+    DateTime timeint = DateTime.parse(detailData['created_at']);
+    var beforeText = RelativeDateFormat.format(timeint);
+    return beforeText;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDetailData();
+  }
+
+  @override
+  void dispose() {
+    commentList.dispose();
+    super.dispose();
+  }
 
   Widget bottomRow(String icon, int _num) {
     return Row(
@@ -32,7 +120,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
           width: 8.w,
         ),
         Text(
-          _num.toString(),
+          CommonUtils.renderFixedNumber(_num.toDouble()),
           style: TextStyle(
               color: Color(0xffFF84A9),
               fontSize: 12.sp,
@@ -49,296 +137,464 @@ class _CommunityDetailState extends State<CommunityDetail> {
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: '我是標題，但好像大家都打很多字我是標題，但好像大家都打很多字',
+            title: detailData['title'] ?? '',
           ),
           Expanded(
-              child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.all(8.w),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child:GestureDetector(
-                                onTap: (){
-                                  context.push('/othersPost/1');
-                                },
-                                child:  Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20.w),
-                                child: Container(
-                                  width: 40.w,
-                                  height: 40.w,
-                                  child: PlatformAwareNetworkImage(
-                                    url: '',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8.w,
-                              ),
-                              Expanded(
-                                  child: Column(
+              child: loading
+                  ? PageStatus.loading(true)
+                  : PullRefreshList(
+                      onLoading: () {
+                        page++;
+                        isAll = false;
+                        getComentList(detailData['id']);
+                      },
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Container(
+                              color: Colors.white,
+                              padding: EdgeInsets.all(8.w),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看天天都要看',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Color(0XFF646464),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  SizedBox(
-                                    height: 4.w,
-                                  ),
                                   Row(
-                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.w),
-                                        height: 18.w,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(9.w),
-                                            gradient: LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: [
-                                                  Color(0xffFFD875),
-                                                  Color(0XFFFF6915),
-                                                ])),
-                                        child: Text(
-                                          '會員等級',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w700),
+                                      Expanded(
+                                          child: GestureDetector(
+                                        onTap: () {
+                                          context.push(
+                                              '/othersPost/${detailData['user']['aff']}');
+                                        },
+                                        behavior: HitTestBehavior.translucent,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.w),
+                                              child: Container(
+                                                width: 40.w,
+                                                height: 40.w,
+                                                child:
+                                                    PlatformAwareNetworkImage(
+                                                  url: detailData['user']
+                                                      ['thumb'],
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 8.w,
+                                            ),
+                                            Expanded(
+                                                child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  detailData['user']
+                                                      ['nickname'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color: Color(0XFF646464),
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                                SizedBox(
+                                                  height: 4.w,
+                                                ),
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    detailData['user']
+                                                                ['vip_level'] >
+                                                            0
+                                                        ? CommonUtils.vipLevel(
+                                                            text:
+                                                                'LV${detailData['user']['vip_level']}')
+                                                        : SizedBox(),
+                                                    SizedBox(
+                                                      width: detailData['user'][
+                                                                  'vip_level'] >
+                                                              0
+                                                          ? 4.w
+                                                          : 0,
+                                                    ),
+                                                    Text(
+                                                      getCreateTime(),
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff979797),
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ))
+                                          ],
+                                        ),
+                                      )),
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (loadFollow) {
+                                            CommonUtils.showText('请勿频繁操作');
+                                            return;
+                                          }
+                                          loadFollow = true;
+                                          toggleFollow(
+                                                  detailData['user']['aff'])
+                                              .then((res) {
+                                            if (res['status'] != 0) {
+                                              isFollow =
+                                                  res['data']['is_follow'] == 1;
+                                              Provider.of<CommunityStore>(
+                                                      context,
+                                                      listen: false)
+                                                  .setFollowData(
+                                                      detailData['user']['aff'],
+                                                      isFollow);
+                                            } else {
+                                              CommonUtils.showText(
+                                                  res['msg'] ?? '系统错误,请稍后重试');
+                                            }
+                                          }).whenComplete(() {
+                                            loadFollow = false;
+                                          });
+                                        },
+                                        child: Selector<CommunityStore, Map>(
+                                          builder:
+                                              (context, followData, child) {
+                                            int _aff =
+                                                detailData['user']['aff'];
+                                            return CommonUtils.shadowBtn(
+                                                'assets/images/2023/icon_${(followData[_aff] ?? isFollow) ? "unfollow" : "follow"}.png',
+                                                text: (followData[_aff] ??
+                                                        isFollow)
+                                                    ? '已關注'
+                                                    : '關注',
+                                                isActive: (followData[_aff] ??
+                                                    isFollow));
+                                          },
+                                          selector: (_, communityStore) =>
+                                              communityStore.followData,
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 4.w,
+                                      GestureDetector(
+                                        onTap: () {
+                                          communityLike(
+                                                  detailData['id'], 'post')
+                                              .then((res) {
+                                            if (res['status'] != 0) {
+                                              isLike =
+                                                  res['data']['is_like'] == 1;
+                                              Provider.of<CommunityStore>(
+                                                      context,
+                                                      listen: false)
+                                                  .setLikeData(
+                                                      detailData['id'], isLike);
+                                            } else {
+                                              CommonUtils.showText(
+                                                  res['msg'] ?? '系统错误,请稍后再试');
+                                            }
+                                          });
+                                        },
+                                        child: Selector<CommunityStore, Map>(
+                                          builder: (context, likeData, child) {
+                                            int _id = detailData['id'];
+                                            return CommonUtils.shadowBtn(
+                                                'assets/images/2023/${(likeData[_id] ?? isLike) ? "icon_love" : "icon_post_like"}.png',
+                                                text: (likeData[_id] ?? isLike)
+                                                    ? '已點讚'
+                                                    : '點讚',
+                                                size: 10.w,
+                                                isActive:
+                                                    (likeData[_id] ?? isLike));
+                                          },
+                                          selector: (_, communityStore) =>
+                                              communityStore.likeData,
+                                        ),
                                       ),
-                                      Text(
-                                        '三小时前',
-                                        style: TextStyle(
-                                            color: Color(0xff979797),
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w400),
-                                      )
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.push('/promote');
+                                        },
+                                        child: CommonUtils.shadowBtn(
+                                            'assets/images/2023/icon_post_share.png',
+                                            text: '分享',
+                                            isActive: false),
+                                      ),
                                     ],
-                                  )
-                                ],
-                              ))
-                            ],
-                          ),)),
-                          GestureDetector(
-                            onTap: () {
-                              isFollow = !isFollow;
-                              setState(() {});
-                            },
-                            child: CommonUtils.shadowBtn(
-                                'assets/images/2023/icon_${isFollow ? "unfollow" : "follow"}.png',
-                                text: isFollow ? '已關注' : '關注',
-                                isActive: isFollow),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isFollow = !isFollow;
-                              setState(() {});
-                            },
-                            child: CommonUtils.shadowBtn(
-                                'assets/images/2023/${isFollow ? "icon_love" : "icon_post_like"}.png',
-                                text: isFollow ? '已點讚' : '點讚',
-                                size: 10.w,
-                                isActive: isFollow),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isFollow = !isFollow;
-                              setState(() {});
-                            },
-                            child: CommonUtils.shadowBtn(
-                                'assets/images/2023/icon_post_share.png',
-                                text: '分享',
-                                isActive: false),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8.w,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              bottomRow('comment', 122),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                                height: 12.w,
-                                width: 1.w,
-                                decoration: BoxDecoration(
-                                    color: Color(0xffFF84A9).withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(5.w)),
-                              ),
-                              bottomRow('like', 332),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                                height: 12.w,
-                                width: 1.w,
-                                decoration: BoxDecoration(
-                                    color: Color(0xffFF84A9).withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(5.w)),
-                              ),
-                              bottomRow('view', 122),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 16.w,
-                          ),
-                          Text(
-                            '#破處回憶',
-                            style: TextStyle(
-                                color: Color(0xffFF5B8C),
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.w),
-                        child: Text(
-                          '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文',
-                          style: TextStyle(
-                              color: Color(0xff646464),
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            height: 32.w,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50.w),
-                                gradient: DefaultStyle.defaluGrandientLine),
-                            child: Text(
-                              '解鎖媒體(500金幣)',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 8.w),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.w),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 200.w,
-                                  child: PlatformAwareNetworkImage(
-                                      url: '', fit: BoxFit.cover),
-                                ),
-                                Positioned.fill(
-                                    child: ClipRect(
-                                        child: BackdropFilter(
-                                  filter: ImageFilter.blur(
-                                      sigmaX: 5.0, sigmaY: 5.0),
-                                  child: Opacity(
-                                    opacity: 0.5,
-                                    child: Container(
-                                      color: Color(0xff6E1D35),
+                                  ),
+                                  SizedBox(
+                                    height: 8.w,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          bottomRow('comment',
+                                              detailData['comment_num']),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 16.w),
+                                            height: 12.w,
+                                            width: 1.w,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xffFF84A9)
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.w)),
+                                          ),
+                                          bottomRow(
+                                              'like', detailData['like_num']),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 16.w),
+                                            height: 12.w,
+                                            width: 1.w,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xffFF84A9)
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.w)),
+                                          ),
+                                          bottomRow(
+                                              'view', detailData['view_num']),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 16.w,
+                                      ),
+                                      tag.isEmpty
+                                          ? SizedBox()
+                                          : Text(
+                                              '#$tag',
+                                              style: TextStyle(
+                                                  color: Color(0xffFF5B8C),
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 14.sp),
+                                            )
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.w),
+                                    child: Text(
+                                      detailData['content'] ?? '',
+                                      style: TextStyle(
+                                          color: Color(0xff646464),
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w400),
                                     ),
                                   ),
-                                ))),
-                              ],
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      detailData['is_pay'] != 1 &&
+                                              detailData['unlock_coins'] > 0
+                                          ? Container(
+                                              height: 32.w,
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16.w),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.w),
+                                                  gradient: DefaultStyle
+                                                      .defaluGrandientLine),
+                                              child: Text(
+                                                '解鎖媒體(${detailData['unlock_coins']}金幣)',
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            )
+                                          : SizedBox()
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.from(detailData['medias'])
+                                        .asMap()
+                                        .keys
+                                        .map((e) {
+                                      Map _item = detailData['medias'][e];
+                                      bool noSize = _item['thumb_width'] == 0 ||
+                                          _item['thumb_height'] == 0;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          picMap['index'] = e;
+                                          String data =
+                                              pliEncry(jsonEncode(picMap));
+                                          context.push(
+                                              '/homepreviewviewpage/$data');
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 8.w),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(5.w),
+                                            child: Stack(
+                                              children: [
+                                                LayoutBuilder(
+                                                    builder: (context, box) {
+                                                  return Container(
+                                                    height: noSize ||
+                                                            _item['type'] != 1
+                                                        ? 200.w
+                                                        : (box.maxWidth /
+                                                                _item[
+                                                                    'thumb_width']) *
+                                                            _item[
+                                                                'thumb_height'],
+                                                    width: box.maxWidth,
+                                                    child:
+                                                        PlatformAwareNetworkImage(
+                                                            url:
+                                                                getCover(_item),
+                                                            fit: BoxFit.cover),
+                                                  );
+                                                }),
+                                                detailData['is_pay'] != 1 &&
+                                                        detailData[
+                                                                'unlock_coins'] >
+                                                            0
+                                                    ? Positioned.fill(
+                                                        child: ClipRect(
+                                                            child:
+                                                                BackdropFilter(
+                                                        filter:
+                                                            ImageFilter.blur(
+                                                                sigmaX: 5.0,
+                                                                sigmaY: 5.0),
+                                                        child: Opacity(
+                                                          opacity: 0.5,
+                                                          child: Container(
+                                                            color: Color(
+                                                                0xff6E1D35),
+                                                          ),
+                                                        ),
+                                                      )))
+                                                    : SizedBox(),
+                                                _item['type'] != 1
+                                                    ? Positioned.fill(
+                                                        child: Container(
+                                                        color: Colors.black26,
+                                                        child: Center(
+                                                          child: PlatformAwareAssetImage(
+                                                              url: PPAssetsPath
+                                                                  .iconPlay,
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          80),
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          80),
+                                                              filterQuality:
+                                                                  FilterQuality
+                                                                      .medium),
+                                                        ),
+                                                      ))
+                                                    : SizedBox()
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SliverPersistentHeader(
-                  pinned: true,
-                  delegate: IndexPageHeaderDelegate(
-                      Container(
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                              color: Color(0xffFFD3E6),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ]),
-                        height: 40.w,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 11.w),
-                                  child: getImage(
-                                      'assets/images/2023/icon_love_red2.png',
-                                      height: 5.w,
-                                      fit: BoxFit.fitHeight,
-                                      isAssets: true),
-                                ),
-                                Text(
-                                  '评论(200)',
-                                  style: TextStyle(
-                                      color: Color(0xffFF5B8C),
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
+                          SliverPersistentHeader(
+                              pinned: true,
+                              delegate: IndexPageHeaderDelegate(
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Color(0xffFFD3E6),
+                                              offset: Offset(0, 2),
+                                              blurRadius: 4,
+                                              spreadRadius: 0)
+                                        ]),
+                                    height: 40.w,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 11.w),
+                                              child: getImage(
+                                                  'assets/images/2023/icon_love_red2.png',
+                                                  height: 5.w,
+                                                  fit: BoxFit.fitHeight,
+                                                  isAssets: true),
+                                            ),
+                                            Text(
+                                              '评论(${detailData['comment_num']})',
+                                              style: TextStyle(
+                                                  color: Color(0xffFF5B8C),
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 14.sp),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  maxHeight: 40.w,
+                                  minHeight: 40.w)),
+                          ValueListenableBuilder(
+                              valueListenable: commentList,
+                              builder: (context, List coment, child) {
+                                return coment.isEmpty
+                                    ? SliverToBoxAdapter(
+                                        child: PageStatus.noData(),
+                                      )
+                                    : SliverList(
+                                        delegate: SliverChildBuilderDelegate(
+                                        (context, index) {
+                                          return CommentItem(
+                                            data: coment[index],
+                                          );
+                                        },
+                                        childCount: coment.length,
+                                        addSemanticIndexes: false,
+                                        addRepaintBoundaries: true,
+                                        addAutomaticKeepAlives: true,
+                                      ));
+                              })
+                        ],
                       ),
-                      maxHeight: 40.w,
-                      minHeight: 40.w)),
-              SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return CommentItem();
-                },
-                childCount: 20,
-                addSemanticIndexes: false,
-                addRepaintBoundaries: true,
-                addAutomaticKeepAlives: true,
-              ))
-            ],
-          )),
+                    )),
           Container(
             color: Colors.white,
             padding: EdgeInsets.symmetric(

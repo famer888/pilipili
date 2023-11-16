@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
@@ -65,19 +66,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    bool darkPrivilege =
-        Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
-    if (darkPrivilege) {
-      tabList.add({
-        {
-          'title': '暗网',
-          'api': '/api/mv/search',
-          'pramas': {'isDark': 1},
-          'isFlow': true,
-          'contentType': 1
-        }
-      });
-    }
     searchProvider = context.read<Search>();
     tabList.forEach((item) {
       scrollChildKeys.add(GlobalKey());
@@ -479,13 +467,30 @@ class _SearchResultState extends State<SearchResult> {
       'isFlow': false,
     },
     {
-      'title': '暗网',
-      'api': '/api/mv/search',
-      'pramas': {'isDark': 1},
-      'isFlow': true,
-      'contentType': 1
+      'title': '帖子',
+      'cardType': 'post',
+      'api': '/api/community/search',
+      'pramas': {},
+      'isFlow': false,
     }
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    bool darkPrivilege =
+        Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
+    if (darkPrivilege) {
+      tabList.add({
+        'title': '暗网',
+        'api': '/api/mv/search',
+        'pramas': {'isDark': 1},
+        'cardType': 'h',
+        'isFlow': true,
+        'contentType': 1
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -564,11 +569,13 @@ class _SearchResultState extends State<SearchResult> {
                     'word': widget.word,
                   };
                   pramas.addAll(tab['pramas']);
+                  String _type = tab['cardType'];
                   return PageViewMixin(
-                    child: tab['cardType'] == 'yuemei'
+                    child: _type == 'yuemei' || _type == 'post'
                         ? Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 18.w),
+                                horizontal: _type == 'post' ? 8.w : 16.w,
+                                vertical: 18.w),
                             child: PublicBuildList(
                                 api: tab['api'],
                                 isShow: true,
@@ -576,12 +583,16 @@ class _SearchResultState extends State<SearchResult> {
                                 nullText: '还没有约炮信息哦～',
                                 itemBuild: (context, index, data, page, limit,
                                     getListData) {
-                                  return YuemeiCard(
-                                    w: 118.w,
-                                    h: 145.w,
-                                    isShowInfo: true,
-                                    data: data,
-                                  );
+                                  return _type == 'post'
+                                      ? PostCard(
+                                          data: data,
+                                        )
+                                      : YuemeiCard(
+                                          w: 118.w,
+                                          h: 145.w,
+                                          isShowInfo: true,
+                                          data: data,
+                                        );
                                 }),
                           )
                         : PublicList(

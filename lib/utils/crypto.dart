@@ -11,6 +11,28 @@ final appkey = "NaojbMJVDK1V82QG49dt6tiXQxAsZTQF";
 final mediaKey = Key.fromUtf8("f5d965df75336270");
 final mediaIv = IV.fromUtf8("97b60394abc2fbe1");
 
+String pliDecry(encrypted) {
+  try {
+    final encrypter = Encrypter(AES(mediaKey, mode: AESMode.cbc));
+    final decrypted = encrypter.decrypt16(encrypted, iv: mediaIv);
+    return decrypted;
+  } catch (err) {
+    CommonUtils.debugPrint("aes decode error:$err");
+    return encrypted;
+  }
+}
+
+String pliEncry(plainText) {
+  try {
+    final encrypter = Encrypter(AES(mediaKey, mode: AESMode.cbc));
+    final encrypted = encrypter.encrypt(plainText, iv: mediaIv);
+    return encrypted.base16;
+  } catch (err) {
+    CommonUtils.debugPrint("aes encode error:$err");
+    return plainText;
+  }
+}
+
 String getSign(Map obj) {
   String md5Text;
   List keyValues = [];

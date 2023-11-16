@@ -1,19 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/images.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class CommentItem extends StatefulWidget {
-  const CommentItem({Key key}) : super(key: key);
-
+  const CommentItem({Key key, this.data}) : super(key: key);
+  final Map data;
   @override
   State<CommentItem> createState() => _CommentItemState();
 }
 
-class _CommentItemState extends State<CommentItem> {
-  Widget commentItem() {
+class _CommentItemState extends State<CommentItem>
+    with AutomaticKeepAliveClientMixin<CommentItem> {
+  List childComment = [];
+  int limit = 15;
+  int page = 1;
+  bool isAll = false;
+  getComentList() {
+    getPostCommentsChild(widget.data['id']).then((res) {
+      if (isAll) return;
+      List newComments = childComment;
+      if (res['status'] != 0) {
+        if (page == 1) {
+          newComments = res['data'];
+        } else {
+          newComments = [...newComments, ...res['data']];
+        }
+        isAll = res['data'].length < limit;
+        childComment = newComments;
+        setState(() {});
+      } else {
+        CommonUtils.showText(res['msg'] ?? '接口异常,请稍后再试');
+      }
+    });
+  }
+
+  Widget commentItem(Map item, {bool isMaster = false}) {
     return Container(
       padding: EdgeInsets.only(bottom: 8.w),
       decoration: BoxDecoration(
@@ -27,7 +52,8 @@ class _CommentItemState extends State<CommentItem> {
             child: SizedBox(
               width: 32.w,
               height: 32.w,
-              child: PlatformAwareNetworkImage(url: '', fit: BoxFit.cover),
+              child: PlatformAwareNetworkImage(
+                  url: item['user']['thumb'], fit: BoxFit.cover),
             ),
           ),
           SizedBox(
@@ -41,20 +67,23 @@ class _CommentItemState extends State<CommentItem> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '天天都要看',
+                    item['user']['nickname'],
                     style: TextStyle(
                         color: Color(0xff646464),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.w),
-                    child: CommonUtils.vipLevel(),
-                  ),
+                  item['user']['vip_level'] > 0
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 8.w),
+                          child: CommonUtils.vipLevel(
+                              text: 'LV${item['user']['vip_level']}'),
+                        )
+                      : SizedBox(),
                   Padding(
                     padding: EdgeInsets.only(left: 8.w),
                     child: Text(
-                      '2022.03.04',
+                      item['created_at'].split(' ')[0],
                       style: TextStyle(
                           color: Color(0xffC2C2C2),
                           fontSize: 12.sp,
@@ -64,7 +93,7 @@ class _CommentItemState extends State<CommentItem> {
                 ],
               ),
               Text(
-                '好看啊，好看啊好看啊好看啊，好看啊好看啊好看啊...好看啊好看啊',
+                item['comment'],
                 style: TextStyle(color: Color(0xff646464), fontSize: 12.sp),
               ),
               SizedBox(
@@ -74,7 +103,10 @@ class _CommentItemState extends State<CommentItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(),
-                  _LikeBtn(),
+                  _LikeBtn(
+                      id: item['id'],
+                      isLike: item['is_like'] == 1,
+                      likeNum: item['like_num']),
                 ],
               )
             ],
@@ -91,41 +123,70 @@ class _CommentItemState extends State<CommentItem> {
           EdgeInsets.only(left: 16.w, right: 16.w, top: 16.5.w, bottom: 8.w),
       child: Column(
         children: [
-          commentItem(),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.fromLTRB(56.w, 0, 0, 0),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 16.5.w),
-                  child: commentItem(),
-                );
-              })
+          commentItem(widget.data, isMaster: true),
+          widget.data['comments'].isEmpty
+              ? SizedBox()
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(56.w, 0, 0, 0),
+                  itemCount: widget.data['comments'].length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: 16.5.w),
+                      child: commentItem(widget.data['comments'][index]),
+                    );
+                  })
         ],
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _LikeBtn extends StatefulWidget {
-  const _LikeBtn({Key key}) : super(key: key);
-
+  const _LikeBtn({Key key, this.isLike, this.id, this.likeNum})
+      : super(key: key);
+  final bool isLike;
+  final int id;
+  final int likeNum;
   @override
   State<_LikeBtn> createState() => _LikeBtnState();
 }
 
-class _LikeBtnState extends State<_LikeBtn>
-    with AutomaticKeepAliveClientMixin<_LikeBtn> {
+class _LikeBtnState extends State<_LikeBtn> {
   bool isLike = false;
+  bool isTap = false;
+  int likeNum = 0;
+  @override
+  void initState() {
+    super.initState();
+    isLike = widget.isLike;
+    likeNum = widget.likeNum;
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        isLike = !isLike;
-        setState(() {});
+        if (isTap) return;
+        communityLike(widget.id, 'comment').then((res) {
+          if (res['status'] != 0) {
+            isLike = res['data']['is_like'] == 1;
+            if (isLike) {
+              likeNum++;
+            } else {
+              likeNum--;
+            }
+            setState(() {});
+          } else {
+            CommonUtils.showText(res['msg'] ?? '系统错误，请稍后再试');
+          }
+        }).whenComplete(() {
+          isTap = false;
+        });
       },
       child: Container(
         width: 60.w,
@@ -155,7 +216,7 @@ class _LikeBtnState extends State<_LikeBtn>
               width: 5.w,
             ),
             Text(
-              '999',
+              likeNum.toString(),
               style: TextStyle(
                   color: isLike ? Colors.white : Color(0XFFFF84A9),
                   fontSize: 12.sp),
@@ -165,7 +226,4 @@ class _LikeBtnState extends State<_LikeBtn>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

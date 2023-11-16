@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +39,27 @@ class CommonUtils {
       return true;
     }
     return false;
+  }
+
+  //设置状态栏颜色
+  static setStatusBar({bool isLight = false}) {
+    if (kIsWeb) {
+      return SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+    } else if (Platform.isAndroid) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, //全局设置透明
+        statusBarIconBrightness: isLight ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: Colors.black,
+      );
+      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    } else if (Platform.isIOS) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      //导航栏状态栏文字颜色
+      SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+    }
   }
 
   //特殊字符处理

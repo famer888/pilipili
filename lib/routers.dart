@@ -22,6 +22,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/message_center.dart';
 import 'package:pilipili/pages/community/community_detail.dart';
 import 'package:pilipili/pages/community/community_publish.dart';
+import 'package:pilipili/pages/community/home_preview_view_page.dart';
 import 'package:pilipili/pages/detail/local_comicsReader.dart';
 import 'package:pilipili/pages/detail/local_comics_detail.dart';
 import 'package:pilipili/pages/detail/local_small_video_detail.dart';
@@ -453,9 +454,17 @@ class Routes {
       key: 'withdrawalsRecord',
       builder: (context, state) => WithdrawalsRecord());
 
+  //图片预览
+  static GoRouterModel homePreviewViewPage = GoRouterModel(
+      key: 'homepreviewviewpage/:url',
+      builder: (context, state) => HomePreviewViewPage(
+            url: state.params['url'] ?? "",
+          ));
+
   static GoRouter init() {
     List<GoRoute> pages = [
       xianmian.toGoRouter(),
+      homePreviewViewPage.toGoRouter(),
       seconedPage.toGoRouter(),
       seconedPageDetail.toGoRouter(),
       search.toGoRouter(),
@@ -560,7 +569,8 @@ class Routes {
       communityPushlish.toGoRouter(routes: pages),
       incomeDetail.toGoRouter(routes: pages),
       withdrawalsPage.toGoRouter(routes: pages),
-      withdrawalsRecord.toGoRouter(routes: pages)
+      withdrawalsRecord.toGoRouter(routes: pages),
+      homePreviewViewPage.toGoRouter(routes: pages)
     ];
     return GoRouter(
       // errorBuilder: (context, state) => ErrorScreen(path: state.location),

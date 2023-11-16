@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
+import 'package:pilipili/store/community.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:provider/provider.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
@@ -24,6 +27,9 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isFollow = false;
+  bool isLike = false;
+  bool loadFollow = false;
+  bool loadLike = false;
   Map user;
   Map data;
   List medias = [];
@@ -33,6 +39,10 @@ class _PostCardState extends State<PostCard> {
     super.initState();
     data = widget.data;
     user = data['user'];
+    if(user!=null){
+      isFollow = user['is_follow'] == 1 ?? false;
+    }
+    isLike = (data['is_like'] ?? 0) == 1;
     if (data['medias'].length > 2) {
       medias = data['medias'].sublist(0, 2);
     } else {
@@ -72,7 +82,7 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/communityDetail/1');
+        context.push('/communityDetail/${data['id']}');
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 4.w),
@@ -90,7 +100,7 @@ class _PostCardState extends State<PostCard> {
         ),
         child: Column(
           children: [
-            Row(
+          user==null?SizedBox():  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -151,26 +161,75 @@ class _PostCardState extends State<PostCard> {
                     ))
                   ],
                 )),
-                widget.showFollow
+                widget.showFollow && user['is_follow'] != null
                     ? GestureDetector(
                         onTap: () {
-                          isFollow = !isFollow;
-                          setState(() {});
+                          if (loadFollow) {
+                            CommonUtils.showText('请勿频繁操作');
+                            return;
+                          }
+                          loadFollow = true;
+                          toggleFollow(user['aff']).then((res) {
+                            if (res['status'] != 0) {
+                              isFollow = res['data']['is_follow'] == 1;
+                              Provider.of<CommunityStore>(context,
+                                      listen: false)
+                                  .setFollowData(user['aff'], isFollow);
+                            } else {
+                              CommonUtils.showText(res['msg'] ?? '系统错误,请稍后重试');
+                            }
+                          }).whenComplete(() {
+                            loadFollow = false;
+                          });
                         },
-                        child: CommonUtils.shadowBtn(
-                            'assets/images/2023/icon_${isFollow ? "unfollow" : "follow"}.png',
-                            text: isFollow ? '已關注' : '關注',
-                            isActive: isFollow),
+                        child: Selector<CommunityStore, Map>(
+                          builder: (context, followData, child) {
+                            int _aff = user['aff'];
+                            return CommonUtils.shadowBtn(
+                                'assets/images/2023/icon_${(followData[_aff] ?? isFollow) ? "unfollow" : "follow"}.png',
+                                text: (followData[_aff] ?? isFollow)
+                                    ? '已關注'
+                                    : '關注',
+                                isActive: (followData[_aff] ?? isFollow));
+                          },
+                          selector: (_, communityStore) =>
+                              communityStore.followData,
+                        ),
                       )
                     : SizedBox(),
-                widget.showLike
+                widget.showLike && data['is_like'] != null
                     ? GestureDetector(
-                        onTap: () {},
-                        child: CommonUtils.shadowBtn(
-                            'assets/images/2023/${isFollow ? "icon_love" : "icon_post_like"}.png',
-                            text: isFollow ? '已點讚' : '點讚',
-                            size: 10.w,
-                            isActive: isFollow),
+                        onTap: () {
+                          if (loadLike) {
+                            CommonUtils.showText('请勿频繁操作');
+                            return;
+                          }
+                          loadLike = true;
+                          communityLike(data['id'], 'post').then((res) {
+                            if (res['status'] != 0) {
+                              isLike = res['data']['is_like'] == 1;
+                              Provider.of<CommunityStore>(context,
+                                      listen: false)
+                                  .setLikeData(data['id'], isLike);
+                            } else {
+                              CommonUtils.showText(res['msg'] ?? '系统错误,请稍后再试');
+                            }
+                          }).whenComplete(() {
+                            loadLike = false;
+                          });
+                        },
+                        child: Selector<CommunityStore, Map>(
+                          builder: (context, likeData, child) {
+                            int _id = data['id'];
+                            return CommonUtils.shadowBtn(
+                                'assets/images/2023/${(likeData[_id] ?? isLike) ? "icon_love" : "icon_post_like"}.png',
+                                text: (likeData[_id] ?? isLike) ? '已點讚' : '點讚',
+                                size: 10.w,
+                                isActive: (likeData[_id] ?? isLike));
+                          },
+                          selector: (_, communityStore) =>
+                              communityStore.likeData,
+                        ),
                       )
                     : SizedBox(),
                 widget.showEdit
