@@ -97,7 +97,6 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
 
   @override
   Widget build(BuildContext context) {
-    print('*******$_pramsMap');
     return Scaffold(
       body: Stack(
         children: [

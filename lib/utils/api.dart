@@ -1199,9 +1199,32 @@ Future<Map> toggleFollow(int aff) async {
 }
 
 //关注列表
-Future<Map> myFollowList(int page,int limit) async {
+Future<Map> myFollowList(int page, int limit) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/user/list_follows",data: {'page':page,'limit':limit});
+    Response data = await PlatformAwareHttp.post("/api/user/list_follows",
+        data: {'page': page, 'limit': limit});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注列表
+Future<Map> getTopicDetail(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/topic_detail",
+        data: {'topic_id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注列表
+Future<Map> toggleFollowTopic(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/follow_topic",
+        data: {'topic_id': id});
     return data.data;
   } catch (e) {
     return null;

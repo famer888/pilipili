@@ -23,6 +23,7 @@ import 'package:pilipili/mixin/message_center.dart';
 import 'package:pilipili/pages/community/community_detail.dart';
 import 'package:pilipili/pages/community/community_publish.dart';
 import 'package:pilipili/pages/community/home_preview_view_page.dart';
+import 'package:pilipili/pages/community/topic_detail.dart';
 import 'package:pilipili/pages/detail/local_comicsReader.dart';
 import 'package:pilipili/pages/detail/local_comics_detail.dart';
 import 'package:pilipili/pages/detail/local_small_video_detail.dart';
@@ -461,6 +462,13 @@ class Routes {
             url: state.params['url'] ?? "",
           ));
 
+  //圈子详情
+  static GoRouterModel topicDetail = GoRouterModel(
+      key: 'topicDetail/:id',
+      builder: (context, state) => TopicDetail(
+            id: int.parse(state.params['id']),
+          ));
+
   static GoRouter init() {
     List<GoRoute> pages = [
       xianmian.toGoRouter(),
@@ -515,7 +523,8 @@ class Routes {
       communityPushlish.toGoRouter(),
       incomeDetail.toGoRouter(),
       withdrawalsRecord.toGoRouter(),
-      withdrawalsPage.toGoRouter()
+      withdrawalsPage.toGoRouter(),
+      topicDetail.toGoRouter()
     ];
     List<GoRoute> rootPages = [
       xianmian.toGoRouter(routes: pages),
@@ -570,7 +579,8 @@ class Routes {
       incomeDetail.toGoRouter(routes: pages),
       withdrawalsPage.toGoRouter(routes: pages),
       withdrawalsRecord.toGoRouter(routes: pages),
-      homePreviewViewPage.toGoRouter(routes: pages)
+      homePreviewViewPage.toGoRouter(routes: pages),
+      topicDetail.toGoRouter(routes: pages)
     ];
     return GoRouter(
       // errorBuilder: (context, state) => ErrorScreen(path: state.location),

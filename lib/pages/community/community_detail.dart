@@ -379,12 +379,19 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                       ),
                                       tag.isEmpty
                                           ? SizedBox()
-                                          : Text(
-                                              '#$tag',
-                                              style: TextStyle(
-                                                  color: Color(0xffFF5B8C),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 14.sp),
+                                          : GestureDetector(
+                                              onTap: () {
+                                                context.push(
+                                                    '/topicDetail/${detailData['topic_ary'][0]}',
+                                                    isNoRepeat: true);
+                                              },
+                                              child: Text(
+                                                '#$tag',
+                                                style: TextStyle(
+                                                    color: Color(0xffFF5B8C),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 14.sp),
+                                              ),
                                             )
                                     ],
                                   ),

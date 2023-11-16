@@ -308,8 +308,14 @@ class _CommunityPageState extends State<CommunityPage> {
                             childAspectRatio: 109 / 71,
                           ),
                           itemBuilder: (context, index) {
-                            return topBtn(topics[index]['name'],
-                                topics[index]['post_num']);
+                            return GestureDetector(
+                              onTap: () {
+                                context.push(
+                                    '/topicDetail/${topics[index]['id']}',isNoRepeat: true);
+                              },
+                              child: topBtn(topics[index]['name'],
+                                  topics[index]['post_num']),
+                            );
                           }),
                 ),
                 SliverPadding(
