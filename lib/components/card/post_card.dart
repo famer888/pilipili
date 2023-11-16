@@ -241,24 +241,6 @@ class _PostCardState extends State<PostCard> {
                               ),
                             )
                           : SizedBox(),
-                      widget.showEdit
-                          ? Container(
-                              margin: EdgeInsets.only(left: 8.w),
-                              width: 48.w,
-                              height: 30.w,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.w),
-                                  gradient: DefaultStyle.defaluGrandientLine),
-                              child: Text(
-                                '编辑',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            )
-                          : SizedBox()
                     ],
                   ),
             SizedBox(
@@ -305,7 +287,25 @@ class _PostCardState extends State<PostCard> {
                       color: Color(0xff646464),
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w700),
-                ))
+                )),
+                widget.showEdit
+                    ? Container(
+                        margin: EdgeInsets.only(left: 8.w),
+                        width: 48.w,
+                        height: 30.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.w),
+                            gradient: DefaultStyle.defaluGrandientLine),
+                        child: Text(
+                          '编辑',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      )
+                    : SizedBox()
               ],
             ),
             SizedBox(
