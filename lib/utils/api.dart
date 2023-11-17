@@ -1230,3 +1230,14 @@ Future<Map> toggleFollowTopic(int id) async {
     return null;
   }
 }
+
+//社区评论
+Future<Map> communityComment(Map _data) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/community/comment", data: _data);
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}

@@ -28,9 +28,9 @@ class CommunityPushlish extends StatefulWidget {
 
 class _CommunityPushlishState extends State<CommunityPushlish> {
   ValueNotifier<bool> showCoinInput = ValueNotifier(false);
-  String coin = '0';
-  String title = '';
-  String content = '';
+  TextEditingController coin = TextEditingController(text: '0');
+  TextEditingController title = TextEditingController(text: '');
+  TextEditingController content = TextEditingController(text: '');
   List topics = [];
   ValueNotifier<List> imageList = ValueNotifier([]);
   ValueNotifier<List> videoList = ValueNotifier([]);
@@ -205,18 +205,22 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       return;
     }
     try {
-      if (coin.trim() != "") {
-        int _coins = int.parse(coin);
+      if (coin.text.trim() != "") {
+        int _coins = int.parse(coin.text);
+        if (_coins > 90) {
+          CommonUtils.showText('帖子最高价格请设置90以内');
+          return;
+        }
       }
     } catch (e) {
       CommonUtils.showText('帖子价格请输入正确金额');
       return;
     }
-    if (title.isEmpty) {
+    if (title.text.isEmpty) {
       CommonUtils.showText('请输入帖子标题');
       return;
     }
-    if (content.isEmpty) {
+    if (content.text.isEmpty) {
       CommonUtils.showText('请输入帖子内容');
       return;
     }
@@ -227,16 +231,17 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     List fileList = [...imageList.value, ...videoList.value].map((e) {
       return {
         'media_url': e['media_url'],
+        'type': e['type'],
         'thumb_height': e['h'],
         'thumb_width': e['w']
       };
     }).toList();
     PageStatus.showLoading(text: '发布中...');
     createPost(
-            coins: coin,
-            title: title,
+            coins: coin.text,
+            title: title.text,
             topicId: selectId,
-            content: content,
+            content: content.text,
             medias: fileList)
         .then((value) {
       if (value['status'] != 0) {
@@ -256,7 +261,36 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     getCircle();
     super.initState();
     if (AppGlobal.postInfo.isNotEmpty) {
-      print('编辑');
+      Map info = AppGlobal.postInfo;
+      CommonUtils.debugPrint(info);
+      title.text = info['title'];
+      content.text = info['content'];
+      showCoinInput.value = true;
+      coin.text = info['unlock_coins'].toString();
+      selectText = '#${info['topics']}';
+      selectId = int.parse(info['topic_id']);
+      List newImageList =
+          List.from(info['medias']).where((item) => item['type'] == 1).toList();
+      imageList.value = newImageList.map((e) {
+        return {
+          'media_url': e['ori_media_url'],
+          'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
+          'type': 1,
+          'w': e['thumb_width'],
+          'h': e['thumb_height'],
+        };
+      }).toList();
+      List newVideoList =
+          List.from(info['medias']).where((item) => item['type'] == 2).toList();
+      videoList.value = newVideoList.map((e) {
+        return {
+          'media_url': e['ori_media_url'],
+          'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
+          'type': 1,
+          'w': e['thumb_width'],
+          'h': e['thumb_height'],
+        };
+      }).toList();
     } else {
       print('发布');
     }
@@ -269,6 +303,9 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     AppGlobal.postInfo = {};
     imageList.dispose();
     videoList.dispose();
+    title.dispose();
+    coin.dispose();
+    content.dispose();
   }
 
   static TextStyle titleStyle = TextStyle(
@@ -277,23 +314,30 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       fontSize: 12.sp, fontWeight: FontWeight.w400, color: Color(0xff979797));
   static TextStyle btnStyle = TextStyle(
       fontSize: 12.sp, fontWeight: FontWeight.w700, color: Colors.white);
-  Widget tapBtn(String text) {
+  Widget tapBtn(String text, {bool status = true}) {
     return Container(
       height: 30.w,
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          gradient: DefaultStyle.defaluGrandientLine,
+          gradient: status
+              ? DefaultStyle.defaluGrandientLine
+              : DefaultStyle.whiteGrandientLine,
           borderRadius: BorderRadius.circular(50.w)),
       child: Text(
         text,
-        style: btnStyle,
+        style: status
+            ? btnStyle
+            : TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w700,
+                color: Color(0xffFF84A9)),
       ),
     );
   }
 
   showQuanzi() {
-    String tags=topics[0]['topic_name_formate'];
+    String tags = topics[0]['topic_name_formate'];
     YyShowDialog.showdialog(context,
         title: '选择圈子', btnText: '确定', cancelText: '取消', callBack: () {
       selectText = tags;
@@ -453,10 +497,12 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                     ),
                                     itemBuilder: (context, index) {
                                       return mediaItem(
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text('视频文件'),
-                                          ),
+                                          child: getImage(
+                                              'assets/images/2023/upload_video_bg.png',
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.cover,
+                                              isAssets: true),
                                           onClose: () {
                                             List _videos = videoList.value;
                                             _videos.removeAt(index);
@@ -552,9 +598,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                   alignment: Alignment.center,
                   child: TextField(
                     autofocus: false,
-                    onChanged: (value) {
-                      title = value;
-                    },
+                    controller: title,
                     maxLength: 20,
                     cursorColor: Color(0xffFF84A9),
                     textInputAction: TextInputAction.done,
@@ -584,9 +628,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                   height: 88.w,
                   child: TextField(
                     autofocus: false,
-                    onChanged: (value) {
-                      content = value;
-                    },
+                    controller: content,
                     cursorColor: Color(0xffFF84A9),
                     textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
@@ -630,9 +672,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                             return GestureDetector(
                               onTap: () {
                                 showCoinInput.value = !showCoinInput.value;
-                                coin = '';
+                                coin.text = '';
                               },
-                              child: tapBtn(value ? '關閉' : '開啟'),
+                              child: tapBtn(value ? '關閉' : '開啟',
+                                  status: !showCoinInput.value),
                             );
                           })
                     ],
@@ -648,9 +691,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                     alignment: Alignment.center,
                     child: TextField(
                       autofocus: true,
-                      onChanged: (value) {
-                        coin = value;
-                      },
+                      controller: coin,
                       maxLength: 20,
                       cursorColor: Color(0xffFF84A9),
                       textInputAction: TextInputAction.done,

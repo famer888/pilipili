@@ -14,6 +14,7 @@ const RESOURCE_TYPE_GIRL = 7; // 楼凤
 const RESOURCE_TYPE_GIRL_AGENT = 8; // 约炮
 const RESOURCE_TYPE_GIRL_CHAT = 9; // 裸聊
 const RESOURCE_TYPE_SYSTEM = 10; // 系统权限（换头像，改昵称，客服使用权限）
+const RESOURCE_TYPE_POST = 11; // 帖子
 
 // 二级嵌套权限（资源类）
 const PRIVILEGE_TYPE_VIEW = 1; // 查看权限 使用isAllowedWithCount

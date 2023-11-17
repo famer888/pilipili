@@ -39,7 +39,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data['source_str'],
+                                data['title'],
                                 style: TextStyle(
                                     color: Color(0xff404040),
                                     fontSize: 16.sp,
