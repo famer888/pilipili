@@ -80,6 +80,8 @@ class _AnwangPageState extends State<AnwangPage> {
   Widget build(BuildContext context) {
     bool darkPrivilege =
         Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
+    String darkPrivilegeText =
+        Provider.of<HomeConfig>(context, listen: false).darkprivilegeTips;
     return Stack(
       children: [
         navitems.isEmpty || loading
@@ -115,7 +117,7 @@ class _AnwangPageState extends State<AnwangPage> {
             ? SizedBox()
             : Positioned.fill(
                 child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 27.5.w),
+                padding: EdgeInsets.symmetric(horizontal: 25.5.w),
                 child: DefaultTextStyle(
                     style: TextStyle(
                         fontSize: 16.sp,
@@ -124,15 +126,16 @@ class _AnwangPageState extends State<AnwangPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('因內涵全球禁止流出暗網真實事件和稀缺資源 n號房,戰爭,變態,恐怖,緬北輪姦等百萬資源'),
-                        SizedBox(
-                          height: 10.w,
-                        ),
-                        Text('警告：唔承受能力誤入，僅對少量用戶開放'),
-                        Text(
-                          '禁止傳播與分享',
-                          style: TextStyle(color: Color(0xffFF5B8C)),
-                        ),
+                        Text(darkPrivilegeText,
+                        textAlign: TextAlign.center,),
+                        // SizedBox(
+                        //   height: 10.w,
+                        // ),
+                        // Text('警告：唔承受能力誤入，僅對少量用戶開放'),
+                        // Text(
+                        //   '禁止傳播與分享',
+                        //   style: TextStyle(color: Color(0xffFF5B8C)),
+                        // ),
                         SizedBox(
                           height: 10.w,
                         ),

@@ -90,6 +90,8 @@ class _CommunityDetailState extends State<CommunityDetail> {
       } else {
         CommonUtils.showText(res['msg'] ?? '接口异常,稍后再试');
       }
+    }).whenComplete(() {
+      PageStatus.closeLoading();
     });
   }
 
@@ -413,24 +415,68 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                     children: [
                                       detailData['is_pay'] != 1 &&
                                               detailData['unlock_coins'] > 0
-                                          ? Container(
-                                              height: 32.w,
-                                              alignment: Alignment.center,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 16.w),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.w),
-                                                  gradient: DefaultStyle
-                                                      .defaluGrandientLine),
-                                              child: Text(
-                                                '解鎖媒體(${detailData['unlock_coins']}金幣)',
-                                                style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                YyShowDialog.showdialog(context,
+                                                    title: '温馨提示',
+                                                    btnText: '解锁',
+                                                    cancelText: '取消',
+                                                    callBack: () {
+                                                  PageStatus.showLoading();
+                                                  unlockPost(detailData['id'])
+                                                      .then((res) {
+                                                    if (res['status'] != 0) {
+                                                      CommonUtils.showText(
+                                                          res['msg'] ?? '解锁成功');
+                                                      getDetailData();
+                                                    } else {
+                                                      CommonUtils.showText(
+                                                          res['msg'] ??
+                                                              '系统错误,请稍后再试');
+                                                    }
+                                                  });
+                                                }, content: (setDialogState) {
+                                                  return DefaultTextStyle(
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff646464),
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(16),
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      child: Text.rich(
+                                                          TextSpan(children: [
+                                                        TextSpan(text: '确定花费'),
+                                                        TextSpan(
+                                                            text:
+                                                                ' ${detailData['unlock_coins']}金币 ',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffFF84A9))),
+                                                        TextSpan(
+                                                            text: '解锁该帖吗？'),
+                                                      ])));
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 32.w,
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 16.w),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50.w),
+                                                    gradient: DefaultStyle
+                                                        .defaluGrandientLine),
+                                                child: Text(
+                                                  '解鎖媒體(${detailData['unlock_coins']}金幣)',
+                                                  style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
                                               ),
                                             )
                                           : SizedBox()
@@ -447,11 +493,16 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                           _item['thumb_height'] == 0;
                                       return GestureDetector(
                                         onTap: () {
-                                          picMap['index'] = e;
-                                          String data =
-                                              pliEncry(jsonEncode(picMap));
-                                          context.push(
-                                              '/homepreviewviewpage/$data');
+                                          if (_item['type'] == 1) {
+                                            picMap['index'] = e;
+                                            String data =
+                                                pliEncry(jsonEncode(picMap));
+                                            context.push(
+                                                '/homepreviewviewpage/$data');
+                                          } else {
+                                            context.push(
+                                                '/videoPreview/${Uri.encodeComponent(_item['media_url_full'])}/${Uri.encodeComponent(_item['cover'])}');
+                                          }
                                         },
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 8.w),

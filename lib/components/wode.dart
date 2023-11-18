@@ -111,7 +111,7 @@ class _WodeState extends State<Wode> {
       'name': "申请原创入驻",
       'iconUrl': 'assets/images/2023/icon_myadd.png',
       'assets': true,
-      'router': '/othersPost'
+      'router': '/zhaomu'
     },
   ];
 

@@ -57,10 +57,8 @@ class _AppCenterState extends State<AppCenter> {
               padding: EdgeInsets.zero,
               itemCount: appList.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  child: Container(
-                    padding: EdgeInsets.all(16.w),
+                return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.w)),
@@ -72,8 +70,7 @@ class _AppCenterState extends State<AppCenter> {
                       clicked: appList[index].clicked,
                       link: appList[index].linkUrl,
                     ),
-                  ),
-                );
+                  );
               }),
     );
   }

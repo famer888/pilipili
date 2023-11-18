@@ -41,7 +41,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   String selectText;
 //选择视频
   Future<void> videoPickerAssets() async {
-    if (imageList.value.length >= videoMaxLength) {
+    if (videoList.value.length >= videoMaxLength) {
       CommonUtils.showText('最多上传$videoMaxLength张图片');
       return;
     }
@@ -238,6 +238,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     }).toList();
     PageStatus.showLoading(text: '发布中...');
     createPost(
+            postInfo: AppGlobal.postInfo,
             coins: coin.text,
             title: title.text,
             topicId: selectId,
@@ -629,8 +630,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                   child: TextField(
                     autofocus: false,
                     controller: content,
+                    maxLines: 999,
                     cursorColor: Color(0xffFF84A9),
-                    textInputAction: TextInputAction.done,
+                    maxLength: null,
+                    keyboardType:TextInputType.multiline,
                     decoration: InputDecoration(
                         isDense: true,
                         helperMaxLines: 66,

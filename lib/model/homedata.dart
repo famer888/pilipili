@@ -157,23 +157,26 @@ class Ads {
 }
 
 class Config {
-  Config(
-      {this.imgUploadUrl,
-      this.mp4UploadUrl,
-      this.mobileMp4UploadUrl,
-      this.uploadImgKey,
-      this.uploadMp4Key,
-      this.uuid,
-      this.github,
-      this.officeSite,
-      this.officialGroup,
-      this.share,
-      this.imgBase,
-      this.line,
-      this.m3u8_encrypt,
-      this.video_encrypt_api,
-      this.video_encrypt_referer,
-      this.video_encrypt_m3u8});
+  Config({
+    this.imgUploadUrl,
+    this.mp4UploadUrl,
+    this.mobileMp4UploadUrl,
+    this.uploadImgKey,
+    this.uploadMp4Key,
+    this.uuid,
+    this.github,
+    this.officeSite,
+    this.officialGroup,
+    this.share,
+    this.imgBase,
+    this.line,
+    this.m3u8_encrypt,
+    this.video_encrypt_api,
+    this.video_encrypt_referer,
+    this.video_encrypt_m3u8,
+    this.withdraw_rate,
+    this.withdraw_ratio,
+  });
 
   String imgUploadUrl;
   String mp4UploadUrl;
@@ -191,6 +194,8 @@ class Config {
   String video_encrypt_api;
   String video_encrypt_referer;
   String video_encrypt_m3u8;
+  int withdraw_rate;
+  int withdraw_ratio;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl:
@@ -226,6 +231,8 @@ class Config {
         video_encrypt_m3u8: json["video_encrypt_m3u8"] == null
             ? null
             : json["video_encrypt_m3u8"],
+        withdraw_rate: json['withdraw_rate'] ?? 0,
+        withdraw_ratio: json['withdraw_ratio'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -249,6 +256,8 @@ class Config {
             video_encrypt_referer == null ? null : video_encrypt_referer,
         "video_encrypt_m3u8":
             video_encrypt_m3u8 == null ? null : video_encrypt_m3u8,
+        "withdraw_rate": withdraw_rate ?? 0,
+        "withdraw_ratio": withdraw_ratio ?? 0,
       };
 }
 

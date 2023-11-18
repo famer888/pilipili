@@ -27,6 +27,7 @@ class YyVideo extends StatefulWidget {
       {Key key,
       this.id,
       this.videoUrl,
+      this.cover,
       this.setVideoUrl, // 改变父组件url
       this.noBack = false,
       this.isCardAuto = false, //是否为卡片形式的自动方法
@@ -56,6 +57,7 @@ class YyVideo extends StatefulWidget {
   final dynamic data;
   final bool isLocal;
   final bool isPreview;
+  final String cover;
 
   @override
   _YyVideoState createState() => _YyVideoState();
@@ -148,6 +150,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
     return Container(
       width: double.infinity,
       height: double.infinity,
+      color: Colors.black,
       child: Stack(
         children: [
           (widget.videoUrl == null || widget.videoUrl == '') &&
@@ -169,7 +172,8 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                           ? Stack(
                               children: [
                                 PlatformAwareNetworkImage(
-                                  url: widget.data.thumbCover ??
+                                  url: widget.cover ??
+                                      widget.data.thumbCover ??
                                       widget.data.coverThumbHorizontal,
                                   fit: BoxFit.cover,
                                 ),
@@ -191,34 +195,42 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                   videoController == null
               ? Container()
               : RepaintBoundary(
-                  child: VideoController(
-                      setPreviewShow: (bool show) {
-                        if (show != previewShow) {
-                          previewShow = show;
-                          setState(() {});
-                        }
-                      },
-                      isPreview: widget.isPreview,
-                      videoController: videoController,
-                      isCardAuto: widget.isCardAuto,
-                      hideControl: widget.hideControl,
-                      previewShow: previewShow,
-                      initShow:
-                          widget.controller == null && widget.videoUrl == null,
-                      data: widget.data,
-                      autoPlay: widget.autoPlay,
-                      id: widget.id,
-                      loop: widget.loop,
-                      noVolume: widget.noVolume,
-                      noBack: widget.noBack,
-                      isFull: widget.isFull,
-                      setController: widget.setController,
-                      videoUrl: widget.videoUrl,
-                      setVideoUrl: widget.setVideoUrl,
-                      uploadVideo: () {
-                        setState(() {});
-                      },
-                      isLocal: widget.isLocal),
+                  child: Padding(
+                      padding: EdgeInsets.only(
+                          top: widget.cover == null
+                              ? 0
+                              : ScreenUtil().statusBarHeight,
+                          bottom: widget.cover == null
+                              ? 0
+                              : ScreenUtil().bottomBarHeight + 30.w),
+                      child: VideoController(
+                          setPreviewShow: (bool show) {
+                            if (show != previewShow) {
+                              previewShow = show;
+                              setState(() {});
+                            }
+                          },
+                          isPreview: widget.isPreview,
+                          videoController: videoController,
+                          isCardAuto: widget.isCardAuto,
+                          hideControl: widget.hideControl,
+                          previewShow: previewShow,
+                          initShow: widget.controller == null &&
+                              widget.videoUrl == null,
+                          data: widget.data,
+                          autoPlay: widget.autoPlay,
+                          id: widget.id,
+                          loop: widget.loop,
+                          noVolume: widget.noVolume,
+                          noBack: widget.noBack,
+                          isFull: widget.isFull,
+                          setController: widget.setController,
+                          videoUrl: widget.videoUrl,
+                          setVideoUrl: widget.setVideoUrl,
+                          uploadVideo: () {
+                            setState(() {});
+                          },
+                          isLocal: widget.isLocal)),
                 ),
           widget.isLocal || widget.videoUrl != null
               ? Container()
@@ -303,7 +315,14 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                           ),
                         )),
           videoController == null || !videoController.value.isInitialized
-              ? Positioned(child: head())
+              ? Positioned(
+                  child: Padding(
+                  padding: EdgeInsets.only(
+                      top: widget.cover == null
+                          ? 0
+                          : ScreenUtil().statusBarHeight),
+                  child: head(),
+                ))
               : Container()
         ],
       ),

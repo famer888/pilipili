@@ -25,6 +25,7 @@ class AppGlobal {
     'https://apiv2.hichatapi.net',
     'https://apiv2.hichatapi.org'
   ];
+  static bool isPostVideoURL = false;
   static Widget bannerWidget;
   static String uploadImgUrl;
   static String uploadImgKey;
@@ -66,7 +67,7 @@ class AppGlobal {
   static Map seconedPagePramas; //页面参数
   static String smallVideoApi;
   static Map smallVideoPramas;
-  static num webBottomHeight=0;
+  static num webBottomHeight = 0;
   static List popAds = [];
   static Map postInfo = {};
 }

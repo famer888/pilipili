@@ -5,11 +5,13 @@ import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:provider/provider.dart';
 
 class MyPostPage extends StatefulWidget {
   const MyPostPage({Key key}) : super(key: key);
@@ -22,7 +24,6 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
   TabController _tabController;
   int currentTab = 0;
   int limit = 24;
-  int chatMoney = 0;
   List tabList = [
     {'name': '已发布', 'cate': 'pass'},
     {'name': '待审核', 'cate': 'wait'},
@@ -33,14 +34,7 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserInfo(context).then((res) {
-      if (res.status != 0) {
-        chatMoney = res.data.chatMoney;
-        setState(() {});
-      } else {
-        CommonUtils.showText(res.msg ?? '系统错误,请稍后重试');
-      }
-    });
+    getUserInfo(context);
 
     /// 选项卡控制器
     _tabController = TabController(
@@ -57,6 +51,7 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
   }
 
   headInfo() {
+    int chatMoney = Provider.of<HomeConfig>(context, listen: false).chatMoney;
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Padding(
         padding: EdgeInsets.symmetric(vertical: 8.w),

@@ -407,6 +407,16 @@ class CommonUtils {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.w),
           color: isActive ? Color(0xffFF84A9) : Colors.white,
+          // gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //     tileMode:TileMode.repeated,
+          //     colors: [
+          //       Color(0XFDFFFFFF),
+          //       Color(0XFDFFF3F8),
+          //       Color(0xffFFD3E6),
+          //       Colors.white54
+          //     ]),
           boxShadow: [
             isActive
                 ? BoxShadow(
@@ -457,7 +467,7 @@ class CommonUtils {
       child: Text(
         text,
         style: TextStyle(
-            color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w700),
+            color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w700),
       ),
     );
   }

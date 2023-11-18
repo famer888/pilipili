@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
+import 'package:pilipili/components/pili/publish_biuld_list.dart';
 
 class WithdrawalsRecord extends StatefulWidget {
-  const WithdrawalsRecord({Key key}) : super(key: key);
-
+  const WithdrawalsRecord({Key key, this.type=2}) : super(key: key);
+  final int type;
   @override
   State<WithdrawalsRecord> createState() => _WithdrawalsRecordState();
 }
@@ -36,11 +37,13 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
         children: [
           PageTitleBar(paddingTop: ScreenUtil().statusBarHeight, title: '提交紀錄'),
           Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Container(
+              child:PublicBuildList(
+                        api: '/api/order/listWithdraw',
+                        isShow: true,
+                        data: {'type': widget.type},
+                        itemBuild:
+                            (context, index, data, page, limit, getListData) {
+                          return Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -70,7 +73,7 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                                         width: 8.w,
                                       ),
                                       Text(
-                                        '2019-03-02',
+                                        data['created_at'],
                                         style: subTextStyle,
                                       ),
                                     ],
@@ -85,7 +88,7 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                                       SizedBox(
                                         width: 8.w,
                                       ),
-                                      witdraStatus(index),
+                                      witdraStatus(data['status']),
                                     ],
                                   )
                                 ],
@@ -108,7 +111,7 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                                         width: 8.w,
                                       ),
                                       Text(
-                                        '500',
+                                        data['amount'],
                                         style: subTextStyle,
                                       ),
                                     ],
@@ -117,14 +120,14 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        'VISA:',
+                                        '账号:',
                                         style: titleStyle,
                                       ),
                                       SizedBox(
                                         width: 8.w,
                                       ),
                                       Text(
-                                        '324650***341',
+                                        data['amount'],
                                         style: subTextStyle,
                                       ),
                                     ],
@@ -159,8 +162,8 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                               )
                             ],
                           )),
-                    );
-                  }))
+                    );;
+                        }))
         ],
       ),
     );

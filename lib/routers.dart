@@ -24,6 +24,7 @@ import 'package:pilipili/pages/community/community_detail.dart';
 import 'package:pilipili/pages/community/community_publish.dart';
 import 'package:pilipili/pages/community/home_preview_view_page.dart';
 import 'package:pilipili/pages/community/topic_detail.dart';
+import 'package:pilipili/pages/community/video_preview.dart';
 import 'package:pilipili/pages/detail/local_comicsReader.dart';
 import 'package:pilipili/pages/detail/local_comics_detail.dart';
 import 'package:pilipili/pages/detail/local_small_video_detail.dart';
@@ -53,6 +54,7 @@ import 'package:pilipili/pages/mine/setup.dart';
 import 'package:pilipili/pages/mine/vip_page.dart';
 import 'package:pilipili/pages/mine/watch_history.dart';
 import 'package:pilipili/pages/mine/withdrawals_page.dart';
+import 'package:pilipili/pages/mine/zhaomu.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/withdrawals_record.dart';
 import 'package:pilipili/utils/common.dart';
@@ -469,6 +471,17 @@ class Routes {
             id: int.parse(state.params['id']),
           ));
 
+  //圈子详情
+  static GoRouterModel zhaomu =
+      GoRouterModel(key: 'zhaomu', builder: (context, state) => ZhaomuPage());
+
+  //视频预览
+  static GoRouterModel videoPreview = GoRouterModel(
+      key: 'videoPreview/:url/:cover',
+      builder: (context, state) => VideoPreview(
+            url: state.params['url'] ?? "",
+            cover:state.params['cover'] ?? "",
+          ));
   static GoRouter init() {
     List<GoRoute> pages = [
       xianmian.toGoRouter(),
@@ -524,7 +537,9 @@ class Routes {
       incomeDetail.toGoRouter(),
       withdrawalsRecord.toGoRouter(),
       withdrawalsPage.toGoRouter(),
-      topicDetail.toGoRouter()
+      topicDetail.toGoRouter(),
+      zhaomu.toGoRouter(),
+      videoPreview.toGoRouter()
     ];
     List<GoRoute> rootPages = [
       xianmian.toGoRouter(routes: pages),
@@ -580,7 +595,9 @@ class Routes {
       withdrawalsPage.toGoRouter(routes: pages),
       withdrawalsRecord.toGoRouter(routes: pages),
       homePreviewViewPage.toGoRouter(routes: pages),
-      topicDetail.toGoRouter(routes: pages)
+      topicDetail.toGoRouter(routes: pages),
+      zhaomu.toGoRouter(routes: pages),
+      videoPreview.toGoRouter(routes: pages)
     ];
     return GoRouter(
       // errorBuilder: (context, state) => ErrorScreen(path: state.location),

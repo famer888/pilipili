@@ -1,14 +1,21 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
+import 'package:pilipili/model/homedata.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
+import 'package:provider/provider.dart';
 
 class WithdrawalsPage extends StatefulWidget {
   const WithdrawalsPage({Key key}) : super(key: key);
-
+// final int type;
   @override
   State<WithdrawalsPage> createState() => _WithdrawalsPageState();
 }
@@ -17,6 +24,39 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
   String userName = '';
   String userBlankNumber = '';
   String userMoney = '';
+  startWithdrawals(Config config) {
+    if (userName.isEmpty) {
+      CommonUtils.showText('请填写收款人信息');
+      return;
+    }
+    if (userBlankNumber.isEmpty || userBlankNumber.length < 12) {
+      CommonUtils.showText('请填写收款账号');
+      return;
+    }
+    if (userMoney.isEmpty) {
+      CommonUtils.showText('请填写提现金额');
+      return;
+    }
+    try {
+      double money = (double.parse(userMoney) * (config.withdraw_rate / 100));
+      print(money % 100);
+      if (money % 100 != 0) {
+        CommonUtils.showText('提现金额必须为100的整数');
+        return;
+      }
+    } catch (e) {
+      CommonUtils.showText('请正确填写提现金额');
+      return;
+    }
+    withdrawMoney(account: userBlankNumber, name: userName, amount: userMoney)
+        .then((res) {
+      if (res['status'] != 0) {
+      } else {
+        CommonUtils.showText(res['msg'] ?? '系统错误请稍后再试');
+      }
+    });
+  }
+
   Widget withdraInput(
       {Function(String) onChanged, String hintText, bool isNumber = false}) {
     return Row(
@@ -33,10 +73,10 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
               ? TextInputType.numberWithOptions(decimal: true)
               : TextInputType.text,
           inputFormatters: isNumber
-              ? []
-              : [
+              ? [
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                ],
+                ]
+              : [],
           decoration: InputDecoration(
               isDense: true,
               counterText: '',
@@ -59,7 +99,6 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
   Widget withdraItem({bool border = true, title = '', Widget rightChild}) {
     return Container(
       height: 52.w,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: border
           ? BoxDecoration(
               border: Border(
@@ -90,6 +129,8 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
 
   @override
   Widget build(BuildContext context) {
+    int chatMoney = Provider.of<HomeConfig>(context, listen: false).chatMoney;
+    Config config = Provider.of<HomeConfig>(context, listen: false).config;
     return GestureDetector(
         onTap: () {
           // 点击任意地方，输入框失去焦点
@@ -131,7 +172,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                               spreadRadius: 0)
                         ]))),
                         Positioned.fill(
-                            child: getImage('assets/images/2023/my_post_bg.png',
+                            child: getImage('assets/images/2023/tx_bg.png',
                                 height: 100.w,
                                 width: double.infinity,
                                 isAssets: true)),
@@ -155,7 +196,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                   SizedBox(
                                     height: 2.w,
                                   ),
-                                  Text('2400',
+                                  Text(chatMoney.toString(),
                                       style: TextStyle(
                                           color: Color(0xffFE155B),
                                           fontWeight: FontWeight.w700,
@@ -176,7 +217,9 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                   SizedBox(
                                     height: 2.w,
                                   ),
-                                  Text('2000',
+                                  Text(
+                                      (chatMoney * (config.withdraw_rate / 100))
+                                          .toString(),
                                       style: TextStyle(
                                           color: Color(0xffFE155B),
                                           fontWeight: FontWeight.w700,
@@ -193,6 +236,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.w),
                         color: Colors.white),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Column(
                       children: [
                         withdraItem(
@@ -207,7 +251,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                         withdraItem(
                             title: '提現手續費',
                             rightChild: Text(
-                              '5%',
+                              '${config.withdraw_ratio}%',
                               style: TextStyle(
                                   color: Color(0xff979797),
                                   fontSize: 14.sp,
@@ -243,33 +287,35 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                       ],
                     ),
                   ),
-                 Center(
-                  child:  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 24.w
-                    ),
-                    width: 200.w,
-                    height: 36.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.w),
-                        gradient: DefaultStyle.defaluGrandientLine,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Color(0xffFF80A3).withOpacity(0.5),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ]),
-                    child: Text(
-                      '提交申請',
-                      style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                 )
+                  Center(
+                    child: GestureDetector(
+                        onTap: () {
+                          startWithdrawals(config);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 24.w),
+                          width: 200.w,
+                          height: 36.w,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.w),
+                              gradient: DefaultStyle.defaluGrandientLine,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0xffFF80A3).withOpacity(0.5),
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0)
+                              ]),
+                          child: Text(
+                            '提交申請',
+                            style: TextStyle(
+                                color: Color(0xffffffff),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        )),
+                  )
                 ],
               ))
             ],

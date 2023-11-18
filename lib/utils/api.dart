@@ -77,6 +77,7 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       AppGlobal.uploadMp4Url = result.data.config.mp4UploadUrl;
       AppGlobal.m3u8_encrypt = result.data.config.m3u8_encrypt;
       AppGlobal.uuid = result.data.member.uuid;
+      getUserInfo(context);
     }
     if (res2.data != null) {
       Provider.of<HomeConfig>(context, listen: false).setPrivilege(res2.data);
@@ -492,7 +493,9 @@ Future<UserInfo> getUserInfo(BuildContext context) async {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/user/userInfo', data: {});
     UserInfo data = UserInfo.fromJson(res.data);
-    HomeConfig.setUserCoins(context, data.data.money);
+    Provider.of<HomeConfig>(context, listen: false)
+        .setChatMoney(context, data.data.chatMoney);
+    Provider.of<HomeConfig>(context, listen: false).setMoney(data.data.money);
     return data;
   } catch (e) {
     return null;
@@ -1093,15 +1096,23 @@ Future<Map> createPost(
     String coins,
     String title,
     String content,
-    List medias}) async {
+    List medias,
+    Map postInfo}) async {
+  Map _postId = {};
+  if (postInfo.isNotEmpty) {
+    _postId['post_id'] = postInfo['id'];
+  }
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/post", data: {
-      "topic_id": topicId,
-      "coins": coins == '' ? 0 : int.parse(coins),
-      "title": title,
-      "content": content,
-      "medias": jsonEncode(medias)
-    });
+    Response data = await PlatformAwareHttp.post(
+        postInfo.isNotEmpty ? "/api/community/editPost" : "/api/community/post",
+        data: {
+          "topic_id": topicId,
+          "coins": coins == '' ? 0 : int.parse(coins),
+          "title": title,
+          "content": content,
+          "medias": jsonEncode(medias),
+          ..._postId
+        });
     return data.data;
   } catch (e) {
     return null;
@@ -1236,6 +1247,32 @@ Future<Map> communityComment(Map _data) async {
   try {
     Response data =
         await PlatformAwareHttp.post("/api/community/comment", data: _data);
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//解锁帖子
+Future<Map> unlockPost(int id) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/community/unlock", data: {'id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//提现
+Future<Map> withdrawMoney(
+    {String account = '',
+    String name = '',
+    String amount,
+    int type = 2}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/order/withdraw",
+        data: {'account': account, 'name': name, 'type': type,'amount':amount});
     return data.data;
   } catch (e) {
     return null;
