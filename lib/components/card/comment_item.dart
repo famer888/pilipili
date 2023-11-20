@@ -53,7 +53,7 @@ class _CommentItemState extends State<CommentItem>
               width: 32.w,
               height: 32.w,
               child: PlatformAwareNetworkImage(
-                  url: item['user']['thumb'], fit: BoxFit.cover),
+                  url:item['user']==null?'': item['user']['thumb']??'', fit: BoxFit.cover),
             ),
           ),
           SizedBox(
@@ -67,13 +67,13 @@ class _CommentItemState extends State<CommentItem>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    item['user']['nickname'],
+                    item['user']==null?'plipili':item['user']['nickname'],
                     style: TextStyle(
                         color: Color(0xff646464),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700),
                   ),
-                  item['user']['vip_level'] > 0
+                 item['user']!=null&& item['user']['vip_level'] > 0
                       ? Padding(
                           padding: EdgeInsets.only(left: 8.w),
                           child: CommonUtils.vipLevel(

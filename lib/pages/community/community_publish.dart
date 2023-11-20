@@ -12,10 +12,12 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/pages/community/file_upload_item.dart';
 import 'package:pilipili/pages/community/xfile_progress_toast.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
@@ -41,7 +43,14 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   String selectText;
 //选择视频
   Future<void> videoPickerAssets() async {
-    if (videoList.value.length >= videoMaxLength) {
+    int _length = videoList.value
+        .where((element) {
+          GlobalKey<FileUploadItemState> _key = element['key'];
+          return _key.currentState.showWidget;
+        })
+        .toList()
+        .length;
+    if (_length >= videoMaxLength) {
       CommonUtils.showText('最多上传$videoMaxLength张图片');
       return;
     }
@@ -52,41 +61,26 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       if (flag) return;
       String ext = file.name.split(".").last.toLowerCase();
       if (ext == "mp4" || file.mimeType == 'video/quicktime') {
-        uploadVideo(file);
+        videoList.value = [
+          ...videoList.value,
+          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+        ];
       } else {
         CommonUtils.showText('请选择mp4格式的视频');
       }
     }
   }
 
-  void uploadVideo(XFile file) {
-    BotToast.showCustomLoading(
-      backgroundColor: Colors.black.withOpacity(0.7),
-      toastBuilder: (cancel) => XFileProgressToast(
-        file: file,
-        response: (data) {
-          BotToast.closeAllLoading();
-          if (data.isEmpty) return;
-          if (data['code'] == 1) {
-            String orgURL = data['msg'] ?? '';
-            videoList.value = [
-              ...videoList.value,
-              {'media_url': orgURL, 'cover': '', 'type': 2, 'w': 0, 'h': 0}
-            ];
-          } else {
-            CommonUtils.showText(data['msg'] ?? "failed");
-          }
-        },
-        cancel: () {
-          BotToast.closeAllLoading();
-        },
-      ),
-    );
-  }
-
   //选择图片
   Future<void> imagePickerAssets() async {
-    if (imageList.value.length >= maxLength) {
+    int _length = imageList.value
+        .where((element) {
+          GlobalKey<FileUploadItemState> _key = element['key'];
+          return _key.currentState.showWidget;
+        })
+        .toList()
+        .length;
+    if (_length >= maxLength) {
       CommonUtils.showText('最多上传$maxLength张图片');
       return;
     }
@@ -94,95 +88,11 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     if (file != null) {
       bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
       if (flag) return;
-      uploadFileImg(file);
-    }
-  }
-
-  void uploadFileImg(XFile file) async {
-    PageStatus.showLoading(text: '上传中...');
-    var data;
-    Uint8List bytes = await file.readAsBytes();
-    final image = img.decodeImage(bytes.toList());
-    int imageWidth = image.width;
-    int imageHeight = image.height;
-    if (kIsWeb) {
-      data = await PlatformAwareHttp.xfileHtmlUploadImage(
-          file: file, position: 'upload');
-    } else {
-      data = await PlatformAwareHttp.xfileUploadImage(
-          file: file, position: 'upload');
-    }
-    PageStatus.closeLoading();
-    if (data['code'] == 1) {
-      String orgURL = data['msg'] ?? '';
       imageList.value = [
         ...imageList.value,
-        {
-          'media_url': orgURL,
-          'cover': AppGlobal.bannerImgBase + orgURL,
-          'type': 1,
-          'w': imageWidth,
-          'h': imageHeight
-        }
+        {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
       ];
-    } else {
-      CommonUtils.showText(data['msg'] ?? "failed");
     }
-  }
-
-  Widget mediaItem({Widget child, Function onClose}) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5.w),
-          boxShadow: [
-            BoxShadow(
-                color: Color(0xffFFD3E6),
-                offset: Offset(0, 2),
-                blurRadius: 4,
-                spreadRadius: 0)
-          ]),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5.w),
-        child: Stack(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: child ?? Container(),
-            ),
-            Positioned(
-                top: 0,
-                right: 0,
-                child: GestureDetector(
-                  onTap: () {
-                    if (onClose != null) {
-                      onClose();
-                    }
-                  },
-                  child: Container(
-                    width: 24.w,
-                    height: 24.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15.w)),
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xffFF8B8B).withOpacity(0.8),
-                              Color(0xffFF7696).withOpacity(0.8),
-                              Color(0xffFF7299).withOpacity(0.8)
-                            ])),
-                    child: getImage('assets/images/2023/icon_close.png',
-                        width: 12.w, height: 12.w, isAssets: true),
-                  ),
-                ))
-          ],
-        ),
-      ),
-    );
   }
 
   getCircle() {
@@ -199,7 +109,43 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     });
   }
 
+  bool uploadLoading() {
+    int imageLength = imageList.value
+        .where((element) {
+          GlobalKey<FileUploadItemState> _key = element['key'];
+          return _key.currentState.showLoad.value;
+        })
+        .toList()
+        .length;
+    int videoLength = videoList.value
+        .where((element) {
+          GlobalKey<FileUploadItemState> _key = element['key'];
+          return _key.currentState.showLoad.value;
+        })
+        .toList()
+        .length;
+    return imageLength > 0 || videoLength > 0;
+  }
+
   publishPost() {
+    if (uploadLoading()) {
+      CommonUtils.showText('请等待文件上传完成');
+      return;
+    }
+    int imageLength = imageList.value
+        .where((element) {
+          GlobalKey<FileUploadItemState> _key = element['key'];
+          return _key.currentState.showWidget;
+        })
+        .toList()
+        .length;
+    int videoLength = videoList.value
+        .where((element) {
+          GlobalKey<FileUploadItemState> _key = element['key'];
+          return _key.currentState.showWidget;
+        })
+        .toList()
+        .length;
     if (selectText == null) {
       CommonUtils.showText('请选择圈子');
       return;
@@ -209,6 +155,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         int _coins = int.parse(coin.text);
         if (_coins > 90) {
           CommonUtils.showText('帖子最高价格请设置90以内');
+          return;
+        }
+        if (_coins > 0 && videoLength == 0) {
+          CommonUtils.showText('视频帖子才能设置价格');
           return;
         }
       }
@@ -224,16 +174,19 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       CommonUtils.showText('请输入帖子内容');
       return;
     }
-    if (videoList.value.isEmpty && imageList.value.isEmpty) {
+
+    if (videoLength == 0 && imageLength == 0) {
       CommonUtils.showText('请上传图片或视频');
       return;
     }
     List fileList = [...imageList.value, ...videoList.value].map((e) {
+      GlobalKey<FileUploadItemState> _key = e['key'];
+      Map dataInfo = _key.currentState.dataInfo;
       return {
-        'media_url': e['media_url'],
-        'type': e['type'],
-        'thumb_height': e['h'],
-        'thumb_width': e['w']
+        'media_url': dataInfo['media_url'],
+        'type': dataInfo['type'],
+        'thumb_height': dataInfo['h'],
+        'thumb_width': dataInfo['w']
       };
     }).toList();
     PageStatus.showLoading(text: '发布中...');
@@ -274,6 +227,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
           List.from(info['medias']).where((item) => item['type'] == 1).toList();
       imageList.value = newImageList.map((e) {
         return {
+          'key': new GlobalKey<FileUploadItemState>(),
           'media_url': e['ori_media_url'],
           'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
           'type': 1,
@@ -285,9 +239,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
           List.from(info['medias']).where((item) => item['type'] == 2).toList();
       videoList.value = newVideoList.map((e) {
         return {
+          'key': new GlobalKey<FileUploadItemState>(),
           'media_url': e['ori_media_url'],
           'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
-          'type': 1,
+          'type': 2,
           'w': e['thumb_width'],
           'h': e['thumb_height'],
         };
@@ -444,6 +399,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.w),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -477,39 +433,25 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                               onTap: videoPickerAssets, child: tapBtn('新增影片'))
                         ],
                       ),
+                      SizedBox(
+                        height: 8.w,
+                      ),
                       ValueListenableBuilder(
                           valueListenable: videoList,
                           builder: (context, List videos, child) {
                             return videos.isEmpty
                                 ? Container()
-                                : GridView.builder(
-                                    itemCount: videos.length,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.5.w, vertical: 10.w),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 4.w,
-                                      crossAxisSpacing: 4.w,
-                                      childAspectRatio: 120 / 80,
-                                    ),
-                                    itemBuilder: (context, index) {
-                                      return mediaItem(
-                                          child: getImage(
-                                              'assets/images/2023/upload_video_bg.png',
-                                              width: double.infinity,
-                                              height: double.infinity,
-                                              fit: BoxFit.cover,
-                                              isAssets: true),
-                                          onClose: () {
-                                            List _videos = videoList.value;
-                                            _videos.removeAt(index);
-                                            imageList.value = [..._videos];
-                                          });
-                                    });
+                                : Wrap(
+                                    spacing: 4.w,
+                                    runSpacing: 4.w,
+                                    alignment: WrapAlignment.spaceBetween,
+                                    children: videos.asMap().keys.map((index) {
+                                      return FileUploadItem(
+                                          type: 2,
+                                          key: videos[index]['key'],
+                                          data: videos[index]);
+                                    }).toList(),
+                                  );
                           })
                     ],
                   ),
@@ -517,6 +459,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.w),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -557,32 +500,19 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                           builder: (context, List imgs, child) {
                             return imgs.isEmpty
                                 ? Container()
-                                : GridView.builder(
-                                    itemCount: imgs.length,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.5.w, vertical: 10.w),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 4.w,
-                                      crossAxisSpacing: 4.w,
-                                      childAspectRatio: 120 / 80,
+                                : Padding(
+                                    padding: EdgeInsets.only(top: 8.w),
+                                    child: Wrap(
+                                      spacing: 4.w,
+                                      runSpacing: 4.w,
+                                      alignment: WrapAlignment.spaceBetween,
+                                      children: imgs.asMap().keys.map((index) {
+                                        return FileUploadItem(
+                                            key: imgs[index]['key'],
+                                            data: imgs[index]);
+                                      }).toList(),
                                     ),
-                                    itemBuilder: (context, index) {
-                                      return mediaItem(
-                                          child: PlatformAwareNetworkImage(
-                                            url: imgs[index]['cover'],
-                                            fit: BoxFit.cover,
-                                          ),
-                                          onClose: () {
-                                            List _images = imageList.value;
-                                            _images.removeAt(index);
-                                            imageList.value = [..._images];
-                                          });
-                                    });
+                                  );
                           })
                     ],
                   ),
@@ -633,7 +563,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                     maxLines: 999,
                     cursorColor: Color(0xffFF84A9),
                     maxLength: null,
-                    keyboardType:TextInputType.multiline,
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                         isDense: true,
                         helperMaxLines: 66,

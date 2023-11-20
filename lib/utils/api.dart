@@ -1102,6 +1102,7 @@ Future<Map> createPost(
   if (postInfo.isNotEmpty) {
     _postId['post_id'] = postInfo['id'];
   }
+  CommonUtils.debugPrint('编辑:${postInfo.isNotEmpty}');
   try {
     Response data = await PlatformAwareHttp.post(
         postInfo.isNotEmpty ? "/api/community/editPost" : "/api/community/post",

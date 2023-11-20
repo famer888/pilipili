@@ -70,6 +70,34 @@ class _CommunityDetailState extends State<CommunityDetail> {
     return path;
   }
 
+  showUnlok() {
+    YyShowDialog.showdialog(context,
+        title: '温馨提示', btnText: '解锁', cancelText: '取消', callBack: () {
+      PageStatus.showLoading();
+      unlockPost(detailData['id']).then((res) {
+        if (res['status'] != 0) {
+          CommonUtils.showText(res['msg'] ?? '解锁成功');
+          getDetailData();
+        } else {
+          CommonUtils.showText(res['msg'] ?? '系统错误,请稍后再试');
+        }
+      });
+    }, content: (setDialogState) {
+      return DefaultTextStyle(
+          style: TextStyle(
+              color: Color(0xff646464),
+              fontSize: ScreenUtil().setSp(16),
+              fontWeight: FontWeight.bold),
+          child: Text.rich(TextSpan(children: [
+            TextSpan(text: '确定花费'),
+            TextSpan(
+                text: ' ${detailData['unlock_coins']}金币 ',
+                style: TextStyle(color: Color(0xffFF84A9))),
+            TextSpan(text: '解锁该帖吗？'),
+          ])));
+    });
+  }
+
   getDetailData() {
     postDetail(widget.id).then((res) {
       CommonUtils.debugPrint(res);
@@ -416,48 +444,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                       detailData['is_pay'] != 1 &&
                                               detailData['unlock_coins'] > 0
                                           ? GestureDetector(
-                                              onTap: () {
-                                                YyShowDialog.showdialog(context,
-                                                    title: '温馨提示',
-                                                    btnText: '解锁',
-                                                    cancelText: '取消',
-                                                    callBack: () {
-                                                  PageStatus.showLoading();
-                                                  unlockPost(detailData['id'])
-                                                      .then((res) {
-                                                    if (res['status'] != 0) {
-                                                      CommonUtils.showText(
-                                                          res['msg'] ?? '解锁成功');
-                                                      getDetailData();
-                                                    } else {
-                                                      CommonUtils.showText(
-                                                          res['msg'] ??
-                                                              '系统错误,请稍后再试');
-                                                    }
-                                                  });
-                                                }, content: (setDialogState) {
-                                                  return DefaultTextStyle(
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xff646464),
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(16),
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                      child: Text.rich(
-                                                          TextSpan(children: [
-                                                        TextSpan(text: '确定花费'),
-                                                        TextSpan(
-                                                            text:
-                                                                ' ${detailData['unlock_coins']}金币 ',
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xffFF84A9))),
-                                                        TextSpan(
-                                                            text: '解锁该帖吗？'),
-                                                      ])));
-                                                });
-                                              },
+                                              onTap: () {},
                                               child: Container(
                                                 height: 32.w,
                                                 alignment: Alignment.center,
@@ -493,6 +480,11 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                           _item['thumb_height'] == 0;
                                       return GestureDetector(
                                         onTap: () {
+                                          if (detailData['is_pay'] != 1 &&
+                                              detailData['unlock_coins'] > 0) {
+                                            showUnlok();
+                                            return;
+                                          }
                                           if (_item['type'] == 1) {
                                             picMap['index'] = e;
                                             String data =

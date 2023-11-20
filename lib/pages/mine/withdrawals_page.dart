@@ -38,10 +38,13 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
       return;
     }
     try {
-      double money = (double.parse(userMoney) * (config.withdraw_rate / 100));
-      print(money % 100);
+      double money = double.parse(userMoney);
       if (money % 100 != 0) {
         CommonUtils.showText('提现金额必须为100的整数');
+        return;
+      }
+      if (money < 300) {
+        CommonUtils.showText('提现金额最少300起');
         return;
       }
     } catch (e) {
@@ -315,6 +318,10 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                 fontWeight: FontWeight.w700),
                           ),
                         )),
+                  ),
+                  Text(
+                    config.withdraw_rule,
+                    style: TextStyle(fontSize: 12.sp, color: Color(0xff646464)),
                   )
                 ],
               ))
