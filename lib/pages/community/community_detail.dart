@@ -444,7 +444,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                       detailData['is_pay'] != 1 &&
                                               detailData['unlock_coins'] > 0
                                           ? GestureDetector(
-                                              onTap: () {},
+                                              onTap: showUnlok,
                                               child: Container(
                                                 height: 32.w,
                                                 alignment: Alignment.center,
