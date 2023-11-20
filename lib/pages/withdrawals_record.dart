@@ -4,7 +4,7 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
 
 class WithdrawalsRecord extends StatefulWidget {
-  const WithdrawalsRecord({Key key, this.type=2}) : super(key: key);
+  const WithdrawalsRecord({Key key, this.type = 2}) : super(key: key);
   final int type;
   @override
   State<WithdrawalsRecord> createState() => _WithdrawalsRecordState();
@@ -16,14 +16,15 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
   static TextStyle subTextStyle = TextStyle(
       fontSize: 14.sp, fontWeight: FontWeight.w400, color: Color(0xff979797));
 
-  Widget witdraStatus(int status) {
+  Widget witdraStatus(String status) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.w),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color:status%2==1? Color(0xffFF84A9):Color(0xffFE155B), borderRadius: BorderRadius.circular(5.w)),
+          color: status == '待审核' ? Color(0xffFE155B) : Color(0xffFF84A9),
+          borderRadius: BorderRadius.circular(5.w)),
       child: Text(
-       status%2==1?'通过' :'待审核',
+        status == '待审核' ? '待审核' : '通过',
         style: TextStyle(
             color: Colors.white, fontSize: 11.sp, fontWeight: FontWeight.w400),
       ),
@@ -37,13 +38,12 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
         children: [
           PageTitleBar(paddingTop: ScreenUtil().statusBarHeight, title: '提交紀錄'),
           Expanded(
-              child:PublicBuildList(
-                        api: '/api/order/listWithdraw',
-                        isShow: true,
-                        data: {'type': widget.type},
-                        itemBuild:
-                            (context, index, data, page, limit, getListData) {
-                          return Container(
+              child: PublicBuildList(
+                  api: '/api/order/listWithdraw',
+                  isShow: true,
+                  data: {'type': widget.type},
+                  itemBuild: (context, index, data, page, limit, getListData) {
+                    return Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -111,7 +111,7 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                                         width: 8.w,
                                       ),
                                       Text(
-                                        data['amount'],
+                                        data['amount'].toString(),
                                         style: subTextStyle,
                                       ),
                                     ],
@@ -127,7 +127,7 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                                         width: 8.w,
                                       ),
                                       Text(
-                                        data['amount'],
+                                        data['account'].toString(),
                                         style: subTextStyle,
                                       ),
                                     ],
@@ -162,8 +162,9 @@ class _WithdrawalsRecordState extends State<WithdrawalsRecord> {
                               )
                             ],
                           )),
-                    );;
-                        }))
+                    );
+                    ;
+                  }))
         ],
       ),
     );

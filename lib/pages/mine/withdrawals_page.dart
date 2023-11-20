@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
@@ -51,12 +53,32 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
       CommonUtils.showText('请正确填写提现金额');
       return;
     }
-    withdrawMoney(account: userBlankNumber, name: userName, amount: userMoney)
+    PageStatus.showLoading();
+    withdrawMoney(
+            account: userBlankNumber,
+            name: userName,
+            amount: userMoney)
         .then((res) {
       if (res['status'] != 0) {
+        getUserInfo(context);
+        YyShowDialog.showdialog(context, title: '温馨提示', btnText: '朕知道了',
+            callBack: () {
+          context.pop();
+        }, content: (setDialogState) {
+          return Text(
+            '提交信息已交付\n 可至提現紀錄查看進度',
+            style: TextStyle(
+                color: Color(0xffFF84A9),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          );
+        });
       } else {
         CommonUtils.showText(res['msg'] ?? '系统错误请稍后再试');
       }
+    }).whenComplete(() {
+      PageStatus.closeLoading();
     });
   }
 
@@ -132,7 +154,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
 
   @override
   Widget build(BuildContext context) {
-    int chatMoney = Provider.of<HomeConfig>(context, listen: false).chatMoney;
+    int postMoney = Provider.of<HomeConfig>(context, listen: false).postMoney;
     Config config = Provider.of<HomeConfig>(context, listen: false).config;
     return GestureDetector(
         onTap: () {
@@ -199,7 +221,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                   SizedBox(
                                     height: 2.w,
                                   ),
-                                  Text(chatMoney.toString(),
+                                  Text(postMoney.toString(),
                                       style: TextStyle(
                                           color: Color(0xffFE155B),
                                           fontWeight: FontWeight.w700,
@@ -221,7 +243,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                     height: 2.w,
                                   ),
                                   Text(
-                                      (chatMoney * (config.withdraw_rate / 100))
+                                      (postMoney * (config.withdraw_rate / 100))
                                           .toString(),
                                       style: TextStyle(
                                           color: Color(0xffFE155B),

@@ -494,7 +494,7 @@ Future<UserInfo> getUserInfo(BuildContext context) async {
         await PlatformAwareHttp.post('/api/user/userInfo', data: {});
     UserInfo data = UserInfo.fromJson(res.data);
     Provider.of<HomeConfig>(context, listen: false)
-        .setChatMoney(context, data.data.chatMoney);
+        .setPostMoney(context, data.data.postMoney);
     Provider.of<HomeConfig>(context, listen: false).setMoney(data.data.money);
     return data;
   } catch (e) {

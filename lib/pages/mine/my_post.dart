@@ -51,7 +51,7 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
   }
 
   headInfo() {
-    int chatMoney = Provider.of<HomeConfig>(context, listen: false).chatMoney;
+    int postMoney = Provider.of<HomeConfig>(context, listen: false).postMoney;
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Padding(
         padding: EdgeInsets.symmetric(vertical: 8.w),
@@ -102,7 +102,7 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
                             fontWeight: FontWeight.w500,
                             fontSize: 14.sp),
                       ),
-                      Text(chatMoney.toString(),
+                      Text(postMoney.toString(),
                           style: TextStyle(
                               color: Color(0xffFE155B),
                               fontWeight: FontWeight.w700,

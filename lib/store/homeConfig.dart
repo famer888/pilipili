@@ -19,7 +19,7 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   String _darkprivilegeTips;
   SystemNotice _systemNotice;
   Map _privilege;
-  int _chatMoney;
+  int _postMoney;
 
   SystemNotice get systemnotice => _systemNotice;
   Member get member => _member;
@@ -30,7 +30,7 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   Map get privilege => _privilege;
   bool get darkPrivilege => _darkPrivilege;
   String get darkprivilegeTips => _darkprivilegeTips;
-  int get chatMoney => _chatMoney;
+  int get postMoney => _postMoney;
 
   void setDarkPrivilegeTips(String text) {
     _darkprivilegeTips = text;
@@ -117,8 +117,8 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
-  void setChatMoney(BuildContext context, int coin) {
-    _chatMoney = coin;
+  void setPostMoney(BuildContext context, int coin) {
+    _postMoney = coin;
     notifyListeners();
   }
 

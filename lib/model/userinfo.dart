@@ -49,7 +49,7 @@ class Data {
       this.nickname,
       this.shortMvFreeTime,
       this.longMvFreeTime,
-      this.chatMoney});
+      this.postMoney});
 
   int money;
   int exp;
@@ -58,7 +58,7 @@ class Data {
   String nickname;
   int shortMvFreeTime;
   int longMvFreeTime;
-  int chatMoney;
+  int postMoney;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
       money: json["money"] == null ? null : json["money"],
@@ -70,7 +70,7 @@ class Data {
           json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
       longMvFreeTime:
           json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
-      chatMoney: json['chat_money'] ?? 0);
+      postMoney: json['post_money'] ?? 0);
 
   Map<String, dynamic> toJson() => {
         "money": money == null ? null : money,
@@ -80,6 +80,6 @@ class Data {
         "nickname": nickname == null ? null : nickname,
         "shortMvFreeTime": shortMvFreeTime == null ? null : shortMvFreeTime,
         "longMvFreeTime": longMvFreeTime == null ? null : longMvFreeTime,
-        "chat_money": chatMoney ?? 0
+        "post_money": postMoney ?? 0
       };
 }
