@@ -17,8 +17,8 @@ class PPAssetsPath {
   static String chatCircleDots = 'assets/images/wode/Chat_Circle_Dots.png';
   static String chatCircleDotsActive =
       'assets/images/wode/Chat_Circle_Dots_active.png';
-  static String iconTG = 'assets/images/mine/icon_tg.png';
-  static String iconPT = 'assets/images/mine/icon_pt.png';
+  static String iconTG = 'assets/images/2023/icon_tg.png';
+  static String iconPT = 'assets/images/2023/icon_pt.png';
   static String backArrow = 'assets/images/backarrow.png';
   static String piliActive = "assets/images/bottomTab/pili_active.png";
   static String pili = "assets/images/bottomTab/pili.png";

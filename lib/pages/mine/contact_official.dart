@@ -105,12 +105,13 @@ class AppInfo extends StatelessWidget {
                     child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    PlatformAwareAssetImage(
-                      url: info['type'] == 'Telegram'
+                    getImage(
+                      info['type'] == 'Telegram'
                           ? PPAssetsPath.iconTG
                           : PPAssetsPath.iconPT,
                       width: 38.8.w,
                       height: 38.8.w,
+                      isAssets: true
                     ),
                     SizedBox(
                       width: 13.w,
