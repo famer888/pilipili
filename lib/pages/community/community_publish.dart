@@ -51,7 +51,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         .toList()
         .length;
     if (_length >= videoMaxLength) {
-      CommonUtils.showText('最多上传$videoMaxLength张图片');
+      CommonUtils.showText('最多上传$videoMaxLength个视频');
       return;
     }
     final XFile file = await _picker.pickVideo(source: ImageSource.gallery);
@@ -179,7 +179,12 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       CommonUtils.showText('请上传图片或视频');
       return;
     }
-    List fileList = [...imageList.value, ...videoList.value].map((e) {
+    List newFilelist =
+        [...imageList.value, ...videoList.value].where((element) {
+      GlobalKey<FileUploadItemState> _key = element['key'];
+      return _key.currentState.showWidget;
+    }).toList();
+    List fileList = newFilelist.map((e) {
       GlobalKey<FileUploadItemState> _key = e['key'];
       Map dataInfo = _key.currentState.dataInfo;
       return {
