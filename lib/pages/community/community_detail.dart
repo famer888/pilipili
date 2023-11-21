@@ -81,6 +81,8 @@ class _CommunityDetailState extends State<CommunityDetail> {
         } else {
           CommonUtils.showText(res['msg'] ?? '系统错误,请稍后再试');
         }
+      }).whenComplete(() {
+        PageStatus.closeLoading();
       });
     }, content: (setDialogState) {
       return DefaultTextStyle(
@@ -635,64 +637,64 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                         (context, index) {
                                           return GestureDetector(
                                             onTap: () {
-                                              if (Privilege.isAllowed(
-                                                  context,
-                                                  RESOURCE_TYPE_POST,
-                                                  PRIVILEGE_TYPE_COMMENT)) {
-                                                InputDialog.show(
-                                                        context, '请输入您的影评～')
-                                                    .then((value) {
-                                                  if (value != null &&
-                                                      value != '') {
-                                                    communityComment({
-                                                      'comment_id':
-                                                          coment[index]['id'],
-                                                      'content': value
-                                                    }).then((res) {
-                                                      if (res['status'] != 0) {
-                                                        CommonUtils.showText(
-                                                            '影评发布成功,请刷新查看～');
-                                                      } else {
-                                                        CommonUtils.showText(
-                                                            res['msg']);
-                                                      }
-                                                    });
-                                                  } else {
-                                                    CommonUtils.showText(
-                                                        '请输入您的影评');
-                                                  }
-                                                });
-                                              } else {
-                                                YyShowDialog.showdialog(context,
-                                                    title: '温馨提示',
-                                                    btnText: '升级VIP',
-                                                    cancelText: '取消',
-                                                    callBack: () {
-                                                  context.push('/vip');
-                                                }, content: (setDialogState) {
-                                                  return DefaultTextStyle(
-                                                      style:
-                                                          DefaultStyle.black14,
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            '升级VIP即可发布影评哦～',
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xffFF5B8C),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize:
-                                                                    16.sp),
-                                                          ),
-                                                        ],
-                                                      ));
-                                                });
-                                              }
+                                              // if (Privilege.isAllowed(
+                                              //     context,
+                                              //     RESOURCE_TYPE_POST,
+                                              //     PRIVILEGE_TYPE_COMMENT)) {
+                                              InputDialog.show(
+                                                      context, '请输入您的影评～')
+                                                  .then((value) {
+                                                if (value != null &&
+                                                    value != '') {
+                                                  communityComment({
+                                                    'comment_id': coment[index]
+                                                        ['id'],
+                                                    'content': value
+                                                  }).then((res) {
+                                                    if (res['status'] != 0) {
+                                                      CommonUtils.showText(
+                                                          '影评发布成功,请刷新查看～');
+                                                    } else {
+                                                      CommonUtils.showText(
+                                                          res['msg']);
+                                                    }
+                                                  });
+                                                } else {
+                                                  CommonUtils.showText(
+                                                      '请输入您的影评');
+                                                }
+                                              });
+                                              // } else {
+                                              //   YyShowDialog.showdialog(context,
+                                              //       title: '温馨提示',
+                                              //       btnText: '升级VIP',
+                                              //       cancelText: '取消',
+                                              //       callBack: () {
+                                              //     context.push('/vip');
+                                              //   }, content: (setDialogState) {
+                                              //     return DefaultTextStyle(
+                                              //         style:
+                                              //             DefaultStyle.black14,
+                                              //         child: Column(
+                                              //           crossAxisAlignment:
+                                              //               CrossAxisAlignment
+                                              //                   .start,
+                                              //           children: [
+                                              //             Text(
+                                              //               '升级VIP即可发布影评哦～',
+                                              //               style: TextStyle(
+                                              //                   color: Color(
+                                              //                       0xffFF5B8C),
+                                              //                   fontWeight:
+                                              //                       FontWeight
+                                              //                           .bold,
+                                              //                   fontSize:
+                                              //                       16.sp),
+                                              //             ),
+                                              //           ],
+                                              //         ));
+                                              //   });
+                                              // }
                                             },
                                             child: CommentItem(
                                               data: coment[index],
@@ -714,45 +716,45 @@ class _CommunityDetailState extends State<CommunityDetail> {
                 vertical: 9.w, horizontal: DefaultStyle.pagePadding),
             child: GestureDetector(
               onTap: () {
-                if (Privilege.isAllowed(
-                    context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_COMMENT)) {
-                  InputDialog.show(context, '请输入您的影评～').then((value) {
-                    if (value != null && value != '') {
-                      communityComment({'post_id': widget.id, 'content': value})
-                          .then((res) {
-                        if (res['status'] != 0) {
-                          CommonUtils.showText('影评发布成功,请刷新查看～');
-                        } else {
-                          CommonUtils.showText(res['msg']);
-                        }
-                      });
-                    } else {
-                      CommonUtils.showText('请输入您的影评');
-                    }
-                  });
-                } else {
-                  YyShowDialog.showdialog(context,
-                      title: '温馨提示',
-                      btnText: '升级VIP',
-                      cancelText: '取消', callBack: () {
-                    context.push('/vip');
-                  }, content: (setDialogState) {
-                    return DefaultTextStyle(
-                        style: DefaultStyle.black14,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '升级VIP即可发布影评哦～',
-                              style: TextStyle(
-                                  color: Color(0xffFF5B8C),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp),
-                            ),
-                          ],
-                        ));
-                  });
-                }
+                // if (Privilege.isAllowed(
+                //     context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_COMMENT)) {
+                InputDialog.show(context, '请输入您的影评～').then((value) {
+                  if (value != null && value != '') {
+                    communityComment({'post_id': widget.id, 'content': value})
+                        .then((res) {
+                      if (res['status'] != 0) {
+                        CommonUtils.showText('影评发布成功,请刷新查看～');
+                      } else {
+                        CommonUtils.showText(res['msg']);
+                      }
+                    });
+                  } else {
+                    CommonUtils.showText('请输入您的影评');
+                  }
+                });
+                // } else {
+                //   YyShowDialog.showdialog(context,
+                //       title: '温馨提示',
+                //       btnText: '升级VIP',
+                //       cancelText: '取消', callBack: () {
+                //     context.push('/vip');
+                //   }, content: (setDialogState) {
+                //     return DefaultTextStyle(
+                //         style: DefaultStyle.black14,
+                //         child: Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               '升级VIP即可发布影评哦～',
+                //               style: TextStyle(
+                //                   color: Color(0xffFF5B8C),
+                //                   fontWeight: FontWeight.bold,
+                //                   fontSize: 16.sp),
+                //             ),
+                //           ],
+                //         ));
+                //   });
+                // }
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -760,7 +762,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                 child: Row(
                   children: [
                     Text(
-                      false ? '能不能火就靠你啦～' : '升级VIP即可发布影评哦～',
+                      '能不能火就靠你啦～',
                       style:
                           TextStyle(color: Color(0xff979797), fontSize: 14.sp),
                     )
