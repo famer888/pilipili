@@ -40,8 +40,9 @@ class _CommunityDetailState extends State<CommunityDetail> {
   bool isAll = false;
   bool isLike = false;
   ValueNotifier<List> commentList = ValueNotifier([]);
+  
   getComentList(int id) {
-    getPostComments(id).then((res) {
+    getPostComments(id, page, limit).then((res) {
       if (isAll) return;
       List newComments = commentList.value;
       if (res['status'] != 0) {
@@ -76,7 +77,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
       PageStatus.showLoading();
       unlockPost(detailData['id']).then((res) {
         if (res['status'] != 0) {
-          CommonUtils.showText(res['msg'] ?? '解锁成功');
+          CommonUtils.showText('解锁成功');
           getDetailData();
         } else {
           CommonUtils.showText(res['msg'] ?? '系统错误,请稍后再试');

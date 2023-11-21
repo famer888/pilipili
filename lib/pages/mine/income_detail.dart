@@ -11,6 +11,22 @@ class IncomeDetail extends StatefulWidget {
 }
 
 class _IncomeDetailState extends State<IncomeDetail> {
+    // 辅助函数，确保月份和日期是两位数
+String _twoDigits(int n) {
+  if (n >= 10) {
+    return '$n';
+  }
+  return '0$n';
+}
+String getDate(String date){
+  // 解析日期字符串
+  DateTime dateTime = DateTime.parse(date);
+
+  // 格式化为所需的日期字符串格式（yyyy-MM-dd）
+  String formattedDate = '${dateTime.year}-${_twoDigits(dateTime.month)}-${_twoDigits(dateTime.day)}';
+  return formattedDate;
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +72,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                                 children: [
                                   Text('日期'),
                                   Text(
-                                    data['created_at'].split('T')[0],
+                                   getDate(data['created_at']),
                                     style: TextStyle(color: Color(0xff979797)),
                                   ),
                                 ],

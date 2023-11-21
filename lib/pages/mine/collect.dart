@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
 
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -63,6 +64,16 @@ class _CollectPageState extends State<CollectPage>
       'index': 5,
       'api': '/api/user/getUserFavor',
       'row': 1,
+      'padding': 16.w,
+      'aspectRatio': null
+    },
+    {
+      'id': -1,
+      'name': '帖子',
+      'index': 6,
+      'api': '/api/community/list_my_like',
+      'row': 1,
+      'padding': 8.w,
       'aspectRatio': null
     }
   ];
@@ -210,9 +221,9 @@ class _CollectPageState extends State<CollectPage>
                     children: tabList.asMap().keys.map<Widget>((e) {
                       return PageViewMixin(
                         child: PublicBuildList(
-                            paddingLeft: tabList[e]['index'] == 5 ? 16.w : 0,
-                            paddingTop: tabList[e]['index'] == 5 ? 16.w : 0,
-                            paddingRight: tabList[e]['index'] == 5 ? 16.w : 0,
+                            paddingLeft: tabList[e]['padding'] ?? 0,
+                            paddingTop: tabList[e]['padding'] ?? 0,
+                            paddingRight: tabList[e]['padding'] ?? 0,
                             api: tabList[e]['api'],
                             isFlow: false,
                             isShow: true,
@@ -224,14 +235,18 @@ class _CollectPageState extends State<CollectPage>
                             },
                             itemBuild: (context, index, data, page, limit,
                                 getListData) {
-                              return tabList[e]['index'] == 5
-                                  ? YuemeiCard(
-                                      isShowInfo: true,
-                                      w: 118.w,
-                                      h: 145.w,
+                              return tabList[e]['index'] == 6
+                                  ? PostCard(
                                       data: data,
                                     )
-                                  : getCardType(tabList[e]['id'], data);
+                                  : tabList[e]['index'] == 5
+                                      ? YuemeiCard(
+                                          isShowInfo: true,
+                                          w: 118.w,
+                                          h: 145.w,
+                                          data: data,
+                                        )
+                                      : getCardType(tabList[e]['id'], data);
                             }),
                       );
                     }).toList()),

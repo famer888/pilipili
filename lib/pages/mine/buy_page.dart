@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
+import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/card/youxuan_card.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
@@ -58,8 +59,18 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
     {
       'id': 10,
       'name': '约妹',
+      'padding': 16.w,
       'index': 5,
       'api': '/api/user/getUserBuy',
+      'row': 1,
+      'aspectRatio': null
+    },
+    {
+      'id': -1,
+      'name': '帖子',
+      'padding': 8.w,
+      'index': 6,
+      'api': '/api/community/list_buy',
       'row': 1,
       'aspectRatio': null
     },
@@ -198,9 +209,9 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                   children: tabList.asMap().keys.map<Widget>((e) {
                     return PageViewMixin(
                       child: PublicBuildList(
-                          paddingLeft: tabList[e]['index'] == 5 ? 16.w : 0,
-                          paddingTop: tabList[e]['index'] == 5 ? 16.w : 0,
-                          paddingRight: tabList[e]['index'] == 5 ? 16.w : 0,
+                          paddingLeft: tabList[e]['padding'] ?? 0,
+                          paddingTop: tabList[e]['padding'] ?? 0,
+                          paddingRight: tabList[e]['padding'] ?? 0,
                           api: tabList[e]['api'],
                           isFlow: false,
                           isShow: true,
@@ -212,15 +223,19 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                           },
                           itemBuild:
                               (context, index, data, page, limit, getListData) {
-                            return tabList[e]['index'] == 5
-                                ? YuemeiCard(
-                                    isShowInfo: true,
-                                    isBuy: true,
-                                    w: 118.w,
-                                    h: 145.w,
+                            return tabList[e]['index'] == 6
+                                ? PostCard(
                                     data: data,
                                   )
-                                : getCardType(tabList[e]['id'], data);
+                                : tabList[e]['index'] == 5
+                                    ? YuemeiCard(
+                                        isShowInfo: true,
+                                        isBuy: true,
+                                        w: 118.w,
+                                        h: 145.w,
+                                        data: data,
+                                      )
+                                    : getCardType(tabList[e]['id'], data);
                           }),
                     );
                   }).toList()),

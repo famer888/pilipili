@@ -1155,10 +1155,10 @@ Future<Map> postDetail(int id) async {
 }
 
 //帖子评论
-Future<Map> getPostComments(int id) async {
+Future<Map> getPostComments(int id, int page, int limit) async {
   try {
     Response data = await PlatformAwareHttp.post("/api/community/post_comments",
-        data: {'id': id});
+        data: {'id': id, 'page': page, 'limit': limit});
     return data.data;
   } catch (e) {
     return null;
@@ -1272,8 +1272,12 @@ Future<Map> withdrawMoney(
     String amount,
     int type = 2}) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/order/withdraw",
-        data: {'account': account, 'name': name, 'type': type,'amount':amount});
+    Response data = await PlatformAwareHttp.post("/api/order/withdraw", data: {
+      'account': account,
+      'name': name,
+      'type': type,
+      'amount': amount
+    });
     return data.data;
   } catch (e) {
     return null;

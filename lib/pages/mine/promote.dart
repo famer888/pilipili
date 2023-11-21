@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +94,8 @@ class _InviteFriendState extends State<Promote> {
   void _copyLinkShare() {
     var config = Provider.of<HomeConfig>(context, listen: false).config;
 
-    Clipboard.setData(ClipboardData(text: config.share.affUrlCopy.url.toString()));
+    Clipboard.setData(
+        ClipboardData(text: config.share.affUrlCopy.url.toString()));
     CommonUtils.showText(
       '复制成功,快去分享吧',
     );
@@ -180,7 +182,7 @@ class _InviteFriendState extends State<Promote> {
                                           fontSize: ScreenUtil().setSp(14),
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: ScreenUtil().setWidth(8)),
-                                  Text('推广码:'+config.share.affCode.toString(),
+                                  Text('推广码:' + config.share.affCode.toString(),
                                       style: TextStyle(
                                           color: Color(0xff646464),
                                           decoration: TextDecoration.none,
@@ -323,7 +325,8 @@ class _InviteFriendState extends State<Promote> {
                                           ),
                                           child: QrImage(
                                             size: ScreenUtil().setWidth(134.5),
-                                            data: config.share.affUrl.toString(),
+                                            data:
+                                                config.share.affUrl.toString(),
                                             padding: EdgeInsets.all(
                                                 ScreenUtil().setWidth(10)),
                                             version: QrVersions.auto,
@@ -461,8 +464,8 @@ class _PromoteActionListState extends State<PromoteActionList> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
-          child:
-              PlatformAwareAssetImage(url: 'assets/images/mine/promete_de.png'),
+          child: getImage('assets/images/2023/promete_de.png',
+              width: double.infinity, fit: BoxFit.fitWidth,isAssets: true),
         ),
       ),
     );
