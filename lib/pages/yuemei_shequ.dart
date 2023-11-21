@@ -71,148 +71,156 @@ class _YuemeiShequState extends State<YuemeiShequ> {
                       ScreenUtil().bottomBarHeight,
                   left: 8.w,
                   right: 8.w,
-                  child: ValueListenableBuilder(
-                    valueListenable: navShow,
-                    builder: (context, isShow, child) {
-                      return isShow ? child : Container();
-                    },
-                    child: Column(
-                      children: [
-                        ValueListenableBuilder(
-                            valueListenable: currentPage,
-                            builder: (context, value, child) {
-                              return value != 0
-                                  ? Container()
-                                  : Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            context.push('/communityPushlish');
-                                          },
-                                          child: Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 8.w),
-                                            width: 52.w,
-                                            height: 52.w,
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(26.w),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Color(0xffFF80A3)
-                                                          .withOpacity(0.5),
-                                                      offset: Offset(0, 2),
-                                                      blurRadius: 4,
-                                                      spreadRadius: 0)
-                                                ]),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              '+',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Color(0xffFF84A9),
-                                                  fontSize: 40.sp),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                            }),
-                        ValueListenableBuilder(
+                  child: Column(
+                    children: [
+                      ValueListenableBuilder(
                           valueListenable: currentPage,
                           builder: (context, value, child) {
-                            return Container(
-                              padding: EdgeInsets.all(8.w),
-                              height: 52.w,
-                              decoration: BoxDecoration(
-                                  color: Color(0xffFF80A3).withOpacity(0.5),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10.w),
-                                    topRight: Radius.circular(10.w),
-                                  )),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: GestureDetector(
-                                    onTap: () {
-                                      pageController.jumpToPage(0);
-                                      currentPage.value = 0;
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          gradient: value == 0
-                                              ? DefaultStyle.defaluGrandientLine
-                                              : DefaultStyle.whiteGrandientLine,
-                                          borderRadius:
-                                              BorderRadius.circular(50.w),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Color(0xffFF80A3)
-                                                    .withOpacity(
-                                                        value == 0 ? 0.5 : 0.3),
-                                                offset: Offset(0, 2),
-                                                blurRadius: 4,
-                                                spreadRadius: 0)
-                                          ]),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '社区',
-                                        style: TextStyle(
-                                            color: value == 0
-                                                ? Colors.white
-                                                : Color(0xffFF84A9),
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w700),
+                            return value != 0
+                                ? Container()
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.push('/communityPushlish');
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(bottom: 8.w),
+                                          width: 52.w,
+                                          height: 52.w,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(26.w),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Color(0xffFF80A3)
+                                                        .withOpacity(0.5),
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 0)
+                                              ]),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            '+',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                color: Color(0xffFF84A9),
+                                                fontSize: 40.sp),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  )),
-                                  SizedBox(
-                                    width: 9.w,
-                                  ),
-                                  Expanded(
-                                      child: GestureDetector(
-                                    onTap: () {
-                                      pageController.jumpToPage(1);
-                                      currentPage.value = 1;
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          gradient: value == 1
-                                              ? DefaultStyle.defaluGrandientLine
-                                              : DefaultStyle.whiteGrandientLine,
-                                          borderRadius:
-                                              BorderRadius.circular(50.w),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Color(0xffFF80A3)
-                                                    .withOpacity(
-                                                        value == 1 ? 0.5 : 0.3),
-                                                offset: Offset(0, 2),
-                                                blurRadius: 4,
-                                                spreadRadius: 0)
-                                          ]),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '约妹',
-                                        style: TextStyle(
-                                            color: value == 1
-                                                ? Colors.white
-                                                : Color(0xffFF84A9),
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                  )),
-                                ],
-                              ),
+                                    ],
+                                  );
+                          }),
+                      ValueListenableBuilder(
+                          valueListenable: navShow,
+                          builder: (context, isShow, child) {
+                            return IgnorePointer(
+                              ignoring: !isShow,
+                              child: Opacity(
+                                  opacity: isShow ? 1 : 0, child: child),
                             );
                           },
-                        )
-                      ],
-                    ),
+                          child: ValueListenableBuilder(
+                            valueListenable: currentPage,
+                            builder: (context, value, child) {
+                              return Container(
+                                padding: EdgeInsets.all(8.w),
+                                height: 52.w,
+                                decoration: BoxDecoration(
+                                    color: Color(0xffFF80A3).withOpacity(0.5),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10.w),
+                                      topRight: Radius.circular(10.w),
+                                    )),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: GestureDetector(
+                                      onTap: () {
+                                        pageController.jumpToPage(0);
+                                        currentPage.value = 0;
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            gradient: value == 0
+                                                ? DefaultStyle
+                                                    .defaluGrandientLine
+                                                : DefaultStyle
+                                                    .whiteGrandientLine,
+                                            borderRadius:
+                                                BorderRadius.circular(50.w),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color(0xffFF80A3)
+                                                      .withOpacity(value == 0
+                                                          ? 0.5
+                                                          : 0.3),
+                                                  offset: Offset(0, 2),
+                                                  blurRadius: 4,
+                                                  spreadRadius: 0)
+                                            ]),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '社区',
+                                          style: TextStyle(
+                                              color: value == 0
+                                                  ? Colors.white
+                                                  : Color(0xffFF84A9),
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    )),
+                                    SizedBox(
+                                      width: 9.w,
+                                    ),
+                                    Expanded(
+                                        child: GestureDetector(
+                                      onTap: () {
+                                        pageController.jumpToPage(1);
+                                        currentPage.value = 1;
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            gradient: value == 1
+                                                ? DefaultStyle
+                                                    .defaluGrandientLine
+                                                : DefaultStyle
+                                                    .whiteGrandientLine,
+                                            borderRadius:
+                                                BorderRadius.circular(50.w),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color(0xffFF80A3)
+                                                      .withOpacity(value == 1
+                                                          ? 0.5
+                                                          : 0.3),
+                                                  offset: Offset(0, 2),
+                                                  blurRadius: 4,
+                                                  spreadRadius: 0)
+                                            ]),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '约妹',
+                                          style: TextStyle(
+                                              color: value == 1
+                                                  ? Colors.white
+                                                  : Color(0xffFF84A9),
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    )),
+                                  ],
+                                ),
+                              );
+                            },
+                          ))
+                    ],
                   ))
             ],
           );

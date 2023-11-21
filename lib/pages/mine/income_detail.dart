@@ -39,7 +39,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data['title'],
+                                data['title'].toString(),
                                 style: TextStyle(
                                     color: Color(0xff404040),
                                     fontSize: 16.sp,
@@ -56,7 +56,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                                 children: [
                                   Text('日期'),
                                   Text(
-                                    data['created_at'].split('')[0],
+                                    data['created_at'].split('T')[0],
                                     style: TextStyle(color: Color(0xff979797)),
                                   ),
                                 ],
@@ -96,7 +96,7 @@ class _IncomeDetailState extends State<IncomeDetail> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(data['type_str']),
+                                  Text(data['type_str'].toString()),
                                   Text(
                                     data['coinCnt'],
                                     style: TextStyle(

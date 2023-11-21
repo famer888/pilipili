@@ -57,7 +57,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     final XFile file = await _picker.pickVideo(source: ImageSource.gallery);
     if (file != null) {
       bool flag =
-          await CommonUtils.pngLimitSize(file, size: 100, tips: "请上传100M以内的图片");
+          await CommonUtils.pngLimitSize(file, size: 100, tips: "请上传100M以内的视频");
       if (flag) return;
       String ext = file.name.split(".").last.toLowerCase();
       if (ext == "mp4" || file.mimeType == 'video/quicktime') {
@@ -153,8 +153,8 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     try {
       if (coin.text.trim() != "") {
         int _coins = int.parse(coin.text);
-        if (_coins > 90) {
-          CommonUtils.showText('帖子最高价格请设置90以内');
+        if (_coins > 900) {
+          CommonUtils.showText('帖子最高价格请设置900以内');
           return;
         }
         if (_coins > 0 && videoLength == 0) {
@@ -599,7 +599,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                             width: 8.w,
                           ),
                           Text(
-                            '最高設置90皮哩幣',
+                            '最高設置900皮哩幣',
                             style: subtitleStyle,
                           )
                         ],

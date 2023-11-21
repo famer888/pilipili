@@ -31,8 +31,8 @@ class _CommunityPageState extends State<CommunityPage> {
   bool isAll = false;
   int page = 1;
   int limit = 15;
-  ValueNotifier<int> selectTab = ValueNotifier(0);
-  String type = 'attention';
+  ValueNotifier<int> selectTab = ValueNotifier(1);
+  String type = 'recommend';
   List topics = [];
   ValueNotifier<bool> showTab = ValueNotifier(false);
   List tabList = [
@@ -445,7 +445,7 @@ class _CommunityPageState extends State<CommunityPage> {
                   return IgnorePointer(
                     ignoring: !value,
                     child: AnimatedOpacity(
-                      opacity: value ? 1 : 0,
+                    opacity: value ? 1 : 0,
                       duration: Duration(milliseconds: 200),
                       child: child,
                     ),

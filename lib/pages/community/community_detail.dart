@@ -91,7 +91,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
           child: Text.rich(TextSpan(children: [
             TextSpan(text: '确定花费'),
             TextSpan(
-                text: ' ${detailData['unlock_coins']}金币 ',
+                text: ' ${detailData['unlock_coins']}皮哩币 ',
                 style: TextStyle(color: Color(0xffFF84A9))),
             TextSpan(text: '解锁该帖吗？'),
           ])));
@@ -457,7 +457,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                     gradient: DefaultStyle
                                                         .defaluGrandientLine),
                                                 child: Text(
-                                                  '解鎖媒體(${detailData['unlock_coins']}金幣)',
+                                                  '解鎖媒體(${detailData['unlock_coins']}皮哩币)',
                                                   style: TextStyle(
                                                       fontSize: 14.sp,
                                                       color: Colors.white,

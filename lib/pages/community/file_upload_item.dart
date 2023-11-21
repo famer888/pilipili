@@ -108,8 +108,7 @@ class FileUploadItemState extends State<FileUploadItem> {
       );
       if (res == null) {
         CommonUtils.showText('上传失败');
-        showWidget = false;
-        setState(() {});
+        closeWidget();
         return;
       } else {
         Map data = jsonDecode(res);
@@ -123,8 +122,7 @@ class FileUploadItemState extends State<FileUploadItem> {
           };
         } else {
           CommonUtils.showText(res['msg'] ?? '上传失败');
-          showWidget = false;
-          setState(() {});
+          closeWidget();
         }
       }
     } else {
@@ -140,8 +138,7 @@ class FileUploadItemState extends State<FileUploadItem> {
       );
       if (res == null) {
         CommonUtils.showText('上传失败');
-        showWidget = false;
-        setState(() {});
+        closeWidget();
         return;
       } else {
         Map data = jsonDecode(res);
@@ -155,8 +152,7 @@ class FileUploadItemState extends State<FileUploadItem> {
           };
         } else {
           CommonUtils.showText(res['msg'] ?? '上传失败');
-          showWidget = false;
-          setState(() {});
+          closeWidget();
         }
       }
     }
