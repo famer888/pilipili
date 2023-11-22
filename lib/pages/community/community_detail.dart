@@ -656,6 +656,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                       CommonUtils.showText(
                                                           '影评发布成功,请刷新查看～');
                                                     } else {
+                                                      CommonUtils.debugPrint(res);
                                                       CommonUtils.showText(
                                                           res['msg']);
                                                     }
@@ -726,6 +727,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                       if (res['status'] != 0) {
                         CommonUtils.showText('影评发布成功,请刷新查看～');
                       } else {
+                        CommonUtils.debugPrint(res);
                         CommonUtils.showText(res['msg']);
                       }
                     });
