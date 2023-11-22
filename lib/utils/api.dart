@@ -36,6 +36,7 @@ import 'http.dart';
 Future<HomeData> getHomeConfig(BuildContext context) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/home/config');
+    CommonUtils.debugPrint(res);
     Response<dynamic> res2 =
         await PlatformAwareHttp.post('/api/privilege/getUserPrivilege');
     if (res.data['data']['help'] != null) {
