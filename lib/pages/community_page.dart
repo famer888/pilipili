@@ -294,17 +294,20 @@ class _CommunityPageState extends State<CommunityPage> {
                 SliverToBoxAdapter(
                   child: topics.isEmpty
                       ? Container()
-                      : GridView.builder(
+                      : SizedBox(
+                        height: 150.w,
+                        child: GridView.builder(
+                        scrollDirection:Axis.horizontal,
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          // shrinkWrap: true,
+                          // physics: NeverScrollableScrollPhysics(),
                           itemCount: topics.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount:2,
                             crossAxisSpacing: 8.w,
                             mainAxisSpacing: 8.w,
-                            childAspectRatio: 109 / 71,
+                            childAspectRatio:  71/109 ,
                           ),
                           itemBuilder: (context, index) {
                             return GestureDetector(
@@ -317,6 +320,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                   topics[index]['post_num']),
                             );
                           }),
+                      ),
                 ),
                 SliverPadding(
                   padding: EdgeInsets.only(top: 16.w),
