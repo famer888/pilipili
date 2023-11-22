@@ -12,7 +12,9 @@ import 'package:pilipili/components/input/InputDailog.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/store/community.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -72,34 +74,48 @@ class _CommunityDetailState extends State<CommunityDetail> {
     return path;
   }
 
-  showUnlok() {
-    YyShowDialog.showdialog(context,
-        title: '温馨提示', btnText: '解锁', cancelText: '取消', callBack: () {
-      PageStatus.showLoading();
-      unlockPost(detailData['id']).then((res) {
-        if (res['status'] != 0) {
-          CommonUtils.showText('解锁成功');
-          getDetailData();
-        } else {
-          CommonUtils.showText(res['msg'] ?? '系统错误,请稍后再试');
-        }
-      }).whenComplete(() {
-        PageStatus.closeLoading();
+  showUnlok(int type) {
+    if (type == 1) {
+      YyShowDialog.showdialog(context,
+          title: '温馨提示', btnText: '开通会员', cancelText: '取消', callBack: () {
+        context.push('/vip');
+      }, content: (setDialogState) {
+        return DefaultTextStyle(
+            style: TextStyle(
+                color: Color(0xff646464),
+                fontSize: ScreenUtil().setSp(16),
+                fontWeight: FontWeight.bold),
+            child: Text('是否开通会员解锁观看所有内容?'));
       });
-    }, content: (setDialogState) {
-      return DefaultTextStyle(
-          style: TextStyle(
-              color: Color(0xff646464),
-              fontSize: ScreenUtil().setSp(16),
-              fontWeight: FontWeight.bold),
-          child: Text.rich(TextSpan(children: [
-            TextSpan(text: '确定花费'),
-            TextSpan(
-                text: ' ${detailData['unlock_coins']}皮哩币 ',
-                style: TextStyle(color: Color(0xffFF84A9))),
-            TextSpan(text: '解锁该帖吗？'),
-          ])));
-    });
+    } else {
+      YyShowDialog.showdialog(context,
+          title: '温馨提示', btnText: '解锁', cancelText: '取消', callBack: () {
+        PageStatus.showLoading();
+        unlockPost(detailData['id']).then((res) {
+          if (res['status'] != 0) {
+            CommonUtils.showText('解锁成功');
+            getDetailData();
+          } else {
+            CommonUtils.showText(res['msg'] ?? '系统错误,请稍后再试');
+          }
+        }).whenComplete(() {
+          PageStatus.closeLoading();
+        });
+      }, content: (setDialogState) {
+        return DefaultTextStyle(
+            style: TextStyle(
+                color: Color(0xff646464),
+                fontSize: ScreenUtil().setSp(16),
+                fontWeight: FontWeight.bold),
+            child: Text.rich(TextSpan(children: [
+              TextSpan(text: '确定花费'),
+              TextSpan(
+                  text: ' ${detailData['unlock_coins']}皮哩币 ',
+                  style: TextStyle(color: Color(0xffFF84A9))),
+              TextSpan(text: '解锁该帖吗？'),
+            ])));
+      });
+    }
   }
 
   getDetailData() {
@@ -145,6 +161,62 @@ class _CommunityDetailState extends State<CommunityDetail> {
     super.dispose();
   }
 
+  getPosType(int type, bool isView) {
+    Widget _btn = SizedBox();
+    switch (type) {
+      case 1: //vip
+        _btn = !isView
+            ? GestureDetector(
+                onTap: () {
+                  showUnlok(type);
+                },
+                child: Container(
+                  height: 32.w,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.w),
+                      gradient: DefaultStyle.defaluGrandientLine),
+                  child: Text(
+                    '开通会员解锁',
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              )
+            : SizedBox();
+        break;
+      case 2: //金币
+        _btn = detailData['is_pay'] != 1 && detailData['unlock_coins'] > 0
+            ? GestureDetector(
+                onTap: () {
+                  showUnlok(type);
+                },
+                child: Container(
+                  height: 32.w,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.w),
+                      gradient: DefaultStyle.defaluGrandientLine),
+                  child: Text(
+                    '解鎖媒體(${detailData['unlock_coins']}皮哩币)',
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              )
+            : SizedBox();
+        break;
+      default:
+    }
+    return _btn;
+  }
+
   Widget bottomRow(String icon, int _num) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -167,6 +239,9 @@ class _CommunityDetailState extends State<CommunityDetail> {
 
   @override
   Widget build(BuildContext context) {
+    var member = Provider.of<HomeConfig>(context, listen: false).member;
+    bool isView =
+        Privilege.isAllowed(context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_VIEW);
     return Scaffold(
       body: Column(
         children: [
@@ -445,32 +520,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      detailData['is_pay'] != 1 &&
-                                              detailData['unlock_coins'] > 0
-                                          ? GestureDetector(
-                                              onTap: showUnlok,
-                                              child: Container(
-                                                height: 32.w,
-                                                alignment: Alignment.center,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 16.w),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50.w),
-                                                    gradient: DefaultStyle
-                                                        .defaluGrandientLine),
-                                                child: Text(
-                                                  '解鎖媒體(${detailData['unlock_coins']}皮哩币)',
-                                                  style: TextStyle(
-                                                      fontSize: 14.sp,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ),
-                                            )
-                                          : SizedBox()
+                                      getPosType(detailData['type'], isView)
                                     ],
                                   ),
                                   Column(
@@ -484,9 +534,13 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                           _item['thumb_height'] == 0;
                                       return GestureDetector(
                                         onTap: () {
-                                          if (detailData['is_pay'] != 1 &&
-                                              detailData['unlock_coins'] > 0) {
-                                            showUnlok();
+                                          if ((detailData['is_pay'] != 1 &&
+                                                  detailData['unlock_coins'] >
+                                                      0 &&
+                                                  detailData['type'] == 2) ||
+                                              (detailData['type'] == 1 &&
+                                                  !isView)) {
+                                            showUnlok(detailData['type']);
                                             return;
                                           }
                                           if (_item['type'] == 1) {
@@ -526,10 +580,16 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                             fit: BoxFit.cover),
                                                   );
                                                 }),
-                                                detailData['is_pay'] != 1 &&
-                                                        detailData[
-                                                                'unlock_coins'] >
-                                                            0
+                                                (detailData['type'] == 1 &&
+                                                            detailData[
+                                                                    'is_pay'] !=
+                                                                1 &&
+                                                            detailData[
+                                                                    'unlock_coins'] >
+                                                                0) ||
+                                                        (detailData['type'] ==
+                                                                1 &&
+                                                            !isView)
                                                     ? Positioned.fill(
                                                         child: ClipRect(
                                                             child:
