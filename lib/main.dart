@@ -78,7 +78,7 @@ void main() async {
             '_' +
             DateTime.now().millisecondsSinceEpoch.toString().toString(),
     "bundleId": "com.pwa.pilipili",
-    "version": "2.1.2",
+    "version": "3.0.0",
     "oauth_type": CommonUtils.isAndroidWeb() ? PPString.aWeb : PPString.web,
     "language": 'zh',
     "via": 'pwa',
@@ -99,7 +99,7 @@ void main() async {
       AppGlobal.appinfo = {
         "oauth_id": iosInfo.identifierForVendor,
         "bundleId": packageInfo.packageName,
-        "version": "2.1.2",
+        "version": "3.0.0",
         "oauth_type": "ios",
       };
     }
