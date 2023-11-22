@@ -76,115 +76,113 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: GestureDetector(
-                  onTapDown: (_) => context.pop(),
-                  child: Container(
-                    color: Colors.black45,
-                  )),
-            ),
-            Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                        child: Container(
-                          color: Colors.black38,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(15),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: ScreenUtil().setWidth(40),
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
-                              alignment: Alignment.center,
-                              child: TextField(
-                                focusNode: focusNode,
-                                onSubmitted: (value) {
-                                  if (value.isNotEmpty) {
-                                    context.pop(value);
-                                  } else {
-                                    BotToast.showText(
-                                        text: widget.tips,
-                                        align: Alignment(0, 0));
-                                  }
-                                },
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: ScreenUtil().setSp(14)),
-                                keyboardType: widget.boardType,
-                                textInputAction: TextInputAction.done,
-                                autofocus: !kIsWeb,
-                                maxLengthEnforced: true,
-                                controller: editingController,
-                                decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 10, right: 10, top: 5, bottom: 5),
-                                    border: InputBorder.none,
-                                    hintStyle: TextStyle(
-                                        color: Color(0xff979797),
-                                        fontSize: ScreenUtil().setSp(14)),
-                                    hintText: widget.tips),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (() {
-                              var text = editingController.text?.replaceAll(
-                                      new RegExp("${PPString.test}\s+\b|\b\s"),
-                                      "") ??
-                                  "";
-                              if (text.isNotEmpty) {
-                                context.pop(text);
-                              } else {
-                                CommonUtils.showText(widget.tips);
-                              }
-                            }),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      ScreenUtil().setWidth(15)),
-                                  gradient: DefaultStyle.defaluGrandientLine),
-                              width: ScreenUtil().setWidth(60),
-                              height: ScreenUtil().setWidth(30),
-                              alignment: Alignment.center,
-                              child: Text(
-                                widget.btnText == null ? '提交' : widget.btnText,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ScreenUtil().setSp(14)),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: ScreenUtil().setWidth(15.5),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: GestureDetector(
+                onTapDown: (_) => context.pop(),
+                child: Container(
+                  color: Colors.black45,
                 )),
-          ],
-        ),
+          ),
+          Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                      child: Container(
+                        color: Colors.black38,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.white,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: ScreenUtil().setWidth(15),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: ScreenUtil().setWidth(40),
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            alignment: Alignment.center,
+                            child: TextField(
+                              focusNode: focusNode,
+                              onSubmitted: (value) {
+                                if (value.isNotEmpty) {
+                                  context.pop(value);
+                                } else {
+                                  BotToast.showText(
+                                      text: widget.tips,
+                                      align: Alignment(0, 0));
+                                }
+                              },
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: ScreenUtil().setSp(14)),
+                              keyboardType: widget.boardType,
+                              textInputAction: TextInputAction.done,
+                              autofocus: !kIsWeb,
+                              maxLengthEnforced: true,
+                              controller: editingController,
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, right: 10, top: 5, bottom: 5),
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
+                                      color: Color(0xff979797),
+                                      fontSize: ScreenUtil().setSp(14)),
+                                  hintText: widget.tips),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: (() {
+                            var text = editingController.text?.replaceAll(
+                                    new RegExp("${PPString.test}\s+\b|\b\s"),
+                                    "") ??
+                                "";
+                            if (text.isNotEmpty) {
+                              context.pop(text);
+                            } else {
+                              CommonUtils.showText(widget.tips);
+                            }
+                          }),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(15)),
+                                gradient: DefaultStyle.defaluGrandientLine),
+                            width: ScreenUtil().setWidth(60),
+                            height: ScreenUtil().setWidth(30),
+                            alignment: Alignment.center,
+                            child: Text(
+                              widget.btnText == null ? '提交' : widget.btnText,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: ScreenUtil().setSp(14)),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: ScreenUtil().setWidth(15.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        ],
       ),
     );
   }

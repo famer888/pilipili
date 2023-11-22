@@ -11,6 +11,7 @@ import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/input/InputDailog.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/store/community.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -40,7 +41,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
   bool isAll = false;
   bool isLike = false;
   ValueNotifier<List> commentList = ValueNotifier([]);
-  
+
   getComentList(int id) {
     getPostComments(id, page, limit).then((res) {
       if (isAll) return;
@@ -656,7 +657,8 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                       CommonUtils.showText(
                                                           '影评发布成功,请刷新查看～');
                                                     } else {
-                                                      CommonUtils.debugPrint(res);
+                                                      CommonUtils.debugPrint(
+                                                          res);
                                                       CommonUtils.showText(
                                                           res['msg']);
                                                     }
@@ -773,6 +775,10 @@ class _CommunityDetailState extends State<CommunityDetail> {
                 ),
               ),
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).padding.bottom +
+                AppGlobal.webBottomHeight,
           )
         ],
       ),
