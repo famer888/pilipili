@@ -118,6 +118,29 @@ class _CommunityDetailState extends State<CommunityDetail> {
     }
   }
 
+  bool isViewPermissions() {
+    bool _view = false;
+    if (detailData['type'] == 1) {
+      //VIP视频
+      bool vipView =
+          Privilege.isAllowed(context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_VIEW);
+      if (vipView) {
+        _view = true;
+      }
+    } else if (detailData['type'] == 2) {
+      //金币视频
+      bool coinView = Privilege.isAllowed(
+          context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_COIN_VIEW);
+      if (coinView || detailData['is_pay'] == 1) {
+        _view = true;
+      }
+    } else {
+      //免费
+      _view = true;
+    }
+    return _view;
+  }
+
   getDetailData() {
     postDetail(widget.id).then((res) {
       CommonUtils.debugPrint(res);
@@ -161,11 +184,11 @@ class _CommunityDetailState extends State<CommunityDetail> {
     super.dispose();
   }
 
-  getPosType(int type, bool isView) {
+  getPosType(int type) {
     Widget _btn = SizedBox();
     switch (type) {
       case 1: //vip
-        _btn = !isView
+        _btn = !isViewPermissions()
             ? GestureDetector(
                 onTap: () {
                   showUnlok(type);
@@ -189,26 +212,43 @@ class _CommunityDetailState extends State<CommunityDetail> {
             : SizedBox();
         break;
       case 2: //金币
-        _btn = detailData['is_pay'] != 1 && detailData['unlock_coins'] > 0
+        _btn = !isViewPermissions()
             ? GestureDetector(
                 onTap: () {
                   showUnlok(type);
                 },
                 child: Container(
-                  height: 32.w,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.w),
-                      gradient: DefaultStyle.defaluGrandientLine),
-                  child: Text(
-                    '解鎖媒體(${detailData['unlock_coins']}皮哩币)',
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
+                    height: 32.w,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.w),
+                        gradient: DefaultStyle.defaluGrandientLine),
+                    child: Text.rich(
+                      detailData['discount_unlock_coins'] <
+                              detailData['unlock_coins']
+                          ? TextSpan(
+                              text:
+                                  "会员折扣价(${detailData['discount_unlock_coins']}皮哩币) ",
+                              children: [
+                                  TextSpan(
+                                    text: "原价:${detailData['unlock_coins']}皮哩币",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white70,
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid),
+                                  )
+                                ])
+                          : TextSpan(
+                              text: '解鎖媒體(${detailData['unlock_coins']}皮哩币)'),
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
+                    )),
               )
             : SizedBox();
         break;
@@ -240,8 +280,6 @@ class _CommunityDetailState extends State<CommunityDetail> {
   @override
   Widget build(BuildContext context) {
     var member = Provider.of<HomeConfig>(context, listen: false).member;
-    bool isView =
-        Privilege.isAllowed(context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_VIEW);
     return Scaffold(
       body: Column(
         children: [
@@ -519,9 +557,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      getPosType(detailData['type'], isView)
-                                    ],
+                                    children: [getPosType(detailData['type'])],
                                   ),
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -534,12 +570,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                           _item['thumb_height'] == 0;
                                       return GestureDetector(
                                         onTap: () {
-                                          if ((detailData['is_pay'] != 1 &&
-                                                  detailData['unlock_coins'] >
-                                                      0 &&
-                                                  detailData['type'] == 2) ||
-                                              (detailData['type'] == 1 &&
-                                                  !isView)) {
+                                          if (!isViewPermissions()) {
                                             showUnlok(detailData['type']);
                                             return;
                                           }
@@ -580,12 +611,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                             fit: BoxFit.cover),
                                                   );
                                                 }),
-                                                (detailData['type'] == 2 &&
-                                                            detailData['is_pay'] != 1 &&
-                                                            detailData['unlock_coins'] >0) ||
-                                                        (detailData['type'] ==
-                                                                1 &&
-                                                            !isView)
+                                                !isViewPermissions()
                                                     ? Positioned.fill(
                                                         child: ClipRect(
                                                             child:

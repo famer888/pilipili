@@ -1034,7 +1034,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                         fontWeight: FontWeight.bold),
                   )),
                   Text(
-                    widget.product['valid_date'].toString() + '天特权时间',
+                widget.product['valid_date']>2000?"永久特权":    widget.product['valid_date'].toString() + '天特权时间',
                     textAlign: TextAlign.right,
                     style: TextStyle(
                         color: Color(
