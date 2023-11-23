@@ -580,13 +580,9 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                             fit: BoxFit.cover),
                                                   );
                                                 }),
-                                                (detailData['type'] == 1 &&
-                                                            detailData[
-                                                                    'is_pay'] !=
-                                                                1 &&
-                                                            detailData[
-                                                                    'unlock_coins'] >
-                                                                0) ||
+                                                (detailData['type'] == 2 &&
+                                                            detailData['is_pay'] != 1 &&
+                                                            detailData['unlock_coins'] >0) ||
                                                         (detailData['type'] ==
                                                                 1 &&
                                                             !isView)

@@ -53,7 +53,9 @@ class Data {
       this.ads,
       this.member,
       this.darkPrivilege,
-      this.darkprivilegeTips});
+      this.darkprivilegeTips,
+      this.allowPublishPost,
+      this.noPermissionPublishPostTips});
 
   VersionMsg versionMsg;
   int timestamp;
@@ -63,6 +65,8 @@ class Data {
   Member member;
   bool darkPrivilege;
   String darkprivilegeTips;
+  int allowPublishPost;
+  String noPermissionPublishPostTips;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         versionMsg: json["versionMsg"] == null
             ? null
@@ -74,6 +78,9 @@ class Data {
         member: json["member"] == null ? null : Member.fromJson(json["member"]),
         darkPrivilege: json["dark_privilege"] ?? false,
         darkprivilegeTips: json["dark_privilege_tips"] ?? '',
+        allowPublishPost: int.parse(json["allow_publish_post"] ?? '0'),
+        noPermissionPublishPostTips:
+            json["no_permission_publish_post_tips"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +92,8 @@ class Data {
         "member": member == null ? null : member.toJson(),
         "dark_privilege": darkPrivilege ?? false,
         "dark_privilege_tips": darkprivilegeTips ?? false,
+        "allow_publish_post": allowPublishPost ?? 0,
+        "no_permission_publish_post_tips": noPermissionPublishPostTips ?? '',
       };
 }
 

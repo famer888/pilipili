@@ -69,6 +69,11 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
           .setConfig(result.data.config);
       Provider.of<HomeConfig>(context, listen: false)
           .setVersionMsg(result.data.versionMsg);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setAllowPublishPost(result.data.allowPublishPost);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setNoPermissionPublishPostTips(
+              result.data.noPermissionPublishPostTips);
       AppGlobal.vipLevel = result.data.member.vipLevel;
       AppGlobal.bannerImgBase = result.data.config.imgBase;
       AppGlobal.uploadImgKey = result.data.config.uploadImgKey;

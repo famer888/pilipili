@@ -20,6 +20,8 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   SystemNotice _systemNotice;
   Map _privilege;
   int _postMoney;
+  int _allowPublishPost;
+  String _noPermissionPublishPostTips;
 
   SystemNotice get systemnotice => _systemNotice;
   Member get member => _member;
@@ -31,6 +33,17 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   bool get darkPrivilege => _darkPrivilege;
   String get darkprivilegeTips => _darkprivilegeTips;
   int get postMoney => _postMoney;
+  int get allowPublishPost => _allowPublishPost;
+  String get noPermissionPublishPostTips => _noPermissionPublishPostTips;
+  void setAllowPublishPost(int status) {
+    _allowPublishPost = status;
+    notifyListeners();
+  }
+
+  void setNoPermissionPublishPostTips(String text) {
+    _noPermissionPublishPostTips = text;
+    notifyListeners();
+  }
 
   void setDarkPrivilegeTips(String text) {
     _darkprivilegeTips = text;

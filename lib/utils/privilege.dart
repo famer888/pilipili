@@ -24,7 +24,8 @@ const PRIVILEGE_TYPE_DISCOUNT = 4; // 金币折扣 使用getDiscount
 const PRIVILEGE_TYPE_UNLOCK = 5; // 解锁权限 使用isAllowedWithCount
 const PRIVILEGE_TYPE_SETTING = 6; // 换头像和昵称 使用isAllowed
 const PRIVILEGE_TYPE_FEED = 7; // 在线客服 使用isAllowed
-
+const PRIVILEGE_TYPE_POST_TOPIC = 11; // 发表话题
+const PRIVILEGE_TYPE_POST = 12; // 发表文章
 class Privilege {
   // 判断是否有权限
   static bool isAllowed(

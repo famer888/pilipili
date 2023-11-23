@@ -5,8 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yuemei.dart';
 import 'package:pilipili/pages/community_page.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/privilege.dart';
+import 'package:provider/provider.dart';
 
 class YuemeiShequ extends StatefulWidget {
   const YuemeiShequ({Key key}) : super(key: key);
@@ -84,7 +88,30 @@ class _YuemeiShequState extends State<YuemeiShequ> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          context.push('/communityPushlish');
+                                          String noPermissionPublishPostTips =
+                                              Provider.of<HomeConfig>(context,
+                                                      listen: false)
+                                                  .noPermissionPublishPostTips;
+                                          int allowPublishPost =
+                                              Provider.of<HomeConfig>(context,
+                                                      listen: false)
+                                                  .allowPublishPost;
+                                          if (allowPublishPost != 0) {
+                                            context.push('/communityPushlish');
+                                          } else {
+                                            bool isPublish =
+                                                Privilege.isAllowed(
+                                                    context,
+                                                    RESOURCE_TYPE_POST,
+                                                    PRIVILEGE_TYPE_POST);
+                                            if (isPublish) {
+                                              context
+                                                  .push('/communityPushlish');
+                                            } else {
+                                              CommonUtils.showText(
+                                                  noPermissionPublishPostTips);
+                                            }
+                                          }
                                         },
                                         child: Container(
                                           margin: EdgeInsets.only(bottom: 8.w),
