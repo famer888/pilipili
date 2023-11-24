@@ -143,7 +143,6 @@ class _CommunityDetailState extends State<CommunityDetail> {
 
   getDetailData() {
     postDetail(widget.id).then((res) {
-      CommonUtils.debugPrint(res);
       if (res['status'] != 0) {
         detailData = res['data']['detail'];
         isLike = detailData['is_like'] == 1;
@@ -739,8 +738,6 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                                       CommonUtils.showText(
                                                           '影评发布成功,请刷新查看～');
                                                     } else {
-                                                      CommonUtils.debugPrint(
-                                                          res);
                                                       CommonUtils.showText(
                                                           res['msg']);
                                                     }
@@ -811,7 +808,6 @@ class _CommunityDetailState extends State<CommunityDetail> {
                       if (res['status'] != 0) {
                         CommonUtils.showText('影评发布成功,请刷新查看～');
                       } else {
-                        CommonUtils.debugPrint(res);
                         CommonUtils.showText(res['msg']);
                       }
                     });

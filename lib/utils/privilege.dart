@@ -32,7 +32,7 @@ class Privilege {
   static bool isAllowed(
       BuildContext context, int resourceType, int privilegeType) {
     Map _privilege = Provider.of<HomeConfig>(context, listen: false).privilege;
-    CommonUtils.debugPrint(_privilege);
+    // CommonUtils.debugPrint(_privilege);
     if (_privilege['data']['$resourceType']['$privilegeType']['status'] == 1) {
       return true;
     }

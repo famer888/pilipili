@@ -89,7 +89,7 @@ class _PostCardState extends State<PostCard> {
         context.push('/communityDetail/${data['id']}');
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4.w),
+        margin: EdgeInsets.symmetric(vertical: 6.w),
         padding: EdgeInsets.all(8.w),
         decoration: BoxDecoration(
           color: Colors.white,
