@@ -11,19 +11,19 @@ class MyButton extends StatelessWidget {
     this.type,
     this.text,
     this.icon,
-    this.activate,
+    this.activate = false,
   }) : super(key: key);
   final Function onTap;
   final ButtonType type;
   final String icon;
   final String text;
   final bool activate;
-  MyButton.text({this.onTap, this.text, this.activate})
+  MyButton.text({this.onTap, this.text, this.activate = false})
       : type = ButtonType.text,
         icon = null;
-  MyButton.topIcon({this.onTap, this.text, this.icon, this.activate})
+  MyButton.topIcon({this.onTap, this.text, this.icon, this.activate = false})
       : type = ButtonType.iconOnTop;
-  MyButton.leftIcon({this.onTap, this.text, this.icon, this.activate})
+  MyButton.leftIcon({this.onTap, this.text, this.icon, this.activate = false})
       : type = ButtonType.iconOnLeft;
 
   @override
