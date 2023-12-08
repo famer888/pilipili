@@ -347,4 +347,29 @@ class DefaultStyle {
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   );
+  static Decoration activeDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(5.w),
+      color: Color(0xffFF84A9),
+      boxShadow: [
+        BoxShadow(
+            color: Color(0xffA82118).withOpacity(0.26),
+            offset: Offset(0, 2),
+            blurRadius: 3,
+            spreadRadius: 0)
+      ]);
+  static Decoration defaultDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(5.w),
+      boxShadow: [
+        BoxShadow(
+            color: Color.fromRGBO(255, 211, 201, 1),
+            blurRadius: 4,
+            blurStyle: BlurStyle.outer,
+            offset: Offset(0, 2))
+      ],
+      gradient: LinearGradient(colors: [
+        Color.fromRGBO(255, 255, 255, 1),
+        Color.fromRGBO(255, 243, 248, 1),
+        Color.fromRGBO(255, 211, 230, 1),
+        Color.fromRGBO(255, 255, 255, 0.5)
+      ], begin: Alignment(0, 0.5), end: Alignment(0, 2)));
 }

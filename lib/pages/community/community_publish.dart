@@ -38,8 +38,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   ValueNotifier<List> videoList = ValueNotifier([]);
   final ImagePicker _picker = ImagePicker();
   int maxLength = 9;
+  int isPublic = 0;
   int videoMaxLength = 1;
   int selectId = 0;
+  bool isAI = false;
   String selectText;
 //选择视频
   Future<void> videoPickerAssets() async {
@@ -102,6 +104,12 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         CommonUtils.debugPrint(res['data']);
         topics = res['data']['topic'] ?? [];
         selectId = topics[0]['topic_id'];
+        isAI = topics[0]['is_ai'] != 0;
+        if (isAI) {
+          maxLength = 3;
+        } else {
+          maxLength = 9;
+        }
         setState(() {});
       } else {
         CommonUtils.showText(res['msg'] ?? '接口异常');
@@ -322,6 +330,12 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                 onTap: () {
                   selectId = topics[index]['topic_id'];
                   tags = topics[index]['topic_name_formate'];
+                  isAI = topics[index]['is_ai'] != 0;
+                  if (isAI) {
+                    maxLength = 3;
+                  } else {
+                    maxLength = 9;
+                  }
                   setDialogState(() {});
                 },
                 child: Container(
@@ -344,7 +358,9 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                     topics[index]['topic_name'],
                     style: TextStyle(
                         color: selectId == topics[index]['topic_id']
-                            ? Colors.white
+                            ? (topics[index]['is_ai'] != 0
+                                ? Color(0xffFE155B)
+                                : Colors.white)
                             : Color(0xff828181),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700),
@@ -400,6 +416,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                       ],
                     ),
                   ),
+                ),
+                Text(
+                  '注意：AI脫衣帖成功發帖後，將會收取您200皮哩幣，上傳的圖片將會進行AI智能脫衣。發佈後若編輯並且更改圖片時，將會重新向您索取AI脫衣費用。',
+                  style: TextStyle(color: Color(0xffFE155B), fontSize: 12.sp),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.w),
@@ -582,6 +602,65 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                       fontSize: 14.sp,
                     ),
                   ),
+                ),
+                Text(
+                  '設置金幣',
+                  style: titleStyle,
+                ),
+                SizedBox(
+                  height: 8.w,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: GestureDetector(
+                      onTap: () {
+                        isPublic = 0;
+                        setState(() {});
+                      },
+                      child: Container(
+                        height: 36.w,
+                        decoration: isPublic == 0
+                            ? DefaultStyle.activeDecoration
+                            : DefaultStyle.defaultDecoration,
+                        alignment: Alignment.center,
+                        child: Text(
+                          '僅限自己觀看',
+                          style: TextStyle(
+                              color: isPublic == 0
+                                  ? Colors.white
+                                  : Color(0xff828181),
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    )),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Expanded(
+                        child: GestureDetector(
+                            onTap: () {
+                              isPublic = 1;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 36.w,
+                              decoration: isPublic == 1
+                                  ? DefaultStyle.activeDecoration
+                                  : DefaultStyle.defaultDecoration,
+                              alignment: Alignment.center,
+                              child: Text(
+                                '公開發佈帖子',
+                                style: TextStyle(
+                                    color: isPublic == 1
+                                        ? Colors.white
+                                        : Color(0xff828181),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            )))
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.w),
