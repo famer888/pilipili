@@ -204,43 +204,6 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     );
   }
 
-  Widget _btnItem({String icon, String name, Color color}) {
-    return Container(
-      width: ScreenUtil().setWidth(40),
-      height: ScreenUtil().setWidth(40),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(8)),
-          color: color == null ? Colors.white : Color(0XFFFF84A9),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5.0,
-              blurStyle: BlurStyle.outer,
-              color: Color.fromRGBO(255, 91, 140, 0.2),
-              offset: Offset(0, ScreenUtil().setWidth(3)),
-            )
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          PlatformAwareAssetImage(
-              url: 'assets/images/detail/' + icon.toString() + '.png',
-              width: ScreenUtil().setWidth(10),
-              fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.medium),
-          SizedBox(
-            height: ScreenUtil().setWidth(3),
-          ),
-          Text(
-            name,
-            style: TextStyle(
-                color: color == null ? DefaultStyle.themeColor : Colors.white,
-                fontSize: ScreenUtil().setSp(12)),
-          )
-        ],
-      ),
-    );
-  }
-
   Future showButtom() {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
