@@ -12,6 +12,7 @@ import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/sharemovie.dart';
+import 'package:pilipili/components/widget/my_gradient_button.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/store/homeConfig.dart';
@@ -119,56 +120,49 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     getPageData();
   }
 
+  void _selectedItemOnClick(int value) {
+    AppGlobal.currentReaderRouteExtra = {
+      'id': data.dataId,
+      'episode': value,
+      'title': data.title,
+      'allEpisode': data.newestSeries,
+      'type': data.finished
+    };
+    context.push(CommonUtils.getRealHash('comicReader/' + value.toString()));
+  }
+
   Widget selectItem(int value) {
-    return GestureDetector(
-        onTap: () {
-          AppGlobal.currentReaderRouteExtra = {
-            'id': data.dataId,
-            'episode': value,
-            'title': data.title,
-            'allEpisode': data.newestSeries,
-            'type': data.finished
-          };
-          context
-              .push(CommonUtils.getRealHash('comicReader/' + value.toString()));
-        },
-        child: Stack(
-          children: [
-            Positioned(
-                top: 0,
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: PlatformAwareAssetImage(
-                    url: value == watchLog
-                        ? PPAssetsPath.comicBtnAactive
-                        : PPAssetsPath.comicBtn,
-                    fit: BoxFit.fill,
-                    filterQuality: FilterQuality.medium)),
-            Container(
-              width: ScreenUtil().setWidth(83),
-              height: ScreenUtil().setWidth(36),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      blurStyle: BlurStyle.outer,
-                      color: Color.fromRGBO(255, 211, 230, 0.42),
-                      offset: Offset(0, 2),
-                      blurRadius: 5),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  value.toString() + '话',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(value == watchLog ? 0xffffffff : 0xff828181),
-                      fontSize: ScreenUtil().setSp(14)),
-                ),
-              ),
-            )
-          ],
-        ));
+    return value == watchLog
+        ? MyGradientButton.inner(
+            onTap: () => _selectedItemOnClick(value),
+            backgroundColor: Color.fromRGBO(255, 132, 169, 1),
+            buttonText: "$value话",
+            textColor: Color(0xffffffff),
+            shadowColors: [
+                BoxShadow(
+                  color: Color.fromRGBO(168, 33, 24, 0.26),
+                  blurRadius: 3,
+                  spreadRadius: -3,
+                  blurStyle: BlurStyle.inner,
+                )
+              ])
+        : MyGradientButton.outter(
+            onTap: () => _selectedItemOnClick(value),
+            gradientColor: LinearGradient(colors: [
+              Color.fromRGBO(255, 255, 255, 1),
+              Color.fromRGBO(255, 243, 248, 1),
+              Color.fromRGBO(255, 211, 230, 1),
+              Color.fromRGBO(255, 255, 255, 0.5)
+            ], begin: Alignment(0, 0.5), end: Alignment(0, 2)),
+            buttonText: "$value话",
+            textColor: Color(0xff828181),
+            shadowColors: [
+                BoxShadow(
+                    color: Color.fromRGBO(255, 211, 201, 1),
+                    blurRadius: 4,
+                    blurStyle: BlurStyle.outer,
+                    offset: Offset(0, 2))
+              ]);
   }
 
   Widget _btnItem({String icon, String name, Color color}) {
