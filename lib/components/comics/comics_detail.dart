@@ -135,16 +135,17 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     return value == watchLog
         ? MyGradientButton.inner(
             onTap: () => _selectedItemOnClick(value),
-            backgroundColor: Color.fromRGBO(255, 132, 169, 1),
             buttonText: "$value话",
             textColor: Color(0xffffffff),
             shadowColors: [
                 BoxShadow(
                   color: Color.fromRGBO(168, 33, 24, 0.26),
+                ),
+                BoxShadow(
+                  color: Color.fromRGBO(255, 132, 169, 1),
                   blurRadius: 3,
-                  spreadRadius: -3,
                   blurStyle: BlurStyle.inner,
-                )
+                ),
               ])
         : MyGradientButton.outter(
             onTap: () => _selectedItemOnClick(value),
