@@ -1,18 +1,15 @@
-import 'dart:ui';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/newComicsCard.dart';
 import 'package:pilipili/components/card/series_card.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/sharemovie.dart';
-import 'package:pilipili/components/widget/my_gradient_button.dart';
+import 'package:pilipili/components/widget/my_button.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/store/homeConfig.dart';
@@ -113,6 +110,74 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     });
   }
 
+  _download() {
+    if (kIsWeb) {
+      CommonUtils.showText('请下载APP使用下载功能！');
+    } else {
+      bool canDownload = Privilege.isAllowedWithCount(
+          context, RESOURCE_TYPE_BOOK, PRIVILEGE_TYPE_DOWNLOAD);
+      if (canDownload) {
+        DownloadComics.createDownloadTask({
+          'id': widget.id,
+          'title': data.title,
+          "description": data.description,
+          "author": data.author,
+          "tags": data.tags,
+          "viewsCount": data.viewsCount,
+          'thumb': data.thumb,
+          'allEpisode': data.newestSeries,
+          "downloading": false,
+          "isWaiting": true,
+          "sets": []
+        });
+      } else {
+        YyShowDialog.showdialog(
+          context,
+          content: (setDialogState) {
+            return Text(
+              "您没有开启漫画下载权限哦！二次元的天堂等您开启~",
+              style: TextStyle(
+                  color: Color(0xff646464),
+                  fontSize: ScreenUtil().setSp(16),
+                  fontWeight: FontWeight.bold),
+            );
+          },
+          cancelText: '取消',
+          btnText: PPString.upgradeNuw,
+          callBack: () {
+            context.push('/vip');
+          },
+        );
+      }
+    }
+  }
+
+  _useFavorite() {
+    userFavorites(type: 2, id: data.dataId).then((res) {
+      if (res != null && res.status != 0) {
+        if (isFavorites) {
+          likeCount--;
+        } else {
+          likeCount++;
+        }
+        isFavorites = !isFavorites;
+        setState(() {});
+      } else {
+        CommonUtils.showText(res.msg);
+      }
+    });
+  }
+
+  _share() {
+    var config = Provider.of<HomeConfig>(context, listen: false).config;
+    ShareMovieModel.showShareMovie(backButtonBehavior,
+        copyUrl: config.share.affUrlCopy.url,
+        thumb: data.thumb,
+        title: data.title ?? '--',
+        subtitle: data.description ?? '--',
+        url: config.share.affUrl.toString());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -132,38 +197,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
   }
 
   Widget selectItem(int value) {
-    return value == watchLog
-        ? MyGradientButton.inner(
-            onTap: () => _selectedItemOnClick(value),
-            buttonText: "$value话",
-            textColor: Color(0xffffffff),
-            shadowColors: [
-                BoxShadow(
-                  color: Color.fromRGBO(168, 33, 24, 0.26),
-                ),
-                BoxShadow(
-                  color: Color.fromRGBO(255, 132, 169, 1),
-                  blurRadius: 3,
-                  blurStyle: BlurStyle.inner,
-                ),
-              ])
-        : MyGradientButton.outter(
-            onTap: () => _selectedItemOnClick(value),
-            gradientColor: LinearGradient(colors: [
-              Color.fromRGBO(255, 255, 255, 1),
-              Color.fromRGBO(255, 243, 248, 1),
-              Color.fromRGBO(255, 211, 230, 1),
-              Color.fromRGBO(255, 255, 255, 0.5)
-            ], begin: Alignment(0, 0.5), end: Alignment(0, 2)),
-            buttonText: "$value话",
-            textColor: Color(0xff828181),
-            shadowColors: [
-                BoxShadow(
-                    color: Color.fromRGBO(255, 211, 201, 1),
-                    blurRadius: 4,
-                    blurStyle: BlurStyle.outer,
-                    offset: Offset(0, 2))
-              ]);
+    return MyButton.text(
+      onTap: () => _selectedItemOnClick(value),
+      text: "$value话",
+      activate: value == watchLog,
+    );
   }
 
   Widget _btnItem({String icon, String name, Color color}) {
@@ -523,108 +561,29 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        if (kIsWeb) {
-                                          CommonUtils.showText('请下载APP使用下载功能！');
-                                        } else {
-                                          bool canDownload =
-                                              Privilege.isAllowedWithCount(
-                                                  context,
-                                                  RESOURCE_TYPE_BOOK,
-                                                  PRIVILEGE_TYPE_DOWNLOAD);
-                                          if (canDownload) {
-                                            DownloadComics.createDownloadTask({
-                                              'id': widget.id,
-                                              'title': data.title,
-                                              "description": data.description,
-                                              "author": data.author,
-                                              "tags": data.tags,
-                                              "viewsCount": data.viewsCount,
-                                              'thumb': data.thumb,
-                                              'allEpisode': data.newestSeries,
-                                              "downloading": false,
-                                              "isWaiting": true,
-                                              "sets": []
-                                            });
-                                          } else {
-                                            YyShowDialog.showdialog(
-                                              context,
-                                              content: (setDialogState) {
-                                                return Text(
-                                                  "您没有开启漫画下载权限哦！二次元的天堂等您开启~",
-                                                  style: TextStyle(
-                                                      color: Color(0xff646464),
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(16),
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                );
-                                              },
-                                              cancelText: '取消',
-                                              btnText: PPString.upgradeNuw,
-                                              callBack: () {
-                                                context.push('/vip');
-                                              },
-                                            );
-                                          }
-                                        }
-                                      },
-                                      child: _btnItem(
-                                          icon: 'icon_down', name: '下载'),
+                                    MyButton.topIcon(
+                                      onTap: _download,
+                                      icon: 'icon_down',
+                                      text: '下载',
+                                      activate: false,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: ScreenUtil().setWidth(4)),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          userFavorites(
-                                                  type: 2, id: data.dataId)
-                                              .then((res) {
-                                            if (res != null &&
-                                                res.status != 0) {
-                                              if (isFavorites) {
-                                                likeCount--;
-                                              } else {
-                                                likeCount++;
-                                              }
-                                              isFavorites = !isFavorites;
-                                              setState(() {});
-                                            } else {
-                                              CommonUtils.showText(res.msg);
-                                            }
-                                          });
-                                        },
-                                        child: _btnItem(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                ScreenUtil().setWidth(4)),
+                                        child: MyButton.topIcon(
+                                            onTap: _useFavorite,
                                             icon: isFavorites
                                                 ? PPString.iconunLike
                                                 : PPString.iconLike,
-                                            name: CommonUtils.renderFixedNumber(
+                                            text: CommonUtils.renderFixedNumber(
                                                 likeCount.toDouble()),
-                                            color: isFavorites
-                                                ? Color(0xffFF84A9)
-                                                : null),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        var config = Provider.of<HomeConfig>(
-                                                context,
-                                                listen: false)
-                                            .config;
-                                        ShareMovieModel.showShareMovie(
-                                            backButtonBehavior,
-                                            copyUrl:
-                                                config.share.affUrlCopy.url,
-                                            thumb: data.thumb,
-                                            title: data.title ?? '--',
-                                            subtitle: data.description ?? '--',
-                                            url:
-                                                config.share.affUrl.toString());
-                                      },
-                                      child: _btnItem(
-                                          icon: 'icon_share', name: '分享'),
-                                    )
+                                            activate: isFavorites)),
+                                    MyButton.topIcon(
+                                        onTap: _share,
+                                        icon: 'icon_share',
+                                        text: '分享',
+                                        activate: false)
                                   ],
                                 ),
                                 GestureDetector(

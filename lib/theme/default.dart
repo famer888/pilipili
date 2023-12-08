@@ -16,6 +16,7 @@ class DefaultStyle {
   static Color btnThemeColor = Color(0xffFFCCDB);
   // 按鈕線性漸層色
   static Color btnLinerThemeColor = Color(0xffFFE4E4);
+
   // 导览页样式
   static TextStyle bottomNavStyle = TextStyle(
       color: Color(0xffFF5B8C),
@@ -347,4 +348,52 @@ class DefaultStyle {
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   );
+
+  // 未点击按钮阴影
+  static List<BoxShadow> unClickButtonBoxShadow = [
+    BoxShadow(
+        color: Color.fromRGBO(255, 211, 201, 1),
+        blurRadius: 4,
+        blurStyle: BlurStyle.outer,
+        offset: Offset(0, 2))
+  ];
+  // 点击按钮阴影
+  static const List<BoxShadow> clickedButtonBoxShadow = [
+    BoxShadow(
+      color: Color.fromRGBO(168, 33, 24, 0.26),
+    ),
+    BoxShadow(
+      color: Color.fromRGBO(255, 132, 169, 1),
+      blurRadius: 3,
+      blurStyle: BlurStyle.inner,
+    ),
+  ];
+  // 按钮外阴影
+  static const LinearGradient buttonGradient = LinearGradient(colors: [
+    Color.fromRGBO(255, 255, 255, 1),
+    Color.fromRGBO(255, 243, 248, 1),
+    Color.fromRGBO(255, 211, 230, 1),
+    Color.fromRGBO(255, 255, 255, 0.5)
+  ], begin: Alignment(0, 0.5), end: Alignment(0, 2));
+  // 按钮文本样式
+  static TextStyle iconButtonUnClickTextStyle = TextStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 132, 169, 1));
+  static TextStyle iconButtonClickedTextStyle = TextStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 255, 255, 1));
+  static TextStyle buttonUnClickTextStyle = TextStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w700,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 132, 169, 1));
+  static TextStyle buttonClickedTextStyle = TextStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w700,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 255, 255, 1));
 }
