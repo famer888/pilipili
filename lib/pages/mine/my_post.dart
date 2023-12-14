@@ -25,9 +25,10 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
   int currentTab = 0;
   int limit = 24;
   List tabList = [
-    {'name': '已发布', 'cate': 'pass'},
-    {'name': '待审核', 'cate': 'wait'},
-    {'name': '不通过', 'cate': 'unpass'}
+    {'name': '已发布', 'cate': 'pass', 'is_private': 0},
+    {'name': '待审核', 'cate': 'wait', 'is_private': 0},
+    {'name': '不通过', 'cate': 'unpass', 'is_private': 0},
+    {'name': '私密帖子', 'cate': 'all', 'is_private': 1}
   ];
 
   @override
@@ -250,7 +251,10 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
                         paddingRight: 8.w,
                         api: '/api/community/list_my',
                         isShow: true,
-                        data: {'cate': tabList[e]['cate']},
+                        data: {
+                          'cate': tabList[e]['cate'],
+                          'is_private': tabList[e]['is_private']
+                        },
                         itemBuild:
                             (context, index, data, page, limit, getListData) {
                           return PostCard(

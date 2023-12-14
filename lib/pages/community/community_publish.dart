@@ -37,11 +37,14 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   ValueNotifier<List> imageList = ValueNotifier([]);
   ValueNotifier<List> videoList = ValueNotifier([]);
   final ImagePicker _picker = ImagePicker();
+  bool loading = true;
   int maxLength = 9;
-  int isPublic = 0;
+  int isPublic = 1;
   int videoMaxLength = 1;
   int selectId = 0;
   bool isAI = false;
+  String aiMsg = '';
+  String aiCoins = '0';
   String selectText;
 //选择视频
   Future<void> videoPickerAssets() async {
@@ -104,12 +107,56 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         CommonUtils.debugPrint(res['data']);
         topics = res['data']['topic'] ?? [];
         selectId = topics[0]['topic_id'];
+        aiCoins = res['data']['ai_coins'];
+        aiMsg = res['data']['ai_msg'];
         isAI = topics[0]['is_ai'] != 0;
+
+        if (AppGlobal.postInfo.isNotEmpty) {
+          Map info = AppGlobal.postInfo;
+          CommonUtils.debugPrint(info);
+          title.text = info['title'];
+          content.text = info['content'];
+          showCoinInput.value = true;
+          coin.text = info['unlock_coins'].toString();
+          selectText = '#${info['topics']}';
+          selectId = int.parse(info['topic_id']);
+          List _v = topics
+              .where((element) => element['topic_id'] == selectId)
+              .toList();
+          isAI = _v[0]['is_ai'] != 0;
+          List newImageList = List.from(info['medias'])
+              .where((item) => item['type'] == 1)
+              .toList();
+          imageList.value = newImageList.map((e) {
+            return {
+              'key': new GlobalKey<FileUploadItemState>(),
+              'media_url': e['ori_media_url'],
+              'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
+              'type': 1,
+              'w': e['thumb_width'],
+              'h': e['thumb_height'],
+            };
+          }).toList();
+          List newVideoList = List.from(info['medias'])
+              .where((item) => item['type'] == 2)
+              .toList();
+          videoList.value = newVideoList.map((e) {
+            return {
+              'key': new GlobalKey<FileUploadItemState>(),
+              'media_url': e['ori_media_url'],
+              'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
+              'type': 2,
+              'w': e['thumb_width'],
+              'h': e['thumb_height'],
+            };
+          }).toList();
+        }
         if (isAI) {
           maxLength = 3;
         } else {
           maxLength = 9;
         }
+        loading = false;
         setState(() {});
       } else {
         CommonUtils.showText(res['msg'] ?? '接口异常');
@@ -133,6 +180,18 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         .toList()
         .length;
     return imageLength > 0 || videoLength > 0;
+  }
+
+  publishAiPost() {
+    YyShowDialog.showdialog(context,
+        title: '温馨提示', btnText: '立即购买', cancelText: '取消', callBack: () {
+      publishPost();
+    }, content: (setDialogState) {
+      return DefaultTextStyle(
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Color(0xffFF5B8C), fontSize: 16.sp),
+          child: Text('AI脱衣将会花费$aiCoins皮哩币，若有VIP发布次数则会优先扣除是否确定发布帖子？'));
+    });
   }
 
   publishPost() {
@@ -209,7 +268,8 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
             title: title.text,
             topicId: selectId,
             content: content.text,
-            medias: fileList)
+            medias: fileList,
+            is_open: isAI ? isPublic : 0)
         .then((value) {
       if (value['status'] != 0) {
         CommonUtils.showText(value['msg'] ?? '上传成功,请耐心等待审核');
@@ -227,42 +287,6 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   void initState() {
     getCircle();
     super.initState();
-    if (AppGlobal.postInfo.isNotEmpty) {
-      Map info = AppGlobal.postInfo;
-      CommonUtils.debugPrint(info);
-      title.text = info['title'];
-      content.text = info['content'];
-      showCoinInput.value = true;
-      coin.text = info['unlock_coins'].toString();
-      selectText = '#${info['topics']}';
-      selectId = int.parse(info['topic_id']);
-      List newImageList =
-          List.from(info['medias']).where((item) => item['type'] == 1).toList();
-      imageList.value = newImageList.map((e) {
-        return {
-          'key': new GlobalKey<FileUploadItemState>(),
-          'media_url': e['ori_media_url'],
-          'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
-          'type': 1,
-          'w': e['thumb_width'],
-          'h': e['thumb_height'],
-        };
-      }).toList();
-      List newVideoList =
-          List.from(info['medias']).where((item) => item['type'] == 2).toList();
-      videoList.value = newVideoList.map((e) {
-        return {
-          'key': new GlobalKey<FileUploadItemState>(),
-          'media_url': e['ori_media_url'],
-          'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
-          'type': 2,
-          'w': e['thumb_width'],
-          'h': e['thumb_height'],
-        };
-      }).toList();
-    } else {
-      print('发布');
-    }
   }
 
   @override
@@ -358,10 +382,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                     topics[index]['topic_name'],
                     style: TextStyle(
                         color: selectId == topics[index]['topic_id']
-                            ? (topics[index]['is_ai'] != 0
+                            ? Colors.white
+                            : (topics[index]['is_ai'] != 0
                                 ? Color(0xffFE155B)
-                                : Colors.white)
-                            : Color(0xff828181),
+                                : Color(0xff828181)),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700),
                   ),
@@ -387,377 +411,411 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
               title: '發佈帖子',
             ),
             Expanded(
-                child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
-              children: [
-                Text(
-                  '選擇圈子',
-                  style: titleStyle,
-                ),
-                SizedBox(
-                  height: 8.w,
-                ),
-                InkWell(
-                  onTap: showQuanzi,
-                  child: SizedBox(
-                    height: 36.w,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          selectText ?? '#選擇圈子',
-                          style: TextStyle(
-                              color: Color(0xff6d6d6d),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        getImage('assets/images/2023/setup_right.png',
-                            width: 16.w, height: 16.w, isAssets: true)
-                      ],
-                    ),
-                  ),
-                ),
-                Text(
-                  '注意：AI脫衣帖成功發帖後，將會收取您200皮哩幣，上傳的圖片將會進行AI智能脫衣。發佈後若編輯並且更改圖片時，將會重新向您索取AI脫衣費用。',
-                  style: TextStyle(color: Color(0xffFE155B), fontSize: 12.sp),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '上傳視頻',
-                                    style: titleStyle,
-                                  ),
-                                  SizedBox(
-                                    width: 8.w,
-                                  ),
-                                  Text(
-                                    '0/$videoMaxLength',
-                                    style: subtitleStyle,
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '支持mp4/mov格式，不超过 100 MB',
-                                style: subtitleStyle,
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                              onTap: videoPickerAssets, child: tapBtn('新增影片'))
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8.w,
-                      ),
-                      ValueListenableBuilder(
-                          valueListenable: videoList,
-                          builder: (context, List videos, child) {
-                            return videos.isEmpty
-                                ? Container()
-                                : Wrap(
-                                    spacing: 4.w,
-                                    runSpacing: 4.w,
-                                    alignment: WrapAlignment.spaceBetween,
-                                    children: videos.asMap().keys.map((index) {
-                                      return FileUploadItem(
-                                          type: 2,
-                                          key: videos[index]['key'],
-                                          data: videos[index]);
-                                    }).toList(),
-                                  );
-                          })
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '上傳照片',
-                                    style: titleStyle,
-                                  ),
-                                  SizedBox(
-                                    width: 8.w,
-                                  ),
-                                  Text(
-                                    '0/$maxLength',
-                                    style: subtitleStyle,
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '支持JPG/PNG格式，每張不超过 1 MB',
-                                style: subtitleStyle,
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: imagePickerAssets,
-                            child: tapBtn('新增照片'),
-                          )
-                        ],
-                      ),
-                      ValueListenableBuilder(
-                          valueListenable: imageList,
-                          builder: (context, List imgs, child) {
-                            return imgs.isEmpty
-                                ? Container()
-                                : Padding(
-                                    padding: EdgeInsets.only(top: 8.w),
-                                    child: Wrap(
-                                      spacing: 4.w,
-                                      runSpacing: 4.w,
-                                      alignment: WrapAlignment.spaceBetween,
-                                      children: imgs.asMap().keys.map((index) {
-                                        return FileUploadItem(
-                                            key: imgs[index]['key'],
-                                            data: imgs[index]);
-                                      }).toList(),
-                                    ),
-                                  );
-                          })
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Text(
-                    '標題',
-                    style: titleStyle,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  alignment: Alignment.center,
-                  child: TextField(
-                    autofocus: false,
-                    controller: title,
-                    maxLength: 20,
-                    cursorColor: Color(0xffFF84A9),
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                        isDense: true,
-                        counterText: '',
-                        hintText: '請輸入文字...',
-                        hintStyle: TextStyle(
-                            fontSize: 14.sp, color: Color(0xffc2c2c2)),
-                        contentPadding: EdgeInsets.zero,
-                        border: InputBorder.none),
-                    style: TextStyle(
-                      color: Color(0xff6D6D6D),
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Text(
-                    '內文',
-                    style: titleStyle,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  height: 88.w,
-                  child: TextField(
-                    autofocus: false,
-                    controller: content,
-                    maxLines: 999,
-                    cursorColor: Color(0xffFF84A9),
-                    maxLength: null,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                        isDense: true,
-                        helperMaxLines: 66,
-                        hintText: '請輸入文字...',
-                        hintStyle: TextStyle(
-                            fontSize: 14.sp, color: Color(0xffc2c2c2)),
-                        contentPadding: EdgeInsets.zero,
-                        border: InputBorder.none),
-                    style: TextStyle(
-                      color: Color(0xff6D6D6D),
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ),
-                Text(
-                  '設置金幣',
-                  style: titleStyle,
-                ),
-                SizedBox(
-                  height: 8.w,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: GestureDetector(
-                      onTap: () {
-                        isPublic = 0;
-                        setState(() {});
-                      },
-                      child: Container(
-                        height: 36.w,
-                        decoration: isPublic == 0
-                            ? DefaultStyle.activeDecoration
-                            : DefaultStyle.defaultDecoration,
-                        alignment: Alignment.center,
-                        child: Text(
-                          '僅限自己觀看',
-                          style: TextStyle(
-                              color: isPublic == 0
-                                  ? Colors.white
-                                  : Color(0xff828181),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    )),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Expanded(
-                        child: GestureDetector(
-                            onTap: () {
-                              isPublic = 1;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 36.w,
-                              decoration: isPublic == 1
-                                  ? DefaultStyle.activeDecoration
-                                  : DefaultStyle.defaultDecoration,
-                              alignment: Alignment.center,
-                              child: Text(
-                                '公開發佈帖子',
-                                style: TextStyle(
-                                    color: isPublic == 1
-                                        ? Colors.white
-                                        : Color(0xff828181),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            )))
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+                child: loading
+                    ? PageStatus.loading(true)
+                    : ListView(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 8.w),
                         children: [
                           Text(
-                            '設置金幣',
+                            '選擇圈子',
                             style: titleStyle,
                           ),
                           SizedBox(
-                            width: 8.w,
+                            height: 8.w,
                           ),
-                          Text(
-                            '最高設置900皮哩幣',
-                            style: subtitleStyle,
+                          InkWell(
+                            onTap: showQuanzi,
+                            child: SizedBox(
+                              height: 36.w,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    selectText ?? '#選擇圈子',
+                                    style: TextStyle(
+                                        color: Color(0xff6d6d6d),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  getImage('assets/images/2023/setup_right.png',
+                                      width: 16.w, height: 16.w, isAssets: true)
+                                ],
+                              ),
+                            ),
+                          ),
+                          isAI
+                              ? Text(
+                                  aiMsg.toString(),
+                                  style: TextStyle(
+                                      color: Color(0xffFE155B),
+                                      fontSize: 12.sp),
+                                )
+                              : SizedBox(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              '上傳視頻',
+                                              style: titleStyle,
+                                            ),
+                                            SizedBox(
+                                              width: 8.w,
+                                            ),
+                                            Text(
+                                              '0/$videoMaxLength',
+                                              style: subtitleStyle,
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          '支持mp4/mov格式，不超过 100 MB',
+                                          style: subtitleStyle,
+                                        ),
+                                      ],
+                                    ),
+                                    GestureDetector(
+                                        onTap: videoPickerAssets,
+                                        child: tapBtn('新增影片'))
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 8.w,
+                                ),
+                                ValueListenableBuilder(
+                                    valueListenable: videoList,
+                                    builder: (context, List videos, child) {
+                                      return videos.isEmpty
+                                          ? Container()
+                                          : Wrap(
+                                              spacing: 4.w,
+                                              runSpacing: 4.w,
+                                              alignment:
+                                                  WrapAlignment.spaceBetween,
+                                              children: videos
+                                                  .asMap()
+                                                  .keys
+                                                  .map((index) {
+                                                return FileUploadItem(
+                                                    type: 2,
+                                                    key: videos[index]['key'],
+                                                    data: videos[index]);
+                                              }).toList(),
+                                            );
+                                    })
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              '上傳照片',
+                                              style: titleStyle,
+                                            ),
+                                            SizedBox(
+                                              width: 8.w,
+                                            ),
+                                            Text(
+                                              '0/$maxLength',
+                                              style: subtitleStyle,
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          '支持JPG/PNG格式，每張不超过 1 MB',
+                                          style: subtitleStyle,
+                                        ),
+                                      ],
+                                    ),
+                                    GestureDetector(
+                                      onTap: imagePickerAssets,
+                                      child: tapBtn('新增照片'),
+                                    )
+                                  ],
+                                ),
+                                ValueListenableBuilder(
+                                    valueListenable: imageList,
+                                    builder: (context, List imgs, child) {
+                                      return imgs.isEmpty
+                                          ? Container()
+                                          : Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 8.w),
+                                              child: Wrap(
+                                                spacing: 4.w,
+                                                runSpacing: 4.w,
+                                                alignment:
+                                                    WrapAlignment.spaceBetween,
+                                                children: imgs
+                                                    .asMap()
+                                                    .keys
+                                                    .map((index) {
+                                                  return FileUploadItem(
+                                                      key: imgs[index]['key'],
+                                                      data: imgs[index]);
+                                                }).toList(),
+                                              ),
+                                            );
+                                    })
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.w),
+                            child: Text(
+                              '標題',
+                              style: titleStyle,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            alignment: Alignment.center,
+                            child: TextField(
+                              autofocus: false,
+                              controller: title,
+                              maxLength: 20,
+                              cursorColor: Color(0xffFF84A9),
+                              textInputAction: TextInputAction.done,
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  counterText: '',
+                                  hintText: '請輸入文字...',
+                                  hintStyle: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Color(0xffc2c2c2)),
+                                  contentPadding: EdgeInsets.zero,
+                                  border: InputBorder.none),
+                              style: TextStyle(
+                                color: Color(0xff6D6D6D),
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.w),
+                            child: Text(
+                              '內文',
+                              style: titleStyle,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            height: 88.w,
+                            child: TextField(
+                              autofocus: false,
+                              controller: content,
+                              maxLines: 999,
+                              cursorColor: Color(0xffFF84A9),
+                              maxLength: null,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  helperMaxLines: 66,
+                                  hintText: '請輸入文字...',
+                                  hintStyle: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Color(0xffc2c2c2)),
+                                  contentPadding: EdgeInsets.zero,
+                                  border: InputBorder.none),
+                              style: TextStyle(
+                                color: Color(0xff6D6D6D),
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                          isAI
+                              ? Text(
+                                  '帖子是否公開',
+                                  style: titleStyle,
+                                )
+                              : SizedBox(),
+                          SizedBox(
+                            height: isAI ? 8.w : 0,
+                          ),
+                          isAI
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                        child: GestureDetector(
+                                      onTap: () {
+                                        isPublic = 1;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 36.w,
+                                        decoration: isPublic == 1
+                                            ? DefaultStyle.activeDecoration
+                                            : DefaultStyle.defaultDecoration,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '僅限自己觀看',
+                                          style: TextStyle(
+                                              color: isPublic == 1
+                                                  ? Colors.white
+                                                  : Color(0xff828181),
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    )),
+                                    SizedBox(
+                                      width: 8.w,
+                                    ),
+                                    Expanded(
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              isPublic = 0;
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              height: 36.w,
+                                              decoration: isPublic == 0
+                                                  ? DefaultStyle
+                                                      .activeDecoration
+                                                  : DefaultStyle
+                                                      .defaultDecoration,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '公開發佈帖子',
+                                                style: TextStyle(
+                                                    color: isPublic == 0
+                                                        ? Colors.white
+                                                        : Color(0xff828181),
+                                                    fontSize: 14.sp,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            )))
+                                  ],
+                                )
+                              : SizedBox(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '設置金幣',
+                                      style: titleStyle,
+                                    ),
+                                    SizedBox(
+                                      width: 8.w,
+                                    ),
+                                    Text(
+                                      '最高設置900皮哩幣',
+                                      style: subtitleStyle,
+                                    )
+                                  ],
+                                ),
+                                ValueListenableBuilder(
+                                    valueListenable: showCoinInput,
+                                    builder: (context, value, child) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          showCoinInput.value =
+                                              !showCoinInput.value;
+                                          coin.text = '';
+                                        },
+                                        child: tapBtn(value ? '關閉' : '開啟',
+                                            status: !showCoinInput.value),
+                                      );
+                                    })
+                              ],
+                            ),
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: showCoinInput,
+                            builder: (context, value, child) {
+                              return value ? child : Container();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w),
+                              alignment: Alignment.center,
+                              child: TextField(
+                                autofocus: true,
+                                controller: coin,
+                                maxLength: 20,
+                                cursorColor: Color(0xffFF84A9),
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9]')),
+                                ],
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    counterText: '',
+                                    hintText: '請輸入金額',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Color(0xffc2c2c2)),
+                                    contentPadding: EdgeInsets.zero,
+                                    border: InputBorder.none),
+                                style: TextStyle(
+                                  color: Color(0xff6D6D6D),
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.w),
+                            child: GestureDetector(
+                              onTap: isAI ? publishAiPost : publishPost,
+                              child: Container(
+                                width: 327.w,
+                                height: 40.w,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50.w),
+                                    gradient: DefaultStyle.defaluGrandientLine),
+                                child: Text(
+                                  '立即發布',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: ScreenUtil().bottomBarHeight + 30.w,
                           )
                         ],
-                      ),
-                      ValueListenableBuilder(
-                          valueListenable: showCoinInput,
-                          builder: (context, value, child) {
-                            return GestureDetector(
-                              onTap: () {
-                                showCoinInput.value = !showCoinInput.value;
-                                coin.text = '';
-                              },
-                              child: tapBtn(value ? '關閉' : '開啟',
-                                  status: !showCoinInput.value),
-                            );
-                          })
-                    ],
-                  ),
-                ),
-                ValueListenableBuilder(
-                  valueListenable: showCoinInput,
-                  builder: (context, value, child) {
-                    return value ? child : Container();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    alignment: Alignment.center,
-                    child: TextField(
-                      autofocus: true,
-                      controller: coin,
-                      maxLength: 20,
-                      cursorColor: Color(0xffFF84A9),
-                      textInputAction: TextInputAction.done,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      ],
-                      decoration: InputDecoration(
-                          isDense: true,
-                          counterText: '',
-                          hintText: '請輸入金額',
-                          hintStyle: TextStyle(
-                              fontSize: 14.sp, color: Color(0xffc2c2c2)),
-                          contentPadding: EdgeInsets.zero,
-                          border: InputBorder.none),
-                      style: TextStyle(
-                        color: Color(0xff6D6D6D),
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.w),
-                  child: GestureDetector(
-                    onTap: publishPost,
-                    child: Container(
-                      width: 327.w,
-                      height: 40.w,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50.w),
-                          gradient: DefaultStyle.defaluGrandientLine),
-                      child: Text(
-                        '立即發布',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().bottomBarHeight + 30.w,
-                )
-              ],
-            ))
+                      ))
           ],
         ),
       ),

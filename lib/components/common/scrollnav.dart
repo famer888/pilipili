@@ -15,7 +15,8 @@ class Scrollnav extends StatefulWidget {
       this.pages,
       this.onNavIndexChanged,
       this.onBackTop,
-      this.hideClose = false})
+      this.hideClose = false,
+      this.isBack = false})
       : super(key: key);
   final String emitName;
   final List<LinkModel> navitems;
@@ -23,6 +24,7 @@ class Scrollnav extends StatefulWidget {
   final Function onNavIndexChanged;
   final Function onBackTop;
   final bool hideClose;
+  final bool isBack;
   @override
   _ScrollnavState createState() => _ScrollnavState();
 }
@@ -108,6 +110,22 @@ class _ScrollnavState extends State<Scrollnav> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        widget.isBack
+                            ? GestureDetector(
+                                onTap: () {
+                                  context.pop();
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      right: ScreenUtil().setWidth(6)),
+                                  child: PlatformAwareAssetImage(
+                                      url: 'assets/images/backarrow.png',
+                                      width: 12.w,
+                                      height: 22.w,
+                                      filterQuality: FilterQuality.medium),
+                                ))
+                            : SizedBox(),
                         Expanded(
                             child: ListView(
                           cacheExtent: ScreenUtil().screenHeight * 5,

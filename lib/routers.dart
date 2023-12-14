@@ -55,6 +55,10 @@ import 'package:pilipili/pages/mine/vip_page.dart';
 import 'package:pilipili/pages/mine/watch_history.dart';
 import 'package:pilipili/pages/mine/withdrawals_page.dart';
 import 'package:pilipili/pages/mine/zhaomu.dart';
+import 'package:pilipili/pages/novel/chapter_list.dart';
+import 'package:pilipili/pages/novel/novel.dart';
+import 'package:pilipili/pages/novel/novel_detai.dart';
+import 'package:pilipili/pages/novel/novel_reader.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/withdrawals_record.dart';
 import 'package:pilipili/utils/common.dart';
@@ -480,7 +484,29 @@ class Routes {
       key: 'videoPreview/:url/:cover',
       builder: (context, state) => VideoPreview(
             url: state.params['url'] ?? "",
-            cover:state.params['cover'] ?? "",
+            cover: state.params['cover'] ?? "",
+          ));
+
+  //小说
+  static GoRouterModel novelPage =
+      GoRouterModel(key: 'novelPage', builder: (context, state) => NovelPage());
+//小说详情
+  static GoRouterModel novelDetail = GoRouterModel(
+      key: 'novelDetail/:nid',
+      builder: (context, state) => NovelDetail(
+            id: int.parse(state.params['nid']),
+          ));
+//小说章节列表
+  static GoRouterModel chapterList = GoRouterModel(
+      key: 'chapterList/:cid',
+      builder: (context, state) => ChapterList(
+            id: int.parse(state.params['cid']),
+          ));
+  //小说阅读器
+  static GoRouterModel novelReader = GoRouterModel(
+      key: 'novelReader/:rid',
+      builder: (context, state) => NovelReader(
+            id: int.parse(state.params['rid']),
           ));
   static GoRouter init() {
     List<GoRoute> pages = [
@@ -539,7 +565,11 @@ class Routes {
       withdrawalsPage.toGoRouter(),
       topicDetail.toGoRouter(),
       zhaomu.toGoRouter(),
-      videoPreview.toGoRouter()
+      videoPreview.toGoRouter(),
+      novelPage.toGoRouter(),
+      novelDetail.toGoRouter(),
+      chapterList.toGoRouter(),
+      novelReader.toGoRouter()
     ];
     List<GoRoute> rootPages = [
       xianmian.toGoRouter(routes: pages),
@@ -597,7 +627,11 @@ class Routes {
       homePreviewViewPage.toGoRouter(routes: pages),
       topicDetail.toGoRouter(routes: pages),
       zhaomu.toGoRouter(routes: pages),
-      videoPreview.toGoRouter(routes: pages)
+      videoPreview.toGoRouter(routes: pages),
+      novelPage.toGoRouter(routes: pages),
+      novelDetail.toGoRouter(routes: pages),
+      chapterList.toGoRouter(routes: pages),
+      novelReader.toGoRouter(routes: pages)
     ];
     return GoRouter(
       // errorBuilder: (context, state) => ErrorScreen(path: state.location),

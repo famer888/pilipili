@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilipili/components/card/navel_card.dart';
 import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
 
@@ -74,6 +75,15 @@ class _CollectPageState extends State<CollectPage>
       'api': '/api/community/list_my_like',
       'row': 1,
       'padding': 8.w,
+      'aspectRatio': null
+    },
+    {
+      'id': 10,
+      'name': '小说',
+      'index': 7,
+      'api': 'novel',
+      'row': 3,
+      'padding': 16.w,
       'aspectRatio': null
     }
   ];
@@ -220,34 +230,50 @@ class _CollectPageState extends State<CollectPage>
                     controller: _tabController,
                     children: tabList.asMap().keys.map<Widget>((e) {
                       return PageViewMixin(
-                        child: PublicBuildList(
-                            paddingLeft: tabList[e]['padding'] ?? 0,
-                            paddingTop: tabList[e]['padding'] ?? 0,
-                            paddingRight: tabList[e]['padding'] ?? 0,
-                            api: tabList[e]['api'],
-                            isFlow: false,
-                            isShow: true,
-                            row: tabList[e]['row'],
-                            aspectRatio: tabList[e]['aspectRatio'],
-                            data: {
-                              'category': tabList[e]['index'] == 3 ? 1 : null,
-                              'type': tabList[e]['id']
-                            },
-                            itemBuild: (context, index, data, page, limit,
-                                getListData) {
-                              return tabList[e]['index'] == 6
-                                  ? PostCard(
-                                      data: data,
-                                    )
-                                  : tabList[e]['index'] == 5
-                                      ? YuemeiCard(
-                                          isShowInfo: true,
-                                          w: 118.w,
-                                          h: 145.w,
+                        child: tabList[e]['api'] == 'novel'
+                            ? PublicBuildList(
+                                paddingLeft: 16.w,
+                                paddingRight: 16.w,
+                                api: '/api/novel/likeList',
+                                isShow: true,
+                                mainAxisSpacing: 16.w,
+                                row: 3,
+                                aspectRatio: 109 / 190,
+                                data: {},
+                                nullText: '还没有小说哦～',
+                                itemBuild: (context, index, data, page, limit,
+                                    getListData) {
+                                  return NovelCard(data: data);
+                                })
+                            : PublicBuildList(
+                                paddingLeft: tabList[e]['padding'] ?? 0,
+                                paddingTop: tabList[e]['padding'] ?? 0,
+                                paddingRight: tabList[e]['padding'] ?? 0,
+                                api: tabList[e]['api'],
+                                isFlow: false,
+                                isShow: true,
+                                row: tabList[e]['row'],
+                                aspectRatio: tabList[e]['aspectRatio'],
+                                data: {
+                                  'category':
+                                      tabList[e]['index'] == 3 ? 1 : null,
+                                  'type': tabList[e]['id']
+                                },
+                                itemBuild: (context, index, data, page, limit,
+                                    getListData) {
+                                  return tabList[e]['index'] == 6
+                                      ? PostCard(
                                           data: data,
                                         )
-                                      : getCardType(tabList[e]['id'], data);
-                            }),
+                                      : tabList[e]['index'] == 5
+                                          ? YuemeiCard(
+                                              isShowInfo: true,
+                                              w: 118.w,
+                                              h: 145.w,
+                                              data: data,
+                                            )
+                                          : getCardType(tabList[e]['id'], data);
+                                }),
                       );
                     }).toList()),
               )

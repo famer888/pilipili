@@ -64,6 +64,8 @@ dependencies:
   preload_page_view: ^0.1.6
   photo_view: ^0.14.0
   fijkplayer: ^0.10.1
+  extended_nested_scroll_view: ^5.1.2
+  animated_size_and_fade: ^3.0.1
   # video_player_web_hls:
   #   git:
   #     url: git@172.105.200.120:rn/video_player_web_hls-0.1.11_6.git
@@ -106,7 +108,7 @@ flutter:
   assets:
     - assets/gif/
     # - assets/images/pili_12/
-    # - assets/images/detail/
+    - assets/images/comics/
     - assets/images/2023/
     - assets/images/2023/bottomTab/
   # An image asset can refer to one or more resolution-specific "variants", see

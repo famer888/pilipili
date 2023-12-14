@@ -209,37 +209,45 @@ class _CommunityPageState extends State<CommunityPage> {
                 children: tabList.map((e) {
               return Expanded(
                 flex: 1,
-                child: GestureDetector(
-                    onTap: () {
-                      selectTab.value = e['id'];
-                      page = 1;
-                      isAll = false;
-                      type = e['type'];
-                      getPageData();
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Opacity(
-                          opacity: value == e['id'] ? 1 : 0,
-                          child: PlatformAwareAssetImage(
-                            url: 'assets/images/icon_love_red.png',
-                            width: 6.w,
-                            fit: BoxFit.fitWidth,
+                child: Center(
+                  child: GestureDetector(
+                      onTap: () {
+                        selectTab.value = e['id'];
+                        page = 1;
+                        isAll = false;
+                        type = e['type'];
+                        getPageData();
+                      },
+                      behavior: HitTestBehavior.translucent,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Text(
+                            e['title'],
+                            style: TextStyle(
+                                color: value == e['id']
+                                    ? Color(0xffFF5B8C)
+                                    : Color(0xffC2C2C2),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.sp),
                           ),
-                        ),
-                        Text(
-                          e['title'],
-                          style: TextStyle(
-                              color: value == e['id']
-                                  ? Color(0xffFF5B8C)
-                                  : Color(0xffC2C2C2),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    )),
+                          Positioned(
+                              left: 0,
+                              right: 0,
+                              top:-4.w,
+                              child: Center(
+                                child: Opacity(
+                                  opacity: value == e['id'] ? 1 : 0,
+                                  child: PlatformAwareAssetImage(
+                                    url: 'assets/images/icon_love_red.png',
+                                    width: 6.w,
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              )),
+                        ],
+                      )),
+                ),
               );
             }).toList()),
           );
@@ -295,32 +303,32 @@ class _CommunityPageState extends State<CommunityPage> {
                   child: topics.isEmpty
                       ? Container()
                       : SizedBox(
-                        height: 150.w,
-                        child: GridView.builder(
-                        scrollDirection:Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          // shrinkWrap: true,
-                          // physics: NeverScrollableScrollPhysics(),
-                          itemCount: topics.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:2,
-                            crossAxisSpacing: 8.w,
-                            mainAxisSpacing: 8.w,
-                            childAspectRatio:  71/109 ,
-                          ),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                context.push(
-                                    '/topicDetail/${topics[index]['id']}',
-                                    isNoRepeat: true);
-                              },
-                              child: topBtn(topics[index]['name'],
-                                  topics[index]['post_num']),
-                            );
-                          }),
-                      ),
+                          height: 150.w,
+                          child: GridView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              // shrinkWrap: true,
+                              // physics: NeverScrollableScrollPhysics(),
+                              itemCount: topics.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 8.w,
+                                mainAxisSpacing: 8.w,
+                                childAspectRatio: 71 / 109,
+                              ),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    context.push(
+                                        '/topicDetail/${topics[index]['id']}',
+                                        isNoRepeat: true);
+                                  },
+                                  child: topBtn(topics[index]['name'],
+                                      topics[index]['post_num']),
+                                );
+                              }),
+                        ),
                 ),
                 SliverPadding(
                   padding: EdgeInsets.only(top: 16.w),
@@ -449,7 +457,7 @@ class _CommunityPageState extends State<CommunityPage> {
                   return IgnorePointer(
                     ignoring: !value,
                     child: AnimatedOpacity(
-                    opacity: value ? 1 : 0,
+                      opacity: value ? 1 : 0,
                       duration: Duration(milliseconds: 200),
                       child: child,
                     ),

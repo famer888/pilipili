@@ -29,6 +29,8 @@ class PublicBuildList extends StatefulWidget {
   final double paddingLeft;
   final double paddingRight;
   final Widget head;
+  final double mainAxisSpacing;
+  final double crossAxisSpacing;
   PublicBuildList({
     Key key,
     this.isShow,
@@ -47,6 +49,8 @@ class PublicBuildList extends StatefulWidget {
     this.paddingLeft = 0,
     this.paddingRight = 0,
     this.head,
+    this.mainAxisSpacing,
+    this.crossAxisSpacing,
   }) : super(key: key);
 
   @override
@@ -78,10 +82,11 @@ class _PublicBuildListState extends State<PublicBuildList> {
         if (res.data['data'] != null && res.data['data'] is List) {
           resdata = (res.data['data'] == null ? [] : res.data['data']);
         } else {
-          resdata =
-              (res.data['data'] != null && res.data['data']['list'] != null
-                  ? res.data['data']['list']
-                  : []);
+          List _list = res.data['data']['result'] ??
+              res.data['data']['list'] ??
+              res.data['data'] ??
+              [];
+          resdata = _list;
         }
 
         if (widget.api.indexOf('dynamic/myDynamic') != -1 &&
@@ -218,8 +223,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
                     itemCount: searchData.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: widget.row,
-                      mainAxisSpacing: ScreenUtil().setWidth(7),
-                      crossAxisSpacing: ScreenUtil().setWidth(7),
+                      mainAxisSpacing: widget.mainAxisSpacing ?? 7.w,
+                      crossAxisSpacing: widget.crossAxisSpacing ?? 7.w,
                       childAspectRatio: widget.aspectRatio,
                     ),
                     itemBuilder: (context, index) {

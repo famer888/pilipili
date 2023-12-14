@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/card/navel_card.dart';
 import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/pili/public_list.dart';
@@ -51,6 +52,14 @@ class _SearchPageState extends State<SearchPage> {
       'api': '/api/book/getList',
       'pramas': {'type': 1},
       'cardType': 'v',
+      'isFlow': false,
+    },
+    {
+      'id': 4,
+      'name': '小说',
+      'api': '/api/novel/getList',
+      'pramas': {'order': "1"},
+      'cardType': 'novel',
       'isFlow': false,
     }
   ];
@@ -358,20 +367,31 @@ class _SearchPageState extends State<SearchPage> {
                           return PageViewMixin(
                             child: PrimaryScrollContainer(
                                 scrollChildKeys[e],
-                                PublicList(
-                                  cartType: tabList[e]['cardType'],
-                                  isFlow: tabList[e]['isFlow'],
-                                  noRefresh: true,
-                                  contentType: e == 2 ? 2 : null,
-                                  data: tabList[e]['pramas'],
-                                  api: tabList[e]['api'],
-                                  isShow: e == tabIndex,
-                                  isSearch: true,
-                                )
-                                // PageGridView(
-                                //   id: e,
-                                // )
-                                ),
+                                tabList[e]['cardType'] == 'novel'
+                                    ? PublicBuildList(
+                                        paddingLeft: 16.w,
+                                        paddingRight: 16.w,
+                                        api: '/api/novel/getList',
+                                        isShow: true,
+                                        mainAxisSpacing: 16.w,
+                                        row: 3,
+                                        aspectRatio: 109 / 190,
+                                        data: {'order': '1'},
+                                        nullText: '还没有小说哦～',
+                                        itemBuild: (context, index, data, page,
+                                            limit, getListData) {
+                                          return NovelCard(data: data);
+                                        })
+                                    : PublicList(
+                                        cartType: tabList[e]['cardType'],
+                                        isFlow: tabList[e]['isFlow'],
+                                        noRefresh: true,
+                                        contentType: e == 2 ? 2 : null,
+                                        data: tabList[e]['pramas'],
+                                        api: tabList[e]['api'],
+                                        isShow: e == tabIndex,
+                                        isSearch: true,
+                                      )),
                           );
                         }).toList(),
                       ),
@@ -470,6 +490,13 @@ class _SearchResultState extends State<SearchResult> {
       'title': '帖子',
       'cardType': 'post',
       'api': '/api/community/search',
+      'pramas': {},
+      'isFlow': false,
+    },
+    {
+      'title': '小说',
+      'cardType': 'novel',
+      'api': '/api/novel/search',
       'pramas': {},
       'isFlow': false,
     }
@@ -571,39 +598,54 @@ class _SearchResultState extends State<SearchResult> {
                   pramas.addAll(tab['pramas']);
                   String _type = tab['cardType'];
                   return PageViewMixin(
-                    child: _type == 'yuemei' || _type == 'post'
-                        ? Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: _type == 'post' ? 8.w : 16.w,
-                                vertical: 18.w),
-                            child: PublicBuildList(
-                                api: tab['api'],
-                                isShow: true,
-                                data: pramas,
-                                nullText: '还没有约炮信息哦～',
-                                itemBuild: (context, index, data, page, limit,
-                                    getListData) {
-                                  return _type == 'post'
-                                      ? PostCard(
-                                          data: data,
-                                        )
-                                      : YuemeiCard(
-                                          w: 118.w,
-                                          h: 145.w,
-                                          isShowInfo: true,
-                                          data: data,
-                                        );
-                                }),
-                          )
-                        : PublicList(
-                            isFlow: tab['isFlow'],
+                    child: _type == 'novel'
+                        ? PublicBuildList(
+                            paddingLeft: 16.w,
+                            paddingRight: 16.w,
+                            api: '/api/novel/search',
+                            isShow: true,
+                            mainAxisSpacing: 16.w,
+                            row: 3,
+                            aspectRatio: 109 / 190,
                             data: pramas,
-                            contentType: tab['contentType'],
-                            cartType: tab['cardType'],
-                            api: tab['api'],
-                            isShow: tabList.indexOf(tab) == currentTab,
-                            isSearch: true,
-                          ),
+                            nullText: '还没有小说哦～',
+                            itemBuild: (context, index, data, page, limit,
+                                getListData) {
+                              return NovelCard(data: data);
+                            })
+                        : (_type == 'yuemei' || _type == 'post'
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: _type == 'post' ? 8.w : 16.w,
+                                    vertical: 18.w),
+                                child: PublicBuildList(
+                                    api: tab['api'],
+                                    isShow: true,
+                                    data: pramas,
+                                    nullText: '还没有约炮信息哦～',
+                                    itemBuild: (context, index, data, page,
+                                        limit, getListData) {
+                                      return _type == 'post'
+                                          ? PostCard(
+                                              data: data,
+                                            )
+                                          : YuemeiCard(
+                                              w: 118.w,
+                                              h: 145.w,
+                                              isShowInfo: true,
+                                              data: data,
+                                            );
+                                    }),
+                              )
+                            : PublicList(
+                                isFlow: tab['isFlow'],
+                                data: pramas,
+                                contentType: tab['contentType'],
+                                cartType: tab['cardType'],
+                                api: tab['api'],
+                                isShow: tabList.indexOf(tab) == currentTab,
+                                isSearch: true,
+                              )),
                   );
                 }).toList(),
               ))
@@ -630,7 +672,17 @@ class _TabHeadState extends State<TabHead> {
       'api': '/api/mv/getList',
       'data': {'category': 1}
     },
-    {'title': '漫画', 'api': '/api/book/getList', 'data': {}}
+    {
+      'title': '漫画',
+      'api': '/api/book/getList',
+      'data': {},
+    },
+    {
+      'title': '小说',
+      'api': '/api/novel/getList',
+      'data': {'order': 1},
+      'type': 'novel'
+    }
   ];
   @override
   void didUpdateWidget(TabHead oldWidget) {

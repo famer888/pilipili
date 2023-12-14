@@ -134,6 +134,7 @@ class _YuemeiShequState extends State<YuemeiShequ> {
                                             '+',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w300,
+                                                height: 1,
                                                 color: Color(0xffFF84A9),
                                                 fontSize: 40.sp),
                                           ),

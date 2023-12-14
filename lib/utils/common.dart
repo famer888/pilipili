@@ -12,6 +12,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:isolated_worker/worker_delegator.dart';
@@ -33,12 +34,39 @@ import 'api.dart';
 class CommonUtils {
   static Future<bool> pngLimitSize(XFile file,
       {int size = 5, String tips}) async {
+    if (kIsWeb) return true;
     int length = await file.length();
     if (length / (1024 * 1024) > size) {
       CommonUtils.showText(tips ?? '上传文件最大${size}M');
       return true;
     }
     return false;
+  }
+
+  static bannerTopath(BuildContext context, {int type, String url}) {
+    var _adsUrl = url;
+    if (['', null, false].contains(_adsUrl)) {
+      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
+      return;
+    }
+    switch (type) {
+      case 1:
+        // 外部浏览器
+        CommonUtils.launchURL("$_adsUrl");
+        break;
+      case 3: //内部
+        context.push(url);
+        break;
+      case 4:
+        // 外部浏览器
+        var members = Provider.of<HomeConfig>(context, listen: false).member;
+        var aff = members.aff;
+        var piliid = members.uuid;
+        CommonUtils.launchURL(_adsUrl + '?aff=$aff&piliid=$piliid');
+        break;
+        break;
+      default:
+    }
   }
 
   //设置状态栏颜色
@@ -197,7 +225,7 @@ class CommonUtils {
     }
   }
 
-  static renderFixedNumber(double value) {
+  static renderFixedNumber(num value) {
     var tips;
     if (value >= 10000) {
       var newvalue = (value / 1000) / 10.round();

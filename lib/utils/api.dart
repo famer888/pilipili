@@ -1102,12 +1102,12 @@ Future<Map> createPost(
     String title,
     String content,
     List medias,
-    Map postInfo}) async {
+    Map postInfo,
+    int is_open}) async {
   Map _postId = {};
   if (postInfo.isNotEmpty) {
     _postId['post_id'] = postInfo['id'];
   }
-  CommonUtils.debugPrint('编辑:${postInfo.isNotEmpty}');
   try {
     Response data = await PlatformAwareHttp.post(
         postInfo.isNotEmpty ? "/api/community/editPost" : "/api/community/post",
@@ -1116,6 +1116,7 @@ Future<Map> createPost(
           "coins": coins == '' ? 0 : int.parse(coins),
           "title": title,
           "content": content,
+          "is_open": is_open,//0 公开  1 私密 
           "medias": jsonEncode(medias),
           ..._postId
         });
@@ -1284,6 +1285,90 @@ Future<Map> withdrawMoney(
       'amount': amount
     });
     return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说详情
+Future<Map> novelDetail({int novelId}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/novel/getDetail", data: {
+      'novelId': novelId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说推荐
+Future<Map> novelRecommend({int categoryId, int page, int limit}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/novel/getRandom",
+        data: {'categoryId': categoryId, 'page': page, 'limit': limit});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说喜欢
+Future<Map> novelLikeToggle(int novelId) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/novel/likeToggle", data: {
+      'novelId': novelId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说评论点赞
+Future<Map> commentLikeToggle(int commentId) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/novel/commentLikeToggle", data: {
+      'commentId': commentId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说内容
+Future<Map> getChapterDetail(int chapterId) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/novel/getChapterDetail", data: {
+      'chapterId': chapterId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 小说发表评论
+Future novelComment({int novelId, String content, int parentId}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/comment/comment',
+        data: {'novelId': novelId, 'content': content, 'parentId': parentId});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 小说购买
+Future novelBuy(int novelId) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/buy',
+        data: {'novelId': novelId});
+    return res.data;
   } catch (e) {
     return null;
   }

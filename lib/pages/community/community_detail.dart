@@ -212,42 +212,58 @@ class _CommunityDetailState extends State<CommunityDetail> {
         break;
       case 2: //金币
         _btn = !isViewPermissions()
-            ? GestureDetector(
-                onTap: () {
-                  showUnlok(type);
-                },
-                child: Container(
-                    height: 32.w,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.w),
-                        gradient: DefaultStyle.defaluGrandientLine),
-                    child: Text.rich(
-                      detailData['discount_unlock_coins'] <
-                              detailData['unlock_coins']
-                          ? TextSpan(
-                              text:
-                                  "会员折扣价(${detailData['discount_unlock_coins']}皮哩币) ",
-                              children: [
-                                  TextSpan(
-                                    text: "原价:${detailData['unlock_coins']}皮哩币",
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white70,
-                                        decoration: TextDecoration.lineThrough,
-                                        decorationStyle:
-                                            TextDecorationStyle.solid),
-                                  )
-                                ])
-                          : TextSpan(
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showUnlok(type);
+                    },
+                    child: Container(
+                        height: 32.w,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.w),
+                            gradient: DefaultStyle.defaluGrandientLine),
+                        child: Text.rich(
+                          TextSpan(
                               text: '解鎖媒體(${detailData['unlock_coins']}皮哩币)'),
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700),
-                    )),
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700),
+                        )),
+                  ),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showUnlok(type);
+                    },
+                    child: Container(
+                        height: 32.w,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.w),
+                            gradient: LinearGradient(
+                              colors: [Color(0xffFF6F1E), Color(0xffFCBC18)],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            )),
+                        child: Text.rich(
+                          TextSpan(
+                              text:
+                                  'VIP 解鎖(${detailData['discount_before_vip_unlock_coins']}皮哩币)'),
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700),
+                        )),
+                  )
+                ],
               )
             : SizedBox();
         break;
@@ -279,6 +295,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
   @override
   Widget build(BuildContext context) {
     var member = Provider.of<HomeConfig>(context, listen: false).member;
+    CommonUtils.debugPrint(detailData);
     return Scaffold(
       body: Column(
         children: [
@@ -656,6 +673,52 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                         ),
                                       );
                                     }).toList(),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 8.w),
+                                    child: Wrap(
+                                      runSpacing: 4.w,
+                                      spacing: 4.w,
+                                      children:
+                                          List.from(detailData['topic_info'])
+                                              .asMap()
+                                              .keys
+                                              .map((e) {
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                context.push(
+                                                    '/topicDetail/${detailData['topic_info'][e]['id']}',
+                                                    isNoRepeat: true);
+                                              },
+                                              child: Container(
+                                                height: 28.w,
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 16.w),
+                                                decoration: BoxDecoration(
+                                                    color: Color(0XFFFFF5F9),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.w)),
+                                                child: Text(
+                                                  detailData['topic_info'][e]
+                                                          ['title']
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Color(0xffFFADC6),
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ),
                                   )
                                 ],
                               ),

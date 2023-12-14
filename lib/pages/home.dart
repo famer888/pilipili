@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,6 +42,7 @@ class _HomeState extends State<Home> {
   bool showAnnouncementStatus = false;
   bool showActivety = false;
   bool initPage = false;
+  List adData = [];
   PageController _controller = PageController();
   List<Map> webTypeList = [
     {'w': 428, 'h': 926, 'r': 3}, // iphone13 pro max
@@ -121,6 +123,10 @@ class _HomeState extends State<Home> {
       getWebType(_h, _w, _ratio);
       // webBottomHeight
     }
+    getAdForCoin(pos: 315).then((res) {
+      adData = res['data'];
+      setState(() {});
+    });
   }
 
   // 初始化下载状态
@@ -520,6 +526,45 @@ class _HomeState extends State<Home> {
                   }
                 },
               )),
+              Positioned(
+                  right: 8.w,
+                  bottom: DefaultStyle.bottomnavbarHegiht +
+                      ScreenUtil().bottomBarHeight +
+                      15.w,
+                  child: adData.isEmpty
+                      ? SizedBox()
+                      : ValueListenableBuilder(
+                          valueListenable: selectedKey,
+                          builder: (context, _v, child) {
+                            return _v <= 2
+                                ? SizedBox(
+                                    width: 90.w,
+                                    height: 90.w,
+                                    child: Swiper(
+                                      autoplayDelay: 3000,
+                                      autoplay: adData.length > 1,
+                                      onIndexChanged: (e) {
+                                        // CommonUtils.debugPrint('-------------------$e---------------------');
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            CommonUtils.bannerTopath(context,
+                                                url: adData[index]['url'],
+                                                type: adData[index]['type']);
+                                          },
+                                          child: PlatformAwareNetworkImage(
+                                            url: adData[index]['img_url'],
+                                            fit: BoxFit.fill,
+                                          ),
+                                        );
+                                      },
+                                      itemCount: adData.length,
+                                    ),
+                                  )
+                                : SizedBox();
+                          })),
               Positioned(
                 right: 0,
                 left: 0,
