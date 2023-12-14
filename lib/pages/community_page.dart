@@ -105,14 +105,15 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   scorllAdd() {
-    double tH =
-        ScreenUtil().statusBarHeight + DefaultStyle.navbarHegiht + 350.w;
+    double tH = 325.w;
+
     //当前页面的tab
     if (_scrollController.offset >= tH && !showTab.value) {
       showTab.value = true;
     } else if (_scrollController.offset < tH && showTab.value) {
       showTab.value = false;
     }
+
     widget.scrollDirection(_scrollController.position.userScrollDirection);
   }
 
@@ -123,6 +124,7 @@ class _CommunityPageState extends State<CommunityPage> {
     pageStatus = 1;
     _scrollController = ScrollController();
     _scrollController.addListener(scorllAdd);
+
     getBanner();
     getTopics();
     getPageData();
@@ -330,13 +332,19 @@ class _CommunityPageState extends State<CommunityPage> {
                               }),
                         ),
                 ),
-                SliverPadding(
-                  padding: EdgeInsets.only(top: 16.w),
-                  sliver: SliverToBoxAdapter(
-                    child: Center(
-                      child: _postTab(),
-                    ),
-                  ),
+                SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: showTab,
+                      builder: (context, show, child) => AnimatedOpacity(
+                            duration: Duration(milliseconds: 200),
+                            opacity: show ? 0 : 1,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 16.w),
+                              child: Center(
+                                child: _postTab(),
+                              ),
+                            ),
+                          )),
                 ),
                 SliverPadding(
                   padding:
