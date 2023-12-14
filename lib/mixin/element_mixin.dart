@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pilipili/components/widget/h4_widget.dart';
 import 'package:pilipili/components/widget/h_scroll_widget.dart';
+import 'package:pilipili/components/widget/novel_column.dart';
 import 'package:pilipili/components/widget/swbanner.dart';
 import 'package:pilipili/components/widget/three_v_column.dart';
 import 'package:pilipili/components/widget/v4_widget.dart';
@@ -121,6 +122,22 @@ mixin ElementMixin<T extends StatefulWidget> on State<T> {
         break;
       case 11:
         yyElement = SwBanner(data: elementValue, element: element);
+        break;
+
+      case 12:
+        yyElement = NovelColumn(
+          data: elementValue,
+          contentType: element['content_type'],
+          title: element['title'] == null || element['title'] == ''
+              ? null
+              : element['title'],
+          id: element['id'],
+          moreButton: element['more_button'] == 1,
+          morePageType: element['more_page_show_type'],
+          limit: element['max_num'],
+          showField: element['show_field'],
+          element: element,
+        );
         break;
       default:
         yyElement = Container();

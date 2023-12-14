@@ -47,10 +47,10 @@ class _NovelReaderState extends State<NovelReader> {
       'icon': 'A-black'
     },
     {
-      'borderColor': Color(0xffB8C1CC),
-      'bacgroundColor': Color(0xffE5F1FF),
-      'fontColor': Color(0xff404040),
-      'icon': 'A-gray'
+      'borderColor': Color(0xff121213),
+      'bacgroundColor': Color(0xff121213),
+      'fontColor': Color(0xff2FB536),
+      'icon': 'A-green'
     },
     {
       'borderColor': Color(0xff2F3655),

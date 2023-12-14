@@ -570,6 +570,8 @@ class CommonUtils {
     } else if (data['cover_original_vertical'] != null &&
         data['cover_original_vertical'] != '') {
       return data['cover_original_vertical'];
+    } else if (data['thumbnail'] != null && data['thumbnail'] != '') {
+      return data['thumbnail'];
     } else {
       return data['cover_original_horizontal'];
     }

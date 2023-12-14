@@ -88,8 +88,17 @@ class _CommunityDetailState extends State<CommunityDetail> {
             child: Text('是否开通会员解锁观看所有内容?'));
       });
     } else {
+      bool isVip = AppGlobal.vipLevel > 0;
+      int money = Provider.of<HomeConfig>(context, listen: false).member.money;
+      bool isInsufficient = money < detailData['unlock_coins'];
       YyShowDialog.showdialog(context,
-          title: '温馨提示', btnText: '解锁', cancelText: '取消', callBack: () {
+          title: '温馨提示',
+          btnText: isInsufficient ? '余额不足,去充值' : '解锁',
+          cancelText: '取消', callBack: () {
+        if (isInsufficient) {
+          context.push('/coinRecharge');
+          return;
+        }
         PageStatus.showLoading();
         unlockPost(detailData['id']).then((res) {
           if (res['status'] != 0) {
@@ -107,13 +116,39 @@ class _CommunityDetailState extends State<CommunityDetail> {
                 color: Color(0xff646464),
                 fontSize: ScreenUtil().setSp(16),
                 fontWeight: FontWeight.bold),
-            child: Text.rich(TextSpan(children: [
-              TextSpan(text: '确定花费'),
-              TextSpan(
-                  text: ' ${detailData['unlock_coins']}皮哩币 ',
-                  style: TextStyle(color: Color(0xffFF84A9))),
-              TextSpan(text: '解锁该帖吗？'),
-            ])));
+            child: Column(
+              children: [
+                Text.rich(TextSpan(children: [
+                  TextSpan(text: '确定花费'),
+                  TextSpan(
+                      text: ' ${detailData['unlock_coins']}皮哩币 ',
+                      style: TextStyle(color: Color(0xffFF84A9))),
+                  TextSpan(text: '解锁该帖吗？'),
+                ])),
+                isVip
+                    ? SizedBox()
+                    : Padding(
+                        padding: EdgeInsets.only(top: 10.w),
+                        child: GestureDetector(
+                          onTap: (){
+                            context.push('/vip');
+                          },
+                          child: Text.rich(
+                            TextSpan(children: [
+                              TextSpan(text: '开通VIP折扣解锁,最低'),
+                              TextSpan(
+                                text:
+                                    ' ${detailData['discount_before_vip_unlock_coins']}皮哩币 ',
+                              ),
+                              TextSpan(text: ',点击开通'),
+                            ]),
+                            style: TextStyle(
+                              color: Color(0xffFF84A9),
+                              decoration: TextDecoration.underline,
+                            ))),
+                      )
+              ],
+            ));
       });
     }
   }
@@ -212,58 +247,24 @@ class _CommunityDetailState extends State<CommunityDetail> {
         break;
       case 2: //金币
         _btn = !isViewPermissions()
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showUnlok(type);
-                    },
-                    child: Container(
-                        height: 32.w,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            gradient: DefaultStyle.defaluGrandientLine),
-                        child: Text.rich(
-                          TextSpan(
-                              text: '解鎖媒體(${detailData['unlock_coins']}皮哩币)'),
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showUnlok(type);
-                    },
-                    child: Container(
-                        height: 32.w,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            gradient: LinearGradient(
-                              colors: [Color(0xffFF6F1E), Color(0xffFCBC18)],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            )),
-                        child: Text.rich(
-                          TextSpan(
-                              text:
-                                  'VIP 解鎖(${detailData['discount_before_vip_unlock_coins']}皮哩币)'),
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700),
-                        )),
-                  )
-                ],
+            ? GestureDetector(
+                onTap: () {
+                  showUnlok(type);
+                },
+                child: Container(
+                    height: 32.w,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.w),
+                        gradient: DefaultStyle.defaluGrandientLine),
+                    child: Text.rich(
+                      TextSpan(text: '解鎖媒體(${detailData['unlock_coins']}皮哩币)'),
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
+                    )),
               )
             : SizedBox();
         break;
@@ -295,7 +296,6 @@ class _CommunityDetailState extends State<CommunityDetail> {
   @override
   Widget build(BuildContext context) {
     var member = Provider.of<HomeConfig>(context, listen: false).member;
-    CommonUtils.debugPrint(detailData);
     return Scaffold(
       body: Column(
         children: [

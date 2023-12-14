@@ -234,14 +234,37 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                     right: 0,
                     bottom: 0,
                     child: widget.contentType == 11 || widget.contentType == 12
-                        ?  PlatformAwareAssetImage(
-                                url:
-                            'assets/images/pili_12/icon_series.png',
+                        ? PlatformAwareAssetImage(
+                            url: 'assets/images/pili_12/icon_series.png',
                             width: widget.width * 0.807,
                             fit: BoxFit.fitWidth,
                           )
                         : Container(),
-                  )
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        height: 16.w,
+                        width: 32.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xffFF8B8B).withOpacity(0.8),
+                                  Color(0xffFF7696).withOpacity(0.8),
+                                  Color(0xffFF7299).withOpacity(0.8)
+                                ]),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(3.w))),
+                        child: Text(
+                          widget.cardData['is_end'] == 1 ? '完结' : '连载',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 10.sp),
+                        ),
+                      ))
                 ],
               ),
               Stack(
@@ -254,13 +277,17 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        widget.showField.indexOf('title') != -1
+                        widget.showField.indexOf('title') != -1 ||
+                                widget.showField.indexOf('name') != -1
                             ? Text(
                                 widget.isSubtitle
                                     ? (widget.cardData['second_title'] ??
                                         widget.cardData['title'] ??
+                                        widget.cardData['name'] ??
                                         '')
-                                    : widget.cardData['title' ?? ''],
+                                    : widget.cardData['title'] ??
+                                        widget.cardData['name'] ??
+                                        '',
                                 maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
