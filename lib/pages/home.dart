@@ -550,6 +550,8 @@ class _HomeState extends State<Home> {
                                           (BuildContext context, int index) {
                                         return GestureDetector(
                                           onTap: () {
+                                            context.push('/novelPage');
+                                            return;
                                             CommonUtils.bannerTopath(context,
                                                 url: adData[index]['url'],
                                                 type: adData[index]['type']);

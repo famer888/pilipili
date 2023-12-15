@@ -85,6 +85,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                 color: Color(0xff646464),
                 fontSize: ScreenUtil().setSp(16),
                 fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
             child: Text('是否开通会员解锁观看所有内容?'));
       });
     } else {
@@ -113,9 +114,11 @@ class _CommunityDetailState extends State<CommunityDetail> {
       }, content: (setDialogState) {
         return DefaultTextStyle(
             style: TextStyle(
-                color: Color(0xff646464),
-                fontSize: ScreenUtil().setSp(16),
-                fontWeight: FontWeight.bold),
+              color: Color(0xff646464),
+              fontSize: ScreenUtil().setSp(16),
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
             child: Column(
               children: [
                 Text.rich(TextSpan(children: [
@@ -130,22 +133,24 @@ class _CommunityDetailState extends State<CommunityDetail> {
                     : Padding(
                         padding: EdgeInsets.only(top: 10.w),
                         child: GestureDetector(
-                          onTap: (){
-                            context.push('/vip');
-                          },
-                          child: Text.rich(
-                            TextSpan(children: [
-                              TextSpan(text: '开通VIP折扣解锁,最低'),
-                              TextSpan(
-                                text:
-                                    ' ${detailData['discount_before_vip_unlock_coins']}皮哩币 ',
+                            onTap: () {
+                              context.push('/vip');
+                            },
+                            child: Text.rich(
+                              TextSpan(children: [
+                                TextSpan(text: '开通VIP折扣解锁,最低'),
+                                TextSpan(
+                                  text:
+                                      ' ${detailData['discount_before_vip_unlock_coins']}皮哩币 ',
+                                ),
+                                TextSpan(text: ',点击开通'),
+                              ]),
+                              style: TextStyle(
+                                color: Color(0xffFF84A9),
+                                decoration: TextDecoration.underline,
                               ),
-                              TextSpan(text: ',点击开通'),
-                            ]),
-                            style: TextStyle(
-                              color: Color(0xffFF84A9),
-                              decoration: TextDecoration.underline,
-                            ))),
+                              textAlign: TextAlign.center,
+                            )),
                       )
               ],
             ));

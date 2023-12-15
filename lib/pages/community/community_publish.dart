@@ -272,8 +272,24 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
             is_open: isAI ? isPublic : 0)
         .then((value) {
       if (value['status'] != 0) {
-        CommonUtils.showText(value['msg'] ?? '上传成功,请耐心等待审核');
-        context.pop();
+         context.pop();
+         YyShowDialog.showdialog(context,
+          title: '发布成功',
+          btnText: '查看帖子',
+          cancelText: '取消', callBack: () {
+           context.push('/myPost');
+
+      }, content: (setDialogState) {
+        return DefaultTextStyle(
+            style: TextStyle(
+              color: Color(0xffFF5B8C),
+              fontSize: ScreenUtil().setSp(16),
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+            child: Text('帖子发布成功,请耐心等待审核,可以在\n我的>帖子管理中查看'));
+      });
+       
       } else {
         print(value['msg']);
         CommonUtils.showText(value['msg'] ?? '接口异常');

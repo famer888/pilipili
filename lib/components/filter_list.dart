@@ -62,7 +62,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    String _prams = widget.data; // type 1长视频 2短视频 3漫画
+    String _prams = widget.data; // type 1长视频 2短视频 3漫画 4小说
+
     List _pramsString = _prams.split(',');
     Map _pramsMap = {};
     _pramsString.forEach((item) {
@@ -81,14 +82,10 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
     } catch (e) {
       CommonUtils.showText('type 必须是数字');
     }
-    try {
+    if (dataType == 1) {
       cardStyle = 'h';
-    } catch (e) {
-      if (dataType == 1 || cardType == 3) {
-        cardStyle = 'h';
-      } else {
-        cardStyle = 'v';
-      }
+    } else {
+      cardStyle = 'v';
     }
     if (widget.isShow && pageStatus == 0) {
       pageStatus = 1;
@@ -137,6 +134,14 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
             page: page,
             limit: AppGlobal.smallVideoLimit);
         cardType = 1;
+        break;
+      case 4:
+        res = await getNovelList(
+            filter: widget.data,
+            order: order,
+            page: page,
+            limit: AppGlobal.smallVideoLimit);
+        cardType = 3;
         break;
       default:
         res = await getFilterComics(

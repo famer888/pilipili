@@ -1116,7 +1116,7 @@ Future<Map> createPost(
           "coins": coins == '' ? 0 : int.parse(coins),
           "title": title,
           "content": content,
-          "is_open": is_open,//0 公开  1 私密 
+          "is_open": is_open, //0 公开  1 私密
           "medias": jsonEncode(medias),
           ..._postId
         });
@@ -1368,6 +1368,17 @@ Future novelBuy(int novelId) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/buy',
         data: {'novelId': novelId});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 小说列表
+Future getNovelList({int order, int page, int limit, String filter}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/getList',
+        data: {'order': order, 'page': page, 'limit': limit, 'filter': filter});
     return res.data;
   } catch (e) {
     return null;

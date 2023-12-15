@@ -224,27 +224,29 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                   Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Container(
-                        height: 16.w,
-                        width: 32.w,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xffFF8B8B).withOpacity(0.8),
-                                  Color(0xffFF7696).withOpacity(0.8),
-                                  Color(0xffFF7299).withOpacity(0.8)
-                                ]),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(3.w))),
-                        child: Text(
-                          widget.cardData['is_end'] == 1 ? '完结' : '连载',
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 10.sp),
-                        ),
-                      ))
+                      child: widget.cardData['is_end'] == null
+                          ? SizedBox()
+                          : Container(
+                              height: 16.w,
+                              width: 32.w,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xffFF8B8B).withOpacity(0.8),
+                                        Color(0xffFF7696).withOpacity(0.8),
+                                        Color(0xffFF7299).withOpacity(0.8)
+                                      ]),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(3.w))),
+                              child: Text(
+                                widget.cardData['is_end'] == 1 ? '完结' : '连载',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10.sp),
+                              ),
+                            ))
                 ],
               ),
               Stack(
