@@ -383,13 +383,20 @@ class DefaultStyle {
         offset: Offset(0, 2))
   ];
   // 点击按钮阴影
-  static const List<BoxShadow> clickedButtonBoxShadow = [
-    BoxShadow(
-      color: Color.fromRGBO(168, 33, 24, 0.26),
-    ),
+  static List<BoxShadow> clickedButtonBoxShadow = [
     BoxShadow(
       color: Color.fromRGBO(255, 132, 169, 1),
-      blurRadius: 3,
+      blurStyle: BlurStyle.inner,
+    ),
+    BoxShadow(
+        color: Colors.black.withOpacity(0.05),
+        blurRadius: 2,
+        blurStyle: BlurStyle.inner,
+        offset: Offset(0, -2)),
+    BoxShadow(
+      color: Color.fromRGBO(255, 132, 169, 1),
+      blurRadius: 1,
+      spreadRadius: -2,
       blurStyle: BlurStyle.inner,
     ),
   ];

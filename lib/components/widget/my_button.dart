@@ -30,90 +30,164 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (type) {
       case ButtonType.text:
-        return GestureDetector(
-            onTap: () => onTap.call(),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.w),
-                  boxShadow: activate
-                      ? DefaultStyle.clickedButtonBoxShadow
-                      : DefaultStyle.unClickButtonBoxShadow,
-                  gradient: activate ? null : DefaultStyle.buttonGradient),
-              width: 83.w,
-              height: 36.w,
-              child: Center(
-                child: Text(text,
-                    style: activate
-                        ? DefaultStyle.buttonClickedTextStyle
-                        : DefaultStyle.buttonUnClickTextStyle),
-              ),
-            ));
+        return activate
+            ? ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(5.w),
+                child: GestureDetector(
+                    onTap: () => onTap.call(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.w),
+                          boxShadow: DefaultStyle.clickedButtonBoxShadow),
+                      width: 83.w,
+                      height: 36.w,
+                      child: Center(
+                        child: Text(text,
+                            style: DefaultStyle.buttonClickedTextStyle),
+                      ),
+                    )),
+              )
+            : GestureDetector(
+                onTap: () => onTap.call(),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.w),
+                      boxShadow: DefaultStyle.unClickButtonBoxShadow,
+                      gradient: DefaultStyle.buttonGradient),
+                  width: 83.w,
+                  height: 36.w,
+                  child: Center(
+                    child:
+                        Text(text, style: DefaultStyle.buttonUnClickTextStyle),
+                  ),
+                ));
         break;
       case ButtonType.iconOnLeft:
-        return GestureDetector(
-            onTap: () => onTap.call(),
-            child: Container(
-              width: 60.w,
-              height: 24.w,
-              decoration: BoxDecoration(
-                  gradient: activate ? null : DefaultStyle.buttonGradient,
-                  borderRadius: BorderRadius.circular(8.w),
-                  boxShadow: activate
-                      ? DefaultStyle.clickedButtonBoxShadow
-                      : DefaultStyle.unClickButtonBoxShadow),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PlatformAwareAssetImage(
-                      url: 'assets/images/detail/' + icon.toString() + '.png',
-                      width: 10.w,
-                      height: 12.w,
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.medium),
-                  SizedBox(
-                    width: 4.w,
+        return activate
+            ? ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(8.w),
+                child: GestureDetector(
+                    onTap: () => onTap.call(),
+                    child: Container(
+                      width: 60.w,
+                      height: 24.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          boxShadow: DefaultStyle.clickedButtonBoxShadow),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          PlatformAwareAssetImage(
+                              url: 'assets/images/detail/' +
+                                  icon.toString() +
+                                  '.png',
+                              width: 10.w,
+                              height: 12.w,
+                              fit: BoxFit.fitWidth,
+                              filterQuality: FilterQuality.medium),
+                          SizedBox(
+                            width: 4.w,
+                          ),
+                          Text(
+                            text,
+                            style: DefaultStyle.iconButtonClickedTextStyle,
+                          )
+                        ],
+                      ),
+                    )),
+              )
+            : GestureDetector(
+                onTap: () => onTap.call(),
+                child: Container(
+                  width: 60.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                      gradient: DefaultStyle.buttonGradient,
+                      borderRadius: BorderRadius.circular(8.w),
+                      boxShadow: DefaultStyle.unClickButtonBoxShadow),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PlatformAwareAssetImage(
+                          url: 'assets/images/detail/' +
+                              icon.toString() +
+                              '.png',
+                          width: 10.w,
+                          height: 12.w,
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.medium),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Text(
+                        text,
+                        style: DefaultStyle.iconButtonUnClickTextStyle,
+                      )
+                    ],
                   ),
-                  Text(
-                    text,
-                    style: activate
-                        ? DefaultStyle.iconButtonClickedTextStyle
-                        : DefaultStyle.iconButtonUnClickTextStyle,
-                  )
-                ],
-              ),
-            ));
+                ));
 
       case ButtonType.iconOnTop:
-        return GestureDetector(
-            onTap: () => onTap.call(),
-            child: Container(
-              width: 40.w,
-              height: 40.w,
-              decoration: BoxDecoration(
-                  gradient: activate ? null : DefaultStyle.buttonGradient,
-                  borderRadius: BorderRadius.circular(8.w),
-                  boxShadow: activate
-                      ? DefaultStyle.clickedButtonBoxShadow
-                      : DefaultStyle.unClickButtonBoxShadow),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PlatformAwareAssetImage(
-                      url: 'assets/images/detail/' + icon.toString() + '.png',
-                      width: 10.w,
-                      height: 12.w,
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.medium),
-                  Text(
-                    text,
-                    style: activate
-                        ? DefaultStyle.iconButtonClickedTextStyle
-                        : DefaultStyle.iconButtonUnClickTextStyle,
-                  )
-                ],
-              ),
-            ));
+        return activate
+            ? ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(8.w),
+                child: GestureDetector(
+                    onTap: () => onTap.call(),
+                    child: Container(
+                      width: 40.w,
+                      height: 40.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          boxShadow: DefaultStyle.clickedButtonBoxShadow),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          PlatformAwareAssetImage(
+                              url: 'assets/images/detail/' +
+                                  icon.toString() +
+                                  '.png',
+                              width: 10.w,
+                              height: 12.w,
+                              fit: BoxFit.fitWidth,
+                              filterQuality: FilterQuality.medium),
+                          Text(text,
+                              style: DefaultStyle.iconButtonClickedTextStyle)
+                        ],
+                      ),
+                    )),
+              )
+            : GestureDetector(
+                onTap: () => onTap.call(),
+                child: Container(
+                  width: 40.w,
+                  height: 40.w,
+                  decoration: BoxDecoration(
+                      gradient: DefaultStyle.buttonGradient,
+                      borderRadius: BorderRadius.circular(8.w),
+                      boxShadow: DefaultStyle.unClickButtonBoxShadow),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PlatformAwareAssetImage(
+                          url: 'assets/images/detail/' +
+                              icon.toString() +
+                              '.png',
+                          width: 10.w,
+                          height: 12.w,
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.medium),
+                      Text(
+                        text,
+                        style: DefaultStyle.iconButtonUnClickTextStyle,
+                      )
+                    ],
+                  ),
+                ));
     }
     return GestureDetector(
         onTap: () => onTap.call(),
