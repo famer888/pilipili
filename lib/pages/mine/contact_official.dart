@@ -182,11 +182,11 @@ class AppInfo extends StatelessWidget {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AppItem(
-                                          href: downloadLink['antDownload'],
+                                          href:downloadLink==null?'': downloadLink['antDownload']??'',
                                           type: 'my',
                                           text: '下载免费VPN'),
                                       AppItem(
-                                          href: downloadLink['tgDownload'],
+                                          href: downloadLink==null?'':downloadLink['tgDownload']??'',
                                           type: 'tg',
                                           text: '下载TG'),
                                     ],

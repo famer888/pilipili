@@ -266,10 +266,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       CommonUtils.showText('请上传图片');
       return;
     }
-    if (!isAI && videoLength == 0) {
-      CommonUtils.showText('请上传视频');
-      return;
-    }
+    // if (!isAI && videoLength == 0) {
+    //   CommonUtils.showText('请上传视频');
+    //   return;
+    // }
     List newFilelist =
         [...imageList.value, ...(isAI ? [] : videoList.value)].where((element) {
       GlobalKey<FileUploadItemState> _key = element['key'];
