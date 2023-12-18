@@ -52,10 +52,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
       return;
     }
     PageStatus.showLoading();
-    withdrawMoney(
-            account: userBlankNumber,
-            name: userName,
-            amount: userMoney)
+    withdrawMoney(account: userBlankNumber, name: userName, amount: userMoney)
         .then((res) {
       if (res['status'] != 0) {
         getUserInfo(context);
@@ -241,7 +238,9 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                     height: 2.w,
                                   ),
                                   Text(
-                                      (postMoney * (config.withdraw_rate / 100))
+                                      double.parse((postMoney *
+                                                  (config.withdraw_rate / 100))
+                                              .toStringAsFixed(1))
                                           .toString(),
                                       style: TextStyle(
                                           color: Color(0xffFE155B),
