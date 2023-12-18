@@ -80,12 +80,14 @@ class _PublicBuildListState extends State<PublicBuildList> {
       CommonUtils.debugPrint("--${widget.api}------请求的返回${res.data}");
       if (res.data['status'] != 0) {
         if (res.data['data'] != null && res.data['data'] is List) {
-          resdata = (res.data['data'] == null ? [] : res.data['data']);
+          resdata = res.data['data'];
         } else {
-          List _list = res.data['data']['result'] ??
-              res.data['data']['list'] ??
-              res.data['data'] ??
-              [];
+          List _list = (res.data['data'] == null
+              ? []
+              : res.data['data']['result'] ??
+                  res.data['data']['list'] ??
+                  res.data['data'] ??
+                  []);
           resdata = _list;
         }
 

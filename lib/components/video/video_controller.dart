@@ -162,6 +162,8 @@ class _VideoControllerState extends State<VideoController>
       widget.videoController?.dispose();
       EventBus().off('stop-current-play');
     }
+    loading.dispose();
+    videoValue.dispose();
     timerfc?.cancel();
     super.dispose();
   }

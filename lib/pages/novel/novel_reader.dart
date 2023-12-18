@@ -125,13 +125,14 @@ class _NovelReaderState extends State<NovelReader> {
       }
     } else {
       //金币
-      if (item['has_permission']) {
+      int _coin=double.parse(item['coins'].toString()).toInt();
+      if (_coin==0||item['has_permission']!=null&&item['has_permission']) {
         context.push('/novelReader/${item['id']}',
             replace: true);
       } else {
         int money =
             Provider.of<HomeConfig>(context, listen: false).member.money;
-        bool isInsufficient = money < item['coin'];
+        bool isInsufficient = money < _coin;
         YyShowDialog.showdialog(context,
             title: '温馨提示',
             btnText: isInsufficient ? '余额不足,去充值' : '立即购买',
@@ -159,7 +160,7 @@ class _NovelReaderState extends State<NovelReader> {
                   color: Color(0xff646464),
                   fontSize: ScreenUtil().setSp(16),
                   fontWeight: FontWeight.bold),
-              child: Text('花費${item['coin']}皮哩币观看完整小說'));
+              child: Text('花費${_coin}皮哩币观看完整小說'));
         });
       }
     }

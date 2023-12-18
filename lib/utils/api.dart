@@ -1097,7 +1097,7 @@ Future<Map> prePostData() async {
 
 //社区发帖
 Future<Map> createPost(
-    {int topicId,
+    {String topicId,
     String coins,
     String title,
     String content,
@@ -1355,7 +1355,7 @@ Future<Map> getChapterDetail(int chapterId) async {
 // 小说发表评论
 Future novelComment({int novelId, String content, int parentId}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/comment/comment',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/comment',
         data: {'novelId': novelId, 'content': content, 'parentId': parentId});
     return res.data;
   } catch (e) {

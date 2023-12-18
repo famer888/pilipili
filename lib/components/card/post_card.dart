@@ -85,8 +85,12 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.push('/communityDetail/${data['id']}');
+      onTap: () {CommonUtils.debugPrint(data['status']);
+        if (data['status'] == 1 || data['status'] == null) {
+          context.push('/communityDetail/${data['id']}');
+        } else {
+          CommonUtils.showText('帖子当前状态不支持查看～');
+        }
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 6.w),

@@ -375,6 +375,7 @@ class _SearchPageState extends State<SearchPage> {
                                         isShow: true,
                                         mainAxisSpacing: 16.w,
                                         row: 3,
+                                        isController: false,
                                         aspectRatio: 109 / 190,
                                         data: {'order': '1'},
                                         nullText: '还没有小说哦～',

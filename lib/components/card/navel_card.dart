@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/yy_dialog.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
+import 'package:pilipili/utils/privilege.dart';
 
 class NovelCard extends StatelessWidget {
   const NovelCard({Key key, this.data}) : super(key: key);
@@ -10,7 +14,30 @@ class NovelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/novelDetail/${data['id']}',isNoRepeat: true);
+        bool _isAllowed = Privilege.isAllowed(
+            context, RESOURCE_TYPE_STORY, PRIVILEGE_TYPE_VIEW);
+        if (!_isAllowed) {
+          YyShowDialog.showdialog(
+            context,
+            content: (setDialogState) {
+              return Text(
+                '您没有开启小说权限呢！天马行空的色情想法就在眼前~',
+                style: TextStyle(
+                    color: DefaultStyle.themeColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenUtil().setSp(16),
+                    decoration: TextDecoration.none),
+              );
+            },
+            cancelText: '取消',
+            btnText: PPString.upgradeNuw,
+            callBack: () {
+              context.push('/vip');
+            },
+          );
+          return;
+        }
+        context.push('/novelDetail/${data['id']}', isNoRepeat: true);
       },
       child: Column(
         children: [
@@ -53,7 +80,7 @@ class NovelCard extends StatelessWidget {
             height: 4.w,
           ),
           Text(
-            data['name']??'标题',
+            data['name'] ?? '标题',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

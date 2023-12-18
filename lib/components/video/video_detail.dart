@@ -170,6 +170,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   void dispose() {
     controller?.dispose();
     commentController?.dispose();
+    isFavoriteNotifier.dispose();
     super.dispose();
   }
 

@@ -40,12 +40,14 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   bool loading = true;
   int maxLength = 9;
   int isPublic = 1;
+  bool isChange = false;
   int videoMaxLength = 1;
-  int selectId = 0;
+  ValueNotifier<List> selectTopic = ValueNotifier([]);
   bool isAI = false;
   String aiMsg = '';
+  List tags = [];
   String aiCoins = '0';
-  String selectText;
+  int oImageLength = 0;
 //选择视频
   Future<void> videoPickerAssets() async {
     int _length = videoList.value
@@ -100,30 +102,34 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     }
   }
 
+  isSelect(List _tags, int id) {
+    return _tags.any((element) => int.parse(element['id'].toString()) == id);
+  }
+
+  changeImage() {
+    isChange = true;
+  }
+
   getCircle() {
     //所有圈子/发帖规则
     prePostData().then((res) {
       if (res['status'] != 0) {
-        CommonUtils.debugPrint(res['data']);
         topics = res['data']['topic'] ?? [];
-        selectId = topics[0]['topic_id'];
         aiCoins = res['data']['ai_coins'];
         aiMsg = res['data']['ai_msg'];
-        isAI = topics[0]['is_ai'] != 0;
-
         if (AppGlobal.postInfo.isNotEmpty) {
           Map info = AppGlobal.postInfo;
-          CommonUtils.debugPrint(info);
           title.text = info['title'];
           content.text = info['content'];
           showCoinInput.value = true;
           coin.text = info['unlock_coins'].toString();
-          selectText = '#${info['topics']}';
-          selectId = int.parse(info['topic_id']);
-          List _v = topics
-              .where((element) => element['topic_id'] == selectId)
-              .toList();
-          isAI = _v[0]['is_ai'] != 0;
+          selectTopic.value = info['topic_info'];
+          isAI = selectTopic.value
+              .where((element) {
+                return element['is_ai'] != 0;
+              })
+              .toList()
+              .isNotEmpty;
           List newImageList = List.from(info['medias'])
               .where((item) => item['type'] == 1)
               .toList();
@@ -158,6 +164,12 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         }
         loading = false;
         setState(() {});
+        oImageLength = imageList.value.length;
+        imageList.addListener(() {
+          if (imageList.value.length != oImageLength && !isChange) {
+            isChange = true;
+          }
+        });
       } else {
         CommonUtils.showText(res['msg'] ?? '接口异常');
       }
@@ -172,26 +184,32 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         })
         .toList()
         .length;
-    int videoLength = videoList.value
-        .where((element) {
-          GlobalKey<FileUploadItemState> _key = element['key'];
-          return _key.currentState.showLoad.value;
-        })
-        .toList()
-        .length;
+    int videoLength = isAI
+        ? 0
+        : videoList.value
+            .where((element) {
+              GlobalKey<FileUploadItemState> _key = element['key'];
+              return _key.currentState.showLoad.value;
+            })
+            .toList()
+            .length;
     return imageLength > 0 || videoLength > 0;
   }
 
   publishAiPost() {
-    YyShowDialog.showdialog(context,
-        title: '温馨提示', btnText: '立即购买', cancelText: '取消', callBack: () {
+    if (isChange) {
+      YyShowDialog.showdialog(context,
+          title: '温馨提示', btnText: '立即购买', cancelText: '取消', callBack: () {
+        publishPost();
+      }, content: (setDialogState) {
+        return DefaultTextStyle(
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Color(0xffFF5B8C), fontSize: 16.sp),
+            child: Text('AI脱衣将会花费$aiCoins皮哩币，若有VIP发布次数则会优先扣除是否确定发布帖子？'));
+      });
+    } else {
       publishPost();
-    }, content: (setDialogState) {
-      return DefaultTextStyle(
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Color(0xffFF5B8C), fontSize: 16.sp),
-          child: Text('AI脱衣将会花费$aiCoins皮哩币，若有VIP发布次数则会优先扣除是否确定发布帖子？'));
-    });
+    }
   }
 
   publishPost() {
@@ -206,14 +224,16 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         })
         .toList()
         .length;
-    int videoLength = videoList.value
-        .where((element) {
-          GlobalKey<FileUploadItemState> _key = element['key'];
-          return _key.currentState.showWidget;
-        })
-        .toList()
-        .length;
-    if (selectText == null) {
+    int videoLength = isAI
+        ? 0
+        : videoList.value
+            .where((element) {
+              GlobalKey<FileUploadItemState> _key = element['key'];
+              return _key.currentState.showWidget;
+            })
+            .toList()
+            .length;
+    if (selectTopic.value.isEmpty) {
       CommonUtils.showText('请选择圈子');
       return;
     }
@@ -224,7 +244,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
           CommonUtils.showText('帖子最高价格请设置900以内');
           return;
         }
-        if (_coins > 0 && videoLength == 0) {
+        if (_coins > 0 && videoLength == 0 && !isAI) {
           CommonUtils.showText('视频帖子才能设置价格');
           return;
         }
@@ -242,12 +262,16 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       return;
     }
 
-    if (videoLength == 0 && imageLength == 0) {
-      CommonUtils.showText('请上传图片或视频');
+    if (imageLength == 0) {
+      CommonUtils.showText('请上传图片');
+      return;
+    }
+    if (!isAI && videoLength == 0) {
+      CommonUtils.showText('请上传视频');
       return;
     }
     List newFilelist =
-        [...imageList.value, ...videoList.value].where((element) {
+        [...imageList.value, ...(isAI ? [] : videoList.value)].where((element) {
       GlobalKey<FileUploadItemState> _key = element['key'];
       return _key.currentState.showWidget;
     }).toList();
@@ -266,30 +290,26 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
             postInfo: AppGlobal.postInfo,
             coins: coin.text,
             title: title.text,
-            topicId: selectId,
+            topicId: selectTopic.value.map((e) => e['id']).toList().join(','),
             content: content.text,
             medias: fileList,
             is_open: isAI ? isPublic : 0)
         .then((value) {
       if (value['status'] != 0) {
-         context.pop();
-         YyShowDialog.showdialog(context,
-          title: '发布成功',
-          btnText: '查看帖子',
-          cancelText: '取消', callBack: () {
-           context.push('/myPost');
-
-      }, content: (setDialogState) {
-        return DefaultTextStyle(
-            style: TextStyle(
-              color: Color(0xffFF5B8C),
-              fontSize: ScreenUtil().setSp(16),
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-            child: Text('帖子发布成功,请耐心等待审核,可以在\n我的>帖子管理中查看'));
-      });
-       
+        context.pop();
+        YyShowDialog.showdialog(context,
+            title: '发布成功', btnText: '查看帖子', cancelText: '取消', callBack: () {
+          AppGlobal.appContext.push('/myPost');
+        }, content: (setDialogState) {
+          return DefaultTextStyle(
+              style: TextStyle(
+                color: Color(0xffFF5B8C),
+                fontSize: ScreenUtil().setSp(16),
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+              child: Text('帖子发布成功,请耐心等待审核,可以在\n我的>帖子管理中查看'));
+        });
       } else {
         print(value['msg']);
         CommonUtils.showText(value['msg'] ?? '接口异常');
@@ -315,6 +335,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     title.dispose();
     coin.dispose();
     content.dispose();
+    selectTopic.dispose();
   }
 
   static TextStyle titleStyle = TextStyle(
@@ -346,10 +367,21 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   }
 
   showQuanzi() {
-    String tags = topics[0]['topic_name_formate'];
+    tags = [...selectTopic.value];
     YyShowDialog.showdialog(context,
         title: '选择圈子', btnText: '确定', cancelText: '取消', callBack: () {
-      selectText = tags;
+      selectTopic.value = tags;
+      isAI = selectTopic.value
+          .where((element) {
+            return element['is_ai'] != 0;
+          })
+          .toList()
+          .isNotEmpty;
+      if (isAI) {
+        maxLength = 3;
+      } else {
+        maxLength = 9;
+      }
       setState(() {});
     }, content: (setDialogState) {
       return SizedBox(
@@ -368,13 +400,16 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  selectId = topics[index]['topic_id'];
-                  tags = topics[index]['topic_name_formate'];
-                  isAI = topics[index]['is_ai'] != 0;
-                  if (isAI) {
-                    maxLength = 3;
+                  if (isSelect(tags, topics[index]['topic_id'])) {
+                    int _index = tags.indexWhere((element) =>
+                        element['id'] == topics[index]['topic_id'].toString());
+                    tags.removeAt(_index);
                   } else {
-                    maxLength = 9;
+                    tags.add({
+                      'id': topics[index]['topic_id'].toString(),
+                      'title': topics[index]['topic_name'],
+                      'is_ai': topics[index]['is_ai']
+                    });
                   }
                   setDialogState(() {});
                 },
@@ -382,12 +417,12 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
-                      color: selectId == topics[index]['topic_id']
+                      color: isSelect(tags, topics[index]['topic_id'])
                           ? Color(0xffFF84A9)
                           : Colors.white,
                       boxShadow: [
                         BoxShadow(
-                            color: selectId == topics[index]['topic_id']
+                            color: isSelect(tags, topics[index]['topic_id'])
                                 ? Color(0xffA82118).withOpacity(0.26)
                                 : Color(0xffFFD3E6),
                             offset: Offset(0, 2),
@@ -397,7 +432,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                   child: Text(
                     topics[index]['topic_name'],
                     style: TextStyle(
-                        color: selectId == topics[index]['topic_id']
+                        color: isSelect(tags, topics[index]['topic_id'])
                             ? Colors.white
                             : (topics[index]['is_ai'] != 0
                                 ? Color(0xffFE155B)
@@ -441,20 +476,34 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                             height: 8.w,
                           ),
                           InkWell(
-                            onTap: showQuanzi,
+                            onTap: () {
+                              showQuanzi();
+                            },
                             child: SizedBox(
                               height: 36.w,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    selectText ?? '#選擇圈子',
-                                    style: TextStyle(
-                                        color: Color(0xff6d6d6d),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400),
-                                  ),
+                                  ValueListenableBuilder(
+                                      valueListenable: selectTopic,
+                                      builder: (context, _val, child) {
+                                        return Expanded(
+                                            child: Text(
+                                          _val.isEmpty
+                                              ? '#選擇圈子'
+                                              : _val
+                                                  .map((e) => '#${e['title']}')
+                                                  .toList()
+                                                  .join(','),
+                                          style: TextStyle(
+                                              color: Color(0xff6d6d6d),
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ));
+                                      }),
                                   getImage('assets/images/2023/setup_right.png',
                                       width: 16.w, height: 16.w, isAssets: true)
                                 ],
@@ -469,73 +518,78 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                       fontSize: 12.sp),
                                 )
                               : SizedBox(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              '上傳視頻',
-                                              style: titleStyle,
-                                            ),
-                                            SizedBox(
-                                              width: 8.w,
-                                            ),
-                                            Text(
-                                              '0/$videoMaxLength',
-                                              style: subtitleStyle,
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          '支持mp4/mov格式，不超过 100 MB',
-                                          style: subtitleStyle,
-                                        ),
-                                      ],
-                                    ),
-                                    GestureDetector(
-                                        onTap: videoPickerAssets,
-                                        child: tapBtn('新增影片'))
-                                  ],
+                          isAI
+                              ? SizedBox()
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    '上傳視頻',
+                                                    style: titleStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8.w,
+                                                  ),
+                                                  Text(
+                                                    '0/$videoMaxLength',
+                                                    style: subtitleStyle,
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                '支持mp4/mov格式，不超过 100 MB',
+                                                style: subtitleStyle,
+                                              ),
+                                            ],
+                                          ),
+                                          GestureDetector(
+                                              onTap: videoPickerAssets,
+                                              child: tapBtn('新增影片'))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 8.w,
+                                      ),
+                                      ValueListenableBuilder(
+                                          valueListenable: videoList,
+                                          builder:
+                                              (context, List videos, child) {
+                                            return videos.isEmpty
+                                                ? Container()
+                                                : Wrap(
+                                                    spacing: 4.w,
+                                                    runSpacing: 4.w,
+                                                    alignment: WrapAlignment
+                                                        .spaceBetween,
+                                                    children: videos
+                                                        .asMap()
+                                                        .keys
+                                                        .map((index) {
+                                                      return FileUploadItem(
+                                                          type: 2,
+                                                          key: videos[index]
+                                                              ['key'],
+                                                          data: videos[index]);
+                                                    }).toList(),
+                                                  );
+                                          })
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 8.w,
-                                ),
-                                ValueListenableBuilder(
-                                    valueListenable: videoList,
-                                    builder: (context, List videos, child) {
-                                      return videos.isEmpty
-                                          ? Container()
-                                          : Wrap(
-                                              spacing: 4.w,
-                                              runSpacing: 4.w,
-                                              alignment:
-                                                  WrapAlignment.spaceBetween,
-                                              children: videos
-                                                  .asMap()
-                                                  .keys
-                                                  .map((index) {
-                                                return FileUploadItem(
-                                                    type: 2,
-                                                    key: videos[index]['key'],
-                                                    data: videos[index]);
-                                              }).toList(),
-                                            );
-                                    })
-                              ],
-                            ),
-                          ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.w),
                             child: Column(
@@ -683,6 +737,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                         child: GestureDetector(
                                       onTap: () {
                                         isPublic = 1;
+                                        coin.text = '';
                                         setState(() {});
                                       },
                                       child: Container(
@@ -733,79 +788,86 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                   ],
                                 )
                               : SizedBox(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '設置金幣',
-                                      style: titleStyle,
-                                    ),
-                                    SizedBox(
-                                      width: 8.w,
-                                    ),
-                                    Text(
-                                      '最高設置900皮哩幣',
-                                      style: subtitleStyle,
-                                    )
-                                  ],
+                          isPublic == 1 && isAI
+                              ? SizedBox()
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            '設置金幣',
+                                            style: titleStyle,
+                                          ),
+                                          SizedBox(
+                                            width: 8.w,
+                                          ),
+                                          Text(
+                                            '最高設置900皮哩幣',
+                                            style: subtitleStyle,
+                                          )
+                                        ],
+                                      ),
+                                      ValueListenableBuilder(
+                                          valueListenable: showCoinInput,
+                                          builder: (context, value, child) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                showCoinInput.value =
+                                                    !showCoinInput.value;
+                                                coin.text = '';
+                                              },
+                                              child: tapBtn(value ? '關閉' : '開啟',
+                                                  status: !showCoinInput.value),
+                                            );
+                                          })
+                                    ],
+                                  ),
                                 ),
-                                ValueListenableBuilder(
-                                    valueListenable: showCoinInput,
-                                    builder: (context, value, child) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          showCoinInput.value =
-                                              !showCoinInput.value;
-                                          coin.text = '';
-                                        },
-                                        child: tapBtn(value ? '關閉' : '開啟',
-                                            status: !showCoinInput.value),
-                                      );
-                                    })
-                              ],
-                            ),
-                          ),
-                          ValueListenableBuilder(
-                            valueListenable: showCoinInput,
-                            builder: (context, value, child) {
-                              return value ? child : Container();
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w),
-                              alignment: Alignment.center,
-                              child: TextField(
-                                autofocus: true,
-                                controller: coin,
-                                maxLength: 20,
-                                cursorColor: Color(0xffFF84A9),
-                                textInputAction: TextInputAction.done,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
-                                decoration: InputDecoration(
-                                    isDense: true,
-                                    counterText: '',
-                                    hintText: '請輸入金額',
-                                    hintStyle: TextStyle(
+                          isPublic == 1 && isAI
+                              ? SizedBox()
+                              : ValueListenableBuilder(
+                                  valueListenable: showCoinInput,
+                                  builder: (context, value, child) {
+                                    return value ? child : Container();
+                                  },
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.w),
+                                    alignment: Alignment.center,
+                                    child: TextField(
+                                      autofocus: true,
+                                      controller: coin,
+                                      maxLength: 20,
+                                      cursorColor: Color(0xffFF84A9),
+                                      textInputAction: TextInputAction.done,
+                                      keyboardType:
+                                          TextInputType.numberWithOptions(
+                                              decimal: true),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp(r'[0-9]')),
+                                      ],
+                                      decoration: InputDecoration(
+                                          isDense: true,
+                                          counterText: '',
+                                          hintText: '請輸入金額',
+                                          hintStyle: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: Color(0xffc2c2c2)),
+                                          contentPadding: EdgeInsets.zero,
+                                          border: InputBorder.none),
+                                      style: TextStyle(
+                                        color: Color(0xff6D6D6D),
                                         fontSize: 14.sp,
-                                        color: Color(0xffc2c2c2)),
-                                    contentPadding: EdgeInsets.zero,
-                                    border: InputBorder.none),
-                                style: TextStyle(
-                                  color: Color(0xff6D6D6D),
-                                  fontSize: 14.sp,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 16.w),
                             child: GestureDetector(

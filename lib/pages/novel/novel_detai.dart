@@ -41,6 +41,7 @@ class _NovelDetailState extends State<NovelDetail> {
   bool isTap = false;
   bool isFavorites = false;
   bool loading = true;
+  bool isBuy = false;
   Map novelLocal = {};
   ValueNotifier<List> recommendList = ValueNotifier([]);
   ValueNotifier<bool> isMore = ValueNotifier(false);
@@ -119,12 +120,13 @@ class _NovelDetailState extends State<NovelDetail> {
           }
         } else {
           //金币
-          if (item['has_permission']) {
+          if (isBuy || item['has_permission']) {
             context.push('/novelReader/${item['id']}');
           } else {
             int money =
                 Provider.of<HomeConfig>(context, listen: false).member.money;
-            bool isInsufficient = money < item['coin'];
+            bool isInsufficient =
+                money < double.parse(item['coins'].toString());
             YyShowDialog.showdialog(context,
                 title: '温馨提示',
                 btnText: isInsufficient ? '余额不足,去充值' : '立即购买',
@@ -134,8 +136,10 @@ class _NovelDetailState extends State<NovelDetail> {
               } else {
                 PageStatus.showLoading();
                 novelBuy(widget.id).then((res) async {
+                  print(res);
                   if (res['status'] != 0) {
                     CommonUtils.showText('购买成功');
+                    isBuy = true;
                     context.push('/novelReader/${item['id']}');
                   } else {
                     CommonUtils.showText(res['msg'] ?? '系统错误～');
@@ -150,7 +154,7 @@ class _NovelDetailState extends State<NovelDetail> {
                       color: Color(0xff646464),
                       fontSize: ScreenUtil().setSp(16),
                       fontWeight: FontWeight.bold),
-                  child: Text('花費${item['coin']}皮哩币观看完整小說'));
+                  child: Text('花費${item['coins']}皮哩币观看完整小說'));
             });
           }
         }
