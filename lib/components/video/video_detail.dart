@@ -620,7 +620,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               },
                                                             ),
                                                             SizedBox(
-                                                              width: 20.w,
+                                                              width: 4.w,
                                                             ),
                                                             ValueListenableBuilder(
                                                                 valueListenable:
@@ -667,7 +667,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   );
                                                                 }),
                                                             SizedBox(
-                                                              width: 20.w,
+                                                              width: 4.w,
                                                             ),
                                                             ButtonItem(
                                                               icon:

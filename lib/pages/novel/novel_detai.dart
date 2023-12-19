@@ -323,8 +323,6 @@ class _NovelDetailState extends State<NovelDetail> {
                                         child: Container(
                                       height: double.infinity,
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -335,11 +333,15 @@ class _NovelDetailState extends State<NovelDetail> {
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Text(
-                                            '作者：${data['author'] ?? '鸡儿川'}',
-                                            style: TextStyle(
-                                              color: Color(0xffFF5B8C),
-                                              fontSize: 12.sp,
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 8.w),
+                                            child: Text(
+                                              '作者：${data['author'] ?? '鸡儿川'}',
+                                              style: TextStyle(
+                                                color: Color(0xffFF5B8C),
+                                                fontSize: 12.sp,
+                                              ),
                                             ),
                                           ),
                                           Text(
@@ -347,6 +349,9 @@ class _NovelDetailState extends State<NovelDetail> {
                                             style: TextStyle(
                                                 color: Color(0xff979797),
                                                 fontSize: 11.sp),
+                                          ),
+                                          SizedBox(
+                                            height: 8.w,
                                           ),
                                           Wrap(
                                               spacing: 4.w,

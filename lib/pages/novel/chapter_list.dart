@@ -191,6 +191,7 @@ class _ChapterListState extends State<ChapterList> {
           ),
           Expanded(
               child: PublicBuildList(
+                paddingTop: 16.w,
                   paddingLeft: 16.w,
                   paddingRight: 16.w,
                   api: '/api/novel/getChapterList',

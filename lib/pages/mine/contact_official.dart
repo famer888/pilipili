@@ -56,6 +56,7 @@ class _ContactOfficialState extends State<ContactOfficial> {
 
   @override
   Widget build(BuildContext context) {
+    CommonUtils.debugPrint(downloadLink);
     return Scaffold(
         body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +75,10 @@ class _ContactOfficialState extends State<ContactOfficial> {
                         .asMap()
                         .keys
                         .map(
-                          (e) => ContactItem(itemData: dataList[e]),
+                          (e) => ContactItem(
+                            itemData: dataList[e],
+                            downloadLink: downloadLink,
+                          ),
                         )
                         .toList(),
                   ),
@@ -106,13 +110,12 @@ class AppInfo extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     getImage(
-                      info['type'] == 'Telegram'
-                          ? PPAssetsPath.iconTG
-                          : PPAssetsPath.iconPT,
-                      width: 38.8.w,
-                      height: 38.8.w,
-                      isAssets: true
-                    ),
+                        info['type'] == 'Telegram'
+                            ? PPAssetsPath.iconTG
+                            : PPAssetsPath.iconPT,
+                        width: 38.8.w,
+                        height: 38.8.w,
+                        isAssets: true),
                     SizedBox(
                       width: 13.w,
                     ),
@@ -182,11 +185,11 @@ class AppInfo extends StatelessWidget {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AppItem(
-                                          href:downloadLink==null?'': downloadLink['antDownload']??'',
+                                          href: downloadLink['antDownload'],
                                           type: 'my',
                                           text: '下载免费VPN'),
                                       AppItem(
-                                          href: downloadLink==null?'':downloadLink['tgDownload']??'',
+                                          href: downloadLink['tgDownload'],
                                           type: 'tg',
                                           text: '下载TG'),
                                     ],
