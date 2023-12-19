@@ -132,7 +132,6 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                               keyboardType: widget.boardType,
                               textInputAction: TextInputAction.done,
                               autofocus: !kIsWeb,
-                              maxLengthEnforced: true,
                               controller: editingController,
                               decoration: InputDecoration(
                                   isDense: true,

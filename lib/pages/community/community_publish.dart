@@ -62,10 +62,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       return;
     }
     final XFile file = await _picker.pickVideo(source: ImageSource.gallery);
-    if (file != null) {
-      bool flag =
-          await CommonUtils.pngLimitSize(file, size: 100, tips: "请上传100M以内的视频");
-      if (flag) return;
+    if (kIsWeb) {
       String ext = file.name.split(".").last.toLowerCase();
       if (ext == "mp4" || file.mimeType == 'video/quicktime') {
         videoList.value = [
@@ -74,6 +71,21 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         ];
       } else {
         CommonUtils.showText('请选择mp4格式的视频');
+      }
+    } else {
+      if (file != null) {
+        bool flag = await CommonUtils.pngLimitSize(file,
+            size: 100, tips: "请上传100M以内的视频");
+        if (flag) return;
+        String ext = file.name.split(".").last.toLowerCase();
+        if (ext == "mp4" || file.mimeType == 'video/quicktime') {
+          videoList.value = [
+            ...videoList.value,
+            {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+          ];
+        } else {
+          CommonUtils.showText('请选择mp4格式的视频');
+        }
       }
     }
   }
@@ -92,13 +104,20 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       return;
     }
     final XFile file = await _picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
-      if (flag) return;
+    if (kIsWeb) {
       imageList.value = [
         ...imageList.value,
         {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
       ];
+    } else {
+      if (file != null) {
+        bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
+        if (flag) return;
+        imageList.value = [
+          ...imageList.value,
+          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+        ];
+      }
     }
   }
 
