@@ -16,13 +16,7 @@ import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class Lanmu extends StatefulWidget {
-  Lanmu(
-      {Key key,
-      this.data,
-      this.id,
-      this.isShow,
-      this.index,
-      this.parentName})
+  Lanmu({Key key, this.data, this.id, this.isShow, this.index, this.parentName})
       : super(key: key);
   final dynamic data;
   final int id;
@@ -63,6 +57,10 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
   }
 
   Future<void> getPageData() async {
+    if (page == 1 && pageStatus != 1) {
+      pageStatus = 1;
+      setState(() {});
+    }
     await getConstructById(id: widget.id, page: page, limit: limit).then((res) {
       if (res == null) {
         networkErr = true;
@@ -185,7 +183,8 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                               ),
                             ),
                           ),
-                          flexibleSpace: HomeTopBanner(fixedBanner:fixedBanner)),
+                          flexibleSpace:
+                              HomeTopBanner(fixedBanner: fixedBanner)),
                       cm_data?.elements == null
                           ? SliverToBoxAdapter()
                           : SliverList(
