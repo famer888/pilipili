@@ -55,7 +55,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
   getPageData() {
     newestSeries.clear();
     getComicDetail(id: widget.id).then((res) {
-      // LogUtil.d("漫画数据---------${res.data.toJson()}");
+     CommonUtils.debugPrint(res);
       if (res.status != 0) {
         loading = false;
         AppGlobal.comicThumb = res.data.thumb;

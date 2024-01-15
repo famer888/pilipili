@@ -57,44 +57,49 @@ class _HomeState extends State<Home> {
       "keepAlive": false,
       "page": PiliCiyuan(),
       "title": "pili次元",
-      "activeIcon": PPAssetsPath.piliActive,
-      "icon": PPAssetsPath.pili,
+      "activeIcon": 'assets/images/2024/bottomTab/pili_active.png',
+      "icon": 'assets/images/2024/bottomTab/pili_inactive.png',
+      "asset": true
     },
     {
       "keepAlive": false,
       "page": Dongman(),
       "title": "动漫",
-      "activeIcon": PPAssetsPath.cartoonActive,
-      "icon": PPAssetsPath.cartoon,
+      "activeIcon": 'assets/images/2024/bottomTab/tv_active.png',
+      "icon": 'assets/images/2024/bottomTab/tv_inactive.png',
+      "asset": true
     },
     {
       "keepAlive": false,
       "page": Manhua(),
       "title": "漫画",
-      "activeIcon": PPAssetsPath.comicsActive,
-      "icon": PPAssetsPath.comics,
+      "activeIcon": 'assets/images/2024/bottomTab/comic_active.png',
+      "icon": 'assets/images/2024/bottomTab/comic_inactive.png',
+      "asset": true
     },
     {
       "keepAlive": false,
       "page": AnwangPage(),
       "title": "暗網",
-      "activeIcon": 'assets/images/2023/bottomTab/anwang_active.png',
-      "icon": 'assets/images/2023/bottomTab/anwang.png',
+      "activeIcon": 'assets/images/2024/bottomTab/hacker_active.png',
+      "icon": 'assets/images/2024/bottomTab/hacker_inactive.png',
       "asset": true
     },
     {
       "keepAlive": false,
       "page": YuemeiShequ(),
       "title": "妹圈",
-      "activeIcon": PPAssetsPath.yuemeiActive,
-      "icon": PPAssetsPath.yuemei,
+      "activeIcon": 'assets/images/2024/bottomTab/date_active.png',
+      "icon": 'assets/images/2024/bottomTab/date_inactive.png',
+      "asset": true
     },
     {
       "keepAlive": true,
       "page": Wode(),
       "title": "我的",
-      "activeIcon": PPAssetsPath.userActive,
-      "icon": PPAssetsPath.user
+      "activeIcon": 'assets/images/2024/bottomTab/mine_active.png',
+      "icon": 'assets/images/2024/bottomTab/mine_inactive.png',
+      "asset": true
     },
   ];
   ValueNotifier<int> selectedKey = ValueNotifier(0);
