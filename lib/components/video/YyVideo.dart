@@ -13,6 +13,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/shelf_proxy.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
@@ -26,6 +27,7 @@ class YyVideo extends StatefulWidget {
       {Key key,
       this.id,
       this.videoUrl,
+      this.cover,
       this.setVideoUrl, // 改变父组件url
       this.noBack = false,
       this.isCardAuto = false, //是否为卡片形式的自动方法
@@ -55,6 +57,7 @@ class YyVideo extends StatefulWidget {
   final dynamic data;
   final bool isLocal;
   final bool isPreview;
+  final String cover;
 
   @override
   _YyVideoState createState() => _YyVideoState();
@@ -118,7 +121,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
 
   @override
   Widget build(BuildContext context) {
-    return videoBuild();
+    return RepaintBoundary(child: videoBuild());
   }
 
   buySmallVideo() {
@@ -147,6 +150,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
     return Container(
       width: double.infinity,
       height: double.infinity,
+      color: Colors.black,
       child: Stack(
         children: [
           (widget.videoUrl == null || widget.videoUrl == '') &&
@@ -168,7 +172,8 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                           ? Stack(
                               children: [
                                 PlatformAwareNetworkImage(
-                                  url: widget.data.thumbCover ??
+                                  url: widget.cover ??
+                                      widget.data.thumbCover ??
                                       widget.data.coverThumbHorizontal,
                                   fit: BoxFit.cover,
                                 ),
@@ -189,34 +194,44 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
           widget.videoUrl == null && widget.controller == null ||
                   videoController == null
               ? Container()
-              : VideoController(
-                  setPreviewShow: (bool show) {
-                    if (show != previewShow) {
-                      previewShow = show;
-                      setState(() {});
-                    }
-                  },
-                  isPreview: widget.isPreview,
-                  videoController: videoController,
-                  isCardAuto: widget.isCardAuto,
-                  hideControl: widget.hideControl,
-                  previewShow: previewShow,
-                  initShow:
-                      widget.controller == null && widget.videoUrl == null,
-                  data: widget.data,
-                  autoPlay: widget.autoPlay,
-                  id: widget.id,
-                  loop: widget.loop,
-                  noVolume: widget.noVolume,
-                  noBack: widget.noBack,
-                  isFull: widget.isFull,
-                  setController: widget.setController,
-                  videoUrl: widget.videoUrl,
-                  setVideoUrl: widget.setVideoUrl,
-                  uploadVideo: () {
-                    setState(() {});
-                  },
-                  isLocal: widget.isLocal),
+              : RepaintBoundary(
+                  child: Padding(
+                      padding: EdgeInsets.only(
+                          top: widget.cover == null
+                              ? 0
+                              : ScreenUtil().statusBarHeight,
+                          bottom: widget.cover == null
+                              ? 0
+                              : ScreenUtil().bottomBarHeight + 30.w),
+                      child: VideoController(
+                          setPreviewShow: (bool show) {
+                            if (show != previewShow) {
+                              previewShow = show;
+                              setState(() {});
+                            }
+                          },
+                          isPreview: widget.isPreview,
+                          videoController: videoController,
+                          isCardAuto: widget.isCardAuto,
+                          hideControl: widget.hideControl,
+                          previewShow: previewShow,
+                          initShow: widget.controller == null &&
+                              widget.videoUrl == null,
+                          data: widget.data,
+                          autoPlay: widget.autoPlay,
+                          id: widget.id,
+                          loop: widget.loop,
+                          noVolume: widget.noVolume,
+                          noBack: widget.noBack,
+                          isFull: widget.isFull,
+                          setController: widget.setController,
+                          videoUrl: widget.videoUrl,
+                          setVideoUrl: widget.setVideoUrl,
+                          uploadVideo: () {
+                            setState(() {});
+                          },
+                          isLocal: widget.isLocal)),
+                ),
           widget.isLocal || widget.videoUrl != null
               ? Container()
               : Positioned(
@@ -244,7 +259,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                       : GestureDetector(
                           onTap: () {
                             if (widget.data.isfree == 1) {
-                              context.push('/${Routes.vip}');
+                              context.push('/vip');
                             } else {
                               showBuy(widget.data, buySmallVideo);
                             }
@@ -272,8 +287,11 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                                       child: Text.rich(TextSpan(children: [
                                     TextSpan(
                                         text: widget.data.isfree == 1
-                                            ? '立即成为VIP解锁全站视频'
-                                            : '支付${widget.data.discountCoins}币即可观看完整版',
+                                            ? PPString.vipNowSeeVideo
+                                            : '支付' +
+                                                widget.data.discountCoins
+                                                    .toString() +
+                                                '币即可观看完整版',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -297,7 +315,14 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                           ),
                         )),
           videoController == null || !videoController.value.isInitialized
-              ? Positioned(child: head())
+              ? Positioned(
+                  child: Padding(
+                  padding: EdgeInsets.only(
+                      top: widget.cover == null
+                          ? 0
+                          : ScreenUtil().statusBarHeight),
+                  child: head(),
+                ))
               : Container()
         ],
       ),
@@ -327,7 +352,7 @@ class VideoContainer extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return useMemo(() {
-      return (isSmallVideo && kIsWeb)
+      return kIsWeb
           ? Container(
               width: double.infinity,
               height: double.infinity,

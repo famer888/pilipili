@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/yy_dialog.dart';
@@ -64,10 +65,10 @@ class MessageOfSystem extends StatelessWidget {
 
       return MessageActionItem(
         title: '【通知消息】',
-        message: '$messages',
+        message: messages.toString(),
         icon: 'assets/images/wode/official_avatar.png',
-        time: times != null ? '$times' : ' ',
-        number: '$noticeCount',
+        time: times != null ? times.toString() : ' ',
+        number: noticeCount.toString(),
         onTap: () {
           context.push(CommonUtils.getRealHash('noticemessage'),
               extra: {'title': '通知消息', 'type': 1});
@@ -96,10 +97,10 @@ class MessageOfNotice extends StatelessWidget {
       }
       return MessageActionItem(
         title: '【客服回复】',
-        message: '$messages',
+        message: messages.toString(),
         icon: 'assets/images/wode/customer_avatar.png',
-        time: times != null ? '$times' : ' ',
-        number: '$noticeCount',
+        time: times != null ? times.toString() : ' ',
+        number: noticeCount.toString(),
         onTap: () {
           if (Privilege.isAllowed(
               context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
@@ -117,9 +118,9 @@ class MessageOfNotice extends StatelessWidget {
                 );
               },
               cancelText: '取消',
-              btnText: '立即升级',
+              btnText: PPString.upgradeNuw,
               callBack: () {
-                context.push('/${Routes.vip}');
+                context.push('/vip');
               },
             );
             return;
@@ -189,7 +190,7 @@ class MessageActionItem extends StatelessWidget {
                         height: ScreenUtil().setWidth(9),
                       ),
                       Text(
-                        '  $message',
+                        '  '+message.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

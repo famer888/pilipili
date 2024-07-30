@@ -6,6 +6,7 @@ import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 import '../../utils/api.dart';
 import '../../utils/common.dart';
@@ -32,8 +33,12 @@ class _YouxuanCardState extends State<YouxuanCard> {
     return GestureDetector(
       onTap: () {
         if (!isBuy) return;
-        context.push(
-            '/packageDetail/${widget.data['id']}/${widget.data['type']}/${widget.data['title']}');
+        context.push('/packageDetail/' +
+            widget.data['id'].toString() +
+            '/' +
+            widget.data['type'].toString() +
+            '/' +
+            widget.data['title'].toString());
       },
       child: Container(
           margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(23)),
@@ -59,7 +64,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                             fontSize: ScreenUtil().setSp(16),
                             fontWeight: FontWeight.bold),
                       ),
-                      Text('总视频：${widget.data['total_num']}部',
+                      Text('总视频：' + widget.data['total_num'].toString() + '部',
                           style: TextStyle(
                               color: Color(0XFFFE155B),
                               fontSize: ScreenUtil().setSp(12)))
@@ -96,11 +101,13 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                       'videoData': widget.data['resource'][e]
                                     };
                                     context.push(CommonUtils.getRealHash(kIsWeb
-                                        ? 'webSmallVideo/0'
-                                        : 'smallVideo/0'));
+                                        ? PPString.webSmallVideo
+                                        : PPString.smallVideo));
                                   } else {
                                     context.push(CommonUtils.getRealHash(
-                                        'videoDetail/${widget.data['resource'][e]['id']}'));
+                                        'videoDetail/' +
+                                            widget.data['resource'][e]['id']
+                                                .toString()));
                                   }
                                 } else {
                                   CommonUtils.showText('购买打折包礼包后即可观看哦～');
@@ -172,8 +179,12 @@ class _YouxuanCardState extends State<YouxuanCard> {
                       ? Center(
                           child: GestureDetector(
                               onTap: () {
-                                context.push(
-                                    '/packageDetail/${widget.data['id']}/${widget.data['type']}/${widget.data['title']}');
+                                context.push('/packageDetail/' +
+                                    widget.data['id'].toString() +
+                                    '/' +
+                                    widget.data['type'].toString() +
+                                    '/' +
+                                    widget.data['title'].toString());
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -183,8 +194,8 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
                                         colors: [
-                                          Color(0xffFF9E9E),
-                                          Color(0xffFF84A9),
+                                          DefaultStyle.linerThemeColor,
+                                          DefaultStyle.themeColor,
                                         ])),
                                 height: ScreenUtil().setWidth(32),
                                 width: ScreenUtil().setWidth(96),
@@ -227,14 +238,19 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                               fontSize: ScreenUtil().setSp(12)),
                                           children: [
                                             TextSpan(
-                                              text: '${widget.data['price']}币',
+                                              text: widget.data['price']
+                                                      .toString() +
+                                                  '币',
                                               style: TextStyle(
                                                   fontSize:
                                                       ScreenUtil().setSp(20)),
                                             ),
                                           ])),
                                       Text(
-                                        ' 原价：${widget.data['original_price']}币',
+                                        ' 原价：' +
+                                            widget.data['original_price']
+                                                .toString() +
+                                            '币',
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough,
@@ -246,7 +262,7 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                   GestureDetector(
                                       onTap: () {
                                         YyShowDialog.showdialog(context,
-                                            btnText: '立即购买',
+                                            btnText: PPString.buyNow,
                                             cancelText: '一会再买', callBack: () {
                                           buyPackage(id: widget.data['id'])
                                               .then((res) {
@@ -271,8 +287,10 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                                       text: '您将支付',
                                                     ),
                                                     TextSpan(
-                                                        text:
-                                                            '${widget.data['price']}币',
+                                                        text: widget
+                                                                .data['price']
+                                                                .toString() +
+                                                            '币',
                                                         style: TextStyle(
                                                           fontSize: ScreenUtil()
                                                               .setSp(16),
@@ -299,7 +317,21 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                                               FontWeight.bold,
                                                         )),
                                                     TextSpan(text: '】'),
-                                                  ]))
+                                                  ])),
+                                                  SizedBox(
+                                                    height: 8.w,
+                                                  ),
+                                                  Text(
+                                                    '总计' +
+                                                        widget.data['total_num']
+                                                            .toString() +
+                                                        '部影片',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0XFFFE155B),
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12)),
+                                                  )
                                                 ],
                                               ));
                                         });
@@ -312,8 +344,8 @@ class _YouxuanCardState extends State<YouxuanCard> {
                                                 begin: Alignment.topCenter,
                                                 end: Alignment.bottomCenter,
                                                 colors: [
-                                                  Color(0xffFF9E9E),
-                                                  Color(0xffFF84A9),
+                                                  DefaultStyle.linerThemeColor,
+                                                  DefaultStyle.themeColor,
                                                 ])),
                                         height: ScreenUtil().setWidth(32),
                                         width: ScreenUtil().setWidth(96),

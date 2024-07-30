@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
-import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 // ignore: must_be_immutable
 class Hcard extends StatefulWidget {
@@ -63,7 +63,8 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
       });
     }
     if (widget.isLocal) {
-      EventBus().on('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}', (arg) {
+      EventBus().on(
+          'DOWNLOADVIDEO_PROGRESS_' + widget.cardData["id"].toString(), (arg) {
         if (widget.cardData["id"] == arg["id"]) {
           setState(() {
             progress = arg["progress"] ?? progress;
@@ -94,7 +95,8 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
   @override
   void dispose() {
     super.dispose();
-    EventBus().off('DOWNLOADVIDEO_PROGRESS_${widget.cardData["id"]}');
+    EventBus()
+        .off('DOWNLOADVIDEO_PROGRESS_' + widget.cardData["id"].toString());
   }
 
   String getDownloadText() {
@@ -106,7 +108,7 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                 ? "点击开始下载"
                 : downloading
                     ? "下载进度:" + (progress * 100).toInt().toString() + "%"
-                    : "暂停下载";
+                    : PPString.pauseDownloads;
     return _text;
   }
 
@@ -208,6 +210,43 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                               )),
                         )
                       : Container(),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: widget.contentType == 11 || widget.contentType == 12
+                        ? PlatformAwareAssetImage(
+                            url: 'assets/images/pili_12/icon_series.png',
+                            width: thumbWidth * 0.444,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : Container(),
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: widget.cardData['is_end'] == null
+                          ? SizedBox()
+                          : Container(
+                              height: 16.w,
+                              width: 32.w,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xffFF8B8B).withOpacity(0.8),
+                                        Color(0xffFF7696).withOpacity(0.8),
+                                        Color(0xffFF7299).withOpacity(0.8)
+                                      ]),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(3.w))),
+                              child: Text(
+                                widget.cardData['is_end'] == 1 ? '完结' : '连载',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10.sp),
+                              ),
+                            ))
                 ],
               ),
               Stack(
@@ -220,13 +259,18 @@ class _HcardState extends State<Hcard> with CardMixin<Hcard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        widget.showField.indexOf('title') != -1
+                        widget.showField.indexOf('title') != -1 ||
+                                widget.showField.indexOf('name') != -1
                             ? Text(
                                 widget.isSubtitle
                                     ? (widget.cardData['second_title'] ??
+                                        widget.cardData['description'] ??
                                         widget.cardData['title'] ??
-                                        '')
-                                    : widget.cardData['title' ?? ""],
+                                        widget.cardData['name'] ??
+                                        PPString.isnull)
+                                    : widget.cardData['title'] ??
+                                        widget.cardData['name'] ??
+                                        PPString.isnull,
                                 maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

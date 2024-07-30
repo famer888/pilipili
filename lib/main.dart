@@ -3,10 +3,15 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isolated_worker/worker_delegator.dart';
+import 'package:pilipili/store/community.dart';
+import 'package:pilipili/store/globle_value.dart';
+import 'package:pilipili/store/search.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/routers.dart';
@@ -18,6 +23,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/crypto.dart';
 
 void main() async {
+  //  debugRepaintRainbowEnabled = true;
   // 初始化数据库，必须放在最前面
   await Hive.initFlutter();
   AppGlobal.appBox = await Hive.openBox('HiveBox'); // 用于存储一些简单的键值对
@@ -39,15 +45,13 @@ void main() async {
   List<WorkerDelegate<dynamic, dynamic>> wds = List.generate(
       AppGlobal.decryptProcessLimit,
       (index) => WorkerDelegate(
-            key: 'decryptImage$index',
+            key: 'decryptImage' + index.toString(),
             defaultDelegate: fooDelegate,
             jsDelegate: fooJsDelegate,
           ));
   WorkerDelegator().addAllDelegates(wds);
-  await WorkerDelegator().importScripts(const <String>[
-    'js/aware.js?v=2',
-    'js/crypto-js.min.js?v=3'
-  ]);
+  await WorkerDelegator().importScripts(
+      const <String>['js/aware.js?v=2', 'js/crypto-js.min.js?v=3']);
 
   // 禁用图片缓存
   PaintingBinding.instance.imageCache.maximumSize = 0;
@@ -70,10 +74,12 @@ void main() async {
   AppGlobal.appBox.put('firstVisitTime', DateTime.now());
   AppGlobal.appinfo = {
     "oauth_id": AppGlobal.appBox.get('oauth_id') ??
-        '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}',
+        CommonUtils.randomId(16).toString() +
+            '_' +
+            DateTime.now().millisecondsSinceEpoch.toString().toString(),
     "bundleId": "com.pwa.pilipili",
-    "version": "2.0.1",
-    "oauth_type": CommonUtils.isAndroidWeb() ? "a-web" : "web",
+    "version": "3.1.0",
+    "oauth_type": CommonUtils.isAndroidWeb() ? PPString.aWeb : PPString.web,
     "language": 'zh',
     "via": 'pwa',
   };
@@ -93,7 +99,7 @@ void main() async {
       AppGlobal.appinfo = {
         "oauth_id": iosInfo.identifierForVendor,
         "bundleId": packageInfo.packageName,
-        "version": "2.0.1",
+        "version": "3.1.0",
         "oauth_type": "ios",
       };
     }
@@ -103,20 +109,23 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => HomeConfig()),
+      ChangeNotifierProvider(create: (_) => GlobleValue()),
+      ChangeNotifierProvider(create: (_) => Search()),
+      ChangeNotifierProvider(create: (_) => CommunityStore()),
     ],
-    child: pilipili(),
+    child: Pilipili(),
   ));
 }
 
 final _router = AppGlobal.appRouter = Routes.init();
 
-class pilipili extends StatefulWidget {
-  pilipili({Key key}) : super(key: key);
+class Pilipili extends StatefulWidget {
+  Pilipili({Key key}) : super(key: key);
   @override
-  _pilipiliState createState() => _pilipiliState();
+  _PilipiliState createState() => _PilipiliState();
 }
 
-class _pilipiliState extends State<pilipili> {
+class _PilipiliState extends State<Pilipili> {
   @override
   void initState() {
     super.initState();

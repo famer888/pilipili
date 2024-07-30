@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilipili/theme/default.dart';
 
 class LoginBox extends StatefulWidget {
   LoginBox(
@@ -61,8 +62,8 @@ class _LoginBoxState extends State<LoginBox> {
                                 decoration: new BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Color(0xffFFCCDB),
-                                      Color(0xffFFE4E4)
+                                      DefaultStyle.btnThemeColor,
+                                      DefaultStyle.btnLinerThemeColor
                                     ],
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
@@ -99,8 +100,8 @@ class _LoginBoxState extends State<LoginBox> {
                                 decoration: new BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Color(0xffFFCCDB),
-                                      Color(0xffFFE4E4)
+                                      DefaultStyle.btnThemeColor,
+                                      DefaultStyle.btnLinerThemeColor
                                     ],
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
@@ -138,7 +139,10 @@ class _LoginBoxState extends State<LoginBox> {
                             height: ScreenUtil().setHeight(34),
                             decoration: new BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [Color(0xffFFCCDB), Color(0xffFFE4E4)],
+                                colors: [
+                                  DefaultStyle.btnThemeColor,
+                                  DefaultStyle.btnLinerThemeColor
+                                ],
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                               ),

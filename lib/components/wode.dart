@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/routers.dart';
@@ -17,8 +20,7 @@ import '../global.dart';
 import 'common/pullrefreshlist.dart';
 
 class Wode extends StatefulWidget {
-  Wode({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  Wode({Key key}) : super(key: key);
   @override
   _WodeState createState() => _WodeState();
 }
@@ -28,10 +30,10 @@ class _WodeState extends State<Wode> {
   int pageStatus = 0;
 
   void initState() {
-    // TODO: implement initState
     super.initState();
+    pageStatus = 1;
+    initInfo();
     EventBus().on('need-update-login-state', (args) {
-      CommonUtils.debugPrint("*********************$args");
       if (args == 'login') {
         setState(() {});
       } else if (args == 'quit') {
@@ -46,16 +48,16 @@ class _WodeState extends State<Wode> {
     EventBus().off('need-update-login-state');
   }
 
-  @override
-  void didUpdateWidget(covariant Wode oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isShow && pageStatus == 0) {
-      setState(() {
-        pageStatus = 1;
-      });
-      initInfo();
-    }
-  }
+  // @override
+  // void didUpdateWidget(covariant Wode oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (widget.isShow && pageStatus == 0) {
+  //     setState(() {
+  //       pageStatus = 1;
+  //     });
+  //     initInfo();
+  //   }
+  // }
 
   void initInfo() async {
     UpdateNumModel getUpdateNum = await apiGetUpdateNum();
@@ -72,19 +74,45 @@ class _WodeState extends State<Wode> {
     });
   }
 
-  List MenuList = [
-    {'name': "观看记录", 'icon': "record", 'router': '/${Routes.watchhistory}'},
-    {'name': "我购买的", 'icon': "buy", "router": '/${Routes.buy}'},
-    {'name': "我的收藏", 'icon': "collect", "router": '/${Routes.collect}'},
-    {'name': "我的下载", 'icon': "download", 'router': '/${Routes.down_page}'},
-    {'name': "在线客服", 'icon': "customer", 'router': '/${Routes.onlineService}'},
+  final List menuList = [
+    {'name': "观看记录", 'iconUrl': PPAssetsPath.record, 'router': '/watchhistory'},
+    {'name': "我购买的", 'iconUrl': PPAssetsPath.buy, "router": '/buy'},
+    {'name': "我的收藏", 'iconUrl': PPAssetsPath.collect, "router": '/collect'},
+    {'name': "我的下载", 'iconUrl': PPAssetsPath.download, 'router': '/downPage'},
+    {
+      'name': "在线客服",
+      'iconUrl': PPAssetsPath.customer,
+      'router': '/onlineService'
+    },
     {
       'name': "联系官方",
-      'icon': "official",
-      'router': '/${Routes.contactOfficial}'
+      'iconUrl': PPAssetsPath.official,
+      'router': '/contactOfficial'
     },
-    {'name': "邀请好友", 'icon': "invite", 'router': '/${Routes.invitefriend}'},
-    {'name': "应用推荐", 'icon': "app_recommen", 'router': '/${Routes.appCenter}'},
+    {'name': "邀请好友", 'iconUrl': PPAssetsPath.invite, 'router': '/invitefriend'},
+    {
+      'name': "应用推荐",
+      'iconUrl': PPAssetsPath.appRecommend,
+      'router': '/appCenter'
+    },
+    {
+      'name': "我的帖子",
+      'iconUrl': 'assets/images/2023/icon_post.png',
+      'assets': true,
+      'router': '/myPost'
+    },
+    {
+      'name': "我的关注",
+      'iconUrl': 'assets/images/2023/icon_myfollow.png',
+      'assets': true,
+      'router': '/myFollow'
+    },
+    {
+      'name': "申请原创入驻",
+      'iconUrl': 'assets/images/2023/icon_myadd.png',
+      'assets': true,
+      'router': '/zhaomu'
+    },
   ];
 
   @override
@@ -98,10 +126,15 @@ class _WodeState extends State<Wode> {
     }
     return Column(
       children: [
-        pageStatus != 2 ? Container() : header(members, isLogin),
+        pageStatus != 2
+            ? Container()
+            : Header(
+                members: members,
+                isLogin: isLogin,
+                networkErr: networkErr,
+              ),
         Expanded(
             child: PullRefreshList(
-          // onLoading: () {},
           onRefresh: () {
             if (networkErr) {
               networkErr = false;
@@ -115,9 +148,11 @@ class _WodeState extends State<Wode> {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setWidth(23),
+                        vertical: 23.w,
                       ),
-                      child: setHandleList(),
+                      child: HandleList(
+                        menuList: menuList,
+                      ),
                     ),
                     Center(
                       child: Text(
@@ -133,23 +168,289 @@ class _WodeState extends State<Wode> {
                       : Container()
                   : Column(
                       children: [
-                        cardList(members),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(22),
+                        CardList(
+                          member: members,
                         ),
-                        setHandleList()
+                        SizedBox(
+                          height: 22.h,
+                        ),
+                        HandleList(
+                          menuList: menuList,
+                        )
                       ],
                     ),
         ))
       ],
     );
   }
+}
 
-  Widget cardList(Member member) {
+class SystemNoticeIcon extends StatelessWidget {
+  const SystemNoticeIcon({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HomeConfig>(builder: (ctx, state, child) {
+      CommonUtils.debugPrint(state.systemnotice?.data?.systemNoticeCount != 0);
+      return GestureDetector(
+        onTap: () {
+          context.push('/messagecenter');
+        },
+        child: PlatformAwareAssetImage(
+            url:
+                // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
+                (state.systemnotice?.data ?? false) != null &&
+                        (state.systemnotice.data.systemNoticeCount != 0 ||
+                            state.systemnotice.data.feedCount != 0)
+                    ? PPAssetsPath.chatCircleDotsActive
+                    : PPAssetsPath.chatCircleDots,
+            width: 24.w,
+            fit: BoxFit.fitWidth,
+            filterQuality: FilterQuality.medium),
+      );
+    });
+  }
+}
+
+class UserAvatar extends StatelessWidget {
+  const UserAvatar({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HomeConfig>(builder: (ctx, state, child) {
+      return state.member.thumb == null
+          ? PlatformAwareAssetImage(
+              url: 'assets/images/wode/avatar.png',
+              width: 30.w,
+              fit: BoxFit.fitWidth,
+              filterQuality: FilterQuality.medium)
+          : PlatformAwareNetworkImage(
+              width: 30.w,
+              fit: BoxFit.cover,
+              url: state.member.thumb.toString(),
+            );
+    });
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({Key key, this.members, this.isLogin, this.networkErr})
+      : super(key: key);
+  final Member members;
+  final bool isLogin;
+  final bool networkErr;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: -10.h,
+          child: PlatformAwareAssetImage(
+              url: "assets/images/wode/header_bg.png",
+              fit: BoxFit.fill,
+              filterQuality: FilterQuality.medium),
+        ),
+        Container(
+          padding: EdgeInsets.only(
+              top: ScreenUtil().statusBarHeight + 10.h,
+              left: 18.w,
+              right: 16.w,
+              bottom: 18.h),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SystemNoticeIcon(),
+                  SizedBox(
+                    width: 13.w,
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        context.push('/setup');
+                      },
+                      child: PlatformAwareAssetImage(
+                          url: "assets/images/wode/Settings.png",
+                          width: 24.w,
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.medium)),
+                ],
+              ),
+              networkErr
+                  ? Container()
+                  : Container(
+                      margin: EdgeInsets.only(
+                        top: 15.w,
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            child: Center(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 8.w),
+                                width: 60.w,
+                                height: 60.w,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    37.25.w,
+                                  ),
+                                  child: UserAvatar(),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  members?.nickname ?? "pilpil用户",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                          top: 5.w,
+                                          right: 5.w,
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.w),
+                                        height: 20.h,
+                                        decoration: new BoxDecoration(
+                                          color: Color.fromRGBO(
+                                              225, 225, 225, 0.28),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          //设置四周边框
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'ID:' +
+                                                (members?.aff ?? '0000000')
+                                                    .toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          isLogin
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.push('/login');
+                                      },
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            PPString.registerLogin,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.sp,
+                                            ),
+                                          ),
+                                          Center(
+                                            child: Icon(
+                                              Icons.chevron_right,
+                                              color: Colors.white,
+                                              size: 15.sp,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 28.h,
+                                    )
+                                  ],
+                                )
+                        ],
+                      ),
+                    )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class HandleList extends StatelessWidget {
+  const HandleList({Key key, this.menuList}) : super(key: key);
+  final List menuList;
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> tempList = [];
+    for (var item in menuList) {
+      tempList.add(
+        GestureDetector(
+          onTap: () {
+            if (item['router'] != null) {
+              context.push(item['router']);
+            }
+          },
+          child: Container(
+            width: 1.sw / 4,
+            child: Column(
+              children: [
+                getImage(item['iconUrl'],
+                    isAssets: item['assets'] != null,
+                    width: 32.w,
+                    fit: BoxFit.fitWidth,
+                    filterQuality: FilterQuality.medium),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Text(
+                  item['name'],
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Color(0xff6D6D6D),
+                    fontSize: 12.sp,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return Wrap(
+      runSpacing: 25.w,
+      children: tempList,
+    );
+  }
+}
+
+class CardList extends StatelessWidget {
+  const CardList({Key key, this.member}) : super(key: key);
+  final Member member;
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          left: ScreenUtil().setWidth(5), right: ScreenUtil().setWidth(10)),
-      padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(14)),
+      margin: EdgeInsets.only(left: 5.w, right: 10.w),
+      padding: EdgeInsets.only(bottom: 14.h),
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1.0, color: Color(0xFFFFDCE6)),
@@ -160,37 +461,37 @@ class _WodeState extends State<Wode> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              context.push('/${Routes.vip}');
+              context.push('/vip');
             },
             child: Stack(
               alignment: Alignment.topLeft,
               children: <Widget>[
                 PlatformAwareAssetImage(
                     url: "assets/images/wode/vip_bg.png",
-                    width: ScreenUtil().setWidth(190),
+                    width: 190.w,
                     // height: ScreenUtil().setWidth(164),
                     fit: BoxFit.fill,
                     filterQuality: FilterQuality.medium),
                 Positioned(
-                  top: ScreenUtil().setWidth(85),
-                  left: ScreenUtil().setWidth(20),
+                  top: 85.w,
+                  left: 20.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "VIP充值",
                         style: TextStyle(
-                            fontSize: ScreenUtil().setSp(18),
+                            fontSize: 18.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        height: ScreenUtil().setHeight(5),
+                        height: 5.h,
                       ),
                       Text(
-                        "您有${member.level ?? 0}张会员卡",
+                        "您有" + (member.level ?? 0).toString() + "张会员卡",
                         style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
+                            fontSize: 14.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       )
@@ -219,11 +520,11 @@ class _WodeState extends State<Wode> {
             child: Column(
               children: [
                 SizedBox(
-                  height: ScreenUtil().setHeight(19),
+                  height: 19.h,
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.push('/${Routes.coinRecharge}');
+                    context.push('/coinRecharge');
                   },
                   child: Stack(
                     alignment: Alignment.topLeft,
@@ -235,22 +536,22 @@ class _WodeState extends State<Wode> {
                           fit: BoxFit.fill,
                           filterQuality: FilterQuality.medium),
                       Positioned(
-                        left: ScreenUtil().setWidth(20),
-                        top: ScreenUtil().setWidth(15),
+                        left: 20.w,
+                        top: 15.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "皮哩币",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(13),
+                                  fontSize: 13.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "余额:${member.money ?? 0}",
+                              "余额:" + (member.money ?? 0).toString(),
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(12),
+                                  fontSize: 12.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             )
@@ -273,7 +574,7 @@ class _WodeState extends State<Wode> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.push('/${Routes.invitefriend}');
+                    context.push('/invitefriend');
                   },
                   child: Stack(
                     alignment: Alignment.topLeft,
@@ -285,39 +586,28 @@ class _WodeState extends State<Wode> {
                           fit: BoxFit.fill,
                           filterQuality: FilterQuality.medium),
                       Positioned(
-                        left: ScreenUtil().setWidth(20),
-                        top: ScreenUtil().setWidth(15),
+                        left: 20.w,
+                        top: 15.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "领取",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(12),
+                                  fontSize: 12.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
                               "免费会员",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(13),
+                                  fontSize: 13.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
                       ),
-                      // Positioned(
-                      //   bottom: ScreenUtil().setWidth(6),
-                      //   left: ScreenUtil().setWidth(12),
-                      //   child: Text(
-                      //     "立即领取",
-                      //     style: TextStyle(
-                      //         fontSize: ScreenUtil().setSp(12),
-                      //         color: Colors.white,
-                      //         fontWeight: FontWeight.bold),
-                      //   ),
-                      // )
                     ],
                   ),
                 ),
@@ -327,256 +617,6 @@ class _WodeState extends State<Wode> {
         ],
       ),
     );
-  }
-
-  Widget setHandleList() {
-    Member members = Provider.of<HomeConfig>(context, listen: false).member;
-    List<Widget> tempList = [];
-    for (var item in MenuList) {
-      tempList.add(
-        new GestureDetector(
-          onTap: () {
-            if (item['router'] != null) {
-              context.push(item['router']);
-            }
-          },
-          child: Container(
-            width: ScreenUtil().screenWidth / 4,
-            child: Column(
-              children: [
-                PlatformAwareAssetImage(
-                    url: 'assets/images/wode/${item['icon']}.png',
-                    fit: BoxFit.fitWidth,
-                    width: ScreenUtil().setWidth(32),
-                    // height: ScreenUtil().setWidth(45),
-                    filterQuality: FilterQuality.medium),
-                SizedBox(
-                  height: ScreenUtil().setHeight(2),
-                ),
-                Text(
-                  item['name'],
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Color(0xff6D6D6D),
-                    fontSize: ScreenUtil().setSp(12),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-    return Wrap(
-      spacing: ScreenUtil().setWidth(0),
-      runSpacing: ScreenUtil().setWidth(25),
-      children: tempList,
-    );
-  }
-
-  Widget header(Member members, bool isLogin) {
-    return Stack(
-      children: [
-        Positioned(
-          left: 0,
-          top: 0,
-          right: 0,
-          bottom: ScreenUtil().setHeight(-10),
-          child: PlatformAwareAssetImage(
-              url: "assets/images/wode/header_bg.png",
-              fit: BoxFit.fill,
-              filterQuality: FilterQuality.medium),
-        ),
-        Container(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top +
-                  ScreenUtil().setHeight(10),
-              left: ScreenUtil().setWidth(18),
-              right: ScreenUtil().setWidth(16),
-              bottom: ScreenUtil().setHeight(18)),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SystemNoticeIcon(),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(13),
-                  ),
-                  GestureDetector(
-                      onTap: () {
-                        context.push('/${Routes.setup}');
-                      },
-                      child: PlatformAwareAssetImage(
-                          url: "assets/images/wode/Settings.png",
-                          width: ScreenUtil().setWidth(24),
-                          fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.medium)),
-                ],
-              ),
-              networkErr
-                  ? Container()
-                  : Container(
-                      margin: EdgeInsets.only(
-                        top: ScreenUtil().setWidth(15),
-                      ),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            child: Center(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                    right: ScreenUtil().setWidth(8)),
-                                width: ScreenUtil().setWidth(60),
-                                height: ScreenUtil().setWidth(60),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                    ScreenUtil().setWidth(37.25),
-                                  ),
-                                  child: UserAvatar(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  members?.nickname ?? "pilpil用户",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ScreenUtil().setSp(18),
-                                    fontWeight: FontWeight.bold,
-                                    overflow: TextOverflow.ellipsis,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                        margin: EdgeInsets.only(
-                                          top: ScreenUtil().setWidth(5),
-                                          right: ScreenUtil().setWidth(5),
-                                        ),
-                                        // width: ScreenUtil().setWidth(93),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                ScreenUtil().setWidth(8)),
-                                        height: ScreenUtil().setHeight(20),
-                                        decoration: new BoxDecoration(
-                                          color: Color.fromRGBO(
-                                              225, 225, 225, 0.28),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          //设置四周边框
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'ID:${members?.aff ?? '0000000'}',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          isLogin
-                              ? Container()
-                              : Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        context.push('/${Routes.login}');
-                                      },
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "注册登录",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: ScreenUtil().setSp(12),
-                                            ),
-                                          ),
-                                          Center(
-                                            child: Icon(
-                                              Icons.chevron_right,
-                                              color: Colors.white,
-                                              size: ScreenUtil().setSp(15),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: ScreenUtil().setHeight(28),
-                                    )
-                                  ],
-                                )
-                        ],
-                      ),
-                    )
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class SystemNoticeIcon extends StatelessWidget {
-  const SystemNoticeIcon({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<HomeConfig>(builder: (ctx, state, child) {
-      CommonUtils.debugPrint(state.systemnotice?.data?.systemNoticeCount != 0);
-      return GestureDetector(
-        onTap: () {
-          context.push('/${Routes.messagecenter}');
-        },
-        child: PlatformAwareAssetImage(
-            url:
-                // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
-                (state.systemnotice?.data ?? false) != null &&
-                        (state.systemnotice.data.systemNoticeCount != 0 ||
-                            state.systemnotice.data.feedCount != 0)
-                    ? 'assets/images/wode/Chat_Circle_Dots_active.png'
-                    : 'assets/images/wode/Chat_Circle_Dots.png',
-            width: ScreenUtil().setWidth(24),
-            fit: BoxFit.fitWidth,
-            filterQuality: FilterQuality.medium),
-      );
-    });
-  }
-}
-
-class UserAvatar extends StatelessWidget {
-  const UserAvatar({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<HomeConfig>(builder: (ctx, state, child) {
-      return state.member.thumb == null
-          ? PlatformAwareAssetImage(
-              url: 'assets/images/wode/avatar.png',
-              width: ScreenUtil().setWidth(30),
-              fit: BoxFit.fitWidth,
-              filterQuality: FilterQuality.medium)
-          : PlatformAwareNetworkImage(
-              width: ScreenUtil().setWidth(30),
-              fit: BoxFit.cover,
-              url: '${state.member.thumb}',
-            );
-    });
+    ;
   }
 }

@@ -10,6 +10,20 @@ class DefaultStyle {
   static double get pagePadding => ScreenUtil().setWidth(12.5);
   // 主题色
   static Color themeColor = Color(0xffFF84A9);
+  // 主题线性渐层色
+  static Color linerThemeColor = Color(0xffFF9E9E);
+  // 按鈕主題色
+  static Color btnThemeColor = Color(0xffFFCCDB);
+  // 按鈕線性漸層色
+  static Color btnLinerThemeColor = Color(0xffFFE4E4);
+
+  // 导览页样式
+  static TextStyle bottomNavStyle = TextStyle(
+      color: Color(0xffFF5B8C),
+      fontWeight: FontWeight.w500,
+      fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
   // 字体样式
   static TextStyle zhuti10 = TextStyle(
       color: Color(0xffFF84A9),
@@ -316,15 +330,102 @@ class DefaultStyle {
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static LinearGradient defaluGrandientLine = LinearGradient(
-    colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
+
   static TextStyle pink14bold = TextStyle(
       color: Color(0xffFF5B8C),
       fontSize: ScreenUtil().setSp(14),
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+
+  static LinearGradient defaluGrandientLine = LinearGradient(
+    colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+  static LinearGradient whiteGrandientLine = LinearGradient(
+    colors: [Color(0xffFFCCDB), Color(0xffFFE4E4)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+  static Decoration activeDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(5.w),
+      color: Color(0xffFF84A9),
+      boxShadow: [
+        BoxShadow(
+            color: Color(0xffA82118).withOpacity(0.26),
+            offset: Offset(0, 2),
+            blurRadius: 3,
+            spreadRadius: 0)
+      ]);
+  static Decoration defaultDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(5.w),
+      boxShadow: [
+        BoxShadow(
+            color: Color.fromRGBO(255, 211, 201, 1),
+            blurRadius: 4,
+            blurStyle: BlurStyle.outer,
+            offset: Offset(0, 2))
+      ],
+      gradient: LinearGradient(colors: [
+        Color.fromRGBO(255, 255, 255, 1),
+        Color.fromRGBO(255, 243, 248, 1),
+        Color.fromRGBO(255, 211, 230, 1),
+        Color.fromRGBO(255, 255, 255, 0.5)
+      ], begin: Alignment(0, 0.5), end: Alignment(0, 2)));
+
+  // 未点击按钮阴影
+  static List<BoxShadow> unClickButtonBoxShadow = [
+    BoxShadow(
+        color: Color.fromRGBO(255, 211, 201, 1),
+        blurRadius: 4,
+        blurStyle: BlurStyle.outer,
+        offset: Offset(0, 2))
+  ];
+  // 点击按钮阴影
+  static List<BoxShadow> clickedButtonBoxShadow = [
+    BoxShadow(
+      color: Color.fromRGBO(255, 132, 169, 1),
+      blurStyle: BlurStyle.inner,
+    ),
+    BoxShadow(
+        color: Colors.black.withOpacity(0.05),
+        blurRadius: 2,
+        blurStyle: BlurStyle.inner,
+        offset: Offset(0, -2)),
+    BoxShadow(
+      color: Color.fromRGBO(255, 132, 169, 1),
+      blurRadius: 1,
+      spreadRadius: -2,
+      blurStyle: BlurStyle.inner,
+    ),
+  ];
+  // 按钮外阴影
+  static const LinearGradient buttonGradient = LinearGradient(colors: [
+    Color.fromRGBO(255, 255, 255, 1),
+    Color.fromRGBO(255, 243, 248, 1),
+    Color.fromRGBO(255, 211, 230, 1),
+    Color.fromRGBO(255, 255, 255, 0.5)
+  ], begin: Alignment(0, 0.5), end: Alignment(0, 2));
+  // 按钮文本样式
+  static TextStyle iconButtonUnClickTextStyle = TextStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 132, 169, 1));
+  static TextStyle iconButtonClickedTextStyle = TextStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 255, 255, 1));
+  static TextStyle buttonUnClickTextStyle = TextStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w700,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 132, 169, 1));
+  static TextStyle buttonClickedTextStyle = TextStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w700,
+      overflow: TextOverflow.ellipsis,
+      color: Color.fromRGBO(255, 255, 255, 1));
 }

@@ -3,28 +3,159 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:convert/convert.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'api.dart';
 
 class CommonUtils {
+  static Future<bool> pngLimitSize(XFile file,
+      {int size = 5, String tips}) async {
+    if (kIsWeb) return true;
+    int length = await file.length();
+    if (length / (1024 * 1024) > size) {
+      CommonUtils.showText(tips ?? '上传文件最大${size}M');
+      return true;
+    }
+    return false;
+  }
+
+  static bannerTopath(BuildContext context, {int type, String url}) {
+    var _adsUrl = url;
+    if (['', null, false].contains(_adsUrl)) {
+      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
+      return;
+    }
+    switch (type) {
+      case 1:
+        // 外部浏览器
+        CommonUtils.launchURL("$_adsUrl");
+        break;
+      case 3: //内部
+        context.push(url);
+        break;
+      case 4:
+        // 外部浏览器
+        var members = Provider.of<HomeConfig>(context, listen: false).member;
+        var aff = members.aff;
+        var piliid = members.uuid;
+        CommonUtils.launchURL(_adsUrl + '?aff=$aff&piliid=$piliid');
+        break;
+        break;
+      default:
+    }
+  }
+
+  //设置状态栏颜色
+  static setStatusBar({bool isLight = false}) {
+    if (kIsWeb) {
+      return SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+    } else if (Platform.isAndroid) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, //全局设置透明
+        statusBarIconBrightness: isLight ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: Colors.black,
+      );
+      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    } else if (Platform.isIOS) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      //导航栏状态栏文字颜色
+      SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+    }
+  }
+
+  //特殊字符处理
+  static Widget getContentSpan(
+    String text, {
+    bool isCopy = false,
+    TextStyle style,
+    TextStyle lightStyle,
+  }) {
+    style = style ??
+        TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp);
+    lightStyle = lightStyle ??
+        TextStyle(
+            color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
+    List<InlineSpan> _contentList = [];
+    RegExp exp = RegExp(
+        r'(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?');
+    Iterable<RegExpMatch> matches = exp.allMatches(text);
+
+    int index = 0;
+    for (var match in matches) {
+      /// start 0  end 8
+      /// start 10 end 12
+      String c = text.substring(match.start, match.end);
+      if (match.start == index) {
+        index = match.end;
+      }
+      if (index < match.start) {
+        String a = text.substring(index, match.start);
+        index = match.end;
+        _contentList.add(
+          TextSpan(text: a, style: style),
+        );
+      }
+      if (RegexUtil.isURL(c)) {
+        _contentList.add(TextSpan(
+            text: c,
+            style: lightStyle,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                CommonUtils.launchURL(text.substring(match.start, match.end));
+              }));
+      } else {
+        _contentList.add(
+          TextSpan(text: c, style: style),
+        );
+      }
+    }
+    if (index < text.length) {
+      String a = text.substring(index, text.length);
+      _contentList.add(
+        TextSpan(text: a, style: style),
+      );
+    }
+    if (isCopy) {
+      return SelectableText.rich(
+        TextSpan(children: _contentList),
+        strutStyle:
+            const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5),
+      );
+    }
+    return RichText(
+        textAlign: TextAlign.left,
+        text: TextSpan(children: _contentList),
+        strutStyle:
+            const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5));
+  }
+
   static bool isAndroidWeb() {
     return kIsWeb &&
         (html.window.navigator.userAgent.indexOf('Android') > -1 ||
@@ -94,7 +225,7 @@ class CommonUtils {
     }
   }
 
-  static renderFixedNumber(double value) {
+  static renderFixedNumber(num value) {
     var tips;
     if (value >= 10000) {
       var newvalue = (value / 1000) / 10.round();
@@ -136,27 +267,16 @@ class CommonUtils {
     if (kIsWeb) {
       var currentHash = html.window.location.hash.replaceAll('#', '');
       if (value == null) return currentHash;
-      if (currentHash.lastIndexOf('/') == currentHash.length - 1) {
-        return '$currentHash$value';
-      } else {
-        return '$currentHash/$value';
-      }
     } else {
-      var location = '${AppGlobal.appRouter.location}/$value';
       if (value == null) return AppGlobal.appRouter.location;
-      if (location.contains('//')) {
-        var current = location.replaceAll('//', '/');
-        return current;
-      } else {
-        return location;
-      }
     }
+    return '/' + value ?? '';
   }
 
   static void debugPrint(value) {
     const bool inProduction = const bool.fromEnvironment("dart.vm.product");
     if (!inProduction) {
-      LogUtil.d(value);
+      LogUtilS.d(value);
     }
   }
 
@@ -196,7 +316,7 @@ class CommonUtils {
               }
             }
           } catch (err) {
-            CommonUtils.debugPrint('图片请求失败${args[0]}');
+            CommonUtils.debugPrint('图片请求失败' + args[0].toString());
             CommonUtils.debugPrint('图片请求失败$err');
           }
         }
@@ -220,7 +340,9 @@ class CommonUtils {
         ? '${AppGlobal.bannerImgBase}new/$url'
             .replaceAll('images/', 'pilipili/')
         : url;
-
+    // if(url.toString().indexOf('assets/images/') != -1){
+    //   print('*****************************$tempUrl');
+    // }
     tasks.add([tempUrl, imgUrl, setUrl, retryHandler]);
 
     int freeIndex = wdsRuningStatuses.indexWhere((element) => !element);
@@ -303,6 +425,81 @@ class CommonUtils {
     return str;
   }
 
+  static Widget shadowBtn(String icon,
+      {String text = '', bool isActive = false, double size}) {
+    return Container(
+      margin: EdgeInsets.only(left: 4.w),
+      alignment: Alignment.center,
+      width: 40.w,
+      height: 40.w,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.w),
+          color: isActive ? Color(0xffFF84A9) : Colors.white,
+          // gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //     tileMode:TileMode.repeated,
+          //     colors: [
+          //       Color(0XFDFFFFFF),
+          //       Color(0XFDFFF3F8),
+          //       Color(0xffFFD3E6),
+          //       Colors.white54
+          //     ]),
+          boxShadow: [
+            isActive
+                ? BoxShadow(
+                    color: Color(0xffA82118).withOpacity(0.26),
+                    offset: Offset(0, 2.w),
+                    blurRadius: 3.w,
+                    spreadRadius: 0)
+                : BoxShadow(
+                    color: Color(0xffFFD3E6),
+                    offset: Offset(0, 2.w),
+                    blurRadius: 4.w,
+                    spreadRadius: 0)
+          ]),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          getImage(icon,
+              height: size ?? 12.w,
+              width: size ?? 12.w,
+              fit: BoxFit.contain,
+              isAssets: true),
+          Text(
+            text,
+            style: TextStyle(
+                color: isActive ? Colors.white : Color(0xffFF84A9),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400),
+          )
+        ],
+      ),
+    );
+  }
+
+  static Widget vipLevel({String text = '會員等級'}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      height: 18.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(9.w),
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xffFFD875),
+                Color(0XFFFF6915),
+              ])),
+      child: Text(
+        text,
+        style: TextStyle(
+            color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+
   static String getPromotionCountDownTime(DateTime now) {
     int seconds =
         48 * 60 * 60 - now.difference(AppGlobal.firstVisitTime).inSeconds;
@@ -310,7 +507,12 @@ class CommonUtils {
     int m = seconds % (60 * 60) ~/ 60;
     int s = seconds % 60;
     if (h > 0 || m > 0 || s > 0) {
-      return '优惠倒计时 ${h > 9 ? h : '0$h'}:${m > 9 ? m : '0$m'}:${s > 9 ? s : '0$s'}';
+      return '优惠倒计时 ' +
+          (h > 9 ? h.toString() : '0' + h.toString()) +
+          ':' +
+          (m > 9 ? m.toString() : '0' + m.toString()) +
+          ':' +
+          (s > 9 ? s.toString() : '0' + s.toString());
     } else {
       return '';
     }
@@ -321,13 +523,13 @@ class CommonUtils {
     int expireTime = DateTime.parse(time).millisecondsSinceEpoch;
     int timeDiff = ((expireTime - curTime) / 1000).ceil();
     if ((timeDiff ~/ 86400).ceil() > 0) {
-      return '${timeDiff ~/ 86400}天';
+      return (timeDiff ~/ 86400).toString() + '天';
     } else if ((timeDiff ~/ 3600).ceil() > 0) {
-      return '${timeDiff ~/ 3600}小时';
+      return (timeDiff ~/ 3600).toString() + '小时';
     } else if ((timeDiff ~/ 60).ceil() > 0) {
-      return '${timeDiff ~/ 60}分钟';
+      return (timeDiff ~/ 60).toString() + '分钟';
     } else {
-      return isActivity ? '已截止' : '已过期';
+      return isActivity ? PPString.hasExpired : PPString.expired;
     }
   }
 
@@ -340,7 +542,7 @@ class CommonUtils {
 
   static String getRandomThumb() {
     int random = new Random().nextInt(29);
-    return 'assets/images/random/${random + 1}.jpg';
+    return 'assets/images/random/' + (random + 1).toString() + '.jpg';
   }
 
   static String gvSha256(String data) {
@@ -368,6 +570,8 @@ class CommonUtils {
     } else if (data['cover_original_vertical'] != null &&
         data['cover_original_vertical'] != '') {
       return data['cover_original_vertical'];
+    } else if (data['thumbnail'] != null && data['thumbnail'] != '') {
+      return data['thumbnail'];
     } else {
       return data['cover_original_horizontal'];
     }

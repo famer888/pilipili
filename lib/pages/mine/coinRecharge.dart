@@ -7,7 +7,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/model/basic.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -39,13 +39,11 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
 
   getCardStatus() {
     getProductOfGold(5).then((product) {
-      LogUtil.d('金币充值----${product.toJson()}');
       if (product.status != 0) {
         if (product.data['product'] != null &&
             product.data['product'].length > 0) {
           spcard = product.data['product'][0];
           getCoinCardStatus().then((res) {
-            LogUtil.d('金币充值----${res['data']}');
             if (res['status'] != 0) {
               cardStatus = res['data'];
               setState(() {});
@@ -162,8 +160,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           colors: [
-                            Color(0xffFF9E9E),
-                            Color(0xffFF84A9),
+                            DefaultStyle.linerThemeColor,
+                            DefaultStyle.themeColor,
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter),
@@ -264,7 +262,13 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                         Text(
                                           cardStatus != null &&
                                                   cardStatus['isBuy'] == 1
-                                              ? '已领取${cardStatus['days']}天,获得${cardStatus['coins']}币'
+                                              ? '已领取' +
+                                                  cardStatus['days']
+                                                      .toString() +
+                                                  '天,获得' +
+                                                  cardStatus['coins']
+                                                      .toString() +
+                                                  '币'
                                               : "每人限购一次",
                                           style: TextStyle(
                                               color: Color(0xffA08A72),
@@ -300,7 +304,10 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                                 .medium),
                                                   ),
                                                   Text(
-                                                    '${spcard['valid_date'] * spcard['coins']}币',
+                                                    (spcard['valid_date'] *
+                                                                spcard['coins'])
+                                                            .toString() +
+                                                        '币',
                                                     style: TextStyle(
                                                         shadows: [
                                                           BoxShadow(
@@ -328,7 +335,10 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                     ScreenUtil().setWidth(4),
                                               ),
                                               Text(
-                                                '¥${double.parse(spcard['promo_price']).toStringAsFixed(0)}',
+                                                '¥' +
+                                                    double.parse(spcard[
+                                                            'promo_price'])
+                                                        .toStringAsFixed(0),
                                                 style: TextStyle(
                                                     color: Color(0xff6D3B03),
                                                     fontWeight: FontWeight.bold,
@@ -343,7 +353,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                 ),
                                 Text(
                                   cardStatus != null && cardStatus['isBuy'] == 1
-                                      ? "到期时间：${cardStatus['valid_date']}"
+                                      ? "到期时间：" +
+                                          cardStatus['valid_date'].toString()
                                       : spcard['description'],
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -398,8 +409,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                       194, 194, 194, 0.5),
                                                 ]
                                               : [
-                                                  Color(0xffFF9E9E),
-                                                  Color(0xffFF84A9),
+                                                  DefaultStyle.linerThemeColor,
+                                                  DefaultStyle.themeColor,
                                                 ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter),
@@ -435,7 +446,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                       Text(
                                         cardStatus['isGet'] == 1
                                             ? "今日"
-                                            : '${spcard['coins']}币',
+                                            : spcard['coins'].toString() + '币',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: ScreenUtil().setSp(20),
@@ -447,8 +458,8 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                       ),
                                       Text(
                                         cardStatus['isGet'] == 1
-                                            ? "已领取"
-                                            : '立即领取',
+                                            ? PPString.received
+                                            : PPString.getNow,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: ScreenUtil().setSp(12),
@@ -514,7 +525,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
         ],
       ),
       Text(
-        '¥${double.parse(product['promo_price']).toStringAsFixed(2)}',
+        '¥' + double.parse(product['promo_price']).toStringAsFixed(2),
         style: TextStyle(
             color: Color(0xff6D3B03),
             fontWeight: FontWeight.bold,
@@ -524,7 +535,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
     ];
     if (product['free_coins'] != 0) {
       textList.add(Text(
-        '额外送${product['free_coins'].toString()}币',
+        '额外送' + product['free_coins'].toString().toString() + '币',
         style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xffB96A11),
@@ -598,7 +609,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
             var aff = members.aff;
             var piliid = members.uuid;
             CommonUtils.launchURL(
-                '${adData['url'].trim()}?aff=$aff&piliid=$piliid');
+                adData['url'].trim().toString() + '?aff=$aff&piliid=$piliid');
           }
         },
         child: Container(

@@ -1,4 +1,7 @@
 //获取精选顶部导航
+import 'dart:convert';
+
+import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
@@ -33,6 +36,7 @@ import 'http.dart';
 Future<HomeData> getHomeConfig(BuildContext context) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/home/config');
+    CommonUtils.debugPrint(res);
     Response<dynamic> res2 =
         await PlatformAwareHttp.post('/api/privilege/getUserPrivilege');
     if (res.data['data']['help'] != null) {
@@ -49,10 +53,15 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       });
     }
     AppGlobal.shouApp = res.data['data']['showApp'] == 1;
+    AppGlobal.popAds = res.data['data']['popAds'];
     HomeData result = HomeData.fromJson(res.data);
     if (result.status != 0) {
       Provider.of<HomeConfig>(context, listen: false)
           .setMember(result.data.member);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setDarkPrivilege(result.data.darkPrivilege);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setDarkPrivilegeTips(result.data.darkprivilegeTips);
       Provider.of<HomeConfig>(context, listen: false)
           .setNotice(result.data.notice);
       Provider.of<HomeConfig>(context, listen: false).setAbs(result.data.ads);
@@ -60,13 +69,20 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
           .setConfig(result.data.config);
       Provider.of<HomeConfig>(context, listen: false)
           .setVersionMsg(result.data.versionMsg);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setAllowPublishPost(result.data.allowPublishPost);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setNoPermissionPublishPostTips(
+              result.data.noPermissionPublishPostTips);
       AppGlobal.vipLevel = result.data.member.vipLevel;
       AppGlobal.bannerImgBase = result.data.config.imgBase;
-      CommonUtils.debugPrint('============AppGlobal.bannerImgBase===========');
-      CommonUtils.debugPrint(AppGlobal.bannerImgBase);
       AppGlobal.uploadImgKey = result.data.config.uploadImgKey;
       AppGlobal.uploadImgUrl = result.data.config.imgUploadUrl;
+      AppGlobal.uploadMp4Key = result.data.config.uploadMp4Key;
+      AppGlobal.uploadMp4Url = result.data.config.mp4UploadUrl;
       AppGlobal.m3u8_encrypt = result.data.config.m3u8_encrypt;
+      AppGlobal.uuid = result.data.member.uuid;
+      getUserInfo(context);
     }
     if (res2.data != null) {
       Provider.of<HomeConfig>(context, listen: false).setPrivilege(res2.data);
@@ -482,7 +498,9 @@ Future<UserInfo> getUserInfo(BuildContext context) async {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/user/userInfo', data: {});
     UserInfo data = UserInfo.fromJson(res.data);
-    HomeConfig.setUserCoins(context, data.data.money);
+    Provider.of<HomeConfig>(context, listen: false)
+        .setPostMoney(context, data.data.postMoney);
+    Provider.of<HomeConfig>(context, listen: false).setMoney(data.data.money);
     return data;
   } catch (e) {
     return null;
@@ -733,6 +751,7 @@ Future getChangVideoList(
     int limit,
     int isfree,
     int category,
+    int isDark = 0,
     int day,
     String filter,
     int order}) async {
@@ -741,6 +760,7 @@ Future getChangVideoList(
         await PlatformAwareHttp.post('/api/mv/getList', data: {
       'type': type,
       'page': page,
+      'isDark': isDark,
       'limit': limit,
       'isfree': isfree,
       'category': category,
@@ -905,11 +925,11 @@ Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
 }
 
 // 购买金币广告
-Future getAdForCoin() async {
+Future getAdForCoin({int pos = 601}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post(
         "/api/home/getADsByPosition",
-        data: {'pos': 601});
+        data: {'pos': pos});
     return res.data;
   } catch (e) {
     return null;
@@ -941,6 +961,425 @@ Future<Basic> setPassword({String password, String passwordConfirm}) async {
         data: {'password': password, 'passwordConfirm': passwordConfirm});
     Basic result = Basic.fromJson(res.data);
     return result;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮城市列表
+Future getCities() async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getCities");
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮列表
+Future getYuepaoList(int page, int limit, String cityName) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getList",
+        data: {
+          'page': page,
+          'limit': limit,
+          'cityName': cityName == '全国' ? '' : cityName
+        });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮详情
+Future getYuepaoDetail(id) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/girl/getDetail", data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮详情
+Future getYuepaoComment(dynamic id, int page, int limit) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getComment",
+        data: {'id': id, 'page': page, 'limit': limit});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮解锁
+Future yuepaoUnlock(id) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/girl/unlock", data: {'id': id});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮评价
+Future yuepaoComment(
+    {dynamic girlMeetId, String comment, int face, int service}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/comment",
+        data: {
+          'girlMeetId': girlMeetId,
+          'comment': comment,
+          'face': face,
+          'service': service
+        });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 约炮评价
+Future getSeriesDetail({int id, int page, int limit}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/series/detail", data: {
+      'id': id,
+      'page': page,
+      'limit': limit,
+    });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 获取系列列表
+Future getSeriesList({int id, int page, int limit, int type}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        "/api/series/getSeriesByTypeAndIdWithPagination",
+        data: {
+          'id': id,
+          'page': page,
+          'limit': limit,
+          'type': type,
+        });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//广告点击统计
+Future<Map> popAdsChick(String id) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/home/popAdsChick", data: {"id": id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//所有圈子/发帖规则
+Future<Map> prePostData() async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/community/pre_post_data");
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//社区发帖
+Future<Map> createPost(
+    {String topicId,
+    String coins,
+    String title,
+    String content,
+    List medias,
+    Map postInfo,
+    int is_open}) async {
+  Map _postId = {};
+  if (postInfo.isNotEmpty) {
+    _postId['post_id'] = postInfo['id'];
+  }
+  try {
+    Response data = await PlatformAwareHttp.post(
+        postInfo.isNotEmpty ? "/api/community/editPost" : "/api/community/post",
+        data: {
+          "topic_id": topicId,
+          "coins": coins == '' ? 0 : int.parse(coins),
+          "title": title,
+          "content": content,
+          "is_open": is_open, //0 公开  1 私密
+          "medias": jsonEncode(medias),
+          ..._postId
+        });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//圈子分页
+Future<Map> getHomeTopics(
+    {String tag = 'recommend', String more = 'no'}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/topics",
+        data: {'tag': tag, 'more': more});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子列表
+Future<Map> getPostList({String tag = 'recommend', int limit, int page}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/list_post",
+        data: {'tag': tag, 'limit': limit, 'page': page});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子详情
+Future<Map> postDetail(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/post_detail",
+        data: {'id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子评论
+Future<Map> getPostComments(int id, int page, int limit) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/post_comments",
+        data: {'id': id, 'page': page, 'limit': limit});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子二级评论
+Future<Map> getPostCommentsChild(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/comments",
+        data: {'comment_id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//帖子评论点赞
+Future<Map> communityLike(int id, String type) async {
+  //类型 post 帖子 comment 评论
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/like",
+        data: {'id': id, 'type': type});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//他人主页
+Future<Map> otherHomeInfo(int aff) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/peer_center",
+        data: {'aff': aff});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注
+Future<Map> toggleFollow(int aff) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/user/toggle_follow",
+        data: {'aff': aff});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注列表
+Future<Map> myFollowList(int page, int limit) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/user/list_follows",
+        data: {'page': page, 'limit': limit});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注列表
+Future<Map> getTopicDetail(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/topic_detail",
+        data: {'topic_id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//关注列表
+Future<Map> toggleFollowTopic(int id) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/community/follow_topic",
+        data: {'topic_id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//社区评论
+Future<Map> communityComment(Map _data) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/community/comment", data: _data);
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//解锁帖子
+Future<Map> unlockPost(int id) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/community/unlock", data: {'id': id});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//提现
+Future<Map> withdrawMoney(
+    {String account = '',
+    String name = '',
+    String amount,
+    int type = 2}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/order/withdraw", data: {
+      'account': account,
+      'name': name,
+      'type': type,
+      'amount': amount
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说详情
+Future<Map> novelDetail({int novelId}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/novel/getDetail", data: {
+      'novelId': novelId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说推荐
+Future<Map> novelRecommend({int categoryId, int page, int limit}) async {
+  try {
+    Response data = await PlatformAwareHttp.post("/api/novel/getRandom",
+        data: {'categoryId': categoryId, 'page': page, 'limit': limit});
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说喜欢
+Future<Map> novelLikeToggle(int novelId) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/novel/likeToggle", data: {
+      'novelId': novelId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说评论点赞
+Future<Map> commentLikeToggle(int commentId) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/novel/commentLikeToggle", data: {
+      'commentId': commentId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//小说内容
+Future<Map> getChapterDetail(int chapterId) async {
+  try {
+    Response data =
+        await PlatformAwareHttp.post("/api/novel/getChapterDetail", data: {
+      'chapterId': chapterId,
+    });
+    return data.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 小说发表评论
+Future novelComment({int novelId, String content, int parentId}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/comment',
+        data: {'novelId': novelId, 'content': content, 'parentId': parentId});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 小说购买
+Future novelBuy(int novelId) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/buy',
+        data: {'novelId': novelId});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 小说列表
+Future getNovelList({int order, int page, int limit, String filter}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/getList',
+        data: {'order': order, 'page': page, 'limit': limit, 'filter': filter});
+    return res.data;
   } catch (e) {
     return null;
   }

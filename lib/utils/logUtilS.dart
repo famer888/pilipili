@@ -7,8 +7,9 @@
  * @FilePath: /flutter2021/lib/utils/logUtil.dart
  */
 import 'package:flutter/cupertino.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
-class LogUtil {
+class LogUtilS {
   static var _separator = "=";
   static var _split =
       "$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator";
@@ -24,7 +25,7 @@ class LogUtil {
     _limitLength = limitLength ??= _limitLength;
     _startLine = "$_split$_title$_split";
     var endLineStr = StringBuffer();
-    var cnCharReg = RegExp("[\u4e00-\u9fa5]");
+    var cnCharReg = RegExp("${PPString.test}[\u4e00-\u9fa5]");
     for (int i = 0; i < _startLine.length; i++) {
       if (cnCharReg.stringMatch(_startLine[i]) != null) {
         endLineStr.write(_separator);

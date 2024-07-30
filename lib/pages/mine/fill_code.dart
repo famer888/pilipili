@@ -57,6 +57,20 @@ class _FillCodePageState extends State<FillCodePage> {
       "btnname": "确认",
     },
   ];
+  @override
+  void dispose() {
+    username.dispose();
+    phone.dispose();
+    phoneCode.dispose();
+    exchange.dispose();
+    invite.dispose();
+    password.dispose();
+    newpassword.dispose();
+    cnewpassword.dispose();
+    newphone.dispose();
+    newphoneCode.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -79,12 +93,14 @@ class _FillCodePageState extends State<FillCodePage> {
         }
         if (username.text.length > 10) {
           CommonUtils.showText('昵称最大长度10个字符');
+          // username.text = username.text.substring(0, 10);
+          username.clear();
+          return;
         }
         PageStatus.loading(mounted);
         var result = await updateUserInfo(nickname: username.text);
         if (result.status == 1) {
-          Provider.of<HomeConfig>(context, listen: false)
-              .setNickname(username.text);
+          context.read<HomeConfig>().setNickname(username.text);
           showText(status: result.status, msg: result.msg);
         } else {
           showText(status: result.status, msg: result.msg);
@@ -104,12 +120,12 @@ class _FillCodePageState extends State<FillCodePage> {
         bindPhone(code: phoneCode.text, phonePrefix: code, phone: phone.text)
             .then((result) {
           if (result.status != 0) {
-            CommonUtils.showText('手机绑定 ${result.msg}');
+            CommonUtils.showText('手机绑定 ' + result.msg.toString());
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机绑定 ${result.msg}');
+            CommonUtils.showText('手机绑定 ' + result.msg.toString());
           }
         });
         PageStatus.closeLoading();
@@ -137,12 +153,12 @@ class _FillCodePageState extends State<FillCodePage> {
                 code: newphoneCode.text)
             .then((res) {
           if (res.status != 0) {
-            CommonUtils.showText('手机换绑 ${res.msg}');
+            CommonUtils.showText('手机换绑 ' + res.msg.toString());
             getHomeConfig(context).then((res) {
               context.pop();
             });
           } else {
-            CommonUtils.showText('手机换绑 ${res.msg}');
+            CommonUtils.showText('手机换绑 ' + res.msg.toString());
           }
         });
         PageStatus.closeLoading();
@@ -165,8 +181,7 @@ class _FillCodePageState extends State<FillCodePage> {
         PageStatus.showLoading();
         var result = await toInvitation(affCode: invite.text);
         if (result.status == 1) {
-          Provider.of<HomeConfig>(context, listen: false)
-              .setInviteBy(invite.text);
+          context.read<HomeConfig>().setInviteBy(invite.text);
         }
         showText(status: result.status, msg: result.msg, word: '填写');
         PageStatus.closeLoading();
@@ -252,14 +267,14 @@ class _FillCodePageState extends State<FillCodePage> {
     }
   }
 
-  void showText({status, msg, word = '修改'}) {
+  void showText({status, msg, word}) {
     if (status == 1) {
-      CommonUtils.showText('$word成功 $msg');
+      CommonUtils.showText((word ?? '修改').toString() + '成功 ' + msg.toString());
       Future.delayed(Duration(seconds: 2), () {
         context.pop();
       });
     } else {
-      CommonUtils.showText('$word失败 $msg');
+      CommonUtils.showText((word ?? '修改').toString() + '失败 ' + msg.toString());
     }
   }
 
@@ -420,7 +435,9 @@ class _FillCodePageState extends State<FillCodePage> {
             // margin: EdgeInsets.only(top: ScreenUtil().setWidth(28)),
             child: Center(
               child: Text(
-                '当前手机号:+${widget.args["phonePrefix"]}${widget.args["phone"]}',
+                '当前手机号:+' +
+                    widget.args["phonePrefix"].toString() +
+                    widget.args["phone"].toString(),
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(15),
                     color: Color(0xff6D6D6D),
@@ -512,7 +529,6 @@ class _FillCodePageState extends State<FillCodePage> {
               title: typeList[currentIndex]["name"],
               rightWidget: TextButton(
                 onPressed: onSubmit,
-                // child: Text("123123"),
                 child: Text(
                   typeList[currentIndex]["btnname"],
                   style: TextStyle(color: Colors.white),

@@ -16,21 +16,27 @@ class PublicList extends StatefulWidget {
   final bool isShow; //是否展示
   final String api; //接口地址
   final Map data; //传递参数
+  final int width;
+  final int crossAxisCount;
   final int limit;
   final bool isFlow; //是否瀑布流
   final String cartType; //  "h" 横向card  "v"竖向card
   final int contentType; //参照 cardMixin.dart 文件
   final bool noRefresh;
+  final bool isSearch;
   PublicList(
       {Key key,
       this.isShow,
       this.api,
       this.data,
+      this.width,
+      this.crossAxisCount = 2,
       this.limit = 20,
       this.isFlow = true,
-      this.cartType = 'h',
+      this.cartType,
       this.contentType,
-      this.noRefresh = false})
+      this.noRefresh = false,
+      this.isSearch = false})
       : super(key: key);
 
   @override
@@ -65,7 +71,7 @@ class _PublicListState extends State<PublicList> {
         CommonUtils.showText(res.data['msg']);
       }
     } catch (e) {
-      CommonUtils.debugPrint('错误:$e');
+      CommonUtils.debugPrint('错误:' + e.toString());
     }
   }
 
@@ -148,28 +154,41 @@ class _PublicListState extends State<PublicList> {
                         itemCount: searchData.length,
                         gridDelegate:
                             SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+                                crossAxisCount: widget.crossAxisCount,
                                 mainAxisSpacing: ScreenUtil().setWidth(10),
                                 crossAxisSpacing: ScreenUtil().setWidth(10)),
                         itemBuilder: (BuildContext context, int index) {
-                          return searchData[index]['mv_type'] == 1
+                          return searchData[index]['mv_type']==1
                               ? Hcard(
+                                  isSearch: widget.isSearch,
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil()
+                                      .setWidth(widget.width ?? 175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),
-                                  contentType: widget.contentType ?? 1,
+                                  contentType:
+                                      searchData[index]['mv_type'] == null
+                                          ? widget.contentType
+                                          : (searchData[index]['mv_type'] == 1
+                                              ? 1
+                                              : 7),
                                   cardData: searchData[index],
                                   showField: 'title')
                               : Vcard(
+                                  isSearch: widget.isSearch,
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
-                                  isSearch: true,
+                                  width: ScreenUtil()
+                                      .setWidth(widget.width ?? 175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),
-                                  contentType: widget.contentType ?? 7,
+                                  contentType:
+                                      searchData[index]['mv_type'] == null
+                                          ? widget.contentType
+                                          : (searchData[index]['mv_type'] == 1
+                                              ? 1
+                                              : 7),
                                   cardData: searchData[index],
                                   showField: 'title');
                         })
@@ -181,29 +200,44 @@ class _PublicListState extends State<PublicList> {
                             vertical: ScreenUtil().setWidth(20)),
                         itemCount: searchData.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount: widget.crossAxisCount,
                           mainAxisSpacing: ScreenUtil().setWidth(7),
                           crossAxisSpacing: ScreenUtil().setWidth(7),
-                          childAspectRatio: widget.cartType == 'h' ? 1.2 : 0.61,
+                          childAspectRatio:
+                              (widget.cartType ?? 'h') == 'h' ? 1.2 : 0.61,
                         ),
                         itemBuilder: (context, index) {
-                          return widget.cartType == 'h'
+                          return (widget.cartType ?? 'h') == 'h'
                               ? Hcard(
+                                  isSearch: widget.isSearch,
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil()
+                                      .setWidth(widget.width ?? 175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),
-                                  contentType: widget.contentType ?? 1,
+                                  contentType:
+                                      searchData[index]['mv_type'] == null
+                                          ? widget.contentType
+                                          : (searchData[index]['mv_type'] == 1
+                                              ? 1
+                                              : 7),
                                   cardData: searchData[index],
                                   showField: 'title')
                               : Vcard(
+                                  isSearch: widget.isSearch,
                                   maxLines: 1,
-                                  width: ScreenUtil().setWidth(175),
+                                  width: ScreenUtil()
+                                      .setWidth(widget.width ?? 175),
                                   tagIconType: searchData[index]['isfree'],
                                   thumbUrl:
                                       CommonUtils.getThumb(searchData[index]),
-                                  contentType: widget.contentType ?? 1,
+                                  contentType:
+                                      searchData[index]['mv_type'] == null
+                                          ? widget.contentType
+                                          : (searchData[index]['mv_type'] == 1
+                                              ? 1
+                                              : 7),
                                   cardData: searchData[index],
                                   showField: 'title');
                         }),

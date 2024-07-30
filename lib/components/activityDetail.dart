@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:pilipili/utils/index.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -68,7 +69,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   .toString()),
                           title: activityInfo['title'] ?? '--',
                           subtitle: activityInfo['desc'] ?? '--',
-                          url: '${config.share.affUrl}');
+                          url: config.share.affUrl);
                     },
                     child: Container(
                       child: PlatformAwareAssetImage(
@@ -191,14 +192,14 @@ class _ActivityDetailState extends State<ActivityDetail> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text.rich(TextSpan(
-                            text: '${activityInfo['join_num']} ',
+                            text: activityInfo['join_num'].toString(),
                             style: TextStyle(
                                 color: Color(0xffff5b8c),
                                 fontSize: ScreenUtil().setSp(16),
                                 fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
-                                  text: '人已参与活动', style: DefaultStyle.black14)
+                                  text: ' 人已参与活动', style: DefaultStyle.black14)
                             ])),
                         activityInfo['status'] != 1
                             ? Container(
@@ -219,6 +220,17 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   String linkUrl = activityInfo['link'];
                                   if (linkUrl == '' || linkUrl == null) return;
                                   List urlList = linkUrl.split('?');
+                                  if (linkUrl.indexOf('toTab') != -1) {
+                                    context.go('/');
+                                    int _tab;
+                                    try {
+                                      _tab = int.parse(linkUrl.split('?')[1]);
+                                    } catch (e) {
+                                      _tab = null;
+                                    }
+                                    EventBus().emit('pili_ciyuan', _tab ?? 0);
+                                    return;
+                                  }
                                   if (activityInfo['link'].indexOf('http') ==
                                       -1) {
                                     Map<String, dynamic> pramas = {};
@@ -249,7 +261,11 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                       var aff = members.aff;
                                       var piliid = members.uuid;
                                       CommonUtils.launchURL(
-                                          '${urlList[0]}?aff=$aff&piliid=$piliid');
+                                          urlList[0].toString() +
+                                              '?aff=' +
+                                              aff.toString() +
+                                              '&piliid=' +
+                                              piliid.toString());
                                     } else {
                                       CommonUtils.launchURL(
                                           activityInfo['link']);

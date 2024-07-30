@@ -10,6 +10,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 import 'model/element.dart';
 
@@ -24,10 +25,14 @@ class AppGlobal {
     'https://apiv2.hichatapi.net',
     'https://apiv2.hichatapi.org'
   ];
+  static bool isPostVideoURL = false;
   static Widget bannerWidget;
   static String uploadImgUrl;
   static String uploadImgKey;
+  static String uploadMp4Key;
+  static String uploadMp4Url;
   static String bannerImgBase;
+  static String uuid;
   static String apiToken;
   static int visibilityDetectorIndex = 0;
   static bool yyShow = true;
@@ -62,4 +67,7 @@ class AppGlobal {
   static Map seconedPagePramas; //页面参数
   static String smallVideoApi;
   static Map smallVideoPramas;
+  static num webBottomHeight = 0;
+  static List popAds = [];
+  static Map postInfo = {};
 }

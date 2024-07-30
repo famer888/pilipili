@@ -5,6 +5,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -48,8 +49,8 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
       child: PlatformAwareAssetImage(
           url: mode == RefreshStatus.refreshing
-              ? 'assets/images/downrefresh1.gif.gif'
-              : 'assets/images/downrefresh1.gif.png',
+              ? PPAssetsPath.downrefreshGif
+              : PPAssetsPath.downrefreshPng,
           height: ScreenUtil().setWidth(50),
           fit: BoxFit.fitHeight,
           filterQuality: FilterQuality.medium),

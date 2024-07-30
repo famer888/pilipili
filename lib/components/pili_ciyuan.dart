@@ -21,71 +21,79 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class PiliCiyuan extends StatefulWidget {
-  PiliCiyuan({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  PiliCiyuan({Key key}) : super(key: key);
   @override
   _PiliCiyuanState createState() => _PiliCiyuanState();
 }
 
 class _PiliCiyuanState extends State<PiliCiyuan> {
-  List<LinkModel> navitems;
+  List<LinkModel> navitems = [];
   int currentIndex = 0;
-  List pages = [];
+  List<Widget> pages = [];
   bool initPage = false;
   bool loading = true;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.isShow && !initPage) {
-      initPage = true;
-      getPageData();
-    }
+    initPage = true;
+    getPageData();
   }
 
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(2);
     loading = false;
-    navitems = data.value.asMap().keys.map((e) {
-      return LinkModel.fromJson(data.value[e]);
-    }).toList();
-    AppGlobal.navList = navitems;
-    pages = data.value.asMap().keys.map((e) {
-      LinkModel _link = LinkModel.fromJson(data.value[e]);
-      if (_link.redirectType == 3) {
+    // data.value.insert(0, {
+    //   'id': 123,
+    //   'related_id': 0,
+    //   'element_id': 123,
+    //   'link_url': 'type:tansuo',
+    //   'resource_url': '',
+    //   'redirect_type': 2,
+    //   'name': '探索',
+    //   'desc': '',
+    //   'sort': 999
+    // });
+
+    data.value.asMap().forEach((index, data) {
+      LinkModel item = LinkModel.fromJson(data);
+      navitems.add(item);
+      if (item.redirectType == 3) {
         // 模块化栏目页
-        return PageViewMixin(
+        pages.add(PageViewMixin(
           child: Lanmu(
-              isShow: currentIndex == e,
-              id: int.parse(navitems[e].linkUrl),
+              isShow: currentIndex == index,
+              id: int.parse(item.linkUrl),
               parentName: 'ciyuan',
-              index: e),
-        );
-      } else if (_link.redirectType == 6) {
+              index: index),
+        ));
+      } else if (item.redirectType == 6) {
         //筛选
-        return PageViewMixin(
+        pages.add(PageViewMixin(
           child: FilterList(
               parentName: 'ciyuan',
-              isShow: currentIndex == e,
-              data: navitems[e].linkUrl,
-              index: e),
-        );
+              isShow: currentIndex == index,
+              data: item.linkUrl,
+              index: index),
+        ));
       } else {
-        return ListPage(
+        pages.add(ListPage(
           parentName: 'ciyuan',
-          isShow: currentIndex == e,
-          title: navitems[e].name,
-          id: navitems[e].linkUrl,
-          index: e,
-        );
+          isShow: currentIndex == index,
+          title: item.name,
+          id: item.linkUrl,
+          index: index,
+        ));
       }
-    }).toList();
+    });
+    AppGlobal.navList = navitems;
+
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return navitems == null || loading
+    return navitems.isEmpty || loading
         ? PageStatus.loading(true)
         : Scrollnav(
             emitName: 'pili_ciyuan',
@@ -94,11 +102,9 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
               setState(() {
                 currentIndex = index;
               });
-                Future.delayed(Duration(milliseconds: 300), () {
-                EventBus().emit('lanmu-init-view', {
-                  'parentName': 'ciyuan',
-                  'currentIndex': index,
-                });
+              EventBus().emit('lanmu-init-view', {
+                'parentName': 'ciyuan',
+                'currentIndex': index,
               });
             },
             pages: pages,

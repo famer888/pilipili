@@ -4,6 +4,7 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/invitionlist.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 
 class InviteRecored extends StatefulWidget {
@@ -154,7 +155,7 @@ class RecoredItem extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: item.register == "未注册"
-                        ? Color(0xffFF84A9)
+                        ? DefaultStyle.themeColor
                         : Color(0xffFE155B),
                     fontSize: ScreenUtil().setSp(14),
                   ))

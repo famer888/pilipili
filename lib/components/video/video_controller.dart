@@ -13,6 +13,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoController extends StatefulWidget {
@@ -66,11 +67,11 @@ class _VideoControllerState extends State<VideoController>
   bool showControl = false; //控制器展示
   bool isLock = false; //锁定状态
   Timer timerfc; //播放暂停按钮的隐藏定时器
-  double videoValue = 0.0; //当前视频播放时间
+  ValueNotifier<double> videoValue = ValueNotifier<double>(0.0); //当前视频播放时间
   double videoMaxTime = 0.0; //视频总播放时间
   bool changeStartIsPlay = false; //拖动进度条时视频是否处于播放状态
   bool videoPageIsActive = true;
-  bool loading = true;
+  ValueNotifier<bool> loading = ValueNotifier<bool>(true);
   bool seekHistory = false;
   double panStart = 0;
   bool showUpTime = false;
@@ -94,9 +95,8 @@ class _VideoControllerState extends State<VideoController>
     if (widget.videoController?.value.isInitialized) {
       videoMaxTime =
           widget.videoController.value.duration.inMilliseconds.toDouble();
-      videoValue =
+      videoValue.value =
           widget.videoController.value.position.inMilliseconds.toDouble();
-      setState(() {});
       widget.videoController.addListener(setVideoValue);
     } else {
       initVideo();
@@ -130,19 +130,20 @@ class _VideoControllerState extends State<VideoController>
           watchRcordTimer = Timer.periodic(new Duration(seconds: 10), (timer) {
             startWatchRecordTimer(AppGlobal.videoWatchRecordBox, widget.data.id,
                 chapterId: widget.data.id,
-                offset: videoValue,
+                offset: videoValue.value,
                 thumb: widget.data.coverOriginalVertical ??
                     widget.data.coverOriginalHorizontal,
                 isFree: widget.data.isfree,
                 title: widget.data.title);
           });
         }
+        loading.value = false;
       }).onError((error, stackTrace) {
         if (mounted) {
           videoPlayErr = true;
           setState(() {});
           CommonUtils.debugPrint(widget.videoUrl);
-          CommonUtils.debugPrint('【播放资源时出错】:$error');
+          CommonUtils.debugPrint('【播放资源时出错】:' + error.toString());
           CommonUtils.showText('视频资源播放错误');
         }
       }).timeout(Duration(seconds: 30), onTimeout: () {
@@ -161,6 +162,8 @@ class _VideoControllerState extends State<VideoController>
       widget.videoController?.dispose();
       EventBus().off('stop-current-play');
     }
+    loading.dispose();
+    videoValue.dispose();
     timerfc?.cancel();
     super.dispose();
   }
@@ -169,10 +172,10 @@ class _VideoControllerState extends State<VideoController>
     int s = (time / 1000 / 60).truncate();
     int h = (time / 1000 - (s * 60)).truncate();
     String timeStr(int numb) {
-      return numb < 10 ? '0$numb' : numb.toString();
+      return numb < 10 ? '0' + numb.toString() : numb.toString();
     }
 
-    return '${timeStr(s)}:${timeStr(h)}';
+    return timeStr(s).toString() + ':' + timeStr(h).toString();
   }
 
   Future<void> changeFull() async {
@@ -226,10 +229,8 @@ class _VideoControllerState extends State<VideoController>
         !seekHistory) {
       var boxData = AppGlobal.videoWatchRecordBox.get(widget.data.id);
       if (boxData != null) {
-        setState(() {
-          seekHistory = true;
-          videoValue = boxData[widget.data.id].toDouble();
-        });
+        seekHistory = true;
+        videoValue.value = boxData[widget.data.id].toDouble();
         widget.videoController
             ?.seekTo(Duration(milliseconds: boxData[widget.data.id].toInt()));
       }
@@ -237,7 +238,7 @@ class _VideoControllerState extends State<VideoController>
     videoMaxTime =
         widget.videoController.value.duration.inMilliseconds.toDouble();
     if (!usecheck) {
-      videoValue =
+      videoValue.value =
           widget.videoController.value.position.inMilliseconds.toDouble();
     }
     if (widget.videoController.value.buffered.isNotEmpty) {
@@ -246,12 +247,11 @@ class _VideoControllerState extends State<VideoController>
               widget.videoController.value.position.inSeconds &&
           element.end.inSeconds >
               widget.videoController.value.position.inSeconds)) {
-        loading = false;
+        loading.value = false;
       } else {
-        loading = true;
+        loading.value = true;
       }
     }
-    setState(() {});
   }
 
   hideControl() {
@@ -282,32 +282,35 @@ class _VideoControllerState extends State<VideoController>
   }
 
   Widget controlShow() {
-    if (bytes == null) {
-      CommonUtils.getRealImage(
-          url: 'assets/images/card_video_shadow.png',
-          imgUrl: bytes,
-          setUrl: (e) {
-            if (!mounted) return;
-            bytes = e;
-            setState(() {});
-          });
-    }
+    // if (bytes == null) {
+    //   CommonUtils.getRealImage(
+    //       url: 'assets/images/card_video_shadow.png',
+    //       imgUrl: bytes,
+    //       setUrl: (e) {
+    //         if (!mounted) return;
+    //         bytes = e;
+    //         setState(() {});
+    //       });
+    // }
     return Stack(
       children: [
         Positioned(
-            child: (mounted &&
-                        loading &&
-                        widget.videoController.value.isPlaying) ||
-                    !widget.videoController.value.isInitialized
-                ? Center(
-                    child: Container(
-                      width: ScreenUtil().setWidth(90),
-                      child: Image.asset('assets/gif/loading_pink.gif',
-                          fit: BoxFit.fitWidth,
-                          filterQuality: FilterQuality.medium),
-                    ),
-                  )
-                : Container()),
+            child: ValueListenableBuilder(
+                valueListenable: loading,
+                builder: (context, value, child) {
+                  return mounted &&
+                          value &&
+                          widget.videoController.value.isPlaying
+                      ? Center(
+                          child: Container(
+                            width: ScreenUtil().setWidth(90),
+                            child: Image.asset('assets/gif/loading_pink.gif',
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.medium),
+                          ),
+                        )
+                      : Container();
+                })),
         Positioned(
           top: 0,
           left: 0,
@@ -338,8 +341,9 @@ class _VideoControllerState extends State<VideoController>
                                 }
                               },
                               child: PlatformAwareAssetImage(
-                                  url:
-                                      'assets/images/detail/${widget.videoController.value.isPlaying ? 'icon_pause' : 'icon_play'}.png',
+                                  url: widget.videoController.value.isPlaying
+                                      ? PPAssetsPath.iconPause
+                                      : PPAssetsPath.iconPlay,
                                   width: ScreenUtil().setWidth(50),
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
@@ -357,11 +361,11 @@ class _VideoControllerState extends State<VideoController>
                 child: Container(
                   height: ScreenUtil().setWidth(38),
                   width: double.infinity,
-                  decoration: bytes != null
-                      ? BoxDecoration(
-                          image: DecorationImage(
-                              image: MemoryImage(bytes), fit: BoxFit.fill))
-                      : null,
+                  // decoration: bytes != null
+                  //     ? BoxDecoration(
+                  //         image: DecorationImage(
+                  //             image: MemoryImage(bytes), fit: BoxFit.fill))
+                  //     : null,
                   padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(13),
                   ),
@@ -377,8 +381,9 @@ class _VideoControllerState extends State<VideoController>
                           }
                         },
                         child: PlatformAwareAssetImage(
-                          url:
-                              'assets/images/volume-icon${widget.videoController.value.volume > 0 ? '-on' : ''}.png',
+                          url: widget.videoController.value.volume > 0
+                              ? PPAssetsPath.volumeon
+                              : PPAssetsPath.volumeOff,
                           width: ScreenUtil().setWidth(15),
                           fit: BoxFit.fitWidth,
                         ),
@@ -434,7 +439,7 @@ class _VideoControllerState extends State<VideoController>
                                 ),
                               ),
                               Text(
-                                getTimeStr(videoValue),
+                                getTimeStr(videoValue.value),
                                 style: DefaultStyle.white11,
                               ),
                               Expanded(
@@ -442,7 +447,8 @@ class _VideoControllerState extends State<VideoController>
                                       data: SliderTheme.of(context).copyWith(
                                           trackHeight: ScreenUtil().setWidth(2),
                                           inactiveTrackColor: Colors.white24,
-                                          activeTrackColor: Color(0xffff84a9),
+                                          activeTrackColor:
+                                              DefaultStyle.themeColor,
                                           overlayColor: Colors.white54,
                                           thumbShape: RoundSliderThumbShape(
                                               enabledThumbRadius:
@@ -451,11 +457,11 @@ class _VideoControllerState extends State<VideoController>
                                             overlayRadius:
                                                 ScreenUtil().setWidth(9),
                                           ),
-                                          thumbColor: Color(0xffff84a9)),
+                                          thumbColor: DefaultStyle.themeColor),
                                       child: Slider(
-                                          value: videoValue > videoMaxTime
+                                          value: videoValue.value > videoMaxTime
                                               ? videoMaxTime
-                                              : videoValue,
+                                              : videoValue.value,
                                           max: videoMaxTime,
                                           min: 0,
                                           onChangeStart: (e) {
@@ -477,12 +483,12 @@ class _VideoControllerState extends State<VideoController>
                                             try {
                                               if (widget.videoController.value
                                                   .isInitialized) {
-                                                videoValue = e;
-                                                setState(() {});
+                                                videoValue.value = e;
                                                 widget.videoController
                                                     .seekTo(Duration(
-                                                        milliseconds:
-                                                            videoValue.toInt()))
+                                                        milliseconds: videoValue
+                                                            .value
+                                                            .toInt()))
                                                     .then((value) {
                                                   usecheck = false;
                                                 });
@@ -555,7 +561,7 @@ class _VideoControllerState extends State<VideoController>
                       padding: EdgeInsets.symmetric(
                           horizontal: ScreenUtil().setWidth(15),
                           vertical: ScreenUtil().setWidth(10)),
-                      child: Text(getTimeStr(videoValue),
+                      child: Text(getTimeStr(videoValue.value),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -623,7 +629,10 @@ class _VideoControllerState extends State<VideoController>
                           width: ScreenUtil().setWidth(118.5),
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                colors: [
+                                  DefaultStyle.themeColor,
+                                  DefaultStyle.linerThemeColor
+                                ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),
@@ -641,54 +650,66 @@ class _VideoControllerState extends State<VideoController>
                   ),
                 ),
               )
-            : GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onPanStart: (DragStartDetails e) {
-                  if (isLock ||
-                      widget.isPreview ||
-                      widget.videoController == null ||
-                      !widget.videoController.value.isInitialized) return;
-                  CommonUtils.debugPrint('panStart:${e.localPosition.dx}');
-                  usecheck = true;
-                  showControl = false;
-                  showUpTime = true;
-                  setState(() {});
-                  changeStartIsPlay = widget.videoController.value.isPlaying;
-                  widget.videoController.pause();
-                  panStart = e.localPosition.dx;
-                },
-                onPanUpdate: (DragUpdateDetails e) {
-                  if (isLock ||
-                      widget.isPreview ||
-                      !widget.videoController.value.isInitialized) return;
-                  upValue = videoValue + (e.localPosition.dx - panStart) * 10;
-                  if (upValue > videoMaxTime) return;
-                  if (upValue > 0 && upValue < videoMaxTime) {
-                    videoValue = upValue;
-                  }
-                  setState(() {});
-                },
-                onPanEnd: (DragEndDetails e) {
-                  if (isLock ||
-                      widget.isPreview ||
-                      !widget.videoController.value.isInitialized) return;
-                  CommonUtils.debugPrint('panEnd:结束');
-                  if (changeStartIsPlay) {
-                    widget.videoController.play();
-                    videoPageIsActive = true;
-                  }
-                  widget.videoController
-                      .seekTo(Duration(milliseconds: videoValue.toInt()))
-                      .then((value) {
-                    usecheck = false;
-                  });
-                  upValue = 0;
-                  showUpTime = false;
-                  setState(() {});
-                },
-                onTap: () {
-                  hideControl();
-                },
-                child: controlShow()));
+            : RepaintBoundary(
+                child: ValueListenableBuilder(
+                    valueListenable: videoValue,
+                    builder: (context, value, child) {
+                      return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onPanStart: (DragStartDetails e) {
+                            if (isLock ||
+                                widget.isPreview ||
+                                widget.videoController == null ||
+                                !widget.videoController.value.isInitialized)
+                              return;
+                            CommonUtils.debugPrint(
+                                'panStart:' + e.localPosition.dx.toString());
+                            usecheck = true;
+                            showControl = false;
+                            showUpTime = true;
+                            setState(() {});
+                            changeStartIsPlay =
+                                widget.videoController.value.isPlaying;
+                            widget.videoController.pause();
+                            panStart = e.localPosition.dx;
+                          },
+                          onPanUpdate: (DragUpdateDetails e) {
+                            if (isLock ||
+                                widget.isPreview ||
+                                !widget.videoController.value.isInitialized)
+                              return;
+                            upValue = videoValue.value +
+                                (e.localPosition.dx - panStart) * 10;
+                            if (upValue > videoMaxTime) return;
+                            if (upValue > 0 && upValue < videoMaxTime) {
+                              videoValue.value = upValue;
+                            }
+                          },
+                          onPanEnd: (DragEndDetails e) {
+                            if (isLock ||
+                                widget.isPreview ||
+                                !widget.videoController.value.isInitialized)
+                              return;
+                            CommonUtils.debugPrint('panEnd:结束');
+                            if (changeStartIsPlay) {
+                              widget.videoController.play();
+                              videoPageIsActive = true;
+                            }
+                            widget.videoController
+                                .seekTo(Duration(
+                                    milliseconds: videoValue.value.toInt()))
+                                .then((value) {
+                              usecheck = false;
+                            });
+                            upValue = 0;
+                            showUpTime = false;
+                            setState(() {});
+                          },
+                          onTap: () {
+                            hideControl();
+                          },
+                          child: controlShow());
+                    }),
+              ));
   }
 }

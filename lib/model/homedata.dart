@@ -45,23 +45,28 @@ class HomeData {
 }
 
 class Data {
-  Data({
-    this.versionMsg,
-    this.timestamp,
-    this.config,
-    this.notice,
-    this.ads,
-    this.member,
-  });
+  Data(
+      {this.versionMsg,
+      this.timestamp,
+      this.config,
+      this.notice,
+      this.ads,
+      this.member,
+      this.darkPrivilege,
+      this.darkprivilegeTips,
+      this.allowPublishPost,
+      this.noPermissionPublishPostTips});
 
   VersionMsg versionMsg;
   int timestamp;
   Notice notice;
-
   Config config;
   Ads ads;
   Member member;
-
+  bool darkPrivilege;
+  String darkprivilegeTips;
+  int allowPublishPost;
+  String noPermissionPublishPostTips;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         versionMsg: json["versionMsg"] == null
             ? null
@@ -71,6 +76,11 @@ class Data {
         config: json["config"] == null ? null : Config.fromJson(json["config"]),
         ads: json["ads"] == null ? null : Ads.fromJson(json["ads"]),
         member: json["member"] == null ? null : Member.fromJson(json["member"]),
+        darkPrivilege: json["dark_privilege"] ?? false,
+        darkprivilegeTips: json["dark_privilege_tips"] ?? '',
+        allowPublishPost: int.parse(json["allow_publish_post"] ?? '0'),
+        noPermissionPublishPostTips:
+            json["no_permission_publish_post_tips"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,6 +90,10 @@ class Data {
         "config": config == null ? null : config.toJson(),
         "ads": ads == null ? null : ads.toJson(),
         "member": member == null ? null : member.toJson(),
+        "dark_privilege": darkPrivilege ?? false,
+        "dark_privilege_tips": darkprivilegeTips ?? false,
+        "allow_publish_post": allowPublishPost ?? 0,
+        "no_permission_publish_post_tips": noPermissionPublishPostTips ?? '',
       };
 }
 
@@ -168,7 +182,11 @@ class Config {
       this.m3u8_encrypt,
       this.video_encrypt_api,
       this.video_encrypt_referer,
-      this.video_encrypt_m3u8});
+      this.video_encrypt_m3u8,
+      this.withdraw_rate,
+      this.withdraw_ratio,
+      this.withdraw_rule,
+      this.tgLink});
 
   String imgUploadUrl;
   String mp4UploadUrl;
@@ -186,42 +204,47 @@ class Config {
   String video_encrypt_api;
   String video_encrypt_referer;
   String video_encrypt_m3u8;
+  int withdraw_rate;
+  int withdraw_ratio;
+  String withdraw_rule;
+  String tgLink;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
-        imgUploadUrl:
-            json["img_upload_url"] == null ? null : json["img_upload_url"],
-        mp4UploadUrl:
-            json["mp4_upload_url"] == null ? null : json["mp4_upload_url"],
-        mobileMp4UploadUrl: json["mobile_mp4_upload_url"] == null
-            ? null
-            : json["mobile_mp4_upload_url"],
-        uploadImgKey:
-            json["upload_img_key"] == null ? null : json["upload_img_key"],
-        uploadMp4Key:
-            json["upload_mp4_key"] == null ? null : json["upload_mp4_key"],
-        uuid: json["uuid"] == null ? null : json["uuid"],
-        github: json["github"] == null ? null : json["github"],
-        officeSite: json["office_site"] == null ? null : json["office_site"],
-        officialGroup:
-            json["official_group"] == null ? null : json["official_group"],
-        share: json["share"] == null ? null : Share.fromJson(json["share"]),
-        imgBase: json["img_base"] == null ? null : json["img_base"],
-        line: json["line"] == null
-            ? null
-            : List<dynamic>.from(json["line"].map((x) => x)),
-        m3u8_encrypt: json['m3u8_encrypt'] == null
-            ? null
-            : json['m3u8_encrypt'].toString(),
-        video_encrypt_api: json["video_encrypt_api"] == null
-            ? null
-            : json["video_encrypt_api"],
-        video_encrypt_referer: json["video_encrypt_referer"] == null
-            ? null
-            : json["video_encrypt_referer"],
-        video_encrypt_m3u8: json["video_encrypt_m3u8"] == null
-            ? null
-            : json["video_encrypt_m3u8"],
-      );
+      imgUploadUrl:
+          json["img_upload_url"] == null ? null : json["img_upload_url"],
+      mp4UploadUrl:
+          json["mp4_upload_url"] == null ? null : json["mp4_upload_url"],
+      mobileMp4UploadUrl: json["mobile_mp4_upload_url"] == null
+          ? null
+          : json["mobile_mp4_upload_url"],
+      uploadImgKey:
+          json["upload_img_key"] == null ? null : json["upload_img_key"],
+      uploadMp4Key:
+          json["upload_mp4_key"] == null ? null : json["upload_mp4_key"],
+      uuid: json["uuid"] == null ? null : json["uuid"],
+      github: json["github"] == null ? null : json["github"],
+      officeSite: json["office_site"] == null ? null : json["office_site"],
+      officialGroup:
+          json["official_group"] == null ? null : json["official_group"],
+      share: json["share"] == null ? null : Share.fromJson(json["share"]),
+      imgBase: json["img_base"] == null ? null : json["img_base"],
+      line: json["line"] == null
+          ? null
+          : List<dynamic>.from(json["line"].map((x) => x)),
+      m3u8_encrypt:
+          json['m3u8_encrypt'] == null ? null : json['m3u8_encrypt'].toString(),
+      video_encrypt_api:
+          json["video_encrypt_api"] == null ? null : json["video_encrypt_api"],
+      video_encrypt_referer: json["video_encrypt_referer"] == null
+          ? null
+          : json["video_encrypt_referer"],
+      video_encrypt_m3u8: json["video_encrypt_m3u8"] == null
+          ? null
+          : json["video_encrypt_m3u8"],
+      withdraw_rate: json['withdraw_rate'] ?? 0,
+      withdraw_ratio: json['withdraw_ratio'] ?? 0,
+      withdraw_rule: json['withdraw_rule'] ?? 0,
+      tgLink: json['tg_link'] ?? '');
 
   Map<String, dynamic> toJson() => {
         "img_upload_url": imgUploadUrl == null ? null : imgUploadUrl,
@@ -244,6 +267,10 @@ class Config {
             video_encrypt_referer == null ? null : video_encrypt_referer,
         "video_encrypt_m3u8":
             video_encrypt_m3u8 == null ? null : video_encrypt_m3u8,
+        "withdraw_rate": withdraw_rate ?? 0,
+        "withdraw_ratio": withdraw_ratio ?? 0,
+        "withdraw_rule": withdraw_rule ?? '',
+        "tg_link": tgLink ?? ''
       };
 }
 

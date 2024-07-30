@@ -8,8 +8,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
-
-import '../../routers.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'login_box.dart';
 
 class Register extends StatefulWidget {
@@ -28,12 +27,7 @@ class _RegisterState extends State<Register> {
   @override
   void initState() {
     super.initState();
-    CommonUtils.debugPrint('-**********************************${widget.type}');
-    // if (widget.isExpired) {
-    //   // getHomeConfig(context);
-    // }
     if (widget.type != null) {
-      CommonUtils.debugPrint('${widget.type}');
       currentIndex = widget.type;
       setState(() {});
     }
@@ -95,7 +89,9 @@ class _RegisterState extends State<Register> {
                 setState(() {});
               },
               child: Text(
-                loginType == 0 ? '账号密码注册' : '手机号注册',
+                loginType == 0
+                    ? PPString.acountPasswodRegister
+                    : PPString.phoneCodRegister,
                 style: TextStyle(
                     color: Color(0xffffffff),
                     fontWeight: FontWeight.bold,
@@ -256,7 +252,7 @@ class _RegisterState extends State<Register> {
 
     return LoginBox(
       title: '忘记密码',
-      btnText: retrieveStatus == 0 ? "下一步" : "重设密码",
+      btnText: retrieveStatus == 0 ? PPString.next : PPString.resetPassword,
       btnMargin: retrieveStatus == 0 ? ScreenUtil().setWidth(200) : null,
       onTap: () {
         if (retrieveStatus == 0) {
@@ -432,7 +428,9 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                               Text(
-                                currentIndex == 0 ? "注册登录" : "忘记密码",
+                                currentIndex == 0
+                                    ? PPString.registerLogin
+                                    : PPString.forgoPassword,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

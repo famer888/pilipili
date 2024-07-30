@@ -163,9 +163,15 @@ samples, guidance on mobile development, and a full API reference.
 fvm flutter run -d chrome --web-renderer html
 fvm flutter build web --web-renderer html --release 打包web
 adb devices
-fvm flutter build apk --target-platform  android-arm --split-per-abi --no-tree-shake-icons 打包安卓
+fvm flutter build apk --target-platform  android-arm --split-per-abi --no-tree-shake-icons --obfuscate --split-debug-info=./symbols 打包安卓
 fvm flutter build ios-framework --output=build/framework --no-tree-shake-icons --no-debug --no-profile --obfuscate --split-debug-info=./symbols 打包iOSSDK
 
+IOS需修改版本
+  video_player: ^2.4.7
+  video_player_platform_interface: ^5.1.4
+Andorid需修改版本
+  video_player: ^2.2.10
+  video_player_platform_interface: ^4.2.0
 # android key
 /usr/libexec/java_home -V
 17.0.1, x86_64:     "OpenJDK 17.0.1"        /Users/mac/Library/Java/JavaVirtualMachines/openjdk-17.0.1/Contents/Home

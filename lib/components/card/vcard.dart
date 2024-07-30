@@ -4,6 +4,7 @@ import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 // ignore: must_be_immutable
 class Vcard extends StatefulWidget {
@@ -69,7 +70,8 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
       setState(() {});
     }
     if (widget.isLocal) {
-      EventBus().on('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}', (arg) {
+      EventBus().on(
+          'DOWNLOADCOMICS_PROGRESS_' + widget.cardData["id"].toString(), (arg) {
         // print(arg);
         if (widget.cardData["id"] == arg["id"]) {
           setState(() {
@@ -106,21 +108,26 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
   }
 
   String getDownloadText() {
-    return "${progress < widget.cardData["sets"].length ? progress + 1 : progress}章:${currentImg}/${imgTotal}";
+    return (progress < widget.cardData["sets"].length ? progress + 1 : progress)
+            .toString() +
+        "章:" +
+        currentImg.toString() +
+        "/" +
+        imgTotal.toString();
   }
 
   @override
   void dispose() {
     super.dispose();
     if (widget.isLocal) {
-      EventBus().off('DOWNLOADCOMICS_PROGRESS_${widget.cardData["id"]}');
+      EventBus()
+          .off('DOWNLOADCOMICS_PROGRESS_' + widget.cardData["id"].toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     double thumbHeight = (widget.width / 140) * 194;
-    String desc = getCardDesc(widget);
     return callDetail(
         cardData: widget.cardData,
         widget: widget,
@@ -207,12 +214,12 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                               : Center(
                                   child: Text(
                                     downloadError
-                                        ? "下载失���，点击重试"
+                                        ? "下载失败，点击重试"
                                         : isWaiting
                                             ? "等待下载..."
                                             : progress == 0
                                                 ? "点击开始下载"
-                                                : "暂停下载",
+                                                : PPString.pauseDownloads,
                                     style: TextStyle(
                                         color: progress == -1
                                             ? Colors.red
@@ -222,7 +229,44 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                                     textAlign: TextAlign.center,
                                   ),
                                 ))
-                      : Container()
+                      : Container(),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: widget.contentType == 11 || widget.contentType == 12
+                        ? PlatformAwareAssetImage(
+                            url: 'assets/images/pili_12/icon_series.png',
+                            width: widget.width * 0.807,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : Container(),
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: widget.cardData['is_end'] == null
+                          ? SizedBox()
+                          : Container(
+                              height: 16.w,
+                              width: 32.w,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xffFF8B8B).withOpacity(0.8),
+                                        Color(0xffFF7696).withOpacity(0.8),
+                                        Color(0xffFF7299).withOpacity(0.8)
+                                      ]),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(3.w))),
+                              child: Text(
+                                widget.cardData['is_end'] == 1 ? '完结' : '连载',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10.sp),
+                              ),
+                            ))
                 ],
               ),
               Stack(
@@ -235,13 +279,17 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        widget.showField.indexOf('title') != -1
+                        widget.showField.indexOf('title') != -1 ||
+                                widget.showField.indexOf('name') != -1
                             ? Text(
                                 widget.isSubtitle
                                     ? (widget.cardData['second_title'] ??
                                         widget.cardData['title'] ??
+                                        widget.cardData['name'] ??
                                         '')
-                                    : widget.cardData['title' ?? ''],
+                                    : widget.cardData['title'] ??
+                                        widget.cardData['name'] ??
+                                        '',
                                 maxLines: widget.maxLines,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

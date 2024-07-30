@@ -8,6 +8,7 @@ import 'package:pilipili/model/coindetail.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({Key key}) : super(key: key);
@@ -63,20 +64,24 @@ class _CoinDetailState extends State<CoinDetail> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("${itemdata.sourceStr}", style: DefaultStyle.black16bold),
+              Text(itemdata.sourceStr.toString(), style: DefaultStyle.black16bold),
               SizedBox(
                 height: ScreenUtil().setWidth(6),
               ),
-              Text('${itemdata.createdAt}',
+              Text(itemdata.createdAt.toString(),
                   style: TextStyle(
                       color: Color.fromRGBO(151, 151, 151, 1),
                       fontSize: ScreenUtil().setSp(14))),
             ],
           )),
           Text(
-            '${itemdata?.type == 1 ? '+' : '-'} ${itemdata?.coin}',
+            (itemdata?.type == 1 ? PPString.add : PPString.reduce).toString() +
+                ' ' +
+                itemdata?.coin.toString(),
             style: TextStyle(
-                color: itemdata?.type == 1?DefaultStyle.themeColor:Color.fromRGBO(254, 21, 91, 1),
+                color: itemdata?.type == 1
+                    ? DefaultStyle.themeColor
+                    : Color.fromRGBO(254, 21, 91, 1),
                 fontWeight: FontWeight.bold,
                 fontSize: ScreenUtil().setSp(14)),
           )

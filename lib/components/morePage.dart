@@ -11,7 +11,7 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 
 // ignore: must_be_immutable
 class MorePage extends StatefulWidget {
@@ -82,7 +82,7 @@ class _MorePageState extends State<MorePage>
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: widget.title != null ? widget.title : '二级列表页',
+            title: widget.title != null ? widget.title : '',
           ),
           Expanded(
               child: Padding(

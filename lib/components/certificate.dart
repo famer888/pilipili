@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:pilipili/theme/default.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:pilipili/utils/common.dart';
@@ -206,7 +206,7 @@ class CertificateModel {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      '用户ID：$id',
+                                                      '用户ID：' + id.toString(),
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff646464),
@@ -223,7 +223,7 @@ class CertificateModel {
                                                           .setHeight(2),
                                                     ),
                                                     Text(
-                                                      '邀请码：$code',
+                                                      '邀请码：' + code.toString(),
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff646464),
@@ -384,7 +384,7 @@ class CertificateModel {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    '用户ID：$id',
+                                                    '用户ID：' + id.toString(),
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xff646464),
@@ -400,7 +400,7 @@ class CertificateModel {
                                                         .setHeight(2),
                                                   ),
                                                   Text(
-                                                    '邀请码：$code',
+                                                    '邀请码：' + code.toString(),
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xff646464),
@@ -435,8 +435,8 @@ class CertificateModel {
                                         ScreenUtil().setWidth(17.5)),
                                     gradient: LinearGradient(
                                       colors: [
-                                        Color(0xffFF84A9),
-                                        Color(0xffFF9E9E)
+                                        DefaultStyle.themeColor,
+                                        DefaultStyle.linerThemeColor
                                       ],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,

@@ -56,5 +56,5 @@ class ItemPosition {
 
   @override
   String toString() =>
-      'ItemPosition(index: $index, itemLeadingEdge: $itemLeadingEdge, itemTrailingEdge: $itemTrailingEdge)';
+      'ItemPosition(index: '+index.toString()+', itemLeadingEdge: '+itemLeadingEdge.toString()+', itemTrailingEdge: '+itemTrailingEdge.toString()+')';
 }

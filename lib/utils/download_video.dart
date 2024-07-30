@@ -14,7 +14,7 @@ import 'package:pilipili/utils/crypto.dart';
 import 'package:hive/hive.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Dio dio = Dio();
@@ -48,7 +48,8 @@ class DownloadUtil {
       documents = await getApplicationDocumentsDirectory();
     }
     String _getApplicationDocumentsDirectory = documents.path;
-    String _cachePath = '$_getApplicationDocumentsDirectory/$folderName/';
+    String _cachePath =
+        _getApplicationDocumentsDirectory + '/' + folderName + '/';
     Directory directory = Directory(_cachePath);
     bool isExists = await directory.exists();
     if (!isExists) {
@@ -57,7 +58,7 @@ class DownloadUtil {
     return _cachePath;
   }
 
-  // 视频解密，返回ts队列
+// 视频解密，返回ts队列
   static Future<Map> getTsList(String urlPath) async {
     // 视频地址解密
     String decrypted;
@@ -67,15 +68,16 @@ class DownloadUtil {
     } else {
       decrypted = res.data;
     }
+    decrypted = _checkIV(decrypted);
     String localM3u8 = decrypted;
     // 整理key和ts链接
     List<String> lists = decrypted.split("#EXTINF:");
     List<String> tsLists = [];
     lists.forEach((e) {
+      print(e);
       // 提取key
       if (e.indexOf("URI=") != -1 && e.indexOf(".key") != -1) {
-        String keyUri =
-            e.substring(e.indexOf("URI=") + 5, e.indexOf(".key") + 4);
+        String keyUri = e.substring(e.indexOf("URI=") + 5, e.lastIndexOf("\""));
         tsLists.add(keyUri);
         // 替换key为本地链接
         localM3u8 = localM3u8.replaceAll(
@@ -85,7 +87,10 @@ class DownloadUtil {
       }
       // 提取ts链接
       if (e.indexOf("http") != -1 && e.indexOf(".ts") != -1) {
-        String tsItem = e.substring(e.indexOf("http"), e.indexOf(".ts") + 3);
+        String tsItem = e
+            .substring(e.indexOf("http"), e.length)
+            .replaceAll("#EXT-X-ENDLIST", "")
+            .trim();
         tsLists.add(tsItem);
         // 替换ts为本地链接
         localM3u8 = localM3u8.replaceAll(
@@ -94,6 +99,7 @@ class DownloadUtil {
                 tsItem.lastIndexOf("/") + 1, tsItem.indexOf(".ts") + 3));
       }
     });
+
     return {"localM3u8": localM3u8, "tsLists": tsLists};
   }
 
@@ -218,8 +224,8 @@ class DownloadUtil {
       String m3u8Name = taskInfo["urlPath"].substring(
           taskInfo["urlPath"].lastIndexOf("/") + 1,
           taskInfo["urlPath"].indexOf("m3u8") + 4);
-      await File("$saveDirectory$m3u8Name").writeAsString(localM3u8);
-      taskInfo["url"] = "$saveDirectory$m3u8Name";
+      await File(saveDirectory + m3u8Name).writeAsString(localM3u8);
+      taskInfo["url"] = saveDirectory + m3u8Name;
       if (!downloading) {
         taskInfo["downloading"] = true;
         taskInfo["isWaiting"] = false;
@@ -343,7 +349,7 @@ class DownloadUtil {
         box.put("download_video_tasks", tasks);
         downloadTasks.removeAt(0);
         startNext();
-        EventBus().emit('DOWNLOADVIDEO_PROGRESS_${taskInfo["id"]}', {
+        EventBus().emit('DOWNLOADVIDEO_PROGRESS_' + taskInfo["id"].toString(), {
           "id": taskInfo["id"],
           "downloading": false,
           "downloadError": true
@@ -373,7 +379,7 @@ class DownloadUtil {
             tasks[taskNum]["downloading"] = true;
             tasks[taskNum]["tsListsFinished"].add(urlPath);
             box.put("download_video_tasks", tasks);
-            LogUtil.d("完成单个任务---------${finishCount / tsTotal}");
+            // LogUtil.d("完成单个任务---------${finishCount / tsTotal}");
             // 发送进度数据
             EventBus().emit('DOWNLOADVIDEO_PROGRESS_${id}',
                 {"id": id, "progress": finishCount / tsTotal});
@@ -387,5 +393,14 @@ class DownloadUtil {
 
     int a = await start();
     return a;
+  }
+
+  static String _checkIV(String data) {
+    if (data.contains("IV=") == false) {
+      String ivData = data.replaceAll(
+          "#EXT-X-KEY:METHOD=AES-128,", "#EXT-X-KEY:METHOD=AES-128,IV=0x0,");
+      return ivData;
+    }
+    return data;
   }
 }

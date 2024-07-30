@@ -88,7 +88,7 @@ class _HscrollWidgetState extends State<HscrollWidget> {
                       : GestureDetector(
                           onTap: () {
                             context.push(
-                                '/morePage/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
+                                '/morePage/'+widget.id.toString()+'/'+widget.title.toString()+'/'+(widget.morePageType ?? 1).toString());
                           },
                           child: Container(
                             width: ScreenUtil().setWidth(70),

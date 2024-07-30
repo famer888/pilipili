@@ -1,0 +1,142 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/card/novel_element.dart';
+import 'package:pilipili/components/card/vcard.dart';
+import 'package:pilipili/components/common/widgetitlebar.dart';
+import 'package:pilipili/global.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
+
+class NovelColumn extends StatefulWidget {
+  NovelColumn(
+      {Key key,
+      this.data,
+      this.title,
+      this.moreButton,
+      this.morePageType,
+      this.contentType,
+      this.showField,
+      this.limit,
+      this.id,
+      this.element})
+      : super(key: key);
+  final List<dynamic> data;
+  final String title;
+  final bool moreButton;
+  final int morePageType;
+  final String showField;
+  final int contentType;
+  final int limit;
+  final dynamic id;
+  final dynamic element;
+  @override
+  _NovelColumnState createState() => _NovelColumnState();
+}
+
+class _NovelColumnState extends State<NovelColumn> {
+  List<dynamic> dataList;
+  int page = 1;
+  bool loading = false;
+  bool isAll = false;
+  @override
+  void initState() {
+    dataList = widget.data;
+    super.initState();
+  }
+
+  changeElement() {
+    loading = true;
+    setState(() {});
+    if (dataList != null && isAll) {
+      page = 1;
+    } else {
+      page++;
+    }
+    getElementById(id: widget.id, limit: widget.limit, page: page).then((res) {
+      if (res['status'] != 0) {
+        if (res['data']['value'].length == widget.limit) {
+          dataList = res['data']['value'];
+        }
+        isAll = res['data']['value'].length < widget.limit;
+      } else {
+        CommonUtils.showText(res.msg);
+      }
+    }).whenComplete(() {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.w
+      ),
+      margin: EdgeInsets.only(
+          bottom:
+              ScreenUtil().setWidth(widget.element['is_margin'] == 1 ? 24 : 5)),
+      child: Column(
+        children: [
+          widget.title != null
+              ? WidgetTitleBar(title: widget.title)
+              : Container(),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: widget.data.map((e) {
+              return NovelElementCard(data: e);
+            }).toList(),
+          ),
+          !widget.moreButton
+              ? Container()
+              : GestureDetector(
+                  onTap: () {
+                    context.push('/morePage/' +
+                        widget.id.toString() +
+                        '/' +
+                        widget.title.toString() +
+                        '/' +
+                        (widget.morePageType ?? 1).toString());
+                  },
+                  child: Container(
+                    width: ScreenUtil().setWidth(240),
+                    height: ScreenUtil().setWidth(39),
+                    margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromRGBO(255, 128, 163, 0.5),
+                              offset: Offset(0, 2),
+                              blurRadius: 3,
+                              spreadRadius: 0)
+                        ],
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setWidth(50)),
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xffff8b8b),
+                              Color(0xffff7696),
+                              Color(0xffff7299),
+                            ])),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '查看更多',
+                          style: DefaultStyle.white14,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+        ],
+      ),
+    );
+  }
+}

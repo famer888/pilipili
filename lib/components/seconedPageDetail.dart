@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 
 class SeconedPageDetail extends StatefulWidget {
   SeconedPageDetail({Key key}) : super(key: key);
@@ -19,6 +20,18 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   TabController _tabController;
   ScrollController _scrollController = ScrollController();
   bool isShow = false;
+  Map<int, Map> apiMap = {
+    1: {'api': '/api/mv/getList', 'data': {}},
+    7: {'api': '/api/mv/getList', 'data': {}},
+    2: {
+      'api': '/api/book/getList',
+      'data': {'type': 1}
+    },
+    10: {
+      'api': '/api/mv/getList',
+      'data': {'category': 1}
+    }
+  };
   String cartType = 'h';
   List _tabs = [
     {
@@ -37,14 +50,14 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   // AppGlobal.seconedPagePramas
   int currentTab = 0;
   dynamic pagePramas;
+  Map _pramsMap = {};
+
   @override
   void initState() {
     super.initState();
     pagePramas = AppGlobal.seconedPagePramas;
     String _prams = pagePramas['link_url'];
     List _pramsString = _prams.split(',');
-
-    Map _pramsMap = {};
 
     _pramsString.forEach((item) {
       List _map = item.split(':');
@@ -122,16 +135,15 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
                   SliverAppBar(
-                    collapsedHeight: ScreenUtil().setWidth(44),
+                    collapsedHeight: 44.w,
                     toolbarHeight: 0,
                     shadowColor: Colors.transparent,
                     pinned: true,
                     backgroundColor: Colors.transparent,
                     primary: true,
-                    leading: Container(),
+                    leading: const SizedBox(),
                     forceElevated: false,
-                    expandedHeight: ScreenUtil().setWidth(140) +
-                        ScreenUtil().statusBarHeight,
+                    expandedHeight: 140.w + ScreenUtil().statusBarHeight,
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.pin,
                       background: Stack(
@@ -139,8 +151,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                           PlatformAwareNetworkImage(
                             url: pagePramas['resource_url'],
                             width: double.infinity,
-                            height: ScreenUtil().setWidth(163) +
-                                ScreenUtil().statusBarHeight,
+                            height: 163.w + ScreenUtil().statusBarHeight,
                             fit: BoxFit.cover,
                           ),
                           // Positioned(
@@ -161,9 +172,9 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                       ),
                     ),
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(ScreenUtil().setWidth(44)),
+                      preferredSize: Size.fromHeight(44.w),
                       child: Container(
-                        height: ScreenUtil().setWidth(44),
+                        height: 44.w,
                         alignment: Alignment.centerLeft,
                         decoration:
                             BoxDecoration(color: Colors.white, boxShadow: [
@@ -175,56 +186,36 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                         ]),
                         child: TabBar(
                           indicatorColor: Colors.transparent,
-                          labelColor: Colors.black,
-                          unselectedLabelColor: Colors.transparent,
-                          labelPadding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setWidth(0),
-                              horizontal: ScreenUtil().setWidth(3)),
+                          labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
                           controller: _tabController,
                           isScrollable: true,
                           tabs: _tabs
                               .asMap()
                               .keys
-                              .map((e) => Container(
-                                    height: ScreenUtil().setWidth(44),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: ScreenUtil().setWidth(10)),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Opacity(
-                                          opacity: e == currentTab ? 1 : 0,
-                                          child: PlatformAwareAssetImage(
-                                              url:
-                                                  "assets/images/icon_love_red2.png",
-                                              width: ScreenUtil().setWidth(6),
-                                              fit: BoxFit.fitWidth,
-                                              filterQuality:
-                                                  FilterQuality.medium),
-                                        ),
-                                        Text(
-                                          _tabs[e]['title'],
-                                          style: TextStyle(
-                                              color: e == currentTab
-                                                  ? Color(0xffff5b8c)
-                                                  : Color(0xffc2c2c2),
-                                              fontSize: ScreenUtil().setSp(15)),
-                                        ),
-                                        Opacity(
-                                          opacity: 0,
-                                          child: PlatformAwareAssetImage(
-                                              url:
-                                                  "assets/images/icon_love_red2.png",
-                                              width: ScreenUtil().setWidth(6),
-                                              fit: BoxFit.fitWidth,
-                                              filterQuality:
-                                                  FilterQuality.medium),
-                                        ),
-                                      ],
-                                    ),
+                              .map((e) => Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Opacity(
+                                        opacity: e == currentTab ? 1 : 0,
+                                        child: PlatformAwareAssetImage(
+                                            url:
+                                                "assets/images/icon_love_red2.png",
+                                            width: 6.w,
+                                            fit: BoxFit.fitWidth,
+                                            filterQuality:
+                                                FilterQuality.medium),
+                                      ),
+                                      Text(
+                                        _tabs[e]['title'],
+                                        style: TextStyle(
+                                            color: e == currentTab
+                                                ? Color(0xffff5b8c)
+                                                : Color(0xffc2c2c2),
+                                            fontSize: 15.sp),
+                                      ),
+                                    ],
                                   ))
                               .toList(),
                         ),
@@ -239,30 +230,38 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                   return PageViewMixin(
                     child: PublicList(
                       isFlow: false,
-                      contentType: cartType == 'v' ? 7 : 1,
+                      contentType: _pramsMap['content_type'] == null
+                          ? (cartType == 'v' ? 7 : 1)
+                          : int.parse(_pramsMap['content_type']),
                       cartType: cartType,
-                      data: _tabs[e]['data'],
-                      api: '/api/mv/getList',
+                      data: _pramsMap['content_type'] == null
+                          ? _tabs[e]['data']
+                          : {
+                              ..._tabs[e]['data'],
+                              ...apiMap[int.parse(_pramsMap['content_type'])]
+                                  ['data']
+                            },
+                      api: _pramsMap['content_type'] == null
+                          ? '/api/mv/getList'
+                          : apiMap[int.parse(_pramsMap['content_type'])]['api'],
                       isShow: e == currentTab,
                     ),
                   );
                 }).toList(),
               )),
           Positioned(
-              top: -ScreenUtil().setWidth(96),
+              top: -96.w,
               right: 0,
               left: 0,
               child: Opacity(
                 opacity: isShow ? 1 : 0,
                 child: Container(
-                  height:
-                      ScreenUtil().setWidth(140) + ScreenUtil().statusBarHeight,
+                  height: 140.w + ScreenUtil().statusBarHeight,
                   child: PlatformAwareNetworkImage(
                     url: pagePramas['resource_url'],
                     alignment: Alignment.bottomCenter,
                     width: double.infinity,
-                    height: ScreenUtil().setWidth(140) +
-                        ScreenUtil().statusBarHeight,
+                    height: 140.w + ScreenUtil().statusBarHeight,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -271,27 +270,22 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
               top: ScreenUtil().statusBarHeight,
               right: 0,
               left: 0,
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
-                child: Container(
-                  height: ScreenUtil().setWidth(44),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
-                        child: PlatformAwareAssetImage(
-                            url: 'assets/images/backarrow.png',
-                            width: ScreenUtil().setWidth(20),
-                            height: ScreenUtil().setWidth(20),
-                            filterQuality: FilterQuality.medium),
-                      ),
-                      Container()
-                    ],
-                  ),
+              child: Container(
+                padding: EdgeInsets.only(
+                    left: DefaultStyle.pagePadding,
+                    right: DefaultStyle.pagePadding,
+                    top: 15.5.w,
+                    bottom: 12.5.w),
+                alignment: Alignment.topLeft,
+                child: GestureDetector(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: PlatformAwareAssetImage(
+                      url: PPAssetsPath.backArrow,
+                      width: 12.w,
+                      height: 22.w,
+                      filterQuality: FilterQuality.medium),
                 ),
               )),
           isShow
@@ -300,16 +294,15 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                   right: 0,
                   left: 0,
                   child: Container(
-                    height: ScreenUtil().setWidth(44),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(60)),
+                    height: 44.w,
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     alignment: Alignment.center,
                     child: Text(
                       pagePramas['name'],
                       style: DefaultStyle.white14,
                     ),
                   ))
-              : Container()
+              : const SizedBox()
         ],
       ),
     );

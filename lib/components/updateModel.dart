@@ -4,7 +4,6 @@ import 'package:app_installer/app_installer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
@@ -22,7 +21,7 @@ class UpdateModel {
       VoidCallback confirmApp,
       BuildContext context,
       String text,
-      String type = "2"}) {
+      String type}) {
     var tipSplit = text.split('#');
     tipWidget(String value) {
       return Text(
@@ -124,7 +123,7 @@ class UpdateModel {
                                                   onTap: () {
                                                     cancelFunc();
                                                     context.push(
-                                                        '/${Routes.appCenter}');
+                                                        '/appCenter');
                                                   },
                                                   child: Container(
                                                       decoration: BoxDecoration(
@@ -144,8 +143,10 @@ class UpdateModel {
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
-                                                              Color(0xffFF9E9E),
-                                                              Color(0xffFF84A9),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,
@@ -202,8 +203,10 @@ class UpdateModel {
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
-                                                              Color(0xffFF9E9E),
-                                                              Color(0xffFF84A9),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,
@@ -263,8 +266,10 @@ class UpdateModel {
                                                         gradient:
                                                             LinearGradient(
                                                           colors: [
-                                                            Color(0xffFF9E9E),
-                                                            Color(0xffFF84A9),
+                                                            DefaultStyle
+                                                                .linerThemeColor,
+                                                            DefaultStyle
+                                                                .themeColor,
                                                           ],
                                                           begin: Alignment
                                                               .topCenter,
@@ -448,8 +453,10 @@ class UpdateModel {
                                                           gradient:
                                                               LinearGradient(
                                                             colors: [
-                                                              Color(0xffFF9E9E),
-                                                              Color(0xffFF84A9),
+                                                              DefaultStyle
+                                                                  .linerThemeColor,
+                                                              DefaultStyle
+                                                                  .themeColor,
                                                             ],
                                                             begin: Alignment
                                                                 .topCenter,
@@ -647,7 +654,7 @@ class _DownloadApkState extends State<DownloadApk> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "正在更新 v.${widget.version}",
+                        "正在更新 v." + widget.version.toString(),
                         style: TextStyle(
                             color: Color(0xFF646464),
                             fontSize: ScreenUtil().setSp(18),

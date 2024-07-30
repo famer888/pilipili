@@ -40,46 +40,47 @@ class _AppCenterState extends State<AppCenter> {
     }
   }
 
+  Widget applicationColumn() {
+    return Expanded(
+      child: appList.length == 0
+          ? Container(
+              color: Color(0xFFEEEEEE),
+              child: Center(
+                child: Text(
+                  "应用列表为空",
+                  style: DefaultStyle.black15bold,
+                ),
+              ),
+            )
+          : ListView.builder(
+              addRepaintBoundaries: false,
+              padding: EdgeInsets.zero,
+              itemCount: appList.length,
+              itemBuilder: (context, index) {
+                return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.w)),
+                    child: ApplicationItem(
+                      id: appList[index].id,
+                      appname: appList[index].title,
+                      iconurl: appList[index].imgUrl,
+                      des: appList[index].description,
+                      clicked: appList[index].clicked,
+                      link: appList[index].linkUrl,
+                    ),
+                  );
+              }),
+    );
+  }
+
   onRefreshPost() {
     banner = [];
     appList = [];
     isLoading = true;
     setState(() {});
     getData();
-  }
-
-  Widget applicationColumn() {
-    List<Widget> tiles = [];
-    Widget content;
-    for (int i = 0; i < appList.length; i++) {
-      tiles.add(
-        ApplicationItem(
-          id: appList[i].id,
-          appname: appList[i].title,
-          iconurl: appList[i].imgUrl,
-          des: appList[i].description,
-          clicked: appList[i].clicked,
-          link: appList[i].linkUrl,
-        ),
-      );
-    }
-    if (appList.length == 0) {
-      tiles.add(Container(
-        color: Color(0xFFEEEEEE),
-        margin: EdgeInsets.only(top: ScreenUtil().setWidth(20)),
-        padding: EdgeInsets.all(ScreenUtil().setWidth(40)),
-        child: Center(
-          child: Text(
-            '应用列表为空',
-            style: DefaultStyle.black15bold,
-          ),
-        ),
-      ));
-    }
-    content = new Column(
-      children: tiles,
-    );
-    return content;
   }
 
   @override
@@ -98,48 +99,25 @@ class _AppCenterState extends State<AppCenter> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: ScreenUtil().setWidth(24),
+                        height: 24.w,
                       ),
                       SwiperContainer(
                         banner: banner,
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          left: DefaultStyle.pagePadding,
-                          top: ScreenUtil().setWidth(44),
-                          bottom: ScreenUtil().setWidth(21.5),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // PlatformAwareAssetImage(
-                            //   url: 'assets/images/mine/icon_title.png',
-                            //   width: ScreenUtil().setWidth(20),
-                            //   height: ScreenUtil().setWidth(20),
-                            // ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(8),
-                            ),
-                            Text(
-                              '推荐APP',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: ScreenUtil().setWidth(16)),
-                            )
-                          ],
+                            top: 24.w, left: 16.w, bottom: 16.w),
+                        child: Text(
+                          '推荐APP',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp),
                         ),
                       ),
-                      Container(
-                          margin: EdgeInsets.all(ScreenUtil().setWidth(8)),
-                          padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(12))),
-                          child: applicationColumn()),
+                      applicationColumn(),
                       SizedBox(
-                        height: MediaQuery.of(context).padding.bottom,
+                        height: ScreenUtil().bottomBarHeight,
                       )
                     ],
                   ),
@@ -197,18 +175,17 @@ class _SwiperContainerState extends State<SwiperContainer> {
   Widget build(BuildContext context) {
     return _banner.length > 1
         ? SizedBox(
-            height: ScreenUtil().setWidth(160),
+            height: 160.w,
             child: Swiper(
               onTap: (index) {
                 _onTapSwiper(index);
               },
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  width: ScreenUtil().setWidth(315),
-                  height: ScreenUtil().setWidth(150),
+                  width: 315.w,
+                  height: 150.w,
                   child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(ScreenUtil().setWidth(10)),
+                    borderRadius: BorderRadius.circular(10.w),
                     child: PlatformAwareNetworkImage(
                       url: _banner[index].imgUrl,
                     ),
@@ -222,11 +199,11 @@ class _SwiperContainerState extends State<SwiperContainer> {
             ))
         : Container(
             width: double.infinity,
-            height: _banner.length == 1 ? ScreenUtil().setWidth(150) : 0,
+            height: _banner.length == 1 ? 150.w : 0,
             child: _banner.length == 1
                 ? GestureDetector(
                     onTap: () {
-                      CommonUtils.launchURL("${_banner[0].url}");
+                      CommonUtils.launchURL(_banner[0].url.toString());
                     },
                     child: PlatformAwareNetworkImage(
                       url: _banner[0].imgUrl,
@@ -314,7 +291,7 @@ class _ApplicationItemState extends State<ApplicationItem> {
           _onTapSwiper();
         },
         child: Padding(
-          padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(26.5)),
+          padding: EdgeInsets.only(bottom: 26.5.w),
           child: Row(
             children: [
               Expanded(
@@ -322,13 +299,15 @@ class _ApplicationItemState extends State<ApplicationItem> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(13)),
-                    height: ScreenUtil().setWidth(64),
-                    width: ScreenUtil().setWidth(64),
+                    margin: EdgeInsets.only(right: 13.w),
+                    height: 64.w,
+                    width: 64.w,
                     child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(ScreenUtil().setWidth(10)),
-                      child: PlatformAwareNetworkImage(url: widget.iconurl),
+                      borderRadius: BorderRadius.circular(10.w),
+                      child: PlatformAwareNetworkImage(
+                        url: widget.iconurl,
+                        noVisibilityDetector: true,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -338,21 +317,21 @@ class _ApplicationItemState extends State<ApplicationItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${widget.appname}',
+                          widget.appname.toString(),
                           style: DefaultStyle.black15bold,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '$clickNumber次下载',
+                          clickNumber.toString() + '次下载',
                           style: DefaultStyle.lgray10,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '${widget.des}',
+                          widget.des.toString(),
                           style: DefaultStyle.lgray11,
                         ),
                       ],
@@ -373,18 +352,17 @@ class _ApplicationItemState extends State<ApplicationItem> {
                   //       fit: BoxFit.fill,
                   //     )),
                   Container(
-                    width: ScreenUtil().setWidth(56),
-                    height: ScreenUtil().setWidth(34),
+                    width: 56.w,
+                    height: 34.w,
                     decoration: BoxDecoration(
                         gradient: DefaultStyle.defaluGrandientLine,
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().setWidth(50))),
+                        borderRadius: BorderRadius.circular(50.w)),
                     child: Center(
                       child: Text(
                         '下载',
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: ScreenUtil().setSp(12),
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold),
                       ),
                     ),

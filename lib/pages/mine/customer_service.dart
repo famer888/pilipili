@@ -54,8 +54,11 @@ class _CustomerServiceState extends State<CustomerService>
       if (regExp.hasMatch(pathList[i])) {
         var newMsg = regExp.stringMatch(pathList[i]) == null
             ? pathList[i]
-            : pathList[i].replaceAll(regExp.stringMatch(pathList[i]),
-                '[youyu]${regExp.stringMatch(pathList[i])}[youyu]');
+            : pathList[i].replaceAll(
+                regExp.stringMatch(pathList[i]),
+                '[youyu]' +
+                    regExp.stringMatch(pathList[i]).toString() +
+                    '[youyu]');
         textList.addAll(newMsg.split('[youyu]'));
       } else {
         textList.add(pathList[i]);
@@ -181,8 +184,13 @@ class _CustomerServiceState extends State<CustomerService>
       platformViewRegistry.registerViewFactory('FileInput', (viewId) {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
-        uploadInput.setAttribute('style',
-            'width: ${ScreenUtil().setWidth(25)}px; height: ${ScreenUtil().setWidth(23)}px; opacity: 0');
+        uploadInput.setAttribute(
+            'style',
+            'width: ' +
+                ScreenUtil().setWidth(25).toString() +
+                'px; height: ' +
+                ScreenUtil().setWidth(23).toString() +
+                'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;
@@ -487,8 +495,8 @@ class _CustomerServiceState extends State<CustomerService>
                       decoration: BoxDecoration(
                           border: Border.all(
                               width: ScreenUtil().setWidth(0.5),
-                              color: Color(0xffFF84A9)),
-                          color: Color(0xffFF84A9),
+                              color: DefaultStyle.themeColor),
+                          color: DefaultStyle.themeColor,
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
                           horizontal: ScreenUtil().setWidth(10.5),

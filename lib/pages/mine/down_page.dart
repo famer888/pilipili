@@ -13,7 +13,8 @@ import 'dart:io';
 import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/download_comics.dart';
 
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 class DownPage extends StatefulWidget {
   DownPage({Key key}) : super(key: key);
@@ -226,7 +227,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                     child: Text(
-                      isAll ? "全不选" : "全选",
+                      isAll ? PPString.allNoSelecr : PPString.allSelecr,
                       style: TextStyle(
                           color: DefaultStyle.themeColor,
                           fontSize: ScreenUtil().setSp(15)),
@@ -370,7 +371,7 @@ class _DownListState extends State<DownList> {
   Future getComicsDownloadInfo() async {
     Box box = await Hive.openBox('HiveBox');
     data = box.get('download_comics_tasks') ?? [];
-    LogUtil.d("漫画信息-----${data}");
+    LogUtilS.d("漫画信息-----"+data.toString());
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;
     }

@@ -15,8 +15,13 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   Notice _notice;
   Config _config;
   Member _member;
+  bool _darkPrivilege;
+  String _darkprivilegeTips;
   SystemNotice _systemNotice;
   Map _privilege;
+  int _postMoney;
+  int _allowPublishPost;
+  String _noPermissionPublishPostTips;
 
   SystemNotice get systemnotice => _systemNotice;
   Member get member => _member;
@@ -25,11 +30,33 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   Ads get ads => _ads;
   VersionMsg get versionMsg => _versionMsg;
   Map get privilege => _privilege;
+  bool get darkPrivilege => _darkPrivilege;
+  String get darkprivilegeTips => _darkprivilegeTips;
+  int get postMoney => _postMoney;
+  int get allowPublishPost => _allowPublishPost;
+  String get noPermissionPublishPostTips => _noPermissionPublishPostTips;
+  void setAllowPublishPost(int status) {
+    _allowPublishPost = status;
+    notifyListeners();
+  }
+
+  void setNoPermissionPublishPostTips(String text) {
+    _noPermissionPublishPostTips = text;
+    notifyListeners();
+  }
+
+  void setDarkPrivilegeTips(String text) {
+    _darkprivilegeTips = text;
+    notifyListeners();
+  }
+
+  void setDarkPrivilege(bool isDark) {
+    _darkPrivilege = isDark;
+    notifyListeners();
+  }
 
   void setPrivilege(Map data) {
     _privilege = data;
-    CommonUtils.debugPrint('setPrivilege');
-    CommonUtils.debugPrint(data);
     notifyListeners();
   }
 
@@ -100,6 +127,11 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setInvitation(dynamic invitation) {
     _member.invitedBy = invitation;
+    notifyListeners();
+  }
+
+  void setPostMoney(BuildContext context, int coin) {
+    _postMoney = coin;
     notifyListeners();
   }
 

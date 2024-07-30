@@ -11,6 +11,7 @@ import 'package:heic_to_jpg/heic_to_jpg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pilipili/components/certificate.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:universal_html/html.dart' as html;
@@ -48,8 +49,13 @@ class _SetupPageState extends State<SetupPage> {
       platformViewRegistry.registerViewFactory('AvatarFileInput', (viewId) {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
-        uploadInput.setAttribute('style',
-            'width: ${ScreenUtil().setWidth(90)}px; height: ${ScreenUtil().setWidth(120)}px; opacity: 0');
+        uploadInput.setAttribute(
+            'style',
+            'width: ' +
+                90.w.toString() +
+                'px; height: ' +
+                120.w.toString() +
+                'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;
@@ -70,127 +76,6 @@ class _SetupPageState extends State<SetupPage> {
         return uploadInput;
       });
     }
-  }
-
-  _setupItem(
-      {String title,
-      String rightText,
-      bool isTips = false,
-      Function onTap,
-      bool isAllRadius = false,
-      bool isTopRadius = false,
-      bool isBottomRadius = false,
-      bool isMarginBottom = false,
-      bool isBorderBottom = true,
-      TextStyle rightStyle}) {
-    return GestureDetector(
-        onTap: () {
-          if (onTap != null) {
-            onTap();
-          }
-        },
-        behavior: HitTestBehavior.translucent,
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                  left: ScreenUtil().setWidth(16),
-                  right: ScreenUtil().setWidth(16),
-                  bottom: ScreenUtil().setWidth(isMarginBottom ? 23 : 0)),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: isAllRadius
-                    ? BorderRadius.all(Radius.circular(10))
-                    : BorderRadius.only(
-                        bottomLeft: Radius.circular(isBottomRadius ? 10.w : 0),
-                        bottomRight: Radius.circular(isBottomRadius ? 10.w : 0),
-                        topLeft: Radius.circular(isTopRadius ? 10.w : 0),
-                        topRight: Radius.circular(isTopRadius ? 10.w : 0)),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(18),
-                    vertical: ScreenUtil().setWidth(18)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        isTips
-                            ? Container(
-                                margin: EdgeInsets.only(
-                                    right: ScreenUtil().setWidth(10)),
-                                width: ScreenUtil().setWidth(10),
-                                height: ScreenUtil().setWidth(10),
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(5))),
-                              )
-                            : Container(),
-                        Text(
-                          title,
-                          style: TextStyle(
-                              color: Color(0xff6d6d6d),
-                              fontSize: ScreenUtil().setSp(12),
-                              fontWeight: FontWeight.w700,
-                              decoration: TextDecoration.none),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        rightText != null
-                            ? Text(
-                                rightText,
-                                style: rightStyle == null
-                                    ? TextStyle(
-                                        color: Color(0xff979797),
-                                        fontSize: ScreenUtil().setSp(14))
-                                    : rightStyle,
-                              )
-                            : Container(),
-                        SizedBox(
-                          width: ScreenUtil().setWidth(8),
-                        ),
-                        PlatformAwareAssetImage(
-                            url: 'assets/images/wode/setup_right.png',
-                            width: ScreenUtil().setWidth(16),
-                            height: ScreenUtil().setWidth(16),
-                            filterQuality: FilterQuality.medium)
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-            isBorderBottom
-                ? Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setWidth(30)),
-                      child: Container(
-                        height: ScreenUtil().setHeight(0.5),
-                        color: Color(0xffECECEC),
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
-        ));
-  }
-
-  _line() {
-    return Container(
-      width: double.infinity,
-      color: Colors.white24,
-      height: ScreenUtil().setWidth(0.5),
-    );
   }
 
   clearToken() {
@@ -238,12 +123,11 @@ class _SetupPageState extends State<SetupPage> {
               backgroundColor: Colors.white,
             ),
             SizedBox(
-              height: ScreenUtil().setWidth(12.5),
+              height: 12.5.w,
             ),
             Text(
               '上传中...',
-              style: TextStyle(
-                  color: Colors.white, fontSize: ScreenUtil().setSp(14)),
+              style: TextStyle(color: Colors.white, fontSize: 14.sp),
             )
           ],
         ),
@@ -303,14 +187,14 @@ class _SetupPageState extends State<SetupPage> {
             '升级会员权限即可修改头像～',
             style: TextStyle(
                 color: Color(0xff646464),
-                fontSize: ScreenUtil().setSp(16),
+                fontSize: 16.sp,
                 fontWeight: FontWeight.bold),
           );
         },
         cancelText: '取消',
-        btnText: '立即升级',
+        btnText: PPString.upgradeNuw,
         callBack: () {
-          context.push('/${Routes.vip}');
+          context.push('/vip');
         },
       );
       return;
@@ -321,12 +205,11 @@ class _SetupPageState extends State<SetupPage> {
           return StatefulBuilder(
             builder: (context1, state) {
               return Container(
-                height: ScreenUtil().setWidth(110) +
-                    (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                height: 110.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                 color: Colors.transparent,
                 child: Container(
                   padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom,
+                    bottom: ScreenUtil().bottomBarHeight,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -346,14 +229,14 @@ class _SetupPageState extends State<SetupPage> {
                           style: TextStyle(
                               color: Color(0xff333333),
                               fontWeight: FontWeight.w500,
-                              fontSize: ScreenUtil().setSp(15)),
+                              fontSize: 15.sp),
                         ))),
                     Container(
                       decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
                         color: Color(0xffeeeeee),
-                        width: ScreenUtil().setWidth(1),
+                        width: 1.w,
                       ))),
                     ),
                     TextButton(
@@ -362,14 +245,14 @@ class _SetupPageState extends State<SetupPage> {
                           context.pop();
                         },
                         child: Container(
-                          height: ScreenUtil().setWidth(49),
+                          height: 49.w,
                           child: Center(
                               child: Text(
                             '从相册选择',
                             style: TextStyle(
                                 color: Color(0xff333333),
                                 fontWeight: FontWeight.w500,
-                                fontSize: ScreenUtil().setSp(15)),
+                                fontSize: 15.sp),
                           )),
                         ))
                   ]),
@@ -383,10 +266,8 @@ class _SetupPageState extends State<SetupPage> {
   @override
   Widget build(BuildContext context) {
     var members = Provider.of<HomeConfig>(context, listen: false).member;
-
     var config = Provider.of<HomeConfig>(context, listen: false).config;
-    int isSetPassword =
-        Provider.of<HomeConfig>(context, listen: false).member.isSetPassword;
+    int isSetPassword = members.isSetPassword;
     bool isLogin = false;
     if (['', null, false].contains(AppGlobal.apiToken)) {
       isLogin = false;
@@ -407,12 +288,11 @@ class _SetupPageState extends State<SetupPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(30)),
+                padding: EdgeInsets.symmetric(vertical: 30.w),
                 child: Center(
-                    child: Container(
-                  width: ScreenUtil().setWidth(90),
-                  height: ScreenUtil().setWidth(120),
+                    child: SizedBox(
+                  width: 90.w,
+                  height: 120.w,
                   child: Stack(
                     children: [
                       Stack(
@@ -420,11 +300,10 @@ class _SetupPageState extends State<SetupPage> {
                           GestureDetector(
                             onTap: showUpimg,
                             child: Container(
-                              width: ScreenUtil().setWidth(90),
-                              height: ScreenUtil().setWidth(90),
+                              width: 90.w,
+                              height: 90.w,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    ScreenUtil().setWidth(45)),
+                                borderRadius: BorderRadius.circular(45.w),
                                 child: fileUrl != null
                                     ? Image.file(
                                         File(fileUrl),
@@ -441,7 +320,7 @@ class _SetupPageState extends State<SetupPage> {
                                 onTap: showUpimg,
                                 child: PlatformAwareAssetImage(
                                     url: "assets/images/wode/edit_img_icon.png",
-                                    width: ScreenUtil().setWidth(30),
+                                    width: 30.w,
                                     filterQuality: FilterQuality.medium),
                               ))
                         ],
@@ -458,9 +337,9 @@ class _SetupPageState extends State<SetupPage> {
                   ),
                 )),
               ),
-              _setupItem(
+              SetupItem(
                   title: '昵称',
-                  rightText: '${members?.nickname}',
+                  rightText: members?.nickname.toString(),
                   isMarginBottom: true,
                   isAllRadius: true,
                   isBorderBottom: false,
@@ -474,14 +353,14 @@ class _SetupPageState extends State<SetupPage> {
                             '升级会员权限即可修改昵称～',
                             style: TextStyle(
                                 color: Color(0xff646464),
-                                fontSize: ScreenUtil().setSp(16),
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.bold),
                           );
                         },
                         cancelText: '取消',
-                        btnText: '立即升级',
+                        btnText: PPString.upgradeNuw,
                         callBack: () {
-                          context.push('/${Routes.vip}');
+                          context.push('/vip');
                         },
                       );
                       return;
@@ -489,38 +368,45 @@ class _SetupPageState extends State<SetupPage> {
                     context.push(CommonUtils.getRealHash('fillcode'),
                         extra: {'type': 0});
                   }),
-              _line(),
-              _setupItem(
+              Line(),
+              SetupItem(
                   isTopRadius: true,
-                  title: members?.phone == null ? '绑定手机' : '更换绑定手机',
-                  rightText: members?.phone == null ? '' : '${members.phone}',
+                  title: members?.phone == null
+                      ? PPString.bindPhone
+                      : PPString.changeBindPhone,
+                  rightText: members?.phone == null
+                      ? PPString.isnull
+                      : members.phone.toString(),
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'), extra: {
                       'type': members?.phone == null ? 1 : 2,
                       'phone': members?.phone,
                       "phonePrefix": members?.phonePrefix
                     });
-                    // context.push('/${Routes.login}',
-                    //     extra: {'type': members?.phone == null ? 5 : 4});
                   }),
               AppGlobal.apiToken == '' && AppGlobal.apiToken != null
                   ? Container()
-                  : _line(),
+                  : Line(),
               AppGlobal.apiToken == '' && AppGlobal.apiToken != null
                   ? Container()
-                  : _setupItem(
-                      title: isSetPassword == 0 ? '设置密码' : '更换密码',
+                  : SetupItem(
+                      title: isSetPassword == 0
+                          ? PPString.setPassword
+                          : PPString.changePassword,
                       isTips: isSetPassword == 0,
-                      rightText: isSetPassword == 0 ? '手机号+密码一键登录' : '',
+                      rightText: isSetPassword == 0
+                          ? PPString.phoneAndPasswordLogin
+                          : PPString.isnull,
                       onTap: () {
                         context.push(CommonUtils.getRealHash('fillcode'),
                             extra: {'type': isSetPassword == 0 ? 6 : 5});
                       }),
-              _line(),
-              _setupItem(
+              Line(),
+              SetupItem(
                   title: '输入邀请码',
                   rightText:
-                      '${members?.invitedBy == null ? '' : members.invitedBy}',
+                      (members?.invitedBy == null ? '' : members.invitedBy)
+                          .toString(),
                   onTap: () {
                     if (members?.invitedBy == null) {
                       context.push(CommonUtils.getRealHash('fillcode'),
@@ -529,8 +415,8 @@ class _SetupPageState extends State<SetupPage> {
                       //     extra: {'title': '邀请码'});
                     }
                   }),
-              _line(),
-              _setupItem(
+              Line(),
+              SetupItem(
                   title: '输入兑换码',
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'),
@@ -538,33 +424,35 @@ class _SetupPageState extends State<SetupPage> {
                     // context.push(CommonUtils.getRealHash('fillcode'),
                     //     extra: {'title': '兑换码'});
                   }),
-              _line(),
-              _setupItem(
+              Line(),
+              SetupItem(
                   title: '账号凭证',
                   onTap: () {
                     CertificateModel.showCertificate(backButtonBehavior,
-                        id: '${members?.aff ?? '0000000'}',
-                        code: '${config?.share?.affCode ?? '0000'}',
-                        url: '${config?.share?.affUrl ?? ''}');
+                        id: (members?.aff ?? '0000000').toString(),
+                        code: (config?.share?.affCode ?? '0000').toString(),
+                        url: (config?.share?.affUrl ?? '').toString());
                   }),
-              _line(),
-              _setupItem(
+              Line(),
+              SetupItem(
                   title: '清除缓存',
                   onTap: () {
                     AppGlobal.imageCacheBox.clear();
                     CommonUtils.showText('已清除缓存,请重启App');
                   }),
-              _line(),
-              _setupItem(
+              Line(),
+              SetupItem(
                   isBottomRadius: true,
                   title: '版本更新',
                   rightText: AppGlobal.isNewVersion
-                      ? '已是最新版本(${AppGlobal.appinfo['version']})'
-                      : '有新版本,去更新？',
+                      ? '已是最新版本(' +
+                          AppGlobal.appinfo['version'].toString() +
+                          ')'
+                      : PPString.isNewVersion,
                   rightStyle: TextStyle(
                       color: Color(0xff979797),
                       decoration: TextDecoration.underline,
-                      fontSize: ScreenUtil().setSp(14)),
+                      fontSize: 14.sp),
                   onTap: () {
                     if (AppGlobal.isNewVersion) {
                       CommonUtils.showText('已是最新版本哦～');
@@ -584,18 +472,20 @@ class _SetupPageState extends State<SetupPage> {
                       },
                       child: Center(
                         child: (Container(
-                          height: ScreenUtil().setWidth(35),
+                          height: 35.w,
                           margin: EdgeInsets.only(
                             bottom: ScreenUtil().bottomBarHeight == 0
-                                ? ScreenUtil().setHeight(40)
+                                ? 40.h
                                 : ScreenUtil().bottomBarHeight + 40.w,
                           ),
-                          width: ScreenUtil().setWidth(200),
+                          width: 200.w,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(17.5)),
+                              borderRadius: BorderRadius.circular(17.5.w),
                               gradient: LinearGradient(
-                                colors: [Color(0xffFF84A9), Color(0xffFF9E9E)],
+                                colors: [
+                                  DefaultStyle.themeColor,
+                                  DefaultStyle.linerThemeColor
+                                ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               )),
@@ -603,8 +493,7 @@ class _SetupPageState extends State<SetupPage> {
                             child: Text(
                               '退出登录',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: ScreenUtil().setSp(15)),
+                                  color: Colors.white, fontSize: 15.sp),
                             ),
                           ),
                         )),
@@ -633,8 +522,144 @@ class UserAvatar extends StatelessWidget {
               filterQuality: FilterQuality.medium)
           : PlatformAwareNetworkImage(
               fit: BoxFit.cover,
-              url: '${state.member.thumb}',
+              url: state.member.thumb.toString(),
             );
     });
+  }
+}
+
+class SetupItem extends StatelessWidget {
+  const SetupItem(
+      {Key key,
+      this.title,
+      this.rightText,
+      this.isTips = false,
+      this.onTap,
+      this.isAllRadius = false,
+      this.isTopRadius = false,
+      this.isBottomRadius = false,
+      this.isMarginBottom = false,
+      this.isBorderBottom = true,
+      this.rightStyle})
+      : super(key: key);
+
+  final String title;
+  final String rightText;
+  final bool isTips;
+  final Function onTap;
+  final bool isAllRadius;
+  final bool isTopRadius;
+  final bool isBottomRadius;
+  final bool isMarginBottom;
+  final bool isBorderBottom;
+  final TextStyle rightStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          if (onTap != null) {
+            onTap();
+          }
+        },
+        behavior: HitTestBehavior.translucent,
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                  left: 16.w, right: 16.w, bottom: (isMarginBottom ? 23 : 0).w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: isAllRadius
+                    ? BorderRadius.all(Radius.circular(10))
+                    : BorderRadius.only(
+                        bottomLeft: Radius.circular(isBottomRadius ? 10.w : 0),
+                        bottomRight: Radius.circular(isBottomRadius ? 10.w : 0),
+                        topLeft: Radius.circular(isTopRadius ? 10.w : 0),
+                        topRight: Radius.circular(isTopRadius ? 10.w : 0)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        isTips
+                            ? Container(
+                                margin: EdgeInsets.only(right: 10.w),
+                                width: 10.w,
+                                height: 10.w,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(5.w)),
+                              )
+                            : Container(),
+                        Text(
+                          title,
+                          style: TextStyle(
+                              color: Color(0xff6d6d6d),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.none),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        rightText != null
+                            ? Text(
+                                rightText,
+                                style: rightStyle == null
+                                    ? TextStyle(
+                                        color: Color(0xff979797),
+                                        fontSize: 14.sp)
+                                    : rightStyle,
+                              )
+                            : Container(),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        PlatformAwareAssetImage(
+                            url: 'assets/images/wode/setup_right.png',
+                            width: 16.w,
+                            height: 16.w,
+                            filterQuality: FilterQuality.medium)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            isBorderBottom
+                ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30.w),
+                      child: Container(
+                        height: 0.5.h,
+                        color: Color(0xffECECEC),
+                      ),
+                    ),
+                  )
+                : Container(),
+          ],
+        ));
+  }
+}
+
+class Line extends StatelessWidget {
+  const Line({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      color: Colors.white24,
+      height: 0.5.w,
+    );
   }
 }

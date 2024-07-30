@@ -1,13 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/common/images.dart';
+import 'package:pilipili/components/yuemei.dart';
+import 'package:pilipili/pages/anwang.dart';
+import 'package:pilipili/pages/yuemei_shequ.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pageviewmixin.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
 import 'package:pilipili/components/manhua.dart';
@@ -22,6 +28,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:hive/hive.dart';
 import 'package:universal_html/html.dart' as html;
+import "package:universal_html/js.dart" as js;
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -35,30 +42,76 @@ class _HomeState extends State<Home> {
   bool showAnnouncementStatus = false;
   bool showActivety = false;
   bool initPage = false;
+  List adData = [];
+  PageController _controller = PageController();
+  List<Map> webTypeList = [
+    {'w': 428, 'h': 926, 'r': 3}, // iphone13 pro max
+    {'w': 390, 'h': 844, 'r': 3}, // iphone 13 and pro
+    {'w': 375, 'h': 812, 'r': 3}, //iphoneX、iphoneXs
+    {'w': 414, 'h': 896, 'r': 3}, //iphone Xs Max
+    {'w': 414, 'h': 896, 'r': 2} //iphone XR
+  ];
+
   List navBarItem = [
     {
+      "keepAlive": false,
+      "page": PiliCiyuan(),
       "title": "pili次元",
-      "activeIcon": "assets/images/bottomTab/pili_active.png",
-      "icon": "assets/images/bottomTab/pili.png",
+      "activeIcon": 'assets/images/2024/bottomTab/pili_active.png',
+      "icon": 'assets/images/2024/bottomTab/pili_inactive.png',
+      "asset": true
     },
     {
+      "keepAlive": false,
+      "page": Dongman(),
       "title": "动漫",
-      "activeIcon": "assets/images/bottomTab/cartoon_active.png",
-      "icon": "assets/images/bottomTab/cartoon.png",
+      "activeIcon": 'assets/images/2024/bottomTab/tv_active.png',
+      "icon": 'assets/images/2024/bottomTab/tv_inactive.png',
+      "asset": true
     },
     {
+      "keepAlive": false,
+      "page": Manhua(),
       "title": "漫画",
-      "activeIcon": "assets/images/bottomTab/comics_active.png",
-      "icon": "assets/images/bottomTab/comics.png",
+      "activeIcon": 'assets/images/2024/bottomTab/comic_active.png',
+      "icon": 'assets/images/2024/bottomTab/comic_inactive.png',
+      "asset": true
     },
     {
+      "keepAlive": false,
+      "page": AnwangPage(),
+      "title": "暗網",
+      "activeIcon": 'assets/images/2024/bottomTab/hacker_active.png',
+      "icon": 'assets/images/2024/bottomTab/hacker_inactive.png',
+      "asset": true
+    },
+    {
+      "keepAlive": false,
+      "page": YuemeiShequ(),
+      "title": "妹圈",
+      "activeIcon": 'assets/images/2024/bottomTab/date_active.png',
+      "icon": 'assets/images/2024/bottomTab/date_inactive.png',
+      "asset": true
+    },
+    {
+      "keepAlive": true,
+      "page": Wode(),
       "title": "我的",
-      "activeIcon": "assets/images/bottomTab/user_active.png",
-      "icon": "assets/images/bottomTab/user.png",
+      "activeIcon": 'assets/images/2024/bottomTab/mine_active.png',
+      "icon": 'assets/images/2024/bottomTab/mine_inactive.png',
+      "asset": true
     },
   ];
-  int selectedKey = 0;
+  ValueNotifier<int> selectedKey = ValueNotifier(0);
   bool loading = true;
+
+  getWebType(int h, int w, double r) {
+    webTypeList.forEach((item) {
+      if (item['h'] == h && item['w'] == w && item['r'] == r) {
+        AppGlobal.webBottomHeight = 15.w;
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -68,6 +121,17 @@ class _HomeState extends State<Home> {
       _initDownloadStastu();
     }
     fetchBeforeEnterApp();
+    if (kIsWeb) {
+      int _h = html.window.screen.height;
+      int _w = html.window.screen.width;
+      double _ratio = html.window.devicePixelRatio;
+      getWebType(_h, _w, _ratio);
+      // webBottomHeight
+    }
+    getAdForCoin(pos: 315).then((res) {
+      adData = res['data'];
+      setState(() {});
+    });
   }
 
   // 初始化下载状态
@@ -212,15 +276,21 @@ class _HomeState extends State<Home> {
           CommonUtils.launchURL(apkurl);
         }
       }
-    }, version: "Pilipiliv.$version", mustupdate: must == 1, text: '$tips');
+    },
+        version: "Pilipiliv." + version.toString(),
+        mustupdate: must == 1,
+        text: '$tips');
 
     showUpdateStatus = true;
     setState(() {});
   }
 
-  // 公告提示
+  // ���告提示
   void showAnnouncement(String message) {
-    if (showAnnouncementStatus == true) return;
+    if (showAnnouncementStatus == true) {
+      _addMainScreen();
+      return;
+    }
     bool isSelf = false;
     isSelf = Provider.of<HomeConfig>(context, listen: false).member.channel ==
         "self";
@@ -229,11 +299,15 @@ class _HomeState extends State<Home> {
       context: context,
       cancel: () {
         AppGlobal.yyShow = false;
+        _addMainScreen();
       },
       confirm: () {
         AppGlobal.yyShow = false;
+        _addMainScreen();
       },
-      confirmApp: () {},
+      confirmApp: () {
+        // _addMainScreen();
+      },
       text: "$message",
       type: isSelf ? "2" : "1",
     );
@@ -242,20 +316,137 @@ class _HomeState extends State<Home> {
     });
   }
 
+  //加载添加到主屏幕功能
+  void _addMainScreen() async {
+    if (!kIsWeb) return;
+    final bool isInstall =
+        (js.context.callMethod("getInstallValue") as String) == "1";
+    final bool isSafari = js.context.callMethod("checkSafari") as bool;
+    if (!isSafari && !isInstall) {
+      showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, setBottomSheetState) {
+              return Container(
+                padding:
+                    EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5.w),
+                      topLeft: Radius.circular(5.w)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 20.w),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(width: 20.w, height: 20.w),
+                        Text(
+                          "添加PiliPili到主屏幕？[如已添加请忽略]",
+                          style: TextStyle(
+                              color: Color.fromRGBO(30, 30, 30, 1),
+                              fontSize: 14.sp),
+                        ),
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(
+                            Icons.close,
+                            size: 20.w,
+                            color: Color.fromRGBO(30, 30, 30, 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30.w),
+                    CommonUtils.getContentSpan(
+                      "如无法正常添加到主屏幕，请下载最新版本的Google浏览器https://www.google.cn/intl/zh-CN/chrome，打开Google浏览器，输入本站网址000，点击右上角的【菜单】然后选择【添加到主屏幕】即可完成WEB版APP"
+                          .replaceAll("000", html.window.location.href),
+                      style: TextStyle(
+                          color: const Color.fromRGBO(245, 28, 88, 1)
+                              .withOpacity(0.5),
+                          fontSize: 12.sp),
+                      lightStyle: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color.fromRGBO(25, 103, 210, 1)),
+                    ),
+                    SizedBox(height: 20.w),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        final bool isDeferredNotNull =
+                            js.context.callMethod("isDeferredNotNull") as bool;
+                        if (isDeferredNotNull) {
+                          js.context.callMethod("presentAddToHome");
+                        } else {
+                          CommonUtils.showText(
+                              "当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作",
+                              time: 2);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(245, 28, 88, 1),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.w))),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: DefaultStyle.pagePadding),
+                        height: 32.w,
+                        alignment: Alignment.center,
+                        child: Text("添加到主屏幕",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 13.sp)),
+                      ),
+                    ),
+                    SizedBox(height: 30.w),
+                  ],
+                ),
+              );
+            });
+          });
+    }
+  }
+
   // 活动弹窗
-  void showActivetyDialog(
-      String content, String type, String title, double height, double width) {
-    if (showActivety == true) return;
-    if (AppGlobal.showActivity == false) return;
-    UpdateModel.showAvtivetysDialog(backButtonBehavior, url: title, cancel: () {
-      AppGlobal.showActivity = false;
-    }, confirm: () {
-      AppGlobal.showActivity = false;
-      _onTapSwiper(type, content);
-    }, height: height, width: width);
-    setState(() {
-      showActivety = true;
-    });
+  void showActivetyDialog(Config config, VersionMsg version) {
+    int activeLength = AppGlobal.popAds.length - 1;
+    int activeIndex = 0;
+    showIndexActive(int index) {
+      UpdateModel.showAvtivetysDialog(backButtonBehavior,
+          width: AppGlobal.popAds[index]['img_width'].toDouble(),
+          height: AppGlobal.popAds[index]['img_height'].toDouble(),
+          url: AppGlobal.popAds[index]['img_url'], cancel: () {
+        activeIndex++;
+        if (activeIndex <= activeLength) {
+          showIndexActive(activeIndex);
+        } else {
+          if (version != null) {
+            checkUpdateAnnouncement(version, config);
+          }
+        }
+      }, confirm: () {
+        _onTapSwiper(AppGlobal.popAds[index]['type'],
+            AppGlobal.popAds[index]['content']);
+        popAdsChick(AppGlobal.popAds[index]['id'].toString());
+        activeIndex++;
+        if (activeIndex <= activeLength) {
+          showIndexActive(activeIndex);
+        } else {
+          if (version != null) {
+            checkUpdateAnnouncement(version, config);
+          }
+        }
+      });
+    }
+
+    showIndexActive(activeIndex);
   }
 
   _onTapSwiper(String type, String _adsUrl) {
@@ -267,55 +458,44 @@ class _HomeState extends State<Home> {
       BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
       return;
     }
-
-    switch (types) {
-      case "1":
-        // 内部路由
-        String linkUrl = _adsUrl;
-        List urlList = linkUrl.split('?');
-        Map<String, dynamic> pramas = {};
-        if (urlList.length > 1) {
-          urlList[1].split("&").forEach((item) {
-            List stringText = item.split('=');
-            pramas[stringText[0]] =
-                stringText.length > 1 ? stringText[1] : null;
-          });
-        }
-        Map<String, dynamic> pramasObj = {};
-        if (pramas['pramaskey'] != null) {
-          pramasObj[pramas['pramaskey']] = pramas;
-        } else {
-          pramasObj = pramas;
-        }
-        context.push(urlList[0], extra: pramasObj);
-        break;
-      case "3":
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl?aff=$aff&piliid=$piliid");
-        break;
-      case "2":
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-      default:
+    if (types == '1') {
+      // 内部路由
+      String linkUrl = _adsUrl;
+      List urlList = linkUrl.split('?');
+      Map<String, dynamic> pramas = {};
+      if (urlList.length > 1) {
+        urlList[1].split("&").forEach((item) {
+          List stringText = item.split('=');
+          pramas[stringText[0]] = stringText.length > 1 ? stringText[1] : null;
+        });
+      }
+      Map<String, dynamic> pramasObj = {};
+      if (pramas['pramaskey'] != null) {
+        pramasObj[pramas['pramaskey']] = pramas;
+      } else {
+        pramasObj = pramas;
+      }
+      context.push(urlList[0], extra: pramasObj);
+    } else if (types == "3") {
+      CommonUtils.launchURL("$_adsUrl?aff=$aff&piliid=$piliid");
+    } else if (types == "2") {
+      CommonUtils.launchURL("$_adsUrl");
     }
   }
 
   initDialog() {
     if (!initPage) {
       initPage = true;
-      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
-        var version =
-            Provider.of<HomeConfig>(context, listen: false).versionMsg;
-        var config = Provider.of<HomeConfig>(context, listen: false).config;
-        checkUpdateAnnouncement(version, config);
-      }
-      if (Provider.of<HomeConfig>(context, listen: false).notice != null ??
-          true) {
-        var notice = Provider.of<HomeConfig>(context, listen: false).notice;
+      var version = Provider.of<HomeConfig>(context, listen: false).versionMsg;
+      var config = Provider.of<HomeConfig>(context, listen: false).config;
+
+      if (AppGlobal.popAds.isNotEmpty) {
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
-        showActivetyDialog(notice.content, notice.type, notice.imgUrl,
-            notice.imgHeight, notice.imgWidth);
+        showActivetyDialog(config, version);
+      } else {
+        if (version != null) {
+          checkUpdateAnnouncement(version, config);
+        }
       }
     }
   }
@@ -323,158 +503,143 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
-        Container(
-          child: Column(
-            children: [
-              Expanded(
-                  child: Stack(
-                children: loading
-                    ? [PageStatus.loading(mounted)]
-                    : [
-                        Positioned(
-                            left: -selectedKey * ScreenUtil().screenWidth,
-                            top: 0,
-                            bottom: 0,
-                            child: Container(
-                              width: ScreenUtil().screenWidth,
-                              height: double.infinity,
-                              child: PiliCiyuan(
-                                isShow: selectedKey == 0,
-                              ),
-                            )),
-                        Positioned(
-                            left: (-selectedKey + 1) * ScreenUtil().screenWidth,
-                            top: 0,
-                            bottom: 0,
-                            child: Container(
-                                width: ScreenUtil().screenWidth,
-                                height: double.infinity,
-                                child: Dongman(
-                                  isShow: selectedKey == 1,
-                                ))),
-                        Positioned(
-                            left: (-selectedKey + 2) * ScreenUtil().screenWidth,
-                            top: 0,
-                            bottom: 0,
-                            child: Container(
-                                width: ScreenUtil().screenWidth,
-                                height: double.infinity,
-                                child: Manhua(
-                                  isShow: selectedKey == 2,
-                                ))),
-                        Positioned(
-                            left: (-selectedKey + 3) * ScreenUtil().screenWidth,
-                            top: 0,
-                            bottom: 0,
-                            child: Container(
-                                width: ScreenUtil().screenWidth,
-                                height: double.infinity,
-                                child: Wode(
-                                  isShow: selectedKey == 3,
-                                ))),
-                        Positioned(
-                          right: 0,
-                          left: 0,
-                          bottom: 0,
-                          child: Container(
-                            decoration:
-                                BoxDecoration(color: Colors.white, boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromRGBO(255, 91, 140, 0.4),
-                                  offset: Offset(5, 6),
-                                  blurRadius: 10,
-                                  spreadRadius: 5)
-                            ]),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: DefaultStyle.bottomnavbarHegiht +
-                                      MediaQuery.of(context).padding.bottom,
-                                  padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context)
-                                          .padding
-                                          .bottom),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: navBarItem
-                                        .asMap()
-                                        .keys
-                                        .map((key) => GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  selectedKey = key;
-                                                });
-
-                                                if (key == 3) {
-                                                  CommonUtils
-                                                      .updateSystemNotice(
-                                                          context);
-                                                }
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  !loading
-                                                      ? PlatformAwareAssetImage(
-                                                          url: selectedKey ==
-                                                                  key
-                                                              ? navBarItem[key]
-                                                                  ['activeIcon']
-                                                              : navBarItem[key]
-                                                                  ['icon'],
-                                                          width: ScreenUtil()
-                                                              .setWidth(25),
-                                                          height: ScreenUtil()
-                                                              .setWidth(25),
-                                                          fit: BoxFit.fitWidth,
-                                                          filterQuality:
-                                                              FilterQuality
-                                                                  .high)
-                                                      : Container(),
-                                                  Text(
-                                                    navBarItem[key]['title'],
-                                                    style: selectedKey == key
-                                                        ? TextStyle(
-                                                            color: Color(
-                                                                0xffFF84A9),
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(12),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .none)
-                                                        : DefaultStyle.lgray12,
-                                                  )
-                                                ],
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                              ),
-                                            ))
-                                        .toList(),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: double.infinity,
-                        )
-                      ],
+      children: loading
+          ? PageStatus.loading(mounted)
+          : [
+              Positioned.fill(
+                  child: PageView.builder(
+                controller: _controller,
+                onPageChanged: (index) {
+                  selectedKey.value = index;
+                },
+                itemCount: navBarItem.length,
+                itemBuilder: (context, index) {
+                  if (navBarItem[index]['keepAlive']) {
+                    return PageViewMixin(
+                      child: navBarItem[index]['page'],
+                    );
+                  } else {
+                    return ValueListenableBuilder(
+                      valueListenable: selectedKey,
+                      builder: (context, _value, child) {
+                        return _value == index
+                            ? child
+                            : PageStatus.loading(mounted);
+                      },
+                      child: navBarItem[index]['page'],
+                    );
+                  }
+                },
               )),
+              Positioned(
+                  right: 8.w,
+                  bottom: DefaultStyle.bottomnavbarHegiht +
+                      ScreenUtil().bottomBarHeight +
+                      15.w,
+                  child: adData.isEmpty
+                      ? SizedBox()
+                      : ValueListenableBuilder(
+                          valueListenable: selectedKey,
+                          builder: (context, _v, child) {
+                            return _v <= 2
+                                ? SizedBox(
+                                    width: 90.w,
+                                    height: 90.w,
+                                    child: Swiper(
+                                      autoplayDelay: 3000,
+                                      autoplay: adData.length > 1,
+                                      onIndexChanged: (e) {
+                                        // CommonUtils.debugPrint('-------------------$e---------------------');
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            CommonUtils.bannerTopath(context,
+                                                url: adData[index]['url'],
+                                                type: adData[index]['type']);
+                                          },
+                                          child: PlatformAwareNetworkImage(
+                                            url: adData[index]['img_url'],
+                                            fit: BoxFit.fill,
+                                          ),
+                                        );
+                                      },
+                                      itemCount: adData.length,
+                                    ),
+                                  )
+                                : SizedBox();
+                          })),
+              Positioned(
+                right: 0,
+                left: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(255, 91, 140, 0.4),
+                        offset: Offset(5, 6),
+                        blurRadius: 10,
+                        spreadRadius: 5)
+                  ]),
+                  child: ValueListenableBuilder(
+                    valueListenable: selectedKey,
+                    builder: (context, _value, child) {
+                      return Container(
+                        width: 1.sw,
+                        height: DefaultStyle.bottomnavbarHegiht +
+                            ScreenUtil().bottomBarHeight,
+                        padding: EdgeInsets.only(
+                            bottom: ScreenUtil().bottomBarHeight),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: navBarItem
+                              .asMap()
+                              .keys
+                              .map((key) => GestureDetector(
+                                    onTap: () {
+                                      _controller.jumpToPage(key);
+                                      if (key == 3) {
+                                        CommonUtils.updateSystemNotice(context);
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        !loading
+                                            ? getImage(
+                                                _value == key
+                                                    ? navBarItem[key]
+                                                        ['activeIcon']
+                                                    : navBarItem[key]['icon'],
+                                                isAssets: navBarItem[key]
+                                                        ['asset'] !=
+                                                    null,
+                                                width: 25.w,
+                                                height: 25.w,
+                                                fit: BoxFit.fitWidth,
+                                                filterQuality:
+                                                    FilterQuality.high)
+                                            : const SizedBox(),
+                                        Text(
+                                          navBarItem[key]['title'],
+                                          style: _value == key
+                                              ? DefaultStyle.bottomNavStyle
+                                              : DefaultStyle.lgray12,
+                                        )
+                                      ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
             ],
-          ),
-        )
-      ],
     );
   }
 }

@@ -203,7 +203,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
       String sufix = widget.url.toString().substring(idx);
       double realWidth = widget.width * (window.devicePixelRatio ?? 1);
       if (realWidth < 180) {
-        thumbUrl = '$prev!180x0$sufix';
+        thumbUrl = '$prev!360x0$sufix';
       }
       if (realWidth >= 180 && realWidth < 360) {
         thumbUrl = '$prev!360x0$sufix';

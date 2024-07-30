@@ -1,7 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:pilipili/components/FlexibleBanner.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -9,7 +9,6 @@ import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/mixin/element_mixin.dart';
-import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -21,6 +20,7 @@ class FilterList extends StatefulWidget {
   FilterList(
       {Key key,
       this.data,
+      this.isDark = 0,
       this.id,
       this.isShow,
       this.index,
@@ -33,6 +33,7 @@ class FilterList extends StatefulWidget {
   final int index;
   final List tabList;
   final String parentName;
+  final int isDark;
   @override
   _FilterListState createState() => _FilterListState();
 }
@@ -48,7 +49,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   int elementID;
   int dataType;
   int order = 1;
-  int cardType;
+  int cardType; //内容类型 1-7
+  String cardStyle = 'h'; //h 横向2列  v 竖向三列
   ScrollController _scrollController = ScrollController();
   bool navShow = true;
   List filterNavList = [
@@ -60,7 +62,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    String _prams = widget.data; // type 1长视频 2短视频 3漫画
+    String _prams = widget.data; // type 1长视频 2短视频 3漫画 4小说
+
     List _pramsString = _prams.split(',');
     Map _pramsMap = {};
     _pramsString.forEach((item) {
@@ -79,16 +82,21 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
     } catch (e) {
       CommonUtils.showText('type 必须是数字');
     }
+    if (dataType == 1) {
+      cardStyle = 'h';
+    } else {
+      cardStyle = 'v';
+    }
     if (widget.isShow && pageStatus == 0) {
       pageStatus = 1;
       getPageData();
     }
-    EventBus().on('lanmu-init-view', (arg) {
+    EventBus().on('lanmu-init-view', (arg) async {
       if (arg['parentName'] == widget.parentName &&
           arg['currentIndex'] == widget.index &&
           pageStatus == 0) {
         pageStatus = 1;
-        getPageData();
+        await getPageData();
       }
     });
   }
@@ -99,6 +107,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       case 1:
         res = await getChangVideoList(
             type: 1,
+            isDark: widget.isDark,
             filter: widget.data,
             order: order,
             page: page,
@@ -108,6 +117,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       case 2:
         res = await getChangVideoList(
             type: 2,
+            isDark: widget.isDark,
             filter: widget.data,
             order: order,
             page: page,
@@ -117,12 +127,21 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       case 3:
         res = await getChangVideoList(
             type: 1,
+            isDark: widget.isDark,
             category: 1,
             filter: widget.data,
             order: order,
             page: page,
             limit: AppGlobal.smallVideoLimit);
         cardType = 1;
+        break;
+      case 4:
+        res = await getNovelList(
+            filter: widget.data,
+            order: order,
+            page: page,
+            limit: AppGlobal.smallVideoLimit);
+        cardType = 3;
         break;
       default:
         res = await getFilterComics(
@@ -149,8 +168,9 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
     setState(() {});
   }
 
-  void getPageData() async {
-    getElementById(id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
+  Future<void> getPageData() async {
+    await getElementById(
+            id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
         .then((res) {
       if (res == null) {
         networkErr = true;
@@ -227,168 +247,8 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                 ),
                               ),
                             ),
-                            flexibleSpace: FlexibleSpaceBar(
-                                collapseMode: CollapseMode.parallax,
-                                background:
-                                    Stack(clipBehavior: Clip.none, children: [
-                                  fixedBanner == null ||
-                                          !(fixedBanner is Map) ||
-                                          fixedBanner['value'].length == 0
-                                      ? PlatformAwareAssetImage(
-                                          url: 'assets/images/demo_bg.png',
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          filterQuality: FilterQuality.medium)
-                                      : Swiper(
-                                          autoplayDelay: 3000,
-                                          autoplay:
-                                              fixedBanner['value'].length > 1,
-                                          physics: fixedBanner['value'].length >
-                                                  1
-                                              ? null
-                                              : new NeverScrollableScrollPhysics(),
-                                          onIndexChanged: (e) {
-                                            // CommonUtils.debugPrint('-------------------$e---------------------');
-                                          },
-                                          pagination: SwiperPagination(
-                                              margin: EdgeInsets.only(
-                                                  bottom: ScreenUtil()
-                                                      .setWidth(40)),
-                                              alignment: Alignment.bottomCenter,
-                                              builder: SwiperCustomPagination(
-                                                  builder:
-                                                      (BuildContext context,
-                                                          SwiperPluginConfig
-                                                              config) {
-                                                return Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: fixedBanner['value']
-                                                      .asMap()
-                                                      .keys
-                                                      .map<Widget>((e) {
-                                                    return AnimatedContainer(
-                                                      duration: Duration(
-                                                          milliseconds: 250),
-                                                      width: ScreenUtil()
-                                                          .setWidth(6),
-                                                      height: ScreenUtil()
-                                                          .setWidth(6),
-                                                      margin: EdgeInsets.only(
-                                                          left: ScreenUtil()
-                                                              .setWidth(16)),
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                              config.activeIndex ==
-                                                                      e
-                                                                  ? Colors.white
-                                                                  : Colors
-                                                                      .white54,
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          3))),
-                                                    );
-                                                  }).toList(),
-                                                );
-                                              })),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return callDetail(
-                                              cardData: fixedBanner['value']
-                                                  [index],
-                                              contentType: 4,
-                                              child: Container(
-                                                clipBehavior: Clip.hardEdge,
-                                                padding: EdgeInsets.only(
-                                                    bottom: ScreenUtil()
-                                                        .setWidth(
-                                                            navHeight - 32)),
-                                                decoration: ShapeDecoration(
-                                                    shape:
-                                                        BeveledRectangleBorder()),
-                                                child: Stack(
-                                                  children: [
-                                                    // Positioned(
-                                                    //   right: 0,
-                                                    //   left: 0,
-                                                    //   bottom: 0,
-                                                    //   top: 0,
-                                                    //   child: Stack(
-                                                    //     children: [
-                                                    //       Opacity(
-                                                    //         opacity: 0.7,
-                                                    //         child:
-                                                    //             PlatformAwareNetworkImage(
-                                                    //           noVisibilityDetector:
-                                                    //               true,
-                                                    //           url: fixedBanner[
-                                                    //                       'value']
-                                                    //                   [index]
-                                                    //               ['resource_url'],
-                                                    //           fit: BoxFit.fill,
-                                                    //         ),
-                                                    //       ),
-                                                    //       BackdropFilter(
-                                                    //         filter:
-                                                    //             ImageFilter.blur(
-                                                    //                 sigmaX: 15,
-                                                    //                 sigmaY: 15),
-                                                    //         child: Container(
-                                                    //           color: Colors.black38,
-                                                    //         ),
-                                                    //       )
-                                                    //     ],
-                                                    //   ),
-                                                    // ),
-                                                    Container(
-                                                      height: ScreenUtil()
-                                                              .setWidth(260) +
-                                                          ScreenUtil()
-                                                              .statusBarHeight,
-                                                    ),
-                                                    Positioned(
-                                                        top: 0,
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        left: 0,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(0),
-                                                          // EdgeInsets.only(
-                                                          //     top: ScreenUtil()
-                                                          //             .statusBarHeight +
-                                                          //         DefaultStyle
-                                                          //             .navbarHegiht
-                                                          //             ),
-                                                          child: Container(
-                                                            width:
-                                                                double.infinity,
-                                                            child:
-                                                                PlatformAwareNetworkImage(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              noVisibilityDetector:
-                                                                  true,
-                                                              url: fixedBanner[
-                                                                          'value']
-                                                                      [index][
-                                                                  'resource_url'],
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          itemCount:
-                                              fixedBanner['value'].length,
-                                        ),
-                                ]))),
+                            flexibleSpace:
+                                HomeTopBanner(fixedBanner: fixedBanner)),
                         filterList == null
                             ? SliverToBoxAdapter(
                                 child: PageStatus.loading(true),
@@ -401,19 +261,14 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: DefaultStyle.pagePadding),
                                     sliver: SliverGrid.count(
-                                      crossAxisCount:
-                                          dataType == 1 || cardType == 3
-                                              ? 2
-                                              : 3,
+                                      crossAxisCount: cardStyle == 'h' ? 2 : 3,
                                       crossAxisSpacing:
                                           ScreenUtil().setWidth(7),
                                       childAspectRatio:
-                                          dataType == 1 || cardType == 3
-                                              ? 1.2
-                                              : 0.61,
+                                          cardStyle == 'h' ? 1.2 : 0.61,
                                       children:
                                           filterList.asMap().keys.map((e) {
-                                        return dataType == 1 || cardType == 3
+                                        return cardStyle == 'h'
                                             ? Hcard(
                                                 onTap: () {
                                                   AppGlobal.smallVideoApi =

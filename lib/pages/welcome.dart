@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:pilipili/store/search.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:provider/provider.dart';
 import "package:universal_html/html.dart" as html;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
@@ -34,7 +36,7 @@ class _WelcomeState extends State<Welcome> {
     if (cliptextList.length > 1) {
       if (cliptextList[0] == 'sq_aff') {
         if (cliptextList[1] != '') {
-          // toInvitation(affCode: cliptextList[1]);
+          toInvitation(affCode: cliptextList[1]);
         }
       }
     }
@@ -45,7 +47,7 @@ class _WelcomeState extends State<Welcome> {
       Uri u = Uri.parse(html.window.location.href);
       String aff = u.queryParameters['sq_aff'];
       if (aff != null) {
-        // toInvitation(affCode: aff);
+        toInvitation(affCode: aff);
       }
     } else {
       Clipboard.getData(Clipboard.kTextPlain).then((value) {
@@ -67,8 +69,8 @@ class _WelcomeState extends State<Welcome> {
           align: Alignment(0, 0),
           duration: new Duration(seconds: 5));
     }, onSuccess: () {
-      getClipboardText();
       getHomeConfig(context).then((res) {
+        getClipboardText();
         if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
           yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};
           setState(() {});
@@ -78,6 +80,7 @@ class _WelcomeState extends State<Welcome> {
           toHome();
         }
       });
+      context.read<Search>().init();
     });
   }
 
@@ -160,7 +163,7 @@ class _WelcomeState extends State<Welcome> {
                               ),
                               child: Center(
                                 child: Text(
-                                  '广告倒计时: $curTime',
+                                  '广告倒计时: ' + curTime.toString(),
                                   style: TextStyle(
                                       decoration: TextDecoration.none,
                                       fontSize: ScreenUtil().setSp(15),

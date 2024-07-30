@@ -165,13 +165,13 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '订单编号：${orderData?.id}',
+                '订单编号：'+orderData?.id.toString(),
                 style: DefaultStyle.lgray12,
               ),
               GestureDetector(
                 onTap: () {
                   Clipboard.setData(
-                      ClipboardData(text: '订单编号：${orderData?.id}'));
+                      ClipboardData(text: '订单编号：'+orderData?.id.toString()));
                   CommonUtils.showText('复制成功');
                 },
                 child: Row(
@@ -211,10 +211,10 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${orderData?.descp}',
+                orderData?.descp.toString(),
                 style: DefaultStyle.black16bold,
               ),
-              Text('${orderData?.amount}', style: DefaultStyle.black16bold),
+              Text(orderData?.amount.toString(), style: DefaultStyle.black16bold),
             ],
           ),
           SizedBox(
@@ -223,9 +223,9 @@ class OrderItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${orderData?.createdAt}', style: DefaultStyle.lgray12),
+              Text(orderData?.createdAt.toString(), style: DefaultStyle.lgray12),
               Text(
-                '${orderData?.statusText}',
+                orderData?.statusText.toString(),
                 style: DefaultStyle.lgray12,
               ),
             ],

@@ -4,8 +4,12 @@ import 'package:pilipili/components/input/InputWidget.dart';
 
 class InputDialog {
   static Future<String> show(BuildContext context, String tips,
-      {int limitingText, TextInputType boardType, String btnText}) async {
+      {int limitingText,
+      TextInputType boardType,
+      String btnText,
+      String value}) async {
     return Navigator.of(context).push(InputOverlay(
+        value: value,
         tips: tips,
         limitingText: limitingText,
         boardType: boardType,
@@ -18,9 +22,10 @@ class InputOverlay extends ModalRoute<String> {
   final int limitingText;
   final TextInputType boardType;
   final String btnText;
-
+  final String value;
   InputOverlay(
       {this.tips,
+      this.value,
       @required this.limitingText,
       @required this.boardType,
       this.btnText});
@@ -50,11 +55,11 @@ class InputOverlay extends ModalRoute<String> {
     Animation<double> secondaryAnimation,
   ) {
     return InputWidget(
-      tips: tips,
-      limitingText: limitingText,
-      boardType: boardType,
-      btnText:btnText
-    );
+        tips: tips,
+        limitingText: limitingText,
+        boardType: boardType,
+        value: value,
+        btnText: btnText);
   }
 
   @override

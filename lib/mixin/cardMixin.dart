@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
+import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/privilege.dart';
 import 'package:pilipili/utils/download_video.dart';
 import 'package:pilipili/utils/download_comics.dart';
@@ -35,26 +37,26 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
   }
 
   String getRouter(int contentType, {String id, bool replace}) {
-    CommonUtils.debugPrint(
-        '----------------------------------当前ContentType--$contentType');
+    CommonUtils.debugPrint('----------------------------------当前ContentType--' +
+        contentType.toString());
     String router;
     switch (contentType) {
       case 1: //视频
         router = replace
-            ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"videoDetail/.*"), 'videoDetail/$id')
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
             : CommonUtils.getRealHash('videoDetail/$id');
         break;
       case 2: //漫画
         router = replace
-            ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"comicsdetail/.*"), 'comicsdetail/$id')
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("${PPString.test}comicsdetail/.*"), 'comicsdetail/$id')
             : CommonUtils.getRealHash('comicsdetail/$id');
         break;
       case 3: //小说
         router = replace
-            ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"novelDetail/.*"), 'novelDetail/$id')
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("${PPString.test}novelDetail/.*"), 'novelDetail/$id')
             : CommonUtils.getRealHash('novelDetail/$id');
         break;
       case 4: //链接
@@ -65,8 +67,8 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
         break;
       case 6: //图集
         router = replace
-            ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"atlasDetail/.*"), 'atlasDetail/$id')
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("${PPString.test}atlasDetail/.*"), 'atlasDetail/$id')
             : CommonUtils.getRealHash('atlasDetail/$id');
         break;
       case 7: //短视频
@@ -75,9 +77,21 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
         break;
       case 10: //动漫
         router = replace
-            ? CommonUtils.getRealHash()
-                .replaceAll(RegExp(r"videoDetail/.*"), 'videoDetail/$id')
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
             : CommonUtils.getRealHash('videoDetail/$id');
+        break;
+      case 11: //视频系列
+        router = replace
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("seriesDetail/.*"), 'seriesDetail/$id/$contentType')
+            : CommonUtils.getRealHash('seriesDetail/$id/$contentType');
+        break;
+      case 12: //漫画系列
+        router = replace
+            ? CommonUtils.getRealHash().replaceAll(
+                RegExp("seriesDetail/.*"), 'seriesDetail/$id/$contentType')
+            : CommonUtils.getRealHash('seriesDetail/$id/$contentType');
         break;
       default:
     }
@@ -121,16 +135,16 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                 return Text(
                   privilegeMap[contentType]['text'],
                   style: TextStyle(
-                      color: Color(0xffff84a9),
+                      color: DefaultStyle.themeColor,
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(16),
                       decoration: TextDecoration.none),
                 );
               },
               cancelText: '取消',
-              btnText: '立即升级',
+              btnText: PPString.upgradeNuw,
               callBack: () {
-                context.push('/${Routes.vip}');
+                context.push('/vip');
               },
             );
             return;
@@ -209,7 +223,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                     .indexWhere((item) => item.name == urlList[1]);
                 //跳转结构
                 try {
-                  EventBus().emit('video_nav', _cindex == null ? 0 : _cindex);
+                  EventBus().emit('pili_ciyuan', _cindex == null ? 0 : _cindex);
                 } catch (e) {}
                 return;
               }
@@ -220,11 +234,11 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                 Provider.of<HomeConfig>(context, listen: false).member;
             var aff = members.aff;
             var piliid = members.uuid;
-            CommonUtils.launchURL('${linkUrl.trim()}?aff=$aff&piliid=$piliid');
+            CommonUtils.launchURL(linkUrl.trim() + '?aff=$aff&piliid=$piliid');
           }
         }
       },
-      child: child,
+      child: RepaintBoundary(child: child),
     );
   }
 
@@ -245,7 +259,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                   ? "点击开始下载"
                   : downloading
                       ? "下载进度:" + (progress * 100).toInt().toString() + "%"
-                      : "暂停下载";
+                      : PPString.pauseDownloads;
       return _text;
     }
 

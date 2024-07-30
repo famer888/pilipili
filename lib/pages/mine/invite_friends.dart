@@ -176,13 +176,13 @@ class _InviteFriendState extends State<InviteFriend> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         MyInviteNumber(
-                                            number: '${myInvition?.allNum}',
+                                            number: myInvition?.allNum.toString(),
                                             label: '邀请人数'),
                                         MyInviteNumber(
-                                            number: '${myInvition?.regNum}',
+                                            number: myInvition?.regNum.toString(),
                                             label: '注册数'),
                                         MyInviteNumber(
-                                            number: '${myInvition?.moneyNum}',
+                                            number: myInvition?.moneyNum.toString(),
                                             label: '皮哩币收入'),
                                       ],
                                     ),
@@ -305,19 +305,19 @@ class IncomeItem extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${incomeListItem?.nickname}',
+              Text(incomeListItem?.nickname.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(16),
                       color: Color(0xff7A3C04))),
               SizedBox(height: ScreenUtil().setHeight(10)),
-              Text('${incomeListItem?.createdAt}',
+              Text(incomeListItem?.createdAt.toString(),
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(13),
                       color: Color(0xff999999))),
             ],
           )),
-          Text('+20币',
+          Text(incomeListItem.coinCnt.toString(),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: ScreenUtil().setSp(15),

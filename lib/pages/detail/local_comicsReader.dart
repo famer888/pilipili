@@ -8,14 +8,12 @@ import 'package:pilipili/components/gestureZoomBox.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/scrollablePositionedList/item_positions_listener.dart';
 import 'package:pilipili/components/scrollablePositionedList/scrollable_positioned_list.dart';
-import 'package:pilipili/components/yy_dialog.dart';
-import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/watchRecordMixin.dart';
-import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/logUtil.dart';
+import 'package:pilipili/utils/logUtilS.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_string.dart';
 
 class LocalComicsReader extends StatefulWidget {
   LocalComicsReader({Key key, this.comicsInfo, this.episode}) : super(key: key);
@@ -103,14 +101,13 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   swichComic(int episode, {bool replace = false}) {
     context.push(
         CommonUtils.getRealHash()
-            .replaceAll(RegExp(r"localComicsReader"), 'localComicsReader'),
+            .replaceAll(RegExp("${PPString.test}localComicsReader"), 'localComicsReader'),
         extra: {'comicsInfo': widget.comicsInfo, 'episode': episode},
         replace: replace);
   }
 
   getPageDetail() async {
     comicsData = widget.comicsInfo["sets"][widget.episode - 1];
-    LogUtil.d("漫画数据-----${comicsData}");
     comicLength = widget.comicsInfo["sets"][widget.episode - 1].length;
     controllerOffset = {
       'offsetLeft': 0.0, //页面进度
@@ -540,7 +537,6 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
         ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
     if (currenPage + 1 != comicLength) {
       currenPage++;
-      CommonUtils.debugPrint('--------${currenPage + 1}-$comicLength--');
       controllerOffset['offsetLeft'] = (currenPage + 1) * segmet;
       comicScroll.jumpTo(index: currenPage);
       setState(() {});
@@ -573,7 +569,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('自动翻页间隔${timeList[defaultTime]}秒'),
+                        Text('自动翻页间隔'+timeList[defaultTime].toString()+'秒'),
                         gestureWidget(_keyb, 'timeLeft', defaultTime,
                             timeList.length - 1),
                         Row(
@@ -650,7 +646,10 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                          '${currenPage + 1 > controllerOffset['pageIndex']['max'] ? controllerOffset['pageIndex']['max'] : currenPage + 1}'),
+                          (currenPage + 1 > controllerOffset['pageIndex']['max']
+                                  ? controllerOffset['pageIndex']['max']
+                                  : currenPage + 1)
+                              .toString()),
                       gestureWidget(_key, 'offsetLeft', currenPage + 1,
                           controllerOffset['pageIndex']['max']),
                       Text(controllerOffset['pageIndex']['max'].toString())
@@ -680,7 +679,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     settingBtn(
                         color:
                             selectState == 1 ? Color(0xffff2e4e) : Colors.white,
-                        img: selectState == 1 ? '3' : '2',
+                        img: selectState == 1 ? PPString.three : PPString.two,
                         title: '上下翻页',
                         onTap: () {
                           isHorizontal = false;
@@ -694,7 +693,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     settingBtn(
                         color:
                             selectState == 2 ? Color(0xffff2e4e) : Colors.white,
-                        img: selectState == 2 ? '5' : '4',
+                        img: selectState == 2 ? PPString.five : PPString.four,
                         title: '左右翻页',
                         onTap: () {
                           isHorizontal = true;
@@ -841,7 +840,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
         mainAxisSize: MainAxisSize.min,
         children: [
           PlatformAwareAssetImage(
-            url: 'assets/images/comics/reader_icon_$img.png',
+            url: 'assets/images/comics/reader_icon_'+img.toString()+'.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
             filterQuality: FilterQuality.medium,
@@ -888,7 +887,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           children: [
             PlatformAwareAssetImage(
               url: 'assets/images/comics/' +
-                  (type == 'left' ? 'left.png' : 'right.png'),
+                  (type == 'left' ? PPString.iconLeft : PPString.iconRight),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
               filterQuality: FilterQuality.medium,
@@ -900,7 +899,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(type == 'left' ? '上' : '下'),
+                    Text(type == 'left' ? PPString.shang : PPString.xia),
                     Text('一'),
                     Text('话'),
                   ],
@@ -1001,7 +1000,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                 horizontal: ScreenUtil().setWidth(14)),
             child: Row(
               children: [
-                Text('共${widget.comicsInfo["allEpisode"]}话',
+                Text('共' + widget.comicsInfo["allEpisode"].toString() + '话',
                     style: TextStyle(
                         color: Color(0xff999999),
                         fontSize: ScreenUtil().setSp(13))),

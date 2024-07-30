@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:universal_html/html.dart';
 import 'dart:io' as io;
 
 class ComicsImg extends StatefulWidget {
@@ -109,15 +108,6 @@ class _ComicsImgState extends State<ComicsImg> {
                       fit: BoxFit.cover,
                     ),
             ),
-            // Positioned(
-            //   top: 0,
-            //   left: 50,
-            //   child:Text((widget.index+1).toString(),
-            //   style: TextStyle(
-            //     color: Colors.red,
-            //     fontSize: ScreenUtil().setSp(100)
-            //   ),
-            //   ))
           ],
         ),
       ),

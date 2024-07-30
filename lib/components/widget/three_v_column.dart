@@ -106,8 +106,12 @@ class _ThreeVColumnState extends State<ThreeVColumn> {
               ? Container()
               : GestureDetector(
                   onTap: () {
-                    context.push(
-                        '/morePage/${widget.id}/${widget.title}/${widget.morePageType ?? 1}');
+                    context.push('/morePage/' +
+                        widget.id.toString() +
+                        '/' +
+                        widget.title.toString() +
+                        '/' +
+                        (widget.morePageType ?? 1).toString());
                   },
                   child: Container(
                     width: ScreenUtil().setWidth(240),

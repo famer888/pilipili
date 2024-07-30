@@ -15,7 +15,8 @@ class Scrollnav extends StatefulWidget {
       this.pages,
       this.onNavIndexChanged,
       this.onBackTop,
-      this.hideClose = false})
+      this.hideClose = false,
+      this.isBack = false})
       : super(key: key);
   final String emitName;
   final List<LinkModel> navitems;
@@ -23,6 +24,7 @@ class Scrollnav extends StatefulWidget {
   final Function onNavIndexChanged;
   final Function onBackTop;
   final bool hideClose;
+  final bool isBack;
   @override
   _ScrollnavState createState() => _ScrollnavState();
 }
@@ -38,7 +40,7 @@ class _ScrollnavState extends State<Scrollnav> {
     _controller = ScrollController();
     _pageController = PageController();
     for (int i = 0; i < widget.navitems.length; i++) {
-      keys.add(GlobalKey(debugLabel: 'navitems-${i.toString()}'));
+      keys.add(GlobalKey(debugLabel: 'navitems-' + i.toString()));
     }
     if (widget.emitName != null) {
       EventBus().on(widget.emitName, (arg) {
@@ -108,6 +110,22 @@ class _ScrollnavState extends State<Scrollnav> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        widget.isBack
+                            ? GestureDetector(
+                                onTap: () {
+                                  context.pop();
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      right: ScreenUtil().setWidth(6)),
+                                  child: PlatformAwareAssetImage(
+                                      url: 'assets/images/backarrow.png',
+                                      width: 12.w,
+                                      height: 22.w,
+                                      filterQuality: FilterQuality.medium),
+                                ))
+                            : SizedBox(),
                         Expanded(
                             child: ListView(
                           cacheExtent: ScreenUtil().screenHeight * 5,
@@ -189,7 +207,8 @@ class _ScrollnavState extends State<Scrollnav> {
                                                     horizontal: ScreenUtil()
                                                         .setWidth(3)),
                                                 child: Text(
-                                                  widget.navitems[index].name,
+                                                  widget.navitems[index].name ??
+                                                      "",
                                                   style: TextStyle(
                                                       color:
                                                           selectedIndex == index
@@ -225,7 +244,7 @@ class _ScrollnavState extends State<Scrollnav> {
                             : GestureDetector(
                                 onTap: () {
                                   // 打开搜索
-                                  context.push('/${Routes.search}');
+                                  context.push('/search');
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
@@ -241,6 +260,6 @@ class _ScrollnavState extends State<Scrollnav> {
                   ))
             ],
           )
-        : Container();
+        : const SizedBox();
   }
 }

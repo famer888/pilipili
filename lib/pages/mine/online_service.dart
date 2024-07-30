@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/privilege.dart';
@@ -18,33 +16,6 @@ class OnlineService extends StatefulWidget {
 }
 
 class _OnlineServiceState extends State<OnlineService> {
-  Widget _questionItem(data, int index) {
-    return Container(
-      padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(32.5)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("${index + 1}、 ${data['problem']}",
-              style: TextStyle(
-                  color: Color(0xff404040),
-                  fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(16))),
-          SizedBox(
-            height: ScreenUtil().setWidth(15),
-          ),
-          Text(
-            data['reply'],
-            style: TextStyle(
-                color: Color(0xff979797),
-                fontSize: ScreenUtil().setSp(14),
-                height: 1.7),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,11 +26,8 @@ class _OnlineServiceState extends State<OnlineService> {
           title: '在线客服',
           paddingTop: ScreenUtil().statusBarHeight,
         ),
-        Container(
-          padding: EdgeInsets.only(
-              // bottom: ScreenUtil().setHeight(13.5),
-              top: ScreenUtil().setHeight(13.5),
-              left: DefaultStyle.pagePadding),
+        Padding(
+          padding: EdgeInsets.only(top: 13.5.h, left: DefaultStyle.pagePadding),
           child: Text(
             "常见问题",
             style: TextStyle(
@@ -73,11 +41,12 @@ class _OnlineServiceState extends State<OnlineService> {
           padding: EdgeInsets.symmetric(
               horizontal: DefaultStyle.pagePadding, vertical: 16.w),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: AppGlobal.helpList
                 .asMap()
                 .keys
-                .map((e) => _questionItem(AppGlobal.helpList[e], e))
+                .map((e) => QuestionItem(data: AppGlobal.helpList[e], index: e))
                 .toList(),
           ),
         )),
@@ -92,7 +61,7 @@ class _OnlineServiceState extends State<OnlineService> {
               BoxShadow(
                   color: Color.fromRGBO(255, 132, 169, 0.2),
                   offset: Offset(0, 0),
-                  blurRadius: ScreenUtil().setWidth(10))
+                  blurRadius: 10.w)
             ],
           ),
           child: Row(
@@ -115,9 +84,25 @@ class _OnlineServiceState extends State<OnlineService> {
               //     ),
               //   ),
               // ),
-              GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
+              Container(
+                width: 150.5.w,
+                height: 35.w,
+                decoration: BoxDecoration(
+                  gradient: DefaultStyle.defaluGrandientLine,
+                  borderRadius: BorderRadius.circular(50.w),
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                      primary: Colors.transparent),
+                  child: Text(
+                    '联系APP客服',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
                     if (Privilege.isAllowed(
                         context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
                       context.push(CommonUtils.getRealHash('customerService'));
@@ -125,42 +110,43 @@ class _OnlineServiceState extends State<OnlineService> {
                       CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
                     }
                   },
-                  child: Stack(
-                    children: [
-                      // Positioned(
-                      //     top: 0,
-                      //     bottom: 0,
-                      //     left: 0,
-                      //     right: 0,
-                      //     child: PlatformAwareAssetImage(
-                      // url:
-                      //       'assets/pengke/video/video_duan_btn.png',
-                      //       fit: BoxFit.fill,
-                      //     )),
-                      Container(
-                        width: ScreenUtil().setWidth(150.5),
-                        height: ScreenUtil().setWidth(35),
-                        decoration: BoxDecoration(
-                          gradient: DefaultStyle.defaluGrandientLine,
-                          borderRadius:
-                              BorderRadius.circular(ScreenUtil().setWidth(50)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '联系APP客服',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
+                ),
+              ),
             ],
           ),
         ),
       ],
     ));
+  }
+}
+
+class QuestionItem extends StatelessWidget {
+  const QuestionItem({Key key, this.data, this.index}) : super(key: key);
+  final dynamic data;
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 32.5.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text((index + 1).toString() + "、 " + data['problem'].toString(),
+              style: TextStyle(
+                  color: Color(0xff404040),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.sp)),
+          SizedBox(
+            height: 15.w,
+          ),
+          Text(
+            data['reply'],
+            style: TextStyle(
+                color: Color(0xff979797), fontSize: 14.sp, height: 1.7.w),
+          ),
+        ],
+      ),
+    );
   }
 }

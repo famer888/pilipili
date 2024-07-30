@@ -14,6 +14,7 @@ const RESOURCE_TYPE_GIRL = 7; // 楼凤
 const RESOURCE_TYPE_GIRL_AGENT = 8; // 约炮
 const RESOURCE_TYPE_GIRL_CHAT = 9; // 裸聊
 const RESOURCE_TYPE_SYSTEM = 10; // 系统权限（换头像，改昵称，客服使用权限）
+const RESOURCE_TYPE_POST = 11; // 帖子
 
 // 二级嵌套权限（资源类）
 const PRIVILEGE_TYPE_VIEW = 1; // 查看权限 使用isAllowedWithCount
@@ -23,13 +24,15 @@ const PRIVILEGE_TYPE_DISCOUNT = 4; // 金币折扣 使用getDiscount
 const PRIVILEGE_TYPE_UNLOCK = 5; // 解锁权限 使用isAllowedWithCount
 const PRIVILEGE_TYPE_SETTING = 6; // 换头像和昵称 使用isAllowed
 const PRIVILEGE_TYPE_FEED = 7; // 在线客服 使用isAllowed
-
+const PRIVILEGE_TYPE_COIN_VIEW = 8;//金币帖 
+const PRIVILEGE_TYPE_POST_TOPIC = 11; // 发表话题
+const PRIVILEGE_TYPE_POST = 12; // 发表文章
 class Privilege {
   // 判断是否有权限
   static bool isAllowed(
       BuildContext context, int resourceType, int privilegeType) {
     Map _privilege = Provider.of<HomeConfig>(context, listen: false).privilege;
-    CommonUtils.debugPrint(_privilege);
+    // CommonUtils.debugPrint(_privilege);
     if (_privilege['data']['$resourceType']['$privilegeType']['status'] == 1) {
       return true;
     }

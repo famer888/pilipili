@@ -7,21 +7,27 @@
  * @FilePath: /flutter2021/lib/components/common/pagetitlebar.dart
  */
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:pilipili/utils/pp_asset_path.dart';
 
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
   PageTitleBar(
-      {Key key, this.title, this.rightWidget, this.height, this.paddingTop = 0})
+      {Key key,
+      this.title,
+      this.rightWidget,
+      this.height,
+      this.paddingTop = 0,
+      this.bgColor})
       : super(key: key);
   String title;
   Widget rightWidget;
   double height;
   double paddingTop;
+  Color bgColor;
   @override
   _PageTitleBarState createState() => _PageTitleBarState();
 }
@@ -39,7 +45,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
       children: [
         Container(
             padding: EdgeInsets.only(top: widget.paddingTop),
-            color: DefaultStyle.themeColor,
+            color: widget.bgColor ?? DefaultStyle.themeColor,
             alignment: Alignment.center,
             width: ScreenUtil().screenWidth,
             child: Container(
@@ -47,7 +53,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
               height: widget.height ?? DefaultStyle.navbarHegiht,
               width: ScreenUtil().screenWidth * 0.8,
               child: Text(
-                widget.title != null ? widget.title : '二级列表页',
+                widget.title != null ? widget.title : '',
                 style: DefaultStyle.white16bold,
               ),
             )),
@@ -59,28 +65,26 @@ class _PageTitleBarState extends State<PageTitleBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: DefaultStyle.pagePadding,
-                      vertical: ScreenUtil().setWidth(5)),
-                  child: InkWell(
-                    onTap: () {
-                      context.pop();
-                    },
-                    borderRadius:
-                        BorderRadius.circular(ScreenUtil().setWidth(20)),
-                    child: Container(
-                      alignment: Alignment.center,
-                      // width: ScreenUtil().setWidth(40),
-                      // height: ScreenUtil().setWidth(40),
-                      child: PlatformAwareAssetImage(
-                          url: 'assets/images/backarrow.png',
-                          fit: BoxFit.fitHeight,
-                          width: ScreenUtil().setWidth(20),
-                          height: ScreenUtil().setWidth(20),
-                          filterQuality: FilterQuality.medium),
-                    ),
-                  ),
+                GestureDetector(
+                  onTap: () {
+                    context.pop();
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: DefaultStyle.pagePadding,
+                          vertical: ScreenUtil().setWidth(5)),
+                      child: Container(
+                        alignment: Alignment.center,
+                        // width: ScreenUtil().setWidth(40),
+                        // height: ScreenUtil().setWidth(40),
+                        child: PlatformAwareAssetImage(
+                            url: PPAssetsPath.backArrow,
+                            fit: BoxFit.fitHeight,
+                            width: 20.w,
+                            height: 20.w,
+                            filterQuality: FilterQuality.medium),
+                      )),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
+import 'package:pilipili/components/card/navel_card.dart';
+import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/card/youxuan_card.dart';
+import 'package:pilipili/components/card/yuemei_card.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
-import 'package:pilipili/components/common/pullrefreshlist.dart';
-import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/components/pili/publish_biuld_list.dart';
 import 'package:pilipili/theme/default.dart';
-import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -28,30 +29,62 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       'id': 1,
       'name': '次元精选',
       'index': 1,
+      'api': '/api/user/getUserBuy',
+      'row': 2,
+      'aspectRatio': 1.2
     },
     {
       'id': 11,
       'name': '次元竖屏',
       'index': 2,
+      'api': '/api/user/getUserBuy',
+      'row': 3,
+      'aspectRatio': 0.61
     },
     {
-      'id': 1,
+      'id': 3,
       'name': '动漫',
       'index': 3,
+      'api': '/api/user/getUserBuy',
+      'row': 2,
+      'aspectRatio': 1.2
     },
     {
       'id': 99,
       'name': '合集包',
       'index': 4,
+      'api': '/api/user/getUserBuy',
+      'row': 1,
+      'aspectRatio': null
+    },
+    {
+      'id': 10,
+      'name': '约妹',
+      'padding': 16.w,
+      'index': 5,
+      'api': '/api/user/getUserBuy',
+      'row': 1,
+      'aspectRatio': null
+    },
+    {
+      'id': -1,
+      'name': '帖子',
+      'padding': 8.w,
+      'index': 6,
+      'api': '/api/community/list_buy',
+      'row': 1,
+      'aspectRatio': null
+    },
+    {
+      'id': 11,
+      'name': '小说',
+      'padding': 8.w,
+      'index': 7,
+      'api': 'novel',
+      'row': 3,
+      'aspectRatio': null
     },
   ];
-
-  Map<int, dynamic> dataList = {
-    1: {"page": 1, "data": [], "isall": false, "isloading": true},
-    2: {"page": 1, "data": [], "isall": false, "isloading": true},
-    3: {"page": 1, "data": [], "isall": false, "isloading": true},
-    4: {"page": 1, "data": [], "isall": false, "isloading": true},
-  };
 
   @override
   void initState() {
@@ -67,118 +100,45 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
         setState(() {
           currentTab = _tabController.index;
         });
-        onTabsChange(_tabController.index + 1);
       }
     });
-    initBuyData();
   }
 
-  initBuyData() async {
-    var result = await getUserBuy(page: 1, type: tabList[0]['id']);
-    if (result['data'] != null && result['data'].length > 0) {
-      setState(() {
-        dataList[1]['data'] = result['data'];
-        dataList[1]['isloading'] = false;
-      });
-      if (result['data'].length < 24) {
-        setState(() {
-          dataList[1]['isall'] = true;
-        });
-      }
-    } else {
-      setState(() {
-        dataList[1]['isall'] = true;
-        dataList[1]['isloading'] = false;
-      });
-    }
-  }
-
-  onTabsChange(int index) async {
-    if (dataList[index]['data'].length == 0 &&
-        dataList[index]['isall'] == false) {
-      var result = await getUserBuy(
-          category: index == 3 ? 1 : null,
-          page: 1,
-          type: tabList[index - 1]['id']);
-      if (result['data'] != null && result['data'].length > 0) {
-        setState(() {
-          dataList[index]['data'] = result['data'];
-          dataList[index]['isloading'] = false;
-        });
-        if (result['data'].length < 24) {
-          setState(() {
-            dataList[index]['isall'] = true;
-          });
-        }
-      } else {
-        setState(() {
-          dataList[index]['isall'] = true;
-          dataList[index]['isloading'] = false;
-        });
-      }
-    }
-  }
-
-  _onRefreshPost(int index) async {
-    setState(() {
-      dataList[index]['isloading'] = true;
-    });
-    dataList[index]['page'] = 1;
-    var result = await getUserBuy(
-        category: index == 3 ? 1 : null,
-        page: dataList[index]['page'],
-        type: tabList[index - 1]['id']);
-    if (result['data'] != null && result['data'].length > 0) {
-      setState(() {
-        dataList[index]['data'] = result['data'];
-        dataList[index]['isloading'] = false;
-      });
-      if (result['data'].length < 24) {
-        setState(() {
-          dataList[index]['isall'] = true;
-        });
-      } else {
-        setState(() {
-          dataList[index]['isall'] = false;
-        });
-      }
-    } else {
-      setState(() {
-        dataList[index]['isall'] = true;
-        dataList[index]['isloading'] = false;
-      });
-    }
-  }
-
-  _onLoading(int index) async {
-    if (dataList[index]['isall'] == false) {
-      dataList[index]['page']++;
-      var result = await getUserBuy(
-          category: index == 3 ? 1 : null,
-          page: dataList[index]['page'],
-          type: tabList[index - 1]['id']);
-      if (result['data'] != null && result['data'].length > 0) {
-        setState(() {
-          dataList[index]['data'].addAll(result['data']);
-          dataList[index]['isloading'] = false;
-        });
-        if (result['data'].length < 24) {
-          setState(() {
-            dataList[index]['isall'] = true;
-          });
-        } else {
-          setState(() {
-            dataList[index]['isall'] = false;
-          });
-        }
-      } else {
-        setState(() {
-          dataList[index]['isall'] = true;
-          dataList[index]['isloading'] = false;
-        });
-      }
-    } else {
-      CommonUtils.showText("已加载全部 ${tabList[index - 1]['name']}");
+  Widget getCardType(int id, dynamic data) {
+    switch (id) {
+      case 1:
+        return Hcard(
+            maxLines: 1,
+            width: 171.5.w,
+            thumbUrl: CommonUtils.getThumb(data),
+            contentType: 1,
+            cardData: data,
+            showField: 'title');
+        break;
+      case 2:
+        return Hcard(
+            maxLines: 1,
+            width: 171.5.w,
+            thumbUrl: CommonUtils.getThumb(data),
+            contentType: 1,
+            cardData: data,
+            showField: 'title');
+        break;
+      case 99:
+        return YouxuanCard(data: data, isHorizontal: data['type'] == 1);
+        break;
+      case 11:
+        return Vcard(
+            maxLines: 1,
+            isSearch: true,
+            width: 110.5.w,
+            thumbUrl: CommonUtils.getThumb(data),
+            contentType: 7,
+            cardData: data,
+            showField: 'title');
+        break;
+      default:
+        return SizedBox();
     }
   }
 
@@ -200,7 +160,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
                     color: Color.fromRGBO(255, 91, 140, 0.1),
-                    offset: Offset(0, 10),
+                    offset: Offset(0, 5.w),
                     blurRadius: 10,
                     spreadRadius: 0)
               ]),
@@ -215,15 +175,12 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                     labelColor: Colors.black,
                     controller: _tabController,
                     unselectedLabelColor: Colors.transparent,
-                    labelPadding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setWidth(0),
-                        horizontal: ScreenUtil().setWidth(6)),
+                    labelPadding: EdgeInsets.symmetric(horizontal: 6.w),
                     // labelStyle: GVStyle.ts14_gray,
                     tabs: tabList.asMap().keys.map((e) {
                       return Container(
-                        height: ScreenUtil().setWidth(44),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(10)),
+                        height: 44.w,
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +189,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                               opacity: e == currentTab ? 1 : 0,
                               child: PlatformAwareAssetImage(
                                   url: "assets/images/icon_love_red2.png",
-                                  width: ScreenUtil().setWidth(6),
+                                  width: 6.w,
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
                             ),
@@ -246,7 +203,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                               opacity: 0,
                               child: PlatformAwareAssetImage(
                                   url: "assets/images/icon_love_red2.png",
-                                  width: ScreenUtil().setWidth(6),
+                                  width: 6.w,
                                   fit: BoxFit.fitWidth,
                                   filterQuality: FilterQuality.medium),
                             ),
@@ -259,182 +216,58 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
             Expanded(
               child: TabBarView(
                   controller: _tabController,
-                  children: tabList
-                      .map(
-                        (e) => PageViewMixin(
-                          key: Key('collectList${e['id']}-${e['name']}'),
-                          child: BuyList(
-                            index: e['index'],
-                            type: e['id'],
-                            dataList: dataList,
-                            onRefreshPost: _onRefreshPost,
-                            onLoading: _onLoading,
-                          ),
-                        ),
-                      )
-                      .toList()),
+                  children: tabList.asMap().keys.map<Widget>((e) {
+                    return PageViewMixin(
+                      child: tabList[e]['api'] == 'novel'
+                          ? PublicBuildList(
+                              paddingLeft: 16.w,
+                              paddingRight: 16.w,
+                              api: '/api/novel/myBuy',
+                              isShow: true,
+                              mainAxisSpacing: 16.w,
+                              row: 3,
+                              aspectRatio: 109 / 190,
+                              data: {},
+                              nullText: '还没有小说哦～',
+                              itemBuild: (context, index, data, page, limit,
+                                  getListData) {
+                                return NovelCard(data: data);
+                              })
+                          : PublicBuildList(
+                              paddingLeft: tabList[e]['padding'] ?? 0,
+                              paddingTop: tabList[e]['padding'] ?? 0,
+                              paddingRight: tabList[e]['padding'] ?? 0,
+                              api: tabList[e]['api'],
+                              isFlow: false,
+                              isShow: true,
+                              row: tabList[e]['row'],
+                              aspectRatio: tabList[e]['aspectRatio'],
+                              data: {
+                                'category': tabList[e]['index'] == 3 ? 1 : null,
+                                'type': tabList[e]['id']
+                              },
+                              itemBuild: (context, index, data, page, limit,
+                                  getListData) {
+                                return tabList[e]['index'] == 6
+                                    ? PostCard(
+                                        data: data,
+                                      )
+                                    : tabList[e]['index'] == 5
+                                        ? YuemeiCard(
+                                            isShowInfo: true,
+                                            isBuy: true,
+                                            w: 118.w,
+                                            h: 145.w,
+                                            data: data,
+                                          )
+                                        : getCardType(tabList[e]['id'], data);
+                              }),
+                    );
+                  }).toList()),
             ),
           ],
         ))
       ],
     ));
-  }
-}
-
-class BuyList extends StatefulWidget {
-  final int type;
-  final int index;
-  final Map<int, dynamic> dataList;
-  final Function onRefreshPost;
-  final Function onLoading;
-  BuyList(
-      {Key key,
-      this.type,
-      this.dataList,
-      this.onRefreshPost,
-      this.onLoading,
-      this.index})
-      : super(key: key);
-
-  @override
-  _BuyListState createState() => _BuyListState();
-}
-
-class _BuyListState extends State<BuyList> {
-  Widget _videoList() {
-    return widget.dataList[widget.index]['isloading']
-        ? PageStatus.loading(mounted)
-        : PullRefreshList(
-            onRefresh: () {
-              widget.onRefreshPost(widget.index);
-            },
-            onLoading: () {
-              widget.onLoading(widget.index);
-            },
-            child: widget.dataList[widget.index]['data'].length == 0
-                ? SingleChildScrollView(
-                    child: PageStatus.noData(text: '您还没有购买视频'),
-                  )
-                : GridView.builder(
-                    cacheExtent: ScreenUtil().screenHeight * 5,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: DefaultStyle.pagePadding,
-                        vertical: ScreenUtil().setWidth(20)),
-                    itemCount: widget.dataList[widget.index]['data'].length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: ScreenUtil().setWidth(10),
-                      crossAxisSpacing: ScreenUtil().setWidth(7),
-                      childAspectRatio: 1.2,
-                    ),
-                    itemBuilder: (context, index) {
-                      return Hcard(
-                          maxLines: 1,
-                          width: ScreenUtil().setWidth(171.5),
-                          thumbUrl: CommonUtils.getThumb(
-                              widget.dataList[widget.index]['data'][index]),
-                          contentType: 1,
-                          cardData: widget.dataList[widget.index]['data']
-                              [index],
-                          showField: 'title');
-                    }));
-  }
-
-  Widget _smallVideoList() {
-    return widget.dataList[widget.index]['isloading']
-        ? PageStatus.loading(mounted)
-        : PullRefreshList(
-            onRefresh: () {
-              widget.onRefreshPost(widget.index);
-            },
-            onLoading: () {
-              widget.onLoading(widget.index);
-            },
-            child: widget.dataList[widget.index]['data'].length == 0
-                ? SingleChildScrollView(
-                    child: PageStatus.noData(text: '您还没有购买短视频'),
-                  )
-                : GridView.builder(
-                    cacheExtent: ScreenUtil().screenHeight * 5,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: DefaultStyle.pagePadding,
-                        vertical: ScreenUtil().setWidth(20)),
-                    itemCount: widget.dataList[widget.index]['data'].length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: ScreenUtil().setWidth(9.5),
-                      crossAxisSpacing: ScreenUtil().setWidth(9.5),
-                      childAspectRatio: 0.61,
-                    ),
-                    itemBuilder: (context, index) {
-                      return Vcard(
-                          maxLines: 1,
-                          isSearch: true,
-                          width: ScreenUtil().setWidth(110.5),
-                          thumbUrl: CommonUtils.getThumb(
-                              widget.dataList[widget.index]['data'][index]),
-                          contentType: 7,
-                          cardData: widget.dataList[widget.index]['data']
-                              [index],
-                          showField: 'title');
-                    }));
-  }
-
-  Widget _youxuanList() {
-    return widget.dataList[widget.index]['isloading']
-        ? PageStatus.loading(mounted)
-        : PullRefreshList(
-            onRefresh: () {
-              widget.onRefreshPost(widget.index);
-            },
-            onLoading: () {
-              widget.onLoading(widget.index);
-            },
-            child: widget.dataList[widget.index]['data'].length == 0
-                ? SingleChildScrollView(
-                    child: PageStatus.noData(text: '您还没有购买打折包包哦～'),
-                  )
-                : ListView.builder(
-                    cacheExtent: ScreenUtil().screenHeight * 5,
-                    padding: EdgeInsets.symmetric(
-                        vertical: DefaultStyle.pagePadding,
-                        horizontal: DefaultStyle.pagePadding),
-                    itemCount: widget.dataList[widget.index]['data'].length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return YouxuanCard(
-                          data: widget.dataList[widget.index]['data'][index],
-                          isHorizontal: widget.dataList[widget.index]['data']
-                                  [index]['type'] ==
-                              1);
-                    }));
-  }
-
-  getListWidget() {
-    switch (widget.type) {
-      case 1:
-        return _videoList();
-        break;
-      case 2:
-        return _videoList();
-        break;
-      case 99:
-        return _youxuanList();
-        break;
-      case 11:
-        return _smallVideoList();
-        break;
-      default:
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return getListWidget();
   }
 }

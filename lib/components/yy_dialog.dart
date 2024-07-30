@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pilipili/theme/default.dart';
+import 'package:pilipili/utils/networkImage.dart';
 
 class YyDialog extends StatefulWidget {
   final Widget child; //子Widget
@@ -21,7 +24,7 @@ class YyDialog extends StatefulWidget {
       this.callBack,
       this.title,
       this.content,
-      this.btnText = '确定',
+      this.btnText,
       this.toPageCallback,
       this.clickCallBack,
       this.isClick,
@@ -54,7 +57,7 @@ class YyDialogState extends State<YyDialog> {
               cancelBack: widget.cancelBack,
               changeBtnText: widget.changeBtnText,
               callBack: widget.callBack,
-              btnText: widget.btnText);
+              btnText: widget.btnText ?? '确定');
         }
       },
       child: widget.child,
@@ -69,7 +72,7 @@ class YyShowDialog {
       bool clear = false,
       Function callBack,
       Function cancelBack,
-      String btnText = '确定',
+      String btnText,
       String cancelText,
       Function changeBtnText,
       bool prohibitClose = false}) {
@@ -109,7 +112,7 @@ class YyShowDialog {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color(0xff646464),
-                                        fontSize: ScreenUtil().setSp(24),
+                                        fontSize: 16.w,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -143,8 +146,9 @@ class YyShowDialog {
                                                             .setWidth(18)),
                                                 gradient: LinearGradient(
                                                   colors: [
-                                                    Color(0xffFFCCDB),
-                                                    Color(0xffFFE4E4)
+                                                    DefaultStyle.btnThemeColor,
+                                                    DefaultStyle
+                                                        .btnLinerThemeColor
                                                   ],
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
@@ -155,7 +159,8 @@ class YyShowDialog {
                                               child: Text(
                                                 cancelText,
                                                 style: TextStyle(
-                                                    color: Color(0xffff84a9),
+                                                    color:
+                                                        DefaultStyle.themeColor,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize:
                                                         ScreenUtil().setSp(14)),
@@ -191,8 +196,8 @@ class YyShowDialog {
                                                             .setWidth(18)),
                                                 gradient: LinearGradient(
                                                   colors: [
-                                                    Color(0xffFF84A9),
-                                                    Color(0xffFF9E9E)
+                                                    DefaultStyle.themeColor,
+                                                    DefaultStyle.linerThemeColor
                                                   ],
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
@@ -201,7 +206,7 @@ class YyShowDialog {
                                             height: ScreenUtil().setWidth(36),
                                             child: Center(
                                               child: Text(
-                                                btnText,
+                                                btnText ?? '确定',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
@@ -227,6 +232,83 @@ class YyShowDialog {
     ).then((value) {
       if (cancelBack != null && clear) {
         cancelBack();
+      }
+    });
+  }
+
+  static Future showButtom(context,
+      {String title,
+      double height,
+      Function callback,
+      dynamic content,
+      Function onClose}) {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setBottomSheetState) {
+            return Stack(
+              children: [
+                Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: Color(0xfffff4f9),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(ScreenUtil().setWidth(12)),
+                        topRight: Radius.circular(ScreenUtil().setWidth(12)),
+                      )),
+                  width: double.infinity,
+                  height: height ??
+                      370.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: ScreenUtil().setWidth(64),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                end: Alignment.bottomCenter,
+                                begin: Alignment.topCenter,
+                                colors: [
+                              Color(0XFFFF89AC),
+                              Color(0XFFFF5B8C),
+                              Color(0XFFFA437A),
+                            ])),
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: DefaultStyle.white18bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: content is Widget
+                              ? content
+                              : content(setBottomSheetState)),
+                    ],
+                  ),
+                ),
+                Positioned(
+                    top: ScreenUtil().setWidth(19.5),
+                    right: ScreenUtil().setWidth(19.5),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.pop();
+                      },
+                      child: PlatformAwareAssetImage(
+                          url: 'assets/images/detail/icon_close.png',
+                          width: ScreenUtil().setWidth(24),
+                          height: ScreenUtil().setWidth(24),
+                          filterQuality: FilterQuality.medium),
+                    ))
+              ],
+            );
+          });
+        }).then((value) {
+      if (onClose != null) {
+        onClose();
       }
     });
   }
