@@ -22,7 +22,7 @@ class AppGlobal {
   static int smallVideoLimit = 18;
   static List<String> apiLines = [
     'https://apiv2.hichatapi.me',
-    'https://apiv2.ws4dx5vf.com',
+    'https://api.ws4dx5vf.com',
     'https://apiv2.hichatapi.org'
   ];
   static bool isPostVideoURL = false;
