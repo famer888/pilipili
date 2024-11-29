@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/comment_item.dart';
@@ -12,7 +12,6 @@ import 'package:pilipili/components/input/InputDailog.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
-import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/store/community.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';

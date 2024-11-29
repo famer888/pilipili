@@ -62,6 +62,15 @@ class PrimaryScrollControllerWrapper extends InheritedWidget
   @override
   bool updateShouldNotify(PrimaryScrollControllerWrapper oldWidget) =>
       controller != oldWidget.controller;
+
+  @override
+  // TODO: implement automaticallyInheritForPlatforms
+  Set<TargetPlatform> get automaticallyInheritForPlatforms =>
+      throw UnimplementedError();
+
+  @override
+  // TODO: implement scrollDirection
+  Axis get scrollDirection => throw UnimplementedError();
 }
 
 //代理
