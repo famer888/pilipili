@@ -21,7 +21,8 @@ import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:http_parser/http_parser.dart';
 
-import 'package:video_player_web_hls/src/shims/dart_ui.dart' as ui;
+import 'package:pilipili/shims/fake_native_widget.dart'
+    if (dart.library.html) 'package:pilipili/shims/real_web_widget.dart' as ui;
 
 class CustomerService extends StatefulWidget {
   CustomerService({Key key}) : super(key: key);

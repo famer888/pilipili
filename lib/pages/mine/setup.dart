@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player_web_hls/src/shims/dart_ui.dart' as ui;
+import 'package:pilipili/shims/fake_native_widget.dart'
+    if (dart.library.html) 'package:pilipili/shims/real_web_widget.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heic_to_jpg/heic_to_jpg.dart';
