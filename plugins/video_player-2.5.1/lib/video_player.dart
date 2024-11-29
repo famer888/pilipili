@@ -442,6 +442,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _isDisposed = true;
     super.dispose();
   }
+
   void requestFullScreen() async {
     _videoPlayerPlatform.requestFullScreen(_textureId);
   }
@@ -456,6 +457,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         duration: Duration.zero, isInitialized: false, errorDescription: '');
     await _videoPlayerPlatform.changeVideo(_textureId, newUri);
   }
+
   /// Starts playing the video.
   ///
   /// If the video is at the end, this method starts playing from the beginning.

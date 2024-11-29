@@ -155,20 +155,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  chewie:
-    dependency: transitive
-    description:
-      name: chewie
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
-  chewie_audio:
-    dependency: transitive
-    description:
-      name: chewie_audio
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
   clock:
     dependency: transitive
     description:
@@ -274,13 +260,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.2"
-  cupertino_icons:
-    dependency: transitive
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   dart_style:
     dependency: transitive
     description:
@@ -425,21 +404,7 @@ packages:
       name: flutter_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
-  flutter_layout_grid:
-    dependency: transitive
-    description:
-      name: flutter_layout_grid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.6"
-  flutter_math_fork:
-    dependency: transitive
-    description:
-      name: flutter_math_fork
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
+    version: "3.0.0-alpha.5"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -461,13 +426,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.3.1"
-  flutter_svg:
-    dependency: transitive
-    description:
-      name: flutter_svg
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.23.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -509,9 +467,9 @@ packages:
   go_router:
     dependency: "direct main"
     description:
-      name: go_router
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "plugins/go_router-2.5.7"
+      relative: true
+    source: path
     version: "2.5.7"
   graphs:
     dependency: transitive
@@ -779,20 +737,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  path_drawing:
-    dependency: transitive
-    description:
-      name: path_drawing
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.1+1"
-  path_parsing:
-    dependency: transitive
-    description:
-      name: path_parsing
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   path_provider:
     dependency: transitive
     description:
@@ -968,13 +912,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   rational:
     dependency: transitive
     description:
@@ -1134,13 +1071,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  tuple:
-    dependency: transitive
-    description:
-      name: tuple
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -1235,40 +1165,33 @@ packages:
   video_player:
     dependency: "direct main"
     description:
-      name: video_player
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "plugins/video_player-2.5.1"
+      relative: true
+    source: path
     version: "2.5.1"
   video_player_android:
     dependency: transitive
     description:
-      name: video_player_android
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "plugins/video_player_android-2.3.10"
+      relative: true
+    source: path
     version: "2.3.10"
   video_player_avfoundation:
     dependency: transitive
     description:
-      name: video_player_avfoundation
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "plugins/video_player_avfoundation-2.3.8"
+      relative: true
+    source: path
     version: "2.3.8"
   video_player_platform_interface:
-    dependency: "direct main"
-    description:
-      name: video_player_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.1.4"
-  video_player_web:
     dependency: transitive
     description:
-      name: video_player_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.13"
+      path: "plugins/video_player_platform_interface-5.1.4"
+      relative: true
+    source: path
+    version: "5.1.4"
   video_player_web_hls:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "plugins/video_player_web_hls-1.0.0+2"
       relative: true
@@ -1337,34 +1260,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
-  webview_flutter:
-    dependency: transitive
-    description:
-      name: webview_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.8.0"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.8.14"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.5"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.7.5"
   win32:
     dependency: transitive
     description:
