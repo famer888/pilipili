@@ -25,6 +25,13 @@ class AppGlobal {
     'https://api.ws4dx5vf.com',
     'https://apiv2.hichatapi.org'
   ];
+  // kIsWeb
+  //     ? ["https://apiv4.tugjazod.com"]
+  //     : [
+  //         'https://apiv1.tugjazod.com',
+  //         'https://apiv2.tugjazod.com',
+  //         'https://apiv3.tugjazod.com'
+  //       ];
   static bool isPostVideoURL = false;
   static Widget bannerWidget;
   static String uploadImgUrl;
