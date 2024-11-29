@@ -1,5 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
@@ -11,7 +13,6 @@ import 'package:pilipili/model/element.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
-import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -126,8 +127,10 @@ class _AnwangPageState extends State<AnwangPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(darkPrivilegeText,
-                        textAlign: TextAlign.center,),
+                        Text(
+                          darkPrivilegeText,
+                          textAlign: TextAlign.center,
+                        ),
                         // SizedBox(
                         //   height: 10.w,
                         // ),

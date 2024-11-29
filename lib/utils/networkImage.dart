@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
+import 'package:universal_html/html.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:pilipili/utils/common.dart';
 

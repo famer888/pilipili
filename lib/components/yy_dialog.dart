@@ -98,7 +98,6 @@ class YyShowDialog {
                     top: ScreenUtil().setWidth(title == null ? 0 : 25),
                     bottom: ScreenUtil().setWidth(24)),
                 child: Stack(
-                  overflow: Overflow.visible,
                   children: <Widget>[
                     SingleChildScrollView(
                       child: Column(

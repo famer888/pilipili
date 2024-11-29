@@ -826,7 +826,6 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
                           color: Color(0xffff506b),
                         ),
                         child: Stack(
-                          overflow: Overflow.visible,
                           children: [
                             Positioned(
                                 right: 0,
@@ -1094,7 +1093,6 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
       height: height,
       width: width,
       child: Stack(
-        overflow: Overflow.visible,
         children: [
           Container(),
           AnimatedPositioned(

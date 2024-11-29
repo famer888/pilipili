@@ -17,7 +17,7 @@ class ZhaomuPage extends StatefulWidget {
 class _ZhaomuPageState extends State<ZhaomuPage> {
   @override
   Widget build(BuildContext context) {
-     Config config = Provider.of<HomeConfig>(context, listen: false).config;
+    Config config = Provider.of<HomeConfig>(context, listen: false).config;
     return Scaffold(
       body: Column(
         children: [
@@ -39,12 +39,13 @@ class _ZhaomuPageState extends State<ZhaomuPage> {
                     top: 549.w,
                     right: 12.w,
                     child: GestureDetector(
-                      onTap: (){
-                        CommonUtils.launchURL(config.tgLink.trim());
-                      },
-                      child: getImage('assets/images/2023/zhaomu_btn.png',
-                        height: 55.w,
-                         fit: BoxFit.fitHeight, isAssets: true)),
+                        onTap: () {
+                          CommonUtils.launchURL(config.tgLink.trim());
+                        },
+                        child: getImage('assets/images/2023/zhaomu_btn.png',
+                            height: 55.w,
+                            fit: BoxFit.fitHeight,
+                            isAssets: true)),
                   )
                 ],
               )

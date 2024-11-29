@@ -4,8 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_html/shims/dart_ui.dart';
-import 'dart:ui' as ui;
+import 'package:video_player_web_hls/src/shims/dart_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heic_to_jpg/heic_to_jpg.dart';
@@ -46,7 +45,7 @@ class _SetupPageState extends State<SetupPage> {
   void initState() {
     super.initState();
     if (kIsWeb) {
-      platformViewRegistry.registerViewFactory('AvatarFileInput', (viewId) {
+      ui.platformViewRegistry.registerViewFactory('AvatarFileInput', (viewId) {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
         uploadInput.setAttribute(

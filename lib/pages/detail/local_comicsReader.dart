@@ -100,8 +100,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
 
   swichComic(int episode, {bool replace = false}) {
     context.push(
-        CommonUtils.getRealHash()
-            .replaceAll(RegExp("${PPString.test}localComicsReader"), 'localComicsReader'),
+        CommonUtils.getRealHash().replaceAll(
+            RegExp("${PPString.test}localComicsReader"), 'localComicsReader'),
         extra: {'comicsInfo': widget.comicsInfo, 'episode': episode},
         replace: replace);
   }
@@ -147,7 +147,6 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
               height: ScreenUtil().screenHeight,
               width: ScreenUtil().screenWidth,
               child: Stack(
-                overflow: Overflow.clip,
                 children: [
                   Column(
                     children: [
@@ -569,7 +568,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('自动翻页间隔'+timeList[defaultTime].toString()+'秒'),
+                        Text('自动翻页间隔' + timeList[defaultTime].toString() + '秒'),
                         gestureWidget(_keyb, 'timeLeft', defaultTime,
                             timeList.length - 1),
                         Row(
@@ -800,7 +799,6 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                           color: Color(0xffff506b),
                         ),
                         child: Stack(
-                          overflow: Overflow.visible,
                           children: [
                             Positioned(
                                 right: 0,
@@ -840,7 +838,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
         mainAxisSize: MainAxisSize.min,
         children: [
           PlatformAwareAssetImage(
-            url: 'assets/images/comics/reader_icon_'+img.toString()+'.png',
+            url: 'assets/images/comics/reader_icon_' + img.toString() + '.png',
             width: ScreenUtil().setWidth(20),
             height: ScreenUtil().setWidth(20),
             filterQuality: FilterQuality.medium,
@@ -1062,7 +1060,6 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
       height: height,
       width: width,
       child: Stack(
-        overflow: Overflow.visible,
         children: [
           Container(),
           AnimatedPositioned(

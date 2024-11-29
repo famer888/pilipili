@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_html/shims/dart_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heic_to_jpg/heic_to_jpg.dart';
@@ -21,6 +20,8 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:http_parser/http_parser.dart';
+
+import 'package:video_player_web_hls/src/shims/dart_ui.dart' as ui;
 
 class CustomerService extends StatefulWidget {
   CustomerService({Key key}) : super(key: key);
@@ -181,7 +182,7 @@ class _CustomerServiceState extends State<CustomerService>
     }
     getFeedback();
     if (kIsWeb) {
-      platformViewRegistry.registerViewFactory('FileInput', (viewId) {
+      ui.platformViewRegistry.registerViewFactory('FileInput', (viewId) {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
         uploadInput.setAttribute(
@@ -342,8 +343,8 @@ class _CustomerServiceState extends State<CustomerService>
                         color: Color(0xffeeeeee),
                         width: ScreenUtil().setWidth(2),
                       ))),
-                      child: FlatButton(
-                          onPressed: () {
+                      child: GestureDetector(
+                          onTap: () {
                             // _enableCamera();
                             loadAssets('camera');
                             context.pop();
@@ -357,8 +358,8 @@ class _CustomerServiceState extends State<CustomerService>
                                 fontSize: ScreenUtil().setSp(15)),
                           ))),
                     ),
-                    FlatButton(
-                        onPressed: () {
+                    GestureDetector(
+                        onTap: () {
                           loadAssets('gallery');
                           context.pop();
                         },

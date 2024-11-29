@@ -75,7 +75,7 @@ class _YyInputState extends State<YyInput> {
         timer = null;
       } else {
         codeStatus = 1;
-        codeText = timers.toString()+'S';
+        codeText = timers.toString() + 'S';
       }
       setState(() {});
     });
@@ -166,7 +166,7 @@ class _YyInputState extends State<YyInput> {
                       color: Color(0XFF6D6D6D)),
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                      hintText: widget.hintText??'请输入内容',
+                      hintText: widget.hintText ?? '请输入内容',
                       hintStyle: TextStyle(color: Color(0xff979797)),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
