@@ -47,7 +47,7 @@ class NovelCard extends StatelessWidget {
               SizedBox(
                 height: 152.w,
                 child: PlatformAwareNetworkImage(
-                  url:'Invalid or corrupted pad block',
+                  url: 'Invalid or corrupted pad block',
                   fit: BoxFit.fill,
                 ),
               ),
