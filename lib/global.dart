@@ -8,6 +8,7 @@
  */
 // 应用级全局变量
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:pilipili/utils/pp_string.dart';
@@ -20,18 +21,13 @@ class AppGlobal {
   static Map appinfo;
   static String apiBaseURL = "";
   static int smallVideoLimit = 18;
-  static List<String> apiLines = [
-    'https://apiv2.hichatapi.me',
-    'https://api.ws4dx5vf.com',
-    'https://apiv2.hichatapi.org'
-  ];
-  // kIsWeb
-  //     ? ["https://apiv4.tugjazod.com"]
-  //     : [
-  //         'https://apiv1.tugjazod.com',
-  //         'https://apiv2.tugjazod.com',
-  //         'https://apiv3.tugjazod.com'
-  //       ];
+  static List<String> apiLines = kIsWeb
+      ? ["https://apiv4.tugjazod.com"]
+      : [
+          'https://apiv1.tugjazod.com',
+          'https://apiv2.tugjazod.com',
+          'https://apiv3.tugjazod.com'
+        ];
   static bool isPostVideoURL = false;
   static Widget bannerWidget;
   static String uploadImgUrl;
