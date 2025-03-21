@@ -57,15 +57,15 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       'row': 1,
       'aspectRatio': null
     },
-    {
-      'id': 10,
-      'name': '约妹',
-      'padding': 16.w,
-      'index': 5,
-      'api': '/api/user/getUserBuy',
-      'row': 1,
-      'aspectRatio': null
-    },
+    // {
+    //   'id': 10,
+    //   'name': '约妹',
+    //   'padding': 16.w,
+    //   'index': 5,
+    //   'api': '/api/user/getUserBuy',
+    //   'row': 1,
+    //   'aspectRatio': null
+    // },
     {
       'id': -1,
       'name': '帖子',

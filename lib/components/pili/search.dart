@@ -480,13 +480,13 @@ class _SearchResultState extends State<SearchResult> {
       'isFlow': false,
       'contentType': 2
     },
-    {
-      'title': '约妹',
-      'cardType': 'yuemei',
-      'api': '/api/girl/search',
-      'pramas': {},
-      'isFlow': false,
-    },
+    // {
+    //   'title': '约妹',
+    //   'cardType': 'yuemei',
+    //   'api': '/api/girl/search',
+    //   'pramas': {},
+    //   'isFlow': false,
+    // },
     {
       'title': '帖子',
       'cardType': 'post',
