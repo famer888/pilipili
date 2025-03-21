@@ -59,15 +59,15 @@ class _CollectPageState extends State<CollectPage>
       'row': 3,
       'aspectRatio': 0.61
     },
-    {
-      'id': 9,
-      'name': '约妹',
-      'index': 5,
-      'api': '/api/user/getUserFavor',
-      'row': 1,
-      'padding': 16.w,
-      'aspectRatio': null
-    },
+    // {
+    //   'id': 9,
+    //   'name': '约妹',
+    //   'index': 5,
+    //   'api': '/api/user/getUserFavor',
+    //   'row': 1,
+    //   'padding': 16.w,
+    //   'aspectRatio': null
+    // },
     {
       'id': -1,
       'name': '帖子',
