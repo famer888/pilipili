@@ -60,7 +60,67 @@ class _YuemeiShequState extends State<YuemeiShequ> {
   Widget build(BuildContext context) {
     return loading
         ? PageStatus.loading(mounted)
-        : CommunityPage(scrollDirection: scrollDirection);
+        : Stack(
+            children: [
+              CommunityPage(scrollDirection: scrollDirection),
+              Positioned(
+                  bottom: DefaultStyle.bottomnavbarHegiht +
+                      ScreenUtil().bottomBarHeight,
+                  left: 8.w,
+                  right: 8.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          String noPermissionPublishPostTips =
+                              Provider.of<HomeConfig>(context, listen: false)
+                                  .noPermissionPublishPostTips;
+                          int allowPublishPost =
+                              Provider.of<HomeConfig>(context, listen: false)
+                                  .allowPublishPost;
+                          if (allowPublishPost != 0) {
+                            context.push('/communityPushlish');
+                          } else {
+                            bool isPublish = Privilege.isAllowed(context,
+                                RESOURCE_TYPE_POST, PRIVILEGE_TYPE_POST);
+                            if (isPublish) {
+                              context.push('/communityPushlish');
+                            } else {
+                              CommonUtils.showText(noPermissionPublishPostTips);
+                            }
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 8.w),
+                          width: 52.w,
+                          height: 52.w,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(26.w),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0xffFF80A3).withOpacity(0.5),
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0)
+                              ]),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '+',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                height: 1,
+                                color: Color(0xffFF84A9),
+                                fontSize: 40.sp),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ))
+            ],
+          );
     // Stack(
     //     children: [
     //       PageView(
