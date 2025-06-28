@@ -71,6 +71,7 @@ class _WelcomeState extends State<Welcome> {
     }, onSuccess: () {
       getHomeConfig(context).then((res) {
         getClipboardText();
+        // toInvitation(affCode: "aqw92");
         if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
           yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};
           setState(() {});

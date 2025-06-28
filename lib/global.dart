@@ -22,11 +22,13 @@ class AppGlobal {
   static String apiBaseURL = "";
   static int smallVideoLimit = 18;
   static List<String> apiLines = kIsWeb
-      ? ["https://apiv4.ekuuiawu.xyz"]
+      ? [
+          "https://apiv4.kogwzxje.top/api.php",
+        ]
       : [
-          'https://apiv1.ekuuiawu.xyz',
-          'https://apiv2.ekuuiawu.xyz',
-          'https://apiv3.ekuuiawu.xyz'
+          'https://apiv1.kogwzxje.top/api.php',
+          'https://apiv2.kogwzxje.top/api.php',
+          'https://apiv3.kogwzxje.top/api.php',
         ];
   static bool isPostVideoURL = false;
   static Widget bannerWidget;
