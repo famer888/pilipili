@@ -7,13 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
-import 'package:pilipili/components/yuemei.dart';
 import 'package:pilipili/pages/anwang.dart';
 import 'package:pilipili/pages/yuemei_shequ.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
-import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/dongman.dart';
 import 'package:pilipili/components/manhua.dart';
@@ -148,10 +146,10 @@ class _HomeState extends State<Home> {
       }
     }
 
-    List video_tasks = box.get('download_video_tasks') ?? [];
-    List comics_tasks = box.get('download_comics_tasks') ?? [];
-    setData("download_video_tasks", video_tasks);
-    setData("download_comics_tasks", comics_tasks);
+    List videoTasks = box.get('download_video_tasks') ?? [];
+    List comicsTasks = box.get('download_comics_tasks') ?? [];
+    setData("download_video_tasks", videoTasks);
+    setData("download_comics_tasks", comicsTasks);
   }
 
   void checkUpdateAnnouncement(VersionMsg version, Config config) {
@@ -172,9 +170,7 @@ class _HomeState extends State<Home> {
     if (AppGlobal.yyShow == false) return;
     if (version.must == 1 && needUpdate) {
       showUpdate(version.version, version.tips, version.apk,
-          must: version.must,
-          showAnnouncementDialog: false,
-          official: config.officeSite);
+          must: version.must, showAnnouncementDialog: false, official: config.officeSite);
       return;
     }
 
@@ -199,7 +195,15 @@ class _HomeState extends State<Home> {
     }
     // 无更新 有公告
     if (version.mstatus == 1) {
-      showAnnouncement(version.message);
+      if (AppGlobal.popAppAds.isNotEmpty) {
+        UpdateModel.showCompartmentDialog(
+          cancel: () {
+            showAnnouncement(version.message);
+          },
+        );
+      } else {
+        showAnnouncement(version.message);
+      }
     }
   }
 
@@ -207,8 +211,7 @@ class _HomeState extends State<Home> {
     initDialog();
     loading = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bool isPwa = kIsWeb &&
-          html.window.matchMedia('(display-mode: standalone)').matches;
+      bool isPwa = kIsWeb && html.window.matchMedia('(display-mode: standalone)').matches;
       if (CommonUtils.isAndroidWeb() && !isPwa) {
         showModalBottomSheet(
             context: context,
@@ -220,8 +223,7 @@ class _HomeState extends State<Home> {
                     top: ScreenUtil().setWidth(15),
                     left: DefaultStyle.pagePadding,
                     right: DefaultStyle.pagePadding,
-                    bottom: ScreenUtil().bottomBarHeight +
-                        ScreenUtil().setWidth(15)),
+                    bottom: ScreenUtil().bottomBarHeight + ScreenUtil().setWidth(15)),
                 child: Row(
                   children: [
                     PlatformAwareAssetImage(
@@ -235,9 +237,7 @@ class _HomeState extends State<Home> {
                     Expanded(
                         child: Text(
                       '打开浏览器[菜单]，选择[添加至主屏幕]或[添加至桌面]或[安装]，将Pilipili添加至手机桌面，以便迅捷访问APP',
-                      style: TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: ScreenUtil().setSp(14)),
+                      style: TextStyle(color: Color(0xff333333), fontSize: ScreenUtil().setSp(14)),
                     ))
                   ],
                 ),
@@ -250,10 +250,7 @@ class _HomeState extends State<Home> {
 
   // 更新提示
   void showUpdate(String version, String tips, String apkurl,
-      {int must,
-      String message,
-      bool showAnnouncementDialog,
-      String official}) {
+      {int must, String message, bool showAnnouncementDialog, String official}) {
     if (showUpdateStatus == true) return;
     UpdateModel.showUpdateDialog(backButtonBehavior, gowebsite: () {
       CommonUtils.launchURL(official);
@@ -266,20 +263,15 @@ class _HomeState extends State<Home> {
       AppGlobal.yyShow = false;
       if (kIsWeb) {
         //刷新网页
-        CommonUtils.launchURL(
-            Provider.of<HomeConfig>(context, listen: false).config.officeSite);
+        CommonUtils.launchURL(Provider.of<HomeConfig>(context, listen: false).config.officeSite);
       } else {
         if (Platform.isAndroid) {
-          UpdateModel.androidUpdate(backButtonBehavior,
-              version: version, url: apkurl);
+          UpdateModel.androidUpdate(backButtonBehavior, version: version, url: apkurl);
         } else {
           CommonUtils.launchURL(apkurl);
         }
       }
-    },
-        version: "Pilipiliv." + version.toString(),
-        mustupdate: must == 1,
-        text: '$tips');
+    }, version: "Pilipiliv." + version.toString(), mustupdate: must == 1, text: '$tips');
 
     showUpdateStatus = true;
     setState(() {});
@@ -292,8 +284,7 @@ class _HomeState extends State<Home> {
       return;
     }
     bool isSelf = false;
-    isSelf = Provider.of<HomeConfig>(context, listen: false).member.channel ==
-        "self";
+    isSelf = Provider.of<HomeConfig>(context, listen: false).member.channel == "self";
     UpdateModel.showAnnouncementDialog(
       backButtonBehavior,
       context: context,
@@ -319,8 +310,7 @@ class _HomeState extends State<Home> {
   //加载添加到主屏幕功能
   void _addMainScreen() async {
     if (!kIsWeb) return;
-    final bool isInstall =
-        (js.context.callMethod("getInstallValue") as String) == "1";
+    final bool isInstall = (js.context.callMethod("getInstallValue") as String) == "1";
     final bool isSafari = js.context.callMethod("checkSafari") as bool;
     if (!isSafari && !isInstall) {
       showModalBottomSheet(
@@ -330,13 +320,10 @@ class _HomeState extends State<Home> {
           builder: (BuildContext context) {
             return StatefulBuilder(builder: (context, setBottomSheetState) {
               return Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(5.w),
-                      topLeft: Radius.circular(5.w)),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(5.w), topLeft: Radius.circular(5.w)),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -348,9 +335,7 @@ class _HomeState extends State<Home> {
                         SizedBox(width: 20.w, height: 20.w),
                         Text(
                           "添加PiliPili到主屏幕？[如已添加请忽略]",
-                          style: TextStyle(
-                              color: Color.fromRGBO(30, 30, 30, 1),
-                              fontSize: 14.sp),
+                          style: TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp),
                         ),
                         GestureDetector(
                           behavior: HitTestBehavior.translucent,
@@ -369,40 +354,28 @@ class _HomeState extends State<Home> {
                     CommonUtils.getContentSpan(
                       "如无法正常添加到主屏幕，请下载最新版本的Google浏览器https://www.google.cn/intl/zh-CN/chrome，打开Google浏览器，输入本站网址000，点击右上角的【菜单】然后选择【添加到主屏幕】即可完成WEB版APP"
                           .replaceAll("000", html.window.location.href),
-                      style: TextStyle(
-                          color: const Color.fromRGBO(245, 28, 88, 1)
-                              .withOpacity(0.5),
-                          fontSize: 12.sp),
-                      lightStyle: TextStyle(
-                          fontSize: 12.sp,
-                          color: const Color.fromRGBO(25, 103, 210, 1)),
+                      style: TextStyle(color: const Color.fromRGBO(245, 28, 88, 1).withOpacity(0.5), fontSize: 12.sp),
+                      lightStyle: TextStyle(fontSize: 12.sp, color: const Color.fromRGBO(25, 103, 210, 1)),
                     ),
                     SizedBox(height: 20.w),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        final bool isDeferredNotNull =
-                            js.context.callMethod("isDeferredNotNull") as bool;
+                        final bool isDeferredNotNull = js.context.callMethod("isDeferredNotNull") as bool;
                         if (isDeferredNotNull) {
                           js.context.callMethod("presentAddToHome");
                         } else {
-                          CommonUtils.showText(
-                              "当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作",
-                              time: 2);
+                          CommonUtils.showText("当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作", time: 2);
                         }
                       },
                       child: Container(
                         decoration: BoxDecoration(
                             color: const Color.fromRGBO(245, 28, 88, 1),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(3.w))),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: DefaultStyle.pagePadding),
+                            borderRadius: BorderRadius.all(Radius.circular(3.w))),
+                        padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                         height: 32.w,
                         alignment: Alignment.center,
-                        child: Text("添加到主屏幕",
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 13.sp)),
+                        child: Text("添加到主屏幕", style: TextStyle(color: Colors.white, fontSize: 13.sp)),
                       ),
                     ),
                     SizedBox(height: 30.w),
@@ -432,8 +405,7 @@ class _HomeState extends State<Home> {
           }
         }
       }, confirm: () {
-        _onTapSwiper(AppGlobal.popAds[index]['type'],
-            AppGlobal.popAds[index]['content']);
+        _onTapSwiper(AppGlobal.popAds[index]['type'], AppGlobal.popAds[index]['content']);
         popAdsChick(AppGlobal.popAds[index]['id'].toString());
         activeIndex++;
         if (activeIndex <= activeLength) {
@@ -522,9 +494,7 @@ class _HomeState extends State<Home> {
                     return ValueListenableBuilder(
                       valueListenable: selectedKey,
                       builder: (context, _value, child) {
-                        return _value == index
-                            ? child
-                            : PageStatus.loading(mounted);
+                        return _value == index ? child : PageStatus.loading(mounted);
                       },
                       child: navBarItem[index]['page'],
                     );
@@ -533,9 +503,7 @@ class _HomeState extends State<Home> {
               )),
               Positioned(
                   right: 8.w,
-                  bottom: DefaultStyle.bottomnavbarHegiht +
-                      ScreenUtil().bottomBarHeight +
-                      15.w,
+                  bottom: DefaultStyle.bottomnavbarHegiht + ScreenUtil().bottomBarHeight + 15.w,
                   child: adData.isEmpty
                       ? SizedBox()
                       : ValueListenableBuilder(
@@ -551,13 +519,11 @@ class _HomeState extends State<Home> {
                                       onIndexChanged: (e) {
                                         // CommonUtils.debugPrint('-------------------$e---------------------');
                                       },
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
+                                      itemBuilder: (BuildContext context, int index) {
                                         return GestureDetector(
                                           onTap: () {
                                             CommonUtils.bannerTopath(context,
-                                                url: adData[index]['url'],
-                                                type: adData[index]['type']);
+                                                url: adData[index]['url'], type: adData[index]['type']);
                                           },
                                           child: PlatformAwareNetworkImage(
                                             url: adData[index]['img_url'],
@@ -577,20 +543,15 @@ class _HomeState extends State<Home> {
                 child: Container(
                   decoration: BoxDecoration(color: Colors.white, boxShadow: [
                     BoxShadow(
-                        color: Color.fromRGBO(255, 91, 140, 0.4),
-                        offset: Offset(5, 6),
-                        blurRadius: 10,
-                        spreadRadius: 5)
+                        color: Color.fromRGBO(255, 91, 140, 0.4), offset: Offset(5, 6), blurRadius: 10, spreadRadius: 5)
                   ]),
                   child: ValueListenableBuilder(
                     valueListenable: selectedKey,
                     builder: (context, _value, child) {
                       return Container(
                         width: 1.sw,
-                        height: DefaultStyle.bottomnavbarHegiht +
-                            ScreenUtil().bottomBarHeight,
-                        padding: EdgeInsets.only(
-                            bottom: ScreenUtil().bottomBarHeight),
+                        height: DefaultStyle.bottomnavbarHegiht + ScreenUtil().bottomBarHeight,
+                        padding: EdgeInsets.only(bottom: ScreenUtil().bottomBarHeight),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -608,28 +569,19 @@ class _HomeState extends State<Home> {
                                       children: [
                                         !loading
                                             ? getImage(
-                                                _value == key
-                                                    ? navBarItem[key]
-                                                        ['activeIcon']
-                                                    : navBarItem[key]['icon'],
-                                                isAssets: navBarItem[key]
-                                                        ['asset'] !=
-                                                    null,
+                                                _value == key ? navBarItem[key]['activeIcon'] : navBarItem[key]['icon'],
+                                                isAssets: navBarItem[key]['asset'] != null,
                                                 width: 25.w,
                                                 height: 25.w,
                                                 fit: BoxFit.fitWidth,
-                                                filterQuality:
-                                                    FilterQuality.high)
+                                                filterQuality: FilterQuality.high)
                                             : const SizedBox(),
                                         Text(
                                           navBarItem[key]['title'],
-                                          style: _value == key
-                                              ? DefaultStyle.bottomNavStyle
-                                              : DefaultStyle.lgray12,
+                                          style: _value == key ? DefaultStyle.bottomNavStyle : DefaultStyle.lgray12,
                                         )
                                       ],
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                     ),
                                   ))
                               .toList(),

@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
-import 'package:pilipili/utils/pp_string.dart';
 
 import 'model/element.dart';
 
@@ -74,5 +73,6 @@ class AppGlobal {
   static Map smallVideoPramas;
   static num webBottomHeight = 0;
   static List popAds = [];
+  static List popAppAds = [];
   static Map postInfo = {};
 }

@@ -7,7 +7,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
@@ -64,9 +63,7 @@ class UpdateModel {
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
-                          color: Color(0xffFFF4F9),
-                          borderRadius:
-                              BorderRadius.circular(ScreenUtil().setWidth(15))),
+                          color: Color(0xffFFF4F9), borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
                       width: ScreenUtil().setWidth(345),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -83,11 +80,7 @@ class UpdateModel {
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFFFF89AC),
-                                        Color(0xFFFF5B8C),
-                                        Color(0xFFFA437A)
-                                      ],
+                                      colors: [Color(0xFFFF89AC), Color(0xFFFF5B8C), Color(0xFFFA437A)],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                     )),
@@ -102,78 +95,52 @@ class UpdateModel {
                                   Expanded(
                                       child: SingleChildScrollView(
                                     padding: EdgeInsets.symmetric(
-                                        vertical: ScreenUtil().setWidth(33.5),
-                                        horizontal: ScreenUtil().setWidth(25)),
+                                        vertical: ScreenUtil().setWidth(33.5), horizontal: ScreenUtil().setWidth(25)),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: newTipsWidget,
                                     ),
                                   )),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: ScreenUtil().setWidth(25)),
+                                    padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(25)),
                                     child: AppGlobal.shouApp
                                         ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               GestureDetector(
                                                   onTap: () {
                                                     cancelFunc();
-                                                    context.push(
-                                                        '/appCenter');
+                                                    context.push('/appCenter');
                                                   },
                                                   child: Container(
                                                       decoration: BoxDecoration(
                                                           boxShadow: [
                                                             BoxShadow(
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        255,
-                                                                        128,
-                                                                        163,
-                                                                        0.5),
-                                                                offset: Offset(
-                                                                    0, 2),
+                                                                color: Color.fromRGBO(255, 128, 163, 0.5),
+                                                                offset: Offset(0, 2),
                                                                 blurRadius: 3,
                                                                 spreadRadius: 0)
                                                           ],
-                                                          gradient:
-                                                              LinearGradient(
+                                                          gradient: LinearGradient(
                                                             colors: [
-                                                              DefaultStyle
-                                                                  .linerThemeColor,
-                                                              DefaultStyle
-                                                                  .themeColor,
+                                                              DefaultStyle.linerThemeColor,
+                                                              DefaultStyle.themeColor,
                                                             ],
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
                                                           ),
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          18))),
+                                                              BorderRadius.circular(ScreenUtil().setWidth(18))),
                                                       margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          21.5)),
+                                                          EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(21.5)),
                                                       child: Container(
-                                                        width: ScreenUtil()
-                                                            .setWidth(120),
-                                                        height: ScreenUtil()
-                                                            .setWidth(36),
+                                                        width: ScreenUtil().setWidth(120),
+                                                        height: ScreenUtil().setWidth(36),
                                                         child: Center(
                                                           child: Text(
                                                             '应用中心',
-                                                            style: DefaultStyle
-                                                                .white15,
+                                                            style: DefaultStyle.white15,
                                                           ),
                                                         ),
                                                       ))),
@@ -189,51 +156,30 @@ class UpdateModel {
                                                       decoration: BoxDecoration(
                                                           boxShadow: [
                                                             BoxShadow(
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        255,
-                                                                        128,
-                                                                        163,
-                                                                        0.5),
-                                                                offset: Offset(
-                                                                    0, 2),
+                                                                color: Color.fromRGBO(255, 128, 163, 0.5),
+                                                                offset: Offset(0, 2),
                                                                 blurRadius: 3,
                                                                 spreadRadius: 0)
                                                           ],
-                                                          gradient:
-                                                              LinearGradient(
+                                                          gradient: LinearGradient(
                                                             colors: [
-                                                              DefaultStyle
-                                                                  .linerThemeColor,
-                                                              DefaultStyle
-                                                                  .themeColor,
+                                                              DefaultStyle.linerThemeColor,
+                                                              DefaultStyle.themeColor,
                                                             ],
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
                                                           ),
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          18))),
+                                                              BorderRadius.circular(ScreenUtil().setWidth(18))),
                                                       margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          21.5)),
+                                                          EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(21.5)),
                                                       child: Container(
-                                                        width: ScreenUtil()
-                                                            .setWidth(120),
-                                                        height: ScreenUtil()
-                                                            .setWidth(35),
+                                                        width: ScreenUtil().setWidth(120),
+                                                        height: ScreenUtil().setWidth(35),
                                                         child: Center(
                                                           child: Text(
                                                             '确定',
-                                                            style: DefaultStyle
-                                                                .white15,
+                                                            style: DefaultStyle.white15,
                                                           ),
                                                         ),
                                                       )))
@@ -252,49 +198,27 @@ class UpdateModel {
                                                     decoration: BoxDecoration(
                                                         boxShadow: [
                                                           BoxShadow(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      255,
-                                                                      128,
-                                                                      163,
-                                                                      0.5),
-                                                              offset:
-                                                                  Offset(0, 2),
+                                                              color: Color.fromRGBO(255, 128, 163, 0.5),
+                                                              offset: Offset(0, 2),
                                                               blurRadius: 3,
                                                               spreadRadius: 0)
                                                         ],
-                                                        gradient:
-                                                            LinearGradient(
+                                                        gradient: LinearGradient(
                                                           colors: [
-                                                            DefaultStyle
-                                                                .linerThemeColor,
-                                                            DefaultStyle
-                                                                .themeColor,
+                                                            DefaultStyle.linerThemeColor,
+                                                            DefaultStyle.themeColor,
                                                           ],
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
+                                                          begin: Alignment.topCenter,
+                                                          end: Alignment.bottomCenter,
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        18))),
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        21.5)),
+                                                        borderRadius: BorderRadius.circular(ScreenUtil().setWidth(18))),
+                                                    margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(21.5)),
                                                     child: Container(
-                                                      height: ScreenUtil()
-                                                          .setWidth(36),
+                                                      height: ScreenUtil().setWidth(36),
                                                       child: Center(
                                                         child: Text(
                                                           '确定',
-                                                          style: DefaultStyle
-                                                              .white15,
+                                                          style: DefaultStyle.white15,
                                                         ),
                                                       ),
                                                     ))),
@@ -367,8 +291,7 @@ class UpdateModel {
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
                                     color: Color(0xffFFF4F9),
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(15))),
+                                    borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
                                 width: ScreenUtil().setWidth(345),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -383,11 +306,7 @@ class UpdateModel {
                                             width: double.infinity,
                                             decoration: BoxDecoration(
                                                 gradient: LinearGradient(
-                                              colors: [
-                                                Color(0xFFFF89AC),
-                                                Color(0xFFFF5B8C),
-                                                Color(0xFFFA437A)
-                                              ],
+                                              colors: [Color(0xFFFF89AC), Color(0xFFFF5B8C), Color(0xFFFA437A)],
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                             )),
@@ -396,85 +315,57 @@ class UpdateModel {
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(18),
+                                                    fontSize: ScreenUtil().setSp(18),
                                                     height: 1.5)),
                                           ),
                                           Expanded(
                                               child: SingleChildScrollView(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    DefaultStyle.pagePadding),
+                                            padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
                                               children: newTipsWidget,
                                             ),
                                           )),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: DefaultStyle
-                                                        .pagePadding +
-                                                    ScreenUtil().setWidth(10)),
+                                                horizontal: DefaultStyle.pagePadding + ScreenUtil().setWidth(10)),
                                             child: Center(
                                               child: GestureDetector(
                                                   onTap: () {
                                                     if (!mustupdate) {
                                                       cancelFunc();
-                                                    } else if (mustupdate &&
-                                                        Platform.isAndroid) {
+                                                    } else if (mustupdate && Platform.isAndroid) {
                                                       cancelFunc();
                                                     }
                                                     confirm?.call();
                                                   },
                                                   child: Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        21.5)),
+                                                    margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(21.5)),
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                           boxShadow: [
                                                             BoxShadow(
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        255,
-                                                                        128,
-                                                                        163,
-                                                                        0.5),
-                                                                offset: Offset(
-                                                                    0, 2),
+                                                                color: Color.fromRGBO(255, 128, 163, 0.5),
+                                                                offset: Offset(0, 2),
                                                                 blurRadius: 3,
                                                                 spreadRadius: 0)
                                                           ],
-                                                          gradient:
-                                                              LinearGradient(
+                                                          gradient: LinearGradient(
                                                             colors: [
-                                                              DefaultStyle
-                                                                  .linerThemeColor,
-                                                              DefaultStyle
-                                                                  .themeColor,
+                                                              DefaultStyle.linerThemeColor,
+                                                              DefaultStyle.themeColor,
                                                             ],
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
                                                           ),
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          18))),
-                                                      height: ScreenUtil()
-                                                          .setWidth(36),
+                                                              BorderRadius.circular(ScreenUtil().setWidth(18))),
+                                                      height: ScreenUtil().setWidth(36),
                                                       child: Center(
                                                         child: Text(
                                                           '立即更新',
-                                                          style: DefaultStyle
-                                                              .white15,
+                                                          style: DefaultStyle.white15,
                                                         ),
                                                       ),
                                                     ),
@@ -492,8 +383,7 @@ class UpdateModel {
             ));
   }
 
-  static void androidUpdate(BackButtonBehavior backButtonBehavior,
-      {VoidCallback cancel, String url, String version}) {
+  static void androidUpdate(BackButtonBehavior backButtonBehavior, {VoidCallback cancel, String url, String version}) {
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => DownloadApk(
         url: url,
@@ -507,11 +397,7 @@ class UpdateModel {
   }
 
   static void showAvtivetysDialog(BackButtonBehavior backButtonBehavior,
-      {VoidCallback cancel,
-      VoidCallback confirm,
-      String url,
-      double height,
-      double width}) {
+      {VoidCallback cancel, VoidCallback confirm, String url, double height, double width}) {
     double maxW = ScreenUtil().screenWidth / 3 * 2;
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => GestureDetector(
@@ -525,8 +411,7 @@ class UpdateModel {
           ),
           width: ScreenUtil().screenWidth,
           padding: EdgeInsets.only(
-              top: kIsWeb ? 0 : ScreenUtil().statusBarHeight,
-              bottom: kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+              top: kIsWeb ? 0 : ScreenUtil().statusBarHeight, bottom: kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
           decoration: BoxDecoration(color: Colors.black38),
           child: Center(
             child: Column(
@@ -558,20 +443,97 @@ class UpdateModel {
                         },
                         child: Container(
                           width: maxW,
-                          height: width == null
-                              ? ScreenUtil().setWidth(150)
-                              : (maxW / width) * height,
+                          height: width == null ? ScreenUtil().setWidth(150) : (maxW / width) * height,
                           child: PlatformAwareNetworkImage(
                             nothumb: true,
                             width: maxW,
-                            height: width == null
-                                ? ScreenUtil().setWidth(150)
-                                : (maxW / width) * height,
-                            url: url.contains('http')
-                                ? url
-                                : AppGlobal.bannerImgBase + url,
+                            height: width == null ? ScreenUtil().setWidth(150) : (maxW / width) * height,
+                            url: url.contains('http') ? url : AppGlobal.bannerImgBase + url,
                           ),
                         ))),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static void showCompartmentDialog({VoidCallback cancel, String url}) {
+    BotToast.showWidget(
+      toastBuilder: (cancelFunc) => Material(
+        color: Colors.transparent,
+        child: GestureDetector(
+          onTap: () {
+            cancelFunc();
+            cancel?.call();
+          },
+          child: Container(
+            color: Colors.black45,
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      cancelFunc();
+                      cancel?.call();
+                    },
+                    child: PlatformAwareAssetImage(
+                        url: "assets/images/detail/icon_close.png",
+                        width: ScreenUtil().setWidth(33),
+                        height: ScreenUtil().setWidth(33),
+                        fit: BoxFit.fill)),
+                SizedBox(height: ScreenUtil().setWidth(20)),
+                Container(
+                  width: 315.w,
+                  height: 380.w,
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.w),
+                  decoration: BoxDecoration(
+                    color: Colors.black45,
+                    borderRadius: BorderRadius.circular(8.w),
+                  ),
+                  child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        itemCount: AppGlobal.popAppAds.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.75, crossAxisCount: 4, mainAxisSpacing: 15.w, crossAxisSpacing: 15.w),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              CommonUtils.launchURL(AppGlobal.popAppAds[index]['link_url']);
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 60.w,
+                                  height: 60.w,
+                                  child: PlatformAwareNetworkImage(
+                                    url: AppGlobal.popAppAds[index]['img_url'],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.w,
+                                ),
+                                Text(
+                                  AppGlobal.popAppAds[index]['title'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                )
               ],
             ),
           ),
@@ -599,9 +561,7 @@ class _DownloadApkState extends State<DownloadApk> {
     try {
       await CommonUtils.checkRequestInstallPackages();
       await CommonUtils.checkStoragePermission();
-      AppInstaller.installApk(savePath)
-          .then((result) {})
-          .catchError((error) {});
+      AppInstaller.installApk(savePath).then((result) {}).catchError((error) {});
     } on Exception catch (_) {}
   }
 
@@ -609,10 +569,8 @@ class _DownloadApkState extends State<DownloadApk> {
   void initState() {
     super.initState();
     getExternalStorageDirectory().then((documents) {
-      String savePath =
-          '${documents.path}/youyu.${DateTime.now().millisecondsSinceEpoch}.apk';
-      PlatformAwareHttp.download(widget.url, savePath,
-          onReceiveProgress: (int count, int total) {
+      String savePath = '${documents.path}/youyu.${DateTime.now().millisecondsSinceEpoch}.apk';
+      PlatformAwareHttp.download(widget.url, savePath, onReceiveProgress: (int count, int total) {
         var tmp = (count / total * 100).toInt();
         if (tmp % 1 == 0) {
           setState(() {
@@ -640,17 +598,15 @@ class _DownloadApkState extends State<DownloadApk> {
                   child: Container(
             width: ScreenUtil().setWidth(345),
             clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-                color: Color(0xffFFF4F9),
-                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
+            decoration:
+                BoxDecoration(color: Color(0xffFFF4F9), borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
-                      vertical: ScreenUtil().setWidth(15.5),
-                      horizontal: ScreenUtil().setWidth(20)),
+                      vertical: ScreenUtil().setWidth(15.5), horizontal: ScreenUtil().setWidth(20)),
                   child: Column(
                     children: <Widget>[
                       Text(
@@ -666,8 +622,7 @@ class _DownloadApkState extends State<DownloadApk> {
                         height: ScreenUtil().setWidth(25),
                       ),
                       ClipRRect(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(ScreenUtil().setWidth(38))),
+                        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(38))),
                         child: Stack(
                           children: <Widget>[
                             Image.asset('assets/gif/loading_1.gif',
@@ -683,8 +638,7 @@ class _DownloadApkState extends State<DownloadApk> {
                                 child: CircularProgressIndicator(
                                   strokeWidth: ScreenUtil().setWidth(12),
                                   backgroundColor: Colors.transparent,
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Color(0xffFF5B8C)),
+                                  valueColor: AlwaysStoppedAnimation(Color(0xffFF5B8C)),
                                   value: progress / 100,
                                 ))
                           ],

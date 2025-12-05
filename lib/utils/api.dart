@@ -1,7 +1,6 @@
 //获取精选顶部导航
 import 'dart:convert';
 
-import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/global.dart';
@@ -25,7 +24,6 @@ import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/model/videolist.dart';
 import 'package:pilipili/model/coindetail.dart';
-import 'package:pilipili/model/coinorvip.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
@@ -37,8 +35,7 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/home/config');
     CommonUtils.debugPrint(res);
-    Response<dynamic> res2 =
-        await PlatformAwareHttp.post('/api/privilege/getUserPrivilege');
+    Response<dynamic> res2 = await PlatformAwareHttp.post('/api/privilege/getUserPrivilege');
     if (res.data['data']['help'] != null) {
       AppGlobal.helpList.clear();
       var help = res.data['data']['help'];
@@ -54,26 +51,19 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
     }
     AppGlobal.shouApp = res.data['data']['showApp'] == 1;
     AppGlobal.popAds = res.data['data']['popAds'];
+    AppGlobal.popAppAds = res.data['data']['pop_app_ads'] ?? [];
     HomeData result = HomeData.fromJson(res.data);
     if (result.status != 0) {
-      Provider.of<HomeConfig>(context, listen: false)
-          .setMember(result.data.member);
-      Provider.of<HomeConfig>(context, listen: false)
-          .setDarkPrivilege(result.data.darkPrivilege);
-      Provider.of<HomeConfig>(context, listen: false)
-          .setDarkPrivilegeTips(result.data.darkprivilegeTips);
-      Provider.of<HomeConfig>(context, listen: false)
-          .setNotice(result.data.notice);
+      Provider.of<HomeConfig>(context, listen: false).setMember(result.data.member);
+      Provider.of<HomeConfig>(context, listen: false).setDarkPrivilege(result.data.darkPrivilege);
+      Provider.of<HomeConfig>(context, listen: false).setDarkPrivilegeTips(result.data.darkprivilegeTips);
+      Provider.of<HomeConfig>(context, listen: false).setNotice(result.data.notice);
       Provider.of<HomeConfig>(context, listen: false).setAbs(result.data.ads);
+      Provider.of<HomeConfig>(context, listen: false).setConfig(result.data.config);
+      Provider.of<HomeConfig>(context, listen: false).setVersionMsg(result.data.versionMsg);
+      Provider.of<HomeConfig>(context, listen: false).setAllowPublishPost(result.data.allowPublishPost);
       Provider.of<HomeConfig>(context, listen: false)
-          .setConfig(result.data.config);
-      Provider.of<HomeConfig>(context, listen: false)
-          .setVersionMsg(result.data.versionMsg);
-      Provider.of<HomeConfig>(context, listen: false)
-          .setAllowPublishPost(result.data.allowPublishPost);
-      Provider.of<HomeConfig>(context, listen: false)
-          .setNoPermissionPublishPostTips(
-              result.data.noPermissionPublishPostTips);
+          .setNoPermissionPublishPostTips(result.data.noPermissionPublishPostTips);
       AppGlobal.vipLevel = result.data.member.vipLevel;
       AppGlobal.bannerImgBase = result.data.config.imgBase;
       AppGlobal.uploadImgKey = result.data.config.uploadImgKey;
@@ -95,9 +85,7 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
 
 Future<ElementModel> getFisrtTopNavConfig(int id) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/element/getElementById',
-        data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/element/getElementById', data: {'id': id});
     ElementModel result = ElementModel.fromJson(res.data['data']);
     return result;
   } catch (e) {
@@ -108,9 +96,8 @@ Future<ElementModel> getFisrtTopNavConfig(int id) async {
 //获取精选某个栏目的元容元素
 Future<ConstructModel> getConstructById({int id, int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/element/getConstructById',
-        data: {'id': id, 'page': page, 'limit': limit});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/element/getConstructById', data: {'id': id, 'page': page, 'limit': limit});
     if (res.data['status'] == 0) {
       CommonUtils.showText(res.data['msg']);
     }
@@ -125,9 +112,8 @@ Future<ConstructModel> getConstructById({int id, int page, int limit}) async {
 //获取某个栏目的内容元素
 Future<dynamic> getElementById({int id, int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/element/getElementById',
-        data: {'id': id, 'page': page, 'limit': limit});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/element/getElementById', data: {'id': id, 'page': page, 'limit': limit});
     dynamic result = res.data;
     return result;
   } catch (e) {
@@ -138,8 +124,7 @@ Future<dynamic> getElementById({int id, int page, int limit}) async {
 //获取视频详情
 Future<AnimationDetail> getVideoDetail({dynamic id}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/mv/getDetail', data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/mv/getDetail', data: {'id': id});
     AnimationDetail result = AnimationDetail.fromJson(res.data);
     CommonUtils.debugPrint(result.toJson());
     return result;
@@ -149,16 +134,10 @@ Future<AnimationDetail> getVideoDetail({dynamic id}) async {
 }
 
 // 评论列表
-Future getCommentList(
-    {int page, int limit, int contentId, int contentType}) async {
+Future getCommentList({int page, int limit, int contentId, int contentType}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/comment/index', data: {
-      'page': page,
-      'limit': limit,
-      'content_id': contentId,
-      'content_type': contentType
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/comment/index',
+        data: {'page': page, 'limit': limit, 'content_id': contentId, 'content_type': contentType});
     return res.data;
   } catch (e) {
     return null;
@@ -166,11 +145,9 @@ Future getCommentList(
 }
 
 // 视频详情推荐视频
-Future getDetailRecommendList(
-    {int id, String tags, int limit, int page}) async {
+Future getDetailRecommendList({int id, String tags, int limit, int page}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/mv/getDetailRecommendList',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/mv/getDetailRecommendList',
         data: {'page': page, 'limit': limit, 'tags': tags, 'id': id});
     return res.data;
   } catch (e) {
@@ -181,8 +158,7 @@ Future getDetailRecommendList(
 //用户收藏   type: 1 mv  2 book 3 story 4 link 5 soundBook 6pic
 Future<Basic> userFavorites({int type, int, id}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/favorites',
-        data: {'type': type, 'relatedId': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/favorites', data: {'type': type, 'relatedId': id});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -191,9 +167,7 @@ Future<Basic> userFavorites({int type, int, id}) async {
 
 Future getDownloadUrl({int id}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/privilege/download',
-        data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/privilege/download', data: {'id': id});
     return res.data;
   } catch (e) {
     return null;
@@ -203,8 +177,7 @@ Future getDownloadUrl({int id}) async {
 //购买视频
 Future<Basic> buyVideo({int id, int coins, BuildContext context}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/mv/buy', data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/mv/buy', data: {'id': id});
     Basic data = Basic.fromJson(res.data);
     if (data.status != 0) {
       HomeConfig.setUserCoins(context, coins);
@@ -216,16 +189,10 @@ Future<Basic> buyVideo({int id, int coins, BuildContext context}) async {
 }
 
 // 发表评论
-Future publishComment(
-    {int commentId, String reply, int contentId, int contentType}) async {
+Future publishComment({int commentId, String reply, int contentId, int contentType}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/comment/comment', data: {
-      'comment_id': commentId,
-      'reply': reply,
-      'content_id': contentId,
-      'content_type': contentType
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/comment/comment',
+        data: {'comment_id': commentId, 'reply': reply, 'content_id': contentId, 'content_type': contentType});
     return res.data;
   } catch (e) {
     return null;
@@ -235,8 +202,7 @@ Future publishComment(
 // 二级列表
 Future getElementByIdSecondPage({int id, int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/element/getElementByIdSecondPage',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/element/getElementByIdSecondPage',
         data: {'id': id, 'page': page, 'limit': limit});
     return res.data;
   } catch (e) {
@@ -247,8 +213,7 @@ Future getElementByIdSecondPage({int id, int page, int limit}) async {
 //漫画阅读
 Future<ComicReading> getComicReading({int id, int episode}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/read",
-        data: {'bookId': id, 'episode': episode});
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/read", data: {'bookId': id, 'episode': episode});
     return ComicReading.fromJson(res.data);
   } catch (e) {
     return null;
@@ -256,11 +221,9 @@ Future<ComicReading> getComicReading({int id, int episode}) async {
 }
 
 //详情页推荐漫画
-Future<RecommendComics> getRecommendComicsList(
-    {int limit = 5, int page = 1, String category = '', int id}) async {
+Future<RecommendComics> getRecommendComicsList({int limit = 5, int page = 1, String category = '', int id}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        "/api/book/getDetailRecommendList",
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/getDetailRecommendList",
         data: {'limit': limit, 'page': page, 'category': category, 'id': id});
     return RecommendComics.fromJson(res.data);
   } catch (e) {
@@ -271,8 +234,7 @@ Future<RecommendComics> getRecommendComicsList(
 //漫画详情
 Future<ComicDetail> getComicDetail({int id}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/getDetail",
-        data: {'bookId': id});
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/book/getDetail", data: {'bookId': id});
     CommonUtils.debugPrint(res.data);
     return ComicDetail.fromJson(res.data);
   } catch (e) {
@@ -283,9 +245,8 @@ Future<ComicDetail> getComicDetail({int id}) async {
 //验证手机号
 Future<Basic> validatePhone({String phone, String phonePrefix}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/account/validatePhone',
-        data: {'phone': phone, 'phonePrefix': phonePrefix});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/account/validatePhone', data: {'phone': phone, 'phonePrefix': phonePrefix});
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {
@@ -296,9 +257,7 @@ Future<Basic> validatePhone({String phone, String phonePrefix}) async {
 //验证用户名
 Future<Basic> validateUsername({String username}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/account/validateUsername',
-        data: {'username': username});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/validateUsername', data: {'username': username});
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {
@@ -319,16 +278,10 @@ Future<Basic> sendPhone({String phone, String phonePrefix, int type}) async {
 }
 
 //手机注册
-Future<Basic> registerByPhone(
-    {String phone, String phonePrefix, String code, String invitedAff}) async {
+Future<Basic> registerByPhone({String phone, String phonePrefix, String code, String invitedAff}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/registerByPhone', data: {
-      'phone': phone,
-      'phonePrefix': phonePrefix,
-      'code': code,
-      'invitedAff': invitedAff
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/registerByPhone',
+        data: {'phone': phone, 'phonePrefix': phonePrefix, 'code': code, 'invitedAff': invitedAff});
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {
@@ -337,19 +290,10 @@ Future<Basic> registerByPhone(
 }
 
 //用户名注册
-Future<Basic> registerByPassword(
-    {String username,
-    String password,
-    String confirmPwd,
-    String invitedAff}) async {
+Future<Basic> registerByPassword({String username, String password, String confirmPwd, String invitedAff}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/registerByPassword', data: {
-      'username': username,
-      'password': password,
-      'confirm_pwd': confirmPwd,
-      'invitedAff': invitedAff
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/registerByPassword',
+        data: {'username': username, 'password': password, 'confirm_pwd': confirmPwd, 'invitedAff': invitedAff});
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {
@@ -358,11 +302,9 @@ Future<Basic> registerByPassword(
 }
 
 //手机登录
-Future<Basic> loginByPhone(
-    {String phone, String phonePrefix, String code}) async {
+Future<Basic> loginByPhone({String phone, String phonePrefix, String code}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/account/loginByPhone',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/loginByPhone',
         data: {'phone': phone, 'phonePrefix': phonePrefix, 'code': code});
     Basic result = Basic.fromJson(res.data);
     return result;
@@ -374,8 +316,7 @@ Future<Basic> loginByPhone(
 //用户名登录
 Future<Basic> loginByPassword({String username, String password}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/account/loginByPassword',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/loginByPassword',
         data: {'username': username, 'password': password});
     Basic result = Basic.fromJson(res.data);
     return result;
@@ -387,8 +328,7 @@ Future<Basic> loginByPassword({String username, String password}) async {
 //绑定手机
 Future<Basic> bindPhone({String phone, String phonePrefix, String code}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/account/bindPhone',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/bindPhone',
         data: {'phone': phone, 'phonePrefix': phonePrefix, 'code': code});
     Basic result = Basic.fromJson(res.data);
     return result;
@@ -399,15 +339,9 @@ Future<Basic> bindPhone({String phone, String phonePrefix, String code}) async {
 
 //切换手机
 Future<Basic> changePhone(
-    {String oldPhone,
-    String oldPhonePrefix,
-    String oldCode,
-    String phone,
-    String phonePrefix,
-    String code}) async {
+    {String oldPhone, String oldPhonePrefix, String oldCode, String phone, String phonePrefix, String code}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/changePhone', data: {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/changePhone', data: {
       'oldPhone': oldPhone,
       'oldPhonePrefix': oldPhonePrefix,
       'oldCode': oldCode,
@@ -424,15 +358,9 @@ Future<Basic> changePhone(
 
 //忘记密码
 Future<Basic> forgetPassword(
-    {String username,
-    String phone,
-    String phonePrefix,
-    String code,
-    String password,
-    String passwordConfirm}) async {
+    {String username, String phone, String phonePrefix, String code, String password, String passwordConfirm}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/forgetPassword', data: {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/forgetPassword', data: {
       'username': username,
       'phone': phone,
       'phonePrefix': phonePrefix,
@@ -450,8 +378,7 @@ Future<Basic> forgetPassword(
 // 活动列表
 Future getActivityList() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/page/list', data: {});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/page/list', data: {});
     return res.data;
   } catch (e) {
     return null;
@@ -461,8 +388,7 @@ Future getActivityList() async {
 // 活动详情
 Future getActivityDetail(id) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/page/detail', data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/page/detail', data: {'id': id});
     return res.data;
   } catch (e) {
     return null;
@@ -472,9 +398,8 @@ Future getActivityDetail(id) async {
 //修改用户头像或昵称
 Future<Basic> updateUserInfo({String nickname, String thumb}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/user/updateUserInfo',
-        data: {'nickname': nickname, 'thumb': thumb});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/updateUserInfo', data: {'nickname': nickname, 'thumb': thumb});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -484,8 +409,7 @@ Future<Basic> updateUserInfo({String nickname, String thumb}) async {
 //填写邀请码
 Future<Basic> toInvitation({String affCode}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/invitation',
-        data: {'aff_code': affCode});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/invitation', data: {'aff_code': affCode});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -495,11 +419,9 @@ Future<Basic> toInvitation({String affCode}) async {
 //获取获取用户信息
 Future<UserInfo> getUserInfo(BuildContext context) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/user/userInfo', data: {});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/userInfo', data: {});
     UserInfo data = UserInfo.fromJson(res.data);
-    Provider.of<HomeConfig>(context, listen: false)
-        .setPostMoney(context, data.data.postMoney);
+    Provider.of<HomeConfig>(context, listen: false).setPostMoney(context, data.data.postMoney);
     Provider.of<HomeConfig>(context, listen: false).setMoney(data.data.money);
     return data;
   } catch (e) {
@@ -510,8 +432,7 @@ Future<UserInfo> getUserInfo(BuildContext context) async {
 //兑换
 Future<Basic> onExchange({String cdk}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/home/exchange', data: {'cdk': cdk});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/home/exchange', data: {'cdk': cdk});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -521,8 +442,7 @@ Future<Basic> onExchange({String cdk}) async {
 //元素视频列表
 Future<VideoList> getListFromElement({int id, int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        "/api/mv/getListFromElement",
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/mv/getListFromElement",
         data: {'elementId': id, 'page': page, 'limit': limit});
     return VideoList.fromJson(res.data);
   } catch (e) {
@@ -533,8 +453,7 @@ Future<VideoList> getListFromElement({int id, int page, int limit}) async {
 //消息通知
 Future<SystemNotice> getSystemNotice() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/message/getUnreadCount');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/message/getUnreadCount');
 
     CommonUtils.debugPrint('Keys${SystemNotice.fromJson(res.data)}');
     return SystemNotice.fromJson(res.data);
@@ -546,8 +465,7 @@ Future<SystemNotice> getSystemNotice() async {
 // 联系官方
 Future getContactList() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/home/getContactList');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/home/getContactList');
     return res.data;
   } catch (e) {
     return null;
@@ -556,9 +474,8 @@ Future getContactList() async {
 
 Future<SystemNoticeList> getSystemNoticeList({int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/message/getSystemNoticeList',
-        data: {'page': page, 'limit': limit});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/message/getSystemNoticeList', data: {'page': page, 'limit': limit});
     return SystemNoticeList.fromJson(res.data);
   } catch (e) {
     return null;
@@ -566,16 +483,10 @@ Future<SystemNoticeList> getSystemNoticeList({int page, int limit}) async {
 }
 
 // 我收藏的
-Future<dynamic> getUserFavor(
-    {int page, int limit = 24, int type, int category}) async {
+Future<dynamic> getUserFavor({int page, int limit = 24, int type, int category}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/user/getUserFavor', data: {
-      'page': page,
-      'limit': limit,
-      'type': type,
-      'category': category
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/getUserFavor',
+        data: {'page': page, 'limit': limit, 'type': type, 'category': category});
     return res.data;
   } catch (e) {
     return null;
@@ -585,8 +496,7 @@ Future<dynamic> getUserFavor(
 //获取商��-金币
 Future<Basic> getProductOfGold(int type) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList',
-        data: {'type': type});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList', data: {'type': type});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -596,8 +506,7 @@ Future<Basic> getProductOfGold(int type) async {
 // 超值金币卡状态
 Future getCoinCardStatus() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/user/getCoinCardStatus');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/getCoinCardStatus');
     return res.data;
   } catch (e) {
     return null;
@@ -607,8 +516,7 @@ Future getCoinCardStatus() async {
 // 领取金币卡
 Future getCoinFromCoinCard() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/user/getCoinFromCoinCard');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/getCoinFromCoinCard');
     return res.data;
   } catch (e) {
     return null;
@@ -620,8 +528,7 @@ Future<Basic> onOrderExchange({
   int product_id,
 }) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/exchange',
-        data: {'product_id': product_id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/exchange', data: {'product_id': product_id});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -635,12 +542,8 @@ Future<Basic> onCreatePaying({
   int product_id,
 }) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/order/createPaying', data: {
-      'pay_way': pay_way,
-      'pay_type': pay_type,
-      'product_id': product_id
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/createPaying',
+        data: {'pay_way': pay_way, 'pay_type': pay_type, 'product_id': product_id});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -648,12 +551,10 @@ Future<Basic> onCreatePaying({
 }
 
 //GOLD明细
-Future<CoinDetialModel> getListMoneyDetail(
-    {int page = 1, dynamic type = '', limit}) async {
+Future<CoinDetialModel> getListMoneyDetail({int page = 1, dynamic type = '', limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        "/api/user/listMoneyDetail",
-        data: {'limit': limit, 'page': page, 'type': type});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/user/listMoneyDetail", data: {'limit': limit, 'page': page, 'type': type});
     return CoinDetialModel.fromJson(res.data);
   } catch (e) {
     return null;
@@ -674,9 +575,7 @@ Future<Basic> sendFeeding(String content, int type, int helpType) async {
 //工单列表
 Future<FeedBack> getFeedbackList({int page}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/message/feedback',
-        data: {'page': page});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/message/feedback', data: {'page': page});
     return FeedBack.fromJson(res.data);
   } catch (e) {
     return null;
@@ -686,8 +585,8 @@ Future<FeedBack> getFeedbackList({int page}) async {
 // 图集列表
 Future getPicList({int page, int limit, int day}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/pic/getList',
-        data: {'page': page, 'limit': limit, 'day': day});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/pic/getList', data: {'page': page, 'limit': limit, 'day': day});
     return res.data;
   } catch (e) {
     return null;
@@ -697,8 +596,7 @@ Future getPicList({int page, int limit, int day}) async {
 // 图集详情
 Future getPicDetail({int id}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/pic/getDetail', data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/pic/getDetail', data: {'id': id});
     return res.data;
   } catch (e) {
     return null;
@@ -708,8 +606,7 @@ Future getPicDetail({int id}) async {
 // 购买打折包
 Future buyPackage({int id}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/package/buy', data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/package/buy', data: {'id': id});
     return res.data;
   } catch (e) {
     return null;
@@ -719,8 +616,7 @@ Future buyPackage({int id}) async {
 /// 获取更新数量
 Future<UpdateNumModel> apiGetUpdateNum({int cartoonId}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/home/getUpdateNum');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/home/getUpdateNum');
     UpdateNumModel result = UpdateNumModel.fromJson(res.data);
     return result;
   } catch (e) {
@@ -732,12 +628,7 @@ Future<UpdateNumModel> apiGetUpdateNum({int cartoonId}) async {
 Future getComicsList({int type, int limit, int page, int day}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/book/getList',
-        data: {
-          'page': page,
-          'limit': limit,
-          'type': type == null ? 1 : type,
-          'day': day
-        });
+        data: {'page': page, 'limit': limit, 'type': type == null ? 1 : type, 'day': day});
     return res.data;
   } catch (e) {
     return null;
@@ -756,8 +647,7 @@ Future getChangVideoList(
     String filter,
     int order}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/mv/getList', data: {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/mv/getList', data: {
       'type': type,
       'page': page,
       'isDark': isDark,
@@ -776,8 +666,7 @@ Future getChangVideoList(
 //获取视频列表
 Future getFilterComics({int page, int limit, String filter, int order}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/book/getListFilter',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/book/getListFilter',
         data: {'page': page, 'limit': limit, 'filter': filter, 'order': order});
     return res.data;
   } catch (e) {
@@ -788,8 +677,7 @@ Future getFilterComics({int page, int limit, String filter, int order}) async {
 // 打折包列表
 Future getPackageList({int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/package/list',
-        data: {'page': page, 'limit': limit});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/package/list', data: {'page': page, 'limit': limit});
     return res.data;
   } catch (e) {
     return null;
@@ -799,9 +687,8 @@ Future getPackageList({int page, int limit}) async {
 //邀请记录
 Future<InvitionList> getListInvition({int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/user/listInvitation',
-        data: {'page': page, 'limit': limit});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/listInvitation', data: {'page': page, 'limit': limit});
     return InvitionList.fromJson(res.data);
   } catch (e) {
     return null;
@@ -811,8 +698,7 @@ Future<InvitionList> getListInvition({int page, int limit}) async {
 // 活动列表
 Future activityList() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/page/list', data: {});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/page/list', data: {});
     return res.data;
   } catch (e) {
     return null;
@@ -822,8 +708,7 @@ Future activityList() async {
 // 我的邀请
 Future<MyInvitationModel> myInvitation({int page, int limit}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/user/myInvitation');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/myInvitation');
     return MyInvitationModel.fromJson(res.data);
   } catch (e) {
     return null;
@@ -833,8 +718,8 @@ Future<MyInvitationModel> myInvitation({int page, int limit}) async {
 // 打折包详情
 Future getPackageDetail({int id, int page, int limit}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/package/detail',
-        data: {'id': id, 'page': page, 'limit': limit});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/package/detail', data: {'id': id, 'page': page, 'limit': limit});
     return res.data;
   } catch (e) {
     return null;
@@ -844,8 +729,7 @@ Future getPackageDetail({int id, int page, int limit}) async {
 // 收益明细
 Future<MyRewardModel> getMyReward() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/user/getMyReward');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/getMyReward');
     return MyRewardModel.fromJson(res.data);
   } catch (e) {
     return null;
@@ -856,12 +740,7 @@ Future<MyRewardModel> getMyReward() async {
 Future getUserBuy({int page, int type, int limit = 24, int category}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/user/getUserBuy",
-        data: {
-          'page': page,
-          'limit': limit,
-          'type': type,
-          'category': category
-        });
+        data: {'page': page, 'limit': limit, 'type': type, 'category': category});
     return res.data;
   } catch (e) {
     return null;
@@ -871,8 +750,8 @@ Future getUserBuy({int page, int type, int limit = 24, int category}) async {
 //获取商品-VIP
 Future<Basic> getProductOfVIP({int showMore}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/order/goodsList',
-        data: {'type': 1, 'show_more': showMore});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/order/goodsList', data: {'type': 1, 'show_more': showMore});
     return Basic.fromJson(res.data);
   } catch (e) {
     return null;
@@ -882,9 +761,8 @@ Future<Basic> getProductOfVIP({int showMore}) async {
 // 我的卡包  VIP
 Future getUserProductList({int limit, int page}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/user/getUserProductList',
-        data: {'limit': limit, 'page': page});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/getUserProductList', data: {'limit': limit, 'page': page});
     return res.data;
   } catch (e) {
     return null;
@@ -892,11 +770,10 @@ Future getUserProductList({int limit, int page}) async {
 }
 
 // 充值记录
-Future<CoinOrVipModel> getOrderList(
-    {int page = 1, dynamic type = '', int limit = 24}) async {
+Future<CoinOrVipModel> getOrderList({int page = 1, dynamic type = '', int limit = 24}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post("/api/order/orderList",
-        data: {'limit': limit, 'page': page, 'type': type});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/order/orderList", data: {'limit': limit, 'page': page, 'type': type});
     return CoinOrVipModel.fromJson(res.data);
   } catch (e) {
     return null;
@@ -906,8 +783,7 @@ Future<CoinOrVipModel> getOrderList(
 // 获取搜索热门标签
 Future<dynamic> gethotTags() async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post("/api/user/hotTags", data: {});
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/user/hotTags", data: {});
     return res.data;
   } catch (e) {
     return null;
@@ -927,9 +803,7 @@ Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
 // 购买金币广告
 Future getAdForCoin({int pos = 601}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        "/api/home/getADsByPosition",
-        data: {'pos': pos});
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/home/getADsByPosition", data: {'pos': pos});
     return res.data;
   } catch (e) {
     return null;
@@ -937,15 +811,10 @@ Future getAdForCoin({int pos = 601}) async {
 }
 
 //更改密码
-Future<Basic> updatePassword(
-    {String password, String newPassword, String newPasswordConfirm}) async {
+Future<Basic> updatePassword({String password, String newPassword, String newPasswordConfirm}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/account/updatePassword', data: {
-      'password': password,
-      'newPassword': newPassword,
-      'newPasswordConfirm': newPasswordConfirm
-    });
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/updatePassword',
+        data: {'password': password, 'newPassword': newPassword, 'newPasswordConfirm': newPasswordConfirm});
     Basic result = Basic.fromJson(res.data);
     return result;
   } catch (e) {
@@ -956,8 +825,7 @@ Future<Basic> updatePassword(
 //设置密码
 Future<Basic> setPassword({String password, String passwordConfirm}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        '/api/account/setPassword',
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/account/setPassword',
         data: {'password': password, 'passwordConfirm': passwordConfirm});
     Basic result = Basic.fromJson(res.data);
     return result;
@@ -980,11 +848,7 @@ Future getCities() async {
 Future getYuepaoList(int page, int limit, String cityName) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getList",
-        data: {
-          'page': page,
-          'limit': limit,
-          'cityName': cityName == '全国' ? '' : cityName
-        });
+        data: {'page': page, 'limit': limit, 'cityName': cityName == '全国' ? '' : cityName});
     return res.data;
   } catch (e) {
     return null;
@@ -994,8 +858,7 @@ Future getYuepaoList(int page, int limit, String cityName) async {
 // 约炮详情
 Future getYuepaoDetail(id) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post("/api/girl/getDetail", data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getDetail", data: {'id': id});
     return res.data;
   } catch (e) {
     return null;
@@ -1005,8 +868,8 @@ Future getYuepaoDetail(id) async {
 // 约炮详情
 Future getYuepaoComment(dynamic id, int page, int limit) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/getComment",
-        data: {'id': id, 'page': page, 'limit': limit});
+    Response<dynamic> res =
+        await PlatformAwareHttp.post("/api/girl/getComment", data: {'id': id, 'page': page, 'limit': limit});
     return res.data;
   } catch (e) {
     return null;
@@ -1016,8 +879,7 @@ Future getYuepaoComment(dynamic id, int page, int limit) async {
 // 约炮解锁
 Future yuepaoUnlock(id) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post("/api/girl/unlock", data: {'id': id});
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/unlock", data: {'id': id});
     return res.data;
   } catch (e) {
     return null;
@@ -1025,16 +887,10 @@ Future yuepaoUnlock(id) async {
 }
 
 // 约炮评价
-Future yuepaoComment(
-    {dynamic girlMeetId, String comment, int face, int service}) async {
+Future yuepaoComment({dynamic girlMeetId, String comment, int face, int service}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/girl/comment",
-        data: {
-          'girlMeetId': girlMeetId,
-          'comment': comment,
-          'face': face,
-          'service': service
-        });
+        data: {'girlMeetId': girlMeetId, 'comment': comment, 'face': face, 'service': service});
     return res.data;
   } catch (e) {
     return null;
@@ -1044,8 +900,7 @@ Future yuepaoComment(
 // 约炮评价
 Future getSeriesDetail({int id, int page, int limit}) async {
   try {
-    Response<dynamic> res =
-        await PlatformAwareHttp.post("/api/series/detail", data: {
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/series/detail", data: {
       'id': id,
       'page': page,
       'limit': limit,
@@ -1059,14 +914,12 @@ Future getSeriesDetail({int id, int page, int limit}) async {
 // 获取系列列表
 Future getSeriesList({int id, int page, int limit, int type}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post(
-        "/api/series/getSeriesByTypeAndIdWithPagination",
-        data: {
-          'id': id,
-          'page': page,
-          'limit': limit,
-          'type': type,
-        });
+    Response<dynamic> res = await PlatformAwareHttp.post("/api/series/getSeriesByTypeAndIdWithPagination", data: {
+      'id': id,
+      'page': page,
+      'limit': limit,
+      'type': type,
+    });
     return res.data;
   } catch (e) {
     return null;
@@ -1076,8 +929,7 @@ Future getSeriesList({int id, int page, int limit, int type}) async {
 //广告点击统计
 Future<Map> popAdsChick(String id) async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/home/popAdsChick", data: {"id": id});
+    Response data = await PlatformAwareHttp.post("/api/home/popAdsChick", data: {"id": id});
     return data.data;
   } catch (e) {
     return null;
@@ -1087,8 +939,7 @@ Future<Map> popAdsChick(String id) async {
 //所有圈子/发帖规则
 Future<Map> prePostData() async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/community/pre_post_data");
+    Response data = await PlatformAwareHttp.post("/api/community/pre_post_data");
     return data.data;
   } catch (e) {
     return null;
@@ -1097,29 +948,22 @@ Future<Map> prePostData() async {
 
 //社区发帖
 Future<Map> createPost(
-    {String topicId,
-    String coins,
-    String title,
-    String content,
-    List medias,
-    Map postInfo,
-    int is_open}) async {
+    {String topicId, String coins, String title, String content, List medias, Map postInfo, int is_open}) async {
   Map _postId = {};
   if (postInfo.isNotEmpty) {
     _postId['post_id'] = postInfo['id'];
   }
   try {
-    Response data = await PlatformAwareHttp.post(
-        postInfo.isNotEmpty ? "/api/community/editPost" : "/api/community/post",
-        data: {
-          "topic_id": topicId,
-          "coins": coins == '' ? 0 : int.parse(coins),
-          "title": title,
-          "content": content,
-          "is_open": is_open, //0 公开  1 私密
-          "medias": jsonEncode(medias),
-          ..._postId
-        });
+    Response data =
+        await PlatformAwareHttp.post(postInfo.isNotEmpty ? "/api/community/editPost" : "/api/community/post", data: {
+      "topic_id": topicId,
+      "coins": coins == '' ? 0 : int.parse(coins),
+      "title": title,
+      "content": content,
+      "is_open": is_open, //0 公开  1 私密
+      "medias": jsonEncode(medias),
+      ..._postId
+    });
     return data.data;
   } catch (e) {
     return null;
@@ -1127,11 +971,9 @@ Future<Map> createPost(
 }
 
 //圈子分页
-Future<Map> getHomeTopics(
-    {String tag = 'recommend', String more = 'no'}) async {
+Future<Map> getHomeTopics({String tag = 'recommend', String more = 'no'}) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/topics",
-        data: {'tag': tag, 'more': more});
+    Response data = await PlatformAwareHttp.post("/api/community/topics", data: {'tag': tag, 'more': more});
     return data.data;
   } catch (e) {
     return null;
@@ -1141,8 +983,8 @@ Future<Map> getHomeTopics(
 //帖子列表
 Future<Map> getPostList({String tag = 'recommend', int limit, int page}) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/list_post",
-        data: {'tag': tag, 'limit': limit, 'page': page});
+    Response data =
+        await PlatformAwareHttp.post("/api/community/list_post", data: {'tag': tag, 'limit': limit, 'page': page});
     return data.data;
   } catch (e) {
     return null;
@@ -1152,8 +994,7 @@ Future<Map> getPostList({String tag = 'recommend', int limit, int page}) async {
 //帖子详情
 Future<Map> postDetail(int id) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/post_detail",
-        data: {'id': id});
+    Response data = await PlatformAwareHttp.post("/api/community/post_detail", data: {'id': id});
     return data.data;
   } catch (e) {
     return null;
@@ -1163,8 +1004,8 @@ Future<Map> postDetail(int id) async {
 //帖子评论
 Future<Map> getPostComments(int id, int page, int limit) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/post_comments",
-        data: {'id': id, 'page': page, 'limit': limit});
+    Response data =
+        await PlatformAwareHttp.post("/api/community/post_comments", data: {'id': id, 'page': page, 'limit': limit});
     return data.data;
   } catch (e) {
     return null;
@@ -1174,8 +1015,7 @@ Future<Map> getPostComments(int id, int page, int limit) async {
 //帖子二级评论
 Future<Map> getPostCommentsChild(int id) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/comments",
-        data: {'comment_id': id});
+    Response data = await PlatformAwareHttp.post("/api/community/comments", data: {'comment_id': id});
     return data.data;
   } catch (e) {
     return null;
@@ -1186,8 +1026,7 @@ Future<Map> getPostCommentsChild(int id) async {
 Future<Map> communityLike(int id, String type) async {
   //类型 post 帖子 comment 评论
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/like",
-        data: {'id': id, 'type': type});
+    Response data = await PlatformAwareHttp.post("/api/community/like", data: {'id': id, 'type': type});
     return data.data;
   } catch (e) {
     return null;
@@ -1197,8 +1036,7 @@ Future<Map> communityLike(int id, String type) async {
 //他人主页
 Future<Map> otherHomeInfo(int aff) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/peer_center",
-        data: {'aff': aff});
+    Response data = await PlatformAwareHttp.post("/api/community/peer_center", data: {'aff': aff});
     return data.data;
   } catch (e) {
     return null;
@@ -1208,8 +1046,7 @@ Future<Map> otherHomeInfo(int aff) async {
 //关注
 Future<Map> toggleFollow(int aff) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/user/toggle_follow",
-        data: {'aff': aff});
+    Response data = await PlatformAwareHttp.post("/api/user/toggle_follow", data: {'aff': aff});
     return data.data;
   } catch (e) {
     return null;
@@ -1219,8 +1056,7 @@ Future<Map> toggleFollow(int aff) async {
 //关注列表
 Future<Map> myFollowList(int page, int limit) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/user/list_follows",
-        data: {'page': page, 'limit': limit});
+    Response data = await PlatformAwareHttp.post("/api/user/list_follows", data: {'page': page, 'limit': limit});
     return data.data;
   } catch (e) {
     return null;
@@ -1230,8 +1066,7 @@ Future<Map> myFollowList(int page, int limit) async {
 //关注列表
 Future<Map> getTopicDetail(int id) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/topic_detail",
-        data: {'topic_id': id});
+    Response data = await PlatformAwareHttp.post("/api/community/topic_detail", data: {'topic_id': id});
     return data.data;
   } catch (e) {
     return null;
@@ -1241,8 +1076,7 @@ Future<Map> getTopicDetail(int id) async {
 //关注列表
 Future<Map> toggleFollowTopic(int id) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/community/follow_topic",
-        data: {'topic_id': id});
+    Response data = await PlatformAwareHttp.post("/api/community/follow_topic", data: {'topic_id': id});
     return data.data;
   } catch (e) {
     return null;
@@ -1252,8 +1086,7 @@ Future<Map> toggleFollowTopic(int id) async {
 //社区评论
 Future<Map> communityComment(Map _data) async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/community/comment", data: _data);
+    Response data = await PlatformAwareHttp.post("/api/community/comment", data: _data);
     return data.data;
   } catch (e) {
     return null;
@@ -1263,8 +1096,7 @@ Future<Map> communityComment(Map _data) async {
 //解锁帖子
 Future<Map> unlockPost(int id) async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/community/unlock", data: {'id': id});
+    Response data = await PlatformAwareHttp.post("/api/community/unlock", data: {'id': id});
     return data.data;
   } catch (e) {
     return null;
@@ -1272,18 +1104,10 @@ Future<Map> unlockPost(int id) async {
 }
 
 //提现
-Future<Map> withdrawMoney(
-    {String account = '',
-    String name = '',
-    String amount,
-    int type = 2}) async {
+Future<Map> withdrawMoney({String account = '', String name = '', String amount, int type = 2}) async {
   try {
-    Response data = await PlatformAwareHttp.post("/api/order/withdraw", data: {
-      'account': account,
-      'name': name,
-      'type': type,
-      'amount': amount
-    });
+    Response data = await PlatformAwareHttp.post("/api/order/withdraw",
+        data: {'account': account, 'name': name, 'type': type, 'amount': amount});
     return data.data;
   } catch (e) {
     return null;
@@ -1316,8 +1140,7 @@ Future<Map> novelRecommend({int categoryId, int page, int limit}) async {
 //小说喜欢
 Future<Map> novelLikeToggle(int novelId) async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/novel/likeToggle", data: {
+    Response data = await PlatformAwareHttp.post("/api/novel/likeToggle", data: {
       'novelId': novelId,
     });
     return data.data;
@@ -1329,8 +1152,7 @@ Future<Map> novelLikeToggle(int novelId) async {
 //小说评论点赞
 Future<Map> commentLikeToggle(int commentId) async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/novel/commentLikeToggle", data: {
+    Response data = await PlatformAwareHttp.post("/api/novel/commentLikeToggle", data: {
       'commentId': commentId,
     });
     return data.data;
@@ -1342,8 +1164,7 @@ Future<Map> commentLikeToggle(int commentId) async {
 //小说内容
 Future<Map> getChapterDetail(int chapterId) async {
   try {
-    Response data =
-        await PlatformAwareHttp.post("/api/novel/getChapterDetail", data: {
+    Response data = await PlatformAwareHttp.post("/api/novel/getChapterDetail", data: {
       'chapterId': chapterId,
     });
     return data.data;
@@ -1366,8 +1187,7 @@ Future novelComment({int novelId, String content, int parentId}) async {
 // 小说购买
 Future novelBuy(int novelId) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/buy',
-        data: {'novelId': novelId});
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/novel/buy', data: {'novelId': novelId});
     return res.data;
   } catch (e) {
     return null;
