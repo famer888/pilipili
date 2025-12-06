@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,19 +57,17 @@ class _AppCenterState extends State<AppCenter> {
               itemCount: appList.length,
               itemBuilder: (context, index) {
                 return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.w)),
-                    child: ApplicationItem(
-                      id: appList[index].id,
-                      appname: appList[index].title,
-                      iconurl: appList[index].imgUrl,
-                      des: appList[index].description,
-                      clicked: appList[index].clicked,
-                      link: appList[index].linkUrl,
-                    ),
-                  );
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12.w)),
+                  child: ApplicationItem(
+                    id: appList[index].id,
+                    appname: appList[index].title,
+                    iconurl: appList[index].imgUrl,
+                    des: appList[index].description,
+                    clicked: appList[index].clicked,
+                    link: appList[index].linkUrl,
+                  ),
+                );
               }),
     );
   }
@@ -105,14 +102,10 @@ class _AppCenterState extends State<AppCenter> {
                         banner: banner,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: 24.w, left: 16.w, bottom: 16.w),
+                        padding: EdgeInsets.only(top: 24.w, left: 16.w, bottom: 16.w),
                         child: Text(
                           '推荐APP',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.sp),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
                         ),
                       ),
                       applicationColumn(),
@@ -144,33 +137,6 @@ class _SwiperContainerState extends State<SwiperContainer> {
     _banner = widget.banner;
   }
 
-  _onTapSwiper(int index) {
-    if (_banner.length == 0) return;
-    var item = _banner[index];
-    var type = item.type;
-    var _adsUrl = item.url;
-    if (['', null, false].contains(_adsUrl)) {
-      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
-      return;
-    }
-    switch (type) {
-      case 1:
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-      case 3:
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-      case 4:
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-        break;
-      default:
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return _banner.length > 1
@@ -178,7 +144,7 @@ class _SwiperContainerState extends State<SwiperContainer> {
             height: 160.w,
             child: Swiper(
               onTap: (index) {
-                _onTapSwiper(index);
+                CommonUtils.bannerTopath(context, url: _banner[0].url, type: _banner[0].type);
               },
               itemBuilder: (BuildContext context, int index) {
                 return Container(
@@ -221,15 +187,7 @@ class ApplicationItem extends StatefulWidget {
   final String des;
   final int clicked;
   final String link;
-  ApplicationItem(
-      {Key key,
-      this.appname,
-      this.iconurl,
-      this.des,
-      this.link,
-      this.clicked,
-      this.id})
-      : super(key: key);
+  ApplicationItem({Key key, this.appname, this.iconurl, this.des, this.link, this.clicked, this.id}) : super(key: key);
 
   @override
   _ApplicationItemState createState() => _ApplicationItemState();
@@ -253,18 +211,11 @@ class _ApplicationItemState extends State<ApplicationItem> {
   }
 
   formatNum(double number, int postion) {
-    if ((number.toString().length - number.toString().lastIndexOf(".") - 1) <
-        postion) {
+    if ((number.toString().length - number.toString().lastIndexOf(".") - 1) < postion) {
       //小数点后有几位小数
-      return number
-          .toStringAsFixed(postion)
-          .substring(0, number.toString().lastIndexOf(".") + postion + 1)
-          .toString();
+      return number.toStringAsFixed(postion).substring(0, number.toString().lastIndexOf(".") + postion + 1).toString();
     } else {
-      return number
-          .toString()
-          .substring(0, number.toString().lastIndexOf(".") + postion + 1)
-          .toString();
+      return number.toString().substring(0, number.toString().lastIndexOf(".") + postion + 1).toString();
     }
   }
 
@@ -274,21 +225,11 @@ class _ApplicationItemState extends State<ApplicationItem> {
     clickNumber = renderFixedNumber(widget.clicked * 1.0);
   }
 
-  _onTapSwiper() {
-    var _adsUrl = widget.link;
-    if (['', null, false].contains(_adsUrl)) {
-      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
-      return;
-    }
-    // 外部浏览器
-    CommonUtils.launchURL("$_adsUrl");
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          _onTapSwiper();
+          CommonUtils.bannerTopath(context, url: widget.link, type: 1);
         },
         child: Padding(
           padding: EdgeInsets.only(bottom: 26.5.w),
@@ -355,15 +296,11 @@ class _ApplicationItemState extends State<ApplicationItem> {
                     width: 56.w,
                     height: 34.w,
                     decoration: BoxDecoration(
-                        gradient: DefaultStyle.defaluGrandientLine,
-                        borderRadius: BorderRadius.circular(50.w)),
+                        gradient: DefaultStyle.defaluGrandientLine, borderRadius: BorderRadius.circular(50.w)),
                     child: Center(
                       child: Text(
                         '下载',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.bold),
                       ),
                     ),
                   )

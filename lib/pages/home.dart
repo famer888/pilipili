@@ -5,7 +5,6 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/pages/anwang.dart';
 import 'package:pilipili/pages/yuemei_shequ.dart';
@@ -405,7 +404,8 @@ class _HomeState extends State<Home> {
           }
         }
       }, confirm: () {
-        _onTapSwiper(AppGlobal.popAds[index]['type'], AppGlobal.popAds[index]['content']);
+        CommonUtils.bannerTopath(context,
+            url: AppGlobal.popAds[index]['content'], type: AppGlobal.popAds[index]['type']);
         popAdsChick(AppGlobal.popAds[index]['id'].toString());
         activeIndex++;
         if (activeIndex <= activeLength) {
@@ -419,40 +419,6 @@ class _HomeState extends State<Home> {
     }
 
     showIndexActive(activeIndex);
-  }
-
-  _onTapSwiper(String type, String _adsUrl) {
-    var members = Provider.of<HomeConfig>(context, listen: false).member;
-    var aff = members.aff;
-    var piliid = members.uuid;
-    var types = type;
-    if (['', null, false].contains(_adsUrl)) {
-      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
-      return;
-    }
-    if (types == '1') {
-      // 内部路由
-      String linkUrl = _adsUrl;
-      List urlList = linkUrl.split('?');
-      Map<String, dynamic> pramas = {};
-      if (urlList.length > 1) {
-        urlList[1].split("&").forEach((item) {
-          List stringText = item.split('=');
-          pramas[stringText[0]] = stringText.length > 1 ? stringText[1] : null;
-        });
-      }
-      Map<String, dynamic> pramasObj = {};
-      if (pramas['pramaskey'] != null) {
-        pramasObj[pramas['pramaskey']] = pramas;
-      } else {
-        pramasObj = pramas;
-      }
-      context.push(urlList[0], extra: pramasObj);
-    } else if (types == "3") {
-      CommonUtils.launchURL("$_adsUrl?aff=$aff&piliid=$piliid");
-    } else if (types == "2") {
-      CommonUtils.launchURL("$_adsUrl");
-    }
   }
 
   initDialog() {

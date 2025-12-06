@@ -77,8 +77,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       CommonUtils.showText('已经没有评论啦～');
       return;
     }
-    var res = await getCommentList(
-        contentId: widget.id, contentType: 1, page: page, limit: limit);
+    var res = await getCommentList(contentId: widget.id, contentType: 1, page: page, limit: limit);
     if (res['status'] != 0) {
       commentLoadingStatus = 2;
       List resdata = res['data'] == null ? [] : res['data'];
@@ -95,13 +94,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   }
 
   Future<void> getSeriesListVideo({Function setBottomSheetState}) async {
-    var res =
-        await getSeriesList(id: widget.id, type: 1, page: spage, limit: slimit);
+    var res = await getSeriesList(id: widget.id, type: 1, page: spage, limit: slimit);
 
     if (res['status'] != 0) {
-      List resdata = res['data'] == null || res['data']['resource'] == null
-          ? []
-          : res['data']['resource'];
+      List resdata = res['data'] == null || res['data']['resource'] == null ? [] : res['data']['resource'];
       sisAll = resdata.length < slimit;
       if (spage == 1) {
         seriesList = res['data'];
@@ -125,9 +121,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
 
   Future<dynamic> getAdCoin() async {
     var adBanner = await getAdForCoin(pos: 701);
-    if (adBanner != null &&
-        adBanner['data'] != null &&
-        adBanner['data'].length > 0) {
+    if (adBanner != null && adBanner['data'] != null && adBanner['data'].length > 0) {
       _banner = adBanner['data'];
     }
   }
@@ -137,18 +131,14 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     await getAdCoin();
     AnimationDetail res = await getVideoDetail(id: widget.id);
     if (res.status != 0) {
-      CommonUtils.debugPrint(
-          "---------视频地址------${res.data.source240}-------------预览视频地址---${res.data?.preview}");
+      CommonUtils.debugPrint("---------视频地址------${res.data.source240}-------------预览视频地址---${res.data?.preview}");
       isPreview = res.data.source240 == null;
       videoUrl = res.data.source240 ??= res.data.preview;
       isFavoriteNotifier.value = res.data.userFavorites == 1;
-      tags = res.data.tags == '' || res.data.tags == null
-          ? []
-          : res.data.tags.split(',');
+      tags = res.data.tags == '' || res.data.tags == null ? [] : res.data.tags.split(',');
       likeCount = res.data.favorites;
       videoInfo = res.data;
-      var recommend = await getDetailRecommendList(
-          id: res.data.id, page: 1, limit: 20, tags: res.data.tags);
+      var recommend = await getDetailRecommendList(id: res.data.id, page: 1, limit: 20, tags: res.data.tags);
       if (recommend['status'] != 0) {
         recommendList = recommend['data'];
       }
@@ -174,36 +164,6 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     super.dispose();
   }
 
-  _onTapSwiper(int index) {
-    if (_banner.length == 0) return;
-    var item = _banner[index];
-    var type = item['type'];
-    var _adsUrl = item['url'];
-    if (['', null, false].contains(_adsUrl)) {
-      BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
-      return;
-    }
-    switch (type) {
-      case 1:
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-      case 3:
-        // 外部浏览器
-        CommonUtils.launchURL("$_adsUrl");
-        break;
-      case 4:
-        // 外部浏览器
-        var members = Provider.of<HomeConfig>(context, listen: false).member;
-        var aff = members.aff;
-        var piliid = members.uuid;
-        CommonUtils.launchURL(_adsUrl + '?aff=$aff&piliid=$piliid');
-        break;
-        break;
-      default:
-    }
-  }
-
   Future showButtom() {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
@@ -224,11 +184,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                          color: Color(0XFFffd3e6),
-                          offset: Offset(0, 2),
-                          blurRadius: 4,
-                          spreadRadius: 0)
+                      BoxShadow(color: Color(0XFFffd3e6), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)
                     ]),
                     child: Row(
                       children: [
@@ -239,10 +195,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                             child: Center(
                           child: Text(
                             seriesList['title'],
-                            style: TextStyle(
-                                color: Color(0xffff5b8c),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Color(0xffff5b8c), fontSize: 14.sp, fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -266,12 +219,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                     onLoading: () {
                       if (sisAll) return;
                       spage++;
-                      getSeriesListVideo(
-                          setBottomSheetState: setBottomSheetState);
+                      getSeriesListVideo(setBottomSheetState: setBottomSheetState);
                     },
                     child: ListView.builder(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 16.w),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                         itemCount: seriesList['resource'].length,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -325,10 +276,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                               ? Center(
                                   child: Container(
                                     width: 90.w,
-                                    child: Image.asset(
-                                        'assets/gif/loading_pink.gif',
-                                        fit: BoxFit.fitWidth,
-                                        filterQuality: FilterQuality.medium),
+                                    child: Image.asset('assets/gif/loading_pink.gif',
+                                        fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
                                   ),
                                 )
                               : YyVideo(
@@ -342,8 +291,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                     videoLoading = true;
                                     videoUrl = url;
                                     setState(() {});
-                                    Future.delayed(Duration(milliseconds: 300),
-                                        () {
+                                    Future.delayed(Duration(milliseconds: 300), () {
                                       videoLoading = false;
                                       setState(() {});
                                     });
@@ -366,9 +314,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                   )
                                 ],
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: DefaultStyle.pagePadding,
-                                  vertical: 8.w),
+                              padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding, vertical: 8.w),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: tabList.asMap().keys.map((e) {
@@ -377,21 +323,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                       controller.jumpToPage(e);
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(
-                                          right: e == tabList.length - 1
-                                              ? 0
-                                              : 20.w),
+                                      margin: EdgeInsets.only(right: e == tabList.length - 1 ? 0 : 20.w),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Opacity(
                                             opacity: currentTab == e ? 1 : 0,
                                             child: PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/icon_love_red.png',
+                                                url: 'assets/images/icon_love_red.png',
                                                 width: 6.w,
-                                                filterQuality:
-                                                    FilterQuality.medium),
+                                                filterQuality: FilterQuality.medium),
                                           ),
                                           Row(
                                             mainAxisSize: MainAxisSize.min,
@@ -400,16 +341,12 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 tabList[e]['name'],
                                                 style: currentTab == e
                                                     ? TextStyle(
-                                                        color:
-                                                            Color(0xffFF5B8C),
-                                                        fontWeight:
-                                                            FontWeight.w700,
+                                                        color: Color(0xffFF5B8C),
+                                                        fontWeight: FontWeight.w700,
                                                         fontSize: 14.sp)
                                                     : TextStyle(
-                                                        color:
-                                                            Color(0xffC2C2C2),
-                                                        fontWeight:
-                                                            FontWeight.w700,
+                                                        color: Color(0xffC2C2C2),
+                                                        fontWeight: FontWeight.w700,
                                                         fontSize: 14.sp),
                                               ),
                                             ],
@@ -443,28 +380,22 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                   slivers: [
                                     SliverToBoxAdapter(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             width: double.infinity,
                                             margin: EdgeInsets.only(top: 16.w),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: DefaultStyle
-                                                          .pagePadding),
+                                                  padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                                   child: Text(
                                                     videoInfo.title,
                                                     style: TextStyle(
-                                                        color:
-                                                            Color(0xff404040),
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        color: Color(0xff404040),
+                                                        fontWeight: FontWeight.bold,
                                                         fontSize: 16.sp),
                                                   ),
                                                 ),
@@ -472,100 +403,62 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   height: 17.w,
                                                 ),
                                                 Padding(
-                                                    padding: EdgeInsets.symmetric(
-                                                        horizontal: DefaultStyle
-                                                            .pagePadding),
+                                                    padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Container(
                                                           height: 40.w,
                                                           child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               Text(
                                                                 '演员：' +
-                                                                    (videoInfo.actors == null ||
-                                                                                videoInfo.actors == ""
+                                                                    (videoInfo.actors == null || videoInfo.actors == ""
                                                                             ? "--"
                                                                             : videoInfo.actors)
                                                                         .toString(),
                                                                 style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFF5B8C),
-                                                                    fontSize:
-                                                                        12.sp),
+                                                                    color: Color(0xffFF5B8C), fontSize: 12.sp),
                                                               ),
                                                               Text(
                                                                 "${videoInfo.countPlay}人看过 - ${videoInfo.createdAt.split(' ')[0]}更新",
                                                                 style: TextStyle(
-                                                                    color: Color(
-                                                                        0xff979797),
-                                                                    fontSize:
-                                                                        11.sp),
+                                                                    color: Color(0xff979797), fontSize: 11.sp),
                                                               )
                                                             ],
                                                           ),
                                                         ),
                                                         Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
+                                                          mainAxisSize: MainAxisSize.min,
                                                           children: [
                                                             ButtonItem(
                                                               icon: 'icon_down',
                                                               name: '下载',
                                                               onTap: () async {
                                                                 if (kIsWeb) {
-                                                                  CommonUtils
-                                                                      .showText(
-                                                                          '请下载APP使用下载功能！');
+                                                                  CommonUtils.showText('请下载APP使用下载功能！');
                                                                 } else {
-                                                                  PageStatus
-                                                                      .showLoading();
-                                                                  getDownloadUrl(
-                                                                          id: videoInfo
-                                                                              .id)
-                                                                      .then(
-                                                                          (res) {
-                                                                    if (res['status'] !=
-                                                                        0) {
-                                                                      Map taskInfo =
-                                                                          {
-                                                                        "id": videoInfo
-                                                                            .id
-                                                                            .toString(),
-                                                                        "urlPath":
-                                                                            res['data']['downloadUrl'],
-                                                                        "title":
-                                                                            videoInfo.title,
-                                                                        "thumbCover":
-                                                                            videoInfo.thumbCover ??
-                                                                                videoInfo.coverThumbHorizontal,
-                                                                        "tags":
-                                                                            tags.join('/'),
-                                                                        "contentType":
-                                                                            1,
-                                                                        "downloading":
-                                                                            false,
-                                                                        "isWaiting":
-                                                                            true
+                                                                  PageStatus.showLoading();
+                                                                  getDownloadUrl(id: videoInfo.id).then((res) {
+                                                                    if (res['status'] != 0) {
+                                                                      Map taskInfo = {
+                                                                        "id": videoInfo.id.toString(),
+                                                                        "urlPath": res['data']['downloadUrl'],
+                                                                        "title": videoInfo.title,
+                                                                        "thumbCover": videoInfo.thumbCover ??
+                                                                            videoInfo.coverThumbHorizontal,
+                                                                        "tags": tags.join('/'),
+                                                                        "contentType": 1,
+                                                                        "downloading": false,
+                                                                        "isWaiting": true
                                                                       };
-                                                                      DownloadUtil
-                                                                          .createDownloadTask(
-                                                                              taskInfo);
+                                                                      DownloadUtil.createDownloadTask(taskInfo);
                                                                     } else {
-                                                                      YyShowDialog
-                                                                          .showdialog(
+                                                                      YyShowDialog.showdialog(
                                                                         context,
-                                                                        content:
-                                                                            (setDialogState) {
+                                                                        content: (setDialogState) {
                                                                           return Text(
                                                                             videoInfo.isfree == 2
                                                                                 ? PPString.noBuySeeVideoHint
@@ -576,19 +469,19 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                                 fontSize: 16.sp),
                                                                           );
                                                                         },
-                                                                        cancelText:
-                                                                            '取消',
-                                                                        btnText: videoInfo.isfree ==
-                                                                                2
+                                                                        cancelText: '取消',
+                                                                        btnText: videoInfo.isfree == 2
                                                                             ? PPString.buyNow
                                                                             : PPString.upgradeNuw,
-                                                                        callBack:
-                                                                            () {
-                                                                          if (videoInfo.isfree ==
-                                                                              2) {
-                                                                            showBuy(videoInfo,
-                                                                                () {
-                                                                              buyVideo(id: videoInfo.id, coins: (money - videoInfo.discountCoins), context: context).then((res) {
+                                                                        callBack: () {
+                                                                          if (videoInfo.isfree == 2) {
+                                                                            showBuy(videoInfo, () {
+                                                                              buyVideo(
+                                                                                      id: videoInfo.id,
+                                                                                      coins: (money -
+                                                                                          videoInfo.discountCoins),
+                                                                                      context: context)
+                                                                                  .then((res) {
                                                                                 if (res.status != 0) {
                                                                                   CommonUtils.showText('购买成功');
                                                                                   videoUrl = res.data;
@@ -596,7 +489,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                                   isPreview = false;
                                                                                   videoLoading = true;
                                                                                   setState(() {});
-                                                                                  Future.delayed(Duration(milliseconds: 300), () {
+                                                                                  Future.delayed(
+                                                                                      Duration(milliseconds: 300), () {
                                                                                     videoLoading = false;
                                                                                     setState(() {});
                                                                                   });
@@ -611,10 +505,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         },
                                                                       );
                                                                     }
-                                                                  }).whenComplete(
-                                                                          () {
-                                                                    PageStatus
-                                                                        .closeLoading();
+                                                                  }).whenComplete(() {
+                                                                    PageStatus.closeLoading();
                                                                   });
                                                                 }
                                                               },
@@ -623,45 +515,27 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               width: 4.w,
                                                             ),
                                                             ValueListenableBuilder(
-                                                                valueListenable:
-                                                                    isFavoriteNotifier,
-                                                                builder: (context,
-                                                                    isFavorite,
-                                                                    child) {
+                                                                valueListenable: isFavoriteNotifier,
+                                                                builder: (context, isFavorite, child) {
                                                                   return ButtonItem(
                                                                     icon: isFavorite
-                                                                        ? PPString
-                                                                            .iconunLike
-                                                                        : PPString
-                                                                            .iconLike,
+                                                                        ? PPString.iconunLike
+                                                                        : PPString.iconLike,
                                                                     name: CommonUtils.renderFixedNumber(
-                                                                        likeCount
-                                                                            .toDouble()),
-                                                                    color: isFavorite
-                                                                        ? Color(
-                                                                            0xffFF84A9)
-                                                                        : null,
-                                                                    onTap:
-                                                                        () async {
+                                                                        likeCount.toDouble()),
+                                                                    color: isFavorite ? Color(0xffFF84A9) : null,
+                                                                    onTap: () async {
                                                                       var res = await userFavorites(
-                                                                          type:
-                                                                              1,
-                                                                          id: videoInfo
-                                                                              .id);
-                                                                      if (res !=
-                                                                              null &&
-                                                                          res.status !=
-                                                                              0) {
+                                                                          type: 1, id: videoInfo.id);
+                                                                      if (res != null && res.status != 0) {
                                                                         if (isFavorite) {
                                                                           likeCount--;
                                                                         } else {
                                                                           likeCount++;
                                                                         }
-                                                                        isFavoriteNotifier.value =
-                                                                            !isFavorite;
+                                                                        isFavoriteNotifier.value = !isFavorite;
                                                                       } else {
-                                                                        CommonUtils.showText(
-                                                                            res.msg);
+                                                                        CommonUtils.showText(res.msg);
                                                                       }
                                                                     },
                                                                   );
@@ -670,38 +544,20 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               width: 4.w,
                                                             ),
                                                             ButtonItem(
-                                                              icon:
-                                                                  'icon_share',
+                                                              icon: 'icon_share',
                                                               name: '分享',
                                                               onTap: () async {
-                                                                var config = Provider.of<
-                                                                            HomeConfig>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .config;
-                                                                ShareMovieModel.showShareMovie(
-                                                                    backButtonBehavior,
-                                                                    copyUrl: config
-                                                                        .share
-                                                                        .affUrlCopy
-                                                                        .url,
-                                                                    thumb: videoInfo?.coverOriginalHorizontal ==
-                                                                            ''
-                                                                        ? videoInfo
-                                                                            ?.coverOriginalVertical
-                                                                        : videoInfo
-                                                                            ?.coverOriginalHorizontal,
-                                                                    title: videoInfo
-                                                                            ?.title ??
-                                                                        '--',
-                                                                    subtitle:
-                                                                        videoInfo?.desc ??
-                                                                            '--',
-                                                                    url: config
-                                                                        .share
-                                                                        .affUrl
-                                                                        .toString());
+                                                                var config =
+                                                                    Provider.of<HomeConfig>(context, listen: false)
+                                                                        .config;
+                                                                ShareMovieModel.showShareMovie(backButtonBehavior,
+                                                                    copyUrl: config.share.affUrlCopy.url,
+                                                                    thumb: videoInfo?.coverOriginalHorizontal == ''
+                                                                        ? videoInfo?.coverOriginalVertical
+                                                                        : videoInfo?.coverOriginalHorizontal,
+                                                                    title: videoInfo?.title ?? '--',
+                                                                    subtitle: videoInfo?.desc ?? '--',
+                                                                    url: config.share.affUrl.toString());
                                                               },
                                                             )
                                                           ],
@@ -714,59 +570,37 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       )
                                                     : Container(
                                                         color: Colors.white54,
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 8.w),
+                                                        margin: EdgeInsets.only(bottom: 8.w),
                                                         height: 0.5.w,
                                                       ),
                                                 tags == null || tags.isEmpty
                                                     ? const SizedBox()
                                                     : Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    DefaultStyle
-                                                                        .pagePadding),
+                                                        padding:
+                                                            EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                                         child: Container(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    bottom:
-                                                                        18.w),
+                                                            padding: EdgeInsets.only(bottom: 18.w),
                                                             child: Wrap(
                                                               spacing: 4.w,
                                                               runSpacing: 4.w,
-                                                              children: tags
-                                                                  .map((tag) {
+                                                              children: tags.map((tag) {
                                                                 return Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
+                                                                  mainAxisSize: MainAxisSize.min,
                                                                   children: [
                                                                     Container(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      height:
-                                                                          21.w,
-                                                                      padding:
-                                                                          EdgeInsets
-                                                                              .symmetric(
-                                                                        horizontal:
-                                                                            16.5.w,
+                                                                      alignment: Alignment.center,
+                                                                      height: 21.w,
+                                                                      padding: EdgeInsets.symmetric(
+                                                                        horizontal: 16.5.w,
                                                                       ),
                                                                       decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(5
-                                                                              .w),
-                                                                          color:
-                                                                              Colors.white),
-                                                                      child:
-                                                                          Text(
+                                                                          borderRadius: BorderRadius.circular(5.w),
+                                                                          color: Colors.white),
+                                                                      child: Text(
                                                                         "$tag",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Color(0xff979797),
-                                                                          fontSize:
-                                                                              12.sp,
+                                                                        style: TextStyle(
+                                                                          color: Color(0xff979797),
+                                                                          fontSize: 12.sp,
                                                                         ),
                                                                       ),
                                                                     ),
@@ -788,51 +622,36 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       width: 343.w,
                                                       child: Swiper(
                                                         onTap: (index) {
-                                                          _onTapSwiper(index);
+                                                          CommonUtils.bannerTopath(context,
+                                                              url: _banner[index]['url'], type: _banner[index]['type']);
                                                         },
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
+                                                        itemBuilder: (BuildContext context, int index) {
                                                           return PageViewMixin(
                                                             child: Container(
                                                               height: 126.w,
                                                               child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10.w),
+                                                                borderRadius: BorderRadius.circular(10.w),
                                                                 child: PlatformAwareNetworkImage(
-                                                                    url: _banner[
-                                                                            index]
-                                                                        [
-                                                                        'img_url'],
-                                                                    noVisibilityDetector:
-                                                                        true),
+                                                                    url: _banner[index]['img_url'],
+                                                                    noVisibilityDetector: true),
                                                               ),
                                                             ),
                                                           );
                                                         },
-                                                        itemCount:
-                                                            _banner.length,
-                                                        autoplay:
-                                                            _banner.length > 1,
+                                                        itemCount: _banner.length,
+                                                        autoplay: _banner.length > 1,
                                                       ))
                                                   : SizedBox(
-                                                      height:
-                                                          _banner.length == 1
-                                                              ? 126.w
-                                                              : 0,
+                                                      height: _banner.length == 1 ? 126.w : 0,
                                                       width: 343.w,
                                                       child: _banner.length == 1
                                                           ? GestureDetector(
                                                               onTap: () {
-                                                                _onTapSwiper(0);
+                                                                CommonUtils.bannerTopath(context,
+                                                                    url: _banner[0]['url'], type: _banner[0]['type']);
                                                               },
-                                                              child:
-                                                                  PlatformAwareNetworkImage(
-                                                                url: _banner[0]
-                                                                    ['img_url'],
+                                                              child: PlatformAwareNetworkImage(
+                                                                url: _banner[0]['img_url'],
                                                               ),
                                                             )
                                                           : const SizedBox(),
@@ -840,82 +659,53 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                           Container(
                                             height: 0.5.w,
                                             width: double.infinity,
-                                            margin: EdgeInsets.only(
-                                                left: 16.w,
-                                                right: 16.w,
-                                                bottom: 16.w),
+                                            margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.w),
                                             color: Color(0xffffd1df),
                                           ),
                                           firstSeriesList.length == 0
                                               ? const SizedBox()
                                               : Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 18.w),
+                                                  padding: EdgeInsets.only(left: 18.w),
                                                   child: WidgetTitleBar(
                                                     title: '系列详情',
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
                                                     style: TextStyle(
-                                                        color:
-                                                            Color(0xffff5b8c),
+                                                        color: Color(0xffff5b8c),
                                                         fontSize: 16.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                        fontWeight: FontWeight.bold),
                                                   ),
                                                 ),
                                           firstSeriesList.length == 0
                                               ? const SizedBox()
                                               : SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: DefaultStyle
-                                                          .pagePadding),
+                                                  scrollDirection: Axis.horizontal,
+                                                  padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                                   child: Row(
                                                     children: [
                                                       Row(
-                                                        children:
-                                                            firstSeriesList
-                                                                .map((e) {
+                                                        children: firstSeriesList.map((e) {
                                                           return GestureDetector(
                                                             onTap: () {
                                                               context.push(
                                                                   CommonUtils.getRealHash().replaceAll(
-                                                                      RegExp(
-                                                                          "${PPString.test}videoDetail/.*"),
-                                                                      'videoDetail/' +
-                                                                          e['id']
-                                                                              .toString()),
-                                                                  replace:
-                                                                      true);
+                                                                      RegExp("${PPString.test}videoDetail/.*"),
+                                                                      'videoDetail/' + e['id'].toString()),
+                                                                  replace: true);
                                                             },
                                                             child: Container(
                                                               width: 160.w,
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right:
-                                                                          8.w),
+                                                              margin: EdgeInsets.only(right: 8.w),
                                                               child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(3
-                                                                              .w),
-                                                                      child:
-                                                                          Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        height:
-                                                                            90.w,
-                                                                        child:
-                                                                            PlatformAwareNetworkImage(
-                                                                          url: e[
-                                                                              'thumb'],
-                                                                          fit: BoxFit
-                                                                              .cover,
+                                                                      borderRadius: BorderRadius.circular(3.w),
+                                                                      child: Container(
+                                                                        width: double.infinity,
+                                                                        height: 90.w,
+                                                                        child: PlatformAwareNetworkImage(
+                                                                          url: e['thumb'],
+                                                                          fit: BoxFit.cover,
                                                                         ),
                                                                       )),
                                                                   SizedBox(
@@ -924,14 +714,10 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   Text(
                                                                     e['title'],
                                                                     style: TextStyle(
-                                                                        color: Color(
-                                                                            0xff646464),
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
+                                                                        color: Color(0xff646464),
+                                                                        fontWeight: FontWeight.bold),
                                                                     maxLines: 1,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    overflow: TextOverflow.ellipsis,
                                                                   )
                                                                 ],
                                                               ),
@@ -946,64 +732,38 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         child: Container(
                                                           width: 70.w,
                                                           height: 39.w,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  boxShadow: [
+                                                          alignment: Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                              boxShadow: [
                                                                 BoxShadow(
-                                                                    color:
-                                                                        Color.fromRGBO(
-                                                                            255,
-                                                                            128,
-                                                                            163,
-                                                                            0.5),
-                                                                    offset:
-                                                                        Offset(0,
-                                                                            2),
-                                                                    blurRadius:
-                                                                        3,
-                                                                    spreadRadius:
-                                                                        0)
+                                                                    color: Color.fromRGBO(255, 128, 163, 0.5),
+                                                                    offset: Offset(0, 2),
+                                                                    blurRadius: 3,
+                                                                    spreadRadius: 0)
                                                               ],
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(50
-                                                                              .w),
-                                                                  gradient: LinearGradient(
-                                                                      begin: Alignment
-                                                                          .topLeft,
-                                                                      end: Alignment
-                                                                          .bottomRight,
-                                                                      colors: [
-                                                                        Color(
-                                                                            0xffff8b8b),
-                                                                        Color(
-                                                                            0xffff7696),
-                                                                        Color(
-                                                                            0xffff7299),
-                                                                      ])),
+                                                              borderRadius: BorderRadius.circular(50.w),
+                                                              gradient: LinearGradient(
+                                                                  begin: Alignment.topLeft,
+                                                                  end: Alignment.bottomRight,
+                                                                  colors: [
+                                                                    Color(0xffff8b8b),
+                                                                    Color(0xffff7696),
+                                                                    Color(0xffff7299),
+                                                                  ])),
                                                           child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
+                                                            mainAxisSize: MainAxisSize.min,
                                                             children: [
                                                               Text(
                                                                 '更多',
-                                                                style:
-                                                                    DefaultStyle
-                                                                        .white14,
+                                                                style: DefaultStyle.white14,
                                                               ),
                                                               SizedBox(
                                                                 width: 9.w,
                                                               ),
                                                               PlatformAwareAssetImage(
-                                                                  url:
-                                                                      'assets/images/icon_more.png',
+                                                                  url: 'assets/images/icon_more.png',
                                                                   height: 8.w,
-                                                                  filterQuality:
-                                                                      FilterQuality
-                                                                          .medium)
+                                                                  filterQuality: FilterQuality.medium)
                                                             ],
                                                           ),
                                                         ),
@@ -1021,9 +781,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                       ),
                                     ),
                                     SliverPadding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: DefaultStyle.pagePadding,
-                                          vertical: 11.w),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding, vertical: 11.w),
                                       sliver: SliverGrid.count(
                                           crossAxisCount: 2,
                                           crossAxisSpacing: 7.w,
@@ -1033,8 +792,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                     maxLines: 1,
                                                     replace: true,
                                                     width: 171.w,
-                                                    thumbUrl:
-                                                        CommonUtils.getThumb(e),
+                                                    thumbUrl: CommonUtils.getThumb(e),
                                                     cardData: e,
                                                     showField: 'title',
                                                     contentType: 1,
@@ -1043,8 +801,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                     )
                                   ],
                                 )),
-                                commentLoadingStatus != 2 &&
-                                        commentLoadingStatus == 1
+                                commentLoadingStatus != 2 && commentLoadingStatus == 1
                                     ? PageStatus.loading(mounted)
                                     : PageViewMixin(
                                         child: Container(
@@ -1065,45 +822,29 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   ? CustomScrollView(
                                                       slivers: [
                                                         SliverToBoxAdapter(
-                                                          child: PageStatus.noData(
-                                                              text:
-                                                                  '还没有任何影评哦～'),
+                                                          child: PageStatus.noData(text: '还没有任何影评哦～'),
                                                         )
                                                       ],
                                                     )
                                                   : ListView.builder(
                                                       cacheExtent: 1.sh * 5,
-                                                      padding: EdgeInsets.symmetric(
-                                                          vertical: DefaultStyle
-                                                              .pagePadding),
-                                                      itemCount:
-                                                          commentList.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
+                                                      padding: EdgeInsets.symmetric(vertical: DefaultStyle.pagePadding),
+                                                      itemCount: commentList.length,
+                                                      itemBuilder: (BuildContext context, int index) {
                                                         return CommentItem(
-                                                          souceType: videoInfo
-                                                                      .category ==
-                                                                  '1'
+                                                          souceType: videoInfo.category == '1'
                                                               ? RESOURCE_TYPE_CARTOON_VIDEO
                                                               : RESOURCE_TYPE_LONG_VIDEO,
                                                           id: widget.id,
-                                                          data: commentList[
-                                                              index],
-                                                          children: commentList[
-                                                                      index][
-                                                                  'child_comment']
-                                                              .map<Widget>(
-                                                                  (childComment) {
+                                                          data: commentList[index],
+                                                          children: commentList[index]['child_comment']
+                                                              .map<Widget>((childComment) {
                                                             return CommentItem(
-                                                                souceType: videoInfo
-                                                                            .category ==
-                                                                        '1'
+                                                                souceType: videoInfo.category == '1'
                                                                     ? RESOURCE_TYPE_CARTOON_VIDEO
                                                                     : RESOURCE_TYPE_LONG_VIDEO,
                                                                 id: widget.id,
-                                                                data:
-                                                                    childComment);
+                                                                data: childComment);
                                                           }).toList(),
                                                         );
                                                       }),
@@ -1111,9 +852,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                             Container(
                                               color: Colors.white,
                                               padding: EdgeInsets.symmetric(
-                                                  vertical: 9.w,
-                                                  horizontal:
-                                                      DefaultStyle.pagePadding),
+                                                  vertical: 9.w, horizontal: DefaultStyle.pagePadding),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   if (Privilege.isAllowed(
@@ -1122,59 +861,37 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           ? RESOURCE_TYPE_CARTOON_VIDEO
                                                           : RESOURCE_TYPE_LONG_VIDEO,
                                                       PRIVILEGE_TYPE_COMMENT)) {
-                                                    InputDialog.show(
-                                                            context, '请输入您的影评～')
-                                                        .then((value) {
-                                                      if (value != null &&
-                                                          value != '') {
+                                                    InputDialog.show(context, '请输入您的影评～').then((value) {
+                                                      if (value != null && value != '') {
                                                         publishComment(
-                                                                contentId:
-                                                                    widget.id,
-                                                                contentType: 1,
-                                                                reply: value)
+                                                                contentId: widget.id, contentType: 1, reply: value)
                                                             .then((res) {
-                                                          if (res['status'] !=
-                                                              0) {
-                                                            CommonUtils.showText(
-                                                                '影评发布成功,请刷新查看～');
+                                                          if (res['status'] != 0) {
+                                                            CommonUtils.showText('影评发布成功,请刷新查看～');
                                                           } else {
-                                                            CommonUtils
-                                                                .showText(
-                                                                    res['msg']);
+                                                            CommonUtils.showText(res['msg']);
                                                           }
                                                         });
                                                       } else {
-                                                        CommonUtils.showText(
-                                                            '请输入您的影评');
+                                                        CommonUtils.showText('请输入您的影评');
                                                       }
                                                     });
                                                   } else {
-                                                    YyShowDialog.showdialog(
-                                                        context,
-                                                        btnText: '升级VIP',
-                                                        cancelText: '取消',
+                                                    YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消',
                                                         callBack: () {
                                                       context.push('/vip');
-                                                    }, content:
-                                                            (setDialogState) {
+                                                    }, content: (setDialogState) {
                                                       return DefaultTextStyle(
-                                                          style: DefaultStyle
-                                                              .black14,
+                                                          style: DefaultStyle.black14,
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               Text(
                                                                 '升级VIP即可发布影评哦～',
                                                                 style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFF5B8C),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        16.sp),
+                                                                    color: Color(0xffFF5B8C),
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 16.sp),
                                                               ),
                                                             ],
                                                           ));
@@ -1182,25 +899,20 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                   }
                                                 },
                                                 child: Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 16.w),
+                                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                                                   height: 36.w,
                                                   child: Row(
                                                     children: [
                                                       Text(
                                                         Privilege.isAllowed(
                                                                 context,
-                                                                videoInfo.category ==
-                                                                        '1'
+                                                                videoInfo.category == '1'
                                                                     ? RESOURCE_TYPE_CARTOON_VIDEO
                                                                     : RESOURCE_TYPE_LONG_VIDEO,
                                                                 PRIVILEGE_TYPE_COMMENT)
                                                             ? '能不能火就靠你啦～'
                                                             : '升级VIP即可发布影评哦～',
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff979797),
-                                                            fontSize: 14.sp),
+                                                        style: TextStyle(color: Color(0xff979797), fontSize: 14.sp),
                                                       )
                                                     ],
                                                   ),
@@ -1223,8 +935,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
 }
 
 class CommentItem extends StatefulWidget {
-  CommentItem({Key key, this.data, this.id, this.children, this.souceType})
-      : super(key: key);
+  CommentItem({Key key, this.data, this.id, this.children, this.souceType}) : super(key: key);
   final List<Widget> children;
   final int souceType;
   final dynamic data;
@@ -1254,16 +965,10 @@ class _CommentItemState extends State<CommentItem> {
             behavior: HitTestBehavior.translucent,
             onTap: () async {
               if (widget.children == null) return;
-              if (Privilege.isAllowed(
-                  context, widget.souceType, PRIVILEGE_TYPE_COMMENT)) {
-                InputDialog.show(context, '请输入您的影评～', limitingText: 16)
-                    .then((value) {
+              if (Privilege.isAllowed(context, widget.souceType, PRIVILEGE_TYPE_COMMENT)) {
+                InputDialog.show(context, '请输入您的影评～', limitingText: 16).then((value) {
                   if (value != null && value != '') {
-                    publishComment(
-                            commentId: widget.data['id'],
-                            contentId: widget.id,
-                            contentType: 1,
-                            reply: value)
+                    publishComment(commentId: widget.data['id'], contentId: widget.id, contentType: 1, reply: value)
                         .then((res) {
                       if (res['status'] != 0) {
                         CommonUtils.showText('影评发布成功,请刷新查看～');
@@ -1274,15 +979,11 @@ class _CommentItemState extends State<CommentItem> {
                   }
                 });
               } else {
-                YyShowDialog.showdialog(context,
-                    btnText: '升级VIP', cancelText: '取消', callBack: () {
+                YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消', callBack: () {
                   context.push('/vip');
                 }, content: (setDialogState) {
                   return DefaultTextStyle(
-                      style: TextStyle(
-                          color: Color(0xffFF5B8C),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp),
+                      style: TextStyle(color: Color(0xffFF5B8C), fontWeight: FontWeight.bold, fontSize: 16.sp),
                       child: Text('升级VIP即可发布影评哦～'));
                 });
               }
@@ -1293,14 +994,9 @@ class _CommentItemState extends State<CommentItem> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: widget.children == null
-                            ? 0
-                            : DefaultStyle.pagePadding),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 0.5.w, color: Color(0xffffd1df)))),
+                    padding: EdgeInsets.symmetric(horizontal: widget.children == null ? 0 : DefaultStyle.pagePadding),
+                    decoration:
+                        BoxDecoration(border: Border(bottom: BorderSide(width: 0.5.w, color: Color(0xffffd1df)))),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1311,10 +1007,7 @@ class _CommentItemState extends State<CommentItem> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15.w),
                             child: PlatformAwareNetworkImage(
-                                width: 30.w,
-                                height: 30.w,
-                                fit: BoxFit.fill,
-                                url: widget.data['userInfo']['thumb']),
+                                width: 30.w, height: 30.w, fit: BoxFit.fill, url: widget.data['userInfo']['thumb']),
                           ),
                         ),
                         Expanded(
@@ -1328,18 +1021,14 @@ class _CommentItemState extends State<CommentItem> {
                                   Text(
                                     widget.data['userInfo']['nickname'],
                                     style: TextStyle(
-                                        color: Color(0xff646464),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold),
+                                        color: Color(0xff646464), fontSize: 14.sp, fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
                                     width: 8.w,
                                   ),
                                   Text(
                                     getCreateTime(),
-                                    style: TextStyle(
-                                        color: Color(0xffC2C2C2),
-                                        fontSize: 12.sp),
+                                    style: TextStyle(color: Color(0xffC2C2C2), fontSize: 12.sp),
                                   ),
                                 ],
                               ),
@@ -1348,8 +1037,7 @@ class _CommentItemState extends State<CommentItem> {
                               padding: EdgeInsets.only(bottom: 13.w),
                               child: Text(
                                 widget.data['reply'],
-                                style: TextStyle(
-                                    color: Color(0xff646464), fontSize: 12.sp),
+                                style: TextStyle(color: Color(0xff646464), fontSize: 12.sp),
                               ),
                             )
                           ],
@@ -1364,8 +1052,7 @@ class _CommentItemState extends State<CommentItem> {
                         margin: EdgeInsets.only(right: 11.w),
                       ),
                       Expanded(
-                          child: widget.children == null ||
-                                  widget.children.length == 0
+                          child: widget.children == null || widget.children.length == 0
                               ? const SizedBox()
                               : Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -1382,8 +1069,7 @@ class _CommentItemState extends State<CommentItem> {
 }
 
 class ButtonItem extends StatefulWidget {
-  const ButtonItem({Key key, this.name, this.icon, this.color, this.onTap})
-      : super(key: key);
+  const ButtonItem({Key key, this.name, this.icon, this.color, this.onTap}) : super(key: key);
   final String name;
   final String icon;
   final Color color;
@@ -1421,8 +1107,7 @@ class _ButtonItemState extends State<ButtonItem> {
         height: 40.w,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.w),
-            color:
-                widget.color == null ? Colors.white : DefaultStyle.themeColor,
+            color: widget.color == null ? Colors.white : DefaultStyle.themeColor,
             boxShadow: [
               BoxShadow(
                 blurRadius: 5.0,
@@ -1448,10 +1133,7 @@ class _ButtonItemState extends State<ButtonItem> {
                   Text(
                     widget.name,
                     style: TextStyle(
-                        color: widget.color == null
-                            ? DefaultStyle.themeColor
-                            : Colors.white,
-                        fontSize: 12.sp),
+                        color: widget.color == null ? DefaultStyle.themeColor : Colors.white, fontSize: 12.sp),
                   )
                 ],
               ),
