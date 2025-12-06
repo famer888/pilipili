@@ -398,6 +398,12 @@ class UpdateModel {
 
   static void showAvtivetysDialog(BackButtonBehavior backButtonBehavior,
       {VoidCallback cancel, VoidCallback confirm, String url, double height, double width}) {
+    if (height == 0) {
+      height = 1;
+    }
+    if (width == 0) {
+      width = 1;
+    }
     double maxW = ScreenUtil().screenWidth / 3 * 2;
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => GestureDetector(
