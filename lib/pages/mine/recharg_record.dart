@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/coinorvip.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -43,8 +41,7 @@ class _RechargeRecordState extends State<RechargeRecord> {
       CommonUtils.showText('请传入type');
       return;
     }
-    CoinOrVipModel result = await getOrderList(
-        page: page, type: widget?.args['type'], limit: limit);
+    CoinOrVipModel result = await getOrderList(page: page, type: widget?.args['type'], limit: limit);
     if (result == null) {
       networkErr = true;
       setState(() {});
@@ -76,9 +73,9 @@ class _RechargeRecordState extends State<RechargeRecord> {
               title: '充值记录',
               rightWidget: GestureDetector(
                 onTap: () {
-                  if (Privilege.isAllowed(
-                      context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
-                    context.push(CommonUtils.getRealHash('customerService'));
+                  if (Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
+                    // context.push(CommonUtils.getRealHash('customerService'));
+                    CommonUtils.toService(context);
                   } else {
                     CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
                   }
@@ -119,11 +116,9 @@ class _RechargeRecordState extends State<RechargeRecord> {
                               )
                             : ListView.builder(
                                 cacheExtent: ScreenUtil().screenHeight * 5,
-                                padding: EdgeInsets.all(ScreenUtil()
-                                    .setWidth(DefaultStyle.pagePadding)),
+                                padding: EdgeInsets.all(ScreenUtil().setWidth(DefaultStyle.pagePadding)),
                                 itemCount: recordList.length,
-                                itemBuilder:
-                                    (BuildContext contenxt, int index) {
+                                itemBuilder: (BuildContext contenxt, int index) {
                                   return OrderItem(
                                     orderData: recordList[index],
                                   );
@@ -146,17 +141,11 @@ class OrderItem extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(16)),
-      padding: EdgeInsets.symmetric(
-          vertical: ScreenUtil().setWidth(18.5),
-          horizontal: ScreenUtil().setWidth(14)),
+      padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(18.5), horizontal: ScreenUtil().setWidth(14)),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
-            BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.1),
-                offset: Offset(0, 0),
-                blurRadius: 5,
-                spreadRadius: 0)
+            BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.1), offset: Offset(0, 0), blurRadius: 5, spreadRadius: 0)
           ],
           borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
       child: Column(
@@ -165,13 +154,12 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '订单编号：'+orderData?.id.toString(),
+                '订单编号：' + orderData?.id.toString(),
                 style: DefaultStyle.lgray12,
               ),
               GestureDetector(
                 onTap: () {
-                  Clipboard.setData(
-                      ClipboardData(text: '订单编号：'+orderData?.id.toString()));
+                  Clipboard.setData(ClipboardData(text: '订单编号：' + orderData?.id.toString()));
                   CommonUtils.showText('复制成功');
                 },
                 child: Row(

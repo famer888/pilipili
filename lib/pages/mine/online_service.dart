@@ -30,16 +30,12 @@ class _OnlineServiceState extends State<OnlineService> {
           padding: EdgeInsets.only(top: 13.5.h, left: DefaultStyle.pagePadding),
           child: Text(
             "常见问题",
-            style: TextStyle(
-                color: Color(0xff979797),
-                fontSize: ScreenUtil().setSp(14),
-                fontWeight: FontWeight.w700),
+            style: TextStyle(color: Color(0xff979797), fontSize: ScreenUtil().setSp(14), fontWeight: FontWeight.w700),
           ),
         ),
         Expanded(
             child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-              horizontal: DefaultStyle.pagePadding, vertical: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding, vertical: 16.w),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,10 +54,7 @@ class _OnlineServiceState extends State<OnlineService> {
             color: Colors.white,
             boxShadow: [
               //阴影
-              BoxShadow(
-                  color: Color.fromRGBO(255, 132, 169, 0.2),
-                  offset: Offset(0, 0),
-                  blurRadius: 10.w)
+              BoxShadow(color: Color.fromRGBO(255, 132, 169, 0.2), offset: Offset(0, 0), blurRadius: 10.w)
             ],
           ),
           child: Row(
@@ -92,9 +85,7 @@ class _OnlineServiceState extends State<OnlineService> {
                   borderRadius: BorderRadius.circular(50.w),
                 ),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shadowColor: Colors.transparent,
-                      primary: Colors.transparent),
+                  style: ElevatedButton.styleFrom(shadowColor: Colors.transparent, backgroundColor: Colors.transparent),
                   child: Text(
                     '联系APP客服',
                     style: TextStyle(
@@ -103,9 +94,9 @@ class _OnlineServiceState extends State<OnlineService> {
                     ),
                   ),
                   onPressed: () {
-                    if (Privilege.isAllowed(
-                        context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
-                      context.push(CommonUtils.getRealHash('customerService'));
+                    if (Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
+                      // context.push(CommonUtils.getRealHash('customerService'));
+                      CommonUtils.toService(context);
                     } else {
                       CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
                     }
@@ -133,17 +124,13 @@ class QuestionItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text((index + 1).toString() + "、 " + data['problem'].toString(),
-              style: TextStyle(
-                  color: Color(0xff404040),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.sp)),
+              style: TextStyle(color: Color(0xff404040), fontWeight: FontWeight.bold, fontSize: 16.sp)),
           SizedBox(
             height: 15.w,
           ),
           Text(
             data['reply'],
-            style: TextStyle(
-                color: Color(0xff979797), fontSize: 14.sp, height: 1.7.w),
+            style: TextStyle(color: Color(0xff979797), fontSize: 14.sp, height: 1.7.w),
           ),
         ],
       ),

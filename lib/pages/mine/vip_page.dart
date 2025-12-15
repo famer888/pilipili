@@ -143,9 +143,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                 Text(
                   text,
                   style: TextStyle(
-                      color: Color(0xff404040),
-                      fontSize: ScreenUtil().setSp(13),
-                      fontWeight: FontWeight.bold),
+                      color: Color(0xff404040), fontSize: ScreenUtil().setSp(13), fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: ScreenUtil().setSp(3),
@@ -246,9 +244,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                         margin: EdgeInsets.only(top: ScreenUtil().setWidth(8)),
                         child: Text(
                           tabList[e]['name'],
-                          style: currentTab == e
-                              ? DefaultStyle.pink14bold
-                              : DefaultStyle.lgray14Bold,
+                          style: currentTab == e ? DefaultStyle.pink14bold : DefaultStyle.lgray14Bold,
                         ),
                       )
                     ],
@@ -293,15 +289,11 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                             child: Swiper(
                                               onIndexChanged: onIndexChanged,
                                               itemCount: products.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
+                                              itemBuilder: (BuildContext context, int index) {
                                                 return PageViewMixin(
                                                   child: VIPItemContainer(
-                                                      product: products
-                                                          .elementAt(index),
-                                                      currentPrice:
-                                                          currentPrice,
+                                                      product: products.elementAt(index),
+                                                      currentPrice: currentPrice,
                                                       promoPrice: promoPrice),
                                                 );
                                               },
@@ -316,15 +308,11 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                         height: ScreenUtil().setWidth(80),
                                         width: double.infinity,
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  ScreenUtil().setWidth(20)),
+                                          padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
                                           child: PlatformAwareAssetImage(
-                                              url:
-                                                  "assets/images/wode/vip_icon_header.png",
+                                              url: "assets/images/wode/vip_icon_header.png",
                                               fit: BoxFit.fill,
-                                              filterQuality:
-                                                  FilterQuality.medium),
+                                              filterQuality: FilterQuality.medium),
                                         )),
                                     Expanded(
                                       child: Container(
@@ -332,17 +320,13 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                           color: Colors.white,
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Color.fromRGBO(
-                                                  255, 158, 164, 0.25),
-                                              blurRadius:
-                                                  ScreenUtil().setWidth(5),
+                                              color: Color.fromRGBO(255, 158, 164, 0.25),
+                                              blurRadius: ScreenUtil().setWidth(5),
                                             )
                                           ],
                                           borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(
-                                                  ScreenUtil().setWidth(10)),
-                                              bottomRight: Radius.circular(
-                                                  ScreenUtil().setWidth(10))),
+                                              bottomLeft: Radius.circular(ScreenUtil().setWidth(10)),
+                                              bottomRight: Radius.circular(ScreenUtil().setWidth(10))),
                                         ),
                                         // padding: EdgeInsets.symmetric(
                                         //     vertical: ScreenUtil()
@@ -352,14 +336,11 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                           right: ScreenUtil().setWidth(20),
                                         ),
                                         child: SingleChildScrollView(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  ScreenUtil().setWidth(16)),
+                                          padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(16)),
                                           child: Center(
                                             child: Wrap(
                                               spacing: 0,
-                                              runSpacing:
-                                                  ScreenUtil().setWidth(29),
+                                              runSpacing: ScreenUtil().setWidth(29),
                                               children: rightsList
                                                   .asMap()
                                                   .keys
@@ -367,15 +348,9 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                                         width: _width / 2,
                                                         child: Center(
                                                           child: _qyItem(
-                                                              logo:
-                                                                  rightsList[e]
-                                                                      ['img'],
-                                                              text:
-                                                                  rightsList[e]
-                                                                      ['name'],
-                                                              title:
-                                                                  rightsList[e]
-                                                                      ['desc']),
+                                                              logo: rightsList[e]['img'],
+                                                              text: rightsList[e]['name'],
+                                                              title: rightsList[e]['desc']),
                                                         ),
                                                       ))
                                                   .toList(),
@@ -390,77 +365,52 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                         vertical: ScreenUtil().setWidth(23),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           GestureDetector(
                                               onTap: () {
                                                 if (Privilege.isAllowed(
-                                                    context,
-                                                    RESOURCE_TYPE_SYSTEM,
-                                                    PRIVILEGE_TYPE_FEED)) {
-                                                  context.push(
-                                                      CommonUtils.getRealHash(
-                                                          'customerService'));
+                                                    context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
+                                                  CommonUtils.toService(context);
+                                                  // context.push(
+                                                  //     CommonUtils.getRealHash(
+                                                  //         'customerService'));
                                                 } else {
-                                                  CommonUtils.showText(
-                                                      '哥哥~开启1V1服务需要会员呢！您好像没有哦~');
+                                                  CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
                                                 }
                                               },
                                               child: Container(
                                                   margin: EdgeInsets.only(
-                                                    left: ScreenUtil()
-                                                        .setWidth(5),
+                                                    left: ScreenUtil().setWidth(5),
                                                     // right: ScreenUtil()
                                                     //     .setWidth(16),
                                                   ),
-                                                  width:
-                                                      ScreenUtil().setWidth(56),
-                                                  height:
-                                                      ScreenUtil().setWidth(56),
+                                                  width: ScreenUtil().setWidth(56),
+                                                  height: ScreenUtil().setWidth(56),
                                                   decoration: BoxDecoration(
                                                     color: Colors.white,
                                                     boxShadow: [
                                                       BoxShadow(
-                                                        color: Color.fromRGBO(
-                                                            255,
-                                                            158,
-                                                            164,
-                                                            0.25),
-                                                        blurRadius: ScreenUtil()
-                                                            .setWidth(5),
+                                                        color: Color.fromRGBO(255, 158, 164, 0.25),
+                                                        blurRadius: ScreenUtil().setWidth(5),
                                                       )
                                                     ],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            ScreenUtil()
-                                                                .setWidth(12)),
+                                                    borderRadius: BorderRadius.circular(ScreenUtil().setWidth(12)),
                                                   ),
                                                   child: Center(
                                                     child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
                                                         PlatformAwareAssetImage(
-                                                            url:
-                                                                'assets/images/wode/vip_kefu.png',
-                                                            width: ScreenUtil()
-                                                                .setWidth(24),
-                                                            height: ScreenUtil()
-                                                                .setWidth(24),
+                                                            url: 'assets/images/wode/vip_kefu.png',
+                                                            width: ScreenUtil().setWidth(24),
+                                                            height: ScreenUtil().setWidth(24),
                                                             fit: BoxFit.fill,
-                                                            filterQuality:
-                                                                FilterQuality
-                                                                    .high),
+                                                            filterQuality: FilterQuality.high),
                                                         Text('客服',
                                                             style: TextStyle(
-                                                                color: Color(
-                                                                    0xffFF84A9),
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            12)))
+                                                                color: Color(0xffFF84A9),
+                                                                fontSize: ScreenUtil().setSp(12)))
                                                       ],
                                                     ),
                                                   ))),
@@ -471,29 +421,21 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                             child: Stack(
                                               children: [
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: ScreenUtil()
-                                                          .setWidth(20)),
+                                                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
                                                   decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(50),
+                                                      borderRadius: BorderRadius.circular(
+                                                        ScreenUtil().setWidth(50),
                                                       ),
-                                                      gradient: DefaultStyle
-                                                          .defaluGrandientLine),
-                                                  width: ScreenUtil()
-                                                      .setWidth(239),
-                                                  height:
-                                                      ScreenUtil().setWidth(56),
+                                                      gradient: DefaultStyle.defaluGrandientLine),
+                                                  width: ScreenUtil().setWidth(239),
+                                                  height: ScreenUtil().setWidth(56),
                                                   child: Stack(
                                                     clipBehavior: Clip.none,
                                                     children: [
                                                       Center(
                                                           child: Text(
                                                         "立即购买",
-                                                        style: DefaultStyle
-                                                            .white18bold,
+                                                        style: DefaultStyle.white18bold,
                                                       )
                                                           //  Text.rich(
                                                           //   TextSpan(
@@ -541,8 +483,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
                                   ],
                                 ),
                           PageViewMixin(
-                            child: MoreVipContainer(
-                                isShow: currentTab == 1, showPay: showPay),
+                            child: MoreVipContainer(isShow: currentTab == 1, showPay: showPay),
                           ),
                           PageViewMixin(
                             child: MyVip(isShow: currentTab == 2),
@@ -623,19 +564,16 @@ class _MyVipState extends State<MyVip> {
                 child: ListView.builder(
                     cacheExtent: ScreenUtil().screenHeight * 5,
                     itemCount: vipList.length,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(31.5)),
+                    padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(31.5)),
                     itemBuilder: (BuildContext context, int index) => Container(
-                          margin: EdgeInsets.only(
-                              bottom: ScreenUtil().setWidth(18.5)),
+                          margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(18.5)),
                           child: Stack(
                             children: [
                               Container(
                                 width: ScreenUtil().setWidth(300),
                                 height: ScreenUtil().setHeight(165),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(15))),
+                                decoration:
+                                    BoxDecoration(borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
                               ),
                               Positioned(
                                   top: 0,
@@ -655,38 +593,25 @@ class _MyVipState extends State<MyVip> {
                                   child: Container(
                                     height: double.infinity,
                                     width: double.infinity,
-                                    padding: EdgeInsets.all(
-                                        ScreenUtil().setWidth(15)),
+                                    padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Container(
-                                                    margin: EdgeInsets.only(
-                                                        right: ScreenUtil()
-                                                            .setWidth(8)),
-                                                    width: ScreenUtil()
-                                                        .setWidth(24),
-                                                    height: ScreenUtil()
-                                                        .setWidth(24),
-                                                    child:
-                                                        PlatformAwareNetworkImage(
-                                                      noVisibilityDetector:
-                                                          true,
-                                                      url: vipList[index]
-                                                          ['second_img'],
+                                                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                                                    width: ScreenUtil().setWidth(24),
+                                                    height: ScreenUtil().setWidth(24),
+                                                    child: PlatformAwareNetworkImage(
+                                                      noVisibilityDetector: true,
+                                                      url: vipList[index]['second_img'],
                                                       fit: BoxFit.fill,
                                                     )),
                                                 Expanded(
@@ -694,32 +619,20 @@ class _MyVipState extends State<MyVip> {
                                                     vipList[index]['pname'],
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(20)),
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: ScreenUtil().setSp(20)),
                                                   ),
                                                 ),
                                                 Text(
                                                   '剩余时间:' +
-                                                      (vipList[index]
-                                                                  ['forever'] ==
-                                                              1
+                                                      (vipList[index]['forever'] == 1
                                                           ? '永久会员'
-                                                          : (vipList[index][
-                                                                          'expired_time'] ==
-                                                                      null ||
-                                                                  vipList[index]
-                                                                          [
-                                                                          'expired_time'] ==
-                                                                      ''
+                                                          : (vipList[index]['expired_time'] == null ||
+                                                                  vipList[index]['expired_time'] == ''
                                                               ? '--'
                                                               : CommonUtils.getExpireTime(
-                                                                  vipList[index]
-                                                                      [
-                                                                      'expired_time'],
-                                                                  isActivity:
-                                                                      false))),
+                                                                  vipList[index]['expired_time'],
+                                                                  isActivity: false))),
                                                   style: TextStyle(
                                                       color: Colors.white
                                                       //  _vipColors(
@@ -729,8 +642,7 @@ class _MyVipState extends State<MyVip> {
                                                       //         ['show_more'])
 
                                                       ,
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(12)),
+                                                      fontSize: ScreenUtil().setSp(12)),
                                                 )
                                               ],
                                             ),
@@ -740,10 +652,7 @@ class _MyVipState extends State<MyVip> {
                                             Text(
                                               vipList[index]['description'],
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize:
-                                                      ScreenUtil().setSp(13),
-                                                  height: 1.2),
+                                                  color: Colors.white, fontSize: ScreenUtil().setSp(13), height: 1.2),
                                             )
                                           ],
                                         ),
@@ -759,8 +668,7 @@ class _MyVipState extends State<MyVip> {
 class MoreVipContainer extends StatefulWidget {
   final bool isShow;
   final Function showPay;
-  MoreVipContainer({Key key, this.isShow = false, this.showPay})
-      : super(key: key);
+  MoreVipContainer({Key key, this.isShow = false, this.showPay}) : super(key: key);
 
   @override
   _MoreVipContainerState createState() => _MoreVipContainerState();
@@ -793,8 +701,7 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
       isInitPage = true;
       getProductOfVIP(showMore: 0).then((res) {
         if (res.status != 0) {
-          moreProducts =
-              res.data['product'] == null ? [] : List.from(res.data['product']);
+          moreProducts = res.data['product'] == null ? [] : List.from(res.data['product']);
           loading = false;
           setState(() {});
         } else {
@@ -822,24 +729,19 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
             : ListView.builder(
                 cacheExtent: ScreenUtil().screenHeight * 5,
                 itemCount: moreProducts.length,
-                padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(31.5)),
-                itemBuilder: (BuildContext context, int index) =>
-                    GestureDetector(
+                padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(31.5)),
+                itemBuilder: (BuildContext context, int index) => GestureDetector(
                       onTap: () {
                         widget.showPay(moreProducts[index]);
                       },
                       child: Container(
-                        margin: EdgeInsets.only(
-                            bottom: ScreenUtil().setWidth(18.5)),
+                        margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(18.5)),
                         child: Stack(
                           children: [
                             Container(
                               width: ScreenUtil().setWidth(300),
                               height: ScreenUtil().setHeight(165),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      ScreenUtil().setWidth(15))),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15))),
                             ),
                             Positioned(
                                 top: 0,
@@ -859,37 +761,26 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                 child: Container(
                                   height: double.infinity,
                                   width: double.infinity,
-                                  padding:
-                                      EdgeInsets.all(ScreenUtil().setWidth(15)),
+                                  padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                  margin: EdgeInsets.only(
-                                                      right: ScreenUtil()
-                                                          .setWidth(8)),
-                                                  width:
-                                                      ScreenUtil().setWidth(24),
-                                                  height:
-                                                      ScreenUtil().setWidth(24),
-                                                  child:
-                                                      PlatformAwareNetworkImage(
+                                                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
+                                                  width: ScreenUtil().setWidth(24),
+                                                  height: ScreenUtil().setWidth(24),
+                                                  child: PlatformAwareNetworkImage(
                                                     noVisibilityDetector: true,
-                                                    url: moreProducts[index]
-                                                        ['second_img_url'],
+                                                    url: moreProducts[index]['second_img_url'],
                                                     fit: BoxFit.fill,
                                                   )),
                                               Expanded(
@@ -897,23 +788,15 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                                   moreProducts[index]['pname'],
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(20)),
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: ScreenUtil().setSp(20)),
                                                 ),
                                               ),
                                               Text(
-                                                (moreProducts[index][
-                                                                'promo_expire_time'] ==
-                                                            null ||
-                                                        moreProducts[index][
-                                                                'promo_expire_time'] ==
-                                                            ''
+                                                (moreProducts[index]['promo_expire_time'] == null ||
+                                                        moreProducts[index]['promo_expire_time'] == ''
                                                     ? PPString.isnull
-                                                    : CommonUtils
-                                                        .getPromotionCountDownTime(
-                                                            now)),
+                                                    : CommonUtils.getPromotionCountDownTime(now)),
                                                 style: DefaultStyle.white13,
                                               )
                                             ],
@@ -924,47 +807,29 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                                           Text(
                                             moreProducts[index]['description'],
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(13),
-                                                height: 1.2),
+                                                color: Colors.white, fontSize: ScreenUtil().setSp(13), height: 1.2),
                                           )
                                         ],
                                       ),
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          Text(
-                                              '¥' +
-                                                  double.parse(
-                                                          moreProducts[index]
-                                                              ['price'])
-                                                      .toInt()
-                                                      .toString(),
+                                          Text('¥' + double.parse(moreProducts[index]['price']).toInt().toString(),
                                               style: TextStyle(
                                                   color: Colors.white54,
-                                                  fontSize:
-                                                      ScreenUtil().setSp(19.8),
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
+                                                  fontSize: ScreenUtil().setSp(19.8),
+                                                  decoration: TextDecoration.lineThrough,
                                                   fontWeight: FontWeight.bold)),
                                           SizedBox(
                                             width: ScreenUtil().setWidth(12.5),
                                           ),
                                           Text(
-                                            '¥' +
-                                                double.parse(moreProducts[index]
-                                                        ['promo_price'])
-                                                    .toInt()
-                                                    .toString(),
+                                            '¥' + double.parse(moreProducts[index]['promo_price']).toInt().toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(28.8),
+                                                fontSize: ScreenUtil().setSp(28.8),
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -983,8 +848,7 @@ class VIPItemContainer extends StatefulWidget {
   final Map product;
   final int currentPrice;
   final int promoPrice;
-  VIPItemContainer({Key key, this.product, this.currentPrice, this.promoPrice})
-      : super(key: key);
+  VIPItemContainer({Key key, this.product, this.currentPrice, this.promoPrice}) : super(key: key);
 
   @override
   _VIPItemContainerState createState() => _VIPItemContainerState();
@@ -1005,9 +869,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: ScreenUtil().setWidth(15),
-              vertical: ScreenUtil().setWidth(18)),
+          padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(15), vertical: ScreenUtil().setWidth(18)),
           width: ScreenUtil().setWidth(301),
           height: ScreenUtil().setWidth(187),
           child: Column(
@@ -1028,17 +890,14 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                   Expanded(
                       child: Text(
                     widget.product['pname'],
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(20),
-                        fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(20), fontWeight: FontWeight.bold),
                   )),
                   Text(
-                widget.product['valid_date']>2000?"永久特权":    widget.product['valid_date'].toString() + '天特权时间',
+                    widget.product['valid_date'] > 2000 ? "永久特权" : widget.product['valid_date'].toString() + '天特权时间',
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                        color: Color(
-                            0xffffffff), //_vipColors(widget.product['pname']),
+                        color: Color(0xffffffff), //_vipColors(widget.product['pname']),
                         fontSize: ScreenUtil().setSp(13)),
                   ),
                 ],
@@ -1053,8 +912,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                   widget.product['description'].toString(),
                   style: TextStyle(
                       height: 1.5,
-                      color: Color(
-                          0xffffffff), //_vipColors(widget.product['pname']),
+                      color: Color(0xffffffff), //_vipColors(widget.product['pname']),
                       fontSize: ScreenUtil().setSp(13)),
                 ),
               )),
@@ -1083,9 +941,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                       Text(
                         '¥' + widget.currentPrice.toString(),
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: ScreenUtil().setSp(24.8),
-                            fontWeight: FontWeight.bold),
+                            color: Colors.white, fontSize: ScreenUtil().setSp(24.8), fontWeight: FontWeight.bold),
                       ),
                     ],
                   )

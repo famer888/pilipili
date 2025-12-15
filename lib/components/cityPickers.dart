@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -54,9 +53,7 @@ class _CityPickerState extends State<CityPicker> {
     dynamic res = await getCities();
     if (res['status'] != 0) {
       res['data'].forEach((cityitem) {
-        allCity.add(City(
-            name: cityitem['cityName'],
-            id: int.parse(cityitem['cityCode'].toString())));
+        allCity.add(City(name: cityitem['cityName'], id: int.parse(cityitem['cityCode'].toString())));
       });
     } else {
       return CommonUtils.showText(res['msg']);
@@ -101,8 +98,7 @@ class _CityPickerState extends State<CityPicker> {
       allCityCodeList.add({
         "id": cityList[i].id,
         "name": cityList[i].name,
-        "letter":
-            PinyinHelper.getFirstWordPinyin(cityList[i].name).substring(0, 1)
+        "letter": PinyinHelper.getFirstWordPinyin(cityList[i].name).substring(0, 1)
       });
     }
     var baseAllCityCode = allCityCodeList.toList();
@@ -160,9 +156,9 @@ class _CityPickerState extends State<CityPicker> {
             title: '城市选择',
             rightWidget: GestureDetector(
               onTap: () {
-                if (Privilege.isAllowed(
-                    context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
-                  context.push(CommonUtils.getRealHash('customerService'));
+                if (Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
+                  // context.push(CommonUtils.getRealHash('customerService'));
+                  CommonUtils.toService(context);
                 } else {
                   CommonUtils.showText('哥哥~开启1V1服务需要会员呢！您好像没有哦~');
                 }
@@ -178,15 +174,11 @@ class _CityPickerState extends State<CityPicker> {
               margin: EdgeInsets.only(bottom: 8.w),
               height: 32.w,
               alignment: Alignment.center,
-              child: Text.rich(TextSpan(
-                  style: TextStyle(color: Color(0xff6d6d6d), fontSize: 12.w),
-                  children: [
-                    TextSpan(text: '没有您所在的城市？点右上 '),
-                    TextSpan(
-                        text: '联系官方运营',
-                        style: TextStyle(color: Color(0xfffe155b))),
-                    TextSpan(text: ' 为您安排！'),
-                  ]))),
+              child: Text.rich(TextSpan(style: TextStyle(color: Color(0xff6d6d6d), fontSize: 12.w), children: [
+                TextSpan(text: '没有您所在的城市？点右上 '),
+                TextSpan(text: '联系官方运营', style: TextStyle(color: Color(0xfffe155b))),
+                TextSpan(text: ' 为您安排！'),
+              ]))),
           loading ? Container() : hotCityBox(),
           SizedBox(height: 20.w),
           Expanded(child: loading ? PageStatus.loading(true) : allCityBox())
@@ -205,10 +197,7 @@ class _CityPickerState extends State<CityPicker> {
         children: <Widget>[
           Text(
             '热门城市',
-            style: TextStyle(
-                fontSize: 14.sp,
-                color: Color(0xff6d6d6d),
-                fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14.sp, color: Color(0xff6d6d6d), fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 8.w,
@@ -227,16 +216,12 @@ class _CityPickerState extends State<CityPicker> {
         padding: EdgeInsets.zero,
         itemCount: hotCityData.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            childAspectRatio: 100 / 26),
+            crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 8, childAspectRatio: 100 / 26),
         itemBuilder: (context, index) {
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              Provider.of<GlobleValue>(context, listen: false)
-                  .setYpLocation(hotCityData[index].name);
+              Provider.of<GlobleValue>(context, listen: false).setYpLocation(hotCityData[index].name);
               Navigator.of(context).pop(
                 hotCityData[index],
               );
@@ -246,9 +231,7 @@ class _CityPickerState extends State<CityPicker> {
               width: 100.w,
               height: 28.w,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5.w)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.w)),
               child: Text(
                 hotCityData[index].name,
                 textAlign: TextAlign.center,
@@ -311,17 +294,12 @@ class _CityPickerState extends State<CityPicker> {
                       child: Container(
                         height: 54.sp,
                         padding: EdgeInsets.symmetric(horizontal: 1.w),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    width: 0.5.w, color: Color(0xffececec)))),
+                        decoration:
+                            BoxDecoration(border: Border(bottom: BorderSide(width: 0.5.w, color: Color(0xffececec)))),
                         child: Row(children: [
                           Text(
                             data[index].listData[index2].name,
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                color: Color(0xff6d6d6d),
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15.sp, color: Color(0xff6d6d6d), fontWeight: FontWeight.bold),
                           )
                         ]),
                       ),
@@ -332,15 +310,12 @@ class _CityPickerState extends State<CityPicker> {
                         Navigator.of(context).pop(
                           data[index].listData[index2],
                         );
-                        EventBus().emit(
-                            'change_city', data[index].listData[index2].name);
+                        EventBus().emit('change_city', data[index].listData[index2].name);
                       },
                     ),
                   );
                 },
-                itemCount: data[index].listData.isEmpty
-                    ? 0
-                    : data[index].listData.length,
+                itemCount: data[index].listData.isEmpty ? 0 : data[index].listData.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
               ),
@@ -545,8 +520,7 @@ class AlphaState extends State<Alpha> {
           child: Text(
             alpha,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: widget.alphaItemSize, color: DefaultStyle.themeColor),
+            style: TextStyle(fontSize: widget.alphaItemSize, color: DefaultStyle.themeColor),
           ),
         ),
       ));
@@ -562,10 +536,7 @@ class AlphaState extends State<Alpha> {
               color: isTouched ? Colors.white : Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Color.fromRGBO(255, 128, 163, 0.5),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                    spreadRadius: 0)
+                    color: Color.fromRGBO(255, 128, 163, 0.5), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)
               ],
               borderRadius: BorderRadius.circular(5.w)),
           alignment: Alignment.center,
@@ -583,18 +554,16 @@ class AlphaState extends State<Alpha> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onVerticalDragDown: (DragDownDetails details) {
-        int touchOffset2Begin = ((details.localPosition.dy - pyPading) /
-                (widget.alphaItemSize + (alphaPading * 2)))
-            .truncate();
+        int touchOffset2Begin =
+            ((details.localPosition.dy - pyPading) / (widget.alphaItemSize + (alphaPading * 2))).truncate();
         String tag = _getHitAlpha(touchOffset2Begin);
         if (tag != null) {
           _touchStartEvent(tag);
         }
       },
       onVerticalDragUpdate: (DragUpdateDetails details) {
-        int touchOffset2Begin = ((details.localPosition.dy - pyPading) /
-                (widget.alphaItemSize + (alphaPading * 2)))
-            .truncate();
+        int touchOffset2Begin =
+            ((details.localPosition.dy - pyPading) / (widget.alphaItemSize + (alphaPading * 2))).truncate();
         String tag = _getHitAlpha(touchOffset2Begin);
         if (tag != null) {
           _touchMoveEvent(tag);
@@ -631,8 +600,7 @@ class CityIndexName extends StatelessWidget {
   }
 }
 
-CityListData cityListDataFromJson(String str) =>
-    CityListData.fromJson(json.decode(str));
+CityListData cityListDataFromJson(String str) => CityListData.fromJson(json.decode(str));
 
 String cityListDataToJson(CityListData data) => json.encode(data.toJson());
 

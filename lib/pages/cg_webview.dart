@@ -45,6 +45,9 @@ class _CgWebviewState extends State<CgWebview> {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(
+            height: ScreenUtil().statusBarHeight,
+          ),
           PageTitleBar(title: widget.title ?? ''),
           Expanded(
             child: kIsWeb

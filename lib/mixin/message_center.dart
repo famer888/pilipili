@@ -5,7 +5,6 @@ import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/yy_dialog.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -70,8 +69,7 @@ class MessageOfSystem extends StatelessWidget {
         time: times != null ? times.toString() : ' ',
         number: noticeCount.toString(),
         onTap: () {
-          context.push(CommonUtils.getRealHash('noticemessage'),
-              extra: {'title': '通知消息', 'type': 1});
+          context.push(CommonUtils.getRealHash('noticemessage'), extra: {'title': '通知消息', 'type': 1});
         },
       );
     });
@@ -90,8 +88,7 @@ class MessageOfNotice extends StatelessWidget {
       if (state.systemnotice?.data?.feed != null) {
         times = state.systemnotice.data.feed.createdAt is String
             ? state.systemnotice.data.feed.createdAt
-            : CommonUtils.getHMTime(
-                int.parse(state.systemnotice.data.feed.createdAt));
+            : CommonUtils.getHMTime(int.parse(state.systemnotice.data.feed.createdAt));
         messages = state.systemnotice.data.feed.question;
         noticeCount = state.systemnotice.data.feedCount;
       }
@@ -102,9 +99,9 @@ class MessageOfNotice extends StatelessWidget {
         time: times != null ? times.toString() : ' ',
         number: noticeCount.toString(),
         onTap: () {
-          if (Privilege.isAllowed(
-              context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
-            context.push(CommonUtils.getRealHash('customerService'));
+          if (Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_FEED)) {
+            // context.push(CommonUtils.getRealHash('customerService'));
+            CommonUtils.toService(context);
           } else {
             YyShowDialog.showdialog(
               context,
@@ -112,9 +109,7 @@ class MessageOfNotice extends StatelessWidget {
                 return Text(
                   '哥哥~开启1V1服务需要会员呢！您好像没有哦~',
                   style: TextStyle(
-                      color: Color(0xff646464),
-                      fontSize: ScreenUtil().setSp(16),
-                      fontWeight: FontWeight.bold),
+                      color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
                 );
               },
               cancelText: '取消',
@@ -138,14 +133,7 @@ class MessageActionItem extends StatelessWidget {
   final String time;
   final String number;
   final Function onTap;
-  const MessageActionItem(
-      {Key key,
-      this.title,
-      this.icon,
-      this.message,
-      this.time,
-      this.number,
-      this.onTap})
+  const MessageActionItem({Key key, this.title, this.icon, this.message, this.time, this.number, this.onTap})
       : super(key: key);
 
   @override
@@ -160,9 +148,7 @@ class MessageActionItem extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
             decoration: BoxDecoration(
                 border: Border(
-              bottom: BorderSide(
-                  width: ScreenUtil().setWidth(0.5),
-                  color: Color.fromRGBO(238, 238, 238, 0.3)),
+              bottom: BorderSide(width: ScreenUtil().setWidth(0.5), color: Color.fromRGBO(238, 238, 238, 0.3)),
             )),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,20 +168,16 @@ class MessageActionItem extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                            color: Color(0xFF404040),
-                            fontSize: ScreenUtil().setSp(15),
-                            fontWeight: FontWeight.w500),
+                            color: Color(0xFF404040), fontSize: ScreenUtil().setSp(15), fontWeight: FontWeight.w500),
                       ),
                       SizedBox(
                         height: ScreenUtil().setWidth(9),
                       ),
                       Text(
-                        '  '+message.toString(),
+                        '  ' + message.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Color(0xFF979797),
-                            fontSize: ScreenUtil().setSp(13)),
+                        style: TextStyle(color: Color(0xFF979797), fontSize: ScreenUtil().setSp(13)),
                       )
                     ],
                   ),
@@ -206,9 +188,7 @@ class MessageActionItem extends StatelessWidget {
                   children: [
                     Text(
                       time,
-                      style: TextStyle(
-                          color: Color(0xFF979797),
-                          fontSize: ScreenUtil().setSp(12)),
+                      style: TextStyle(color: Color(0xFF979797), fontSize: ScreenUtil().setSp(12)),
                     ),
                     SizedBox(
                       height: ScreenUtil().setWidth(15),
@@ -217,17 +197,12 @@ class MessageActionItem extends StatelessWidget {
                       opacity: number == '0' ? 0 : 1,
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(1),
-                            horizontal: ScreenUtil().setWidth(8)),
+                            vertical: ScreenUtil().setWidth(1), horizontal: ScreenUtil().setWidth(8)),
                         decoration: BoxDecoration(
-                            color: Color(0xfffFE155B),
-                            borderRadius: BorderRadius.circular(
-                                ScreenUtil().setWidth(7.5))),
+                            color: Color(0xfffFE155B), borderRadius: BorderRadius.circular(ScreenUtil().setWidth(7.5))),
                         child: Text(
                           number,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: ScreenUtil().setSp(12)),
+                          style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(12)),
                         ),
                       ),
                     )
