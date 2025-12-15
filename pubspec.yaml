@@ -77,7 +77,8 @@ dependencies:
   card_swiper: ^2.0.3
   lpinyin: ^2.0.3
   common_utils: ^2.1.0
-
+  webviewx_plus: 0.3.3
+  flutter_inappwebview: ^5.6.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

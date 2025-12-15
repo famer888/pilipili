@@ -1204,3 +1204,13 @@ Future getNovelList({int order, int page, int limit, String filter}) async {
     return null;
   }
 }
+
+//获取客服
+Future<Basic> customerConf() async {
+  try {
+    Response<dynamic> data = await PlatformAwareHttp.post('/api/user/customer_conf');
+    return Basic.fromJson(data.data);
+  } catch (e) {
+    return null;
+  }
+}

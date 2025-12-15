@@ -18,6 +18,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pilipili/components/common/images.dart';
+import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/model/basic.dart';
 import 'package:pilipili/model/systemnotice.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/pp_string.dart';
@@ -32,6 +34,17 @@ import 'package:universal_html/html.dart' as html;
 import 'api.dart';
 
 class CommonUtils {
+  static toService(BuildContext context) async {
+    PageStatus.showLoading();
+    Basic res = await customerConf();
+    PageStatus.closeLoading();
+    if (res?.status != 0) {
+      context.push('/cgWebview/${Uri.encodeComponent(res?.data['url'])}/在线客服');
+    } else {
+      showText(res?.msg ?? '系统错误');
+    }
+  }
+
   static Future<bool> pngLimitSize(XFile file, {int size = 5, String tips}) async {
     if (kIsWeb) return true;
     int length = await file.length();

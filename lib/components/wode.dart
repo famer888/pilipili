@@ -12,7 +12,6 @@ import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/index.dart';
 
@@ -79,40 +78,13 @@ class _WodeState extends State<Wode> {
     {'name': "我购买的", 'iconUrl': PPAssetsPath.buy, "router": '/buy'},
     {'name': "我的收藏", 'iconUrl': PPAssetsPath.collect, "router": '/collect'},
     {'name': "我的下载", 'iconUrl': PPAssetsPath.download, 'router': '/downPage'},
-    {
-      'name': "在线客服",
-      'iconUrl': PPAssetsPath.customer,
-      'router': '/onlineService'
-    },
-    {
-      'name': "联系官方",
-      'iconUrl': PPAssetsPath.official,
-      'router': '/contactOfficial'
-    },
+    {'name': "在线客服", 'iconUrl': PPAssetsPath.customer, 'router': 'onlineService'},
+    {'name': "联系官方", 'iconUrl': PPAssetsPath.official, 'router': '/contactOfficial'},
     {'name': "邀请好友", 'iconUrl': PPAssetsPath.invite, 'router': '/invitefriend'},
-    {
-      'name': "应用推荐",
-      'iconUrl': PPAssetsPath.appRecommend,
-      'router': '/appCenter'
-    },
-    {
-      'name': "我的帖子",
-      'iconUrl': 'assets/images/2023/icon_post.png',
-      'assets': true,
-      'router': '/myPost'
-    },
-    {
-      'name': "我的关注",
-      'iconUrl': 'assets/images/2023/icon_myfollow.png',
-      'assets': true,
-      'router': '/myFollow'
-    },
-    {
-      'name': "申请原创入驻",
-      'iconUrl': 'assets/images/2023/icon_myadd.png',
-      'assets': true,
-      'router': '/zhaomu'
-    },
+    {'name': "应用推荐", 'iconUrl': PPAssetsPath.appRecommend, 'router': '/appCenter'},
+    {'name': "我的帖子", 'iconUrl': 'assets/images/2023/icon_post.png', 'assets': true, 'router': '/myPost'},
+    {'name': "我的关注", 'iconUrl': 'assets/images/2023/icon_myfollow.png', 'assets': true, 'router': '/myFollow'},
+    {'name': "申请原创入驻", 'iconUrl': 'assets/images/2023/icon_myadd.png', 'assets': true, 'router': '/zhaomu'},
   ];
 
   @override
@@ -200,8 +172,7 @@ class SystemNoticeIcon extends StatelessWidget {
             url:
                 // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
                 (state.systemnotice?.data ?? false) != null &&
-                        (state.systemnotice.data.systemNoticeCount != 0 ||
-                            state.systemnotice.data.feedCount != 0)
+                        (state.systemnotice.data.systemNoticeCount != 0 || state.systemnotice.data.feedCount != 0)
                     ? PPAssetsPath.chatCircleDotsActive
                     : PPAssetsPath.chatCircleDots,
             width: 24.w,
@@ -234,8 +205,7 @@ class UserAvatar extends StatelessWidget {
 }
 
 class Header extends StatelessWidget {
-  const Header({Key key, this.members, this.isLogin, this.networkErr})
-      : super(key: key);
+  const Header({Key key, this.members, this.isLogin, this.networkErr}) : super(key: key);
   final Member members;
   final bool isLogin;
   final bool networkErr;
@@ -249,16 +219,10 @@ class Header extends StatelessWidget {
           right: 0,
           bottom: -10.h,
           child: PlatformAwareAssetImage(
-              url: "assets/images/wode/header_bg.png",
-              fit: BoxFit.fill,
-              filterQuality: FilterQuality.medium),
+              url: "assets/images/wode/header_bg.png", fit: BoxFit.fill, filterQuality: FilterQuality.medium),
         ),
         Container(
-          padding: EdgeInsets.only(
-              top: ScreenUtil().statusBarHeight + 10.h,
-              left: 18.w,
-              right: 16.w,
-              bottom: 18.h),
+          padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight + 10.h, left: 18.w, right: 16.w, bottom: 18.h),
           child: Column(
             children: [
               Row(
@@ -323,26 +287,19 @@ class Header extends StatelessWidget {
                                           top: 5.w,
                                           right: 5.w,
                                         ),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.w),
+                                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                                         height: 20.h,
                                         decoration: new BoxDecoration(
-                                          color: Color.fromRGBO(
-                                              225, 225, 225, 0.28),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
+                                          color: Color.fromRGBO(225, 225, 225, 0.28),
+                                          borderRadius: BorderRadius.all(Radius.circular(25)),
                                           //设置四周边框
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'ID:' +
-                                                (members?.aff ?? '0000000')
-                                                    .toString(),
+                                            'ID:' + (members?.aff ?? '0000000').toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.bold),
+                                                color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.bold),
                                           ),
                                         )),
                                   ],
@@ -359,8 +316,7 @@ class Header extends StatelessWidget {
                                         context.push('/login');
                                       },
                                       child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             PPString.registerLogin,
@@ -407,6 +363,11 @@ class HandleList extends StatelessWidget {
         GestureDetector(
           onTap: () {
             if (item['router'] != null) {
+              if (item['router'] == 'onlineService') {
+                //客服页面
+                CommonUtils.toService(context);
+                return;
+              }
               context.push(item['router']);
             }
           },
@@ -480,20 +441,14 @@ class CardList extends StatelessWidget {
                     children: [
                       Text(
                         "VIP充值",
-                        style: TextStyle(
-                            fontSize: 18.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18.sp, color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 5.h,
                       ),
                       Text(
                         "您有" + (member.level ?? 0).toString() + "张会员卡",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 14.sp, color: Colors.white, fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
@@ -543,17 +498,11 @@ class CardList extends StatelessWidget {
                           children: [
                             Text(
                               "皮哩币",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               "余额:" + (member.money ?? 0).toString(),
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -593,17 +542,11 @@ class CardList extends StatelessWidget {
                           children: [
                             Text(
                               "领取",
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               "免费会员",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -617,6 +560,5 @@ class CardList extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }
