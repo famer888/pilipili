@@ -88,4 +88,38 @@ class PlatformAwareCrypto {
       return null;
     }
   }
+
+  //新增上报加解密
+
+  static String getReportSign(Map obj, {String signKey = ''}) {
+    final keyValues = [];
+    keyValues.add("client=${obj['client']}");
+    keyValues.add("data=${obj['data']}");
+    keyValues.add("timestamp=${obj['timestamp']}");
+
+    final text = '${keyValues.join('&')}$signKey';
+    final digest = sha256.convert(utf8.encode(text));
+    final md5Text = md5.convert(utf8.encode(digest.toString())).toString();
+    return md5Text;
+  }
+
+  static dynamic encryptReportParams(Object value, {String keyString = '', String ivString = '', String signKey = ''}) {
+    final word = jsonEncode(value);
+    final encrypter = Encrypter(AES(Key.fromUtf8(keyString), mode: AESMode.cbc));
+    final encrypted = encrypter.encryptBytes(utf8.encode(word), iv: IV.fromUtf8(ivString));
+    final data = utf8.decode(encrypted.base64.codeUnits);
+    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final sign = getReportSign({'client': 'pwa', 'data': data, 'timestamp': timestamp}, signKey: signKey);
+    return 'client=pwa&timestamp=$timestamp&data=$data&sign=$sign';
+  }
+
+  static String encryptSecret(String key) {
+    final serect = key.split('_').first;
+    final interval = int.tryParse(key.split('_').last) ?? 3600;
+    final ct = (DateTime.now().millisecondsSinceEpoch / 1000 / interval).floor();
+    final cal = (sha1.convert(utf8.encode(serect + ct.toString()))).toString();
+    final sha = sha1.convert(utf8.encode(serect + cal));
+    final str = md5.convert(utf8.encode(sha.toString())).toString();
+    return str.substring(0, 16);
+  }
 }

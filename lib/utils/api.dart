@@ -79,7 +79,8 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
           appIdStr: result.data.click_app_id ?? AppGlobal.appCode,
           uidStr: (result.data.member.aff ?? 0).toString(),
           sidStr: result.data.member.uuid ?? '',
-          api: result.data.click_transit_path ?? "/api/report/batch");
+          config: result.data.buryPoint,
+          api: result.data.buryPoint.clickTransitPath ?? "");
       getUserInfo(context);
     }
     if (res2.data != null) {

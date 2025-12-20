@@ -57,7 +57,8 @@ class Data {
       this.allowPublishPost,
       this.noPermissionPublishPostTips,
       this.click_app_id,
-      this.click_transit_path});
+      this.click_transit_path,
+      this.buryPoint});
 
   VersionMsg versionMsg;
   int timestamp;
@@ -71,20 +72,21 @@ class Data {
   String noPermissionPublishPostTips;
   String click_app_id;
   String click_transit_path;
+  ReportConfig buryPoint;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        versionMsg: json["versionMsg"] == null ? null : VersionMsg.fromJson(json["versionMsg"]),
-        notice: json["notice"] == null ? null : Notice.fromJson(json["notice"]),
-        timestamp: json["timestamp"] == null ? null : json["timestamp"],
-        config: json["config"] == null ? null : Config.fromJson(json["config"]),
-        ads: json["ads"] == null ? null : Ads.fromJson(json["ads"]),
-        member: json["member"] == null ? null : Member.fromJson(json["member"]),
-        darkPrivilege: json["dark_privilege"] ?? false,
-        darkprivilegeTips: json["dark_privilege_tips"] ?? '',
-        allowPublishPost: int.parse(json["allow_publish_post"] ?? '0'),
-        noPermissionPublishPostTips: json["no_permission_publish_post_tips"] ?? '',
-        click_app_id: json["click_app_id"],
-        click_transit_path: json["click_transit_path"],
-      );
+      versionMsg: json["versionMsg"] == null ? null : VersionMsg.fromJson(json["versionMsg"]),
+      notice: json["notice"] == null ? null : Notice.fromJson(json["notice"]),
+      timestamp: json["timestamp"] == null ? null : json["timestamp"],
+      config: json["config"] == null ? null : Config.fromJson(json["config"]),
+      ads: json["ads"] == null ? null : Ads.fromJson(json["ads"]),
+      member: json["member"] == null ? null : Member.fromJson(json["member"]),
+      darkPrivilege: json["dark_privilege"] ?? false,
+      darkprivilegeTips: json["dark_privilege_tips"] ?? '',
+      allowPublishPost: int.parse(json["allow_publish_post"] ?? '0'),
+      noPermissionPublishPostTips: json["no_permission_publish_post_tips"] ?? '',
+      click_app_id: json["click_app_id"],
+      click_transit_path: json["click_transit_path"],
+      buryPoint: ReportConfig.fromJson(json['bury_point']));
 
   Map<String, dynamic> toJson() => {
         "versionMsg": versionMsg == null ? null : versionMsg.toJson(),
@@ -98,7 +100,8 @@ class Data {
         "allow_publish_post": allowPublishPost ?? 0,
         "no_permission_publish_post_tips": noPermissionPublishPostTips ?? '',
         "click_app_id": click_app_id,
-        "click_transit_path": click_transit_path
+        "click_transit_path": click_transit_path,
+        "bury_point": buryPoint
       };
 }
 
@@ -631,4 +634,87 @@ class VersionMsg {
         "mstatus": mstatus == null ? null : mstatus,
         "channel": channel == null ? null : channel,
       };
+}
+
+class ReportConfig {
+  ReportConfig({
+    this.clickAppId = '',
+    this.clickTransitPath = '',
+    this.isReportOrderPaid = 0,
+    this.isReportCoinConsume = 0,
+    this.isReportNavigation = 0,
+    this.isReportAppPageView = 0,
+    this.isReportPageClick = 0,
+    this.isReportAdvertising = 0,
+    this.isReportPageLifecycle = 0,
+    this.isReportVideoEvent = 0,
+    this.isReportVideoLike = 0,
+    this.isReportVideoComment = 0,
+    this.isReportVideoCollect = 0,
+    this.isReportVideoPurchase = 0,
+    this.isReportKeywordSearch = 0,
+    this.isReportKeywordClick = 0,
+    this.isReportAdImpression = 0,
+    this.isReportAdClick = 0,
+    this.isEncryption = 0,
+    this.encryptionKey = '',
+    this.encryptionIv = '',
+    this.signKey = '',
+    this.authenticationKey = '',
+    this.authenticationTime = 3600,
+  });
+
+  final String clickAppId;
+  final String clickTransitPath;
+  final int isReportOrderPaid;
+  final int isReportCoinConsume;
+  final int isReportNavigation;
+  final int isReportAppPageView;
+  final int isReportPageClick;
+  final int isReportAdvertising;
+  final int isReportPageLifecycle;
+  final int isReportVideoEvent;
+  final int isReportVideoLike;
+  final int isReportVideoComment;
+  final int isReportVideoCollect;
+  final int isReportVideoPurchase;
+  final int isReportKeywordSearch;
+  final int isReportKeywordClick;
+  final int isReportAdImpression;
+  final int isReportAdClick;
+  final int isEncryption;
+  final String encryptionKey;
+  final String encryptionIv;
+  final String signKey;
+  final String authenticationKey;
+  final int authenticationTime;
+
+  factory ReportConfig.fromJson(Map<String, dynamic> json) {
+    return ReportConfig(
+      clickAppId: json['click_app_id'] ?? '',
+      clickTransitPath: json['click_transit_path'] ?? '',
+      isReportOrderPaid: json['is_report_order_paid'] ?? 0,
+      isReportCoinConsume: json['is_report_coin_consume'] ?? 0,
+      isReportNavigation: json['is_report_navigation'] ?? 0,
+      isReportAppPageView: json['is_report_app_page_view'] ?? 0,
+      isReportPageClick: json['is_report_page_click'] ?? 0,
+      isReportAdvertising: json['is_report_advertising'] ?? 0,
+      isReportPageLifecycle: json['is_report_page_lifecycle'] ?? 0,
+      isReportVideoEvent: json['is_report_video_event'] ?? 0,
+      isReportVideoLike: json['is_report_video_like'] ?? 0,
+      isReportVideoComment: json['is_report_video_comment'] ?? 0,
+      isReportVideoCollect: json['is_report_video_collect'] ?? 0,
+      isReportVideoPurchase: json['is_report_video_purchase'] ?? 0,
+      isReportKeywordSearch: json['is_report_keyword_search'] ?? 0,
+      isReportKeywordClick: json['is_report_keyword_click'] ?? 0,
+      isReportAdImpression: json['is_report_ad_impression'] ?? 0,
+      isReportAdClick: json['is_report_ad_click'] ?? 0,
+      isEncryption: json['is_encryption'] ?? 0,
+      encryptionKey: json['encryption_key'] ?? '',
+      encryptionIv: json['encryption_iv'] ?? '',
+      signKey: json['sign_key'] ?? '',
+      authenticationKey: json['authentication_key'] ?? '',
+      authenticationTime: int.tryParse(json['authentication_time'] ?? '3600') ?? 3600,
+    );
+  }
 }

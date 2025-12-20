@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:pilipili/utils/crypto.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:video_player/video_player.dart';
 import 'package:pilipili/report/video_analytics_tracker.dart';
@@ -15,7 +16,7 @@ class AppEventReport {
   static int reposrtLength = 1;
   static String apiPath = '';
   List reportedAdIds = [];
-
+  ReportConfig reportConfig; //上报配置
   /// 事件缓存（批量）
   List<Map<String, dynamic>> eventList = [];
 
@@ -95,17 +96,17 @@ class AppEventReport {
 
   //-----------------视频相关操作---end------------------
 
-  Future<void> init({
-    String channelStr, //渠道码
-    String appIdStr, //应用id
-    String uidStr, //用户id
-    String sidStr, //用户uuid
-    bool vip, //用户是否是会员
-    String api, //api地址（prod 时传批量上报路径）
-  }) async {
+  Future<void> init(
+      {String channelStr, //渠道码
+      String appIdStr, //应用id
+      String uidStr, //用户id
+      String sidStr, //用户uuid
+      bool vip, //用户是否是会员
+      String api, //api地址（prod 时传批量上报路径）
+      ReportConfig config}) async {
     if (isInlit) return;
     isInlit = true;
-
+    reportConfig = config;
     channel = channelStr;
     uid = uidStr;
     apiPath = api;
@@ -180,7 +181,7 @@ class AppEventReport {
                 finalBatch.add(base);
               }
               CommonUtils.debugPrint('批量上报数据: $finalBatch');
-              options.data = jsonEncode(finalBatch);
+              options.data = finalBatch;
             }
 
             return handler.next(options);
@@ -194,17 +195,32 @@ class AppEventReport {
           },
         ),
       );
+    if (reportConfig.isEncryption == 1) {
+      final secretValue =
+          PlatformAwareCrypto.encryptSecret('${reportConfig.authenticationKey}_${reportConfig.authenticationTime}');
+      _reportDio.options.headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Cf-Ray-Xf': secretValue};
+
+      _reportDio.interceptors.add(
+        InterceptorsWrapper(onRequest: (options, handler) {
+          if (options.data != null) {
+            final dynamic data = options.data;
+            print('上报 加密前 参数 = ${options.data}');
+            options.data = PlatformAwareCrypto.encryptReportParams(data,
+                keyString: reportConfig.encryptionKey,
+                ivString: reportConfig.encryptionIv,
+                signKey: reportConfig.signKey);
+          }
+          handler.next(options);
+        }),
+      );
+    }
   }
 
   /// 事件上报
   void track(String event, Map data) {
     if (_reportDio == null) return;
 
-    String _apiPath = isProd
-        ? (apiPath != null && apiPath.contains('http') ? apiPath : '${AppGlobal.apiBaseURL}$apiPath')
-        : 'https://api.shuifeng.cc/api/eventTracking/batchReport.json';
-
-    CommonUtils.debugPrint("上报地址: $_apiPath");
+    CommonUtils.debugPrint("上报地址: $apiPath");
     final int ts = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     eventList.add({
       'event': event,
@@ -218,7 +234,7 @@ class AppEventReport {
 
       _reportDio
           .post(
-        _apiPath,
+        apiPath,
         data: batch,
       )
           .then(
