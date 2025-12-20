@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+/// ------------------------------
+/// PrimaryScrollContainer
+/// ------------------------------
 class PrimaryScrollContainer extends StatefulWidget {
   final Widget child;
 
@@ -18,16 +21,18 @@ class PrimaryScrollContainerState extends State<PrimaryScrollContainer> {
   ScrollControllerWrapper _scrollController;
 
   get scrollController {
-    final PrimaryScrollController primaryScrollController = context
-        .dependOnInheritedWidgetOfExactType(aspect: PrimaryScrollController);
-    if (primaryScrollController != null)
+    final PrimaryScrollController primaryScrollController =
+        context.dependOnInheritedWidgetOfExactType(aspect: PrimaryScrollController);
+
+    if (primaryScrollController != null) {
       _scrollController.inner = primaryScrollController.controller;
+    }
+
     return _scrollController;
   }
 
   @override
   void initState() {
-    print('initstate');
     _scrollController = ScrollControllerWrapper();
     super.initState();
   }
@@ -45,8 +50,13 @@ class PrimaryScrollContainerState extends State<PrimaryScrollContainer> {
   }
 }
 
-class PrimaryScrollControllerWrapper extends InheritedWidget
-    implements PrimaryScrollController {
+/// ------------------------------
+/// PrimaryScrollControllerWrapper
+/// ------------------------------
+/// 用来覆盖 PrimaryScrollController
+/// 适配 Flutter 3.3.0（无 null-safety）
+/// ------------------------------
+class PrimaryScrollControllerWrapper extends InheritedWidget implements PrimaryScrollController {
   final ScrollController scrollController;
 
   const PrimaryScrollControllerWrapper({
@@ -55,25 +65,39 @@ class PrimaryScrollControllerWrapper extends InheritedWidget
     @required this.scrollController,
   }) : super(key: key, child: child);
 
-  get runtimeType => PrimaryScrollController;
-
-  get controller => scrollController;
+  /// 让 Flutter 识别为 PrimaryScrollController
+  @override
+  Type get runtimeType => PrimaryScrollController;
 
   @override
-  bool updateShouldNotify(PrimaryScrollControllerWrapper oldWidget) =>
-      controller != oldWidget.controller;
+  ScrollController get controller => scrollController;
 
+  /// 更新机制
   @override
-  // TODO: implement automaticallyInheritForPlatforms
-  Set<TargetPlatform> get automaticallyInheritForPlatforms =>
-      throw UnimplementedError();
+  bool updateShouldNotify(PrimaryScrollControllerWrapper oldWidget) => controller != oldWidget.controller;
 
+  /// Flutter 3.3.0 必须实现的 getter
+  /// 哪些平台会自动继承 PrimaryScrollController
   @override
-  // TODO: implement scrollDirection
-  Axis get scrollDirection => throw UnimplementedError();
+  Set<TargetPlatform> get automaticallyInheritForPlatforms => const <TargetPlatform>{
+        TargetPlatform.android,
+        TargetPlatform.fuchsia,
+        TargetPlatform.linux,
+        TargetPlatform.windows,
+      };
+
+  /// 某些 Flutter 版本会访问这个 getter
+  @override
+  bool get automaticallyApplyForPlatform => true;
+
+  /// scrollDirection 用于判断是否继承滚动控制器
+  @override
+  Axis get scrollDirection => Axis.vertical;
 }
 
-//代理
+/// ------------------------------
+/// ScrollControllerWrapper 代理原逻辑（未改动）
+/// ------------------------------
 class ScrollControllerWrapper implements ScrollController {
   static int a = 1;
 
@@ -81,7 +105,7 @@ class ScrollControllerWrapper implements ScrollController {
 
   int code = a++;
 
-  ScrollPosition interceptedAttachPosition; //拦截的position
+  ScrollPosition interceptedAttachPosition;
   ScrollPosition lastPosition;
 
   bool showing = true;
@@ -95,11 +119,8 @@ class ScrollControllerWrapper implements ScrollController {
 
   @override
   void attach(ScrollPosition position) {
-    print('{$code}:attach start {$showing}');
-    if (position == interceptedAttachPosition) print("attach by inner");
-    position.hasListeners;
-    print('{$code}:attach end {$showing}');
     if (inner.positions.contains(position)) return;
+
     if (showing) {
       inner.attach(position);
       lastPosition = position;
@@ -110,34 +131,25 @@ class ScrollControllerWrapper implements ScrollController {
 
   @override
   void detach(ScrollPosition position, {bool fake = false}) {
-    assert(() {
-      print('{$code}:detach start {$showing}');
-      return true;
-    }.call());
-    if (fake) print("detach is innner");
     if (inner.positions.contains(position)) {
       inner.detach(position);
     }
+
     if (position == interceptedAttachPosition && !fake) {
-      print('{$code}:set null {$showing}');
       interceptedAttachPosition = null;
     }
     if (position == lastPosition && !fake) {
-      print('{$code}:set null {$showing}');
       lastPosition = null;
     }
+
     if (fake) {
       interceptedAttachPosition = position;
     }
-    assert(() {
-      print('{$code}:detach end {$showing}');
-      return true;
-    }.call());
   }
 
   void onAttachChange(bool b) {
-    print('{$code}:change{$b}');
     showing = b;
+
     if (!showing) {
       if (lastPosition != null) detach(lastPosition, fake: true);
     } else {
@@ -146,13 +158,11 @@ class ScrollControllerWrapper implements ScrollController {
   }
 
   @override
-  ScrollPosition createScrollPosition(ScrollPhysics physics,
-          ScrollContext context, ScrollPosition oldPosition) =>
+  ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) =>
       inner.createScrollPosition(physics, context, oldPosition);
 
   @override
-  void debugFillDescription(List<String> description) =>
-      inner.debugFillDescription(description);
+  void debugFillDescription(List<String> description) => inner.debugFillDescription(description);
 
   @override
   String get debugLabel => inner.debugLabel;
@@ -194,7 +204,5 @@ class ScrollControllerWrapper implements ScrollController {
   int get hashCode => inner.hashCode;
 
   @override
-  bool operator ==(other) {
-    return hashCode == (other.hashCode);
-  }
+  bool operator ==(other) => hashCode == (other.hashCode);
 }

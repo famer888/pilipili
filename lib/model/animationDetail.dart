@@ -4,11 +4,9 @@
 
 import 'dart:convert';
 
-AnimationDetail animationDetailFromJson(String str) =>
-    AnimationDetail.fromJson(json.decode(str));
+AnimationDetail animationDetailFromJson(String str) => AnimationDetail.fromJson(json.decode(str));
 
-String animationDetailToJson(AnimationDetail data) =>
-    json.encode(data.toJson());
+String animationDetailToJson(AnimationDetail data) => json.encode(data.toJson());
 
 class AnimationDetail {
   AnimationDetail({
@@ -25,8 +23,7 @@ class AnimationDetail {
   bool crypt;
   bool isVip;
 
-  factory AnimationDetail.fromJson(Map<String, dynamic> json) =>
-      AnimationDetail(
+  factory AnimationDetail.fromJson(Map<String, dynamic> json) => AnimationDetail(
         data: json["data"] == null ? null : DetailData.fromJson(json["data"]),
         status: json["status"] == null ? null : json["status"],
         msg: json["msg"] == null ? null : json["msg"],
@@ -128,6 +125,7 @@ class DetailData {
   String publisher;
   String actors;
   String category;
+  String categoryIds;
   String tags;
   String selfTag;
   String tagsId;
@@ -200,8 +198,7 @@ class DetailData {
       countPlay: json["count_play"] == null ? null : json["count_play"],
       countFavorites: json["count_favorites"],
       countLike: json["count_like"] == null ? null : json["count_like"],
-      countComment:
-          json["count_comment"] == null ? null : json["count_comment"],
+      countComment: json["count_comment"] == null ? null : json["count_comment"],
       countReward: json["count_reward"] == null ? null : json["count_reward"],
       countPay: json["count_pay"] == null ? null : json["count_pay"],
       incomeCoins: json["income_coins"] == null ? null : json["income_coins"],
@@ -211,17 +208,13 @@ class DetailData {
       callbackAt: json["callback_at"] == null ? null : json["callback_at"],
       isfree: json["isfree"] == null ? null : json["isfree"],
       status: json["status"] == null ? null : json["status"],
-      thumbStartTime:
-          json["thumb_start_time"] == null ? null : json["thumb_start_time"],
-      thumbDuration:
-          json["thumb_duration"] == null ? null : json["thumb_duration"],
+      thumbStartTime: json["thumb_start_time"] == null ? null : json["thumb_start_time"],
+      thumbDuration: json["thumb_duration"] == null ? null : json["thumb_duration"],
       isHide: json["is_hide"] == null ? null : json["is_hide"],
       coins: json["coins"] == null ? null : json["coins"],
       musicId: json["music_id"] == null ? null : json["music_id"],
-      enableBackground:
-          json["enable_background"] == null ? null : json["enable_background"],
-      enableSoundtrack:
-          json["enable_soundtrack"] == null ? null : json["enable_soundtrack"],
+      enableBackground: json["enable_background"] == null ? null : json["enable_background"],
+      enableSoundtrack: json["enable_soundtrack"] == null ? null : json["enable_soundtrack"],
       isDelete: json["is_delete"] == null ? null : json["is_delete"],
       rejectReason: json["reject_reason"],
       rejectAt: json["reject_at"] == null ? null : json["reject_at"],
@@ -231,20 +224,12 @@ class DetailData {
       desc: json["desc"] == null ? null : json["desc"],
       isPopular: json["is_popular"] == null ? null : json["is_popular"],
       isTiptop: json["is_tiptop"] == null ? null : json["is_tiptop"],
-      userFavorites:
-          json["userFavorites"] == null ? null : json["userFavorites"],
+      userFavorites: json["userFavorites"] == null ? null : json["userFavorites"],
       userLike: json["userLike"] == null ? null : json["userLike"],
-      coverThumbHorizontal: json["cover_thumb_horizontal"] == null
-          ? null
-          : json["cover_thumb_horizontal"],
-      coverOriginalVertical: json["cover_original_vertical"] == null
-          ? null
-          : json["cover_original_vertical"],
-      coverOriginalHorizontal: json["cover_original_horizontal"] == null
-          ? null
-          : json["cover_original_horizontal"],
-      discountCoins:
-          json["discount_coins"] == null ? 0 : json["discount_coins"],
+      coverThumbHorizontal: json["cover_thumb_horizontal"] == null ? null : json["cover_thumb_horizontal"],
+      coverOriginalVertical: json["cover_original_vertical"] == null ? null : json["cover_original_vertical"],
+      coverOriginalHorizontal: json["cover_original_horizontal"] == null ? null : json["cover_original_horizontal"],
+      discountCoins: json["discount_coins"] == null ? 0 : json["discount_coins"],
       favorites: json["favorites"] == null ? 0 : json["favorites"],
       preview: json["preview"] == null ? null : json["preview"]);
 
@@ -305,12 +290,9 @@ class DetailData {
         "is_tiptop": isTiptop == null ? null : isTiptop,
         "userFavorites": userFavorites == null ? null : userFavorites,
         "userLike": userLike == null ? null : userLike,
-        "cover_thumb_horizontal":
-            coverThumbHorizontal == null ? null : coverThumbHorizontal,
-        "cover_original_vertical":
-            coverOriginalVertical == null ? null : coverOriginalVertical,
-        "cover_original_horizontal":
-            coverOriginalHorizontal == null ? null : coverOriginalHorizontal,
+        "cover_thumb_horizontal": coverThumbHorizontal == null ? null : coverThumbHorizontal,
+        "cover_original_vertical": coverOriginalVertical == null ? null : coverOriginalVertical,
+        "cover_original_horizontal": coverOriginalHorizontal == null ? null : coverOriginalHorizontal,
         "discount_coins": discountCoins == null ? 0 : discountCoins,
         "favorites": favorites == null ? 0 : favorites,
         "preview": preview == null ? null : preview,

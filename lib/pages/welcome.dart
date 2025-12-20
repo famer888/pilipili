@@ -30,29 +30,21 @@ class _WelcomeState extends State<Welcome> {
     setState(() {});
   }
 
-  Future<void> sendCodeInvitation(value) async {
-    if (value.text == null) return;
-    List cliptextList = value.text.split(":").toList();
-    if (cliptextList.length > 1) {
-      if (cliptextList[0] == 'sq_aff') {
-        if (cliptextList[1] != '') {
-          toInvitation(affCode: cliptextList[1]);
-        }
-      }
-    }
-  }
-
   void getClipboardText() {
     if (kIsWeb) {
-      Uri u = Uri.parse(html.window.location.href);
+      Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       String aff = u.queryParameters['sq_aff'];
-      if (aff != null) {
-        toInvitation(affCode: aff);
-      }
+      String traceID = u.queryParameters['trace_id'];
+      if (aff != null) toInvitation(affCode: aff);
+      if (traceID != null) AppGlobal.appBox?.put('trace_id', traceID);
     } else {
       Clipboard.getData(Clipboard.kTextPlain).then((value) {
-        if (value != null) {
-          sendCodeInvitation(value);
+        if (value?.text != null) {
+          final params = Uri.splitQueryString(value?.text ?? '');
+          final aff = params['sq_aff'];
+          final traceID = params['trace_id'];
+          if (aff != null) toInvitation(affCode: aff);
+          if (traceID != null) AppGlobal.appBox?.put('trace_id', traceID);
         }
       });
     }
@@ -64,8 +56,7 @@ class _WelcomeState extends State<Welcome> {
     CommonUtils.checkline(onFailed: () {
       BotToast.showText(
           text: '无法连接服务器，请检查手机网络设置',
-          textStyle: TextStyle(
-              fontSize: ScreenUtil().setWidth(15), color: Colors.white),
+          textStyle: TextStyle(fontSize: ScreenUtil().setWidth(15), color: Colors.white),
           align: Alignment(0, 0),
           duration: new Duration(seconds: 5));
     }, onSuccess: () {
@@ -106,8 +97,7 @@ class _WelcomeState extends State<Welcome> {
     return WillPopScope(
         onWillPop: () async {
           // 点击返回键的操作
-          if (lastPopTime == null ||
-              DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
+          if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
             lastPopTime = DateTime.now();
             BotToast.showText(text: '再按一下退出Pilipili～', align: Alignment(0, 0));
           } else {
@@ -121,8 +111,7 @@ class _WelcomeState extends State<Welcome> {
           body: GestureDetector(
             onTap: () {
               FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus &&
-                  currentFocus.focusedChild != null) {
+              if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
                 FocusManager.instance.primaryFocus.unfocus();
               }
             },
@@ -135,8 +124,7 @@ class _WelcomeState extends State<Welcome> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              if (yyads['url'] == '' || yyads['url'] == null)
-                                return;
+                              if (yyads['url'] == '' || yyads['url'] == null) return;
                               CommonUtils.launchURL(yyads['url']);
                             },
                             child: Container(
@@ -149,18 +137,15 @@ class _WelcomeState extends State<Welcome> {
                             ),
                           ),
                           Positioned(
-                            top: (kIsWeb ? 0 : ScreenUtil().statusBarHeight) +
-                                ScreenUtil().setWidth(10),
+                            top: (kIsWeb ? 0 : ScreenUtil().statusBarHeight) + ScreenUtil().setWidth(10),
                             right: ScreenUtil().setWidth(15),
                             child: Container(
                               padding: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setWidth(5),
-                                  horizontal: ScreenUtil().setWidth(15)),
+                                  vertical: ScreenUtil().setWidth(5), horizontal: ScreenUtil().setWidth(15)),
                               height: ScreenUtil().setWidth(35),
                               decoration: BoxDecoration(
                                 color: Color.fromRGBO(0, 0, 0, .5),
-                                borderRadius: BorderRadius.circular(
-                                    ScreenUtil().setWidth(35)),
+                                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(35)),
                               ),
                               child: Center(
                                 child: Text(
@@ -190,10 +175,7 @@ class _WelcomeState extends State<Welcome> {
                         child: Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('正在检测线路,请稍后～',
-                                  style: DefaultStyle.black15bold)
-                            ],
+                            children: [Text('正在检测线路,请稍后～', style: DefaultStyle.black15bold)],
                           ),
                         ),
                       ),

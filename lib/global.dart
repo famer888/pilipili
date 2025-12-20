@@ -16,6 +16,7 @@ import 'model/element.dart';
 
 class AppGlobal {
   // 全局路由实例
+  static String appCode = "DX-054";
   static String comicThumb; //避免传参，用来记录漫画封面
   static Map appinfo;
   static String apiBaseURL = "";

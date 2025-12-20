@@ -62,8 +62,7 @@ import 'package:pilipili/pages/novel/novel_detai.dart';
 import 'package:pilipili/pages/novel/novel_reader.dart';
 import 'package:pilipili/pages/welcome.dart';
 import 'package:pilipili/pages/withdrawals_record.dart';
-import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/index.dart';
+import 'package:pilipili/report/router_observer.dart';
 
 class GoRouterModel {
   GoRouterModel({this.key, this.builder, this.pageBuilder});
@@ -504,75 +503,7 @@ class Routes {
       initialLocation: "/",
       routerNeglect: true,
       routes: [GoRoute(path: '/', builder: (context, state) => Welcome(), routes: pages)],
-      observers: [BotToastNavigatorObserver(), MyNavObserver()],
+      observers: [BotToastNavigatorObserver(), MyNavObserver.instance],
     );
   }
-}
-
-changeRouter() {
-  GoRouter(
-      routerNeglect: true,
-      routes: [GoRoute(path: '/', builder: (context, state) => Welcome(), routes: [])],
-      observers: [BotToastNavigatorObserver(), MyNavObserver()]);
-}
-
-class MyNavObserver extends NavigatorObserver {
-  MyNavObserver() {
-    //
-  }
-
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
-    if (route != null && route.settings != null && route.settings.name != '/') {
-      AppGlobal.routerReplace = true;
-    }
-    if (previousRoute != null &&
-        route.settings.name != null &&
-        (previousRoute.str.indexOf('smallVideo') != -1 ||
-            previousRoute.str.indexOf('webSmallVideo') != -1 ||
-            previousRoute.str.indexOf('videoDetail') != -1)) {
-      EventBus().emit('stop-current-play');
-    }
-    CommonUtils.debugPrint('didPush: 当前路由=${route.settings.name}, previousRoute= ${previousRoute?.settings?.name}');
-  }
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
-    if (previousRoute != null && previousRoute.settings != null && previousRoute.settings.name == '/') {
-      AppGlobal.routerReplace = false;
-    }
-    if (route.str.indexOf('/login') != -1 || route.str.indexOf('/setup') != -1) {
-      route.popped.then((value) {
-        EventBus().emit('need-update-login-state', value);
-      });
-    }
-    if (route.str.indexOf('noticemessage') != -1 || route.str.indexOf('customerService') != -1) {
-      CommonUtils.updateSystemNotice(AppGlobal.appContext);
-    }
-    CommonUtils.debugPrint(
-        'didPop: ${route.str} result: ${route?.settings?.name}, 当前路由= ${previousRoute?.settings?.name}');
-  }
-
-  @override
-  void didRemove(Route<dynamic> route, Route<dynamic> previousRoute) =>
-      CommonUtils.debugPrint('didRemove: ${route.str}, previousRoute= ${previousRoute?.str}');
-
-  @override
-  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) =>
-      CommonUtils.debugPrint('didReplace: new= ${newRoute?.str}, old= ${oldRoute?.str}');
-
-  @override
-  void didStartUserGesture(
-    Route<dynamic> route,
-    Route<dynamic> previousRoute,
-  ) =>
-      CommonUtils.debugPrint('didStartUserGesture: ${route.str}, '
-          'previousRoute= ${previousRoute?.str}');
-
-  @override
-  void didStopUserGesture() => CommonUtils.debugPrint('didStopUserGesture');
-}
-
-extension on Route<dynamic> {
-  String get str => 'route(${settings.name}: ${settings.arguments})';
 }

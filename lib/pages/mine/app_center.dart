@@ -5,10 +5,12 @@ import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/appcenter.dart';
+import 'package:pilipili/report/report_utils.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class AppCenter extends StatefulWidget {
   AppCenter({Key key}) : super(key: key);
@@ -34,6 +36,10 @@ class _AppCenterState extends State<AppCenter> {
       setState(() {
         banner.addAll(result.data.banner);
         appList.addAll(result.data.apps);
+        ReportUtils.adVertising(
+            eventType: AdEventType.show,
+            advertisingKey: AdType.appsList,
+            advertisingId: result.data.apps.map((e) => e['id']).toList().join(','));
         isLoading = false;
       });
     }
@@ -60,12 +66,12 @@ class _AppCenterState extends State<AppCenter> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12.w)),
                   child: ApplicationItem(
-                    id: appList[index].id,
-                    appname: appList[index].title,
-                    iconurl: appList[index].imgUrl,
-                    des: appList[index].description,
-                    clicked: appList[index].clicked,
-                    link: appList[index].linkUrl,
+                    id: appList[index]['id'],
+                    appname: appList[index]['title'],
+                    iconurl: appList[index]['img_url'],
+                    des: appList[index]['description'],
+                    clicked: appList[index]['clicked'],
+                    link: appList[index]['link_url'],
                   ),
                 );
               }),
@@ -137,6 +143,16 @@ class _SwiperContainerState extends State<SwiperContainer> {
     _banner = widget.banner;
   }
 
+  adVertising(AdEventType eventType, Map data) {
+    ReportUtils.adVertising(
+        eventType: eventType,
+        advertisingKey: AdType.homeFloatBanner,
+        advertisingId: data['id'],
+        adSlotKey: data['advertise_location_code'],
+        adSlotName: data['ad_slot_name'],
+        adtype: data['ad_type']);
+  }
+
   @override
   Widget build(BuildContext context) {
     return _banner.length > 1
@@ -144,19 +160,28 @@ class _SwiperContainerState extends State<SwiperContainer> {
             height: 160.w,
             child: Swiper(
               onTap: (index) {
-                CommonUtils.bannerTopath(context, url: _banner[0].url, type: _banner[0].type);
+                adVertising(AdEventType.click, _banner[index]);
+                CommonUtils.bannerTopath(context, url: _banner[index]['url'], type: _banner[index]['type']);
               },
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  width: 315.w,
-                  height: 150.w,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10.w),
-                    child: PlatformAwareNetworkImage(
-                      url: _banner[index].imgUrl,
+                return VisibilityDetector(
+                    key: Key('${ReportUtils.getAdType(AdType.welfareBanner)['key']}_Banner_${_banner[index]['id']}'),
+                    child: Container(
+                      width: 315.w,
+                      height: 150.w,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.w),
+                        child: PlatformAwareNetworkImage(
+                          url: _banner[index]['img_url'],
+                        ),
+                      ),
                     ),
-                  ),
-                );
+                    onVisibilityChanged: (info) {
+                      final visibleFraction = info.visibleFraction;
+                      if (visibleFraction > 0.7) {
+                        adVertising(AdEventType.show, _banner[index]);
+                      }
+                    });
               },
               itemCount: _banner.length,
               autoplay: _banner.length > 1,
@@ -167,14 +192,23 @@ class _SwiperContainerState extends State<SwiperContainer> {
             width: double.infinity,
             height: _banner.length == 1 ? 150.w : 0,
             child: _banner.length == 1
-                ? GestureDetector(
-                    onTap: () {
-                      CommonUtils.launchURL(_banner[0].url.toString());
-                    },
-                    child: PlatformAwareNetworkImage(
-                      url: _banner[0].imgUrl,
+                ? VisibilityDetector(
+                    key: Key('${ReportUtils.getAdType(AdType.welfareBanner)['key']}_Banner_${_banner[0]['id']}'),
+                    child: GestureDetector(
+                      onTap: () {
+                        adVertising(AdEventType.click, _banner[0]);
+                        CommonUtils.launchURL(_banner[0]['url'].toString());
+                      },
+                      child: PlatformAwareNetworkImage(
+                        url: _banner[0]['img_url'],
+                      ),
                     ),
-                  )
+                    onVisibilityChanged: (info) {
+                      final visibleFraction = info.visibleFraction;
+                      if (visibleFraction > 0.7) {
+                        adVertising(AdEventType.show, _banner[0]);
+                      }
+                    })
                 : SizedBox(),
           );
   }
@@ -187,7 +221,9 @@ class ApplicationItem extends StatefulWidget {
   final String des;
   final int clicked;
   final String link;
-  ApplicationItem({Key key, this.appname, this.iconurl, this.des, this.link, this.clicked, this.id}) : super(key: key);
+  final Map app;
+  ApplicationItem({Key key, this.appname, this.iconurl, this.des, this.link, this.clicked, this.id, this.app})
+      : super(key: key);
 
   @override
   _ApplicationItemState createState() => _ApplicationItemState();
@@ -229,6 +265,13 @@ class _ApplicationItemState extends State<ApplicationItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
+          ReportUtils.adVertising(
+              eventType: AdEventType.click,
+              advertisingKey: AdType.appsList,
+              advertisingId: widget.app['id'],
+              adSlotKey: widget.app['advertise_location_code'],
+              adSlotName: widget.app['ad_slot_name'],
+              adtype: widget.app['ad_type']);
           CommonUtils.bannerTopath(context, url: widget.link, type: 1);
         },
         child: Padding(

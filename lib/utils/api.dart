@@ -24,6 +24,7 @@ import 'package:pilipili/model/updateNum.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:pilipili/model/videolist.dart';
 import 'package:pilipili/model/coindetail.dart';
+import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
@@ -72,6 +73,13 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       AppGlobal.uploadMp4Url = result.data.config.mp4UploadUrl;
       AppGlobal.m3u8_encrypt = result.data.config.m3u8_encrypt;
       AppGlobal.uuid = result.data.member.uuid;
+      AppEventReport.instance.init(
+          vip: (result.data.member.vipLevel ?? 0) > 0,
+          channelStr: result.data.member.channel ?? '',
+          appIdStr: result.data.click_app_id ?? AppGlobal.appCode,
+          uidStr: (result.data.member.aff ?? 0).toString(),
+          sidStr: result.data.member.uuid ?? '',
+          api: result.data.click_transit_path ?? "/api/report/batch");
       getUserInfo(context);
     }
     if (res2.data != null) {

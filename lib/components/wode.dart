@@ -89,21 +89,24 @@ class _WodeState extends State<Wode> {
 
   @override
   Widget build(BuildContext context) {
-    Member members = Provider.of<HomeConfig>(context, listen: false).member;
-    bool isLogin = false;
-    if (['', null, false].contains(AppGlobal.apiToken)) {
-      isLogin = false;
-    } else {
-      isLogin = true;
-    }
     return Column(
       children: [
         pageStatus != 2
             ? Container()
-            : Header(
-                members: members,
-                isLogin: isLogin,
-                networkErr: networkErr,
+            : Consumer<HomeConfig>(
+                builder: (context, counter, _) {
+                  bool isLogin = false;
+                  if (['', null, false].contains(AppGlobal.apiToken)) {
+                    isLogin = false;
+                  } else {
+                    isLogin = true;
+                  }
+                  return Header(
+                    members: counter.member,
+                    isLogin: isLogin,
+                    networkErr: networkErr,
+                  );
+                },
               ),
         Expanded(
             child: PullRefreshList(
@@ -140,8 +143,12 @@ class _WodeState extends State<Wode> {
                       : Container()
                   : Column(
                       children: [
-                        CardList(
-                          member: members,
+                        Consumer<HomeConfig>(
+                          builder: (context, counter, _) {
+                            return CardList(
+                              member: counter.member,
+                            );
+                          },
                         ),
                         SizedBox(
                           height: 22.h,

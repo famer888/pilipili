@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pilipili/report/api_timing_interceptor.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/common.dart';
@@ -43,14 +44,14 @@ Dio _apiDio = new Dio(new BaseOptions(
     if (yytoken != null && yytoken != '') {
       AppGlobal.apiToken = yytoken;
     }
+    String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
     _data.addAll(AppGlobal.appinfo);
-    _data.addAll({'token': AppGlobal.apiToken});
+    _data.addAll({'token': AppGlobal.apiToken, 'trace_id': traceId});
     if (options.data != null) {
       _data.addAll(options.data);
     }
     CommonUtils.debugPrint(_data);
-    options.data =
-        await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
+    options.data = await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
 
     return handler.next(options);
   }, onResponse: (response, handler) async {
@@ -58,10 +59,7 @@ Dio _apiDio = new Dio(new BaseOptions(
       String _data = await PlatformAwareCrypto.decryptResData(response.data);
       response.data = jsonDecode(_data);
     }
-    if (response.data["msg"] == "token无效" &&
-        !isJump &&
-        AppGlobal.appContext != null &&
-        AppGlobal.apInit) {
+    if (response.data["msg"] == "token无效" && !isJump && AppGlobal.appContext != null && AppGlobal.apInit) {
       CommonUtils.showText("token失效,请重新登录");
       isJump = true;
       AppGlobal.apiToken = '';
@@ -77,24 +75,21 @@ Dio _apiDio = new Dio(new BaseOptions(
     return handler.next(response);
   }, onError: (DioError e, handler) {
     return handler.next(e);
-  }));
+  }))
+  ..interceptors.add(ApiTimingInterceptor());
 
 class PlatformAwareHttp {
   static Future getImage(url) {
     if (url.contains('http')) {
       return kIsWeb
-          ? html.HttpRequest.request(url, responseType: 'arraybuffer')
-              .then((xhr) {
+          ? html.HttpRequest.request(url, responseType: 'arraybuffer').then((xhr) {
               if (xhr.response != null) {
                 return base64Encode(xhr.response.asUint8List());
               }
               return '';
             }).onError((error, stackTrace) => '')
-          : _imageDio
-              .get(url)
-              .then((res) => base64Encode(res.data))
-              .onError((error, stackTrace) {
-              print('error---${url}----${error}');
+          : _imageDio.get(url).then((res) => base64Encode(res.data)).onError((error, stackTrace) {
+              print('error---$url----$error');
               return '';
             });
     } else {
@@ -103,10 +98,7 @@ class PlatformAwareHttp {
   }
 
   static Future uploadImage(
-      {dynamic imageUrl,
-      String id,
-      String position = 'head',
-      ProgressCallback progressCallback}) async {
+      {dynamic imageUrl, String id, String position = 'head', ProgressCallback progressCallback}) async {
     try {
       if (id == null) id = '${DateTime.now().millisecondsSinceEpoch}';
       var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
@@ -132,9 +124,7 @@ class PlatformAwareHttp {
               ),
       });
       Response response = await _uploadDio.post(AppGlobal.uploadImgUrl,
-          data: formData,
-          onSendProgress: progressCallback,
-          options: Options(contentType: 'multipart/form-data'));
+          data: formData, onSendProgress: progressCallback, options: Options(contentType: 'multipart/form-data'));
       return response;
     } catch (e) {
       return null;
@@ -179,10 +169,7 @@ class PlatformAwareHttp {
   }
 
   static Future xfileHtmlUploadImage(
-      {XFile file,
-      String id,
-      String position = 'head',
-      Function(html.ProgressEvent) progressCallback}) async {
+      {XFile file, String id, String position = 'head', Function(html.ProgressEvent) progressCallback}) async {
     try {
       id ??= DateTime.now().millisecondsSinceEpoch.toString();
       var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
@@ -202,12 +189,8 @@ class PlatformAwareHttp {
           blob,
         );
 
-      html.HttpRequest httpRequest = await html.HttpRequest.request(
-          AppGlobal.uploadImgUrl,
-          method: "POST",
-          mimeType: "image/$ext",
-          sendData: formData,
-          onProgress: progressCallback);
+      html.HttpRequest httpRequest = await html.HttpRequest.request(AppGlobal.uploadImgUrl,
+          method: "POST", mimeType: "image/$ext", sendData: formData, onProgress: progressCallback);
       html.Url.revokeObjectUrl(url);
       return jsonDecode(httpRequest.response);
     } catch (e) {
@@ -217,10 +200,7 @@ class PlatformAwareHttp {
   }
 
   static Future xfileBytesUploadMp4(
-      {XFile file,
-      String position = 'head',
-      CancelToken cancelToken,
-      ProgressCallback progressCallback}) async {
+      {XFile file, String position = 'head', CancelToken cancelToken, ProgressCallback progressCallback}) async {
     try {
       String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
       var videoKey = AppGlobal.uploadMp4Key.replaceFirst('head', '');
@@ -253,10 +233,7 @@ class PlatformAwareHttp {
   }
 
   static Future xfileUploadMp4(
-      {XFile file,
-      String position = 'head',
-      CancelToken cancelToken,
-      ProgressCallback progressCallback}) async {
+      {XFile file, String position = 'head', CancelToken cancelToken, ProgressCallback progressCallback}) async {
     try {
       String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
       var videoKey = AppGlobal.uploadMp4Key.replaceFirst('head', '');
@@ -287,17 +264,14 @@ class PlatformAwareHttp {
     }
   }
 
-  static Future<Response> download(String urlPath, String savePath,
-      {ProgressCallback onReceiveProgress}) {
+  static Future<Response> download(String urlPath, String savePath, {ProgressCallback onReceiveProgress}) {
 //    if(_dio == null) return;
-    return _uploadDio.download(urlPath, savePath,
-        onReceiveProgress: onReceiveProgress);
+    return _uploadDio.download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
   }
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
   static Future post(String path, {Map data, CancelToken cancelToken}) {
     // AppGlobal.apiBaseURL='https://pili.yesebo.net';
-    return _apiDio.post(AppGlobal.apiBaseURL + path,
-        data: data, cancelToken: cancelToken);
+    return _apiDio.post(AppGlobal.apiBaseURL + path, data: data, cancelToken: cancelToken);
   }
 }

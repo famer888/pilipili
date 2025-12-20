@@ -55,7 +55,9 @@ class Data {
       this.darkPrivilege,
       this.darkprivilegeTips,
       this.allowPublishPost,
-      this.noPermissionPublishPostTips});
+      this.noPermissionPublishPostTips,
+      this.click_app_id,
+      this.click_transit_path});
 
   VersionMsg versionMsg;
   int timestamp;
@@ -67,10 +69,10 @@ class Data {
   String darkprivilegeTips;
   int allowPublishPost;
   String noPermissionPublishPostTips;
+  String click_app_id;
+  String click_transit_path;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        versionMsg: json["versionMsg"] == null
-            ? null
-            : VersionMsg.fromJson(json["versionMsg"]),
+        versionMsg: json["versionMsg"] == null ? null : VersionMsg.fromJson(json["versionMsg"]),
         notice: json["notice"] == null ? null : Notice.fromJson(json["notice"]),
         timestamp: json["timestamp"] == null ? null : json["timestamp"],
         config: json["config"] == null ? null : Config.fromJson(json["config"]),
@@ -79,8 +81,9 @@ class Data {
         darkPrivilege: json["dark_privilege"] ?? false,
         darkprivilegeTips: json["dark_privilege_tips"] ?? '',
         allowPublishPost: int.parse(json["allow_publish_post"] ?? '0'),
-        noPermissionPublishPostTips:
-            json["no_permission_publish_post_tips"] ?? '',
+        noPermissionPublishPostTips: json["no_permission_publish_post_tips"] ?? '',
+        click_app_id: json["click_app_id"],
+        click_transit_path: json["click_transit_path"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,6 +97,8 @@ class Data {
         "dark_privilege_tips": darkprivilegeTips ?? false,
         "allow_publish_post": allowPublishPost ?? 0,
         "no_permission_publish_post_tips": noPermissionPublishPostTips ?? '',
+        "click_app_id": click_app_id,
+        "click_transit_path": click_transit_path
       };
 }
 
@@ -210,37 +215,22 @@ class Config {
   String tgLink;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
-      imgUploadUrl:
-          json["img_upload_url"] == null ? null : json["img_upload_url"],
-      mp4UploadUrl:
-          json["mp4_upload_url"] == null ? null : json["mp4_upload_url"],
-      mobileMp4UploadUrl: json["mobile_mp4_upload_url"] == null
-          ? null
-          : json["mobile_mp4_upload_url"],
-      uploadImgKey:
-          json["upload_img_key"] == null ? null : json["upload_img_key"],
-      uploadMp4Key:
-          json["upload_mp4_key"] == null ? null : json["upload_mp4_key"],
+      imgUploadUrl: json["img_upload_url"] == null ? null : json["img_upload_url"],
+      mp4UploadUrl: json["mp4_upload_url"] == null ? null : json["mp4_upload_url"],
+      mobileMp4UploadUrl: json["mobile_mp4_upload_url"] == null ? null : json["mobile_mp4_upload_url"],
+      uploadImgKey: json["upload_img_key"] == null ? null : json["upload_img_key"],
+      uploadMp4Key: json["upload_mp4_key"] == null ? null : json["upload_mp4_key"],
       uuid: json["uuid"] == null ? null : json["uuid"],
       github: json["github"] == null ? null : json["github"],
       officeSite: json["office_site"] == null ? null : json["office_site"],
-      officialGroup:
-          json["official_group"] == null ? null : json["official_group"],
+      officialGroup: json["official_group"] == null ? null : json["official_group"],
       share: json["share"] == null ? null : Share.fromJson(json["share"]),
       imgBase: json["img_base"] == null ? null : json["img_base"],
-      line: json["line"] == null
-          ? null
-          : List<dynamic>.from(json["line"].map((x) => x)),
-      m3u8_encrypt:
-          json['m3u8_encrypt'] == null ? null : json['m3u8_encrypt'].toString(),
-      video_encrypt_api:
-          json["video_encrypt_api"] == null ? null : json["video_encrypt_api"],
-      video_encrypt_referer: json["video_encrypt_referer"] == null
-          ? null
-          : json["video_encrypt_referer"],
-      video_encrypt_m3u8: json["video_encrypt_m3u8"] == null
-          ? null
-          : json["video_encrypt_m3u8"],
+      line: json["line"] == null ? null : List<dynamic>.from(json["line"].map((x) => x)),
+      m3u8_encrypt: json['m3u8_encrypt'] == null ? null : json['m3u8_encrypt'].toString(),
+      video_encrypt_api: json["video_encrypt_api"] == null ? null : json["video_encrypt_api"],
+      video_encrypt_referer: json["video_encrypt_referer"] == null ? null : json["video_encrypt_referer"],
+      video_encrypt_m3u8: json["video_encrypt_m3u8"] == null ? null : json["video_encrypt_m3u8"],
       withdraw_rate: json['withdraw_rate'] ?? 0,
       withdraw_ratio: json['withdraw_ratio'] ?? 0,
       withdraw_rule: json['withdraw_rule'] ?? 0,
@@ -249,8 +239,7 @@ class Config {
   Map<String, dynamic> toJson() => {
         "img_upload_url": imgUploadUrl == null ? null : imgUploadUrl,
         "mp4_upload_url": mp4UploadUrl == null ? null : mp4UploadUrl,
-        "mobile_mp4_upload_url":
-            mobileMp4UploadUrl == null ? null : mobileMp4UploadUrl,
+        "mobile_mp4_upload_url": mobileMp4UploadUrl == null ? null : mobileMp4UploadUrl,
         "upload_img_key": uploadImgKey == null ? null : uploadImgKey,
         "upload_mp4_key": uploadMp4Key == null ? null : uploadMp4Key,
         "uuid": uuid == null ? null : uuid,
@@ -261,12 +250,9 @@ class Config {
         "img_base": imgBase == null ? null : imgBase,
         "line": line == null ? null : List<dynamic>.from(line.map((x) => x)),
         "m3u8_encrypt": m3u8_encrypt == null ? null : m3u8_encrypt,
-        "video_encrypt_api":
-            video_encrypt_api == null ? null : video_encrypt_api,
-        "video_encrypt_referer":
-            video_encrypt_referer == null ? null : video_encrypt_referer,
-        "video_encrypt_m3u8":
-            video_encrypt_m3u8 == null ? null : video_encrypt_m3u8,
+        "video_encrypt_api": video_encrypt_api == null ? null : video_encrypt_api,
+        "video_encrypt_referer": video_encrypt_referer == null ? null : video_encrypt_referer,
+        "video_encrypt_m3u8": video_encrypt_m3u8 == null ? null : video_encrypt_m3u8,
         "withdraw_rate": withdraw_rate ?? 0,
         "withdraw_ratio": withdraw_ratio ?? 0,
         "withdraw_rule": withdraw_rule ?? '',
@@ -286,9 +272,7 @@ class Share {
   String affUrl;
 
   factory Share.fromJson(Map<String, dynamic> json) => Share(
-        affUrlCopy: json["aff_url_copy"] == null
-            ? null
-            : AffUrlCopy.fromJson(json["aff_url_copy"]),
+        affUrlCopy: json["aff_url_copy"] == null ? null : AffUrlCopy.fromJson(json["aff_url_copy"]),
         affCode: json["aff_code"] == null ? null : json["aff_code"],
         affUrl: json["aff_url"] == null ? null : json["aff_url"],
       );
@@ -476,25 +460,18 @@ class Member {
         coins: json["coins"] == null ? null : json["coins"],
         money: json["money"] == null ? null : json["money"],
         tempVip: json["temp_vip"] == null ? null : json["temp_vip"],
-        followedCount:
-            json["followed_count"] == null ? null : json["followed_count"],
+        followedCount: json["followed_count"] == null ? null : json["followed_count"],
         videosCount: json["videos_count"] == null ? null : json["videos_count"],
-        fabulousCount:
-            json["fabulous_count"] == null ? null : json["fabulous_count"],
+        fabulousCount: json["fabulous_count"] == null ? null : json["fabulous_count"],
         likesCount: json["likes_count"] == null ? null : json["likes_count"],
-        commentCount:
-            json["comment_count"] == null ? null : json["comment_count"],
+        commentCount: json["comment_count"] == null ? null : json["comment_count"],
         vipLevel: json["vip_level"] == null ? null : json["vip_level"],
-        personSignnatrue: json["person_signnatrue"] == null
-            ? null
-            : json["person_signnatrue"],
+        personSignnatrue: json["person_signnatrue"] == null ? null : json["person_signnatrue"],
         oldVip: json["old_vip"] == null ? null : json["old_vip"],
         stature: json["stature"] == null ? null : json["stature"],
         interest: json["interest"] == null ? null : json["interest"],
         city: json["city"] == null ? null : json["city"],
-        usedMoneyFreeNum: json["used_money_free_num"] == null
-            ? null
-            : json["used_money_free_num"],
+        usedMoneyFreeNum: json["used_money_free_num"] == null ? null : json["used_money_free_num"],
         agentFee: json["agent_fee"] == null ? null : json["agent_fee"],
         agent: json["agent"] == null ? null : json["agent"],
         buildId: json["build_id"] == null ? null : json["build_id"],
@@ -504,16 +481,11 @@ class Member {
         chatUid: json["chat_uid"] == null ? null : json["chat_uid"],
         phone: json["phone"] == null ? null : json["phone"],
         phonePrefix: json["phone_prefix"] == null ? null : json["phone_prefix"],
-        freeViewCnt:
-            json["free_view_cnt"] == null ? null : json["free_view_cnt"],
-        lastactivity:
-            json["lastactivity"] == null ? null : json["lastactivity"],
-        thumbStr: json["thumb_str"] == null || json["thumb_str"] == ''
-            ? null
-            : json["thumb_str"],
+        freeViewCnt: json["free_view_cnt"] == null ? null : json["free_view_cnt"],
+        lastactivity: json["lastactivity"] == null ? null : json["lastactivity"],
+        thumbStr: json["thumb_str"] == null || json["thumb_str"] == '' ? null : json["thumb_str"],
         oauthStr: json["oauth_str"] == null ? null : json["oauth_str"],
-        isSetPassword:
-            json["is_set_password"] == null ? null : json["is_set_password"],
+        isSetPassword: json["is_set_password"] == null ? null : json["is_set_password"],
         level: json["level"] == null ? null : json["level"],
       );
 
@@ -561,8 +533,7 @@ class Member {
         "stature": stature == null ? null : stature,
         "interest": interest == null ? null : interest,
         "city": city == null ? null : city,
-        "used_money_free_num":
-            usedMoneyFreeNum == null ? null : usedMoneyFreeNum,
+        "used_money_free_num": usedMoneyFreeNum == null ? null : usedMoneyFreeNum,
         "agent_fee": agentFee == null ? null : agentFee,
         "agent": agent == null ? null : agent,
         "build_id": buildId == null ? null : buildId,
@@ -582,15 +553,7 @@ class Member {
 }
 
 class Notice {
-  Notice(
-      {this.id,
-      this.title,
-      this.content,
-      this.createdAt,
-      this.type,
-      this.imgUrl,
-      this.imgWidth,
-      this.imgHeight});
+  Notice({this.id, this.title, this.content, this.createdAt, this.type, this.imgUrl, this.imgWidth, this.imgHeight});
 
   int id;
   String title;
@@ -607,12 +570,8 @@ class Notice {
       createdAt: json["created_at"].toString(),
       type: json["type"],
       imgUrl: json["img_url"],
-      imgWidth: json["img_width"] == null
-          ? null
-          : double.parse(json["img_width"].toString()),
-      imgHeight: json["img_height"] == null
-          ? null
-          : double.parse(json["img_height"].toString()));
+      imgWidth: json["img_width"] == null ? null : double.parse(json["img_width"].toString()),
+      imgHeight: json["img_height"] == null ? null : double.parse(json["img_height"].toString()));
 
   Map<String, dynamic> toJson() => {
         "id": id,

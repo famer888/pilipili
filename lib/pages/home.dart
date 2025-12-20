@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/pages/anwang.dart';
 import 'package:pilipili/pages/yuemei_shequ.dart';
+import 'package:pilipili/report/report_utils.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
@@ -26,6 +27,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:hive/hive.dart';
 import 'package:universal_html/html.dart' as html;
 import "package:universal_html/js.dart" as js;
+import 'package:visibility_detector/visibility_detector.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -56,7 +58,8 @@ class _HomeState extends State<Home> {
       "title": "pili次元",
       "activeIcon": 'assets/images/2024/bottomTab/pili_active.png',
       "icon": 'assets/images/2024/bottomTab/pili_inactive.png',
-      "asset": true
+      "asset": true,
+      "key": "navigation_pili",
     },
     {
       "keepAlive": false,
@@ -64,7 +67,8 @@ class _HomeState extends State<Home> {
       "title": "动漫",
       "activeIcon": 'assets/images/2024/bottomTab/tv_active.png',
       "icon": 'assets/images/2024/bottomTab/tv_inactive.png',
-      "asset": true
+      "asset": true,
+      "key": "navigation_dm",
     },
     {
       "keepAlive": false,
@@ -72,7 +76,8 @@ class _HomeState extends State<Home> {
       "title": "漫画",
       "activeIcon": 'assets/images/2024/bottomTab/comic_active.png',
       "icon": 'assets/images/2024/bottomTab/comic_inactive.png',
-      "asset": true
+      "asset": true,
+      "key": "navigation_mh",
     },
     {
       "keepAlive": false,
@@ -80,7 +85,8 @@ class _HomeState extends State<Home> {
       "title": "暗網",
       "activeIcon": 'assets/images/2024/bottomTab/hacker_active.png',
       "icon": 'assets/images/2024/bottomTab/hacker_inactive.png',
-      "asset": true
+      "asset": true,
+      "key": "navigation_aw",
     },
     {
       "keepAlive": false,
@@ -88,7 +94,8 @@ class _HomeState extends State<Home> {
       "title": "妹圈",
       "activeIcon": 'assets/images/2024/bottomTab/date_active.png',
       "icon": 'assets/images/2024/bottomTab/date_inactive.png',
-      "asset": true
+      "asset": true,
+      "key": "navigation_mq",
     },
     {
       "keepAlive": true,
@@ -96,7 +103,8 @@ class _HomeState extends State<Home> {
       "title": "我的",
       "activeIcon": 'assets/images/2024/bottomTab/mine_active.png',
       "icon": 'assets/images/2024/bottomTab/mine_inactive.png',
-      "asset": true
+      "asset": true,
+      "key": "navigation_wd",
     },
   ];
   ValueNotifier<int> selectedKey = ValueNotifier(0);
@@ -391,6 +399,8 @@ class _HomeState extends State<Home> {
     int activeLength = AppGlobal.popAds.length - 1;
     int activeIndex = 0;
     showIndexActive(int index) {
+      ReportUtils.adVertising(
+          eventType: AdEventType.show, advertisingKey: AdType.homePopup, advertisingId: AppGlobal.popAds[index]['id']);
       UpdateModel.showAvtivetysDialog(backButtonBehavior,
           width: AppGlobal.popAds[index]['img_width'].toDouble(),
           height: AppGlobal.popAds[index]['img_height'].toDouble(),
@@ -403,7 +413,18 @@ class _HomeState extends State<Home> {
             checkUpdateAnnouncement(version, config);
           }
         }
+        ReportUtils.adVertising(
+            eventType: AdEventType.close,
+            advertisingKey: AdType.homePopup,
+            advertisingId: AppGlobal.popAds[index]['id']);
       }, confirm: () {
+        ReportUtils.adVertising(
+            eventType: AdEventType.click,
+            advertisingKey: AdType.homePopup,
+            advertisingId: AppGlobal.popAds[index]['id'],
+            adSlotKey: AppGlobal.popAds[index]['advertise_location_code'],
+            adSlotName: AppGlobal.popAds[index]['ad_slot_name'],
+            adtype: AppGlobal.popAds[index]['ad_type']);
         CommonUtils.bannerTopath(context,
             url: AppGlobal.popAds[index]['content'], type: AppGlobal.popAds[index]['type']);
         popAdsChick(AppGlobal.popAds[index]['id'].toString());
@@ -436,6 +457,16 @@ class _HomeState extends State<Home> {
         }
       }
     }
+  }
+
+  adVertising(AdEventType eventType, int index) {
+    ReportUtils.adVertising(
+        eventType: eventType,
+        advertisingKey: AdType.homeFloatBanner,
+        advertisingId: adData[index]['id'],
+        adSlotKey: adData[index]['advertise_location_code'],
+        adSlotName: adData[index]['ad_slot_name'],
+        adtype: adData[index]['ad_type']);
   }
 
   @override
@@ -486,16 +517,26 @@ class _HomeState extends State<Home> {
                                         // CommonUtils.debugPrint('-------------------$e---------------------');
                                       },
                                       itemBuilder: (BuildContext context, int index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            CommonUtils.bannerTopath(context,
-                                                url: adData[index]['url'], type: adData[index]['type']);
-                                          },
-                                          child: PlatformAwareNetworkImage(
-                                            url: adData[index]['img_url'],
-                                            fit: BoxFit.fill,
-                                          ),
-                                        );
+                                        return VisibilityDetector(
+                                            key: Key(
+                                                '${ReportUtils.getAdType(AdType.homeFloatBanner)['key']}_FLOATBANNER_${adData[index]['id']}'),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                adVertising(AdEventType.click, index);
+                                                CommonUtils.bannerTopath(context,
+                                                    url: adData[index]['url'], type: adData[index]['type']);
+                                              },
+                                              child: PlatformAwareNetworkImage(
+                                                url: adData[index]['img_url'],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            onVisibilityChanged: (info) {
+                                              final visibleFraction = info.visibleFraction;
+                                              if (visibleFraction > 0.7) {
+                                                adVertising(AdEventType.show, index);
+                                              }
+                                            });
                                       },
                                       itemCount: adData.length,
                                     ),
@@ -527,6 +568,7 @@ class _HomeState extends State<Home> {
                               .map((key) => GestureDetector(
                                     onTap: () {
                                       _controller.jumpToPage(key);
+                                      ReportUtils.onNavChange(navBarItem[key]['key'], navBarItem[key]['title']);
                                       if (key == 3) {
                                         CommonUtils.updateSystemNotice(context);
                                       }

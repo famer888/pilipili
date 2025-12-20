@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/video/video_controller.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/video_mixin.dart';
-import 'package:pilipili/routers.dart';
+import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -69,14 +69,14 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
   initPageState() {
     if (widget.controller != null) {
       videoController = widget.controller;
+      AppEventReport.instance.videoControllerInit(videoController);
       setState(() {});
     } else {
       if (kIsWeb) {
         if (AppGlobal.m3u8_encrypt == '1') {
           new Dio().get(widget.videoUrl).then((res) {
             String decrypted = PlatformAwareCrypto.decryptM3U8(res.data);
-            final _blob =
-                html.Blob([decrypted], 'application/x-mpegURL', 'native');
+            final _blob = html.Blob([decrypted], 'application/x-mpegURL', 'native');
             final _url = html.Url.createObjectUrl(_blob);
             CommonUtils.debugPrint(_url);
             initVideo(_url);
@@ -87,8 +87,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
       } else if (!widget.isLocal) {
         if (AppGlobal.m3u8_encrypt == '1') {
           createServer(widget.videoUrl).then((proxyConfig) {
-            String proxyurl = widget.videoUrl
-                .replaceAll(proxyConfig['origin'], proxyConfig['localproxy']);
+            String proxyurl = widget.videoUrl.replaceAll(proxyConfig['origin'], proxyConfig['localproxy']);
             initVideo(proxyurl);
           });
         } else {
@@ -110,6 +109,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
 
   initVideo(dynamic url) {
     videoController = VideoPlayerController.network(url);
+    AppEventReport.instance.videoControllerInit(videoController);
     setState(() {});
   }
 
@@ -126,11 +126,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
 
   buySmallVideo() {
     int money = Provider.of<HomeConfig>(context, listen: false).member.money;
-    buyVideo(
-            id: widget.data.id,
-            coins: (money - widget.data.discountCoins),
-            context: context)
-        .then((res) {
+    buyVideo(id: widget.data.id, coins: (money - widget.data.discountCoins), context: context).then((res) {
       if (res.status != 0) {
         CommonUtils.showText('购买成功');
         widget.videoUrl = res.data;
@@ -153,12 +149,10 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
       color: Colors.black,
       child: Stack(
         children: [
-          (widget.videoUrl == null || widget.videoUrl == '') &&
-                  widget.controller == null
+          (widget.videoUrl == null || widget.videoUrl == '') && widget.controller == null
               ? Container()
               : Center(
-                  child: videoController != null &&
-                          videoController.value.isInitialized
+                  child: videoController != null && videoController.value.isInitialized
                       ? Hero(
                           tag: 'yyplayr',
                           child: Stack(
@@ -172,37 +166,28 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                           ? Stack(
                               children: [
                                 PlatformAwareNetworkImage(
-                                  url: widget.cover ??
-                                      widget.data.thumbCover ??
-                                      widget.data.coverThumbHorizontal,
+                                  url: widget.cover ?? widget.data.thumbCover ?? widget.data.coverThumbHorizontal,
                                   fit: BoxFit.cover,
                                 ),
                                 Positioned(
                                     child: Center(
                                   child: Container(
                                     width: ScreenUtil().setWidth(90),
-                                    child: Image.asset(
-                                        'assets/gif/loading_pink.gif',
-                                        fit: BoxFit.fitWidth,
-                                        filterQuality: FilterQuality.medium),
+                                    child: Image.asset('assets/gif/loading_pink.gif',
+                                        fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
                                   ),
                                 ))
                               ],
                             )
                           : Container(),
                 ),
-          widget.videoUrl == null && widget.controller == null ||
-                  videoController == null
+          widget.videoUrl == null && widget.controller == null || videoController == null
               ? Container()
               : RepaintBoundary(
                   child: Padding(
                       padding: EdgeInsets.only(
-                          top: widget.cover == null
-                              ? 0
-                              : ScreenUtil().statusBarHeight,
-                          bottom: widget.cover == null
-                              ? 0
-                              : ScreenUtil().bottomBarHeight + 30.w),
+                          top: widget.cover == null ? 0 : ScreenUtil().statusBarHeight,
+                          bottom: widget.cover == null ? 0 : ScreenUtil().bottomBarHeight + 30.w),
                       child: VideoController(
                           setPreviewShow: (bool show) {
                             if (show != previewShow) {
@@ -215,8 +200,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                           isCardAuto: widget.isCardAuto,
                           hideControl: widget.hideControl,
                           previewShow: previewShow,
-                          initShow: widget.controller == null &&
-                              widget.videoUrl == null,
+                          initShow: widget.controller == null && widget.videoUrl == null,
                           data: widget.data,
                           autoPlay: widget.autoPlay,
                           id: widget.id,
@@ -239,88 +223,76 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                   right: 0,
                   left: 0,
                   bottom: 0,
-                  child: (widget.videoUrl == null || widget.videoUrl == '') &&
-                          widget.controller == null
+                  child: (widget.videoUrl == null || widget.videoUrl == '') && widget.controller == null
                       ? Container(
                           color: Colors.black54,
                           child: Center(
                             child: widget.data.isfree == 1
                                 ? nofree(data: widget.data)
-                                : coinbuy(
-                                    data: widget.data,
-                                    buyFunction: buySmallVideo),
+                                : coinbuy(data: widget.data, buyFunction: buySmallVideo),
                           ),
                         )
                       : Container()),
           Positioned(
-              child:
-                  (!widget.isPreview || widget.videoUrl == null || !previewShow)
-                      ? Container()
-                      : GestureDetector(
-                          onTap: () {
-                            if (widget.data.isfree == 1) {
-                              context.push('/vip');
-                            } else {
-                              showBuy(widget.data, buySmallVideo);
-                            }
-                          },
-                          child: Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          ScreenUtil().setWidth(11)),
-                                      gradient: LinearGradient(colors: [
-                                        widget.data.isfree == 1
-                                            ? Color.fromRGBO(255, 132, 169, 0.7)
-                                            : Color.fromRGBO(255, 210, 49, 0.7),
-                                        widget.data.isfree == 1
-                                            ? Color.fromRGBO(255, 132, 169, 0.7)
-                                            : Color.fromRGBO(237, 34, 34, 0.7),
-                                      ])),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(20)),
-                                  height: ScreenUtil().setWidth(22),
-                                  child: Center(
-                                      child: Text.rich(TextSpan(children: [
-                                    TextSpan(
-                                        text: widget.data.isfree == 1
-                                            ? PPString.vipNowSeeVideo
-                                            : '支付' +
-                                                widget.data.discountCoins
-                                                    .toString() +
-                                                '币即可观看完整版',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: ScreenUtil().setSp(12))),
-                                    // TextSpan(
-                                    //     text: widget.data.isfree == 1
-                                    //         ? '升级会员'
-                                    //         : '${widget.data.discountCoins}GOLD',
-                                    //     style: TextStyle(
-                                    //         color: Color(0xff62f7ff),
-                                    //         fontSize: ScreenUtil().setSp(13))),
-                                    // TextSpan(
-                                    //     text: '解锁完整版>>',
-                                    //     style: TextStyle(
-                                    //         color: Colors.white,
-                                    //         fontSize: ScreenUtil().setSp(13)))
-                                  ]))),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
+              child: (!widget.isPreview || widget.videoUrl == null || !previewShow)
+                  ? Container()
+                  : GestureDetector(
+                      onTap: () {
+                        if (widget.data.isfree == 1) {
+                          context.push('/vip');
+                        } else {
+                          showBuy(widget.data, buySmallVideo);
+                        }
+                      },
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(ScreenUtil().setWidth(11)),
+                                  gradient: LinearGradient(colors: [
+                                    widget.data.isfree == 1
+                                        ? Color.fromRGBO(255, 132, 169, 0.7)
+                                        : Color.fromRGBO(255, 210, 49, 0.7),
+                                    widget.data.isfree == 1
+                                        ? Color.fromRGBO(255, 132, 169, 0.7)
+                                        : Color.fromRGBO(237, 34, 34, 0.7),
+                                  ])),
+                              padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+                              height: ScreenUtil().setWidth(22),
+                              child: Center(
+                                  child: Text.rich(TextSpan(children: [
+                                TextSpan(
+                                    text: widget.data.isfree == 1
+                                        ? PPString.vipNowSeeVideo
+                                        : '支付' + widget.data.discountCoins.toString() + '币即可观看完整版',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: ScreenUtil().setSp(12))),
+                                // TextSpan(
+                                //     text: widget.data.isfree == 1
+                                //         ? '升级会员'
+                                //         : '${widget.data.discountCoins}GOLD',
+                                //     style: TextStyle(
+                                //         color: Color(0xff62f7ff),
+                                //         fontSize: ScreenUtil().setSp(13))),
+                                // TextSpan(
+                                //     text: '解锁完整版>>',
+                                //     style: TextStyle(
+                                //         color: Colors.white,
+                                //         fontSize: ScreenUtil().setSp(13)))
+                              ]))),
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
           videoController == null || !videoController.value.isInitialized
               ? Positioned(
                   child: Padding(
-                  padding: EdgeInsets.only(
-                      top: widget.cover == null
-                          ? 0
-                          : ScreenUtil().statusBarHeight),
+                  padding: EdgeInsets.only(top: widget.cover == null ? 0 : ScreenUtil().statusBarHeight),
                   child: head(),
                 ))
               : Container()
@@ -343,9 +315,7 @@ class HooksSet extends HookWidget {
 }
 
 class VideoContainer extends HookWidget {
-  const VideoContainer(
-      {Key key, this.videoController, this.isSmallVideo = false})
-      : super(key: key);
+  const VideoContainer({Key key, this.videoController, this.isSmallVideo = false}) : super(key: key);
   final VideoPlayerController videoController;
   final bool isSmallVideo;
 

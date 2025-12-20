@@ -7,6 +7,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/report/report_utils.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
@@ -404,6 +405,7 @@ class UpdateModel {
     if (width == 0) {
       width = 1;
     }
+
     double maxW = ScreenUtil().screenWidth / 3 * 2;
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => GestureDetector(
@@ -466,6 +468,10 @@ class UpdateModel {
   }
 
   static void showCompartmentDialog({VoidCallback cancel, String url}) {
+    ReportUtils.adVertising(
+        eventType: AdEventType.show,
+        advertisingKey: AdType.homePopup,
+        advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','));
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => Material(
         color: Colors.transparent,
@@ -473,6 +479,10 @@ class UpdateModel {
           onTap: () {
             cancelFunc();
             cancel?.call();
+            ReportUtils.adVertising(
+                eventType: AdEventType.close,
+                advertisingKey: AdType.homePopup,
+                advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','));
           },
           child: Container(
             color: Colors.black45,
@@ -486,6 +496,10 @@ class UpdateModel {
                     onTap: () {
                       cancelFunc();
                       cancel?.call();
+                      ReportUtils.adVertising(
+                          eventType: AdEventType.close,
+                          advertisingKey: AdType.homePopup,
+                          advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','));
                     },
                     child: PlatformAwareAssetImage(
                         url: "assets/images/detail/icon_close.png",
@@ -513,6 +527,13 @@ class UpdateModel {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
+                              ReportUtils.adVertising(
+                                  eventType: AdEventType.click,
+                                  advertisingKey: AdType.homePopup,
+                                  advertisingId: AppGlobal.popAppAds[index]['id'],
+                                  adSlotKey: AppGlobal.popAppAds[index]['advertise_location_code'],
+                                  adSlotName: AppGlobal.popAppAds[index]['ad_slot_name'],
+                                  adtype: AppGlobal.popAppAds[index]['ad_type']);
                               CommonUtils.launchURL(AppGlobal.popAppAds[index]['link_url']);
                             },
                             child: Column(

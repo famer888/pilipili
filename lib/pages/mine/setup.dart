@@ -50,12 +50,7 @@ class _SetupPageState extends State<SetupPage> {
         uploadInput = html.FileUploadInputElement();
         uploadInput.accept = 'image/*';
         uploadInput.setAttribute(
-            'style',
-            'width: ' +
-                90.w.toString() +
-                'px; height: ' +
-                120.w.toString() +
-                'px; opacity: 0');
+            'style', 'width: ' + 90.w.toString() + 'px; height: ' + 120.w.toString() + 'px; opacity: 0');
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;
@@ -65,8 +60,7 @@ class _SetupPageState extends State<SetupPage> {
               reader.onLoadEnd.listen((_event) {
                 upImage(
                     MultipartFile.fromBytes(reader.result,
-                        filename: file.name,
-                        contentType: MediaType.parse(file.type)),
+                        filename: file.name, contentType: MediaType.parse(file.type)),
                     imgfile: base64);
               });
               reader.readAsArrayBuffer(file);
@@ -89,8 +83,7 @@ class _SetupPageState extends State<SetupPage> {
         upImage(file.path);
       });
     } else {
-      XFile photo = await _picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 30);
+      XFile photo = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
       if (photo == null) return;
       var formatList = ["heic", "heif", "HEIC", "HEIF"];
       List imgArr = photo.name.split('.');
@@ -113,9 +106,7 @@ class _SetupPageState extends State<SetupPage> {
     BotToast.showCustomLoading(toastBuilder: (cancelFunc) {
       return Container(
         padding: const EdgeInsets.all(15),
-        decoration: const BoxDecoration(
-            color: Colors.black54,
-            borderRadius: BorderRadius.all(Radius.circular(8))),
+        decoration: const BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -153,8 +144,7 @@ class _SetupPageState extends State<SetupPage> {
         Future.delayed(Duration(seconds: 1), () async {
           var resultUserInfo = await getUserInfo(context);
           if (resultUserInfo.status != 0) {
-            Provider.of<HomeConfig>(context, listen: false)
-                .setAvatar(resultUserInfo.data.thumb);
+            Provider.of<HomeConfig>(context, listen: false).setAvatar(resultUserInfo.data.thumb);
           }
         });
       } else {
@@ -178,17 +168,13 @@ class _SetupPageState extends State<SetupPage> {
   }
 
   void showUpimg() {
-    if (!Privilege.isAllowed(
-        context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_SETTING)) {
+    if (!Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_SETTING)) {
       YyShowDialog.showdialog(
         context,
         content: (setDialogState) {
           return Text(
             '升级会员权限即可修改头像～',
-            style: TextStyle(
-                color: Color(0xff646464),
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold),
+            style: TextStyle(color: Color(0xff646464), fontSize: 16.sp, fontWeight: FontWeight.bold),
           );
         },
         cancelText: '取消',
@@ -213,9 +199,7 @@ class _SetupPageState extends State<SetupPage> {
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                   ),
                   child: Column(children: <Widget>[
                     TextButton(
@@ -226,10 +210,7 @@ class _SetupPageState extends State<SetupPage> {
                         child: Center(
                             child: Text(
                           '拍照',
-                          style: TextStyle(
-                              color: Color(0xff333333),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15.sp),
+                          style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w500, fontSize: 15.sp),
                         ))),
                     Container(
                       decoration: BoxDecoration(
@@ -249,10 +230,7 @@ class _SetupPageState extends State<SetupPage> {
                           child: Center(
                               child: Text(
                             '从相册选择',
-                            style: TextStyle(
-                                color: Color(0xff333333),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15.sp),
+                            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w500, fontSize: 15.sp),
                           )),
                         ))
                   ]),
@@ -325,12 +303,9 @@ class _SetupPageState extends State<SetupPage> {
                               ))
                         ],
                       ),
-                      kIsWeb &&
-                              Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM,
-                                  PRIVILEGE_TYPE_SETTING)
+                      kIsWeb && Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_SETTING)
                           ? Positioned(
-                              child:
-                                  HtmlElementView(viewType: 'AvatarFileInput'),
+                              child: HtmlElementView(viewType: 'AvatarFileInput'),
                             )
                           : Container()
                     ],
@@ -344,17 +319,13 @@ class _SetupPageState extends State<SetupPage> {
                   isAllRadius: true,
                   isBorderBottom: false,
                   onTap: () {
-                    if (!Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM,
-                        PRIVILEGE_TYPE_SETTING)) {
+                    if (!Privilege.isAllowed(context, RESOURCE_TYPE_SYSTEM, PRIVILEGE_TYPE_SETTING)) {
                       YyShowDialog.showdialog(
                         context,
                         content: (setDialogState) {
                           return Text(
                             '升级会员权限即可修改昵称～',
-                            style: TextStyle(
-                                color: Color(0xff646464),
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Color(0xff646464), fontSize: 16.sp, fontWeight: FontWeight.bold),
                           );
                         },
                         cancelText: '取消',
@@ -365,18 +336,13 @@ class _SetupPageState extends State<SetupPage> {
                       );
                       return;
                     }
-                    context.push(CommonUtils.getRealHash('fillcode'),
-                        extra: {'type': 0});
+                    context.push(CommonUtils.getRealHash('fillcode'), extra: {'type': 0});
                   }),
               Line(),
               SetupItem(
                   isTopRadius: true,
-                  title: members?.phone == null
-                      ? PPString.bindPhone
-                      : PPString.changeBindPhone,
-                  rightText: members?.phone == null
-                      ? PPString.isnull
-                      : members.phone.toString(),
+                  title: members?.phone == null ? PPString.bindPhone : PPString.changeBindPhone,
+                  rightText: members?.phone == null ? PPString.isnull : members.phone.toString(),
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'), extra: {
                       'type': members?.phone == null ? 1 : 2,
@@ -384,33 +350,23 @@ class _SetupPageState extends State<SetupPage> {
                       "phonePrefix": members?.phonePrefix
                     });
                   }),
-              AppGlobal.apiToken == '' && AppGlobal.apiToken != null
-                  ? Container()
-                  : Line(),
+              AppGlobal.apiToken == '' && AppGlobal.apiToken != null ? Container() : Line(),
               AppGlobal.apiToken == '' && AppGlobal.apiToken != null
                   ? Container()
                   : SetupItem(
-                      title: isSetPassword == 0
-                          ? PPString.setPassword
-                          : PPString.changePassword,
+                      title: isSetPassword == 0 ? PPString.setPassword : PPString.changePassword,
                       isTips: isSetPassword == 0,
-                      rightText: isSetPassword == 0
-                          ? PPString.phoneAndPasswordLogin
-                          : PPString.isnull,
+                      rightText: isSetPassword == 0 ? PPString.phoneAndPasswordLogin : PPString.isnull,
                       onTap: () {
-                        context.push(CommonUtils.getRealHash('fillcode'),
-                            extra: {'type': isSetPassword == 0 ? 6 : 5});
+                        context.push(CommonUtils.getRealHash('fillcode'), extra: {'type': isSetPassword == 0 ? 6 : 5});
                       }),
               Line(),
               SetupItem(
                   title: '输入邀请码',
-                  rightText:
-                      (members?.invitedBy == null ? '' : members.invitedBy)
-                          .toString(),
+                  rightText: (members?.invitedBy == null ? '' : members.invitedBy).toString(),
                   onTap: () {
                     if (members?.invitedBy == null) {
-                      context.push(CommonUtils.getRealHash('fillcode'),
-                          extra: {'type': 4});
+                      context.push(CommonUtils.getRealHash('fillcode'), extra: {'type': 4});
                       // context.push(CommonUtils.getRealHash('fillcode'),
                       //     extra: {'title': '邀请码'});
                     }
@@ -419,8 +375,7 @@ class _SetupPageState extends State<SetupPage> {
               SetupItem(
                   title: '输入兑换码',
                   onTap: () {
-                    context.push(CommonUtils.getRealHash('fillcode'),
-                        extra: {'type': 3});
+                    context.push(CommonUtils.getRealHash('fillcode'), extra: {'type': 3});
                     // context.push(CommonUtils.getRealHash('fillcode'),
                     //     extra: {'title': '兑换码'});
                   }),
@@ -445,14 +400,10 @@ class _SetupPageState extends State<SetupPage> {
                   isBottomRadius: true,
                   title: '版本更新',
                   rightText: AppGlobal.isNewVersion
-                      ? '已是最新版本(' +
-                          AppGlobal.appinfo['version'].toString() +
-                          ')'
+                      ? '已是最新版本(' + AppGlobal.appinfo['version'].toString() + ')'
                       : PPString.isNewVersion,
-                  rightStyle: TextStyle(
-                      color: Color(0xff979797),
-                      decoration: TextDecoration.underline,
-                      fontSize: 14.sp),
+                  rightStyle:
+                      TextStyle(color: Color(0xff979797), decoration: TextDecoration.underline, fontSize: 14.sp),
                   onTap: () {
                     if (AppGlobal.isNewVersion) {
                       CommonUtils.showText('已是最新版本哦～');
@@ -465,35 +416,30 @@ class _SetupPageState extends State<SetupPage> {
               ),
               isLogin
                   ? GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         AppGlobal.apiToken = '';
                         clearToken();
+                        await getHomeConfig(context);
                         context.pop('quit');
                       },
                       child: Center(
                         child: (Container(
                           height: 35.w,
                           margin: EdgeInsets.only(
-                            bottom: ScreenUtil().bottomBarHeight == 0
-                                ? 40.h
-                                : ScreenUtil().bottomBarHeight + 40.w,
+                            bottom: ScreenUtil().bottomBarHeight == 0 ? 40.h : ScreenUtil().bottomBarHeight + 40.w,
                           ),
                           width: 200.w,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(17.5.w),
                               gradient: LinearGradient(
-                                colors: [
-                                  DefaultStyle.themeColor,
-                                  DefaultStyle.linerThemeColor
-                                ],
+                                colors: [DefaultStyle.themeColor, DefaultStyle.linerThemeColor],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               )),
                           child: Center(
                             child: Text(
                               '退出登录',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 15.sp),
+                              style: TextStyle(color: Colors.white, fontSize: 15.sp),
                             ),
                           ),
                         )),
@@ -566,8 +512,7 @@ class SetupItem extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.only(
-                  left: 16.w, right: 16.w, bottom: (isMarginBottom ? 23 : 0).w),
+              margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: (isMarginBottom ? 23 : 0).w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: isAllRadius
@@ -591,9 +536,7 @@ class SetupItem extends StatelessWidget {
                                 margin: EdgeInsets.only(right: 10.w),
                                 width: 10.w,
                                 height: 10.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(5.w)),
+                                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(5.w)),
                               )
                             : Container(),
                         Text(
@@ -613,9 +556,7 @@ class SetupItem extends StatelessWidget {
                             ? Text(
                                 rightText,
                                 style: rightStyle == null
-                                    ? TextStyle(
-                                        color: Color(0xff979797),
-                                        fontSize: 14.sp)
+                                    ? TextStyle(color: Color(0xff979797), fontSize: 14.sp)
                                     : rightStyle,
                               )
                             : Container(),

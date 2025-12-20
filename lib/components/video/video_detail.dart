@@ -16,6 +16,8 @@ import 'package:pilipili/components/video/YyVideo.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/mixin/video_mixin.dart';
 import 'package:pilipili/model/animationDetail.dart';
+import 'package:pilipili/report/app_event_report.dart';
+import 'package:pilipili/report/report_utils.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -24,6 +26,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import '../../components/page_status.dart';
 import '../../utils/common.dart';
 import '../../utils/privilege.dart';
@@ -131,7 +134,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     await getAdCoin();
     AnimationDetail res = await getVideoDetail(id: widget.id);
     if (res.status != 0) {
-      CommonUtils.debugPrint("---------视频地址------${res.data.source240}-------------预览视频地址---${res.data?.preview}");
+      AppEventReport.instance.initVideoInfo(
+          id: res.data.id.toString(), title: res.data.title, typeId: '', typeName: '', tagKey: '', tagName: '');
       isPreview = res.data.source240 == null;
       videoUrl = res.data.source240 ??= res.data.preview;
       isFavoriteNotifier.value = res.data.userFavorites == 1;
@@ -159,6 +163,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   @override
   void dispose() {
     controller?.dispose();
+    AppEventReport.instance.videoDispose();
     commentController?.dispose();
     isFavoriteNotifier.dispose();
     super.dispose();
@@ -243,6 +248,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
             );
           });
         });
+  }
+
+  adVertising(AdEventType eventType, Map data) {
+    ReportUtils.adVertising(
+        eventType: eventType,
+        advertisingKey: AdType.videoDetail,
+        advertisingId: data['id'],
+        adSlotKey: data['advertise_location_code'],
+        adSlotName: data['ad_slot_name'],
+        adtype: data['ad_type']);
   }
 
   @override
@@ -547,6 +562,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                               icon: 'icon_share',
                                                               name: '分享',
                                                               onTap: () async {
+                                                                AppEventReport.instance.videoShare();
                                                                 var config =
                                                                     Provider.of<HomeConfig>(context, listen: false)
                                                                         .config;
@@ -622,21 +638,31 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       width: 343.w,
                                                       child: Swiper(
                                                         onTap: (index) {
+                                                          adVertising(AdEventType.click, _banner[index]);
                                                           CommonUtils.bannerTopath(context,
                                                               url: _banner[index]['url'], type: _banner[index]['type']);
                                                         },
                                                         itemBuilder: (BuildContext context, int index) {
-                                                          return PageViewMixin(
-                                                            child: Container(
-                                                              height: 126.w,
-                                                              child: ClipRRect(
-                                                                borderRadius: BorderRadius.circular(10.w),
-                                                                child: PlatformAwareNetworkImage(
-                                                                    url: _banner[index]['img_url'],
-                                                                    noVisibilityDetector: true),
+                                                          return VisibilityDetector(
+                                                              key: Key(
+                                                                  '${ReportUtils.getAdType(AdType.videoDetail)['key']}_Banner_${_banner[index]['id']}'),
+                                                              child: PageViewMixin(
+                                                                child: Container(
+                                                                  height: 126.w,
+                                                                  child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(10.w),
+                                                                    child: PlatformAwareNetworkImage(
+                                                                        url: _banner[index]['img_url'],
+                                                                        noVisibilityDetector: true),
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
+                                                              onVisibilityChanged: (info) {
+                                                                final visibleFraction = info.visibleFraction;
+                                                                if (visibleFraction > 0.7) {
+                                                                  adVertising(AdEventType.show, _banner[index]);
+                                                                }
+                                                              });
                                                         },
                                                         itemCount: _banner.length,
                                                         autoplay: _banner.length > 1,
@@ -645,15 +671,25 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       height: _banner.length == 1 ? 126.w : 0,
                                                       width: 343.w,
                                                       child: _banner.length == 1
-                                                          ? GestureDetector(
-                                                              onTap: () {
-                                                                CommonUtils.bannerTopath(context,
-                                                                    url: _banner[0]['url'], type: _banner[0]['type']);
-                                                              },
-                                                              child: PlatformAwareNetworkImage(
-                                                                url: _banner[0]['img_url'],
+                                                          ? VisibilityDetector(
+                                                              key: Key(
+                                                                  '${ReportUtils.getAdType(AdType.videoDetail)['key']}_Banner_${_banner[0]['id']}'),
+                                                              child: GestureDetector(
+                                                                onTap: () {
+                                                                  adVertising(AdEventType.click, _banner[0]);
+                                                                  CommonUtils.bannerTopath(context,
+                                                                      url: _banner[0]['url'], type: _banner[0]['type']);
+                                                                },
+                                                                child: PlatformAwareNetworkImage(
+                                                                  url: _banner[0]['img_url'],
+                                                                ),
                                                               ),
-                                                            )
+                                                              onVisibilityChanged: (info) {
+                                                                final visibleFraction = info.visibleFraction;
+                                                                if (visibleFraction > 0.7) {
+                                                                  adVertising(AdEventType.show, _banner[0]);
+                                                                }
+                                                              })
                                                           : const SizedBox(),
                                                     )),
                                           Container(

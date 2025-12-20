@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:pilipili/components/page_status.dart';
+import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -68,9 +69,7 @@ class _RegisterState extends State<Register> {
                 child: Text(
                   '已有账号 ！去登录',
                   style: TextStyle(
-                      color: Color(0xffffffff),
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(13)),
+                      color: Color(0xffffffff), fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(13)),
                 ),
               ),
             )
@@ -89,13 +88,9 @@ class _RegisterState extends State<Register> {
                 setState(() {});
               },
               child: Text(
-                loginType == 0
-                    ? PPString.acountPasswodRegister
-                    : PPString.phoneCodRegister,
-                style: TextStyle(
-                    color: Color(0xffffffff),
-                    fontWeight: FontWeight.bold,
-                    fontSize: ScreenUtil().setSp(12)),
+                loginType == 0 ? PPString.acountPasswodRegister : PPString.phoneCodRegister,
+                style:
+                    TextStyle(color: Color(0xffffffff), fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(12)),
               ),
             ),
           ],
@@ -112,15 +107,12 @@ class _RegisterState extends State<Register> {
             return;
           }
           PageStatus.showLoading();
-          registerByPhone(
-                  code: phoneCode.text,
-                  phone: phone.text,
-                  phonePrefix: phonePrefix,
-                  invitedAff: code.text)
+          registerByPhone(code: phoneCode.text, phone: phone.text, phonePrefix: phonePrefix, invitedAff: code.text)
               .then((res) {
             if (res.status != 0) {
               currentIndex = 0;
               setState(() {});
+              String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
               CommonUtils.showText('注册成功,快去登录吧～');
               clearInput();
             } else {
@@ -150,14 +142,12 @@ class _RegisterState extends State<Register> {
           }
           PageStatus.showLoading();
           registerByPassword(
-                  username: username.text,
-                  password: password.text,
-                  confirmPwd: cpassword.text,
-                  invitedAff: code.text)
+                  username: username.text, password: password.text, confirmPwd: cpassword.text, invitedAff: code.text)
               .then((res) {
             if (res.status != 0) {
               currentIndex = 0;
               setState(() {});
+              String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
               CommonUtils.showText('注册成功,快去登录吧～');
               clearInput();
             } else {
@@ -185,9 +175,7 @@ class _RegisterState extends State<Register> {
                   startTime = e;
                 },
                 onSendCode: () {
-                  sendPhone(
-                          phone: phone.text, phonePrefix: phonePrefix, type: 5)
-                      .then((res) {
+                  sendPhone(phone: phone.text, phonePrefix: phonePrefix, type: 5).then((res) {
                     if (res.status == 1) {
                       if (startTime != null) {
                         startTime();
@@ -323,12 +311,7 @@ class _RegisterState extends State<Register> {
         }
       },
       children: retrieveStatus == 0
-          ? [
-              YyInput(
-                  controller: acount,
-                  type: TextInputType.text,
-                  hintText: '请输入要找回的账号')
-            ]
+          ? [YyInput(controller: acount, type: TextInputType.text, hintText: '请输入要找回的账号')]
           : [
               YyInput(
                 controller: phone,
@@ -346,8 +329,7 @@ class _RegisterState extends State<Register> {
                   startTime = e;
                 },
                 onSendCode: () {
-                  sendPhone(phone: phone.text, phonePrefix: code, type: 3)
-                      .then((res) {
+                  sendPhone(phone: phone.text, phonePrefix: code, type: 3).then((res) {
                     if (res.status == 1) {
                       if (startTime != null) {
                         startTime();
@@ -359,16 +341,8 @@ class _RegisterState extends State<Register> {
                   });
                 },
               ),
-              YyInput(
-                  hintText: '请输入新密码(至少6位)',
-                  controller: password,
-                  type: TextInputType.text,
-                  isPassword: true),
-              YyInput(
-                  hintText: '请再次输入新密码(至少6位)',
-                  controller: cpassword,
-                  type: TextInputType.text,
-                  isPassword: true)
+              YyInput(hintText: '请输入新密码(至少6位)', controller: password, type: TextInputType.text, isPassword: true),
+              YyInput(hintText: '请再次输入新密码(至少6位)', controller: cpassword, type: TextInputType.text, isPassword: true)
             ],
     );
   }
@@ -383,9 +357,7 @@ class _RegisterState extends State<Register> {
             left: 0,
             bottom: 0,
             child: PlatformAwareAssetImage(
-                url: 'assets/images/login/bg_2.png',
-                fit: BoxFit.fill,
-                filterQuality: FilterQuality.medium)),
+                url: 'assets/images/login/bg_2.png', fit: BoxFit.fill, filterQuality: FilterQuality.medium)),
         Scaffold(
             backgroundColor: Colors.transparent,
             body: SafeArea(
@@ -428,9 +400,7 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                               Text(
-                                currentIndex == 0
-                                    ? PPString.registerLogin
-                                    : PPString.forgoPassword,
+                                currentIndex == 0 ? PPString.registerLogin : PPString.forgoPassword,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

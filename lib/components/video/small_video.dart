@@ -11,6 +11,7 @@ import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/watchRecordMixin.dart';
 import 'package:pilipili/model/videolist.dart';
+import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/store/sharedPreferences.dart';
 import 'package:pilipili/theme/default.dart';
@@ -34,13 +35,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:pilipili/routers.dart';
 
 import '../../utils/privilege.dart';
 
 class SmallVideo extends StatefulWidget {
-  SmallVideo({Key key, this.id, this.elementId, this.page = 1, this.videoData})
-      : super(key: key);
+  SmallVideo({Key key, this.id, this.elementId, this.page = 1, this.videoData}) : super(key: key);
   final int id;
   final int elementId;
   final int page;
@@ -67,10 +66,7 @@ class _SmallVideoState extends State<SmallVideo> {
     if (widget.videoData != null) return;
     loading = true;
     setState(() {});
-    Map _pramas = {
-      'page': videoPage == null ? page : videoPage,
-      'limit': AppGlobal.smallVideoLimit
-    };
+    Map _pramas = {'page': videoPage == null ? page : videoPage, 'limit': AppGlobal.smallVideoLimit};
     _pramas.addAll(AppGlobal.smallVideoPramas);
     PlatformAwareHttp.post(AppGlobal.smallVideoApi, data: _pramas).then((json) {
       VideoList res = VideoList.fromJson(json.data);
@@ -78,8 +74,7 @@ class _SmallVideoState extends State<SmallVideo> {
         if (res.data == null) return;
         if (res.data.length < AppGlobal.smallVideoLimit) {
           isAll = true;
-          CommonUtils.showText(
-              '已为您加载完最后' + res.data.length.toString() + '部视频～');
+          CommonUtils.showText('已为您加载完最后' + res.data.length.toString() + '部视频～');
         }
         loading = false;
         pageLoading = false;
@@ -89,8 +84,7 @@ class _SmallVideoState extends State<SmallVideo> {
           page = videoPage;
           topPage = videoPage;
           videoList.addAll(res.data);
-          int videoIndex =
-              res.data.indexWhere((item) => item.datumId == widget.id);
+          int videoIndex = res.data.indexWhere((item) => item.datumId == widget.id);
 
           //需要加载上一页
           bool isT = videoIndex <= 5 && topPage > 1;
@@ -118,8 +112,7 @@ class _SmallVideoState extends State<SmallVideo> {
             videoData.addAll(videoList);
             videoList = videoData;
             if (isCreate) {
-              cIndex =
-                  videoList.indexWhere((item) => item.datumId == widget.id);
+              cIndex = videoList.indexWhere((item) => item.datumId == widget.id);
               currentIndex = cIndex;
               setState(() {});
               createController(cIndex);
@@ -130,8 +123,7 @@ class _SmallVideoState extends State<SmallVideo> {
           } else {
             videoList.addAll(res.data);
             if (isCreate) {
-              cIndex =
-                  videoList.indexWhere((item) => item.datumId == widget.id);
+              cIndex = videoList.indexWhere((item) => item.datumId == widget.id);
               currentIndex = cIndex;
               setState(() {});
               createController(cIndex);
@@ -168,15 +160,11 @@ class _SmallVideoState extends State<SmallVideo> {
     if (widget.videoData == null) {
       getSmallVideolist(videoPage: widget.page);
     } else {
-      getVideoDetail(
-              id: widget.videoData['id'] == null
-                  ? widget.videoData['related_id']
-                  : widget.videoData['id'])
+      getVideoDetail(id: widget.videoData['id'] == null ? widget.videoData['related_id'] : widget.videoData['id'])
           .then((res) {
         if (res.status != 0) {
           VideoItem videoDetail = VideoItem.fromJson(res.data.toJson());
-          videoDetail.coverThumbVertical =
-              CommonUtils.getThumb(widget.videoData);
+          videoDetail.coverThumbVertical = CommonUtils.getThumb(widget.videoData);
           videoDetail.countLike = res.data.favorites;
           videoList = [videoDetail];
           controller = PreloadPageController();
@@ -194,6 +182,7 @@ class _SmallVideoState extends State<SmallVideo> {
   @override
   void dispose() {
     super.dispose();
+    AppEventReport.instance.videoDispose();
     AppGlobal.smallVideoApi = null;
     AppGlobal.smallVideoPramas = null;
     Wakelock.disable();
@@ -215,8 +204,7 @@ class _SmallVideoState extends State<SmallVideo> {
                       child: Container(
                         width: ScreenUtil().setWidth(120),
                         child: Image.asset('assets/gif/loading_pink.gif',
-                            fit: BoxFit.fitWidth,
-                            filterQuality: FilterQuality.medium),
+                            fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
                       ),
                     )
                   : Container()
@@ -289,10 +277,7 @@ class _SmallVideoState extends State<SmallVideo> {
                 padding: EdgeInsets.only(
                     left: ScreenUtil().setWidth(15.5),
                     right: ScreenUtil().setWidth(15.5),
-                    top: kIsWeb
-                        ? ScreenUtil().setWidth(31)
-                        : ScreenUtil().statusBarHeight +
-                            ScreenUtil().setWidth(15),
+                    top: kIsWeb ? ScreenUtil().setWidth(31) : ScreenUtil().statusBarHeight + ScreenUtil().setWidth(15),
                     bottom: ScreenUtil().setWidth(6)),
                 color: Color.fromRGBO(130, 56, 78, 0.44),
                 child: Column(
@@ -306,8 +291,7 @@ class _SmallVideoState extends State<SmallVideo> {
                           },
                           behavior: HitTestBehavior.translucent,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: ScreenUtil().setWidth(10)),
+                            padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(10)),
                             child: PlatformAwareAssetImage(
                                 url: PPAssetsPath.backArrow,
                                 width: ScreenUtil().setWidth(12),
@@ -337,12 +321,7 @@ class _SmallVideoState extends State<SmallVideo> {
 
 class SmallVideoPlayer extends StatefulWidget {
   SmallVideoPlayer(
-      {Key key,
-      this.onVideoControllerInited,
-      this.onVideoControllerDisposed,
-      this.currentIndex,
-      this.index,
-      this.data})
+      {Key key, this.onVideoControllerInited, this.onVideoControllerDisposed, this.currentIndex, this.index, this.data})
       : super(key: key);
   Function onVideoControllerInited;
   Function onVideoControllerDisposed;
@@ -353,8 +332,7 @@ class SmallVideoPlayer extends StatefulWidget {
   _SmallVideoPlayerState createState() => _SmallVideoPlayerState();
 }
 
-class _SmallVideoPlayerState extends State<SmallVideoPlayer>
-    with WatchRecordMixin {
+class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMixin {
   VideoPlayerController _controller;
   bool videoInit = false; //视频是否初始化
   double videoValue = 0.0; //当前视频播放时间
@@ -380,12 +358,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
       CommonUtils.showText('已经没有评论啦～');
       return;
     }
-    getCommentList(
-            contentId: widget.data.datumId,
-            contentType: 7,
-            page: page,
-            limit: limit)
-        .then((res) {
+    getCommentList(contentId: widget.data.datumId, contentType: 7, page: page, limit: limit).then((res) {
       if (res['status'] != 0) {
         commentLoading = false;
         List resdata = res['data'] == null ? [] : res['data'];
@@ -427,9 +400,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   Widget _itemContainer(Widget child) {
     return Container(
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-          color: Colors.white24,
-          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
+      decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
       width: ScreenUtil().setWidth(56),
       height: ScreenUtil().setWidth(56),
       child: child,
@@ -447,11 +418,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   }
 
   buySmallVideo(int money) {
-    buyVideo(
-            id: widget.data.datumId,
-            coins: (money - widget.data.discountCoins),
-            context: context)
-        .then((res) {
+    buyVideo(id: widget.data.datumId, coins: (money - widget.data.discountCoins), context: context).then((res) {
       if (res.status != 0) {
         CommonUtils.showText('购买成功');
         isNovideo = false;
@@ -468,13 +435,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   showBuyVip() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.data.isfree == 2) {
-        int money =
-            Provider.of<HomeConfig>(context, listen: false).member.money;
+        int money = Provider.of<HomeConfig>(context, listen: false).member.money;
         bool isInsufficient = money < widget.data.discountCoins;
-        YyShowDialog.showdialog(context,
-            btnText: isInsufficient
-                ? PPString.goldInsufficient
-                : PPString.buySee, callBack: () {
+        YyShowDialog.showdialog(context, btnText: isInsufficient ? PPString.goldInsufficient : PPString.buySee,
+            callBack: () {
           if (isInsufficient) {
             context.push('/coinRecharge');
           } else {
@@ -482,10 +446,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
           }
         }, content: (setDialogState) {
           return DefaultTextStyle(
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff646464),
-                  fontSize: ScreenUtil().setSp(14)),
+              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff646464), fontSize: ScreenUtil().setSp(14)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -504,8 +465,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
         YyShowDialog.showdialog(context,
             btnText: '充值VIP',
             cancelBack: () {
-              var config =
-                  Provider.of<HomeConfig>(context, listen: false).config;
+              var config = Provider.of<HomeConfig>(context, listen: false).config;
               ShareMovieModel.showShareMovie(backButtonBehavior,
                   copyUrl: config.share.affUrlCopy.url,
                   thumb: widget.data.coverThumbVertical,
@@ -520,9 +480,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
             content: (setDialogState) {
               return DefaultTextStyle(
                   style: TextStyle(
-                      color: Color(0xff646464),
-                      fontSize: ScreenUtil().setSp(16),
-                      fontWeight: FontWeight.bold),
+                      color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -626,31 +584,21 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   },
                                   child: commentList.length == 0
                                       ? SingleChildScrollView(
-                                          child: PageStatus.noData(
-                                              text: '还没有任何影评哦～'),
+                                          child: PageStatus.noData(text: '还没有任何影评哦～'),
                                         )
                                       : ListView.builder(
                                           padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  DefaultStyle.pagePadding,
-                                              horizontal:
-                                                  DefaultStyle.pagePadding),
+                                              vertical: DefaultStyle.pagePadding, horizontal: DefaultStyle.pagePadding),
                                           itemCount: commentList.length,
-                                          cacheExtent:
-                                              ScreenUtil().screenHeight * 5,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
+                                          cacheExtent: ScreenUtil().screenHeight * 5,
+                                          itemBuilder: (BuildContext context, int index) {
                                             return CommentItem(
-                                              souceType:
-                                                  RESOURCE_TYPE_SHORT_VIDEO,
+                                              souceType: RESOURCE_TYPE_SHORT_VIDEO,
                                               id: widget.data.datumId,
                                               data: commentList[index],
-                                              children: commentList[index]
-                                                      ['child_comment']
-                                                  .map<Widget>((childComment) {
+                                              children: commentList[index]['child_comment'].map<Widget>((childComment) {
                                                 return CommentItem(
-                                                    souceType:
-                                                        RESOURCE_TYPE_SHORT_VIDEO,
+                                                    souceType: RESOURCE_TYPE_SHORT_VIDEO,
                                                     id: widget.data.datumId,
                                                     data: childComment);
                                               }).toList(),
@@ -660,16 +608,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          if (Privilege.isAllowed(
-                              context,
-                              RESOURCE_TYPE_SHORT_VIDEO,
-                              PRIVILEGE_TYPE_COMMENT)) {
+                          if (Privilege.isAllowed(context, RESOURCE_TYPE_SHORT_VIDEO, PRIVILEGE_TYPE_COMMENT)) {
                             InputDialog.show(context, '请输入您的影评～').then((value) {
                               if (value != null && value != '') {
-                                publishComment(
-                                        contentId: widget.data.datumId,
-                                        contentType: 7,
-                                        reply: value)
+                                publishComment(contentId: widget.data.datumId, contentType: 7, reply: value)
                                     .then((res) {
                                   if (res['status'] != 0) {
                                     CommonUtils.showText('影评发布成功,请刷新查看');
@@ -682,9 +624,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                               }
                             });
                           } else {
-                            YyShowDialog.showdialog(context,
-                                btnText: '升级VIP',
-                                cancelText: '取消', callBack: () {
+                            YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消', callBack: () {
                               context.push('/vip');
                             }, content: (setDialogState) {
                               return DefaultTextStyle(
@@ -693,8 +633,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                       fontSize: ScreenUtil().setSp(16),
                                       fontWeight: FontWeight.bold),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text('升级VIP即可发布影评哦～'),
                                     ],
@@ -704,28 +643,19 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                         },
                         child: Container(
                           color: Colors.white,
-                          margin: EdgeInsets.only(
-                              bottom:
-                                  kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                          margin: EdgeInsets.only(bottom: kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                           padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setWidth(12),
-                              horizontal: DefaultStyle.pagePadding),
+                              vertical: ScreenUtil().setWidth(12), horizontal: DefaultStyle.pagePadding),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: ScreenUtil().setWidth(16)),
+                            padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(16)),
                             height: ScreenUtil().setWidth(36),
                             child: Row(
                               children: [
                                 Text(
-                                  Privilege.isAllowed(
-                                          context,
-                                          RESOURCE_TYPE_SHORT_VIDEO,
-                                          PRIVILEGE_TYPE_COMMENT)
+                                  Privilege.isAllowed(context, RESOURCE_TYPE_SHORT_VIDEO, PRIVILEGE_TYPE_COMMENT)
                                       ? PPString.vipCommentHint
                                       : PPString.noVipCommentHint,
-                                  style: TextStyle(
-                                      color: Color(0xff999999),
-                                      fontSize: ScreenUtil().setSp(14)),
+                                  style: TextStyle(color: Color(0xff999999), fontSize: ScreenUtil().setSp(14)),
                                 )
                               ],
                             ),
@@ -792,12 +722,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
       videoMaxTime = _controller.value.duration.inMilliseconds.toDouble();
       Timer.periodic(new Duration(seconds: 10), (timer) {
         timer.cancel();
-        startWatchRecordTimer(
-            AppGlobal.smallVideoWatchRecordBox, widget.data.datumId,
+        startWatchRecordTimer(AppGlobal.smallVideoWatchRecordBox, widget.data.datumId,
             chapterId: widget.data.datumId,
             offset: videoValue,
-            thumb: widget.data.coverThumbVertical ??
-                widget.data.coverThumbHorizontal,
+            thumb: widget.data.coverThumbVertical ?? widget.data.coverThumbHorizontal,
             isFree: widget.data.isfree,
             title: widget.data.title);
       });
@@ -807,6 +735,14 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
       _controller.addListener(setVideovalue);
       if (widget.currentIndex == widget.index && AppGlobal.videoPageIsActive) {
         if (!kIsWeb) {
+          AppEventReport.instance.initVideoInfo(
+              id: widget.data.id.toString(),
+              title: widget.data.title,
+              typeId: '',
+              typeName: '',
+              tagKey: widget.data.tagsId,
+              tagName: widget.data.tags);
+          AppEventReport.instance.videoControllerInit(_controller);
           _controller.play();
         }
       }
@@ -825,7 +761,6 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
         CommonUtils.showText('视频资源播放超时');
       }
     });
-    ;
   }
 
   initVideo(url) {
@@ -848,8 +783,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
     } else {
       if (AppGlobal.m3u8_encrypt == '1') {
         createServer(url).then((proxyConfig) {
-          String proxyurl =
-              url.replaceAll(proxyConfig['origin'], proxyConfig['localproxy']);
+          String proxyurl = url.replaceAll(proxyConfig['origin'], proxyConfig['localproxy']);
           createVideo(proxyurl);
         });
       } else {
@@ -900,19 +834,15 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                           ? Stack(
                               children: [
                                 Center(
-                                  child: VideoContainer(
-                                      videoController: _controller),
+                                  child: VideoContainer(videoController: _controller),
                                 ),
                                 Positioned(
                                     child: mounted && loading
                                         ? Center(
                                             child: Container(
                                               width: ScreenUtil().setWidth(120),
-                                              child: Image.asset(
-                                                  'assets/gif/loading_pink.gif',
-                                                  fit: BoxFit.fitWidth,
-                                                  filterQuality:
-                                                      FilterQuality.medium),
+                                              child: Image.asset('assets/gif/loading_pink.gif',
+                                                  fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
                                             ),
                                           )
                                         : Container())
@@ -926,17 +856,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                     children: [
                                       PlatformAwareNetworkImage(
                                           fit: BoxFit.contain,
-                                          url: widget.data.coverThumbVertical ??
-                                              widget.data.coverThumbHorizontal),
+                                          url: widget.data.coverThumbVertical ?? widget.data.coverThumbHorizontal),
                                       Positioned(
                                           child: Center(
                                         child: Container(
                                           width: ScreenUtil().setWidth(120),
-                                          child: Image.asset(
-                                              'assets/gif/loading_pink.gif',
-                                              fit: BoxFit.fitWidth,
-                                              filterQuality:
-                                                  FilterQuality.medium),
+                                          child: Image.asset('assets/gif/loading_pink.gif',
+                                              fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
                                         ),
                                       ))
                                     ],
@@ -953,16 +879,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                           children: [
                             PlatformAwareNetworkImage(
                                 fit: BoxFit.contain,
-                                url: widget.data.coverThumbVertical ??
-                                    widget.data.coverThumbHorizontal),
+                                url: widget.data.coverThumbVertical ?? widget.data.coverThumbHorizontal),
                             Positioned(
                                 child: Center(
                               child: Container(
                                 width: ScreenUtil().setWidth(120),
-                                child: Image.asset(
-                                    'assets/gif/loading_pink.gif',
-                                    fit: BoxFit.fitWidth,
-                                    filterQuality: FilterQuality.medium),
+                                child: Image.asset('assets/gif/loading_pink.gif',
+                                    fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
                               ),
                             ))
                           ],
@@ -998,34 +921,23 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                       children: [
                                         Text(
                                           '视频播放错误,请检查网络后重试',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: ScreenUtil().setSp(16)),
+                                          style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(16)),
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            initVideo(isNovideo
-                                                ? widget.data.preview
-                                                : widget.data.source240);
+                                            initVideo(isNovideo ? widget.data.preview : widget.data.source240);
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(
-                                                top: ScreenUtil().setWidth(22)),
+                                            margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
                                             height: ScreenUtil().setWidth(32),
                                             width: ScreenUtil().setWidth(118.5),
                                             decoration: BoxDecoration(
                                                 gradient: LinearGradient(
-                                                  colors: [
-                                                    DefaultStyle.themeColor,
-                                                    DefaultStyle.linerThemeColor
-                                                  ],
+                                                  colors: [DefaultStyle.themeColor, DefaultStyle.linerThemeColor],
                                                   begin: Alignment.topCenter,
                                                   end: Alignment.bottomCenter,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(16))),
+                                                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(16))),
                                             child: Center(
                                               child: Text(
                                                 '重新加载',
@@ -1060,82 +972,54 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                   left: ScreenUtil().setWidth(15.5),
                                   bottom: kIsWeb
                                       ? ScreenUtil().setWidth(18)
-                                      : ScreenUtil().setWidth(18) +
-                                          ScreenUtil().bottomBarHeight),
+                                      : ScreenUtil().setWidth(18) + ScreenUtil().bottomBarHeight),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Expanded(
                                           child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           !isNovideo
                                               ? Container()
                                               : GestureDetector(
                                                   onTap: () {
-                                                    if (widget.data.isfree ==
-                                                        2) {
-                                                      int money = Provider.of<
-                                                                  HomeConfig>(
-                                                              context,
-                                                              listen: false)
-                                                          .member
-                                                          .money;
-                                                      bool isInsufficient =
-                                                          money <
-                                                              widget.data
-                                                                  .discountCoins;
-                                                      YyShowDialog.showdialog(
-                                                          context,
+                                                    if (widget.data.isfree == 2) {
+                                                      int money =
+                                                          Provider.of<HomeConfig>(context, listen: false).member.money;
+                                                      bool isInsufficient = money < widget.data.discountCoins;
+                                                      YyShowDialog.showdialog(context,
                                                           title: 'GOLD视频',
                                                           btnText: isInsufficient
-                                                              ? PPString
-                                                                  .goldInsufficient
-                                                              : PPString.buySee,
-                                                          callBack: () {
+                                                              ? PPString.goldInsufficient
+                                                              : PPString.buySee, callBack: () {
                                                         if (isInsufficient) {
-                                                          context.push(
-                                                              '/coinRecharge');
+                                                          context.push('/coinRecharge');
                                                         } else {
                                                           buySmallVideo(money);
                                                         }
-                                                      }, content:
-                                                              (setDialogState) {
+                                                      }, content: (setDialogState) {
                                                         return DefaultTextStyle(
                                                             style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Color(
-                                                                    0xff646464),
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            14)),
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Color(0xff646464),
+                                                                fontSize: ScreenUtil().setSp(14)),
                                                             child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                                Text.rich(TextSpan(
-                                                                    text:
-                                                                        '该视频需要花费',
-                                                                    children: [
-                                                                      TextSpan(
-                                                                          text: widget.data.discountCoins.toString() +
-                                                                              'G',
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: DefaultStyle.themeColor,
-                                                                              fontSize: ScreenUtil().setSp(16)))
-                                                                    ]))
+                                                                Text.rich(TextSpan(text: '该视频需要花费', children: [
+                                                                  TextSpan(
+                                                                      text: widget.data.discountCoins.toString() + 'G',
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight.bold,
+                                                                          color: DefaultStyle.themeColor,
+                                                                          fontSize: ScreenUtil().setSp(16)))
+                                                                ]))
                                                               ],
                                                             ));
                                                       });
@@ -1143,92 +1027,46 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                       context.push('/vip');
                                                     }
                                                   },
-                                                  child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(
-                                                                      ScreenUtil()
-                                                                          .setWidth(
-                                                                              11)),
-                                                                  gradient:
-                                                                      LinearGradient(
-                                                                          colors: [
-                                                                        widget.data.isfree ==
-                                                                                1
-                                                                            ? Color.fromRGBO(
-                                                                                255,
-                                                                                132,
-                                                                                169,
-                                                                                0.7)
-                                                                            : Color.fromRGBO(
-                                                                                255,
-                                                                                210,
-                                                                                49,
-                                                                                0.7),
-                                                                        widget.data.isfree ==
-                                                                                1
-                                                                            ? Color.fromRGBO(
-                                                                                255,
-                                                                                132,
-                                                                                169,
-                                                                                0.7)
-                                                                            : Color.fromRGBO(
-                                                                                237,
-                                                                                34,
-                                                                                34,
-                                                                                0.7),
-                                                                      ])),
-                                                          padding: EdgeInsets.symmetric(
-                                                              horizontal:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          20)),
-                                                          height: ScreenUtil()
-                                                              .setWidth(22),
-                                                          child: Text.rich(
-                                                              TextSpan(
-                                                                  children: [
-                                                                TextSpan(
-                                                                    text: widget.data.isfree ==
-                                                                            1
-                                                                        ? PPString
-                                                                            .vipNowSeeVideo
-                                                                        : '支付' +
-                                                                            widget.data.discountCoins
-                                                                                .toString() +
-                                                                            '币即可观看完整版',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize:
-                                                                            ScreenUtil().setSp(12))),
-                                                              ])),
-                                                        )
-                                                      ]),
+                                                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                                                    Container(
+                                                      alignment: Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(ScreenUtil().setWidth(11)),
+                                                          gradient: LinearGradient(colors: [
+                                                            widget.data.isfree == 1
+                                                                ? Color.fromRGBO(255, 132, 169, 0.7)
+                                                                : Color.fromRGBO(255, 210, 49, 0.7),
+                                                            widget.data.isfree == 1
+                                                                ? Color.fromRGBO(255, 132, 169, 0.7)
+                                                                : Color.fromRGBO(237, 34, 34, 0.7),
+                                                          ])),
+                                                      padding:
+                                                          EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+                                                      height: ScreenUtil().setWidth(22),
+                                                      child: Text.rich(TextSpan(children: [
+                                                        TextSpan(
+                                                            text: widget.data.isfree == 1
+                                                                ? PPString.vipNowSeeVideo
+                                                                : '支付' +
+                                                                    widget.data.discountCoins.toString() +
+                                                                    '币即可观看完整版',
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: ScreenUtil().setSp(12))),
+                                                      ])),
+                                                    )
+                                                  ]),
                                                 ),
                                           SizedBox(
                                             height: ScreenUtil().setWidth(10),
                                           ),
-                                          widget.data.tags != null &&
-                                                  widget.data.tags != ''
+                                          widget.data.tags != null && widget.data.tags != ''
                                               ? Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: ScreenUtil()
-                                                          .setWidth(10)),
+                                                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                                                   child: Text(
-                                                    '#' +
-                                                        widget.data.tags
-                                                            .replaceAll(
-                                                                ',', ' #'),
+                                                    '#' + widget.data.tags.replaceAll(',', ' #'),
                                                     style: DefaultStyle.white14,
                                                   ),
                                                 )
@@ -1237,79 +1075,53 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                             widget.data.title,
                                             style: TextStyle(
                                                 height: 1.25,
-                                                color: Color.fromRGBO(
-                                                    255, 255, 255, 1),
-                                                fontSize:
-                                                    ScreenUtil().setSp(16),
-                                                decoration:
-                                                    TextDecoration.none),
+                                                color: Color.fromRGBO(255, 255, 255, 1),
+                                                fontSize: ScreenUtil().setSp(16),
+                                                decoration: TextDecoration.none),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          widget.data.desc == '' ||
-                                                  widget.data.desc == null
+                                          widget.data.desc == '' || widget.data.desc == null
                                               ? Container()
                                               : SizedBox(
-                                                  height:
-                                                      ScreenUtil().setWidth(13),
+                                                  height: ScreenUtil().setWidth(13),
                                                 ),
-                                          widget.data.desc == '' ||
-                                                  widget.data.desc == null
+                                          widget.data.desc == '' || widget.data.desc == null
                                               ? Container()
                                               : Text(
                                                   widget.data.desc,
                                                   style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          255, 255, 255, 1),
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(14),
-                                                      decoration:
-                                                          TextDecoration.none),
+                                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                                      fontSize: ScreenUtil().setSp(14),
+                                                      decoration: TextDecoration.none),
                                                 ),
                                         ],
                                       )),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              PersistentState.getState(
-                                                      'small_video')
-                                                  .then((value) {
+                                              PersistentState.getState('small_video').then((value) {
                                                 if (value == null) {
-                                                  YyShowDialog.showdialog(
-                                                      context,
-                                                      btnText: '朕知道了', content:
-                                                          (setDialogStatus) {
+                                                  YyShowDialog.showdialog(context, btnText: '朕知道了',
+                                                      content: (setDialogStatus) {
                                                     return Text(
                                                       '点击喜欢后可前往【我的】-【我的收藏】中查看该视频',
                                                       style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              Color(0xff646464),
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(14)),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Color(0xff646464),
+                                                          fontSize: ScreenUtil().setSp(14)),
+                                                      textAlign: TextAlign.center,
                                                     );
                                                   });
-                                                  PersistentState.saveState(
-                                                      'small_video', 'isshow');
+                                                  PersistentState.saveState('small_video', 'isshow');
                                                 }
                                               });
-                                              userFavorites(
-                                                      type: 10,
-                                                      id: widget.data.datumId)
-                                                  .then((res) {
-                                                if (res != null &&
-                                                    res.status != 0) {
-                                                  isLike
-                                                      ? likeNum--
-                                                      : likeNum++;
+                                              userFavorites(type: 10, id: widget.data.datumId).then((res) {
+                                                if (res != null && res.status != 0) {
+                                                  isLike ? likeNum-- : likeNum++;
                                                   isLike = !isLike;
                                                   setState(() {});
                                                 } else {
@@ -1321,20 +1133,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 PlatformAwareAssetImage(
-                                                    url: isLike
-                                                        ? PPAssetsPath.iconLike
-                                                        : PPAssetsPath
-                                                            .iconUnlike,
-                                                    width: ScreenUtil()
-                                                        .setWidth(20),
-                                                    filterQuality:
-                                                        FilterQuality.medium),
+                                                    url: isLike ? PPAssetsPath.iconLike : PPAssetsPath.iconUnlike,
+                                                    width: ScreenUtil().setWidth(20),
+                                                    filterQuality: FilterQuality.medium),
                                                 SizedBox(
-                                                  height: ScreenUtil()
-                                                      .setWidth(5.5),
+                                                  height: ScreenUtil().setWidth(5.5),
                                                 ),
-                                                Text(likeNum.toString(),
-                                                    style: DefaultStyle.white12)
+                                                Text(likeNum.toString(), style: DefaultStyle.white12)
                                               ],
                                             )),
                                           ),
@@ -1343,40 +1148,26 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              var config =
-                                                  Provider.of<HomeConfig>(
-                                                          context,
-                                                          listen: false)
-                                                      .config;
-                                              ShareMovieModel.showShareMovie(
-                                                  backButtonBehavior,
-                                                  copyUrl: config
-                                                      .share.affUrlCopy.url,
-                                                  thumb: widget
-                                                      .data.coverThumbVertical,
-                                                  title:
-                                                      widget.data.title ?? '--',
-                                                  subtitle:
-                                                      widget.data.desc ?? '--',
-                                                  url: config.share.affUrl
-                                                      .toString());
+                                              var config = Provider.of<HomeConfig>(context, listen: false).config;
+                                              ShareMovieModel.showShareMovie(backButtonBehavior,
+                                                  copyUrl: config.share.affUrlCopy.url,
+                                                  thumb: widget.data.coverThumbVertical,
+                                                  title: widget.data.title ?? '--',
+                                                  subtitle: widget.data.desc ?? '--',
+                                                  url: config.share.affUrl.toString());
+                                              AppEventReport.instance.videoShare();
                                             },
                                             child: _itemContainer(Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 PlatformAwareAssetImage(
-                                                    url:
-                                                        'assets/images/detail/icon_share_w.png',
-                                                    width: ScreenUtil()
-                                                        .setWidth(20),
-                                                    filterQuality:
-                                                        FilterQuality.medium),
+                                                    url: 'assets/images/detail/icon_share_w.png',
+                                                    width: ScreenUtil().setWidth(20),
+                                                    filterQuality: FilterQuality.medium),
                                                 SizedBox(
-                                                  height: ScreenUtil()
-                                                      .setWidth(5.5),
+                                                  height: ScreenUtil().setWidth(5.5),
                                                 ),
-                                                Text('分享',
-                                                    style: DefaultStyle.white12)
+                                                Text('分享', style: DefaultStyle.white12)
                                               ],
                                             )),
                                           ),
@@ -1391,20 +1182,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 PlatformAwareAssetImage(
-                                                    url:
-                                                        'assets/images/detail/icon_msg_w.png',
-                                                    width: ScreenUtil()
-                                                        .setWidth(20),
-                                                    filterQuality:
-                                                        FilterQuality.medium),
+                                                    url: 'assets/images/detail/icon_msg_w.png',
+                                                    width: ScreenUtil().setWidth(20),
+                                                    filterQuality: FilterQuality.medium),
                                                 SizedBox(
-                                                  height: ScreenUtil()
-                                                      .setWidth(5.5),
+                                                  height: ScreenUtil().setWidth(5.5),
                                                 ),
-                                                Text(
-                                                    widget.data.countComment
-                                                        .toString(),
-                                                    style: DefaultStyle.white11)
+                                                Text(widget.data.countComment.toString(), style: DefaultStyle.white11)
                                               ],
                                             )),
                                           ),
@@ -1414,121 +1198,75 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                           GestureDetector(
                                             onTap: () {
                                               if (kIsWeb) {
-                                                CommonUtils.showText(
-                                                    '请下载APP使用下载功能～');
+                                                CommonUtils.showText('请下载APP使用下载功能～');
                                               } else {
                                                 PageStatus.showLoading();
-                                                getDownloadUrl(
-                                                        id: widget.data.datumId)
-                                                    .then((res) {
+                                                getDownloadUrl(id: widget.data.datumId).then((res) {
                                                   if (res['status'] != 0) {
                                                     Map taskInfo = {
-                                                      "id": widget.data.datumId
-                                                          .toString(),
-                                                      "urlPath": res['data']
-                                                          ['downloadUrl'],
-                                                      "title":
-                                                          widget.data.title,
+                                                      "id": widget.data.datumId.toString(),
+                                                      "urlPath": res['data']['downloadUrl'],
+                                                      "title": widget.data.title,
                                                       "desc": widget.data.desc,
-                                                      "thumbCover": widget.data
-                                                              .coverThumbHorizontal ??
-                                                          widget.data
-                                                              .coverThumbVertical,
-                                                      "tags": widget.data.tags
-                                                          .split(",")
-                                                          .join("/"),
+                                                      "thumbCover": widget.data.coverThumbHorizontal ??
+                                                          widget.data.coverThumbVertical,
+                                                      "tags": widget.data.tags.split(",").join("/"),
                                                       "contentType": 7,
                                                       "downloading": false,
                                                       "isWaiting": true
                                                     };
-                                                    DownloadUtil
-                                                        .createDownloadTask(
-                                                            taskInfo);
+                                                    DownloadUtil.createDownloadTask(taskInfo);
                                                   } else {
                                                     YyShowDialog.showdialog(
                                                       context,
-                                                      content:
-                                                          (setDialogState) {
+                                                      content: (setDialogState) {
                                                         return Text(
-                                                          widget.data.isfree ==
-                                                                  2
-                                                              ? PPString
-                                                                  .noBuyVideoCacheHint
-                                                              : PPString
-                                                                  .noVipVideoCachHint,
+                                                          widget.data.isfree == 2
+                                                              ? PPString.noBuyVideoCacheHint
+                                                              : PPString.noVipVideoCachHint,
                                                           style: TextStyle(
-                                                              color: Color(
-                                                                  0xff646464),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          16)),
+                                                              color: Color(0xff646464),
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: ScreenUtil().setSp(16)),
                                                         );
                                                       },
                                                       cancelText: '取消',
-                                                      btnText: widget.data
-                                                                  .isfree ==
-                                                              2
+                                                      btnText: widget.data.isfree == 2
                                                           ? PPString.buyNow
                                                           : PPString.upgradeNuw,
                                                       callBack: () {
-                                                        if (widget
-                                                                .data.isfree ==
-                                                            2) {
-                                                          int money = Provider
-                                                                  .of<HomeConfig>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
+                                                        if (widget.data.isfree == 2) {
+                                                          int money = Provider.of<HomeConfig>(context, listen: false)
                                                               .member
                                                               .money;
-                                                          bool isInsufficient =
-                                                              money <
-                                                                  widget.data
-                                                                      .discountCoins;
-                                                          YyShowDialog.showdialog(
-                                                              context,
+                                                          bool isInsufficient = money < widget.data.discountCoins;
+                                                          YyShowDialog.showdialog(context,
                                                               btnText: isInsufficient
-                                                                  ? PPString
-                                                                      .goldInsufficient
-                                                                  : PPString
-                                                                      .buySee,
-                                                              callBack: () {
+                                                                  ? PPString.goldInsufficient
+                                                                  : PPString.buySee, callBack: () {
                                                             if (isInsufficient) {
-                                                              context.push(
-                                                                  '/coinRecharge');
+                                                              context.push('/coinRecharge');
                                                             } else {
-                                                              buySmallVideo(
-                                                                  money);
+                                                              buySmallVideo(money);
                                                             }
-                                                          }, content:
-                                                                  (setDialogState) {
+                                                          }, content: (setDialogState) {
                                                             return DefaultTextStyle(
                                                                 style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Color(
-                                                                        0xff646464),
-                                                                    fontSize: ScreenUtil()
-                                                                        .setSp(
-                                                                            14)),
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: Color(0xff646464),
+                                                                    fontSize: ScreenUtil().setSp(14)),
                                                                 child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
-                                                                    Text.rich(TextSpan(
-                                                                        text:
-                                                                            '该视频需要花费',
-                                                                        children: [
-                                                                          TextSpan(
-                                                                              text: widget.data.discountCoins.toString() + 'G',
-                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: DefaultStyle.themeColor, fontSize: ScreenUtil().setSp(16)))
-                                                                        ]))
+                                                                    Text.rich(TextSpan(text: '该视频需要花费', children: [
+                                                                      TextSpan(
+                                                                          text: widget.data.discountCoins.toString() +
+                                                                              'G',
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: DefaultStyle.themeColor,
+                                                                              fontSize: ScreenUtil().setSp(16)))
+                                                                    ]))
                                                                   ],
                                                                 ));
                                                           });
@@ -1547,18 +1285,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 PlatformAwareAssetImage(
-                                                    url:
-                                                        'assets/images/detail/icon_down_w.png',
-                                                    width: ScreenUtil()
-                                                        .setWidth(20),
-                                                    filterQuality:
-                                                        FilterQuality.medium),
+                                                    url: 'assets/images/detail/icon_down_w.png',
+                                                    width: ScreenUtil().setWidth(20),
+                                                    filterQuality: FilterQuality.medium),
                                                 SizedBox(
-                                                  height: ScreenUtil()
-                                                      .setWidth(5.5),
+                                                  height: ScreenUtil().setWidth(5.5),
                                                 ),
-                                                Text("下载",
-                                                    style: DefaultStyle.white11)
+                                                Text("下载", style: DefaultStyle.white11)
                                               ],
                                             )),
                                           ),
@@ -1577,61 +1310,38 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                       ),
                                       Expanded(
                                           child: SliderTheme(
-                                              data: SliderTheme.of(context)
-                                                  .copyWith(
-                                                      trackHeight: ScreenUtil()
-                                                          .setWidth(2),
-                                                      inactiveTrackColor:
-                                                          Colors.white24,
-                                                      activeTrackColor:
-                                                          Colors.white,
-                                                      overlayColor:
-                                                          Colors.white54,
-                                                      thumbShape:
-                                                          RoundSliderThumbShape(
-                                                              enabledThumbRadius:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          5)),
-                                                      overlayShape:
-                                                          RoundSliderOverlayShape(
-                                                        overlayRadius:
-                                                            ScreenUtil()
-                                                                .setWidth(9),
-                                                      ),
-                                                      thumbColor: Colors.white),
+                                              data: SliderTheme.of(context).copyWith(
+                                                  trackHeight: ScreenUtil().setWidth(2),
+                                                  inactiveTrackColor: Colors.white24,
+                                                  activeTrackColor: Colors.white,
+                                                  overlayColor: Colors.white54,
+                                                  thumbShape: RoundSliderThumbShape(
+                                                      enabledThumbRadius: ScreenUtil().setWidth(5)),
+                                                  overlayShape: RoundSliderOverlayShape(
+                                                    overlayRadius: ScreenUtil().setWidth(9),
+                                                  ),
+                                                  thumbColor: Colors.white),
                                               child: Slider(
-                                                  value:
-                                                      videoValue >= videoMaxTime
-                                                          ? videoMaxTime
-                                                          : videoValue,
+                                                  value: videoValue >= videoMaxTime ? videoMaxTime : videoValue,
                                                   max: videoMaxTime,
                                                   min: 0,
                                                   onChangeStart: (e) {
                                                     usecheck = true;
-                                                    changeStartIsPlay =
-                                                        _controller
-                                                            .value.isPlaying;
+                                                    changeStartIsPlay = _controller.value.isPlaying;
                                                     _controller.pause();
                                                   },
                                                   onChangeEnd: (e) {
                                                     if (changeStartIsPlay) {
                                                       _controller.play();
-                                                      AppGlobal
-                                                              .videoPageIsActive =
-                                                          true;
+                                                      AppGlobal.videoPageIsActive = true;
                                                     }
                                                   },
                                                   onChanged: (e) {
-                                                    if (_controller
-                                                        .value.isInitialized) {
+                                                    if (_controller.value.isInitialized) {
                                                       videoValue = e;
                                                       setState(() {});
                                                       _controller
-                                                          .seekTo(Duration(
-                                                              milliseconds:
-                                                                  videoValue
-                                                                      .toInt()))
+                                                          .seekTo(Duration(milliseconds: videoValue.toInt()))
                                                           .then((value) {
                                                         usecheck = false;
                                                       });
@@ -1644,15 +1354,12 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                     ],
                                   ),
                                   SizedBox(
-                                    height: ScreenUtil().setWidth(20) +
-                                        MediaQuery.of(context).padding.bottom,
+                                    height: ScreenUtil().setWidth(20) + MediaQuery.of(context).padding.bottom,
                                   ),
                                 ],
                               ),
                             )),
-                        _controller == null ||
-                                (_controller != null &&
-                                    !_controller.value.isInitialized)
+                        _controller == null || (_controller != null && !_controller.value.isInitialized)
                             ? Container()
                             : Positioned(
                                 top: 0,
@@ -1660,10 +1367,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                 bottom: 0,
                                 right: 0,
                                 child: AnimatedOpacity(
-                                  opacity: showControl ||
-                                          !_controller.value.isPlaying
-                                      ? 1
-                                      : 0,
+                                  opacity: showControl || !_controller.value.isPlaying ? 1 : 0,
                                   duration: Duration(milliseconds: 300),
                                   child: Center(
                                     child: PlatformAwareAssetImage(

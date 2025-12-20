@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-AppCenterModel appCenterModelFromJson(String str) =>
-    AppCenterModel.fromJson(json.decode(str));
+AppCenterModel appCenterModelFromJson(String str) => AppCenterModel.fromJson(json.decode(str));
 
 String appCenterModelToJson(AppCenterModel data) => json.encode(data.toJson());
 
@@ -43,25 +42,17 @@ class Data {
     this.apps,
   });
 
-  List<Banner> banner;
-  List<App> apps;
+  List banner;
+  List apps;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        banner: json["banner"] == null
-            ? null
-            : List<Banner>.from(json["banner"].map((x) => Banner.fromJson(x))),
-        apps: json["apps"] == null
-            ? null
-            : List<App>.from(json["apps"].map((x) => App.fromJson(x))),
+        banner: json["banner"] ?? [],
+        apps: json["apps"] ?? [],
       );
 
   Map<String, dynamic> toJson() => {
-        "banner": banner == null
-            ? null
-            : List<dynamic>.from(banner.map((x) => x.toJson())),
-        "apps": apps == null
-            ? null
-            : List<dynamic>.from(apps.map((x) => x.toJson())),
+        "banner": banner ?? [],
+        "apps": apps ?? [],
       };
 }
 
@@ -91,9 +82,7 @@ class App {
         imgUrl: json["img_url"] == null ? null : json["img_url"],
         linkUrl: json["link_url"] == null ? null : json["link_url"],
         clicked: json["clicked"] == null ? null : json["clicked"],
-        createdAt: json["created_at"] == null
-            ? null
-            : createdAtValues.map[json["created_at"]],
+        createdAt: json["created_at"] == null ? null : createdAtValues.map[json["created_at"]],
       );
 
   Map<String, dynamic> toJson() => {
@@ -103,8 +92,7 @@ class App {
         "img_url": imgUrl == null ? null : imgUrl,
         "link_url": linkUrl == null ? null : linkUrl,
         "clicked": clicked == null ? null : clicked,
-        "created_at":
-            createdAt == null ? null : createdAtValues.reverse[createdAt],
+        "created_at": createdAt == null ? null : createdAtValues.reverse[createdAt],
       };
 }
 
@@ -154,17 +142,14 @@ class Banner {
         imgUrl: json["img_url"] == null ? null : json["img_url"],
         url: json["url"] == null ? null : json["url"],
         position: json["position"] == null ? null : json["position"],
-        androidDownUrl:
-            json["android_down_url"] == null ? null : json["android_down_url"],
+        androidDownUrl: json["android_down_url"] == null ? null : json["android_down_url"],
         iosDownUrl: json["ios_down_url"] == null ? null : json["ios_down_url"],
         type: json["type"] == null ? null : json["type"],
         status: json["status"] == null ? null : json["status"],
         oauthType: json["oauth_type"] == null ? null : json["oauth_type"],
         mvM3U8: json["mv_m3u8"] == null ? null : json["mv_m3u8"],
         channel: json["channel"] == null ? null : json["channel"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         imgFullUrl: json["img_full_url"] == null ? null : json["img_full_url"],
       );
 
