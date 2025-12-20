@@ -204,7 +204,7 @@ class AppEventReport {
         InterceptorsWrapper(onRequest: (options, handler) {
           if (options.data != null) {
             final dynamic data = options.data;
-            print('上报 加密前 参数 = ${options.data}');
+            CommonUtils.debugPrint('上报 加密前 参数 = ${options.data}');
             options.data = PlatformAwareCrypto.encryptReportParams(data,
                 keyString: reportConfig.encryptionKey,
                 ivString: reportConfig.encryptionIv,
