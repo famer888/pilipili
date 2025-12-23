@@ -224,7 +224,10 @@ class AppEventReport {
     final int ts = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     eventList.add({
       'event': event,
-      'payload': data,
+      'payload': {
+        ...data,
+        'event': event,
+      },
       'client_ts': ts,
     });
 
