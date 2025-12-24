@@ -270,7 +270,7 @@ class ReportUtils {
       'ad_slot_key': adSlotKey ?? getAdType(adType)['key'], //广告位标识：与展示事件一致，如 home_banner_1
       'ad_slot_name': adSlotName ?? getAdType(adType)['name'], //广告位名称：与展示事件一致
       'ad_id': adId, //被点击的广告ID
-      'creative_id': creativeId, //素材ID（可选）
+      'creative_id': creativeId ?? '', //素材ID（可选）
       'ad_type': adtype ?? getAdType(adType)['key'], //广告类型：banner, feed, interstitial, reward_video 等
     };
     AppEventReport.instance.track('ad_click', data);

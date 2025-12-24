@@ -180,7 +180,7 @@ class AppEventReport {
                 base['event_id'] = eventId;
                 finalBatch.add(base);
               }
-              CommonUtils.debugPrint('批量上报数据: $finalBatch');
+              // CommonUtils.debugPrint('批量上报数据: $finalBatch');
               options.data = finalBatch;
             }
 
@@ -204,7 +204,7 @@ class AppEventReport {
         InterceptorsWrapper(onRequest: (options, handler) {
           if (options.data != null) {
             final dynamic data = options.data;
-            CommonUtils.debugPrint('上报 加密前 参数 = ${options.data}');
+            // CommonUtils.debugPrint('上报 加密前 参数 = ${options.data}');
             options.data = PlatformAwareCrypto.encryptReportParams(data,
                 keyString: reportConfig.encryptionKey,
                 ivString: reportConfig.encryptionIv,
@@ -220,14 +220,38 @@ class AppEventReport {
   void track(String event, Map data) {
     if (_reportDio == null) return;
 
-    CommonUtils.debugPrint("上报地址: $apiPath");
+    ///上报拦截
+    if (reportConfig.isReportAdvertising != 1 && event == "advertising") {
+      //APP广告行为
+      return;
+    } else if (reportConfig.isReportAdClick != 1 && event == "ad_click") {
+      //广告点击
+      return;
+    } else if (reportConfig.isReportAdImpression != 1 && event == "ad_impression") {
+      //广告展示
+      return;
+    } else if (reportConfig.isReportNavigation != 1 && event == "navigation") {
+      //导航路径行为
+      return;
+    } else if (reportConfig.isReportPageClick != 1 && event == "page_click") {
+      //应用页面点击
+      return;
+    } else if (reportConfig.isReportAppPageView != 1 && event == "app_page_view") {
+      //应用页面展示
+      return;
+    } else if (reportConfig.isReportVideoEvent != 1 && event == "video_event") {
+      //视频事件
+      return;
+    } else if (reportConfig.isReportKeywordClick != 1 && event == "keyword_click") {
+      //关键词搜索点击
+      return;
+    }
+
+    // CommonUtils.debugPrint("上报地址: $apiPath");
     final int ts = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     eventList.add({
       'event': event,
-      'payload': {
-        ...data,
-        'event': event,
-      },
+      'payload': data,
       'client_ts': ts,
     });
 
@@ -242,7 +266,7 @@ class AppEventReport {
       )
           .then(
         (res) {
-          CommonUtils.debugPrint('批量上报成功: ${res.data}');
+          // CommonUtils.debugPrint('批量上报成功: ${res.data}');
         },
         onError: (e, stack) {
           CommonUtils.debugPrint('批量上报失败: $e');

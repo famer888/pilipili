@@ -50,7 +50,7 @@ Dio _apiDio = new Dio(new BaseOptions(
     if (options.data != null) {
       _data.addAll(options.data);
     }
-    CommonUtils.debugPrint(_data);
+    // CommonUtils.debugPrint(_data);
     options.data = await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
 
     return handler.next(options);
