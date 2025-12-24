@@ -25,7 +25,7 @@ class AppEventReport {
 
   bool isProd = true; //是否正式服
   VideoAnalyticsTracker _tracker;
-  Map videoInfo; //视频信息
+  Map videoInfo = {}; //视频信息
   Dio _reportDio;
   bool isVip = false;
   bool isInlit = false;
