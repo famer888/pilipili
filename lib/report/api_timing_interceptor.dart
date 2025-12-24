@@ -33,8 +33,9 @@ class ApiTimingInterceptor extends Interceptor {
 
   void _finish(RequestOptions options, {bool success}) {
     final now = DateTime.now().millisecondsSinceEpoch;
-    final pageKey = options.extra['pageKey'] as String;
-    final enterMs = options.extra['pageEnterMs'] as int ?? now;
+
+    final pageKey = (options.extra['pageKey'] as String) ?? 'unknown';
+    final enterMs = (options.extra['pageEnterMs'] as int) ?? now;
 
     PageRequestTracker.instance.onRequestEnd(pageKey, enterMs, now);
 
