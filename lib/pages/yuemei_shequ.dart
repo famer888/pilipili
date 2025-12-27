@@ -3,17 +3,16 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/components/yuemei.dart';
 import 'package:pilipili/pages/community_page.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class YuemeiShequ extends StatefulWidget {
-  const YuemeiShequ({Key key}) : super(key: key);
+  const YuemeiShequ({Key key, this.pos}) : super(key: key);
+  final int pos;
   @override
   State<YuemeiShequ> createState() => _YuemeiShequState();
 }
@@ -62,10 +61,9 @@ class _YuemeiShequState extends State<YuemeiShequ> {
         ? PageStatus.loading(mounted)
         : Stack(
             children: [
-              CommunityPage(scrollDirection: scrollDirection),
+              CommunityPage(pos: widget.pos, scrollDirection: scrollDirection),
               Positioned(
-                  bottom: DefaultStyle.bottomnavbarHegiht +
-                      ScreenUtil().bottomBarHeight,
+                  bottom: DefaultStyle.bottomnavbarHegiht + ScreenUtil().bottomBarHeight,
                   left: 8.w,
                   right: 8.w,
                   child: Row(
@@ -75,16 +73,12 @@ class _YuemeiShequState extends State<YuemeiShequ> {
                       GestureDetector(
                         onTap: () {
                           String noPermissionPublishPostTips =
-                              Provider.of<HomeConfig>(context, listen: false)
-                                  .noPermissionPublishPostTips;
-                          int allowPublishPost =
-                              Provider.of<HomeConfig>(context, listen: false)
-                                  .allowPublishPost;
+                              Provider.of<HomeConfig>(context, listen: false).noPermissionPublishPostTips;
+                          int allowPublishPost = Provider.of<HomeConfig>(context, listen: false).allowPublishPost;
                           if (allowPublishPost != 0) {
                             context.push('/communityPushlish');
                           } else {
-                            bool isPublish = Privilege.isAllowed(context,
-                                RESOURCE_TYPE_POST, PRIVILEGE_TYPE_POST);
+                            bool isPublish = Privilege.isAllowed(context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_POST);
                             if (isPublish) {
                               context.push('/communityPushlish');
                             } else {
@@ -110,10 +104,7 @@ class _YuemeiShequState extends State<YuemeiShequ> {
                           child: Text(
                             '+',
                             style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                height: 1,
-                                color: Color(0xffFF84A9),
-                                fontSize: 40.sp),
+                                fontWeight: FontWeight.w300, height: 1, color: Color(0xffFF84A9), fontSize: 40.sp),
                           ),
                         ),
                       ),
@@ -128,7 +119,7 @@ class _YuemeiShequState extends State<YuemeiShequ> {
     //         controller: pageController,
     //         children: [
     //           CommunityPage(scrollDirection: scrollDirection),
-    //           YuemeiPage(scrollDirection: scrollDirection),
+    //           YuemeiPage(pos: widget.pos,scrollDirection: scrollDirection),
     //         ],
     //       ),
     //       Positioned(

@@ -12,7 +12,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class Dongman extends StatefulWidget {
-  Dongman({Key key}) : super(key: key);
+  Dongman({Key key, this.pos}) : super(key: key);
+  final int pos;
   @override
   _DongmanState createState() => _DongmanState();
 }
@@ -44,6 +45,7 @@ class _DongmanState extends State<Dongman> {
         // 模块化栏目页
         pages.add(PageViewMixin(
           child: Lanmu(
+              pos: widget.pos,
               isShow: currentIndex == index,
               id: int.parse(item.linkUrl),
               parentName: 'dongman',
@@ -53,13 +55,11 @@ class _DongmanState extends State<Dongman> {
         //筛选
         pages.add(PageViewMixin(
           child: FilterList(
-              parentName: 'dongman',
-              isShow: currentIndex == index,
-              data: item.linkUrl,
-              index: index),
+              pos: widget.pos, parentName: 'dongman', isShow: currentIndex == index, data: item.linkUrl, index: index),
         ));
       } else {
         pages.add(ListPage(
+          pos: widget.pos,
           parentName: 'dongman',
           isShow: currentIndex == index,
           title: item.name,

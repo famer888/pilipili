@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/FlexibleBanner.dart';
@@ -13,8 +12,9 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key key, this.scrollDirection}) : super(key: key);
+  const CommunityPage({Key key, this.scrollDirection, this.pos}) : super(key: key);
   final Function scrollDirection;
+  final int pos;
   @override
   State<CommunityPage> createState() => _CommunityPageState();
 }
@@ -70,8 +70,7 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   void getBanner() async {
-    getElementById(id: 139, page: 1, limit: AppGlobal.smallVideoLimit)
-        .then((res) {
+    getElementById(id: 139, page: 1, limit: AppGlobal.smallVideoLimit).then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
@@ -146,9 +145,7 @@ class _CommunityPageState extends State<CommunityPage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.w),
           gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.center,
-              colors: [Color(0xffFFF9FC), Color(0xffFFD3E6)]),
+              begin: Alignment.topCenter, end: Alignment.center, colors: [Color(0xffFFF9FC), Color(0xffFFD3E6)]),
           border: Border.all(
             width: 2.w,
             color: Color(0xffFFEBD3),
@@ -158,10 +155,7 @@ class _CommunityPageState extends State<CommunityPage> {
         children: [
           Text(
             text,
-            style: TextStyle(
-                color: Color(0xffFF6896),
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w700),
+            style: TextStyle(color: Color(0xffFF6896), fontSize: 16.sp, fontWeight: FontWeight.w700),
           ),
           Container(
             height: 25.w,
@@ -177,10 +171,7 @@ class _CommunityPageState extends State<CommunityPage> {
                 )),
             child: Text(
               '$postNum 個帖子',
-              style: TextStyle(
-                  color: Color(0xffffffff),
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400),
+              style: TextStyle(color: Color(0xffffffff), fontSize: 12.sp, fontWeight: FontWeight.w400),
             ),
           )
         ],
@@ -199,10 +190,7 @@ class _CommunityPageState extends State<CommunityPage> {
               borderRadius: BorderRadius.circular(20.w),
               boxShadow: [
                 BoxShadow(
-                    color: Color(0xffFF80A3).withOpacity(0.5),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                    spreadRadius: 0)
+                    color: Color(0xffFF80A3).withOpacity(0.5), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)
               ],
             ),
             height: 40.w,
@@ -227,16 +215,14 @@ class _CommunityPageState extends State<CommunityPage> {
                           Text(
                             e['title'],
                             style: TextStyle(
-                                color: value == e['id']
-                                    ? Color(0xffFF5B8C)
-                                    : Color(0xffC2C2C2),
+                                color: value == e['id'] ? Color(0xffFF5B8C) : Color(0xffC2C2C2),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14.sp),
                           ),
                           Positioned(
                               left: 0,
                               right: 0,
-                              top:-4.w,
+                              top: -4.w,
                               child: Center(
                                 child: Opacity(
                                   opacity: value == e['id'] ? 1 : 0,
@@ -284,13 +270,9 @@ class _CommunityPageState extends State<CommunityPage> {
                     pinned: false,
                     elevation: 0,
                     forceElevated: true,
-                    expandedHeight: ScreenUtil().statusBarHeight +
-                        DefaultStyle.navbarHegiht +
-                        160.w +
-                        24.w,
+                    expandedHeight: (1.sw / 7) * 5,
                     bottom: PreferredSize(
-                      preferredSize:
-                          Size(double.infinity, ScreenUtil().setWidth(24)),
+                      preferredSize: Size(double.infinity, ScreenUtil().setWidth(24)),
                       child: Container(
                           height: 16.w,
                           decoration: BoxDecoration(
@@ -300,7 +282,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                 topRight: Radius.circular(30.w),
                               ))),
                     ),
-                    flexibleSpace: HomeTopBanner(fixedBanner: fixedBanner)),
+                    flexibleSpace: HomeTopBanner(pos: widget.pos, fixedBanner: fixedBanner)),
                 SliverToBoxAdapter(
                   child: topics.isEmpty
                       ? Container()
@@ -312,8 +294,7 @@ class _CommunityPageState extends State<CommunityPage> {
                               // shrinkWrap: true,
                               // physics: NeverScrollableScrollPhysics(),
                               itemCount: topics.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 8.w,
                                 mainAxisSpacing: 8.w,
@@ -322,12 +303,9 @@ class _CommunityPageState extends State<CommunityPage> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    context.push(
-                                        '/topicDetail/${topics[index]['id']}',
-                                        isNoRepeat: true);
+                                    context.push('/topicDetail/${topics[index]['id']}', isNoRepeat: true);
                                   },
-                                  child: topBtn(topics[index]['name'],
-                                      topics[index]['post_num']),
+                                  child: topBtn(topics[index]['name'], topics[index]['post_num']),
                                 );
                               }),
                         ),
@@ -347,8 +325,7 @@ class _CommunityPageState extends State<CommunityPage> {
                           )),
                 ),
                 SliverPadding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 17.w, horizontal: 8.w),
+                  padding: EdgeInsets.symmetric(vertical: 17.w, horizontal: 8.w),
                   sliver: loading
                       ? SliverToBoxAdapter(
                           child: PageStatus.loading(mounted),
@@ -361,8 +338,7 @@ class _CommunityPageState extends State<CommunityPage> {
                 ),
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: MediaQuery.of(context).padding.bottom +
-                        ScreenUtil().bottomBarHeight,
+                    height: MediaQuery.of(context).padding.bottom + ScreenUtil().bottomBarHeight,
                   ),
                 )
               ],
@@ -388,16 +364,14 @@ class _CommunityPageState extends State<CommunityPage> {
                             left: 0,
                             child: Container(
                               height: double.infinity,
-                              padding: EdgeInsets.only(
-                                  top: ScreenUtil().setWidth(13)),
+                              padding: EdgeInsets.only(top: ScreenUtil().setWidth(13)),
                               decoration: BoxDecoration(
-                                  gradient: RadialGradient(colors: [
-                                Color.fromRGBO(255, 0, 107, 0.33),
-                                Color.fromRGBO(255, 0, 122, 0.0)
-                              ], radius: 0.8, center: Alignment.bottomCenter)),
+                                  gradient: RadialGradient(
+                                      colors: [Color.fromRGBO(255, 0, 107, 0.33), Color.fromRGBO(255, 0, 122, 0.0)],
+                                      radius: 0.8,
+                                      center: Alignment.bottomCenter)),
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   PlatformAwareAssetImage(
                                       url: 'assets/images/icon_love.png',
@@ -413,21 +387,16 @@ class _CommunityPageState extends State<CommunityPage> {
                             )),
                         Container(
                           height: DefaultStyle.navbarHegiht,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: ScreenUtil().setWidth(13)),
+                          padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(13)),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: ScreenUtil().setWidth(3)),
+                                padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(3)),
                                 child: Text(
                                   "社區",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -441,8 +410,7 @@ class _CommunityPageState extends State<CommunityPage> {
                           context.push('/search');
                         },
                         child: Container(
-                          padding:
-                              EdgeInsets.only(left: ScreenUtil().setWidth(6)),
+                          padding: EdgeInsets.only(left: ScreenUtil().setWidth(6)),
                           child: PlatformAwareAssetImage(
                               url: 'assets/images/icon_search.png',
                               width: ScreenUtil().setWidth(20.5),
@@ -454,8 +422,7 @@ class _CommunityPageState extends State<CommunityPage> {
               ),
             )),
         Positioned(
-            top:
-                ScreenUtil().statusBarHeight + DefaultStyle.navbarHegiht + 16.w,
+            top: ScreenUtil().statusBarHeight + DefaultStyle.navbarHegiht + 16.w,
             left: 16.w,
             right: 16.w,
             child: Center(
@@ -480,8 +447,7 @@ class _CommunityPageState extends State<CommunityPage> {
 }
 
 class IndexPageHeaderDelegate extends SliverPersistentHeaderDelegate {
-  IndexPageHeaderDelegate(this.child,
-      {this.minHeight = 50, this.maxHeight = 50});
+  IndexPageHeaderDelegate(this.child, {this.minHeight = 50, this.maxHeight = 50});
 
   Widget child;
   final double minHeight;
@@ -494,8 +460,7 @@ class IndexPageHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => maxHeight;
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       child: child,
     );

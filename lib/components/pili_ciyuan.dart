@@ -21,7 +21,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class PiliCiyuan extends StatefulWidget {
-  PiliCiyuan({Key key}) : super(key: key);
+  PiliCiyuan({Key key, this.pos}) : super(key: key);
+  final int pos;
   @override
   _PiliCiyuanState createState() => _PiliCiyuanState();
 }
@@ -62,19 +63,23 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
         // 模块化栏目页
         pages.add(PageViewMixin(
           child: Lanmu(
-              isShow: currentIndex == index,
-              id: int.parse(item.linkUrl),
-              parentName: 'ciyuan',
-              index: index),
+            isShow: currentIndex == index,
+            id: int.parse(item.linkUrl),
+            parentName: 'ciyuan',
+            index: index,
+            pos: widget.pos,
+          ),
         ));
       } else if (item.redirectType == 6) {
         //筛选
         pages.add(PageViewMixin(
           child: FilterList(
-              parentName: 'ciyuan',
-              isShow: currentIndex == index,
-              data: item.linkUrl,
-              index: index),
+            parentName: 'ciyuan',
+            isShow: currentIndex == index,
+            data: item.linkUrl,
+            index: index,
+            pos: widget.pos,
+          ),
         ));
       } else {
         pages.add(ListPage(
@@ -83,6 +88,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
           title: item.name,
           id: item.linkUrl,
           index: index,
+          pos: widget.pos,
         ));
       }
     });

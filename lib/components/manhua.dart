@@ -12,7 +12,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class Manhua extends StatefulWidget {
-  Manhua({Key key}) : super(key: key);
+  Manhua({Key key, this.pos}) : super(key: key);
+  final int pos;
   @override
   _ManhuaState createState() => _ManhuaState();
 }
@@ -29,6 +30,7 @@ class _ManhuaState extends State<Manhua> {
     initPage = true;
     getPageData();
   }
+
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(4);
     if (data == null) {
@@ -43,6 +45,7 @@ class _ManhuaState extends State<Manhua> {
         // 模块化栏目页
         pages.add(PageViewMixin(
           child: Lanmu(
+              pos: widget.pos,
               isShow: currentIndex == index,
               id: int.parse(item.linkUrl),
               parentName: 'manhua',
@@ -52,13 +55,11 @@ class _ManhuaState extends State<Manhua> {
         //筛选
         pages.add(PageViewMixin(
           child: FilterList(
-              parentName: 'manhua',
-              isShow: currentIndex == index,
-              data: item.linkUrl,
-              index: index),
+              pos: widget.pos, parentName: 'manhua', isShow: currentIndex == index, data: item.linkUrl, index: index),
         ));
       } else {
         pages.add(ListPage(
+          pos: widget.pos,
           parentName: 'manhua',
           isShow: currentIndex == index,
           title: item.name,

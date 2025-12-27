@@ -54,7 +54,9 @@ class _HomeState extends State<Home> {
   List navBarItem = [
     {
       "keepAlive": false,
-      "page": PiliCiyuan(),
+      "page": PiliCiyuan(
+        pos: 318,
+      ),
       "title": "pili次元",
       "activeIcon": 'assets/images/2024/bottomTab/pili_active.png',
       "icon": 'assets/images/2024/bottomTab/pili_inactive.png',
@@ -63,7 +65,9 @@ class _HomeState extends State<Home> {
     },
     {
       "keepAlive": false,
-      "page": Dongman(),
+      "page": Dongman(
+        pos: 319,
+      ),
       "title": "动漫",
       "activeIcon": 'assets/images/2024/bottomTab/tv_active.png',
       "icon": 'assets/images/2024/bottomTab/tv_inactive.png',
@@ -72,7 +76,9 @@ class _HomeState extends State<Home> {
     },
     {
       "keepAlive": false,
-      "page": Manhua(),
+      "page": Manhua(
+        pos: 320,
+      ),
       "title": "漫画",
       "activeIcon": 'assets/images/2024/bottomTab/comic_active.png',
       "icon": 'assets/images/2024/bottomTab/comic_inactive.png',
@@ -81,7 +87,9 @@ class _HomeState extends State<Home> {
     },
     {
       "keepAlive": false,
-      "page": AnwangPage(),
+      "page": AnwangPage(
+        pos: 321,
+      ),
       "title": "暗網",
       "activeIcon": 'assets/images/2024/bottomTab/hacker_active.png',
       "icon": 'assets/images/2024/bottomTab/hacker_inactive.png',
@@ -90,7 +98,9 @@ class _HomeState extends State<Home> {
     },
     {
       "keepAlive": false,
-      "page": YuemeiShequ(),
+      "page": YuemeiShequ(
+        pos: 314,
+      ),
       "title": "妹圈",
       "activeIcon": 'assets/images/2024/bottomTab/date_active.png',
       "icon": 'assets/images/2024/bottomTab/date_inactive.png',

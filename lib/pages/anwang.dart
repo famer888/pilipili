@@ -19,7 +19,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:provider/provider.dart';
 
 class AnwangPage extends StatefulWidget {
-  const AnwangPage({Key key}) : super(key: key);
+  const AnwangPage({Key key, this.pos}) : super(key: key);
+  final int pos;
   @override
   State<AnwangPage> createState() => _AnwangPageState();
 }
@@ -48,6 +49,7 @@ class _AnwangPageState extends State<AnwangPage> {
         // 模块化栏目页
         pages.add(PageViewMixin(
           child: Lanmu(
+              pos: widget.pos,
               isShow: currentIndex == index,
               id: int.parse(item.linkUrl),
               parentName: 'anwang',
@@ -57,6 +59,7 @@ class _AnwangPageState extends State<AnwangPage> {
         //筛选
         pages.add(PageViewMixin(
           child: FilterList(
+              pos: widget.pos,
               parentName: 'anwang',
               isShow: currentIndex == index,
               isDark: 1,
@@ -65,6 +68,7 @@ class _AnwangPageState extends State<AnwangPage> {
         ));
       } else {
         pages.add(ListPage(
+          pos: widget.pos,
           parentName: 'anwang',
           isDark: 1,
           isShow: currentIndex == index,
@@ -79,10 +83,8 @@ class _AnwangPageState extends State<AnwangPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool darkPrivilege =
-        Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
-    String darkPrivilegeText =
-        Provider.of<HomeConfig>(context, listen: false).darkprivilegeTips;
+    bool darkPrivilege = Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
+    String darkPrivilegeText = Provider.of<HomeConfig>(context, listen: false).darkprivilegeTips;
     return Stack(
       children: [
         navitems.isEmpty || loading
@@ -120,10 +122,7 @@ class _AnwangPageState extends State<AnwangPage> {
                 child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 25.5.w),
                 child: DefaultTextStyle(
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w700),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -161,15 +160,11 @@ class _AnwangPageState extends State<AnwangPage> {
                                       Text(
                                         '點擊開通',
                                         style: TextStyle(
-                                            color: Color(0xffFE155B),
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w700),
+                                            color: Color(0xffFE155B), fontSize: 16.sp, fontWeight: FontWeight.w700),
                                       ),
                                       Text('開啟無限觀影',
                                           style: TextStyle(
-                                              color: Color(0xffffffff),
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w700)),
+                                              color: Color(0xffffffff), fontSize: 14.sp, fontWeight: FontWeight.w700)),
                                     ],
                                   ),
                                   SizedBox(
@@ -184,15 +179,11 @@ class _AnwangPageState extends State<AnwangPage> {
                                       height: 34.w,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50.w),
-                                          gradient:
-                                              DefaultStyle.defaluGrandientLine),
+                                          borderRadius: BorderRadius.circular(50.w),
+                                          gradient: DefaultStyle.defaluGrandientLine),
                                       child: Text('立即解锁',
                                           style: TextStyle(
-                                              color: Color(0xffffffff),
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w700)),
+                                              color: Color(0xffffffff), fontSize: 16.sp, fontWeight: FontWeight.w700)),
                                     ),
                                   )
                                 ],

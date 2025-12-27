@@ -1,4 +1,3 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/FlexibleBanner.dart';
@@ -14,18 +13,10 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:provider/provider.dart';
 
 class FilterList extends StatefulWidget {
   FilterList(
-      {Key key,
-      this.data,
-      this.isDark = 0,
-      this.id,
-      this.isShow,
-      this.index,
-      this.tabList,
-      this.parentName})
+      {Key key, this.data, this.isDark = 0, this.id, this.isShow, this.index, this.tabList, this.parentName, this.pos})
       : super(key: key);
   final dynamic data;
   final int id;
@@ -34,6 +25,7 @@ class FilterList extends StatefulWidget {
   final List tabList;
   final String parentName;
   final int isDark;
+  final int pos;
   @override
   _FilterListState createState() => _FilterListState();
 }
@@ -92,9 +84,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
       getPageData();
     }
     EventBus().on('lanmu-init-view', (arg) async {
-      if (arg['parentName'] == widget.parentName &&
-          arg['currentIndex'] == widget.index &&
-          pageStatus == 0) {
+      if (arg['parentName'] == widget.parentName && arg['currentIndex'] == widget.index && pageStatus == 0) {
         pageStatus = 1;
         await getPageData();
       }
@@ -136,19 +126,11 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
         cardType = 1;
         break;
       case 4:
-        res = await getNovelList(
-            filter: widget.data,
-            order: order,
-            page: page,
-            limit: AppGlobal.smallVideoLimit);
+        res = await getNovelList(filter: widget.data, order: order, page: page, limit: AppGlobal.smallVideoLimit);
         cardType = 3;
         break;
       default:
-        res = await getFilterComics(
-            filter: widget.data,
-            order: order,
-            page: page,
-            limit: AppGlobal.smallVideoLimit);
+        res = await getFilterComics(filter: widget.data, order: order, page: page, limit: AppGlobal.smallVideoLimit);
         cardType = 2;
     }
     if (res == null) {
@@ -169,9 +151,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   }
 
   Future<void> getPageData() async {
-    await getElementById(
-            id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
-        .then((res) {
+    await getElementById(id: elementID, page: 1, limit: AppGlobal.smallVideoLimit).then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
@@ -224,31 +204,23 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                             pinned: false,
                             elevation: 0,
                             forceElevated: true,
-                            expandedHeight: ScreenUtil().statusBarHeight +
-                                DefaultStyle.navbarHegiht +
-                                ScreenUtil().setWidth(160) +
-                                ScreenUtil().setWidth(navHeight),
+                            expandedHeight: (1.sw / 7) * 5,
                             bottom: PreferredSize(
-                              preferredSize: Size(double.infinity,
-                                  ScreenUtil().setWidth(navHeight)),
+                              preferredSize: Size(double.infinity, ScreenUtil().setWidth(navHeight)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(
-                                        ScreenUtil().setWidth(24)),
-                                    topLeft: Radius.circular(
-                                        ScreenUtil().setWidth(24))),
+                                    topRight: Radius.circular(ScreenUtil().setWidth(24)),
+                                    topLeft: Radius.circular(ScreenUtil().setWidth(24))),
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: Color.fromRGBO(255, 244, 249, 1),
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: ScreenUtil().setWidth(12)),
+                                  padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(12)),
                                 ),
                               ),
                             ),
-                            flexibleSpace:
-                                HomeTopBanner(fixedBanner: fixedBanner)),
+                            flexibleSpace: HomeTopBanner(pos: widget.pos, fixedBanner: fixedBanner)),
                         filterList == null
                             ? SliverToBoxAdapter(
                                 child: PageStatus.loading(true),
@@ -258,21 +230,16 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                     child: PageStatus.noData(),
                                   )
                                 : SliverPadding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: DefaultStyle.pagePadding),
+                                    padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                     sliver: SliverGrid.count(
                                       crossAxisCount: cardStyle == 'h' ? 2 : 3,
-                                      crossAxisSpacing:
-                                          ScreenUtil().setWidth(7),
-                                      childAspectRatio:
-                                          cardStyle == 'h' ? 1.2 : 0.61,
-                                      children:
-                                          filterList.asMap().keys.map((e) {
+                                      crossAxisSpacing: ScreenUtil().setWidth(7),
+                                      childAspectRatio: cardStyle == 'h' ? 1.2 : 0.61,
+                                      children: filterList.asMap().keys.map((e) {
                                         return cardStyle == 'h'
                                             ? Hcard(
                                                 onTap: () {
-                                                  AppGlobal.smallVideoApi =
-                                                      '/api/mv/getList';
+                                                  AppGlobal.smallVideoApi = '/api/mv/getList';
                                                   AppGlobal.smallVideoPramas = {
                                                     'type': 2,
                                                     'filter': widget.data,
@@ -280,22 +247,16 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                                   };
                                                 },
                                                 maxLines: 1,
-                                                width:
-                                                    ScreenUtil().setWidth(174),
+                                                width: ScreenUtil().setWidth(174),
                                                 contentType: cardType,
-                                                page: ((e + 1) /
-                                                        AppGlobal
-                                                            .smallVideoLimit)
-                                                    .ceil(),
-                                                thumbUrl: CommonUtils.getThumb(
-                                                    filterList[e]),
+                                                page: ((e + 1) / AppGlobal.smallVideoLimit).ceil(),
+                                                thumbUrl: CommonUtils.getThumb(filterList[e]),
                                                 cardData: filterList[e],
                                                 showField: 'title',
                                               )
                                             : Vcard(
                                                 onTap: () {
-                                                  AppGlobal.smallVideoApi =
-                                                      '/api/mv/getList';
+                                                  AppGlobal.smallVideoApi = '/api/mv/getList';
                                                   AppGlobal.smallVideoPramas = {
                                                     'type': 2,
                                                     'filter': widget.data,
@@ -303,15 +264,10 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                                   };
                                                 },
                                                 maxLines: 1,
-                                                page: ((e + 1) /
-                                                        AppGlobal
-                                                            .smallVideoLimit)
-                                                    .ceil(),
-                                                width:
-                                                    ScreenUtil().setWidth(110),
+                                                page: ((e + 1) / AppGlobal.smallVideoLimit).ceil(),
+                                                width: ScreenUtil().setWidth(110),
                                                 contentType: cardType,
-                                                thumbUrl: CommonUtils.getThumb(
-                                                    filterList[e]),
+                                                thumbUrl: CommonUtils.getThumb(filterList[e]),
                                                 cardData: filterList[e],
                                                 showField: 'title',
                                               );
@@ -320,8 +276,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                                   ),
                         SliverToBoxAdapter(
                           child: SizedBox(
-                            height: ScreenUtil().bottomBarHeight +
-                                ScreenUtil().setWidth(30),
+                            height: ScreenUtil().bottomBarHeight + ScreenUtil().setWidth(30),
                           ),
                         )
                       ],
@@ -329,22 +284,15 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                   ),
         AnimatedPositioned(
             duration: Duration(milliseconds: 300),
-            top: DefaultStyle.navbarHegiht +
-                ScreenUtil().statusBarHeight +
-                ScreenUtil().setWidth(24),
-            right: navShow
-                ? 0
-                : -((filterNavList.length - 1) * ScreenUtil().setWidth(60)),
+            top: DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight + ScreenUtil().setWidth(24),
+            right: navShow ? 0 : -((filterNavList.length - 1) * ScreenUtil().setWidth(60)),
             child: Container(
               height: ScreenUtil().setWidth(40),
               decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                        color: Color.fromRGBO(255, 91, 140, 0.2),
-                        offset: Offset(0, 2),
-                        blurRadius: 3,
-                        spreadRadius: 0)
+                        color: Color.fromRGBO(255, 91, 140, 0.2), offset: Offset(0, 2), blurRadius: 3, spreadRadius: 0)
                   ],
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(ScreenUtil().setWidth(12)),
@@ -367,8 +315,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                     },
                     child: Container(
                       width: ScreenUtil().setWidth(60),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setWidth(10)),
+                      padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -386,9 +333,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
                             style: TextStyle(
                                 height: 1.2,
                                 fontWeight: FontWeight.w700,
-                                color: filterNavList[e]['order'] == order
-                                    ? Color(0xffff5b8c)
-                                    : Color(0xffc2c2c2),
+                                color: filterNavList[e]['order'] == order ? Color(0xffff5b8c) : Color(0xffc2c2c2),
                                 fontSize: ScreenUtil().setSp(14)),
                           ),
                           Opacity(

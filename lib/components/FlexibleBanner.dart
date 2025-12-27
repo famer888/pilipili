@@ -3,25 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/report/report_utils.dart';
+import 'package:pilipili/utils/api.dart';
+import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class HomeTopBanner extends StatefulWidget {
-  const HomeTopBanner({Key key, this.fixedBanner}) : super(key: key);
+  const HomeTopBanner({Key key, this.fixedBanner, this.pos}) : super(key: key);
   final dynamic fixedBanner;
+  final int pos;
   @override
   State<HomeTopBanner> createState() => _HomeTopBannerState();
 }
 
 class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
+  List _banner = [];
+  Future<dynamic> getAd() async {
+    var adBanner = await getAdForCoin(pos: widget.pos);
+    if (adBanner != null && adBanner['data'] != null && adBanner['data'].length > 0) {
+      _banner = adBanner['data'];
+      setState(() {});
+    }
+  }
+
   adVertising(AdEventType eventType, int index) {
     ReportUtils.adVertising(
         eventType: eventType,
         advertisingKey: AdType.homeFloatBanner,
-        advertisingId: widget.fixedBanner['value'][index]['id'],
-        adSlotKey: widget.fixedBanner['value'][index]['advertise_location_code'],
-        adSlotName: widget.fixedBanner['value'][index]['ad_slot_name'],
-        adtype: widget.fixedBanner['value'][index]['ad_type']);
+        advertisingId: _banner[index]['id'],
+        adSlotKey: _banner[index]['advertise_location_code'],
+        adSlotName: _banner[index]['ad_slot_name'],
+        adtype: _banner[index]['ad_type']);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAd();
   }
 
   @override
@@ -29,7 +48,7 @@ class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
     return FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         background: Stack(clipBehavior: Clip.none, children: [
-          widget.fixedBanner == null || !(widget.fixedBanner is Map) || widget.fixedBanner['value'].length == 0
+          _banner == null || _banner.isEmpty
               ? PlatformAwareAssetImage(
                   url: 'assets/images/demo_bg.png',
                   width: double.infinity,
@@ -37,18 +56,15 @@ class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
                   filterQuality: FilterQuality.medium)
               : Swiper(
                   autoplayDelay: 3000,
-                  autoplay: widget.fixedBanner['value'].length > 1,
-                  physics: widget.fixedBanner['value'].length > 1 ? null : new NeverScrollableScrollPhysics(),
-                  onIndexChanged: (e) {
-                    // CommonUtils.debugPrint('-------------------$e---------------------');
-                  },
+                  autoplay: _banner.length > 1,
+                  physics: _banner.length > 1 ? null : new NeverScrollableScrollPhysics(),
                   pagination: SwiperPagination(
                       margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(40)),
                       alignment: Alignment.bottomCenter,
                       builder: SwiperCustomPagination(builder: (BuildContext context, SwiperPluginConfig config) {
                         return Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: widget.fixedBanner['value'].asMap().keys.map<Widget>((e) {
+                          children: _banner.asMap().keys.map<Widget>((e) {
                             return AnimatedContainer(
                               duration: Duration(milliseconds: 250),
                               width: ScreenUtil().setWidth(6),
@@ -64,12 +80,13 @@ class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
                   itemBuilder: (BuildContext context, int index) {
                     return VisibilityDetector(
                         key: Key(
-                            '${ReportUtils.getAdType(AdType.homeBanner)['key']}_Banner_${widget.fixedBanner['value'][index]['id']}'),
+                            '${ReportUtils.getAdType(AdType.homeBanner)['key']}_${widget.pos}_Banner_${_banner[index]['id']}'),
                         child: callDetail(
                           onTap: () {
                             adVertising(AdEventType.click, index);
+                            CommonUtils.bannerTopath(context, url: _banner[index]['url'], type: _banner[index]['type']);
                           },
-                          cardData: widget.fixedBanner['value'][index],
+                          cardData: _banner[index],
                           contentType: 4,
                           child: Container(
                             clipBehavior: Clip.hardEdge,
@@ -91,7 +108,7 @@ class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
                                         child: PlatformAwareNetworkImage(
                                           alignment: Alignment.center,
                                           noVisibilityDetector: true,
-                                          url: widget.fixedBanner['value'][index]['resource_url'],
+                                          url: _banner[index]['img_url'] ?? _banner[index]['resource_url'],
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -107,7 +124,7 @@ class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
                           }
                         });
                   },
-                  itemCount: widget.fixedBanner['value'].length,
+                  itemCount: _banner.length,
                 )
         ]));
   }

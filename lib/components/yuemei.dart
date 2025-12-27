@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/FlexibleBanner.dart';
@@ -11,18 +7,17 @@ import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
-import 'package:pilipili/routers.dart';
-import 'package:pilipili/store/globle_value.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:provider/provider.dart';
+
 class YuemeiPage extends StatefulWidget {
   final bool isShow;
   final Function scrollDirection;
-  YuemeiPage({Key key, this.isShow = false,this.scrollDirection}) : super(key: key);
+  final int pos;
+  YuemeiPage({Key key, this.isShow = false, this.scrollDirection, this.pos}) : super(key: key);
 
   @override
   _YuemeiPageState createState() => _YuemeiPageState();
@@ -69,8 +64,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
   }
 
   void getBanner() async {
-    getElementById(id: 139, page: 1, limit: AppGlobal.smallVideoLimit)
-        .then((res) {
+    getElementById(id: 139, page: 1, limit: AppGlobal.smallVideoLimit).then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
@@ -86,11 +80,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
         ? SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return YuemeiCard(
-                    w: 118.w,
-                    h: 145.w,
-                    isShowInfo: true,
-                    data: yuepaoList[index]);
+                return YuemeiCard(w: 118.w, h: 145.w, isShowInfo: true, data: yuepaoList[index]);
               },
               childCount: yuepaoList.length,
               addSemanticIndexes: false,
@@ -104,8 +94,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
             crossAxisSpacing: 12.w,
             childAspectRatio: 0.843,
             children: yuepaoList.asMap().keys.map((e) {
-              return YuemeiCard(
-                  w: 118.w, h: 145.w, isShowInfo: false, data: yuepaoList[e]);
+              return YuemeiCard(w: 118.w, h: 145.w, isShowInfo: false, data: yuepaoList[e]);
             }).toList(),
           );
   }
@@ -122,6 +111,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
     //   print("Scrolling Down");
     // }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -161,8 +151,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                 ? PageStatus.loading(true)
                 : PullRefreshList(
                     color: Color.fromRGBO(130, 26, 70, 0.44),
-                    offset: DefaultStyle.navbarHegiht +
-                        ScreenUtil().statusBarHeight,
+                    offset: DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
                     onLoading: () {
                       if (isAll) return;
                       page++;
@@ -180,19 +169,14 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                             pinned: false,
                             elevation: 0,
                             forceElevated: true,
-                            expandedHeight: ScreenUtil().statusBarHeight +
-                                DefaultStyle.navbarHegiht +
-                                ScreenUtil().setWidth(160) +
-                                ScreenUtil().setWidth(24),
+                            expandedHeight: (1.sw / 7) * 5,
                             bottom: PreferredSize(
-                              preferredSize: Size(
-                                  double.infinity, ScreenUtil().setWidth(24)),
+                              preferredSize: Size(double.infinity, ScreenUtil().setWidth(24)),
                               child: Stack(
                                 children: [
                                   Container(
                                     padding: EdgeInsets.only(right: 12.w),
-                                    margin:
-                                        EdgeInsets.only(left: 75.w, top: 20.w),
+                                    margin: EdgeInsets.only(left: 75.w, top: 20.w),
                                     height: 36.w,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -204,9 +188,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                         Text(
                                           'C圈嫩妹 制服COS 官方认证',
                                           style: TextStyle(
-                                              color: Color(0xffc2c2c2),
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14.sp),
+                                              color: Color(0xffc2c2c2), fontWeight: FontWeight.bold, fontSize: 14.sp),
                                         ),
                                         Text(' 包赔付',
                                             style: TextStyle(
@@ -227,7 +209,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                 ],
                               ),
                             ),
-                            flexibleSpace: HomeTopBanner(fixedBanner:fixedBanner)),
+                            flexibleSpace: HomeTopBanner(pos: widget.pos, fixedBanner: fixedBanner)),
                         loading
                             ? SliverToBoxAdapter(
                                 child: PageStatus.loading(true),
@@ -237,15 +219,12 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                                     child: PageStatus.noData(text: '没有约妹资源哟～'),
                                   )
                                 : SliverPadding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 17.w,
-                                        horizontal: DefaultStyle.pagePadding),
+                                    padding: EdgeInsets.symmetric(vertical: 17.w, horizontal: DefaultStyle.pagePadding),
                                     sliver: _listView(),
                                   )),
                         SliverToBoxAdapter(
                           child: SizedBox(
-                            height: MediaQuery.of(context).padding.bottom +
-                                ScreenUtil().bottomBarHeight,
+                            height: MediaQuery.of(context).padding.bottom + ScreenUtil().bottomBarHeight,
                           ),
                         )
                       ],
@@ -259,28 +238,23 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
               color: Color.fromRGBO(130, 56, 78, 0.44),
               child: Container(
                 height: DefaultStyle.navbarHegiht,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.5.w),
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.5.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     DefaultTextStyle(
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.81),
-                            fontSize: 16.sp),
+                        style: TextStyle(color: Colors.white.withOpacity(0.81), fontSize: 16.sp),
                         child: Row(
                           children: [
                             GestureDetector(
                               onTap: () {
-                                context.push(
-                                    CommonUtils.getRealHash('cityPicker'));
+                                context.push(CommonUtils.getRealHash('cityPicker'));
                               },
                               behavior: HitTestBehavior.translucent,
                               child: Row(
                                 children: [
                                   PlatformAwareAssetImage(
-                                    url:
-                                        'assets/images/pili_12/icon_location.png',
+                                    url: 'assets/images/pili_12/icon_location.png',
                                     width: 24.w,
                                     fit: BoxFit.fitWidth,
                                   ),
@@ -304,8 +278,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                               child: Row(
                                 children: [
                                   PlatformAwareAssetImage(
-                                    url:
-                                        'assets/images/pili_12/icon_filter.png',
+                                    url: 'assets/images/pili_12/icon_filter.png',
                                     width: 24.w,
                                     fit: BoxFit.fitWidth,
                                   ),
@@ -324,8 +297,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
                           context.push('/search');
                         },
                         child: Container(
-                          padding:
-                              EdgeInsets.only(left: ScreenUtil().setWidth(6)),
+                          padding: EdgeInsets.only(left: ScreenUtil().setWidth(6)),
                           child: PlatformAwareAssetImage(
                               url: 'assets/images/icon_search.png',
                               width: ScreenUtil().setWidth(20.5),
