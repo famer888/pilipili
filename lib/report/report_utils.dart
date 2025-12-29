@@ -194,6 +194,7 @@ class ReportUtils {
     dynamic adSlotName, //传 ad_name
     dynamic adPageKey, // 传 page_key
     dynamic adPageName, //传 page_name
+    dynamic creativeId, //素材ID（可选）
   }) {
     String type = '';
     switch (eventType) {
@@ -210,9 +211,9 @@ class ReportUtils {
     }
     Map data = {
       'event_type': type, //事件类型：click(点击), close(关闭), show(展示)
-      'advertising_key':
+      'advertising_key': adSlotKey ??
           getAdType(advertisingKey)['key'], //广告标识：home_popup(首页弹窗), home_banner(首页Banner), video_reward(激励视频)等
-      'advertising_name': getAdType(advertisingKey)['name'], //广告标识名称：首页弹窗, 首页Banner, 激励视频
+      'advertising_name': adSlotName ?? getAdType(advertisingKey)['name'], //广告标识名称：首页弹窗, 首页Banner, 激励视频
       'advertising_id': advertisingId.toString(), //广告ID
     };
 
@@ -229,7 +230,9 @@ class ReportUtils {
           adSlotKey: adSlotKey ?? getAdType(advertisingKey)['key'],
           adSlotName: adSlotName ?? getAdType(advertisingKey)['name'],
           adId: advertisingId,
+          type: adtype ?? getAdType(advertisingKey)['key'],
           adType: advertisingKey,
+          creativeId: creativeId,
           adPageKey: adPageKey,
           adPageName: adPageName);
     } else {
@@ -244,6 +247,7 @@ class ReportUtils {
           adType: advertisingKey,
           adtype: adtype ?? getAdType(advertisingKey)['key'],
           adSlotKey: adSlotKey,
+          creativeId: creativeId,
           adSlotName: adSlotName,
           adPageKey: adPageKey,
           adPageName: adPageName);
@@ -270,7 +274,7 @@ class ReportUtils {
       'ad_slot_key': adSlotKey ?? getAdType(adType)['key'], //广告位标识：与展示事件一致，如 home_banner_1
       'ad_slot_name': adSlotName ?? getAdType(adType)['name'], //广告位名称：与展示事件一致
       'ad_id': adId, //被点击的广告ID
-      'creative_id': creativeId ?? '', //素材ID（可选）
+      'creative_id': creativeId, //素材ID（可选）
       'ad_type': adtype ?? getAdType(adType)['key'], //广告类型：banner, feed, interstitial, reward_video 等
     };
     AppEventReport.instance.track('ad_click', data);
