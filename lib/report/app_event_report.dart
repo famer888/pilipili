@@ -167,6 +167,7 @@ class AppEventReport {
                 // payload 放到字段里
                 if (ev.containsKey('payload')) {
                   base['payload'] = ev['payload'];
+                  base['payload']['trace_id'] = traceId;
                 }
 
                 final List<String> md5List = [];
