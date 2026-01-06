@@ -410,7 +410,12 @@ class _HomeState extends State<Home> {
     int activeIndex = 0;
     showIndexActive(int index) {
       ReportUtils.adVertising(
-          eventType: AdEventType.show, advertisingKey: AdType.homePopup, advertisingId: AppGlobal.popAds[index]['id']);
+          eventType: AdEventType.show,
+          advertisingKey: AdType.homePopup,
+          advertisingId: AppGlobal.popAds[index]['id'],
+          adSlotKey: AppGlobal.popAds[index]['advertise_location_code'],
+          adSlotName: AppGlobal.popAds[index]['ad_slot_name'],
+          adtype: AppGlobal.popAds[index]['ad_type']);
       UpdateModel.showAvtivetysDialog(backButtonBehavior,
           width: AppGlobal.popAds[index]['img_width'].toDouble(),
           height: AppGlobal.popAds[index]['img_height'].toDouble(),
@@ -426,7 +431,10 @@ class _HomeState extends State<Home> {
         ReportUtils.adVertising(
             eventType: AdEventType.close,
             advertisingKey: AdType.homePopup,
-            advertisingId: AppGlobal.popAds[index]['id']);
+            advertisingId: AppGlobal.popAds[index]['id'],
+            adSlotKey: AppGlobal.popAds[index]['advertise_location_code'],
+            adSlotName: AppGlobal.popAds[index]['ad_slot_name'],
+            adtype: AppGlobal.popAds[index]['ad_type']);
       }, confirm: () {
         ReportUtils.adVertising(
             eventType: AdEventType.click,

@@ -468,10 +468,15 @@ class UpdateModel {
   }
 
   static void showCompartmentDialog({VoidCallback cancel, String url}) {
-    ReportUtils.adVertising(
-        eventType: AdEventType.show,
-        advertisingKey: AdType.homePopup,
-        advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','));
+    if (AppGlobal.popAppAds.isNotEmpty) {
+      ReportUtils.adVertising(
+          eventType: AdEventType.show,
+          advertisingKey: AdType.homePopup,
+          advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','),
+          adSlotKey: AppGlobal.popAppAds.first['advertise_location_code'],
+          adSlotName: AppGlobal.popAppAds.first['ad_slot_name'],
+          adtype: AppGlobal.popAppAds.first['ad_type']);
+    }
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => Material(
         color: Colors.transparent,
@@ -482,7 +487,10 @@ class UpdateModel {
             ReportUtils.adVertising(
                 eventType: AdEventType.close,
                 advertisingKey: AdType.homePopup,
-                advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','));
+                advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','),
+                adSlotKey: AppGlobal.popAppAds.first['advertise_location_code'],
+                adSlotName: AppGlobal.popAppAds.first['ad_slot_name'],
+                adtype: AppGlobal.popAppAds.first['ad_type']);
           },
           child: Container(
             color: Colors.black45,
@@ -499,7 +507,10 @@ class UpdateModel {
                       ReportUtils.adVertising(
                           eventType: AdEventType.close,
                           advertisingKey: AdType.homePopup,
-                          advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','));
+                          advertisingId: AppGlobal.popAppAds.map((e) => e['id']).toList().join(','),
+                          adSlotKey: AppGlobal.popAppAds.first['advertise_location_code'],
+                          adSlotName: AppGlobal.popAppAds.first['ad_slot_name'],
+                          adtype: AppGlobal.popAppAds.first['ad_type']);
                     },
                     child: PlatformAwareAssetImage(
                         url: "assets/images/detail/icon_close.png",

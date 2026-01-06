@@ -39,7 +39,10 @@ class _AppCenterState extends State<AppCenter> {
         ReportUtils.adVertising(
             eventType: AdEventType.show,
             advertisingKey: AdType.appsList,
-            advertisingId: result.data.apps.map((e) => e['id']).toList().join(','));
+            advertisingId: result.data.apps.map((e) => e['id']).toList().join(','),
+            adSlotKey: result.data.apps.first['advertise_location_code'],
+            adSlotName: result.data.apps.first['ad_slot_name'],
+            adtype: result.data.apps.first['ad_type']);
         isLoading = false;
       });
     }
