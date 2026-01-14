@@ -49,8 +49,8 @@ class _PageClickListenerState extends State<PageClickListener> {
         }
 
         // 这里才认为是一次真正的点击
-        final pageKey = MyNavObserver.instance.currentPageKey ?? '';
-        final rawName = MyNavObserver.instance.currentRouteName ?? '';
+        final pageKey = MyNavObserver.instance.currentPageKey ?? 'home';
+        final rawName = MyNavObserver.instance.currentRouteName ?? '首页';
         final pageName = RouterPageName.pageName[rawName] ?? rawName;
 
         final clickPageX = upPos.dx.toInt();

@@ -80,7 +80,7 @@ class MyNavObserver extends NavigatorObserver {
   }
 
   String _cleanRouteName(String name) {
-    if (name == null || name.isEmpty || name == 'unknown') return '';
+    if (name == null || name.isEmpty || name == 'unknown') return 'home';
     try {
       name = name.split('/')[1];
       if (name.isEmpty) name = 'home';
