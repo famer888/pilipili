@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/input/yy_input.dart';
 import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -112,7 +111,6 @@ class _RegisterState extends State<Register> {
             if (res.status != 0) {
               currentIndex = 0;
               setState(() {});
-              String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
               CommonUtils.showText('注册成功,快去登录吧～');
               clearInput();
             } else {
@@ -147,7 +145,6 @@ class _RegisterState extends State<Register> {
             if (res.status != 0) {
               currentIndex = 0;
               setState(() {});
-              String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
               CommonUtils.showText('注册成功,快去登录吧～');
               clearInput();
             } else {

@@ -70,18 +70,36 @@ void main() async {
   AppGlobal.appBox.put('firstVisitTime', DateTime.now());
   String oauthId = AppGlobal.appBox.get('oauth_id') ??
       CommonUtils.randomId(16).toString() + '_' + DateTime.now().millisecondsSinceEpoch.toString().toString();
+
+  String userAgent = '';
+  String deviceBrand = '';
+  String deviceModel = '';
+  String affCode = '';
+  String traceId = '';
   Future<void> getTraceId() async {
     if (kIsWeb) {
       Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
-      String traceID = u.queryParameters['trace_id'];
-      if (traceID != null) await AppGlobal.appBox?.put('trace_id', traceID);
+      affCode = u.queryParameters["lcg_aff"] ?? "";
+      String tId = u.queryParameters['trace_id'];
+      if (tId != null) {
+        traceId = tId;
+        await AppGlobal.appBox?.put('trace_id', tId);
+      } else {
+        traceId = await AppGlobal.appBox?.get('trace_id') ?? "";
+      }
     } else {
       await Clipboard.getData(Clipboard.kTextPlain).then((value) async {
         try {
           if (value?.text != null) {
             final params = Uri.splitQueryString(value?.text ?? '');
-            final traceID = params['trace_id'];
-            if (traceID != null) await AppGlobal.appBox?.put('trace_id', traceID);
+            String tId = params['trace_id'];
+            affCode = params["lcg_aff"] ?? "";
+            if (tId != null) {
+              traceId = tId;
+              await AppGlobal.appBox?.put('trace_id', tId);
+            } else {
+              traceId = await AppGlobal.appBox?.get('trace_id') ?? "";
+            }
           }
         } catch (e) {
           print('剪切板文本错误');
@@ -91,10 +109,6 @@ void main() async {
   }
 
   await getTraceId();
-
-  String userAgent = '';
-  String deviceBrand = '';
-  String deviceModel = '';
   if (kIsWeb) {
     userAgent = html.window.navigator.userAgent;
   } else {
@@ -107,7 +121,9 @@ void main() async {
     'user_agent': userAgent,
     'device_brand': deviceBrand,
     'device_model': deviceModel,
-    'device': AppEventReport.detectWebDeviceLabel()
+    'device': AppEventReport.detectWebDeviceLabel(),
+    'trace_id': traceId,
+    'aff_x_code': affCode
   };
   AppGlobal.appinfo = {
     "oauth_id": oauthId,

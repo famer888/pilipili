@@ -44,9 +44,8 @@ Dio _apiDio = new Dio(new BaseOptions(
     if (yytoken != null && yytoken != '') {
       AppGlobal.apiToken = yytoken;
     }
-    String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
     _data.addAll(AppGlobal.appinfo);
-    _data.addAll({'token': AppGlobal.apiToken, 'trace_id': traceId});
+    _data.addAll({'token': AppGlobal.apiToken});
     if (options.data != null) {
       _data.addAll(options.data);
     }

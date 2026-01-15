@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:pilipili/store/search.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
-import "package:universal_html/html.dart" as html;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,24 +29,6 @@ class _WelcomeState extends State<Welcome> {
     setState(() {});
   }
 
-  void getClipboardText() {
-    if (kIsWeb) {
-      Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
-      String aff = u.queryParameters['sq_aff'];
-      if (aff != null) toInvitation(affCode: aff);
-    } else {
-      Clipboard.getData(Clipboard.kTextPlain).then((value) {
-        try {
-          if (value?.text != null) {
-            final params = Uri.splitQueryString(value?.text ?? '');
-            final aff = params['sq_aff'];
-            if (aff != null) toInvitation(affCode: aff);
-          }
-        } catch (e) {}
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -59,7 +40,6 @@ class _WelcomeState extends State<Welcome> {
           duration: new Duration(seconds: 5));
     }, onSuccess: () {
       getHomeConfig(context).then((res) {
-        getClipboardText();
         // toInvitation(affCode: "aqw92");
         if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
           yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};
