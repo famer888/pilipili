@@ -79,7 +79,7 @@ void main() async {
   Future<void> getTraceId() async {
     if (kIsWeb) {
       Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
-      affCode = u.queryParameters["lcg_aff"] ?? "";
+      affCode = u.queryParameters["sq_aff"] ?? "";
       String tId = u.queryParameters['trace_id'];
       if (tId != null) {
         traceId = tId;
@@ -93,7 +93,7 @@ void main() async {
           if (value?.text != null) {
             final params = Uri.splitQueryString(value?.text ?? '');
             String tId = params['trace_id'];
-            affCode = params["lcg_aff"] ?? "";
+            affCode = params["sq_aff"] ?? "";
             if (tId != null) {
               traceId = tId;
               await AppGlobal.appBox?.put('trace_id', tId);
