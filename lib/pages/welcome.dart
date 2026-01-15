@@ -34,18 +34,14 @@ class _WelcomeState extends State<Welcome> {
     if (kIsWeb) {
       Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       String aff = u.queryParameters['sq_aff'];
-      String traceID = u.queryParameters['trace_id'];
       if (aff != null) toInvitation(affCode: aff);
-      if (traceID != null) AppGlobal.appBox?.put('trace_id', traceID);
     } else {
       Clipboard.getData(Clipboard.kTextPlain).then((value) {
         try {
           if (value?.text != null) {
             final params = Uri.splitQueryString(value?.text ?? '');
             final aff = params['sq_aff'];
-            final traceID = params['trace_id'];
             if (aff != null) toInvitation(affCode: aff);
-            if (traceID != null) AppGlobal.appBox?.put('trace_id', traceID);
           }
         } catch (e) {}
       });

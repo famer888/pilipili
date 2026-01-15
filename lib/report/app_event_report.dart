@@ -219,7 +219,8 @@ class AppEventReport {
 
   /// 事件上报
   void track(String event, Map data) {
-    if (_reportDio == null) return;
+    Dio dio = _reportDio;
+    if (dio == null) return;
 
     ///上报拦截
     if (reportConfig.isReportAdvertising != 1 && event == "advertising") {
@@ -260,7 +261,7 @@ class AppEventReport {
       final List<Map<String, dynamic>> batch = List<Map<String, dynamic>>.from(eventList);
       eventList.clear();
 
-      _reportDio
+      dio
           .post(
         apiPath,
         data: batch,

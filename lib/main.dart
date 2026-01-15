@@ -70,6 +70,28 @@ void main() async {
   AppGlobal.appBox.put('firstVisitTime', DateTime.now());
   String oauthId = AppGlobal.appBox.get('oauth_id') ??
       CommonUtils.randomId(16).toString() + '_' + DateTime.now().millisecondsSinceEpoch.toString().toString();
+  Future<void> getTraceId() async {
+    if (kIsWeb) {
+      Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
+      String traceID = u.queryParameters['trace_id'];
+      if (traceID != null) await AppGlobal.appBox?.put('trace_id', traceID);
+    } else {
+      await Clipboard.getData(Clipboard.kTextPlain).then((value) async {
+        try {
+          if (value?.text != null) {
+            final params = Uri.splitQueryString(value?.text ?? '');
+            final traceID = params['trace_id'];
+            if (traceID != null) await AppGlobal.appBox?.put('trace_id', traceID);
+          }
+        } catch (e) {
+          print('剪切板文本错误');
+        }
+      });
+    }
+  }
+
+  await getTraceId();
+
   String userAgent = '';
   String deviceBrand = '';
   String deviceModel = '';
