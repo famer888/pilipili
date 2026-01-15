@@ -140,7 +140,6 @@ class AppEventReport {
         InterceptorsWrapper(
           onRequest: (options, handler) async {
             if (options.data is List) {
-              String traceId = AppGlobal.appBox?.get('trace_id') ?? "";
               final List list = options.data as List;
 
               final List<Map<String, dynamic>> finalBatch = [];
@@ -151,7 +150,7 @@ class AppEventReport {
                 final int ts = ev['client_ts'] ?? 0;
                 Map<String, dynamic> base = {
                   'device_id': AppGlobal.appinfo['device_id'],
-                  'trace_id': traceId,
+                  'trace_id': AppGlobal.appinfo['trace_id'],
                   'event': eventName,
                   'channel': channel,
                   'sid': sid,
@@ -167,7 +166,7 @@ class AppEventReport {
                 // payload 放到字段里
                 if (ev.containsKey('payload')) {
                   base['payload'] = ev['payload'];
-                  base['payload']['trace_id'] = traceId;
+                  base['payload']['trace_id'] = AppGlobal.appinfo['trace_id'];
                 }
 
                 final List<String> md5List = [];
