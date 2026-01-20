@@ -58,7 +58,8 @@ class Data {
       this.noPermissionPublishPostTips,
       this.click_app_id,
       this.click_transit_path,
-      this.buryPoint});
+      this.buryPoint,
+      this.maintainTipsStr});
 
   VersionMsg versionMsg;
   int timestamp;
@@ -73,6 +74,7 @@ class Data {
   String click_app_id;
   String click_transit_path;
   ReportConfig buryPoint;
+  String maintainTipsStr;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
       versionMsg: json["versionMsg"] == null ? null : VersionMsg.fromJson(json["versionMsg"]),
       notice: json["notice"] == null ? null : Notice.fromJson(json["notice"]),
@@ -86,7 +88,8 @@ class Data {
       noPermissionPublishPostTips: json["no_permission_publish_post_tips"] ?? '',
       click_app_id: json["click_app_id"],
       click_transit_path: json["click_transit_path"],
-      buryPoint: ReportConfig.fromJson(json['bury_point']));
+      buryPoint: ReportConfig.fromJson(json['bury_point']),
+      maintainTipsStr: json["maintain_tips_str"] ?? "");
 
   Map<String, dynamic> toJson() => {
         "versionMsg": versionMsg == null ? null : versionMsg.toJson(),
@@ -101,7 +104,8 @@ class Data {
         "no_permission_publish_post_tips": noPermissionPublishPostTips ?? '',
         "click_app_id": click_app_id,
         "click_transit_path": click_transit_path,
-        "bury_point": buryPoint
+        "bury_point": buryPoint,
+        "maintain_tips_str": maintainTipsStr
       };
 }
 

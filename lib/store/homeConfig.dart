@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/model/systemnotice.dart';
-import 'package:pilipili/utils/common.dart';
 
 class GetConfig {
   static String imagePath;
@@ -22,6 +21,7 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   int _postMoney;
   int _allowPublishPost;
   String _noPermissionPublishPostTips;
+  String _message;
 
   SystemNotice get systemnotice => _systemNotice;
   Member get member => _member;
@@ -35,6 +35,12 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   int get postMoney => _postMoney;
   int get allowPublishPost => _allowPublishPost;
   String get noPermissionPublishPostTips => _noPermissionPublishPostTips;
+  String get message => _message;
+  void setMessage(String message) {
+    _message = message;
+    notifyListeners();
+  }
+
   void setAllowPublishPost(int status) {
     _allowPublishPost = status;
     notifyListeners();

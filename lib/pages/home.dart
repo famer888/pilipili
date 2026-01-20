@@ -301,6 +301,7 @@ class _HomeState extends State<Home> {
       return;
     }
     bool isSelf = false;
+    String maintainTipsStr = Provider.of<HomeConfig>(context, listen: false).message;
     isSelf = Provider.of<HomeConfig>(context, listen: false).member.channel == "self";
     UpdateModel.showAnnouncementDialog(
       backButtonBehavior,
@@ -316,7 +317,7 @@ class _HomeState extends State<Home> {
       confirmApp: () {
         // _addMainScreen();
       },
-      text: "$message",
+      text: "$maintainTipsStr",
       type: isSelf ? "2" : "1",
     );
     setState(() {

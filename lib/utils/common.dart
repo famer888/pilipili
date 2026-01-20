@@ -254,7 +254,7 @@ class CommonUtils {
 
   static launchURL(String url) async {
     try {
-      await launch(url, forceSafariVC: false);
+      await launch(url.trim(), forceSafariVC: false);
     } catch (e) {
       BotToast.showText(text: '网址错误');
     }

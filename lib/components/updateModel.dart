@@ -4,8 +4,10 @@ import 'package:app_installer/app_installer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/report/report_utils.dart';
 import 'package:pilipili/theme/default.dart';
@@ -22,30 +24,26 @@ class UpdateModel {
       BuildContext context,
       String text,
       String type}) {
-    var tipSplit = text.split('#');
-    tipWidget(String value) {
-      return Text(
-        value,
-        style: TextStyle(
+    HtmlUnescape unescape = HtmlUnescape();
+    String decodedString = unescape.convert(text ?? '');
+    Widget content = Html(
+      shrinkWrap: true,
+      data: decodedString,
+      style: {
+        "*": Style(
           color: Color(0xFFf646464),
-          fontSize: ScreenUtil().setSp(15),
-          decoration: TextDecoration.none,
-          fontWeight: FontWeight.normal,
+          lineHeight: LineHeight.rem(1.5),
+          margin: Margins.zero,
         ),
-      );
-    }
-
-    tipsWidget() {
-      return tipSplit.map((value) {
-        Widget widget = tipWidget(value);
-        return widget;
-      }).toList();
-    }
-
-    List<Widget> newTipsWidget = tipsWidget();
-    newTipsWidget.add(Container(
-      width: double.infinity,
-    ));
+        "a": Style(
+          color: Color(0xff47b0f8),
+          textDecoration: TextDecoration.underline,
+        )
+      },
+      onLinkTap: (url, context, attributes, element) {
+        CommonUtils.launchURL(url ?? "");
+      },
+    );
     BotToast.showWidget(
         toastBuilder: (cancelFunc) => Container(
               child: Stack(
@@ -97,11 +95,7 @@ class UpdateModel {
                                       child: SingleChildScrollView(
                                     padding: EdgeInsets.symmetric(
                                         vertical: ScreenUtil().setWidth(33.5), horizontal: ScreenUtil().setWidth(25)),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: newTipsWidget,
-                                    ),
+                                    child: content,
                                   )),
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(25)),

@@ -55,6 +55,7 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
     AppGlobal.popAppAds = res.data['data']['pop_app_ads'] ?? [];
     HomeData result = HomeData.fromJson(res.data);
     if (result.status != 0) {
+      Provider.of<HomeConfig>(context, listen: false).setMessage(result.data.maintainTipsStr);
       Provider.of<HomeConfig>(context, listen: false).setMember(result.data.member);
       Provider.of<HomeConfig>(context, listen: false).setDarkPrivilege(result.data.darkPrivilege);
       Provider.of<HomeConfig>(context, listen: false).setDarkPrivilegeTips(result.data.darkprivilegeTips);
