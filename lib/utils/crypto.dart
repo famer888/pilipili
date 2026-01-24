@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:pilipili/utils/common.dart';
+import 'package:flutter/foundation.dart' as platform;
 
-final key = Key.fromUtf8("NQYT3eSsXG52WPDS");
-final iv = IV.fromUtf8("KIxEQJNeXG715zkh");
-final appkey = "NaojbMJVDK1V82QG49dt6tiXQxAsZTQF";
+final key = Key.fromUtf8(platform.kIsWeb ? "tpPmmU6PGq7HXeRI" : "boYKnvXMkj3lkhjp");
+final iv = IV.fromUtf8(platform.kIsWeb ? "kScjUo8FzUTIxeCy" : "fhE0omBgjlnihR8A");
+final appkey = platform.kIsWeb ? "AKmg68AZLnOKxvU0GGFbD65KBKzwm5Gr" : "tQdNCz4OY9iR1ystwAThyHbhBOnTGmNT";
 
 final mediaKey = Key.fromUtf8("f5d965df75336270");
 final mediaIv = IV.fromUtf8("97b60394abc2fbe1");
@@ -36,6 +37,7 @@ String pliEncry(plainText) {
 String getSign(Map obj) {
   String md5Text;
   List keyValues = [];
+  keyValues.add("_ver=" + obj['_ver'].toString());
   keyValues.add("client=" + obj['client'].toString());
   keyValues.add("data=" + obj['data'].toString());
   keyValues.add("timestamp=" + obj['timestamp'].toString());
@@ -51,8 +53,8 @@ class PlatformAwareCrypto {
     Encrypted encrypted = encrypter.encryptBytes(utf8.encode(word), iv: iv);
     String data = utf8.decode(encrypted.base64.codeUnits);
     int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    String sign = getSign({"client": "pwa", "data": data, "timestamp": timestamp});
-    return "client=pwa&timestamp=$timestamp&data=$data&sign=$sign";
+    String sign = getSign({"client": "pwa", "data": data, "timestamp": timestamp, "_ver": "v1"});
+    return "client=${platform.kIsWeb ? 'pwa' : 'and'}&&timestamp=$timestamp&data=$data&sign=$sign&_ver=v1";
   }
 
   static Future<String> decryptResData(dynamic data) async {
@@ -121,5 +123,30 @@ class PlatformAwareCrypto {
     final sha = sha1.convert(utf8.encode(serect + cal));
     final str = md5.convert(utf8.encode(sha.toString())).toString();
     return str.substring(0, 16);
+  }
+
+  //验证签名
+  static String makeSign(Map<dynamic, dynamic> params, String signKey) {
+    if (params == null || params.isEmpty) {
+      return '';
+    }
+    // 1. ksort（按 key 排序）
+    final sortedKeys = params.keys.toList()..sort();
+    // 2. 拼接 key=value
+    final List<String> arrTemp = [];
+    for (final key in sortedKeys) {
+      var value = params[key]?.toString() ?? '';
+      if (key == 'data') {
+        value = value.replaceAll(' ', '+');
+      }
+      arrTemp.add('$key=$value');
+    }
+    // 3. 用 & 连接
+    final string = arrTemp.join('&') + signKey;
+    // 4. 先 sha256，再 md5
+    final sha256Str = sha256.convert(utf8.encode(string)).toString();
+    final md5Str = md5.convert(utf8.encode(sha256Str)).toString();
+
+    return md5Str;
   }
 }

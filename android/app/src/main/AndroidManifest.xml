@@ -18,7 +18,7 @@
         android:label="Pilipili"
         android:name="${applicationName}"
         android:hardwareAccelerated="true" 
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         android:theme="@style/LaunchTheme"
         android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_config"

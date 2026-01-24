@@ -593,17 +593,17 @@ class Notice {
 }
 
 class VersionMsg {
-  VersionMsg({
-    this.version,
-    this.type,
-    this.apk,
-    this.tips,
-    this.must,
-    this.status,
-    this.message,
-    this.mstatus,
-    this.channel,
-  });
+  VersionMsg(
+      {this.version,
+      this.type,
+      this.apk,
+      this.tips,
+      this.must,
+      this.status,
+      this.message,
+      this.mstatus,
+      this.channel,
+      this.sha256});
 
   String version;
   String type;
@@ -614,18 +614,19 @@ class VersionMsg {
   String message;
   int mstatus;
   String channel;
+  String sha256;
 
   factory VersionMsg.fromJson(Map<String, dynamic> json) => VersionMsg(
-        version: json["version"] == null ? null : json["version"],
-        type: json["type"] == null ? null : json["type"],
-        apk: json["apk"] == null ? null : json["apk"],
-        tips: json["tips"] == null ? null : json["tips"],
-        must: json["must"] == null ? null : json["must"],
-        status: json["status"] == null ? null : json["status"],
-        message: json["message"] == null ? null : json["message"],
-        mstatus: json["mstatus"] == null ? null : json["mstatus"],
-        channel: json["channel"] == null ? null : json["channel"],
-      );
+      version: json["version"] == null ? null : json["version"],
+      type: json["type"] == null ? null : json["type"],
+      apk: json["apk"] == null ? null : json["apk"],
+      tips: json["tips"] == null ? null : json["tips"],
+      must: json["must"] == null ? null : json["must"],
+      status: json["status"] == null ? null : json["status"],
+      message: json["message"] == null ? null : json["message"],
+      mstatus: json["mstatus"] == null ? null : json["mstatus"],
+      channel: json["channel"] == null ? null : json["channel"],
+      sha256: json["sha256"]);
 
   Map<String, dynamic> toJson() => {
         "version": version == null ? null : version,
@@ -637,6 +638,7 @@ class VersionMsg {
         "message": message == null ? null : message,
         "mstatus": mstatus == null ? null : mstatus,
         "channel": channel == null ? null : channel,
+        "sha256": sha256
       };
 }
 

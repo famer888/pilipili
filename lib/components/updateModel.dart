@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_installer/app_installer.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -8,13 +9,17 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
+import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/report/report_utils.dart';
+import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pilipili/utils/networkImage.dart';
+import 'package:provider/provider.dart';
 
 class UpdateModel {
   static void showAnnouncementDialog(BackButtonBehavior backButtonBehavior,
@@ -597,12 +602,18 @@ class _DownloadApkState extends State<DownloadApk> {
     } on Exception catch (_) {}
   }
 
+  Future<bool> md5ApkFile(File apkFile) async {
+    final digest = await sha256.bind(apkFile.openRead()).first;
+    VersionMsg cf = Provider.of<HomeConfig>(context, listen: false).versionMsg;
+    return cf.sha256 == digest.toString();
+  }
+
   @override
   void initState() {
     super.initState();
     getExternalStorageDirectory().then((documents) {
       String savePath = '${documents.path}/youyu.${DateTime.now().millisecondsSinceEpoch}.apk';
-      PlatformAwareHttp.download(widget.url, savePath, onReceiveProgress: (int count, int total) {
+      PlatformAwareHttp.download(widget.url, savePath, onReceiveProgress: (int count, int total) async {
         var tmp = (count / total * 100).toInt();
         if (tmp % 1 == 0) {
           setState(() {
@@ -610,7 +621,23 @@ class _DownloadApkState extends State<DownloadApk> {
           });
         }
         if (count >= total) {
-          _installApk(savePath);
+          if (await md5ApkFile(File(savePath))) {
+            _installApk(savePath);
+          } else {
+            //关闭升级弹窗
+            widget.onTap?.call();
+            //弹出告警提示
+            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
+            YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消',
+                callBack: () {
+              CommonUtils.launchURL(officeSite);
+            }, content: (setDialogState) {
+              return DefaultTextStyle(
+                  style: TextStyle(
+                      color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
+                  child: Text('数据校验失败，请去官网下载最新版本！'));
+            });
+          }
         }
       }).catchError((err) {
         BotToast.cleanAll();

@@ -1,10 +1,15 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/report/api_timing_interceptor.dart';
+import 'package:pilipili/store/homeConfig.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:pilipili/global.dart';
 import 'package:pilipili/utils/common.dart';
@@ -13,6 +18,7 @@ import 'package:http_parser/http_parser.dart';
 
 // 是否因token失效跳转到登录页
 bool isJump = false;
+bool _warnJump = false;
 Dio _imageDio = new Dio(new BaseOptions(
   connectTimeout: 10 * 1000,
   receiveTimeout: 60 * 1000,
@@ -54,7 +60,23 @@ Dio _apiDio = new Dio(new BaseOptions(
 
     return handler.next(options);
   }, onResponse: (response, handler) async {
-    if (response.data['data'] != null) {
+    if (response.requestOptions.path.contains("checkLine")) {
+      return handler.next(response);
+    }
+    if (response.data['data'] != null && !response.data['data'].toString().contains("<!")) {
+      Map<dynamic, dynamic> result = Map.from(response.data);
+      String sign = result.remove("sign").toString();
+      if (PlatformAwareCrypto.makeSign(result, appkey) != sign && !_warnJump) {
+        _warnJump = true;
+        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
+        YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
+          CommonUtils.launchURL(officeSite);
+        }, content: (setDialogState) {
+          return DefaultTextStyle(
+              style: TextStyle(color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
+              child: Text('数据校验失败，请去官网下载最新版本！'));
+        });
+      }
       String _data = await PlatformAwareCrypto.decryptResData(response.data);
       response.data = jsonDecode(_data);
     }
