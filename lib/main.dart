@@ -129,7 +129,7 @@ void main() async {
     "oauth_id": oauthId,
     "device_id": oauthId,
     "bundleId": "com.pwa.pilipili",
-    "version": "3.1.1",
+    "version": AppGlobal.version,
     "oauth_type": CommonUtils.isAndroidWeb() ? PPString.aWeb : PPString.web,
     "language": 'zh',
     "via": 'pwa',
@@ -145,7 +145,7 @@ void main() async {
         "oauth_id": androidInfo.androidId,
         "device_id": androidInfo.androidId,
         "bundleId": packageInfo.packageName,
-        "version": packageInfo.version,
+        "version": AppGlobal.version,
         "oauth_type": "android",
         ..._deviceInfo
       };
@@ -155,7 +155,7 @@ void main() async {
         "oauth_id": iosInfo.identifierForVendor,
         "device_id": iosInfo.identifierForVendor,
         "bundleId": packageInfo.packageName,
-        "version": "3.1.1",
+        "version": AppGlobal.version,
         "oauth_type": "ios",
       };
     }
