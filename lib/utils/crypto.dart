@@ -53,7 +53,8 @@ class PlatformAwareCrypto {
     Encrypted encrypted = encrypter.encryptBytes(utf8.encode(word), iv: iv);
     String data = utf8.decode(encrypted.base64.codeUnits);
     int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    String sign = getSign({"client": "pwa", "data": data, "timestamp": timestamp, "_ver": "v1"});
+    String sign =
+        getSign({"client": platform.kIsWeb ? 'pwa' : 'and', "data": data, "timestamp": timestamp, "_ver": "v1"});
     return "client=${platform.kIsWeb ? 'pwa' : 'and'}&&timestamp=$timestamp&data=$data&sign=$sign&_ver=v1";
   }
 
