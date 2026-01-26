@@ -145,7 +145,7 @@ void main() async {
         "oauth_id": androidInfo.androidId,
         "device_id": androidInfo.androidId,
         "bundleId": packageInfo.packageName,
-        "version": AppGlobal.version,
+        "version": packageInfo.version,
         "oauth_type": "android",
         ..._deviceInfo
       };
