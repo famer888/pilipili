@@ -95,6 +95,9 @@ class _SearchPageState extends State<SearchPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: ScreenUtil().statusBarHeight,
+                ),
                 SearchHeader(
                   pageController: searchController,
                   hideClearIconNotifier: hideClearNotifier,
