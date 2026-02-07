@@ -69,6 +69,7 @@ class _AppCenterState extends State<AppCenter> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12.w)),
                   child: ApplicationItem(
+                    app: appList[index],
                     id: appList[index]['id'],
                     appname: appList[index]['title'],
                     iconurl: appList[index]['img_url'],
