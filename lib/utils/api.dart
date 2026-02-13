@@ -433,6 +433,7 @@ Future<UserInfo> getUserInfo(BuildContext context) async {
     UserInfo data = UserInfo.fromJson(res.data);
     Provider.of<HomeConfig>(context, listen: false).setPostMoney(context, data.data.postMoney);
     Provider.of<HomeConfig>(context, listen: false).setMoney(data.data.money);
+    Provider.of<HomeConfig>(context, listen: false).setUserInfo(data.data);
     return data;
   } catch (e) {
     return null;
@@ -804,6 +805,7 @@ Future<dynamic> gethotTags() async {
 Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/home/appCenter");
+    print(res);
     return AppCenterModel.fromJson(res.data);
   } catch (e) {
     return null;
@@ -1219,6 +1221,55 @@ Future getNovelList({int order, int page, int limit, String filter}) async {
 Future<Basic> customerConf() async {
   try {
     Response<dynamic> data = await PlatformAwareHttp.post('/api/user/customer_conf');
+    return Basic.fromJson(data.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//福利中心
+Future<Basic> taskIndex() async {
+  try {
+    Response<dynamic> data = await PlatformAwareHttp.post('/api/task/index');
+    return Basic.fromJson(data.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//积分日志记录
+Future<Basic> taskLogs(int page, int limit) async {
+  try {
+    Response<dynamic> data = await PlatformAwareHttp.post('/api/task/logs', data: {'page': page, 'limit': limit});
+    return Basic.fromJson(data.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//完成任务
+Future<Basic> taskUpdate(int id) async {
+  try {
+    Response<dynamic> data = await PlatformAwareHttp.post('/api/task/update', data: {'id': id});
+    return Basic.fromJson(data.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//完成任务
+Future<Basic> mvView(int id) async {
+  try {
+    Response<dynamic> data = await PlatformAwareHttp.post('/api/mv/view', data: {'mv_id': id});
+    return Basic.fromJson(data.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+Future<Basic> taskComplete(int id) async {
+  try {
+    Response<dynamic> data = await PlatformAwareHttp.post('/api/task/complete', data: {'id': id});
     return Basic.fromJson(data.data);
   } catch (e) {
     return null;

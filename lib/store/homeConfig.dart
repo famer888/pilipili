@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pilipili/model/userinfo.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/model/systemnotice.dart';
@@ -14,6 +15,7 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   Notice _notice;
   Config _config;
   Member _member;
+  UserInfoData _userinfo;
   bool _darkPrivilege;
   String _darkprivilegeTips;
   SystemNotice _systemNotice;
@@ -36,8 +38,14 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   int get allowPublishPost => _allowPublishPost;
   String get noPermissionPublishPostTips => _noPermissionPublishPostTips;
   String get message => _message;
+  UserInfoData get userInfo => _userinfo;
   void setMessage(String message) {
     _message = message;
+    notifyListeners();
+  }
+
+  void setUserInfo(UserInfoData info) {
+    _userinfo = info;
     notifyListeners();
   }
 

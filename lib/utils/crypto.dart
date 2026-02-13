@@ -55,7 +55,7 @@ class PlatformAwareCrypto {
     int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     String sign =
         getSign({"client": platform.kIsWeb ? 'pwa' : 'and', "data": data, "timestamp": timestamp, "_ver": "v1"});
-    return "client=${platform.kIsWeb ? 'pwa' : 'and'}&&timestamp=$timestamp&data=$data&sign=$sign&_ver=v1";
+    return "client=${platform.kIsWeb ? 'pwa' : 'and'}&timestamp=$timestamp&data=$data&sign=$sign&_ver=v1";
   }
 
   static Future<String> decryptResData(dynamic data) async {

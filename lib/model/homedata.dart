@@ -84,7 +84,7 @@ class Data {
       member: json["member"] == null ? null : Member.fromJson(json["member"]),
       darkPrivilege: json["dark_privilege"] ?? false,
       darkprivilegeTips: json["dark_privilege_tips"] ?? '',
-      allowPublishPost: int.parse(json["allow_publish_post"] ?? '0'),
+      allowPublishPost: int.parse(json["allow_publish_post"].toString()),
       noPermissionPublishPostTips: json["no_permission_publish_post_tips"] ?? '',
       click_app_id: json["click_app_id"],
       click_transit_path: json["click_transit_path"],

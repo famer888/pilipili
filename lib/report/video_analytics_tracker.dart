@@ -1,5 +1,6 @@
 import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/report/report_utils.dart';
+import 'package:pilipili/utils/api.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoAnalyticsTracker {
@@ -13,6 +14,9 @@ class VideoAnalyticsTracker {
 
   // 用来判断是否为 seek 的阈值（毫秒）
   static const int _seekThresholdMs = 1500;
+  Duration _accumulatedPlayTime = Duration.zero;
+  bool _hasLoggedOneMinute = false;
+  static const Duration _oneMinute = Duration(minutes: 1);
 
   VideoAnalyticsTracker({
     this.controller,
@@ -49,6 +53,8 @@ class VideoAnalyticsTracker {
 
     // 3) 播放/暂停
     _checkPlayPause(v);
+
+    _checkPlayOneMinuteLog(v, delta);
 
     // 4) 播放完成
     _checkComplete(v);
@@ -91,11 +97,25 @@ class VideoAnalyticsTracker {
     }
   }
 
+  void _checkPlayOneMinuteLog(VideoPlayerValue v, Duration delta) {
+    if (_hasLoggedOneMinute) return;
+    if (!v.isPlaying) return;
+
+    if (delta.inMilliseconds <= 0) return;
+    if (delta.inMilliseconds.abs() >= _seekThresholdMs) return;
+
+    _accumulatedPlayTime += delta;
+
+    if (_accumulatedPlayTime >= _oneMinute) {
+      _hasLoggedOneMinute = true;
+      mvView(int.parse(AppEventReport.instance.videoInfo['video_id'].toString()));
+    }
+  }
+
   void _checkComplete(VideoPlayerValue v) {
     if (_hasCompleted) return;
     if (v.duration <= Duration.zero) return;
 
-    // 容忍一点误差：剩余时间 < 500ms 视为完成
     final remaining = v.duration - v.position;
     if (!remaining.isNegative && remaining.inMilliseconds > 500) {
       return;
@@ -113,13 +133,11 @@ class VideoAnalyticsTracker {
     return p.clamp(0, 100).round();
   }
 
-  /// 对外：播放时长（按当前播放位置来算）
   int get playDurationSeconds => controller.value.position.inSeconds;
 
   int get playProgressPercent => _calcPlayProgressPercent();
   int get videoDurationSeconds => controller.value.duration.inSeconds;
 
-  /// 分享事件，外部手动调用
   void trackShare() {
     _sendBehaviorEvent(VideoEvenType.share);
   }

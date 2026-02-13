@@ -81,7 +81,7 @@ class _WodeState extends State<Wode> {
     {'name': "在线客服", 'iconUrl': PPAssetsPath.customer, 'router': 'onlineService'},
     {'name': "联系官方", 'iconUrl': PPAssetsPath.official, 'router': '/contactOfficial'},
     {'name': "邀请好友", 'iconUrl': PPAssetsPath.invite, 'router': '/invitefriend'},
-    {'name': "应用推荐", 'iconUrl': PPAssetsPath.appRecommend, 'router': '/appCenter'},
+    {'name': "应用推荐", 'iconUrl': PPAssetsPath.appRecommend, 'router': '/walfareIndexPage/1'},
     {'name': "我的帖子", 'iconUrl': 'assets/images/2023/icon_post.png', 'assets': true, 'router': '/myPost'},
     {'name': "我的关注", 'iconUrl': 'assets/images/2023/icon_myfollow.png', 'assets': true, 'router': '/myFollow'},
     {'name': "申请原创入驻", 'iconUrl': 'assets/images/2023/icon_myadd.png', 'assets': true, 'router': '/zhaomu'},

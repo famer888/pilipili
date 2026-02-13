@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'
-    hide RefreshIndicator, RefreshIndicatorState;
+import 'package:flutter/material.dart' hide RefreshIndicator, RefreshIndicatorState;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
@@ -11,10 +10,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class GifHeader extends RefreshIndicator {
-  GifHeader()
-      : super(
-            height: ScreenUtil().setWidth(80),
-            refreshStyle: RefreshStyle.Follow);
+  GifHeader() : super(height: ScreenUtil().setWidth(80), refreshStyle: RefreshStyle.Follow);
   @override
   State<StatefulWidget> createState() {
     return GifHeaderState();
@@ -48,9 +44,7 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
       child: PlatformAwareAssetImage(
-          url: mode == RefreshStatus.refreshing
-              ? PPAssetsPath.downrefreshGif
-              : PPAssetsPath.downrefreshPng,
+          url: mode == RefreshStatus.refreshing ? PPAssetsPath.downrefreshGif : PPAssetsPath.downrefreshPng,
           height: ScreenUtil().setWidth(50),
           fit: BoxFit.fitHeight,
           filterQuality: FilterQuality.medium),
@@ -65,14 +59,7 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
 
 // ignore: must_be_immutable
 class PullRefreshList extends StatefulWidget {
-  PullRefreshList(
-      {Key key,
-      this.child,
-      this.onRefresh,
-      this.offset = 0,
-      this.onLoading,
-      this.color})
-      : super(key: key);
+  PullRefreshList({Key key, this.child, this.onRefresh, this.offset = 0, this.onLoading, this.color}) : super(key: key);
   Widget child;
   double offset;
   Color color;
@@ -151,30 +138,6 @@ class _PullRefreshListState extends State<PullRefreshList> {
           offset: widget.offset,
           backgroundColor: widget.color ?? DefaultStyle.themeColor,
         ),
-        // header: CustomHeader(
-        //   builder: (BuildContext context, RefreshStatus mode) {
-        //     Widget body;
-        //     if (mode == RefreshStatus.idle) {
-        //       body = Text("再拉一点");
-        //     } else if (mode == RefreshStatus.refreshing) {
-        //       body = CupertinoActivityIndicator();
-        //     } else if (mode == RefreshStatus.failed) {
-        //       body = Text("加载失败，点击重新加载");
-        //     } else if (mode == RefreshStatus.canRefresh) {
-        //       body = Text("松手加载更多数据");
-        //     } else if (mode == RefreshStatus.completed) {
-        //       body = Text("数据加载成功");
-        //     }  else {
-        //       body = Text("老兄，我已经在海底了，再拉跟你急了");
-        //     }
-        //     return Container(
-        //       height: 55.0,
-        //       child: DefaultTextStyle(
-        //           style: TextStyle(color: Colors.black),
-        //           child: Center(child: body)),
-        //     );
-        //   },
-        // ),
         footer: CustomFooter(
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
@@ -191,9 +154,7 @@ class _PullRefreshListState extends State<PullRefreshList> {
             }
             return Container(
               height: 55.0,
-              child: DefaultTextStyle(
-                  style: TextStyle(color: Colors.black),
-                  child: Center(child: body)),
+              child: DefaultTextStyle(style: TextStyle(color: Colors.black), child: Center(child: body)),
             );
           },
         ),

@@ -55,7 +55,7 @@ Dio _apiDio = new Dio(new BaseOptions(
     if (options.data != null) {
       _data.addAll(options.data);
     }
-    // CommonUtils.debugPrint(_data);
+    CommonUtils.debugPrint(_data);
     options.data = await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
 
     return handler.next(options);
@@ -68,7 +68,7 @@ Dio _apiDio = new Dio(new BaseOptions(
       String sign = result.remove("sign").toString();
       if (PlatformAwareCrypto.makeSign(result, appkey) != sign && !_warnJump) {
         _warnJump = true;
-        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
+        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config?.officeSite ?? "";
         YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
           CommonUtils.launchURL(officeSite);
         }, content: (setDialogState) {
@@ -292,7 +292,7 @@ class PlatformAwareHttp {
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
   static Future post(String path, {Map data, CancelToken cancelToken}) {
-    // AppGlobal.apiBaseURL='https://pili.yesebo.net';
+    AppGlobal.apiBaseURL = 'https://pili.yesebo.net/api.php';
     return _apiDio.post(AppGlobal.apiBaseURL + path, data: data, cancelToken: cancelToken);
   }
 }

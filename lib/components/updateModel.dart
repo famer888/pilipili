@@ -111,7 +111,7 @@ class UpdateModel {
                                               GestureDetector(
                                                   onTap: () {
                                                     cancelFunc();
-                                                    context.push('/appCenter');
+                                                    context.push('/walfareIndexPage/1');
                                                   },
                                                   child: Container(
                                                       decoration: BoxDecoration(
@@ -627,7 +627,7 @@ class _DownloadApkState extends State<DownloadApk> {
             //关闭升级弹窗
             widget.onTap?.call();
             //弹出告警提示
-            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
+            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config?.officeSite ?? "";
             YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消',
                 callBack: () {
               CommonUtils.launchURL(officeSite);

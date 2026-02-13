@@ -1,7 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/appcenter.dart';
@@ -48,40 +47,6 @@ class _AppCenterState extends State<AppCenter> {
     }
   }
 
-  Widget applicationColumn() {
-    return Expanded(
-      child: appList.length == 0
-          ? Container(
-              color: Color(0xFFEEEEEE),
-              child: Center(
-                child: Text(
-                  "应用列表为空",
-                  style: DefaultStyle.black15bold,
-                ),
-              ),
-            )
-          : ListView.builder(
-              addRepaintBoundaries: false,
-              padding: EdgeInsets.zero,
-              itemCount: appList.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12.w)),
-                  child: ApplicationItem(
-                    app: appList[index],
-                    id: appList[index]['id'],
-                    appname: appList[index]['title'],
-                    iconurl: appList[index]['img_url'],
-                    des: appList[index]['description'],
-                    clicked: appList[index]['clicked'],
-                    link: appList[index]['link_url'],
-                  ),
-                );
-              }),
-    );
-  }
-
   onRefreshPost() {
     banner = [];
     appList = [];
@@ -92,42 +57,71 @@ class _AppCenterState extends State<AppCenter> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [
-        PageTitleBar(title: '应用推荐', paddingTop: ScreenUtil().statusBarHeight),
-        Expanded(
-          child: isLoading
-              ? PageStatus.loading(mounted)
-              : PullRefreshList(
-                  onRefresh: onRefreshPost,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: 24.w,
-                      ),
-                      SwiperContainer(
-                        banner: banner,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 24.w, left: 16.w, bottom: 16.w),
-                        child: Text(
-                          '推荐APP',
-                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
+    return isLoading
+        ? PageStatus.loading(mounted)
+        : PullRefreshList(
+            onRefresh: onRefreshPost,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 24.w,
                         ),
-                      ),
-                      applicationColumn(),
-                      SizedBox(
-                        height: ScreenUtil().bottomBarHeight,
-                      )
-                    ],
-                  ),
-                ),
-        ),
-      ],
-    ));
+                        SwiperContainer(
+                          banner: banner,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 24.w, left: 16.w, bottom: 16.w),
+                          child: Text(
+                            '推荐APP',
+                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ];
+              },
+              body: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  appList.length == 0
+                      ? Container(
+                          child: Center(
+                            child: Text(
+                              "应用列表为空",
+                              style: DefaultStyle.black15bold,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          addRepaintBoundaries: false,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: appList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: ApplicationItem(
+                                app: appList[index],
+                                id: appList[index]['id'],
+                                appname: appList[index]['title'],
+                                iconurl: appList[index]['img_url'],
+                                des: appList[index]['description'],
+                                clicked: appList[index]['clicked'],
+                                link: appList[index]['link_url'],
+                              ),
+                            );
+                          })
+                ],
+              ),
+            ));
   }
 }
 

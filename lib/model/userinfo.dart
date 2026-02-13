@@ -17,14 +17,14 @@ class UserInfo {
     this.isVip,
   });
 
-  Data data;
+  UserInfoData data;
   int status;
   String msg;
   bool crypt;
   bool isVip;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : UserInfoData.fromJson(json["data"]),
         status: json["status"] == null ? null : json["status"],
         msg: json["msg"] == null ? null : json["msg"],
         crypt: json["crypt"] == null ? null : json["crypt"],
@@ -40,8 +40,8 @@ class UserInfo {
       };
 }
 
-class Data {
-  Data(
+class UserInfoData {
+  UserInfoData(
       {this.money,
       this.exp,
       this.level,
@@ -49,7 +49,8 @@ class Data {
       this.nickname,
       this.shortMvFreeTime,
       this.longMvFreeTime,
-      this.postMoney});
+      this.postMoney,
+      this.score});
 
   int money;
   int exp;
@@ -59,18 +60,18 @@ class Data {
   int shortMvFreeTime;
   int longMvFreeTime;
   int postMoney;
+  num score;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory UserInfoData.fromJson(Map<String, dynamic> json) => UserInfoData(
       money: json["money"] == null ? null : json["money"],
       exp: json["exp"] == null ? null : json["exp"],
       level: json["level"] == null ? null : json["level"],
       thumb: json["thumb"] == null ? null : json["thumb"],
       nickname: json["nickname"] == null ? null : json["nickname"],
-      shortMvFreeTime:
-          json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
-      longMvFreeTime:
-          json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
-      postMoney: json['post_money'] ?? 0);
+      shortMvFreeTime: json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
+      longMvFreeTime: json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
+      postMoney: json['post_money'] ?? 0,
+      score: json['score'] ?? 0);
 
   Map<String, dynamic> toJson() => {
         "money": money == null ? null : money,
@@ -80,6 +81,7 @@ class Data {
         "nickname": nickname == null ? null : nickname,
         "shortMvFreeTime": shortMvFreeTime == null ? null : shortMvFreeTime,
         "longMvFreeTime": longMvFreeTime == null ? null : longMvFreeTime,
-        "post_money": postMoney ?? 0
+        "post_money": postMoney ?? 0,
+        "score": score ?? 0
       };
 }

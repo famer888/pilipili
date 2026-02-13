@@ -54,8 +54,9 @@ class RouterPageName {
     "seriesDetail": "系列详情",
 
     // 应用 / 官方
-    "appCenter": "应用中心",
+    "walfareIndexPage": "福利中心",
     "contactOfficial": "联系官方",
+    "vipExchangePage": "兑换VIP",
 
     // 会员 / 记录
     "vip": "会员充值页面",

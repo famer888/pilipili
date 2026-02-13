@@ -32,7 +32,6 @@ import 'package:pilipili/pages/detail/local_small_video_detail.dart';
 import 'package:pilipili/pages/detail/local_video_detail.dart';
 import 'package:pilipili/pages/login/index.dart';
 import 'package:pilipili/pages/login/register.dart';
-import 'package:pilipili/pages/mine/app_center.dart';
 import 'package:pilipili/pages/mine/buy_page.dart';
 import 'package:pilipili/pages/mine/coinRecharge.dart';
 import 'package:pilipili/pages/mine/coin_detail.dart';
@@ -52,8 +51,10 @@ import 'package:pilipili/pages/mine/others_post.dart';
 import 'package:pilipili/pages/mine/promote.dart';
 import 'package:pilipili/pages/mine/recharg_record.dart';
 import 'package:pilipili/pages/mine/setup.dart';
+import 'package:pilipili/pages/mine/vip_exchange.dart';
 import 'package:pilipili/pages/mine/vip_page.dart';
 import 'package:pilipili/pages/mine/watch_history.dart';
+import 'package:pilipili/pages/mine/welfare_index_page.dart';
 import 'package:pilipili/pages/mine/withdrawals_page.dart';
 import 'package:pilipili/pages/mine/zhaomu.dart';
 import 'package:pilipili/pages/novel/chapter_list.dart';
@@ -228,7 +229,13 @@ class Routes {
       GoRouterModel(key: 'contactOfficial', builder: (context, state) => ContactOfficial());
 
 //应用推荐
-  static GoRouterModel appCenter = GoRouterModel(key: 'appCenter', builder: (context, state) => AppCenter());
+  static GoRouterModel walfareIndexPage = GoRouterModel(
+      key: 'walfareIndexPage/:index',
+      builder: (context, state) {
+        return WalfareIndexPage(
+          index: int.tryParse(state.params['index'].toString()),
+        );
+      });
 
 //会员充值页面
   static GoRouterModel vip = GoRouterModel(key: 'vip', builder: (context, state) => VipPage());
@@ -431,6 +438,11 @@ class Routes {
           title: state.params['title'] ?? '0',
         );
       });
+
+  //会员兑换
+  static GoRouterModel vipExchangePage =
+      GoRouterModel(key: 'vipExchangePage', builder: (context, state) => VipExchangePage());
+
   static GoRouter init() {
     List<GoRoute> pages = [
       xianmian.toGoRouter(),
@@ -457,7 +469,7 @@ class Routes {
       atlasList.toGoRouter(),
       onlineService.toGoRouter(),
       contactOfficial.toGoRouter(),
-      appCenter.toGoRouter(),
+      walfareIndexPage.toGoRouter(),
       vip.toGoRouter(),
       rechargeRecord.toGoRouter(),
       watchhistory.toGoRouter(),
@@ -493,7 +505,8 @@ class Routes {
       novelDetail.toGoRouter(),
       chapterList.toGoRouter(),
       novelReader.toGoRouter(),
-      cgWebview.toGoRouter()
+      cgWebview.toGoRouter(),
+      vipExchangePage.toGoRouter()
     ];
 
     return GoRouter(

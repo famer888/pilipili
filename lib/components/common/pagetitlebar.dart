@@ -15,16 +15,11 @@ import 'package:pilipili/utils/pp_asset_path.dart';
 
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
-  PageTitleBar(
-      {Key key,
-      this.title,
-      this.rightWidget,
-      this.height,
-      this.paddingTop = 0,
-      this.bgColor})
+  PageTitleBar({Key key, this.title, this.rightWidget, this.cWidget, this.height, this.paddingTop = 0, this.bgColor})
       : super(key: key);
   String title;
   Widget rightWidget;
+  final Widget cWidget;
   double height;
   double paddingTop;
   Color bgColor;
@@ -52,10 +47,11 @@ class _PageTitleBarState extends State<PageTitleBar> {
               alignment: Alignment.center,
               height: widget.height ?? DefaultStyle.navbarHegiht,
               width: ScreenUtil().screenWidth * 0.8,
-              child: Text(
-                widget.title != null ? widget.title : '',
-                style: DefaultStyle.white16bold,
-              ),
+              child: widget.cWidget ??
+                  Text(
+                    widget.title != null ? widget.title : '',
+                    style: DefaultStyle.white16bold,
+                  ),
             )),
         Positioned(
             left: 0,
@@ -72,8 +68,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
                   behavior: HitTestBehavior.translucent,
                   child: Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: DefaultStyle.pagePadding,
-                          vertical: ScreenUtil().setWidth(5)),
+                          horizontal: DefaultStyle.pagePadding, vertical: ScreenUtil().setWidth(5)),
                       child: Container(
                         alignment: Alignment.center,
                         // width: ScreenUtil().setWidth(40),
@@ -87,11 +82,8 @@ class _PageTitleBarState extends State<PageTitleBar> {
                       )),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: DefaultStyle.pagePadding),
-                  child: widget.rightWidget != null
-                      ? widget.rightWidget
-                      : Container(),
+                  padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                  child: widget.rightWidget != null ? widget.rightWidget : Container(),
                 )
               ],
             ))
