@@ -143,8 +143,8 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                 Basic res = await taskComplete(task.id);
                 if (res != null && res.status != 0) {
                   getTaskIndex();
-                  String officeSite = Provider.of<HomeConfig>(context, listen: false).config?.officeSite ?? "";
-                  CommonUtils.launchURL(officeSite);
+                  // String officeSite = Provider.of<HomeConfig>(context, listen: false).config?.officeSite ?? "";
+                  CommonUtils.launchURL(task.url);
                 } else {
                   CommonUtils.showText(res?.msg ?? '错误');
                 }
