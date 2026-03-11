@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/model/element.dart';
@@ -8,7 +8,7 @@ import 'package:pilipili/utils/networkImage.dart';
 
 class Scrollnav extends StatefulWidget {
   Scrollnav(
-      {Key key,
+      {Key? key,
       this.emitName,
       this.navitems,
       this.pages,
@@ -17,11 +17,11 @@ class Scrollnav extends StatefulWidget {
       this.hideClose = false,
       this.isBack = false})
       : super(key: key);
-  final String emitName;
-  final List<LinkModel> navitems;
-  final List<Widget> pages;
-  final Function onNavIndexChanged;
-  final Function onBackTop;
+  final String? emitName;
+  final List<LinkModel>? navitems;
+  final List<Widget>? pages;
+  final Function? onNavIndexChanged;
+  final Function? onBackTop;
   final bool hideClose;
   final bool isBack;
   @override
@@ -30,15 +30,15 @@ class Scrollnav extends StatefulWidget {
 
 class _ScrollnavState extends State<Scrollnav> {
   List<GlobalKey> keys = <GlobalKey>[];
-  ScrollController _controller;
-  PageController _pageController;
+  late ScrollController _controller;
+  late PageController _pageController;
   int selectedIndex = 0;
   @override
   void initState() {
     super.initState();
     _controller = ScrollController();
     _pageController = PageController();
-    for (int i = 0; i < widget.navitems.length; i++) {
+    for (int i = 0; i < widget.navitems!.length; i++) {
       keys.add(GlobalKey(debugLabel: 'navitems-' + i.toString()));
     }
     EventBus().on(widget.emitName, (arg) {
@@ -55,10 +55,16 @@ class _ScrollnavState extends State<Scrollnav> {
   }
 
   void scrollItemToCenter(int pos) {
-    RenderBox box = keys[pos].currentContext.findRenderObject();
-    Offset os = box.localToGlobal(Offset.zero);
-    double w = box.size.width;
-    double x = os.dx;
+    final context = keys[pos].currentContext;
+    if (context == null) return;
+
+    final box = context.findRenderObject() as RenderBox;
+    final _offset = box.localToGlobal(Offset.zero);
+
+    final w = box.size.width;
+    // final h = box.size.height;
+    // double w = box.size.width;
+    double x = _offset.dx;
     double windowW = ScreenUtil().screenWidth;
     double rlOffset = windowW / 2 - (x + w / 2);
     double offset = _controller.offset - rlOffset;
@@ -66,7 +72,7 @@ class _ScrollnavState extends State<Scrollnav> {
         .animateTo(offset,
             duration: Duration(milliseconds: 200), curve: Curves.easeInOut)
         .then((value) {
-      widget.onNavIndexChanged(pos);
+      widget.onNavIndexChanged!(pos);
         });
   }
 
@@ -77,7 +83,7 @@ class _ScrollnavState extends State<Scrollnav> {
             children: [
               PageView(
                 controller: _pageController,
-                children: widget.pages,
+                children: widget.pages!,
                 onPageChanged: (index) {
                   if (selectedIndex != index) {
                     selectedIndex = index;
@@ -126,12 +132,12 @@ class _ScrollnavState extends State<Scrollnav> {
                           scrollDirection: Axis.horizontal,
                           controller: _controller,
                           children: widget.navitems
-                              .asMap()
+                              !.asMap()
                               .keys
                               .map<Widget>((index) => GestureDetector(
                                     onTap: () {
                                       if (selectedIndex == index) {
-                                        widget.onBackTop(index);
+                                        widget.onBackTop!(index);
                                       }
                                       _pageController.jumpToPage(index);
                                     },
@@ -200,7 +206,7 @@ class _ScrollnavState extends State<Scrollnav> {
                                                     horizontal: ScreenUtil()
                                                         .setWidth(3)),
                                                 child: Text(
-                                                  widget.navitems[index].name ??
+                                                  widget.navitems![index].name ??
                                                       "",
                                                   style: TextStyle(
                                                       color:

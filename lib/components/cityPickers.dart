@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +21,7 @@ typedef OnTouchEnd = void Function();
 /// 城市选择
 class CityPicker extends StatefulWidget {
   const CityPicker({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -34,14 +34,14 @@ class _CityPickerState extends State<CityPicker> {
   // 后端返回的热门城市数据
   List<City> hotCityData = [];
   // 后端返回的全部城市数据
-  List<City> allCityData;
+  late List<City> allCityData;
   List<String> letters = [];
   // 添加了字母区分的全部城市列表
-  List<DatumCity> data = [];
-  Timer _changeTimer;
+  List<DatumCity>? data = [];
+  late Timer _changeTimer;
   bool _isTouchTagBar = false;
   double letterItemSize = ScreenUtil().setSp(12);
-  String _tagName;
+  late String _tagName;
   final ScrollController _scrollController = ScrollController();
 
   /// 获取城市接口列表
@@ -66,8 +66,8 @@ class _CityPickerState extends State<CityPicker> {
       var resultString = {"data": result};
       var resultEntity = CityListData.fromJson(resultString);
       data = resultEntity.data;
-      for (int i = 0; i < data.length; i++) {
-        letters.add(data[i].letter.toUpperCase());
+      for (int i = 0; i < data!.length; i++) {
+        letters.add(data![i].letter!.toUpperCase());
       }
     }
     loading = false;
@@ -88,9 +88,9 @@ class _CityPickerState extends State<CityPicker> {
 
   /// 获取全部的城市列表汉字的拼音首字母添加进数据中
   Future<List<dynamic>> onOrderData({
-    @required List<City> tmpCityList,
+    @required List<City>? tmpCityList,
   }) async {
-    List<City> cityList = tmpCityList;
+    List<City> cityList = tmpCityList!;
     var allCityCodeList = [];
 
     // 获取城市首字母
@@ -98,7 +98,7 @@ class _CityPickerState extends State<CityPicker> {
       allCityCodeList.add({
         "id": cityList[i].id,
         "name": cityList[i].name,
-        "letter": PinyinHelper.getFirstWordPinyin(cityList[i].name).substring(0, 1)
+        "letter": PinyinHelper.getFirstWordPinyin(cityList[i].name!).substring(0, 1)
       });
     }
     var baseAllCityCode = allCityCodeList.toList();
@@ -138,7 +138,7 @@ class _CityPickerState extends State<CityPicker> {
       int index = letters.indexOf(alpha);
       var height = index * 36.w;
       for (int i = 0; i < index; i++) {
-        height += data[i].listData.length * 54.w;
+        height += data![i].listData!.length * 54.w;
       }
       _scrollController.jumpTo(height);
     });
@@ -221,7 +221,7 @@ class _CityPickerState extends State<CityPicker> {
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              Provider.of<GlobleValue>(context, listen: false).setYpLocation(hotCityData[index].name);
+              Provider.of<GlobleValue>(context, listen: false).setYpLocation(hotCityData[index].name!);
               Navigator.of(context).pop(
                 hotCityData[index],
               );
@@ -233,7 +233,7 @@ class _CityPickerState extends State<CityPicker> {
               alignment: Alignment.center,
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.w)),
               child: Text(
-                hotCityData[index].name,
+                hotCityData[index].name!,
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 style: TextStyle(
@@ -254,11 +254,11 @@ class _CityPickerState extends State<CityPicker> {
       textAlign: TextAlign.center,
     ); // 判定是否有数据
     Widget tempTouchBar = const SizedBox(); // 判定操作列表
-    if (data.isNotEmpty) {
+    if (data!.isNotEmpty) {
       tempWidget = ListView.builder(
         padding: EdgeInsets.zero,
         controller: _scrollController,
-        itemCount: data.length,
+        itemCount: data!.length,
         //预设渲染高度设定为手机屏幕高度
         cacheExtent: 1.sh,
         itemBuilder: (
@@ -273,7 +273,7 @@ class _CityPickerState extends State<CityPicker> {
                   SizedBox(
                     width: 16.w,
                   ),
-                  CityIndexName(data[index].letter.toUpperCase())
+                  CityIndexName(data![index].letter!.toUpperCase())
                 ],
               ),
               ListView.builder(
@@ -298,7 +298,7 @@ class _CityPickerState extends State<CityPicker> {
                             BoxDecoration(border: Border(bottom: BorderSide(width: 0.5.w, color: Color(0xffececec)))),
                         child: Row(children: [
                           Text(
-                            data[index].listData[index2].name,
+                            data![index].listData![index2].name!,
                             style: TextStyle(fontSize: 15.sp, color: Color(0xff6d6d6d), fontWeight: FontWeight.bold),
                           )
                         ]),
@@ -306,16 +306,16 @@ class _CityPickerState extends State<CityPicker> {
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         Provider.of<GlobleValue>(context, listen: false)
-                            .setYpLocation(data[index].listData[index2].name);
+                            .setYpLocation(data![index].listData![index2].name!);
                         Navigator.of(context).pop(
-                          data[index].listData[index2],
+                          data![index].listData![index2],
                         );
-                        EventBus().emit('change_city', data[index].listData[index2].name);
+                        EventBus().emit('change_city', data![index].listData![index2].name);
                       },
                     ),
                   );
                 },
-                itemCount: data[index].listData.isEmpty ? 0 : data[index].listData.length,
+                itemCount: data![index].listData!.isEmpty ? 0 : data![index].listData!.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
               ),
@@ -383,15 +383,15 @@ class _CityPickerState extends State<CityPicker> {
 
 class Alpha extends StatefulWidget {
   /// 单个字母的字体大小
-  final double alphaItemSize;
-  final List alphas;
+  final double? alphaItemSize;
+  final List? alphas;
 
   /// 当选中的字母发生改变
-  final AlphaChanged onAlphaChange;
+  final AlphaChanged? onAlphaChange;
 
-  final OnTouchStart onTouchStart;
-  final OnTouchMove onTouchMove;
-  final OnTouchEnd onTouchEnd;
+  final OnTouchStart? onTouchStart;
+  final OnTouchMove? onTouchMove;
+  final OnTouchEnd? onTouchEnd;
 
   /// 激活状态下的背景色
   final Color activeBgColor;
@@ -406,7 +406,7 @@ class Alpha extends StatefulWidget {
   final Color fontActiveColor;
 
   const Alpha(
-      {Key key,
+      {Key? key,
       @required this.alphaItemSize,
 
       /// 可供选择的字母集
@@ -443,7 +443,7 @@ class AlphaState extends State<Alpha> {
   double alphaPading = 4.w;
 
   // 当触摸结束前, 最后一个字母;
-  String _lastTag;
+  late String _lastTag;
 
   @override
   void initState() {
@@ -452,27 +452,27 @@ class AlphaState extends State<Alpha> {
   }
 
   _init() {
-    List alphas = widget.alphas;
+    List alphas = widget.alphas!;
     for (int i = 0; i <= alphas.length; i++) {
-      indexRange.add((i) * widget.alphaItemSize);
+      indexRange.add((i) * widget.alphaItemSize!);
     }
   }
 
   String _getHitAlpha(offset) {
     int hit = offset;
     if (hit < 0) {
-      return null;
+      return null!;
     }
-    if (hit >= widget.alphas.length) {
-      return null;
+    if (hit >= widget.alphas!.length) {
+      return null!;
     }
-    return widget.alphas[hit];
+    return widget.alphas![hit];
   }
 
-  _onAlphaChange([String tag]) {
+  _onAlphaChange([String? tag]) {
     if (tag != _lastTag) {
-      _lastTag = tag;
-      widget.onAlphaChange(tag);
+      _lastTag = tag!;
+      widget.onAlphaChange!(tag!);
     }
   }
 
@@ -482,12 +482,12 @@ class AlphaState extends State<Alpha> {
     });
     _onAlphaChange(tag);
 
-    widget.onTouchStart();
+    widget.onTouchStart!();
     }
 
   _touchMoveEvent(String tag) {
     _onAlphaChange(tag);
-    widget.onTouchMove();
+    widget.onTouchMove!();
     }
 
   _touchEndEvent() {
@@ -496,21 +496,21 @@ class AlphaState extends State<Alpha> {
     });
     // 这里本可以不用再触发一次的. 但是为了数据的准备, 最后再触发一次
     _onAlphaChange(_lastTag);
-      widget.onTouchEnd();
+      widget.onTouchEnd!();
     }
 
   _buildAlpha() {
     List<Widget> result = [];
-    for (var alpha in widget.alphas) {
+    for (var alpha in (widget.alphas ?? [])) {
       result.add(Padding(
         padding: EdgeInsets.symmetric(vertical: alphaPading),
         child: SizedBox(
           key: Key(alpha),
-          height: widget.alphaItemSize,
+          height: widget.alphaItemSize ?? 20,
           child: Text(
             alpha,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: widget.alphaItemSize, color: DefaultStyle.themeColor),
+            style: TextStyle(fontSize: widget.alphaItemSize ?? 14, color: DefaultStyle.themeColor),
           ),
         ),
       ));
@@ -545,13 +545,13 @@ class AlphaState extends State<Alpha> {
     return GestureDetector(
       onVerticalDragDown: (DragDownDetails details) {
         int touchOffset2Begin =
-            ((details.localPosition.dy - pyPading) / (widget.alphaItemSize + (alphaPading * 2))).truncate();
+            ((details.localPosition.dy - pyPading) / ((widget.alphaItemSize ?? 0) + (alphaPading * 2))).truncate();
         String tag = _getHitAlpha(touchOffset2Begin);
         _touchStartEvent(tag);
             },
       onVerticalDragUpdate: (DragUpdateDetails details) {
         int touchOffset2Begin =
-            ((details.localPosition.dy - pyPading) / (widget.alphaItemSize + (alphaPading * 2))).truncate();
+            ((details.localPosition.dy - pyPading) / ((widget.alphaItemSize ?? 0) + (alphaPading * 2))).truncate();
         String tag = _getHitAlpha(touchOffset2Begin);
         _touchMoveEvent(tag);
             },
@@ -567,7 +567,7 @@ class AlphaState extends State<Alpha> {
 class CityIndexName extends StatelessWidget {
   String indexName;
 
-  CityIndexName(this.indexName, {Key key}) : super(key: key);
+  CityIndexName(this.indexName, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -596,7 +596,7 @@ class CityListData {
     @required this.data,
   });
 
-  List<DatumCity> data;
+  List<DatumCity>? data;
 
   factory CityListData.fromJson(Map<String, dynamic> json) => CityListData(
         data: List<DatumCity>.from(
@@ -617,8 +617,8 @@ class DatumCity {
     @required this.letter,
   });
 
-  List<ListDatumCity> listData;
-  String letter;
+  List<ListDatumCity>? listData;
+  String? letter;
 
   factory DatumCity.fromJson(Map<String, dynamic> json) => DatumCity(
         listData: List<ListDatumCity>.from(
@@ -642,9 +642,9 @@ class ListDatumCity {
     @required this.name,
   });
 
-  String letter;
-  int id;
-  String name;
+  String? letter;
+  int? id;
+  String? name;
 
   factory ListDatumCity.fromJson(Map<String, dynamic> json) => ListDatumCity(
         letter: json["letter"] ?? '',
@@ -665,8 +665,8 @@ class City {
     @required this.name,
   });
 
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   factory City.fromJson(Map<String, dynamic> json) => City(
         id: json["id"],

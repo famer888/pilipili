@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +8,8 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class LocalComicsDetatl extends StatefulWidget {
-  LocalComicsDetatl({Key key, this.comicsInfo}) : super(key: key);
-  final Map comicsInfo;
+  LocalComicsDetatl({Key? key, this.comicsInfo}) : super(key: key);
+  final Map? comicsInfo;
 
   @override
   _LocalComicsDetatlState createState() => _LocalComicsDetatlState();
@@ -19,7 +19,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool textmore = false;
   bool isOpenAll = false;
-  double scrollto;
+  late double scrollto;
   @override
   void initState() {
     super.initState();
@@ -68,7 +68,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
         ));
   }
 
-  Widget _btnItem({String icon, String name, Color color}) {
+  Widget _btnItem({String? icon, String? name, Color? color}) {
     return Container(
       width: ScreenUtil().setWidth(40),
       height: ScreenUtil().setWidth(40),
@@ -95,7 +95,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
             height: ScreenUtil().setWidth(3),
           ),
           Text(
-            name,
+            name!,
             style: TextStyle(
                 color: color == null ? DefaultStyle.themeColor : Colors.white,
                 fontSize: ScreenUtil().setSp(12)),
@@ -109,9 +109,9 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
   @override
   Widget build(BuildContext context) {
-    List tags = widget.comicsInfo["tags"]?.split(',');
-    List newestSeries = List.filled(widget.comicsInfo["allEpisode"], 1);
-    List minWestSeries = widget.comicsInfo["allEpisode"] > 8
+    List tags = widget.comicsInfo!["tags"]?.split(',');
+    List newestSeries = List.filled(widget.comicsInfo!["allEpisode"], 1);
+    List minWestSeries = widget.comicsInfo!["allEpisode"] > 8
         ? newestSeries.sublist(0, 8)
         : newestSeries;
     return Scaffold(
@@ -142,7 +142,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                     Container(
                                       height: ScreenUtil().setWidth(210),
                                       child: PlatformAwareNetworkImage(
-                                        url: widget.comicsInfo["thumb"],
+                                        url: widget.comicsInfo!["thumb"],
                                         fit: BoxFit.cover,
                                       ),
                                     )
@@ -166,7 +166,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.comicsInfo["title"],
+                                  widget.comicsInfo!["title"],
                                   style: TextStyle(
                                       color: Color(0xff404040),
                                       fontSize: ScreenUtil().setSp(16),
@@ -177,12 +177,12 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                       vertical: ScreenUtil().setWidth(8)),
                                   child: Text(
                                     '作者：' +
-                                        (widget.comicsInfo["author"] == null ||
-                                                    widget.comicsInfo[
+                                        (widget.comicsInfo!["author"] == null ||
+                                                    widget.comicsInfo![
                                                             "author"] ==
                                                         ""
                                                 ? "--"
-                                                : widget.comicsInfo["author"])
+                                                : widget.comicsInfo!["author"])
                                             .toString(),
                                     style: TextStyle(
                                       color: Color(0xffFF5B8C),
@@ -193,7 +193,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                 ),
                                 Text(
                                   CommonUtils.renderFixedNumber(double.parse(
-                                          widget.comicsInfo["viewsCount"]
+                                          widget.comicsInfo!["viewsCount"]
                                               .toString())) +
                                       '人看过',
                                   style: TextStyle(
@@ -259,8 +259,8 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  widget.comicsInfo['description'] == null ||
-                                          widget.comicsInfo['description'] == ''
+                                  widget.comicsInfo!['description'] == null ||
+                                          widget.comicsInfo!['description'] == ''
                                       ? Container()
                                       : Container(
                                           padding: EdgeInsets.only(
@@ -291,7 +291,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                                               Stack(
                                                 children: [
                                                   Text(
-                                                    widget.comicsInfo[
+                                                    widget.comicsInfo![
                                                         'description'],
                                                     maxLines:
                                                         textmore ? null : 2,
@@ -461,7 +461,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
 
   //阅读器目录
   Widget comicDrawer() {
-    List allList = List.filled(widget.comicsInfo["allEpisode"], 1);
+    List allList = List.filled(widget.comicsInfo!["allEpisode"], 1);
     return Container(
       height: ScreenUtil().screenHeight,
       width: ScreenUtil().setWidth(286.5),
@@ -477,7 +477,7 @@ class _LocalComicsDetatlState extends State<LocalComicsDetatl> {
                 horizontal: ScreenUtil().setWidth(14)),
             child: Row(
               children: [
-                Text('共' + widget.comicsInfo["allEpisode"].toString() + '话',
+                Text('共' + widget.comicsInfo!["allEpisode"].toString() + '话',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: ScreenUtil().setSp(18),

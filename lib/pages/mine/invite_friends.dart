@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -12,7 +12,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class InviteFriend extends StatefulWidget {
-  InviteFriend({Key key}) : super(key: key);
+  InviteFriend({Key? key}) : super(key: key);
 
   @override
   _InviteFriendState createState() => _InviteFriendState();
@@ -22,7 +22,7 @@ class _InviteFriendState extends State<InviteFriend> {
   ScrollController _scrollController = ScrollController();
   List incomeList = [];
   bool isLoading = true;
-  Data myInvition;
+  late Data myInvition;
 
   @override
   void initState() {
@@ -43,11 +43,11 @@ class _InviteFriendState extends State<InviteFriend> {
     MyInvitationModel result = await myInvitation();
     MyRewardModel reward = await getMyReward();
     setState(() {
-      myInvition = result.data;
+      myInvition = result.data!;
       isLoading = false;
     });
       setState(() {
-      incomeList.addAll(reward.data);
+      incomeList.addAll(reward.data!);
     });
     }
 
@@ -64,7 +64,7 @@ class _InviteFriendState extends State<InviteFriend> {
 
   Widget build(BuildContext context) {
     String channel =
-        Provider.of<HomeConfig>(context, listen: false).member.channel;
+        Provider.of<HomeConfig>(context, listen: false).member.channel!;
     CommonUtils.debugPrint(channel);
     return
         // Container(
@@ -283,8 +283,8 @@ class _InviteFriendState extends State<InviteFriend> {
 }
 
 class IncomeItem extends StatelessWidget {
-  final Datum incomeListItem;
-  const IncomeItem({Key key, this.incomeListItem}) : super(key: key);
+  final Datum? incomeListItem;
+  const IncomeItem({Key? key, this.incomeListItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -299,19 +299,19 @@ class IncomeItem extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(incomeListItem.nickname.toString(),
+              Text(incomeListItem!.nickname.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(16),
                       color: Color(0xff7A3C04))),
               SizedBox(height: ScreenUtil().setHeight(10)),
-              Text(incomeListItem.createdAt.toString(),
+              Text(incomeListItem!.createdAt.toString(),
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(13),
                       color: Color(0xff999999))),
             ],
           )),
-          Text(incomeListItem.coinCnt.toString(),
+          Text(incomeListItem!.coinCnt.toString(),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: ScreenUtil().setSp(15),
@@ -323,15 +323,15 @@ class IncomeItem extends StatelessWidget {
 }
 
 class MyInviteNumber extends StatelessWidget {
-  final String number;
-  final String label;
-  const MyInviteNumber({Key key, this.number, this.label}) : super(key: key);
+  final String? number;
+  final String? label;
+  const MyInviteNumber({Key? key, this.number, this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(number,
+        Text(number!,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(24),
                 color: Color(0xff7A3D04),
@@ -339,7 +339,7 @@ class MyInviteNumber extends StatelessWidget {
         SizedBox(
           height: ScreenUtil().setHeight(3),
         ),
-        Text(label,
+        Text(label!,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(11), color: Color(0xff9C8484))),
       ],
@@ -348,9 +348,9 @@ class MyInviteNumber extends StatelessWidget {
 }
 
 class ActionImage extends StatelessWidget {
-  final String url;
-  final GestureTapCallback onTap;
-  const ActionImage({Key key, this.url, this.onTap}) : super(key: key);
+  final String? url;
+  final GestureTapCallback? onTap;
+  const ActionImage({Key? key, this.url, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'dart:math';
+﻿import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -8,10 +8,10 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class NewComicsCard extends StatefulWidget {
-  final Datum cardData;
+  final Datum? cardData;
   final bool relace;
-  final double width;
-  NewComicsCard({Key key, this.cardData, this.relace = false, this.width})
+  final double? width;
+  NewComicsCard({Key? key, this.cardData, this.relace = false, this.width})
       : super(key: key);
 
   @override
@@ -19,12 +19,12 @@ class NewComicsCard extends StatefulWidget {
 }
 
 class _NewComicsCardState extends State<NewComicsCard> {
-  double _height;
+  late double _height;
   String tags = '';
   @override
   void initState() {
     super.initState();
-    _height = (widget.width / 109) * 152;
+    _height = (widget.width! / 109) * 152;
   }
 
   Color randomColor() {
@@ -37,13 +37,12 @@ class _NewComicsCardState extends State<NewComicsCard> {
     return GestureDetector(
       onTap: () {
         if (widget.relace) {
-          context.push(
+          context.pushReplacement(
               CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}comicsdetail/.*"),
-                  'comicsdetail/' + widget.cardData.datumId.toString()),
-              replace: widget.relace);
+                  'comicsdetail/' + widget.cardData!.datumId.toString()));
         } else {
           context.push(CommonUtils.getRealHash(
-              'comicsdetail/' + widget.cardData.datumId.toString()));
+              'comicsdetail/' + widget.cardData!.datumId.toString()));
         }
       },
       child: Container(
@@ -59,7 +58,7 @@ class _NewComicsCardState extends State<NewComicsCard> {
               width: widget.width,
               height: _height,
               child: PlatformAwareNetworkImage(
-                url: widget.cardData == null ? null : widget.cardData.thumb,
+                url: widget.cardData == null ? null : widget.cardData!.thumb,
                 filterQuality: FilterQuality.medium,
                 fit: BoxFit.cover,
               ),
@@ -68,9 +67,9 @@ class _NewComicsCardState extends State<NewComicsCard> {
                 width: widget.width,
                 margin: EdgeInsets.only(top: ScreenUtil().setWidth(4)),
                 child: Text(
-                    widget.cardData == null
-                        ? PPString.isnull
-                        : widget.cardData.title,
+                    "${widget.cardData == null
+                        ? PPString.isnull!
+                        : widget.cardData!.title}",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(

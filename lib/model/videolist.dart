@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final videoList = videoListFromJson(jsonString);
 
@@ -17,11 +17,11 @@ class VideoList {
     this.isVip,
   });
 
-  List<VideoItem> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<VideoItem>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory VideoList.fromJson(Map<String, dynamic> json) => VideoList(
         data: json["data"] == null
@@ -37,7 +37,7 @@ class VideoList {
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -109,67 +109,67 @@ class VideoItem {
       this.userFavorites,
       this.discountCoins});
 
-  int datumId;
+  int? datumId;
   dynamic aff;
-  String id;
-  int pId;
-  String title;
+  String? id;
+  int? pId;
+  String? title;
   dynamic secondTitle;
-  int mvType;
-  int isActivity;
-  int isRecommend;
-  int vExt;
-  int duration;
-  String coverOriginalVertical;
-  String coverZipVertical;
-  String coverThumbVertical;
-  String coverOriginalHorizontal;
-  String coverZipHorizontal;
-  String coverThumbHorizontal;
-  String directors;
-  String publisher;
-  String actors;
-  String category;
-  String tags;
+  int? mvType;
+  int? isActivity;
+  int? isRecommend;
+  int? vExt;
+  int? duration;
+  String? coverOriginalVertical;
+  String? coverZipVertical;
+  String? coverThumbVertical;
+  String? coverOriginalHorizontal;
+  String? coverZipHorizontal;
+  String? coverThumbHorizontal;
+  String? directors;
+  String? publisher;
+  String? actors;
+  String? category;
+  String? tags;
   dynamic selfTag;
-  String tagsId;
-  String via;
-  DateTime releaseAt;
-  int rating;
-  int countPlay;
-  int countLike;
-  int favorites;
-  int countComment;
-  int countReward;
-  int countPay;
-  int incomeCoins;
-  int isfree;
-  int status;
-  int thumbStartTime;
-  int thumbDuration;
-  int isHide;
-  int coins;
-  int musicId;
-  int enableBackground;
-  int enableSoundtrack;
-  int isDelete;
+  String? tagsId;
+  String? via;
+  DateTime? releaseAt;
+  int? rating;
+  int? countPlay;
+  int? countLike;
+  int? favorites;
+  int? countComment;
+  int? countReward;
+  int? countPay;
+  int? incomeCoins;
+  int? isfree;
+  int? status;
+  int? thumbStartTime;
+  int? thumbDuration;
+  int? isHide;
+  int? coins;
+  int? musicId;
+  int? enableBackground;
+  int? enableSoundtrack;
+  int? isDelete;
   dynamic rejesqReason;
-  int rejesqAt;
-  int isTop;
-  int clubId;
-  int isTester;
-  String desc;
-  int isPopular;
-  int isTiptop;
-  String createdAt;
-  String updatedAt;
-  String refreshAt;
-  String callbackAt;
+  int? rejesqAt;
+  int? isTop;
+  int? clubId;
+  int? isTester;
+  String? desc;
+  int? isPopular;
+  int? isTiptop;
+  String? createdAt;
+  String? updatedAt;
+  String? refreshAt;
+  String? callbackAt;
   dynamic preview;
   dynamic sourceOriginStr;
-  String source240;
-  int userFavorites;
-  int discountCoins;
+  String? source240;
+  int? userFavorites;
+  int? discountCoins;
   factory VideoItem.fromJson(Map<String, dynamic> json) => VideoItem(
       datumId: json["id"] == null ? null : json["id"],
       aff: json["aff"],

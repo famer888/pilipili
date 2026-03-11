@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +11,7 @@ import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class CoinDetail extends StatefulWidget {
-  const CoinDetail({Key key}) : super(key: key);
+  const CoinDetail({Key? key}) : super(key: key);
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
@@ -36,8 +36,8 @@ class _CoinDetailState extends State<CoinDetail> {
     CoinDetialModel result =
         await getListMoneyDetail(page: page, type: type, limit: limit);
     if (result.status != 0) {
-      isAll = result.data.length < limit;
-      List resdata = result.data == null ? [] : result.data;
+      isAll = result.data!.length < limit;
+      List resdata = result.data ?? [];
       isLoading = false;
       if (page == 1) {
         arrayDetial = resdata;
@@ -46,7 +46,7 @@ class _CoinDetailState extends State<CoinDetail> {
       }
       setState(() {});
     } else {
-      CommonUtils.showText(result.msg);
+      CommonUtils.showText(result.msg!);
     }
   }
 

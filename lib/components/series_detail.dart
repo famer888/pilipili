@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/series_card.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -10,9 +10,9 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class SeriesDetail extends StatefulWidget {
-  SeriesDetail({Key key, this.id, this.type}) : super(key: key);
-  final int id;
-  final int type; //type  11 视频  12 漫画
+  SeriesDetail({Key? key, this.id, this.type}) : super(key: key);
+  final int? id;
+  final int? type; //type  11 视频  12 漫画
   @override
   _SeriesDetailState createState() => _SeriesDetailState();
 }
@@ -27,7 +27,7 @@ class _SeriesDetailState extends State<SeriesDetail> {
   bool isAll = false;
   int page = 1;
   int limit = 30;
-  Map seriesInfo;
+  late Map seriesInfo;
   getPageData() {
     getSeriesDetail(id: widget.id, page: page, limit: limit).then((res) {
       if (res['status'] != 0) {

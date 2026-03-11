@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Tom
  * @Date: 2021-12-21 11:51:44
  * @LastEditTime: 2021-12-27 15:15:12
@@ -21,8 +21,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class PiliCiyuan extends StatefulWidget {
-  PiliCiyuan({Key key, this.pos}) : super(key: key);
-  final int pos;
+  PiliCiyuan({Key? key, this.pos}) : super(key: key);
+  final int? pos;
   @override
   _PiliCiyuanState createState() => _PiliCiyuanState();
 }
@@ -56,7 +56,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
     //   'sort': 999
     // });
 
-    data.value.asMap().forEach((index, data) {
+    data.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {
@@ -64,7 +64,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
         pages.add(PageViewMixin(
           child: Lanmu(
             isShow: currentIndex == index,
-            id: int.parse(item.linkUrl),
+            id: int.parse(item.linkUrl!),
             parentName: 'ciyuan',
             index: index,
             pos: widget.pos,

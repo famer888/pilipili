@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
@@ -14,17 +14,17 @@ import 'package:pilipili/utils/common.dart';
 // ignore: must_be_immutable
 class MorePage extends StatefulWidget {
   MorePage(
-      {Key key,
+      {Key? key,
       this.title,
       this.filterOptions,
       this.crossAxisCount,
       this.morePageType,
       this.id})
       : super(key: key);
-  String title;
-  List filterOptions; // 筛选项
-  int crossAxisCount; // 列表是几列的
-  int morePageType; // 使用什么类型的卡片
+  String? title;
+  List? filterOptions; // 筛选项
+  int? crossAxisCount; // 列表是几列的
+  int? morePageType; // 使用什么类型的卡片
   dynamic id;
   @override
   _MorePageState createState() => _MorePageState();
@@ -36,8 +36,8 @@ class _MorePageState extends State<MorePage>
   int page = 1;
   int limit = 18;
   bool isAll = false;
-  int contentType;
-  List data;
+  late int contentType;
+  late List data;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class _MorePageState extends State<MorePage>
         children: [
           PageTitleBar(
             paddingTop: ScreenUtil().statusBarHeight,
-            title: widget.title != null ? widget.title : '',
+            title: widget.title != null ? widget.title! : '',
           ),
           Expanded(
               child: Padding(

@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -24,8 +24,8 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class CommunityDetail extends StatefulWidget {
-  const CommunityDetail({Key key, this.id}) : super(key: key);
-  final int id;
+  const CommunityDetail({Key? key, this.id}) : super(key: key);
+  final int? id;
   @override
   State<CommunityDetail> createState() => _CommunityDetailState();
 }
@@ -89,7 +89,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
       });
     } else {
       bool isVip = AppGlobal.vipLevel > 0;
-      int money = Provider.of<HomeConfig>(context, listen: false).member.money;
+      int money = Provider.of<HomeConfig>(context, listen: false).member.money!;
       bool isInsufficient = money < detailData['unlock_coins'];
       YyShowDialog.showdialog(context,
           title: '温馨提示',
@@ -181,7 +181,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
   }
 
   getDetailData() {
-    postDetail(widget.id).then((res) {
+    postDetail(widget.id!).then((res) {
       if (res['status'] != 0) {
         detailData = res['data']['detail'];
         isLike = detailData['is_like'] == 1;
@@ -550,8 +550,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                           : GestureDetector(
                                               onTap: () {
                                                 context.push(
-                                                    '/topicDetail/${detailData['topic_ary'][0]}',
-                                                    isNoRepeat: true);
+                                                    '/topicDetail/${detailData['topic_ary'][0]}');
                                               },
                                               child: Text(
                                                 '#$tag',
@@ -694,8 +693,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                             GestureDetector(
                                               onTap: () {
                                                 context.push(
-                                                    '/topicDetail/${detailData['topic_info'][e]['id']}',
-                                                    isNoRepeat: true);
+                                                    '/topicDetail/${detailData['topic_info'][e]['id']}');
                                               },
                                               child: Container(
                                                 height: 28.w,

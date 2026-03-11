@@ -1,4 +1,4 @@
-import 'package:card_swiper/card_swiper.dart';
+﻿import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,8 +23,9 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class YuemeiDetail extends StatefulWidget {
-  YuemeiDetail({Key key, this.id}) : super(key: key);
-  final int id;
+  YuemeiDetail({Key? key, this.id}) : super(key: key);
+  final int? id;
+
   @override
   _YuemeiDetailState createState() => _YuemeiDetailState();
 }
@@ -32,7 +33,7 @@ class YuemeiDetail extends StatefulWidget {
 class _YuemeiDetailState extends State<YuemeiDetail> {
   TextEditingController scoreText = TextEditingController();
   ScrollController _scrollController = ScrollController();
-  Map girlInfo;
+  late Map girlInfo;
   String scoreString = '';
   bool loading = true;
   bool isListView = true;
@@ -49,6 +50,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
   String unlimited = '无限解锁';
   String jstext = '解锁联系方式';
   String ljtext = '立即解锁';
+
   getPageData() {
     getYuepaoDetail(widget.id).then((res) {
       if (res == null) {
@@ -112,32 +114,17 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                 margin: EdgeInsets.only(top: 24.w),
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
                 width: 311.w,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.w),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color(0XFFffd3e6),
-                          offset: Offset(0, 2),
-                          blurRadius: 4,
-                          spreadRadius: 0)
-                    ]),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.w), boxShadow: [
+                  BoxShadow(color: Color(0XFFffd3e6), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)
+                ]),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     infoItem(title: '解锁信息', text: girlInfo['title']),
-                    connectMap.length == 0
-                        ? infoItem(title: '联系方式', text: girlInfo['phone'])
-                        : Container(),
-                    connectMap['wechat'] != null
-                        ? infoItem(title: '微信', text: connectMap['wechat'])
-                        : Container(),
-                    connectMap['qq'] != null
-                        ? infoItem(title: 'QQ', text: connectMap['qq'])
-                        : Container(),
-                    connectMap['phone'] != null
-                        ? infoItem(title: '电话', text: connectMap['phone'])
-                        : Container(),
+                    connectMap.length == 0 ? infoItem(title: '联系方式', text: girlInfo['phone']) : Container(),
+                    connectMap['wechat'] != null ? infoItem(title: '微信', text: connectMap['wechat']) : Container(),
+                    connectMap['qq'] != null ? infoItem(title: 'QQ', text: connectMap['qq']) : Container(),
+                    connectMap['phone'] != null ? infoItem(title: '电话', text: connectMap['phone']) : Container(),
                   ],
                 ),
               ),
@@ -168,21 +155,15 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                             blurRadius: 4,
                             spreadRadius: 0)
                       ],
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            DefaultStyle.linerThemeColor,
-                            DefaultStyle.themeColor,
-                          ])),
+                      gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
+                        DefaultStyle.linerThemeColor,
+                        DefaultStyle.themeColor,
+                      ])),
                   width: 327.w,
                   height: 40.w,
                   child: Text(
                     '确定',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.sp),
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.sp),
                   ),
                 ),
               )
@@ -191,7 +172,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
         ));
   }
 
-  Widget serverItem({String title, String text}) {
+  Widget serverItem({String? title, String? text}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.w),
       child: Row(
@@ -203,10 +184,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
           ),
           Text(
             title ?? '',
-            style: TextStyle(
-                color: Color(0xff6d6d6d),
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold),
+            style: TextStyle(color: Color(0xff6d6d6d), fontSize: 14.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(
             width: 5.w,
@@ -230,32 +208,26 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
       content: (setDialogState) {
         return Text(
           '您已发表过评价了',
-          style: TextStyle(
-              color: Color(0xff646464),
-              fontWeight: FontWeight.bold,
-              fontSize: ScreenUtil().setSp(16)),
+          style: TextStyle(color: Color(0xff646464), fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(16)),
         );
       },
       btnText: '朕知道了',
     );
   }
 
-  infoItem({String title, String text}) {
+  infoItem({String? title, String? text}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.w),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            title + '：',
-            style: TextStyle(
-                color: Color(0xff6d6d6d),
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold),
+            (title ?? '') + '：',
+            style: TextStyle(color: Color(0xff6d6d6d), fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           Flexible(
               child: Text(
-            text,
+            text!,
             style: TextStyle(color: Color(0xff6d6d6d), fontSize: 16.sp),
           )),
         ],
@@ -267,15 +239,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
     yuepaoUnlock(widget.id).then((res) {
       if (res['status'] != 0) {
         if (freeCount > 0) {
-          Map _privilege =
-              Provider.of<HomeConfig>(context, listen: false).privilege;
-          _privilege['data'][RESOURCE_TYPE_GIRL.toString()]
-              [PRIVILEGE_TYPE_UNLOCK.toString()]['value'] = (freeCount - 1);
-          Provider.of<HomeConfig>(context, listen: false)
-              .setPrivilege(_privilege);
+          Map _privilege = Provider.of<HomeConfig>(context, listen: false).privilege;
+          _privilege['data'][RESOURCE_TYPE_GIRL.toString()][PRIVILEGE_TYPE_UNLOCK.toString()]['value'] =
+              (freeCount - 1);
+          Provider.of<HomeConfig>(context, listen: false).setPrivilege(_privilege);
         } else {
-          Provider.of<HomeConfig>(context, listen: false)
-              .setMoney(money - girlInfo['buy_price']);
+          Provider.of<HomeConfig>(context, listen: false).setMoney(money - girlInfo['buy_price']);
         }
         getPageData();
       } else {
@@ -286,7 +255,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
   }
 
   Future showBuy(Function buyFunction) {
-    money = Provider.of<HomeConfig>(context, listen: false).member.money;
+    money = Provider.of<HomeConfig>(context, listen: false).member.money!;
     bool isInsufficient = money < girlInfo['buy_price'];
     bool isVip = AppGlobal.vipLevel > 0;
     return showModalBottomSheet(
@@ -306,8 +275,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                         topRight: Radius.circular(ScreenUtil().setWidth(12)),
                       )),
                   width: double.infinity,
-                  height: ScreenUtil().setWidth(370) +
-                      (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                  height: ScreenUtil().setWidth(370) + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -315,14 +283,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                         height: ScreenUtil().setWidth(64),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                end: Alignment.bottomCenter,
-                                begin: Alignment.topCenter,
-                                colors: [
-                              Color(0XFFFF89AC),
-                              Color(0XFFFF5B8C),
-                              Color(0XFFFA437A),
-                            ])),
+                            gradient: LinearGradient(end: Alignment.bottomCenter, begin: Alignment.topCenter, colors: [
+                          Color(0XFFFF89AC),
+                          Color(0XFFFF5B8C),
+                          Color(0XFFFA437A),
+                        ])),
                         child: Center(
                           child: Text(
                             '解锁联系方式',
@@ -339,8 +304,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setWidth(24)),
+                              margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(24)),
                               child: Stack(
                                 children: [
                                   Positioned(
@@ -349,8 +313,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                       left: 0,
                                       right: 0,
                                       child: PlatformAwareAssetImage(
-                                          url:
-                                              'assets/images/detail/video_buy_bg.png',
+                                          url: 'assets/images/detail/video_buy_bg.png',
                                           fit: BoxFit.fill,
                                           filterQuality: FilterQuality.medium)),
                                   Container(
@@ -361,44 +324,29 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Padding(
-                                            padding: EdgeInsets.only(
-                                                right:
-                                                    ScreenUtil().setWidth(24)),
+                                            padding: EdgeInsets.only(right: ScreenUtil().setWidth(24)),
                                             child: PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/detail/video_buy_coin.png',
-                                                width:
-                                                    ScreenUtil().setWidth(64),
-                                                filterQuality:
-                                                    FilterQuality.medium),
+                                                url: 'assets/images/detail/video_buy_coin.png',
+                                                width: ScreenUtil().setWidth(64),
+                                                filterQuality: FilterQuality.medium),
                                           ),
                                           Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Text(
-                                                freeCount > 0
-                                                    ? '免费解锁'
-                                                    : (girlInfo['buy_price']
-                                                            .toString() +
-                                                        '币'),
+                                                freeCount > 0 ? '免费解锁' : (girlInfo['buy_price'].toString() + '币'),
                                                 style: TextStyle(
                                                     color: Color(0xffFFCD6B),
                                                     shadows: <Shadow>[
                                                       Shadow(
-                                                        offset: Offset(
-                                                            ScreenUtil()
-                                                                .setWidth(1),
-                                                            ScreenUtil()
-                                                                .setWidth(1)),
+                                                        offset:
+                                                            Offset(ScreenUtil().setWidth(1), ScreenUtil().setWidth(1)),
                                                         blurRadius: 3.0,
-                                                        color:
-                                                            Color(0xffB96A11),
+                                                        color: Color(0xffB96A11),
                                                       ),
                                                     ],
-                                                    fontSize:
-                                                        ScreenUtil().setSp(32),
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                    fontSize: ScreenUtil().setSp(32),
+                                                    fontWeight: FontWeight.bold),
                                               )
                                             ],
                                           ),
@@ -428,42 +376,32 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                               alignment: Alignment.center,
                               child: Text(
                                 '因行业特殊，联系方式可能更改，请尽快联系对方',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xfffe155b),
-                                    fontSize: 12.w),
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xfffe155b), fontSize: 12.w),
                               ),
                             ),
                             Expanded(
                                 child: Container(
                               alignment: Alignment.bottomCenter,
-                              padding: EdgeInsets.only(
-                                  bottom: ScreenUtil().bottomBarHeight +
-                                      ScreenUtil().setWidth(20)),
+                              padding:
+                                  EdgeInsets.only(bottom: ScreenUtil().bottomBarHeight + ScreenUtil().setWidth(20)),
                               child: isVip
                                   ? GestureDetector(
                                       onTap: () {
                                         if (isInsufficient && freeCount <= 0) {
                                           context.pop();
-                                          context
-                                              .push('/coinRecharge');
+                                          context.push('/coinRecharge');
                                         } else {
                                           buyFunction();
                                         }
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                ScreenUtil().setWidth(20)),
+                                            borderRadius: BorderRadius.circular(ScreenUtil().setWidth(20)),
                                             gradient: SweepGradient(
                                                 //  begin: Alignment.bottomCenter,
                                                 colors: [
-                                                  Color(isInsufficient
-                                                      ? 0xffffccdb
-                                                      : 0XFFff84a9),
-                                                  Color(isInsufficient
-                                                      ? 0xffffe4e4
-                                                      : 0XFFff9e9e),
+                                                  Color(isInsufficient ? 0xffffccdb : 0XFFff84a9),
+                                                  Color(isInsufficient ? 0xffffe4e4 : 0XFFff9e9e),
                                                 ])),
                                         width: double.infinity,
                                         height: ScreenUtil().setWidth(40),
@@ -473,17 +411,11 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                 ? unlimited
                                                 : (freeCount > 0
                                                     ? '立即免费解锁(剩余$freeCount次)'
-                                                    : (isInsufficient
-                                                        ? PPString
-                                                            .goldInsufficient
-                                                        : PPString.buyNow)),
+                                                    : (isInsufficient ? PPString.goldInsufficient : PPString.buyNow)),
                                             style: TextStyle(
-                                                color: isInsufficient
-                                                    ? DefaultStyle.themeColor
-                                                    : Colors.white,
+                                                color: isInsufficient ? DefaultStyle.themeColor : Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    ScreenUtil().setSp(16)),
+                                                fontSize: ScreenUtil().setSp(16)),
                                           ),
                                         ),
                                       ))
@@ -492,36 +424,25 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         Expanded(
                                             child: GestureDetector(
                                                 onTap: () {
-                                                  if (isInsufficient &&
-                                                      freeCount <= 0) {
+                                                  if (isInsufficient && freeCount <= 0) {
                                                     context.pop();
-                                                    context.push(
-                                                        '/coinRecharge');
+                                                    context.push('/coinRecharge');
                                                   } else {
                                                     buyFunction();
                                                   }
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius
-                                                          .circular(ScreenUtil()
-                                                              .setWidth(20)),
+                                                      borderRadius: BorderRadius.circular(ScreenUtil().setWidth(20)),
                                                       gradient: LinearGradient(
-                                                          begin:
-                                                              Alignment.topLeft,
-                                                          end: Alignment
-                                                              .bottomRight,
+                                                          begin: Alignment.topLeft,
+                                                          end: Alignment.bottomRight,
                                                           colors: [
-                                                            Color(isInsufficient
-                                                                ? 0xffffccdb
-                                                                : 0XFFff84a9),
-                                                            Color(isInsufficient
-                                                                ? 0xffffe4e4
-                                                                : 0XFFff9e9e),
+                                                            Color(isInsufficient ? 0xffffccdb : 0XFFff84a9),
+                                                            Color(isInsufficient ? 0xffffe4e4 : 0XFFff9e9e),
                                                           ])),
                                                   width: double.infinity,
-                                                  height:
-                                                      ScreenUtil().setWidth(40),
+                                                  height: ScreenUtil().setWidth(40),
                                                   child: Center(
                                                     child: Text(
                                                       freeCount > 9999
@@ -529,22 +450,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                           : (freeCount > 0
                                                               ? '立即免费解锁(剩余$freeCount次)'
                                                               : (isInsufficient
-                                                                  ? PPString
-                                                                      .goldInsufficient
-                                                                  : PPString
-                                                                      .buyNow)),
+                                                                  ? PPString.goldInsufficient
+                                                                  : PPString.buyNow)),
                                                       style: TextStyle(
-                                                          color: isInsufficient
-                                                              ? Color(
-                                                                  0xffff84a9)
-                                                              : Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(
-                                                                  isInsufficient
-                                                                      ? 14
-                                                                      : 16)),
+                                                          color: isInsufficient ? Color(0xffff84a9) : Colors.white,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: ScreenUtil().setSp(isInsufficient ? 14 : 16)),
                                                     ),
                                                   ),
                                                 )))
@@ -578,8 +489,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
 
   @override
   Widget build(BuildContext context) {
-    freeCount =
-        Privilege.getCount(context, RESOURCE_TYPE_GIRL, PRIVILEGE_TYPE_UNLOCK);
+    freeCount = Privilege.getCount(context, RESOURCE_TYPE_GIRL, PRIVILEGE_TYPE_UNLOCK);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -597,8 +507,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                       ? PageStatus.loading(true)
                       : PullRefreshList(
                           color: Color.fromRGBO(130, 26, 70, 0.44),
-                          offset: DefaultStyle.navbarHegiht +
-                              ScreenUtil().statusBarHeight,
+                          offset: DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
                           onLoading: () {
                             if (isAll) return;
                             page++;
@@ -617,171 +526,124 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                   forceElevated: true,
                                   expandedHeight: 500.w,
                                   bottom: PreferredSize(
-                                    preferredSize: Size(double.infinity,
-                                        ScreenUtil().setWidth(24)),
+                                    preferredSize: Size(double.infinity, ScreenUtil().setWidth(24)),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(
-                                              ScreenUtil().setWidth(15)),
-                                          topLeft: Radius.circular(
-                                              ScreenUtil().setWidth(15))),
+                                          topRight: Radius.circular(ScreenUtil().setWidth(15)),
+                                          topLeft: Radius.circular(ScreenUtil().setWidth(15))),
                                       child: Container(
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                          color:
-                                              Color.fromRGBO(255, 244, 249, 1),
+                                          color: Color.fromRGBO(255, 244, 249, 1),
                                         ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                ScreenUtil().setWidth(12)),
+                                        padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(12)),
                                       ),
                                     ),
                                   ),
                                   flexibleSpace: FlexibleSpaceBar(
                                       collapseMode: CollapseMode.parallax,
-                                      background: StatefulBuilder(
-                                          builder: (contex, setSwiperState) {
-                                        return Stack(
-                                            clipBehavior: Clip.none,
-                                            children: [
-                                              girlInfo['resource'] == null ||
-                                                      girlInfo['resource']
-                                                              .length ==
-                                                          0
-                                                  ? Container(
-                                                      height: double.infinity,
-                                                      child: PlatformAwareAssetImage(
-                                                          url:
-                                                              'assets/images/demo_bg.png',
-                                                          width:
-                                                              double.infinity,
-                                                          fit: BoxFit.cover,
-                                                          filterQuality:
-                                                              FilterQuality
-                                                                  .medium),
-                                                    )
-                                                  : Swiper(
-                                                      // autoplayDelay: 3000,
-                                                      // loop: true,
-                                                      // autoplay:
-                                                      //     girlInfo['resource']
-                                                      //             .length >
-                                                      //         1,
-                                                      physics: girlInfo[
-                                                                      'resource']
-                                                                  .length >
-                                                              1
-                                                          ? null
-                                                          : new NeverScrollableScrollPhysics(),
-                                                      onIndexChanged: (e) {
-                                                        currentIndex = e;
-                                                        setSwiperState(() {});
-                                                      },
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        List picList = girlInfo[
-                                                                'resource']
-                                                            .where((item) =>
-                                                                item['type'] ==
-                                                                1)
-                                                            .toList();
-                                                        return Container(
-                                                          clipBehavior:
-                                                              Clip.hardEdge,
-                                                          decoration:
-                                                              ShapeDecoration(
-                                                                  shape:
-                                                                      BeveledRectangleBorder()),
-                                                          child: PageViewMixin(
-                                                            child: Stack(
-                                                              children: [
-                                                                Container(
-                                                                  height: 500.w,
-                                                                ),
-                                                                Positioned(
-                                                                    top: 0,
-                                                                    bottom: 0,
-                                                                    right: 0,
-                                                                    left: 0,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          EdgeInsets.all(
-                                                                              0),
-                                                                      child:
-                                                                          Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        child: girlInfo['resource'][index]['type'] ==
-                                                                                1
-                                                                            ? PlatformAwareNetworkImage(
-                                                                                alignment: Alignment.center,
-                                                                                noVisibilityDetector: true,
-                                                                                url: girlInfo['resource'][index]['url'],
-                                                                                fit: BoxFit.cover,
-                                                                              )
-                                                                            : Center(
-                                                                                child: YyVideo(
-                                                                                  loop: true,
-                                                                                  noBack: true,
-                                                                                  videoUrl: girlInfo['resource'][index]['url'],
-                                                                                ),
-                                                                              ),
-                                                                      ),
-                                                                    ))
-                                                              ],
+                                      background: StatefulBuilder(builder: (contex, setSwiperState) {
+                                        return Stack(clipBehavior: Clip.none, children: [
+                                          girlInfo['resource'] == null || girlInfo['resource'].length == 0
+                                              ? Container(
+                                                  height: double.infinity,
+                                                  child: PlatformAwareAssetImage(
+                                                      url: 'assets/images/demo_bg.png',
+                                                      width: double.infinity,
+                                                      fit: BoxFit.cover,
+                                                      filterQuality: FilterQuality.medium),
+                                                )
+                                              : Swiper(
+                                                  // autoplayDelay: 3000,
+                                                  // loop: true,
+                                                  // autoplay:
+                                                  //     girlInfo['resource']
+                                                  //             .length >
+                                                  //         1,
+                                                  physics: girlInfo['resource'].length > 1
+                                                      ? null
+                                                      : new NeverScrollableScrollPhysics(),
+                                                  onIndexChanged: (e) {
+                                                    currentIndex = e;
+                                                    setSwiperState(() {});
+                                                  },
+                                                  itemBuilder: (BuildContext context, int index) {
+                                                    List picList = girlInfo['resource']
+                                                        .where((item) => item['type'] == 1)
+                                                        .toList();
+                                                    return Container(
+                                                      clipBehavior: Clip.hardEdge,
+                                                      decoration: ShapeDecoration(shape: BeveledRectangleBorder()),
+                                                      child: PageViewMixin(
+                                                        child: Stack(
+                                                          children: [
+                                                            Container(
+                                                              height: 500.w,
                                                             ),
-                                                          ),
-                                                        );
-                                                      },
-                                                      itemCount:
-                                                          girlInfo['resource']
-                                                              .length,
-                                                    ),
-                                              Positioned(
-                                                  right: 12.w,
-                                                  bottom: 27.w,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            255, 203, 219, 0.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    15.w)),
-                                                    alignment: Alignment.center,
-                                                    height: 28.w,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 8.w),
-                                                    child: Text(
-                                                      (currentIndex + 1)
-                                                              .toString() +
-                                                          '/' +
-                                                          girlInfo['resource']
-                                                              .length
-                                                              .toString(),
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 14.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ))
-                                            ]);
+                                                            Positioned(
+                                                                top: 0,
+                                                                bottom: 0,
+                                                                right: 0,
+                                                                left: 0,
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.all(0),
+                                                                  child: Container(
+                                                                    width: double.infinity,
+                                                                    child: girlInfo['resource'][index]['type'] == 1
+                                                                        ? PlatformAwareNetworkImage(
+                                                                            alignment: Alignment.center,
+                                                                            noVisibilityDetector: true,
+                                                                            url: girlInfo['resource'][index]['url'],
+                                                                            fit: BoxFit.cover,
+                                                                          )
+                                                                        : Center(
+                                                                            child: YyVideo(
+                                                                              loop: true,
+                                                                              noBack: true,
+                                                                              videoUrl: girlInfo['resource'][index]
+                                                                                  ['url'],
+                                                                            ),
+                                                                          ),
+                                                                  ),
+                                                                ))
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  itemCount: girlInfo['resource'].length,
+                                                ),
+                                          Positioned(
+                                              right: 12.w,
+                                              bottom: 27.w,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Color.fromRGBO(255, 203, 219, 0.5),
+                                                    borderRadius: BorderRadius.circular(15.w)),
+                                                alignment: Alignment.center,
+                                                height: 28.w,
+                                                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                                child: Text(
+                                                  (currentIndex + 1).toString() +
+                                                      '/' +
+                                                      girlInfo['resource'].length.toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14.sp,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ))
+                                        ]);
                                       }))),
                               SliverToBoxAdapter(
                                 child: Container(
                                   padding: EdgeInsets.all(16.w),
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  margin: EdgeInsets.symmetric(horizontal: 16.w),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(11.w),
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Color.fromRGBO(
-                                              255, 128, 163, 0.5),
+                                          color: Color.fromRGBO(255, 128, 163, 0.5),
                                           offset: Offset(0, 2),
                                           blurRadius: 4,
                                           spreadRadius: 0)
@@ -789,17 +651,14 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                     color: Colors.white,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
@@ -807,26 +666,18 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                       child: Text(
                                                     girlInfo['title'] ?? '',
                                                     style: TextStyle(
-                                                        color:
-                                                            Color(0xff6d6d6d),
+                                                        color: Color(0xff6d6d6d),
                                                         fontSize: 18.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                        fontWeight: FontWeight.bold),
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   )),
                                                   SizedBox(
                                                     width: 4.w,
                                                   ),
-                                                  girlInfo['buy_count'] !=
-                                                              null &&
-                                                          girlInfo[
-                                                                  'buy_count'] >
-                                                              10
+                                                  girlInfo['buy_count'] != null && girlInfo['buy_count'] > 10
                                                       ? PlatformAwareAssetImage(
-                                                          url:
-                                                              'assets/images/pili_12/yuemei_jingpin.png',
+                                                          url: 'assets/images/pili_12/yuemei_jingpin.png',
                                                           width: 54.w,
                                                           fit: BoxFit.fitWidth,
                                                         )
@@ -835,39 +686,28 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               ),
                                               SizedBox(height: 8.w),
                                               DefaultTextStyle(
-                                                  style: TextStyle(
-                                                      color: Color(0xff979797),
-                                                      fontSize: 11.sp),
+                                                  style: TextStyle(color: Color(0xff979797), fontSize: 11.sp),
                                                   child: Row(
                                                     children: [
                                                       Row(
                                                         children: [
                                                           PlatformAwareAssetImage(
-                                                            url:
-                                                                'assets/images/pili_12/icon_location_red.png',
+                                                            url: 'assets/images/pili_12/icon_location_red.png',
                                                             width: 18.w,
-                                                            fit:
-                                                                BoxFit.fitWidth,
+                                                            fit: BoxFit.fitWidth,
                                                           ),
-                                                          Text(girlInfo[
-                                                                  'cityName'] ??
-                                                              '未知')
+                                                          Text(girlInfo['cityName'] ?? '未知')
                                                         ],
                                                       ),
                                                       SizedBox(width: 32.w),
                                                       Row(
                                                         children: [
                                                           PlatformAwareAssetImage(
-                                                            url:
-                                                                'assets/images/pili_12/icon_lock.png',
+                                                            url: 'assets/images/pili_12/icon_lock.png',
                                                             width: 18.w,
-                                                            fit:
-                                                                BoxFit.fitWidth,
+                                                            fit: BoxFit.fitWidth,
                                                           ),
-                                                          Text((girlInfo[
-                                                                      'buy_count'] ??
-                                                                  '0')
-                                                              .toString())
+                                                          Text((girlInfo['buy_count'] ?? '0').toString())
                                                         ],
                                                       )
                                                     ],
@@ -878,14 +718,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                             onTap: () {
                                               if (onFavorites) return;
                                               onFavorites = true;
-                                              userFavorites(
-                                                      type: 9, id: widget.id)
-                                                  .then((res) {
+                                              userFavorites(type: 9, id: widget.id).then((res) {
                                                 if (res.status != 0) {
                                                   isFavorites = !isFavorites;
                                                   setState(() {});
                                                 } else {
-                                                  CommonUtils.showText(res.msg);
+                                                  CommonUtils.showText(res.msg!);
                                                 }
                                                 onFavorites = false;
                                               });
@@ -893,47 +731,32 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                             child: Container(
                                               width: 40.w,
                                               height: 40.w,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5.5.w),
+                                              padding: EdgeInsets.symmetric(vertical: 5.5.w),
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.w),
-                                                  color: isFavorites
-                                                      ? DefaultStyle.themeColor
-                                                      : Colors.white,
+                                                  borderRadius: BorderRadius.circular(8.w),
+                                                  color: isFavorites ? DefaultStyle.themeColor : Colors.white,
                                                   boxShadow: [
                                                     BoxShadow(
                                                       blurRadius: 5.0,
-                                                      blurStyle:
-                                                          BlurStyle.outer,
-                                                      color: Color.fromRGBO(
-                                                          255, 91, 140, 0.2),
+                                                      blurStyle: BlurStyle.outer,
+                                                      color: Color.fromRGBO(255, 91, 140, 0.2),
                                                       offset: Offset(0, 3.w),
                                                     )
                                                   ]),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   PlatformAwareAssetImage(
-                                                    url:
-                                                        'assets/images/detail/' +
-                                                            (isFavorites
-                                                                ? 'icon_unlike'
-                                                                : 'icon_like') +
-                                                            '.png',
+                                                    url: 'assets/images/detail/' +
+                                                        (isFavorites ? 'icon_unlike' : 'icon_like') +
+                                                        '.png',
                                                     width: 12.w,
                                                     fit: BoxFit.fitWidth,
                                                   ),
                                                   Text(
                                                     isFavorites ? '已收藏' : '收藏',
                                                     style: TextStyle(
-                                                        color: isFavorites
-                                                            ? Colors.white
-                                                            : DefaultStyle
-                                                                .themeColor,
+                                                        color: isFavorites ? Colors.white : DefaultStyle.themeColor,
                                                         fontSize: 12.sp),
                                                   )
                                                 ],
@@ -946,30 +769,19 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         height: 0.5,
                                         width: double.infinity,
                                         color: Color(0xffffdae4),
-                                        margin: EdgeInsets.symmetric(
-                                            vertical: 12.w),
+                                        margin: EdgeInsets.symmetric(vertical: 12.w),
                                       ),
-                                      serverItem(
-                                          title: '服务: ',
-                                          text: girlInfo['girl_service_type'] ??
-                                              '--'),
+                                      serverItem(title: '服务: ', text: girlInfo['girl_service_type'] ?? '--'),
                                       serverItem(
                                           title: '资料: ',
-                                          text: (girlInfo['girl_age'] ?? '--')
-                                                  .toString() +
+                                          text: (girlInfo['girl_age'] ?? '--').toString() +
                                               '岁/' +
-                                              (girlInfo['girl_height'] ?? '--')
-                                                  .toString() +
+                                              (girlInfo['girl_height'] ?? '--').toString() +
                                               'cm/' +
-                                              (girlInfo['girl_cup'] ?? '--')
-                                                  .toString() +
+                                              (girlInfo['girl_cup'] ?? '--').toString() +
                                               '杯'),
-                                      serverItem(
-                                          title: '价格: ',
-                                          text: girlInfo['girl_price'] ?? '--'),
-                                      serverItem(
-                                          title: '简介: ',
-                                          text: girlInfo['desc'] ?? '--'),
+                                      serverItem(title: '价格: ', text: girlInfo['girl_price'] ?? '--'),
+                                      serverItem(title: '简介: ', text: girlInfo['desc'] ?? '--'),
                                       Stack(
                                         children: [
                                           Positioned(
@@ -978,104 +790,72 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               right: 0,
                                               left: 0,
                                               child: PlatformAwareAssetImage(
-                                                  url:
-                                                      'assets/images/dazhebaobg.png',
+                                                  url: 'assets/images/dazhebaobg.png',
                                                   fit: BoxFit.fill,
-                                                  filterQuality:
-                                                      FilterQuality.medium)),
+                                                  filterQuality: FilterQuality.medium)),
                                           Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 15.w),
+                                            padding: EdgeInsets.symmetric(vertical: 15.w),
                                             width: double.infinity,
                                             height: 64.w,
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 girlInfo['userBuy'] == 0
                                                     ? Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           Text(
-                                                            girlInfo['buy_price']
-                                                                    .toString() +
-                                                                '皮哩币',
+                                                            girlInfo['buy_price'].toString() + '皮哩币',
                                                             style: TextStyle(
                                                                 height: 1,
-                                                                color: Color(
-                                                                    0xfffe155b),
+                                                                color: Color(0xfffe155b),
                                                                 fontSize: 16.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                fontWeight: FontWeight.bold),
                                                           ),
                                                           Text('解锁联系方式',
                                                               style: TextStyle(
-                                                                  color: Color(
-                                                                      0xffff5b8c),
-                                                                  fontSize:
-                                                                      14.sp,
+                                                                  color: Color(0xffff5b8c),
+                                                                  fontSize: 14.sp,
                                                                   height: 1,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold))
+                                                                  fontWeight: FontWeight.bold))
                                                         ],
                                                       )
                                                     : Text('解锁成功!',
                                                         style: TextStyle(
-                                                            color: Color(
-                                                                0xfffe155b),
+                                                            color: Color(0xfffe155b),
                                                             fontSize: 16.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                            fontWeight: FontWeight.bold)),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    if (girlInfo['userBuy'] ==
-                                                        0) {
+                                                    if (girlInfo['userBuy'] == 0) {
                                                       showBuy(payUnlock);
                                                     } else {
                                                       showGirlInfo();
                                                     }
                                                   },
                                                   child: Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 20.w),
+                                                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(17.w),
+                                                        borderRadius: BorderRadius.circular(17.w),
                                                         gradient: LinearGradient(
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
                                                             colors: [
-                                                              DefaultStyle
-                                                                  .linerThemeColor,
-                                                              DefaultStyle
-                                                                  .themeColor,
+                                                              DefaultStyle.linerThemeColor,
+                                                              DefaultStyle.themeColor,
                                                             ])),
                                                     height: 34.w,
                                                     child: Text(
                                                       girlInfo['userBuy'] == 0
                                                           ? (freeCount > 9999
                                                               ? unlimited
-                                                              : (freeCount > 0
-                                                                  ? '免费解锁(剩余$freeCount次)'
-                                                                  : ljtext))
+                                                              : (freeCount > 0 ? '免费解锁(剩余$freeCount次)' : ljtext))
                                                           : '查看联系方式',
                                                       style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontWeight: FontWeight.bold,
                                                           fontSize: 12.sp),
                                                     ),
                                                   ),
@@ -1093,9 +873,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 24.w),
                                   child: WidgetTitleBar(
-                                    title: (girlInfo['comment_count'] ?? '0')
-                                            .toString() +
-                                        '人评价',
+                                    title: (girlInfo['comment_count'] ?? '0').toString() + '人评价',
                                     bottom: 12.w,
                                   ),
                                 ),
@@ -1105,41 +883,29 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                       child: PageStatus.noData(text: '没有找到评价～'),
                                     )
                                   : SliverPadding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 17.w,
-                                          horizontal: DefaultStyle.pagePadding),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 17.w, horizontal: DefaultStyle.pagePadding),
                                       sliver: SliverList(
                                         delegate: SliverChildBuilderDelegate(
                                           (context, index) {
                                             return Container(
                                               decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.w)),
+                                                  color: Colors.white, borderRadius: BorderRadius.circular(10.w)),
                                               padding: EdgeInsets.all(16.w),
-                                              margin:
-                                                  EdgeInsets.only(bottom: 12.5),
+                                              margin: EdgeInsets.only(bottom: 12.5),
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20.w),
+                                                        borderRadius: BorderRadius.circular(20.w),
                                                         child: Container(
                                                           width: 40.w,
                                                           height: 40.w,
-                                                          child:
-                                                              PlatformAwareNetworkImage(
-                                                            url: commentList[
-                                                                index]['thumb'],
+                                                          child: PlatformAwareNetworkImage(
+                                                            url: commentList[index]['thumb'],
                                                             fit: BoxFit.cover,
                                                           ),
                                                         ),
@@ -1148,38 +914,23 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                         width: 8.w,
                                                       ),
                                                       Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           Text(
-                                                            commentList[index][
-                                                                    'nickname'] ??
-                                                                '--',
+                                                            commentList[index]['nickname'] ?? '--',
                                                             style: TextStyle(
                                                                 height: 1,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Color(
-                                                                    0xff646464),
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Color(0xff646464),
                                                                 fontSize: 14.w),
                                                           ),
                                                           SizedBox(
                                                             height: 8.w,
                                                           ),
                                                           Text(
-                                                            '体验时间：' +
-                                                                    commentList[
-                                                                            index]
-                                                                        [
-                                                                        'updated_at'] ??
-                                                                '--',
+                                                            '体验时间：' + commentList[index]['updated_at'] ?? '--',
                                                             style: TextStyle(
-                                                                height: 1,
-                                                                fontSize: 14.w,
-                                                                color: Color(
-                                                                    0xff979797)),
+                                                                height: 1, fontSize: 14.w, color: Color(0xff979797)),
                                                           ),
                                                           SizedBox(
                                                             height: 8.w,
@@ -1188,19 +939,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             children: [
                                                               Text(
                                                                 '服务 : ',
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffff5b8c),
-                                                                    fontSize:
-                                                                        14.w),
+                                                                style:
+                                                                    TextStyle(color: Color(0xffff5b8c), fontSize: 14.w),
                                                               ),
                                                               YuemeiScore(
                                                                 isSet: false,
-                                                                defaultScore:
-                                                                    commentList[
-                                                                            index]
-                                                                        [
-                                                                        'service'],
+                                                                defaultScore: commentList[index]['service'],
                                                               )
                                                             ],
                                                           ),
@@ -1211,19 +955,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                             children: [
                                                               Text(
                                                                 '颜值 : ',
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffff5b8c),
-                                                                    fontSize:
-                                                                        14.w),
+                                                                style:
+                                                                    TextStyle(color: Color(0xffff5b8c), fontSize: 14.w),
                                                               ),
                                                               YuemeiScore(
                                                                 isSet: false,
-                                                                defaultScore:
-                                                                    commentList[
-                                                                            index]
-                                                                        [
-                                                                        'face'],
+                                                                defaultScore: commentList[index]['face'],
                                                               )
                                                             ],
                                                           )
@@ -1232,21 +969,14 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     ],
                                                   ),
                                                   Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 12.w),
+                                                    margin: EdgeInsets.symmetric(vertical: 12.w),
                                                     width: double.infinity,
                                                     height: 0.5.w,
                                                     color: Color(0XFFffdae4),
                                                   ),
                                                   Text(
-                                                    commentList[index]
-                                                            ['comment'] ??
-                                                        '--',
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xff6d6d6d),
-                                                        fontSize: 14.w),
+                                                    commentList[index]['comment'] ?? '--',
+                                                    style: TextStyle(color: Color(0xff6d6d6d), fontSize: 14.w),
                                                   )
                                                 ],
                                               ),
@@ -1261,9 +991,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                     ),
                               SliverToBoxAdapter(
                                 child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).padding.bottom +
-                                          ScreenUtil().bottomBarHeight,
+                                  height: MediaQuery.of(context).padding.bottom + ScreenUtil().bottomBarHeight,
                                 ),
                               ),
                             ],
@@ -1283,10 +1011,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
               : Container(
                   color: Colors.white,
                   height: 48.w + ScreenUtil().bottomBarHeight,
-                  padding: EdgeInsets.only(
-                      left: 20.w,
-                      right: 20.w,
-                      bottom: ScreenUtil().bottomBarHeight),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: ScreenUtil().bottomBarHeight),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -1294,8 +1019,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                           ? Row(
                               children: [
                                 PlatformAwareAssetImage(
-                                  url:
-                                      'assets/images/pili_12/icon_big_lock.png',
+                                  url: 'assets/images/pili_12/icon_big_lock.png',
                                   width: 16.w,
                                   fit: BoxFit.fitWidth,
                                 ),
@@ -1304,9 +1028,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                 ),
                                 Text(
                                   '联系方式已隐藏',
-                                  style: TextStyle(
-                                      color: Color(0xff979797),
-                                      fontSize: 14.sp),
+                                  style: TextStyle(color: Color(0xff979797), fontSize: 14.sp),
                                 )
                               ],
                             )
@@ -1316,8 +1038,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                   return publishComment();
                                 }
                                 Map _comment = {};
-                                YyShowDialog.showButtom(context,
-                                    title: '体验评价', height: 380.w, onClose: () {
+                                YyShowDialog.showButtom(context, title: '体验评价', height: 380.w, onClose: () {
                                   scoreString = '';
                                 }, content: (setButtom) {
                                   return Container(
@@ -1325,18 +1046,12 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                     child: Column(
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(
-                                              top: 24.w, bottom: 24.w),
-                                          padding: EdgeInsets.only(
-                                              left: 16.w,
-                                              right: 16.w,
-                                              bottom: 16.w,
-                                              top: 24.w),
+                                          margin: EdgeInsets.only(top: 24.w, bottom: 24.w),
+                                          padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.w, top: 24.w),
                                           width: 311.w,
                                           decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10.w),
+                                              borderRadius: BorderRadius.circular(10.w),
                                               boxShadow: [
                                                 BoxShadow(
                                                     color: Color(0XFFffd3e6),
@@ -1345,20 +1060,16 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     spreadRadius: 0)
                                               ]),
                                           child: DefaultTextStyle(
-                                              style: TextStyle(
-                                                  color: Color(0xffff5b8c),
-                                                  fontSize: 14.sp),
+                                              style: TextStyle(color: Color(0xffff5b8c), fontSize: 14.sp),
                                               child: Column(
                                                 children: [
                                                   Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    mainAxisSize: MainAxisSize.min,
                                                     children: [
                                                       Text('服务 ：'),
                                                       YuemeiScore(
                                                         scoreFunction: (score) {
-                                                          _comment['service'] =
-                                                              score;
+                                                          _comment['service'] = score;
                                                         },
                                                       )
                                                     ],
@@ -1367,67 +1078,50 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     height: 16.w,
                                                   ),
                                                   Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    mainAxisSize: MainAxisSize.min,
                                                     children: [
                                                       Text('颜值 ：'),
                                                       YuemeiScore(
                                                         scoreFunction: (score) {
-                                                          _comment['face'] =
-                                                              score;
+                                                          _comment['face'] = score;
                                                         },
                                                       )
                                                     ],
                                                   ),
                                                   GestureDetector(
                                                     onTap: () {
-                                                      InputDialog.show(context,
-                                                              '可以描述下服务过程（选填）',
-                                                              btnText: '完成',
-                                                              value:
-                                                                  scoreString)
-                                                          .then((value) {
-                                                        if (value != '') {
-                                                          scoreString = value;
-                                                          setButtom(() {});
-                                                        }
+                                                      InputDialog.show(context, '可以描述下服务过程（选填）',
+                                                              btnText: '完成', value: scoreString)
+                                                          .then((innerFuture) {
+                                                        innerFuture.then((value) {
+                                                          if (value != '') {
+                                                            scoreString = value!;
+                                                            setButtom(() {});
+                                                          }
+                                                        });
                                                       });
                                                     },
                                                     child: Container(
                                                         height: 96.w,
                                                         width: double.infinity,
-                                                        margin: EdgeInsets.only(
-                                                            top: 16.w),
+                                                        margin: EdgeInsets.only(top: 16.w),
                                                         decoration: BoxDecoration(
-                                                            color: Color(
-                                                                0xFFffe6eb),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
+                                                            color: Color(0xFFffe6eb),
+                                                            borderRadius: BorderRadius.circular(10)),
                                                         child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: scoreString ==
-                                                                    ''
+                                                            padding: EdgeInsets.all(8.0),
+                                                            child: scoreString == ''
                                                                 ? Text(
                                                                     '可以描述下服务过程（选填）',
                                                                     style: TextStyle(
-                                                                        fontSize: 14
-                                                                            .sp,
-                                                                        color: Color(
-                                                                            0xff6d6d6d)),
+                                                                        fontSize: 14.sp, color: Color(0xff6d6d6d)),
                                                                   )
                                                                 : SingleChildScrollView(
                                                                     child: Text(
                                                                       scoreString,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            14.w,
-                                                                        color: Color(
-                                                                            0xfffe155b),
+                                                                      style: TextStyle(
+                                                                        fontSize: 14.w,
+                                                                        color: Color(0xfffe155b),
                                                                       ),
                                                                     ),
                                                                   ))),
@@ -1437,24 +1131,20 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            if (_comment['face'] == null ||
-                                                _comment['service'] == null) {
-                                              return CommonUtils.showText(
-                                                  '请对本次体验进行评分');
+                                            if (_comment['face'] == null || _comment['service'] == null) {
+                                              return CommonUtils.showText('请对本次体验进行评分');
                                             }
                                             yuepaoComment(
                                                     girlMeetId: girlInfo['id'],
                                                     comment: scoreString,
                                                     face: _comment['face'],
-                                                    service:
-                                                        _comment['service'])
+                                                    service: _comment['service'])
                                                 .then((res) {
                                               if (res['status'] != 0) {
                                                 getPageData();
                                                 CommonUtils.showText('发表评价成功');
                                               } else {
-                                                CommonUtils.showText(
-                                                    res['msg']);
+                                                CommonUtils.showText(res['msg']);
                                               }
                                             });
                                             context.pop();
@@ -1462,12 +1152,10 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                           child: Container(
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.w),
+                                                borderRadius: BorderRadius.circular(20.w),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                      color: Color.fromRGBO(
-                                                          255, 128, 163, 0.5),
+                                                      color: Color.fromRGBO(255, 128, 163, 0.5),
                                                       offset: Offset(0, 2),
                                                       blurRadius: 4,
                                                       spreadRadius: 0)
@@ -1476,8 +1164,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                     colors: [
-                                                      DefaultStyle
-                                                          .linerThemeColor,
+                                                      DefaultStyle.linerThemeColor,
                                                       DefaultStyle.themeColor,
                                                     ])),
                                             width: 327.w,
@@ -1485,9 +1172,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                             child: Text(
                                               '发表评价',
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16.sp),
+                                                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.sp),
                                             ),
                                           ),
                                         )
@@ -1499,12 +1184,10 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(15)),
+                                    borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15)),
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Color.fromRGBO(
-                                              255, 128, 163, 0.3),
+                                          color: Color.fromRGBO(255, 128, 163, 0.3),
                                           offset: Offset(0, 2),
                                           blurRadius: 4,
                                           spreadRadius: 0)
@@ -1521,9 +1204,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                 child: Text(
                                   '体验评价', //查看联系方式
                                   style: TextStyle(
-                                      color: DefaultStyle.themeColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.sp),
+                                      color: DefaultStyle.themeColor, fontWeight: FontWeight.bold, fontSize: 12.sp),
                                 ),
                               ),
                             ),
@@ -1538,8 +1219,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(15)),
+                              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15)),
                               boxShadow: [
                                 BoxShadow(
                                     color: Color.fromRGBO(255, 128, 163, 0.5),
@@ -1547,27 +1227,20 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                     blurRadius: 4,
                                     spreadRadius: 0)
                               ],
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    DefaultStyle.linerThemeColor,
-                                    DefaultStyle.themeColor,
-                                  ])),
+                              gradient:
+                                  LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
+                                DefaultStyle.linerThemeColor,
+                                DefaultStyle.themeColor,
+                              ])),
                           height: 30.w,
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
                             girlInfo['userBuy'] == 0
                                 ? freeCount > 9999
                                     ? unlimited
-                                    : (freeCount > 0
-                                        ? '免费解锁(剩余$freeCount次)'
-                                        : jstext)
+                                    : (freeCount > 0 ? '免费解锁(剩余$freeCount次)' : jstext)
                                 : '查看联系方式', //查看联系方式
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.sp),
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.sp),
                           ),
                         ),
                       )

@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -11,11 +11,11 @@ import 'package:pilipili/utils/http.dart';
 
 class XFileProgressToast extends StatefulWidget {
   const XFileProgressToast(
-      {@required this.file, @required this.response, this.cancel})
+      {required this.file, required this.response, this.cancel})
       : super();
   final XFile file;
   final Function(Map) response;
-  final Function() cancel;
+  final Function()? cancel;
 
   @override
   State<XFileProgressToast> createState() => _XFileProgressToastState();
@@ -102,7 +102,7 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
           behavior: HitTestBehavior.translucent,
           onTap: () {
             cancelToken.cancel();
-            widget.cancel.call();
+            widget.cancel?.call();
           },
           child: Container(
             height: 30.w,

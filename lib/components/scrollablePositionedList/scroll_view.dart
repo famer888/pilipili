@@ -6,26 +6,30 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'wrapping.dart';
 import 'viewport.dart';
 
 /// A version of [CustomScrollView] that allows does not constrict the extents
 /// to be within 0 and 1. See [CustomScrollView] for more information.
 class UnboundedCustomScrollView extends CustomScrollView {
+  final bool _shrinkWrap;
+
   const UnboundedCustomScrollView({
-    Key key,
+    Key? key,
     Axis scrollDirection = Axis.vertical,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    Key center,
+    Key? center,
     double anchor = 0.0,
-    double cacheExtent,
+    double? cacheExtent,
     List<Widget> slivers = const <Widget>[],
-    int semanticChildCount,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-  })  : _anchor = anchor,
+  })  : _shrinkWrap = shrinkWrap,
+        _anchor = anchor,
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -33,7 +37,7 @@ class UnboundedCustomScrollView extends CustomScrollView {
           controller: controller,
           primary: primary,
           physics: physics,
-          shrinkWrap: shrinkWrap,
+          shrinkWrap: false,
           center: center,
           cacheExtent: cacheExtent,
           semanticChildCount: semanticChildCount,
@@ -57,11 +61,14 @@ class UnboundedCustomScrollView extends CustomScrollView {
     AxisDirection axisDirection,
     List<Widget> slivers,
   ) {
-    if (shrinkWrap) {
-      return ShrinkWrappingViewport(
+    if (_shrinkWrap) {
+      return CustomShrinkWrappingViewport(
         axisDirection: axisDirection,
         offset: offset,
         slivers: slivers,
+        cacheExtent: cacheExtent,
+        center: center,
+        anchor: anchor,
       );
     }
     return UnboundedViewport(

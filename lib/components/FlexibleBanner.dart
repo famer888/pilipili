@@ -1,4 +1,4 @@
-import 'package:card_swiper/card_swiper.dart';
+﻿import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
@@ -9,9 +9,9 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class HomeTopBanner extends StatefulWidget {
-  const HomeTopBanner({Key key, this.fixedBanner, this.pos}) : super(key: key);
+  const HomeTopBanner({Key? key, this.fixedBanner, this.pos}) : super(key: key);
   final dynamic fixedBanner;
-  final int pos;
+  final int? pos;
   @override
   State<HomeTopBanner> createState() => _HomeTopBannerState();
 }

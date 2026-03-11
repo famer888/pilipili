@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,23 +15,22 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class LocalComicsReader extends StatefulWidget {
-  LocalComicsReader({Key key, this.comicsInfo, this.episode}) : super(key: key);
-  final Map comicsInfo;
-  final int episode;
+  LocalComicsReader({Key? key, this.comicsInfo, this.episode}) : super(key: key);
+  final Map? comicsInfo;
+  final int? episode;
 
   @override
   _LocalComicsReaderState createState() => _LocalComicsReaderState();
 }
 
-class _LocalComicsReaderState extends State<LocalComicsReader>
-    with WatchRecordMixin {
+class _LocalComicsReaderState extends State<LocalComicsReader> with WatchRecordMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ItemScrollController comicScroll = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   bool isHorizontal = false; //是否横向滑动
   int selectState = 1; //底部翻页控制器选择
   bool isAutomatic = false; //是否开启自动翻页
-  int cureentIndex; //当前 X 话
+  late int cureentIndex; //当前 X 话
   bool showPrompt = false; //展示提示
   bool isShow = true; //控制器的隐藏显示
   bool isTap = false; //正在控制器上操作
@@ -42,44 +41,25 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   int animationTime = 500;
   bool intPage = true;
   Axis scrollDirection = Axis.vertical;
-  Map controllerOffset;
-  List timeList = [
-    1,
-    1.5,
-    2,
-    2.5,
-    3,
-    3.5,
-    4,
-    4.5,
-    5,
-    5.5,
-    6,
-    6.5,
-    7,
-    7.5,
-    8,
-    8.5,
-    9,
-    9.5,
-    10
-  ];
-  List comicsData;
+  late Map controllerOffset;
+  List timeList = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
+  late List comicsData;
   int defaultTime = 8;
-  Timer _timer;
+  late Timer _timer;
   int currenPage = 0;
   bool loading = true;
-  double leftDx;
-  double leftDxb;
+  late double leftDx;
+  late double leftDxb;
   GlobalKey _key = GlobalKey();
   GlobalKey _keyb = GlobalKey();
-  int randomIndex;
+  late int randomIndex;
+
   _getRenderBox(_) {
     //获取`RenderBox`对象
-    RenderBox renderBox = _key.currentContext.findRenderObject();
+    RenderBox renderBox = (_key.currentContext!.findRenderObject()!) as RenderBox;
     Offset offset = renderBox.localToGlobal(Offset(0, 0));
     leftDx = offset.dx;
-    RenderBox renderBoxb = _keyb.currentContext.findRenderObject();
+    RenderBox renderBoxb = (_keyb.currentContext!.findRenderObject()!) as RenderBox;
     Offset offsetb = renderBoxb.localToGlobal(Offset(0, 0));
     leftDxb = offsetb.dx;
   }
@@ -87,8 +67,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   @override
   void initState() {
     super.initState();
-    cureentIndex = widget.episode;
-    List allList = List.filled(widget.comicsInfo['allEpisode'], 1);
+    cureentIndex = widget.episode!;
+    List allList = List.filled(widget.comicsInfo!['allEpisode'], 1);
     int index = 1;
     allList.forEach((item) {
       episodeList.add(index);
@@ -98,28 +78,25 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   }
 
   swichComic(int episode, {bool replace = false}) {
-    context.push(
-        CommonUtils.getRealHash().replaceAll(
-            RegExp("${PPString.test}localComicsReader"), 'localComicsReader'),
-        extra: {'comicsInfo': widget.comicsInfo, 'episode': episode},
-        replace: replace);
+    final path = CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}localComicsReader"), 'localComicsReader');
+    if (replace) {
+      context.pushReplacement(path, extra: {'comicsInfo': widget.comicsInfo, 'episode': episode});
+    } else {
+      context.push(path, extra: {'comicsInfo': widget.comicsInfo, 'episode': episode});
+    }
   }
 
   getPageDetail() async {
-    comicsData = widget.comicsInfo["sets"][widget.episode - 1];
-    comicLength = widget.comicsInfo["sets"][widget.episode - 1].length;
+    comicsData = widget.comicsInfo!["sets"][widget.episode! - 1];
+    comicLength = widget.comicsInfo!["sets"][widget.episode! - 1].length;
     controllerOffset = {
       'offsetLeft': 0.0, //页面进度
-      'pageIndex': {
-        'min': 1,
-        'max': widget.comicsInfo["sets"][widget.episode - 1].length
-      },
+      'pageIndex': {'min': 1, 'max': widget.comicsInfo!["sets"][widget.episode! - 1].length},
       'timeLeft': 0.0, //翻页间隔
       'timeIndex': {'min': 0, 'max': timeList.length}
     };
     loading = false;
-    var segmet =
-        ScreenUtil().setWidth(590) / controllerOffset['pageIndex']['max'];
+    var segmet = ScreenUtil().setWidth(590) / controllerOffset['pageIndex']['max'];
     controllerOffset['offsetLeft'] = (currenPage + 1) * segmet;
     setState(() {});
     // WidgetsBinding.instance.addPostFrameCallback(_getRenderBox);
@@ -135,6 +112,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   }
 
   List episodeList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,12 +144,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                       ))
                     ],
                   ),
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: operatiogArea()),
+                  Positioned(top: 0, left: 0, right: 0, bottom: 0, child: operatiogArea()),
                   pageController()
                 ],
               ),
@@ -181,8 +154,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   }
 
   nextPage() {
-    var segmet =
-        ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
+    var segmet = ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
     // if (isShow) {
     //   isShow = false;
     // }
@@ -195,8 +167,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   }
 
   prevPage() {
-    var segmet =
-        ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
+    var segmet = ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
     // if (isShow) {
     //   isShow = false;
     // }
@@ -228,17 +199,12 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     child: Container(
                       height: ScreenUtil().setWidth(50),
                       margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(5)),
-                      color: showPrompt
-                          ? Color.fromRGBO(247, 48, 48, 0.5)
-                          : Colors.transparent,
+                      color: showPrompt ? Color.fromRGBO(247, 48, 48, 0.5) : Colors.transparent,
                       child: Center(
                         child: Text(
                           '设定',
                           style: TextStyle(
-                              color: showPrompt
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              fontSize: ScreenUtil().setSp(18)),
+                              color: showPrompt ? Colors.white : Colors.transparent, fontSize: ScreenUtil().setSp(18)),
                         ),
                       ),
                     ),
@@ -256,16 +222,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                   child: Container(
                     height: double.infinity,
                     width: ScreenUtil().setWidth(50),
-                    color: showPrompt
-                        ? Color.fromRGBO(134, 197, 36, 0.5)
-                        : Colors.transparent,
+                    color: showPrompt ? Color.fromRGBO(134, 197, 36, 0.5) : Colors.transparent,
                     child: Center(
                       child: DefaultTextStyle(
                           style: TextStyle(
-                              color: showPrompt
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              fontSize: ScreenUtil().setSp(18)),
+                              color: showPrompt ? Colors.white : Colors.transparent, fontSize: ScreenUtil().setSp(18)),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -288,18 +249,13 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                           setState(() {});
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: ScreenUtil().setWidth(5)),
+                          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(5)),
                           height: double.infinity,
-                          color: showPrompt
-                              ? Color.fromRGBO(34, 156, 240, 0.5)
-                              : Colors.transparent,
+                          color: showPrompt ? Color.fromRGBO(34, 156, 240, 0.5) : Colors.transparent,
                           child: Center(
                             child: DefaultTextStyle(
                                 style: TextStyle(
-                                    color: showPrompt
-                                        ? Colors.white
-                                        : Colors.transparent,
+                                    color: showPrompt ? Colors.white : Colors.transparent,
                                     fontSize: ScreenUtil().setSp(18)),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -324,16 +280,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                   child: Container(
                     height: double.infinity,
                     width: ScreenUtil().setWidth(50),
-                    color: showPrompt
-                        ? Color.fromRGBO(134, 197, 36, 0.5)
-                        : Colors.transparent,
+                    color: showPrompt ? Color.fromRGBO(134, 197, 36, 0.5) : Colors.transparent,
                     child: Center(
                       child: DefaultTextStyle(
                           style: TextStyle(
-                              color: showPrompt
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              fontSize: ScreenUtil().setSp(18)),
+                              color: showPrompt ? Colors.white : Colors.transparent, fontSize: ScreenUtil().setSp(18)),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -355,15 +306,12 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
               child: Container(
                 height: ScreenUtil().setWidth(50),
                 margin: EdgeInsets.only(top: ScreenUtil().setWidth(5)),
-                color: showPrompt
-                    ? Color.fromRGBO(134, 197, 36, 0.5)
-                    : Colors.transparent,
+                color: showPrompt ? Color.fromRGBO(134, 197, 36, 0.5) : Colors.transparent,
                 child: Center(
                   child: Text(
                     '下一页',
                     style: TextStyle(
-                        color: showPrompt ? Colors.white : Colors.transparent,
-                        fontSize: ScreenUtil().setSp(18)),
+                        color: showPrompt ? Colors.white : Colors.transparent, fontSize: ScreenUtil().setSp(18)),
                   ),
                 ),
               ),
@@ -393,12 +341,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
           physics: ClampingScrollPhysics(),
           scrollDirection: isHorizontal ? Axis.horizontal : Axis.vertical,
           itemScrollController: comicScroll,
-          itemPositionsListener: itemPositionsListener,
+          itemPositionsListener: itemPositionsListener!,
           padding: EdgeInsets.only(top: 0),
           itemBuilder: (BuildContext context, int index) {
             return isHorizontal
-                ? comicsData[index]["imgWidth"] == 'none' ||
-                        comicsData[index]['imgHeight'] == 'none'
+                ? comicsData[index]["imgWidth"] == 'none' || comicsData[index]['imgHeight'] == 'none'
                     ? Container()
                     : Container(
                         height: ScreenUtil().screenHeight,
@@ -416,8 +363,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                                   : double.parse(comicsData[index]['imgWidth']),
                               height: comicsData[index]['imgHeight'] == '0'
                                   ? ScreenUtil().screenHeight
-                                  : double.parse(
-                                      comicsData[index]['imgHeight']),
+                                  : double.parse(comicsData[index]['imgHeight']),
                               currentIndex: currenPage,
                               setPosition: (int position, double pageOffset) {
                                 currenPage = position;
@@ -427,8 +373,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                               length: comicLength),
                         ),
                       )
-                : (comicsData[index]['imgWidth'] == 'none' ||
-                        comicsData[index]['imgHeight'] == 'none'
+                : (comicsData[index]['imgWidth'] == 'none' || comicsData[index]['imgHeight'] == 'none'
                     ? Container()
                     : ComicsImg(
                         isLocal: true,
@@ -471,8 +416,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                   child: comicHeader(),
                   time: animationTime),
               Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(4)),
+                padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(4)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -484,13 +428,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                         child: comicButtom(
                             type: 'left',
                             onTap: () {
-                              if (widget.episode > 1) {
-                                swichComic(widget.episode - 1, replace: true);
+                              if (widget.episode! > 1) {
+                                swichComic(widget.episode! - 1, replace: true);
                               } else {
                                 BotToast.showText(
-                                    text: '已经是第一话了哦～',
-                                    align: Alignment(0, 0),
-                                    duration: new Duration(seconds: 2));
+                                    text: '已经是第一话了哦～', align: Alignment(0, 0), duration: new Duration(seconds: 2));
                               }
                             }),
                         time: animationTime),
@@ -502,14 +444,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                         child: comicButtom(
                             type: 'right',
                             onTap: () {
-                              if (widget.episode <
-                                  widget.comicsInfo["allEpisode"]) {
-                                swichComic(widget.episode + 1, replace: true);
+                              if (widget.episode! < widget.comicsInfo!["allEpisode"]) {
+                                swichComic(widget.episode! + 1, replace: true);
                               } else {
                                 BotToast.showText(
-                                    text: '已经是最后一话了哦～',
-                                    align: Alignment(0, 0),
-                                    duration: new Duration(seconds: 2));
+                                    text: '已经是最后一话了哦～', align: Alignment(0, 0), duration: new Duration(seconds: 2));
                               }
                               CommonUtils.debugPrint('下一话');
                             }),
@@ -531,8 +470,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   }
 
   autoPage() {
-    var segmet =
-        ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
+    var segmet = ScreenUtil().setWidth(295) / controllerOffset['pageIndex']['max'];
     if (currenPage + 1 != comicLength) {
       currenPage++;
       controllerOffset['offsetLeft'] = (currenPage + 1) * segmet;
@@ -555,21 +493,17 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
               right: automatic ? 0 : ScreenUtil().screenWidth,
               opacity: automatic ? 1 : 0,
               child: DefaultTextStyle(
-                  style: TextStyle(
-                      color: Colors.white, fontSize: ScreenUtil().setSp(12)),
+                  style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(12)),
                   child: Container(
                     height: ScreenUtil().setWidth(120.5),
                     width: ScreenUtil().screenWidth,
                     color: Color.fromRGBO(0, 0, 0, 0.7),
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil().setWidth(14),
-                        bottom: ScreenUtil().setWidth(20)),
+                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(14), bottom: ScreenUtil().setWidth(20)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('自动翻页间隔' + timeList[defaultTime].toString() + '秒'),
-                        gestureWidget(_keyb, 'timeLeft', defaultTime,
-                            timeList.length - 1),
+                        gestureWidget(_keyb, 'timeLeft', defaultTime, timeList.length - 1),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -578,10 +512,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                                 if (_timer.isActive) {
                                   _timer.cancel();
                                 }
-                                int time =
-                                    (timeList[defaultTime] * 1000).toInt();
-                                _timer = Timer.periodic(
-                                    Duration(milliseconds: time), (timer) {
+                                int time = (timeList[defaultTime] * 1000).toInt();
+                                _timer = Timer.periodic(Duration(milliseconds: time), (timer) {
                                   autoPage();
                                 });
                                 isAutomatic = true;
@@ -592,9 +524,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                                 width: ScreenUtil().setWidth(81),
                                 height: ScreenUtil().setWidth(26.5),
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white,
-                                        width: ScreenUtil().setWidth(0.5)),
+                                    border: Border.all(color: Colors.white, width: ScreenUtil().setWidth(0.5)),
                                     borderRadius: BorderRadius.circular(2.5)),
                                 child: Center(child: Text('开始')),
                               ),
@@ -613,9 +543,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                                 width: ScreenUtil().setWidth(81),
                                 height: ScreenUtil().setWidth(26.5),
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white,
-                                        width: ScreenUtil().setWidth(0.5)),
+                                    border: Border.all(color: Colors.white, width: ScreenUtil().setWidth(0.5)),
                                     borderRadius: BorderRadius.circular(2.5)),
                                 child: Center(child: Text('结束自动翻页')),
                               ),
@@ -631,25 +559,20 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
             height: ScreenUtil().setWidth(120),
             width: ScreenUtil().screenWidth,
             color: Color.fromRGBO(0, 0, 0, 0.7),
-            padding: EdgeInsets.only(
-                top: ScreenUtil().setWidth(15),
-                bottom: ScreenUtil().setWidth(12)),
+            padding: EdgeInsets.only(top: ScreenUtil().setWidth(15), bottom: ScreenUtil().setWidth(12)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 DefaultTextStyle(
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setWidth(14), color: Colors.white),
+                  style: TextStyle(fontSize: ScreenUtil().setWidth(14), color: Colors.white),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                          (currenPage + 1 > controllerOffset['pageIndex']['max']
-                                  ? controllerOffset['pageIndex']['max']
-                                  : currenPage + 1)
-                              .toString()),
-                      gestureWidget(_key, 'offsetLeft', currenPage + 1,
-                          controllerOffset['pageIndex']['max']),
+                      Text((currenPage + 1 > controllerOffset['pageIndex']['max']
+                              ? controllerOffset['pageIndex']['max']
+                              : currenPage + 1)
+                          .toString()),
+                      gestureWidget(_key, 'offsetLeft', currenPage + 1, controllerOffset['pageIndex']['max']),
                       Text(controllerOffset['pageIndex']['max'].toString())
                     ],
                   ),
@@ -672,11 +595,10 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                             automatic = false;
                             setState(() {});
                           }
-                          _scaffoldKey.currentState.openEndDrawer();
+                          _scaffoldKey.currentState!.openEndDrawer();
                         }),
                     settingBtn(
-                        color:
-                            selectState == 1 ? Color(0xffff2e4e) : Colors.white,
+                        color: selectState == 1 ? Color(0xffff2e4e) : Colors.white,
                         img: selectState == 1 ? PPString.three : PPString.two,
                         title: '上下翻页',
                         onTap: () {
@@ -689,8 +611,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                           comicScroll.jumpTo(index: currenPage);
                         }),
                     settingBtn(
-                        color:
-                            selectState == 2 ? Color(0xffff2e4e) : Colors.white,
+                        color: selectState == 2 ? Color(0xffff2e4e) : Colors.white,
                         img: selectState == 2 ? PPString.five : PPString.four,
                         title: '左右翻页',
                         onTap: () {
@@ -723,13 +644,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
 
   fixOffset(String offset, double segmet, int max) {
     if (offset == 'timeLeft') {
-      defaultTime = (controllerOffset[offset] / segmet).toInt() > max
-          ? max
-          : (controllerOffset[offset] / segmet).toInt();
+      defaultTime =
+          (controllerOffset[offset] / segmet).toInt() > max ? max : (controllerOffset[offset] / segmet).toInt();
     } else {
-      currenPage = (controllerOffset[offset] / segmet).toInt() > max
-          ? max
-          : (controllerOffset[offset] / segmet).toInt();
+      currenPage =
+          (controllerOffset[offset] / segmet).toInt() > max ? max : (controllerOffset[offset] / segmet).toInt();
       if (currenPage >= 0 && currenPage <= comicLength - 1) {
         comicScroll.jumpTo(index: currenPage);
       }
@@ -759,9 +678,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
       },
       onPanUpdate: (DragUpdateDetails e) {
         //用户手指滑动时，更新偏移，重新构建
-        controllerOffset[offset] = e.globalPosition.dx - leftDx < 0
-            ? 0.0
-            : e.globalPosition.dx - leftDx;
+        controllerOffset[offset] = e.globalPosition.dx - leftDx < 0 ? 0.0 : e.globalPosition.dx - leftDx;
         fixOffset(offset, segmet, max);
       },
       onPanEnd: (DragEndDetails e) {
@@ -793,8 +710,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                         width: ((box.maxWidth / max) * min).truncateToDouble(),
                         height: ScreenUtil().setWidth(6),
                         decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(ScreenUtil().setWidth(1.5)),
+                          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(1.5)),
                           color: Color(0xffff506b),
                         ),
                         child: Stack(
@@ -807,8 +723,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                                   height: ScreenUtil().setWidth(9),
                                   decoration: BoxDecoration(
                                       color: Color(0xffff2e4e),
-                                      borderRadius: BorderRadius.circular(
-                                          ScreenUtil().setWidth(4.5)),
+                                      borderRadius: BorderRadius.circular(ScreenUtil().setWidth(4.5)),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Color(0xffff2e4e),
@@ -829,10 +744,12 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
     );
   }
 
-  Widget settingBtn({Color color, String title, String img, Function onTap}) {
+  Widget settingBtn({Color? color, String? title, String? img, Function? onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: onTap,
+      onTap: (){
+        onTap?.call();
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -847,7 +764,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
             height: ScreenUtil().setWidth(9),
           ),
           Text(
-            title,
+            title!,
             style: TextStyle(color: color, fontSize: ScreenUtil().setSp(12)),
           )
         ],
@@ -855,12 +772,12 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
     );
   }
 
-  Widget comicButtom({String type, Function onTap}) {
+  Widget comicButtom({String? type, Function? onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        onTap();
-            },
+        onTap!();
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(7.5)),
         width: ScreenUtil().setWidth(45),
@@ -868,29 +785,23 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
         decoration: BoxDecoration(
             color: Color.fromRGBO(0, 0, 0, 0.7),
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(
-                    type == 'left' ? ScreenUtil().setWidth(37.5) : 10),
-                topRight: Radius.circular(
-                    type == 'left' ? 10 : ScreenUtil().setWidth(37.5)),
-                bottomLeft: Radius.circular(
-                    type == 'left' ? ScreenUtil().setWidth(37.5) : 10),
-                bottomRight: Radius.circular(
-                    type == 'left' ? 10 : ScreenUtil().setWidth(37.5)))),
+                topLeft: Radius.circular(type == 'left' ? ScreenUtil().setWidth(37.5) : 10),
+                topRight: Radius.circular(type == 'left' ? 10 : ScreenUtil().setWidth(37.5)),
+                bottomLeft: Radius.circular(type == 'left' ? ScreenUtil().setWidth(37.5) : 10),
+                bottomRight: Radius.circular(type == 'left' ? 10 : ScreenUtil().setWidth(37.5)))),
         child: Row(
           textDirection: type == 'left' ? TextDirection.ltr : TextDirection.rtl,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             PlatformAwareAssetImage(
-              url: 'assets/images/comics/' +
-                  (type == 'left' ? PPString.iconLeft : PPString.iconRight),
+              url: 'assets/images/comics/' + (type == 'left' ? PPString.iconLeft : PPString.iconRight),
               width: ScreenUtil().setWidth(12.5),
               height: ScreenUtil().setWidth(16),
               filterQuality: FilterQuality.medium,
               fit: BoxFit.contain,
             ),
             DefaultTextStyle(
-                style: TextStyle(
-                    color: Colors.white, fontSize: ScreenUtil().setSp(15)),
+                style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(15)),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -934,9 +845,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
               Container(
                   width: ScreenUtil().screenWidth * 0.7,
                   child: Text(
-                    widget.comicsInfo["title"],
-                    style: TextStyle(
-                        color: Colors.white, fontSize: ScreenUtil().setSp(21)),
+                    widget.comicsInfo!["title"],
+                    style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(21)),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ))
@@ -958,15 +868,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                   height: ScreenUtil().setWidth(15),
                   width: ScreenUtil().setWidth(15),
                   decoration: BoxDecoration(
-                      color: Color(0xffff526d),
-                      borderRadius:
-                          BorderRadius.circular(ScreenUtil().setWidth(7.5))),
+                      color: Color(0xffff526d), borderRadius: BorderRadius.circular(ScreenUtil().setWidth(7.5))),
                   child: Center(
                     child: Text(
                       '?',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: ScreenUtil().setSp(11)),
+                      style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(11)),
                     ),
                   ),
                 ),
@@ -990,15 +896,11 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
             height: ScreenUtil().statusBarHeight,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenUtil().setWidth(19),
-                horizontal: ScreenUtil().setWidth(14)),
+            padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(19), horizontal: ScreenUtil().setWidth(14)),
             child: Row(
               children: [
-                Text('共' + widget.comicsInfo["allEpisode"].toString() + '话',
-                    style: TextStyle(
-                        color: Color(0xff999999),
-                        fontSize: ScreenUtil().setSp(13))),
+                Text('共' + widget.comicsInfo!["allEpisode"].toString() + '话',
+                    style: TextStyle(color: Color(0xff999999), fontSize: ScreenUtil().setSp(13))),
               ],
             ),
           ),
@@ -1021,17 +923,12 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                     height: ScreenUtil().setWidth(32),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2.5),
-                        color: cureentIndex == e + 1
-                            ? Color(0xffff506b)
-                            : Colors.white),
+                        color: cureentIndex == e + 1 ? Color(0xffff506b) : Colors.white),
                     child: Center(
                         child: Text(
                       episodeList[e].toString(),
                       style: TextStyle(
-                          color: cureentIndex == e + 1
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: ScreenUtil().setSp(15)),
+                          color: cureentIndex == e + 1 ? Colors.white : Colors.black, fontSize: ScreenUtil().setSp(15)),
                     )),
                   ),
                 );
@@ -1045,14 +942,14 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
 
   Widget transitionWidget(
       {int time = 200,
-      double height,
-      double opacity,
-      double width,
-      Widget child,
-      double left,
-      double right,
-      double bottom,
-      double top}) {
+      double? height,
+      double? opacity,
+      double? width,
+      Widget? child,
+      double? left,
+      double? right,
+      double? bottom,
+      double? top}) {
     return Container(
       height: height,
       width: width,
@@ -1065,7 +962,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
               bottom: bottom,
               top: top,
               child: AnimatedOpacity(
-                opacity: opacity,
+                opacity: opacity!,
                 duration: Duration(milliseconds: time),
                 child: child,
               ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -8,7 +8,7 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 
 class InviteRecored extends StatefulWidget {
-  InviteRecored({Key key}) : super(key: key);
+  InviteRecored({Key? key}) : super(key: key);
 
   final Color baseColor = Color(0xff333333);
 
@@ -37,7 +37,7 @@ class _InviteRecoredState extends State<InviteRecored> {
     var result = await getListInvition(page: currentPage, limit: limit);
     if (result.status == 1) {
       isLoading = false;
-      List resData = result.data.list == null ? [] : result.data.list;
+      List resData = result.data!.list ?? [];
 
       if (currentPage == 1) {
         list = resData;
@@ -108,8 +108,8 @@ class _InviteRecoredState extends State<InviteRecored> {
 }
 
 class RecoredItem extends StatelessWidget {
-  final ListElement item;
-  const RecoredItem({Key key, this.item}) : super(key: key);
+  final ListElement? item;
+  const RecoredItem({Key? key, this.item}) : super(key: key);
 
   // String handleTime(time) {
   //   getTime(int _num) {
@@ -138,23 +138,23 @@ class RecoredItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.nickname,
+                    item!.nickname!,
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(16),
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: ScreenUtil().setHeight(8)),
-                  Text(item.createdAt,
+                  Text(item!.createdAt!,
                       style: TextStyle(
                         color: Color(0xff979797),
                         fontSize: ScreenUtil().setSp(14),
                       ))
                 ],
               ),
-              Text(item.register,
+              Text(item!.register!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: item.register == "未注册"
+                    color: item!.register == "未注册"
                         ? DefaultStyle.themeColor
                         : Color(0xffFE155B),
                     fontSize: ScreenUtil().setSp(14),
@@ -187,14 +187,14 @@ class RecoredItem extends StatelessWidget {
 // }
 
 class RecoredHeader extends StatelessWidget {
-  final String title;
-  const RecoredHeader({Key key, this.title}) : super(key: key);
+  final String? title;
+  const RecoredHeader({Key? key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Text(
-        title,
+        title!,
         textAlign: TextAlign.center,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

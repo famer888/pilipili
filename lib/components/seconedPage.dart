@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -12,9 +12,9 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class SeconedPage extends StatefulWidget {
-  SeconedPage({Key key, this.title, this.id}) : super(key: key);
-  final String title;
-  final int id;
+  SeconedPage({Key? key, this.title, this.id}) : super(key: key);
+  final String? title;
+  final int? id;
   @override
   State<SeconedPage> createState() => _SeconedPageState();
 }
@@ -26,14 +26,14 @@ class _SeconedPageState extends State<SeconedPage> {
   int limit = 10;
   bool networkErr = false;
   bool isShow = false;
-  ConstructModel cm_data;
+  late ConstructModel cm_data;
   void getPageData() async {
     getConstructById(id: widget.id, page: page, limit: limit).then((res) {
-      isAll = res.elements.length < limit;
+      isAll = res.elements!.length < limit;
       if (page == 1) {
         cm_data = res;
       } else {
-        cm_data.elements.addAll(res.elements);
+        cm_data.elements!.addAll(res.elements!);
       }
     }).whenComplete(() {
       loading = false;
@@ -103,7 +103,7 @@ class _SeconedPageState extends State<SeconedPage> {
                   child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: DefaultStyle.pagePadding),
-                  child: cm_data.elements.isEmpty
+                  child: cm_data.elements!.isEmpty
                       ? PageStatus.noData()
                       : PullRefreshList(
                           onRefresh: () {
@@ -125,12 +125,12 @@ class _SeconedPageState extends State<SeconedPage> {
                                 bottom: ScreenUtil().bottomBarHeight +
                                     ScreenUtil().setWidth(20),
                               ),
-                              itemCount: cm_data.elements.length,
+                              itemCount: cm_data.elements!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 List itemCard =
-                                    cm_data.elements[index]['value'] == null
+                                    cm_data.elements![index]['value'] == null
                                         ? []
-                                        : cm_data.elements[index]['value'];
+                                        : cm_data.elements![index]['value'];
                                 return itemCard.isEmpty
                                     ? Container()
                                     : renderItem(itemCard[0]);

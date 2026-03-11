@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 AppCenterModel appCenterModelFromJson(String str) => AppCenterModel.fromJson(json.decode(str));
 
@@ -13,11 +13,11 @@ class AppCenterModel {
     this.isVip,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory AppCenterModel.fromJson(Map<String, dynamic> json) => AppCenterModel(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -28,7 +28,7 @@ class AppCenterModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -42,8 +42,8 @@ class Data {
     this.apps,
   });
 
-  List banner;
-  List apps;
+  List? banner;
+  List? apps;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         banner: json["banner"] ?? [],
@@ -67,13 +67,13 @@ class App {
     this.createdAt,
   });
 
-  int id;
-  String title;
-  String description;
-  String imgUrl;
-  String linkUrl;
-  int clicked;
-  CreatedAt createdAt;
+  int? id;
+  String? title;
+  String? description;
+  String? imgUrl;
+  String? linkUrl;
+  int? clicked;
+  CreatedAt? createdAt;
 
   factory App.fromJson(Map<String, dynamic> json) => App(
         id: json["id"] == null ? null : json["id"],
@@ -119,21 +119,21 @@ class Banner {
     this.imgFullUrl,
   });
 
-  int id;
-  String title;
-  String description;
-  String imgUrl;
-  String url;
-  int position;
-  String androidDownUrl;
-  String iosDownUrl;
-  int type;
-  int status;
-  int oauthType;
-  String mvM3U8;
-  String channel;
-  DateTime createdAt;
-  String imgFullUrl;
+  int? id;
+  String? title;
+  String? description;
+  String? imgUrl;
+  String? url;
+  int? position;
+  String? androidDownUrl;
+  String? iosDownUrl;
+  int? type;
+  int? status;
+  int? oauthType;
+  String? mvM3U8;
+  String? channel;
+  DateTime? createdAt;
+  String? imgFullUrl;
 
   factory Banner.fromJson(Map<String, dynamic> json) => Banner(
         id: json["id"] == null ? null : json["id"],
@@ -167,14 +167,14 @@ class Banner {
         "oauth_type": oauthType == null ? null : oauthType,
         "mv_m3u8": mvM3U8 == null ? null : mvM3U8,
         "channel": channel == null ? null : channel,
-        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "img_full_url": imgFullUrl == null ? null : imgFullUrl,
       };
 }
 
 class EnumValues<T> {
   Map<String, T> map;
-  Map<T, String> reverseMap;
+  late Map<T, String> reverseMap;
 
   EnumValues(this.map);
 

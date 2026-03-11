@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/foundation.dart';
@@ -22,8 +22,9 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class NovelReader extends StatefulWidget {
-  const NovelReader({Key key, this.id}) : super(key: key);
-  final int id;
+  const NovelReader({Key? key, this.id}) : super(key: key);
+  final int? id;
+
   @override
   State<NovelReader> createState() => _NovelReaderState();
 }
@@ -32,7 +33,7 @@ class _NovelReaderState extends State<NovelReader> {
   ValueNotifier<bool> isShow = ValueNotifier(true);
   ValueNotifier<double> currentSliderValue = ValueNotifier(14);
   ValueNotifier<int> themeStyle = ValueNotifier(0);
-  ScrollController controller;
+  late ScrollController controller;
   List themeList = [
     {
       'borderColor': Color(0xffFF84A9),
@@ -68,78 +69,68 @@ class _NovelReaderState extends State<NovelReader> {
   List<String> content = [];
   Map data = {};
   bool loading = true;
-  Map novelLocal;
-  Timer _debounce;
+  late Map novelLocal;
+  late Timer _debounce;
   ValueNotifier<bool> isFavorites = ValueNotifier(false);
   bool isTap = false;
+
   @override
   void initState() {
     super.initState();
 
     //文章主题初始化
-    Map novelTheme = AppGlobal.appBox.get('novel_theme');
+    Map novelTheme = AppGlobal.appBox!.get('novel_theme');
     currentSliderValue.value = novelTheme['fontSize'];
     themeStyle.value = novelTheme['themeStyle'];
-      initContent(widget.id);
+    initContent(widget.id!);
   }
 
   changeOffset() {
     _themeChanged(() {
       Map currentInfo = novelLocal;
       currentInfo[data['novel_id']]['ofsset'][data['id']] = controller.offset;
-      AppGlobal.appBox.put('novel_local', currentInfo);
+      AppGlobal.appBox!.put('novel_local', currentInfo);
     }, 500);
   }
 
   toChaoter(Map item) {
     if (item['payment_type'] == 'free') {
       //免费
-      context.push('/novelReader/${item['id']}',
-          replace: true);
+      context.pushReplacement('/novelReader/${item['id']}');
     } else if (item['payment_type'] == 'vip') {
       //vip
-      bool isView = Privilege.isAllowed(
-          context, RESOURCE_TYPE_STORY, PRIVILEGE_TYPE_VIEW);
+      bool isView = Privilege.isAllowed(context, RESOURCE_TYPE_STORY, PRIVILEGE_TYPE_VIEW);
       if (isView) {
-        context.push('/novelReader/${item['id']}',
-            replace: true);
+        context.pushReplacement('/novelReader/${item['id']}');
       } else {
-        YyShowDialog.showdialog(context,
-            title: '温馨提示', btnText: '开通会员', cancelText: '取消', callBack: () {
+        YyShowDialog.showdialog(context, title: '温馨提示', btnText: '开通会员', cancelText: '取消', callBack: () {
           context.push('/vip');
         }, content: (setDialogState) {
           return DefaultTextStyle(
-              style: TextStyle(
-                  color: Color(0xff646464),
-                  fontSize: ScreenUtil().setSp(16),
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
               child: Text('您还没有权限，请升级会员权限'));
         });
       }
     } else {
       //金币
-      int _coin=double.parse(item['coins'].toString()).toInt();
-      if (_coin==0||item['has_permission']!=null&&item['has_permission']) {
-        context.push('/novelReader/${item['id']}',
-            replace: true);
+      int _coin = double.parse(item['coins'].toString()).toInt();
+      if (_coin == 0 || item['has_permission'] != null && item['has_permission']) {
+        context.pushReplacement('/novelReader/${item['id']}');
       } else {
-        int money =
-            Provider.of<HomeConfig>(context, listen: false).member.money;
+        int money = Provider.of<HomeConfig>(context, listen: false).member.money!;
         bool isInsufficient = money < _coin;
         YyShowDialog.showdialog(context,
             title: '温馨提示',
             btnText: isInsufficient ? '余额不足,去充值' : '立即购买',
             cancelText: isInsufficient ? null : '取消', callBack: () {
           if (isInsufficient) {
-            context.push('/novelReader/${item['id']}',
-                replace: true);
+            context.pushReplacement('/novelReader/${item['id']}');
           } else {
             PageStatus.showLoading();
             novelBuy(data['novel_id']).then((res) async {
               if (res['status'] != 0) {
                 CommonUtils.showText('购买成功');
-                context.push('/novelReader/${item['id']}',
-                    replace: true);
+                context.pushReplacement('/novelReader/${item['id']}');
               } else {
                 CommonUtils.showText(res['msg'] ?? '系统错误～');
               }
@@ -149,10 +140,7 @@ class _NovelReaderState extends State<NovelReader> {
           }
         }, content: (setDialogState) {
           return DefaultTextStyle(
-              style: TextStyle(
-                  color: Color(0xff646464),
-                  fontSize: ScreenUtil().setSp(16),
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
               child: Text('花費${_coin}皮哩币观看完整小說'));
         });
       }
@@ -169,7 +157,7 @@ class _NovelReaderState extends State<NovelReader> {
         loading = false;
 
         //滚动初始化
-        novelLocal = AppGlobal.appBox.get('novel_local');
+        novelLocal = AppGlobal.appBox!.get('novel_local');
         Map currentInfo = novelLocal;
         if (currentInfo[data['novel_id']] == null) {
           currentInfo[data['novel_id']] = {
@@ -179,11 +167,9 @@ class _NovelReaderState extends State<NovelReader> {
         } else {
           currentInfo[data['novel_id']]['chapter'] = data['id'];
         }
-        AppGlobal.appBox.put('novel_local', currentInfo);
-        controller = ScrollController(
-            initialScrollOffset:
-                currentInfo[data['novel_id']]['ofsset'][data['id']] ?? 0);
-            } else {
+        AppGlobal.appBox!.put('novel_local', currentInfo);
+        controller = ScrollController(initialScrollOffset: currentInfo[data['novel_id']]['ofsset'][data['id']] ?? 0);
+      } else {
         CommonUtils.showText(res['msg'] ?? '系统错误～');
       }
       setState(() {});
@@ -262,48 +248,40 @@ class _NovelReaderState extends State<NovelReader> {
                               isShow: true,
                               data: {'novelId': data['novel_id']},
                               nullText: '还没有评论哦～',
-                              itemBuild: (context, index, _data, page, limit,
-                                  getListData) {
+                              itemBuild: (context, index, _data, page, limit, getListData) {
                                 return GestureDetector(
                                   onTap: () {
                                     if (Privilege.isAllowed(
-                                        context,
-                                        RESOURCE_TYPE_SHORT_VIDEO,
-                                        PRIVILEGE_TYPE_COMMENT)) {
-                                      InputDialog.show(context, '请输入您的影评～')
-                                          .then((value) {
-                                        if (value != '') {
-                                          novelComment(
-                                                  novelId: data['novel_id'],
-                                                  content: value,
-                                                  parentId: _data['id'])
-                                              .then((res) {
-                                            if (res['status'] != 0) {
-                                              CommonUtils.showText(
-                                                  '影评发布成功,请刷新查看');
-                                            } else {
-                                              CommonUtils.showText(res['msg']);
-                                            }
-                                          });
-                                        } else {
-                                          CommonUtils.showText('请输入您的影评');
-                                        }
+                                        context, RESOURCE_TYPE_SHORT_VIDEO, PRIVILEGE_TYPE_COMMENT)) {
+                                      InputDialog.show(context, '请输入您的影评～').then((innerFuture) {
+                                        innerFuture.then((value) {
+                                          if (value != '') {
+                                            novelComment(
+                                                    novelId: data['novel_id'], content: value, parentId: _data['id'])
+                                                .then((res) {
+                                              if (res['status'] != 0) {
+                                                CommonUtils.showText('影评发布成功,请刷新查看');
+                                              } else {
+                                                CommonUtils.showText(res['msg']);
+                                              }
+                                            });
+                                          } else {
+                                            CommonUtils.showText('请输入您的影评');
+                                          }
+                                        });
                                       });
                                     } else {
-                                      YyShowDialog.showdialog(context,
-                                          btnText: '升级VIP',
-                                          cancelText: '取消', callBack: () {
+                                      YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消',
+                                          callBack: () {
                                         context.push('/vip');
                                       }, content: (setDialogState) {
                                         return DefaultTextStyle(
                                             style: TextStyle(
                                                 color: Color(0xff646464),
-                                                fontSize:
-                                                    ScreenUtil().setSp(16),
+                                                fontSize: ScreenUtil().setSp(16),
                                                 fontWeight: FontWeight.bold),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text('升级VIP即可发布影评哦～'),
                                               ],
@@ -319,30 +297,24 @@ class _NovelReaderState extends State<NovelReader> {
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          if (Privilege.isAllowed(
-                              context,
-                              RESOURCE_TYPE_SHORT_VIDEO,
-                              PRIVILEGE_TYPE_COMMENT)) {
-                            InputDialog.show(context, '请输入您的影评～').then((value) {
-                              if (value != '') {
-                                novelComment(
-                                        novelId: data['novel_id'],
-                                        content: value)
-                                    .then((res) {
-                                  if (res['status'] != 0) {
-                                    CommonUtils.showText('影评发布成功,请刷新查看');
-                                  } else {
-                                    CommonUtils.showText(res['msg']);
-                                  }
-                                });
-                              } else {
-                                CommonUtils.showText('请输入您的影评');
-                              }
+                          if (Privilege.isAllowed(context, RESOURCE_TYPE_SHORT_VIDEO, PRIVILEGE_TYPE_COMMENT)) {
+                            InputDialog.show(context, '请输入您的影评～').then((innerFuture) {
+                              innerFuture.then((value) {
+                                if (value != '') {
+                                  novelComment(novelId: data['novel_id'], content: value).then((res) {
+                                    if (res['status'] != 0) {
+                                      CommonUtils.showText('影评发布成功,请刷新查看');
+                                    } else {
+                                      CommonUtils.showText(res['msg']);
+                                    }
+                                  });
+                                } else {
+                                  CommonUtils.showText('请输入您的影评');
+                                }
+                              });
                             });
                           } else {
-                            YyShowDialog.showdialog(context,
-                                btnText: '升级VIP',
-                                cancelText: '取消', callBack: () {
+                            YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消', callBack: () {
                               context.push('/vip');
                             }, content: (setDialogState) {
                               return DefaultTextStyle(
@@ -351,8 +323,7 @@ class _NovelReaderState extends State<NovelReader> {
                                       fontSize: ScreenUtil().setSp(16),
                                       fontWeight: FontWeight.bold),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text('升级VIP即可发布影评哦～'),
                                     ],
@@ -362,28 +333,19 @@ class _NovelReaderState extends State<NovelReader> {
                         },
                         child: Container(
                           color: Colors.white,
-                          margin: EdgeInsets.only(
-                              bottom:
-                                  kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                          margin: EdgeInsets.only(bottom: kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                           padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setWidth(12),
-                              horizontal: DefaultStyle.pagePadding),
+                              vertical: ScreenUtil().setWidth(12), horizontal: DefaultStyle.pagePadding),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: ScreenUtil().setWidth(16)),
+                            padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(16)),
                             height: ScreenUtil().setWidth(36),
                             child: Row(
                               children: [
                                 Text(
-                                  Privilege.isAllowed(
-                                          context,
-                                          RESOURCE_TYPE_STORY,
-                                          PRIVILEGE_TYPE_COMMENT)
+                                  Privilege.isAllowed(context, RESOURCE_TYPE_STORY, PRIVILEGE_TYPE_COMMENT)
                                       ? PPString.vipCommentHint
                                       : PPString.noVipCommentHint,
-                                  style: TextStyle(
-                                      color: Color(0xff999999),
-                                      fontSize: ScreenUtil().setSp(14)),
+                                  style: TextStyle(color: Color(0xff999999), fontSize: ScreenUtil().setSp(14)),
                                 )
                               ],
                             ),
@@ -432,9 +394,7 @@ class _NovelReaderState extends State<NovelReader> {
         decoration: BoxDecoration(
             color: item['bacgroundColor'],
             borderRadius: BorderRadius.circular(5.w),
-            border: Border.all(
-                width: isActive ? 2.w : 1.w,
-                color: isActive ? Color(0xffFF84A9) : item['borderColor'])),
+            border: Border.all(width: isActive ? 2.w : 1.w, color: isActive ? Color(0xffFF84A9) : item['borderColor'])),
         alignment: Alignment.center,
         child: Image.asset(
           'assets/images/2023/${item['icon']}.png',
@@ -503,15 +463,11 @@ class _NovelReaderState extends State<NovelReader> {
                                             itemCount: content.length,
                                             itemBuilder: (context, index) {
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 6.w),
+                                                padding: EdgeInsets.symmetric(vertical: 6.w),
                                                 child: Text(content[index]),
                                               );
                                             }),
-                                        style: TextStyle(
-                                            color: themeList[_value]
-                                                ['fontColor'],
-                                            fontSize: _size.sp),
+                                        style: TextStyle(color: themeList[_value]['fontColor'], fontSize: _size.sp),
                                         duration: Duration(milliseconds: 500));
                                   });
                             })),
@@ -530,64 +486,46 @@ class _NovelReaderState extends State<NovelReader> {
                       return AnimatedSizeAndFade(
                         child: show
                             ? Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Color(0xffFF84A9)
-                                              .withOpacity(0.2),
-                                          offset: Offset(0, -1),
-                                          blurRadius: 5,
-                                          spreadRadius: 0)
-                                    ]),
-                                padding: EdgeInsets.fromLTRB(12.w, 10.w, 12.w,
-                                    24.w + ScreenUtil().bottomBarHeight),
+                                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                                  BoxShadow(
+                                      color: Color(0xffFF84A9).withOpacity(0.2),
+                                      offset: Offset(0, -1),
+                                      blurRadius: 5,
+                                      spreadRadius: 0)
+                                ]),
+                                padding: EdgeInsets.fromLTRB(12.w, 10.w, 12.w, 24.w + ScreenUtil().bottomBarHeight),
                                 child: Column(
                                   children: [
                                     DefaultTextStyle(
                                         style: TextStyle(
-                                            color: Color(0xffFF5B8C),
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w700),
+                                            color: Color(0xffFF5B8C), fontSize: 14.sp, fontWeight: FontWeight.w700),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             GestureDetector(
                                               onTap: () {
-                                                if (data['pre_chapter'] !=
-                                                        null &&
-                                                    data['pre_chapter']['id'] !=
-                                                        null) {
-                                                  toChaoter(
-                                                      data['pre_chapter']);
+                                                if (data['pre_chapter'] != null && data['pre_chapter']['id'] != null) {
+                                                  toChaoter(data['pre_chapter']);
                                                 } else {
-                                                  CommonUtils.showText(
-                                                      '没有上一章啦～');
+                                                  CommonUtils.showText('没有上一章啦～');
                                                 }
                                               },
                                               child: Text('上一章'),
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                context.push(
-                                                    '/chapterList/${data['novel_id']}');
+                                                context.push('/chapterList/${data['novel_id']}');
                                               },
                                               child: Text('目录'),
                                             ),
                                             GestureDetector(
                                                 onTap: () {
                                                   print(data['next_chapter']);
-                                                  if (data['next_chapter'] !=
-                                                          null &&
-                                                      data['next_chapter']
-                                                              ['id'] !=
-                                                          null) {
-                                                    toChaoter(
-                                                        data['next_chapter']);
+                                                  if (data['next_chapter'] != null &&
+                                                      data['next_chapter']['id'] != null) {
+                                                    toChaoter(data['next_chapter']);
                                                   } else {
-                                                    CommonUtils.showText(
-                                                        '没有下一章啦～');
+                                                    CommonUtils.showText('没有下一章啦～');
                                                   }
                                                 },
                                                 child: Text('下一章')),
@@ -611,16 +549,11 @@ class _NovelReaderState extends State<NovelReader> {
                                             }
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(
-                                                left: 16.w,
-                                                top: 5.w,
-                                                bottom: 5.w),
+                                            margin: EdgeInsets.only(left: 16.w, top: 5.w, bottom: 5.w),
                                             height: 2.w,
                                             width: 20.w,
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.w),
-                                                color: Color(0xffFF84A9)),
+                                                borderRadius: BorderRadius.circular(2.w), color: Color(0xffFF84A9)),
                                           ),
                                         ),
                                         Expanded(
@@ -628,34 +561,25 @@ class _NovelReaderState extends State<NovelReader> {
                                           valueListenable: currentSliderValue,
                                           builder: (context, value, child) {
                                             return SliderTheme(
-                                                data: SliderTheme.of(context)
-                                                    .copyWith(
+                                                data: SliderTheme.of(context).copyWith(
                                                   // 修改滑块的大小
-                                                  thumbShape:
-                                                      RoundSliderThumbShape(
+                                                  thumbShape: RoundSliderThumbShape(
                                                     enabledThumbRadius: 7.w,
                                                   ),
                                                 ),
                                                 child: Slider(
                                                   value: value,
                                                   thumbColor: Color(0xffFF84A9),
-                                                  inactiveColor:
-                                                      Color(0xffE0E0E0),
-                                                  activeColor:
-                                                      Color(0xffFF84A9),
+                                                  inactiveColor: Color(0xffE0E0E0),
+                                                  activeColor: Color(0xffFF84A9),
                                                   min: 10,
                                                   max: 30,
                                                   onChanged: (double value) {
-                                                    currentSliderValue.value =
-                                                        value;
+                                                    currentSliderValue.value = value;
                                                     _themeChanged(() {
-                                                      AppGlobal.appBox.put(
-                                                          'novel_theme', {
-                                                        'fontSize':
-                                                            currentSliderValue
-                                                                .value,
-                                                        'themeStyle':
-                                                            themeStyle.value
+                                                      AppGlobal.appBox!.put('novel_theme', {
+                                                        'fontSize': currentSliderValue.value,
+                                                        'themeStyle': themeStyle.value
                                                       });
                                                     }, 1000);
                                                   },
@@ -680,10 +604,7 @@ class _NovelReaderState extends State<NovelReader> {
                                                 height: 2.w,
                                                 width: 20.w,
                                                 decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            2.w),
-                                                    color: Color(0xffFF84A9)),
+                                                    borderRadius: BorderRadius.circular(2.w), color: Color(0xffFF84A9)),
                                               ),
                                             )),
                                             Positioned.fill(
@@ -692,10 +613,7 @@ class _NovelReaderState extends State<NovelReader> {
                                                 height: 20.w,
                                                 width: 2.w,
                                                 decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            2.w),
-                                                    color: Color(0xffFF84A9)),
+                                                    borderRadius: BorderRadius.circular(2.w), color: Color(0xffFF84A9)),
                                               ),
                                             ))
                                           ]),
@@ -710,34 +628,21 @@ class _NovelReaderState extends State<NovelReader> {
                                         Expanded(
                                             child: ValueListenableBuilder(
                                                 valueListenable: themeStyle,
-                                                builder:
-                                                    (context, value, child) {
+                                                builder: (context, value, child) {
                                                   return Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: themeList
-                                                        .asMap()
-                                                        .keys
-                                                        .map((e) {
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: themeList.asMap().keys.map((e) {
                                                       return GestureDetector(
                                                         onTap: () {
                                                           themeStyle.value = e;
                                                           _themeChanged(() {
-                                                            AppGlobal.appBox.put(
-                                                                'novel_theme', {
-                                                              'fontSize':
-                                                                  currentSliderValue
-                                                                      .value,
-                                                              'themeStyle':
-                                                                  themeStyle
-                                                                      .value
+                                                            AppGlobal.appBox!.put('novel_theme', {
+                                                              'fontSize': currentSliderValue.value,
+                                                              'themeStyle': themeStyle.value
                                                             });
                                                           }, 1000);
                                                         },
-                                                        child: _fontBgItem(
-                                                            themeList[e],
-                                                            value == e),
+                                                        child: _fontBgItem(themeList[e], value == e),
                                                       );
                                                     }).toList(),
                                                   );
@@ -750,8 +655,7 @@ class _NovelReaderState extends State<NovelReader> {
                                             builder: (context, _value, child) {
                                               return GestureDetector(
                                                 onTap: _useFavorite,
-                                                behavior:
-                                                    HitTestBehavior.translucent,
+                                                behavior: HitTestBehavior.translucent,
                                                 child: Column(
                                                   children: [
                                                     Image.asset(
@@ -765,11 +669,9 @@ class _NovelReaderState extends State<NovelReader> {
                                                     Text(
                                                       _value ? '已收藏' : '收藏',
                                                       style: TextStyle(
-                                                          color:
-                                                              Color(0xffFF84A9),
+                                                          color: Color(0xffFF84A9),
                                                           fontSize: 14.sp,
-                                                          fontWeight:
-                                                              FontWeight.w700),
+                                                          fontWeight: FontWeight.w700),
                                                     )
                                                   ],
                                                 ),
@@ -796,8 +698,7 @@ class _NovelReaderState extends State<NovelReader> {
                                                 style: TextStyle(
                                                     color: Color(0xffFF84A9),
                                                     fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                                    fontWeight: FontWeight.w700),
                                               )
                                             ],
                                           ),

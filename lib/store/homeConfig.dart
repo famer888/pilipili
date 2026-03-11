@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/model/userinfo.dart';
 import 'package:provider/provider.dart';
@@ -6,24 +6,24 @@ import 'package:pilipili/model/homedata.dart';
 import 'package:pilipili/model/systemnotice.dart';
 
 class GetConfig {
-  static String imagePath;
+  static String? imagePath;
 }
 
 class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
-  VersionMsg _versionMsg;
-  Ads _ads;
-  Notice _notice;
-  Config _config;
-  Member _member;
-  UserInfoData _userinfo;
-  bool _darkPrivilege;
-  String _darkprivilegeTips;
-  SystemNotice _systemNotice;
-  Map _privilege;
-  int _postMoney;
-  int _allowPublishPost;
-  String _noPermissionPublishPostTips;
-  String _message;
+  late VersionMsg _versionMsg;
+  late Ads _ads;
+  late Notice _notice;
+  late Config _config;
+  late Member _member;
+  late UserInfoData _userinfo;
+  late bool _darkPrivilege;
+  late String _darkprivilegeTips;
+  late SystemNotice _systemNotice;
+  late Map _privilege;
+  late int _postMoney;
+  late int _allowPublishPost;
+  late String _noPermissionPublishPostTips;
+  late String _message;
 
   SystemNotice get systemnotice => _systemNotice;
   Member get member => _member;

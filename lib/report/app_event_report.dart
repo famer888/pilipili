@@ -1,4 +1,4 @@
-import 'package:device_info_plus/device_info_plus.dart';
+﻿import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pilipili/global.dart';
@@ -16,7 +16,7 @@ class AppEventReport {
   static int reposrtLength = 1;
   static String apiPath = '';
   List reportedAdIds = [];
-  ReportConfig reportConfig; //上报配置
+  late ReportConfig reportConfig; //上报配置
   /// 事件缓存（批量）
   List<Map<String, dynamic>> eventList = [];
 
@@ -24,9 +24,9 @@ class AppEventReport {
   int eventLength = 10;
 
   bool isProd = true; //是否正式服
-  VideoAnalyticsTracker _tracker;
+  late VideoAnalyticsTracker _tracker;
   Map videoInfo = {}; //视频信息
-  Dio _reportDio;
+  late Dio _reportDio;
   bool isVip = false;
   bool isInlit = false;
 
@@ -60,12 +60,12 @@ class AppEventReport {
 
   //-----------------视频相关操作---start------------------
   initVideoInfo({
-    String id,
-    String title,
-    String typeId,
-    String typeName,
-    String tagKey,
-    String tagName,
+    String? id,
+    String? title,
+    String? typeId,
+    String? typeName,
+    String? tagKey,
+    String? tagName,
   }) {
     videoInfo = {
       'video_id': id,
@@ -97,23 +97,23 @@ class AppEventReport {
   //-----------------视频相关操作---end------------------
 
   Future<void> init(
-      {String channelStr, //渠道码
-      String appIdStr, //应用id
-      String uidStr, //用户id
-      String sidStr, //用户uuid
-      bool vip, //用户是否是会员
-      String api, //api地址（prod 时传批量上报路径）
-      ReportConfig config}) async {
+      {String? channelStr, //渠道码
+      String? appIdStr, //应用id
+      String? uidStr, //用户id
+      String? sidStr, //用户uuid
+      bool? vip, //用户是否是会员
+      String? api, //api地址（prod 时传批量上报路径）
+      ReportConfig? config}) async {
     if (isInlit) return;
     isInlit = true;
-    reportConfig = config;
-    channel = channelStr;
-    uid = uidStr;
-    apiPath = api;
-    appId = appIdStr;
-    sid = sidStr;
+    reportConfig = config!;
+    channel = channelStr!;
+    uid = uidStr!;
+    apiPath = api!;
+    appId = appIdStr!;
+    sid = sidStr!;
     deviceId = sid;
-    isVip = vip;
+    isVip = vip!;
 
     if (kIsWeb) {
       userAgent = html.window.navigator.userAgent;
@@ -128,8 +128,8 @@ class AppEventReport {
 
     _reportDio = Dio(
       BaseOptions(
-        connectTimeout: 60 * 1000,
-        receiveTimeout: 300 * 1000,
+        connectTimeout: Duration(milliseconds: 60 * 1000),
+        receiveTimeout: Duration(milliseconds: 300 * 1000),
         validateStatus: (status) {
           return status != null && status >= 200 && status < 300;
         },
@@ -149,8 +149,8 @@ class AppEventReport {
                 final String eventName = ev['event'] ?? '';
                 final int ts = ev['client_ts'] ?? 0;
                 Map<String, dynamic> base = {
-                  'device_id': AppGlobal.appinfo['device_id'],
-                  'trace_id': AppGlobal.appinfo['trace_id'],
+                  'device_id': AppGlobal.appinfo!['device_id'],
+                  'trace_id': AppGlobal.appinfo!['trace_id'],
                   'event': eventName,
                   'channel': channel,
                   'sid': sid,
@@ -166,7 +166,7 @@ class AppEventReport {
                 // payload 放到字段里
                 if (ev.containsKey('payload')) {
                   base['payload'] = ev['payload'];
-                  base['payload']['trace_id'] = AppGlobal.appinfo['trace_id'];
+                  base['payload']['trace_id'] = AppGlobal.appinfo!['trace_id'];
                 }
 
                 final List<String> md5List = [];
@@ -206,9 +206,9 @@ class AppEventReport {
             final dynamic data = options.data;
             // CommonUtils.debugPrint('上报 加密前 参数 = ${options.data}');
             options.data = PlatformAwareCrypto.encryptReportParams(data,
-                keyString: reportConfig.encryptionKey,
-                ivString: reportConfig.encryptionIv,
-                signKey: reportConfig.signKey);
+                keyString: reportConfig.encryptionKey!,
+                ivString: reportConfig.encryptionIv!,
+                signKey: reportConfig.signKey!);
           }
           handler.next(options);
         }),

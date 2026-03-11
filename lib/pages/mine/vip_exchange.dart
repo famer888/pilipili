@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -12,7 +12,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 
 class VipExchangePage extends StatefulWidget {
-  const VipExchangePage({Key key}) : super(key: key);
+  const VipExchangePage({Key? key}) : super(key: key);
 
   @override
   State<VipExchangePage> createState() => _VipExchangePageState();

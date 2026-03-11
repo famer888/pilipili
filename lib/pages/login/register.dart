@@ -1,4 +1,4 @@
-import 'package:country_code_picker/country_code_picker.dart';
+﻿import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -12,8 +12,8 @@ import 'package:pilipili/utils/pp_string.dart';
 import 'login_box.dart';
 
 class Register extends StatefulWidget {
-  Register({Key key, this.type}) : super(key: key);
-  final int type;
+  Register({Key? key, this.type}) : super(key: key);
+  final int? type;
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -23,11 +23,11 @@ class _RegisterState extends State<Register> {
 
   int loginType = 1; //0 手机 1 账号密码
   int retrieveStatus = 0; //0 输入找回账号  1开始找回
-  String retrieveName;
+  late String retrieveName;
   @override
   void initState() {
     super.initState();
-    currentIndex = widget.type;
+    currentIndex = widget.type!;
     setState(() {});
     }
 
@@ -38,7 +38,7 @@ class _RegisterState extends State<Register> {
     final cpassword = TextEditingController();
     final phone = TextEditingController();
     final phoneCode = TextEditingController();
-    Function startTime;
+    Function? startTime;
     String phonePrefix = '86';
     clearInput() {
       username.clear();
@@ -112,7 +112,7 @@ class _RegisterState extends State<Register> {
               CommonUtils.showText('注册成功,快去登录吧～');
               clearInput();
             } else {
-              CommonUtils.showText(res.msg);
+              CommonUtils.showText(res.msg!);
             }
           }).whenComplete(() {
             PageStatus.closeLoading();
@@ -146,7 +146,7 @@ class _RegisterState extends State<Register> {
               CommonUtils.showText('注册成功,快去登录吧～');
               clearInput();
             } else {
-              CommonUtils.showText(res.msg);
+              CommonUtils.showText(res.msg!);
             }
           }).whenComplete(() {
             PageStatus.closeLoading();
@@ -172,10 +172,10 @@ class _RegisterState extends State<Register> {
                 onSendCode: () {
                   sendPhone(phone: phone.text, phonePrefix: phonePrefix, type: 5).then((res) {
                     if (res.status == 1) {
-                      startTime();
+                      startTime?.call();
                       CommonUtils.showText('发送成功～');
                                         } else {
-                      CommonUtils.showText(res.msg);
+                      CommonUtils.showText(res.msg!);
                     }
                   });
                 },
@@ -221,7 +221,7 @@ class _RegisterState extends State<Register> {
     final password = TextEditingController();
     final cpassword = TextEditingController();
 
-    Function startTime;
+    Function? startTime;
     String code = '86';
     clearinput() {
       acount.clear();
@@ -296,7 +296,7 @@ class _RegisterState extends State<Register> {
               CommonUtils.showText('密码已成功找回～');
               clearinput();
             } else {
-              CommonUtils.showText(res.msg);
+              CommonUtils.showText(res.msg!);
             }
           }).whenComplete(() {
             PageStatus.closeLoading();
@@ -324,10 +324,10 @@ class _RegisterState extends State<Register> {
                 onSendCode: () {
                   sendPhone(phone: phone.text, phonePrefix: code, type: 3).then((res) {
                     if (res.status == 1) {
-                      startTime();
+                      startTime?.call();
                       CommonUtils.showText('发送成功～');
                                         } else {
-                      CommonUtils.showText(res.msg);
+                      CommonUtils.showText(res.msg!);
                     }
                   });
                 },

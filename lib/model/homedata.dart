@@ -18,12 +18,12 @@ class HomeData {
     this.line,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
-  String line;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
+  String? line;
 
   factory HomeData.fromJson(Map<String, dynamic> json) => HomeData(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -35,7 +35,7 @@ class HomeData {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -61,20 +61,20 @@ class Data {
       this.buryPoint,
       this.maintainTipsStr});
 
-  VersionMsg versionMsg;
-  int timestamp;
-  Notice notice;
-  Config config;
-  Ads ads;
-  Member member;
-  bool darkPrivilege;
-  String darkprivilegeTips;
-  int allowPublishPost;
-  String noPermissionPublishPostTips;
-  String click_app_id;
-  String click_transit_path;
-  ReportConfig buryPoint;
-  String maintainTipsStr;
+  VersionMsg? versionMsg;
+  int? timestamp;
+  Notice? notice;
+  Config? config;
+  Ads? ads;
+  Member? member;
+  bool? darkPrivilege;
+  String? darkprivilegeTips;
+  int? allowPublishPost;
+  String? noPermissionPublishPostTips;
+  String? click_app_id;
+  String? click_transit_path;
+  ReportConfig? buryPoint;
+  String? maintainTipsStr;
   factory Data.fromJson(Map<String, dynamic> json) => Data(
       versionMsg: json["versionMsg"] == null ? null : VersionMsg.fromJson(json["versionMsg"]),
       notice: json["notice"] == null ? null : Notice.fromJson(json["notice"]),
@@ -84,20 +84,20 @@ class Data {
       member: json["member"] == null ? null : Member.fromJson(json["member"]),
       darkPrivilege: json["dark_privilege"] ?? false,
       darkprivilegeTips: json["dark_privilege_tips"] ?? '',
-      allowPublishPost: int.parse(json["allow_publish_post"].toString()),
+      allowPublishPost: json["allow_publish_post"] == null ? null : int.parse(json["allow_publish_post"].toString()),
       noPermissionPublishPostTips: json["no_permission_publish_post_tips"] ?? '',
       click_app_id: json["click_app_id"],
       click_transit_path: json["click_transit_path"],
-      buryPoint: ReportConfig.fromJson(json['bury_point']),
+      buryPoint: json['bury_point'] == null ? null : ReportConfig.fromJson(json['bury_point']),
       maintainTipsStr: json["maintain_tips_str"] ?? "");
 
   Map<String, dynamic> toJson() => {
-        "versionMsg": versionMsg == null ? null : versionMsg.toJson(),
+        "versionMsg": versionMsg == null ? null : versionMsg!.toJson(),
         "timestamp": timestamp == null ? null : timestamp,
-        "notice": notice == null ? null : notice.toJson(),
-        "config": config == null ? null : config.toJson(),
-        "ads": ads == null ? null : ads.toJson(),
-        "member": member == null ? null : member.toJson(),
+        "notice": notice == null ? null : notice!.toJson(),
+        "config": config == null ? null : config!.toJson(),
+        "ads": ads == null ? null : ads!.toJson(),
+        "member": member == null ? null : member!.toJson(),
         "dark_privilege": darkPrivilege ?? false,
         "dark_privilege_tips": darkprivilegeTips ?? false,
         "allow_publish_post": allowPublishPost ?? 0,
@@ -127,20 +127,20 @@ class Ads {
     this.createdAt,
   });
 
-  int id;
-  String title;
-  String description;
-  String imgUrl;
-  String url;
-  int position;
-  String androidDownUrl;
-  String iosDownUrl;
-  int type;
-  int status;
-  int oauthType;
-  String mvM3U8;
-  String channel;
-  String createdAt;
+  int? id;
+  String? title;
+  String? description;
+  String? imgUrl;
+  String? url;
+  int? position;
+  String? androidDownUrl;
+  String? iosDownUrl;
+  int? type;
+  int? status;
+  int? oauthType;
+  String? mvM3U8;
+  String? channel;
+  String? createdAt;
 
   factory Ads.fromJson(Map<String, dynamic> json) => Ads(
         id: json["id"],
@@ -156,7 +156,7 @@ class Ads {
         oauthType: json["oauth_type"],
         mvM3U8: json["mv_m3u8"],
         channel: json["channel"],
-        createdAt: json["created_at"].toString(),
+        createdAt: json["created_at"]?.toString(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -200,26 +200,26 @@ class Config {
       this.withdraw_rule,
       this.tgLink});
 
-  String imgUploadUrl;
-  String mp4UploadUrl;
-  String mobileMp4UploadUrl;
-  String uploadImgKey;
-  String uploadMp4Key;
-  String uuid;
-  String github;
-  String officeSite;
-  String officialGroup;
-  Share share;
-  String imgBase;
-  List<dynamic> line;
-  String m3u8_encrypt;
-  String video_encrypt_api;
-  String video_encrypt_referer;
-  String video_encrypt_m3u8;
-  int withdraw_rate;
-  int withdraw_ratio;
-  String withdraw_rule;
-  String tgLink;
+  String? imgUploadUrl;
+  String? mp4UploadUrl;
+  String? mobileMp4UploadUrl;
+  String? uploadImgKey;
+  String? uploadMp4Key;
+  String? uuid;
+  String? github;
+  String? officeSite;
+  String? officialGroup;
+  Share? share;
+  String? imgBase;
+  List<dynamic>? line;
+  String? m3u8_encrypt;
+  String? video_encrypt_api;
+  String? video_encrypt_referer;
+  String? video_encrypt_m3u8;
+  int? withdraw_rate;
+  int? withdraw_ratio;
+  String? withdraw_rule;
+  String? tgLink;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
       imgUploadUrl: json["img_upload_url"] == null ? null : json["img_upload_url"],
@@ -253,9 +253,9 @@ class Config {
         "github": github == null ? null : github,
         "office_site": officeSite == null ? null : officeSite,
         "official_group": officialGroup == null ? null : officialGroup,
-        "share": share == null ? null : share.toJson(),
+        "share": share == null ? null : share!.toJson(),
         "img_base": imgBase == null ? null : imgBase,
-        "line": line == null ? null : List<dynamic>.from(line.map((x) => x)),
+        "line": line == null ? null : List<dynamic>.from(line!.map((x) => x)),
         "m3u8_encrypt": m3u8_encrypt == null ? null : m3u8_encrypt,
         "video_encrypt_api": video_encrypt_api == null ? null : video_encrypt_api,
         "video_encrypt_referer": video_encrypt_referer == null ? null : video_encrypt_referer,
@@ -274,9 +274,9 @@ class Share {
     this.affUrl,
   });
 
-  AffUrlCopy affUrlCopy;
-  String affCode;
-  String affUrl;
+  AffUrlCopy? affUrlCopy;
+  String? affCode;
+  String? affUrl;
 
   factory Share.fromJson(Map<String, dynamic> json) => Share(
         affUrlCopy: json["aff_url_copy"] == null ? null : AffUrlCopy.fromJson(json["aff_url_copy"]),
@@ -285,7 +285,7 @@ class Share {
       );
 
   Map<String, dynamic> toJson() => {
-        "aff_url_copy": affUrlCopy == null ? null : affUrlCopy.toJson(),
+        "aff_url_copy": affUrlCopy == null ? null : affUrlCopy!.toJson(),
         "aff_code": affCode == null ? null : affCode,
         "aff_url": affUrl == null ? null : affUrl,
       };
@@ -297,8 +297,8 @@ class AffUrlCopy {
     this.url,
   });
 
-  String code;
-  String url;
+  String? code;
+  String? url;
 
   factory AffUrlCopy.fromJson(Map<String, dynamic> json) => AffUrlCopy(
         code: json["code"] == null ? null : json["code"],
@@ -374,65 +374,65 @@ class Member {
     this.level, // 该字段已用于显示有效卡数量
   });
 
-  int uid;
-  String uuid;
-  String username;
-  String createdAt;
-  String updatedAt;
-  int roleId;
-  int gender;
-  String regip;
-  String regdate;
-  String lastip;
-  String lastvisit;
+  int? uid;
+  String? uuid;
+  String? username;
+  String? createdAt;
+  String? updatedAt;
+  int? roleId;
+  int? gender;
+  String? regip;
+  String? regdate;
+  String? lastip;
+  String? lastvisit;
   dynamic expiredAt;
-  int lastpost;
-  int oltime;
-  int pageviews;
-  int score;
-  String aff;
-  String channel;
+  int? lastpost;
+  int? oltime;
+  int? pageviews;
+  int? score;
+  String? aff;
+  String? channel;
   dynamic invitedBy;
-  int invitedNum;
-  int banPost;
-  int postNum;
-  int loginCount;
-  String appVersion;
-  int validate;
-  int share;
-  int isLogin;
-  String nickname;
-  String thumb;
-  int coins;
-  int money;
-  int tempVip;
-  int followedCount;
-  int videosCount;
-  int fabulousCount;
-  int likesCount;
-  int commentCount;
-  int vipLevel;
-  String personSignnatrue;
-  int oldVip;
-  int stature;
-  String interest;
-  String city;
-  int usedMoneyFreeNum;
-  int agentFee;
-  int agent;
-  int buildId;
-  int authStatus;
-  int exp;
-  String isVirtual;
-  String chatUid;
+  int? invitedNum;
+  int? banPost;
+  int? postNum;
+  int? loginCount;
+  String? appVersion;
+  int? validate;
+  int? share;
+  int? isLogin;
+  String? nickname;
+  String? thumb;
+  int? coins;
+  int? money;
+  int? tempVip;
+  int? followedCount;
+  int? videosCount;
+  int? fabulousCount;
+  int? likesCount;
+  int? commentCount;
+  int? vipLevel;
+  String? personSignnatrue;
+  int? oldVip;
+  int? stature;
+  String? interest;
+  String? city;
+  int? usedMoneyFreeNum;
+  int? agentFee;
+  int? agent;
+  int? buildId;
+  int? authStatus;
+  int? exp;
+  String? isVirtual;
+  String? chatUid;
   dynamic phone;
   dynamic phonePrefix;
-  int freeViewCnt;
-  String lastactivity;
+  int? freeViewCnt;
+  String? lastactivity;
   dynamic thumbStr;
-  String oauthStr;
-  int isSetPassword;
-  int level;
+  String? oauthStr;
+  int? isSetPassword;
+  int? level;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         uid: json["uid"] == null ? null : json["uid"],
@@ -562,19 +562,19 @@ class Member {
 class Notice {
   Notice({this.id, this.title, this.content, this.createdAt, this.type, this.imgUrl, this.imgWidth, this.imgHeight});
 
-  int id;
-  String title;
-  String content;
-  String createdAt;
-  String type;
-  String imgUrl;
-  double imgWidth;
-  double imgHeight;
+  int? id;
+  String? title;
+  String? content;
+  String? createdAt;
+  String? type;
+  String? imgUrl;
+  double? imgWidth;
+  double? imgHeight;
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
       id: json["id"],
       title: json["title"],
       content: json["content"],
-      createdAt: json["created_at"].toString(),
+      createdAt: json["created_at"]?.toString(),
       type: json["type"],
       imgUrl: json["img_url"],
       imgWidth: json["img_width"] == null ? null : double.parse(json["img_width"].toString()),
@@ -605,16 +605,16 @@ class VersionMsg {
       this.channel,
       this.sha256});
 
-  String version;
-  String type;
-  String apk;
-  String tips;
-  int must;
-  int status;
-  String message;
-  int mstatus;
-  String channel;
-  String sha256;
+  String? version;
+  String? type;
+  String? apk;
+  String? tips;
+  int? must;
+  int? status;
+  String? message;
+  int? mstatus;
+  String? channel;
+  String? sha256;
 
   factory VersionMsg.fromJson(Map<String, dynamic> json) => VersionMsg(
       version: json["version"] == null ? null : json["version"],
@@ -670,30 +670,30 @@ class ReportConfig {
     this.authenticationTime = 3600,
   });
 
-  final String clickAppId;
-  final String clickTransitPath;
-  final int isReportOrderPaid;
-  final int isReportCoinConsume;
-  final int isReportNavigation;
-  final int isReportAppPageView;
-  final int isReportPageClick;
-  final int isReportAdvertising;
-  final int isReportPageLifecycle;
-  final int isReportVideoEvent;
-  final int isReportVideoLike;
-  final int isReportVideoComment;
-  final int isReportVideoCollect;
-  final int isReportVideoPurchase;
-  final int isReportKeywordSearch;
-  final int isReportKeywordClick;
-  final int isReportAdImpression;
-  final int isReportAdClick;
-  final int isEncryption;
-  final String encryptionKey;
-  final String encryptionIv;
-  final String signKey;
-  final String authenticationKey;
-  final int authenticationTime;
+  final String? clickAppId;
+  final String? clickTransitPath;
+  final int? isReportOrderPaid;
+  final int? isReportCoinConsume;
+  final int? isReportNavigation;
+  final int? isReportAppPageView;
+  final int? isReportPageClick;
+  final int? isReportAdvertising;
+  final int? isReportPageLifecycle;
+  final int? isReportVideoEvent;
+  final int? isReportVideoLike;
+  final int? isReportVideoComment;
+  final int? isReportVideoCollect;
+  final int? isReportVideoPurchase;
+  final int? isReportKeywordSearch;
+  final int? isReportKeywordClick;
+  final int? isReportAdImpression;
+  final int? isReportAdClick;
+  final int? isEncryption;
+  final String? encryptionKey;
+  final String? encryptionIv;
+  final String? signKey;
+  final String? authenticationKey;
+  final int? authenticationTime;
 
   factory ReportConfig.fromJson(Map<String, dynamic> json) {
     return ReportConfig(

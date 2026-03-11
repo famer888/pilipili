@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 MyRewardModel myRewardModelFromJson(String str) =>
     MyRewardModel.fromJson(json.decode(str));
@@ -14,11 +14,11 @@ class MyRewardModel {
     this.isVip,
   });
 
-  List<Datum> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<Datum>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory MyRewardModel.fromJson(Map<String, dynamic> json) => MyRewardModel(
         data: json["data"] == null
@@ -33,7 +33,7 @@ class MyRewardModel {
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -56,17 +56,17 @@ class Datum {
     this.typeStr,
   });
 
-  String nickname;
-  int id;
-  int aff;
-  int source;
-  int type;
-  String coinCnt;
-  String desc;
-  int sourceAff;
-  DateTime createdAt;
-  String sourceStr;
-  String typeStr;
+  String? nickname;
+  int? id;
+  int? aff;
+  int? source;
+  int? type;
+  String? coinCnt;
+  String? desc;
+  int? sourceAff;
+  DateTime? createdAt;
+  String? sourceStr;
+  String? typeStr;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         nickname: json["nickname"] == null ? null : json["nickname"],
@@ -93,7 +93,7 @@ class Datum {
         "coinCnt": coinCnt == null ? null : coinCnt,
         "desc": desc == null ? null : desc,
         "source_aff": sourceAff == null ? null : sourceAff,
-        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "source_str": sourceStr == null ? null : sourceStr,
         "type_str": typeStr == null ? null : typeStr,
       };

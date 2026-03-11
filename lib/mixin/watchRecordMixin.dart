@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -6,7 +6,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 
 mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
-  Timer watchRcordTimer;
+  late Timer watchRcordTimer;
 
   @override
   void dispose() {
@@ -25,11 +25,11 @@ mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
   }
 
   void startWatchRecordTimer(Box theBox, int id,
-      {int chapterId,
-      String thumb,
-      int isFree,
-      String title,
-      int current, //小说  当前章节index
+      {int? chapterId,
+      String? thumb,
+      int? isFree,
+      String? title,
+      int? current, //小说  当前章节index
       dynamic offset}) {
     CommonUtils.debugPrint('startWatchRecordTimer');
     CommonUtils.debugPrint('-----上次播放至:'+offset.toString()+'');

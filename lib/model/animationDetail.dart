@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final animationDetail = animationDetailFromJson(jsonString);
 
@@ -17,11 +17,11 @@ class AnimationDetail {
     this.isVip,
   });
 
-  DetailData data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  DetailData? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory AnimationDetail.fromJson(Map<String, dynamic> json) => AnimationDetail(
         data: json["data"] == null ? null : DetailData.fromJson(json["data"]),
@@ -32,7 +32,7 @@ class AnimationDetail {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -106,69 +106,69 @@ class DetailData {
     this.preview,
   });
 
-  int id;
-  String memberUuid;
-  String title;
-  int mvType;
-  int isActivity;
-  int isRecommend;
-  String source240;
+  int? id;
+  String? memberUuid;
+  String? title;
+  int? mvType;
+  int? isActivity;
+  int? isRecommend;
+  String? source240;
   dynamic source480;
   dynamic source720;
   dynamic source1080;
-  int vExt;
-  int duration;
-  String thumbCover;
-  int thumbWidth;
-  int thumbHeight;
-  String directors;
-  String publisher;
-  String actors;
-  String category;
-  String categoryIds;
-  String tags;
-  String selfTag;
-  String tagsId;
-  String via;
-  String onshelfTm;
-  int rating;
-  int countPlay;
+  int? vExt;
+  int? duration;
+  String? thumbCover;
+  int? thumbWidth;
+  int? thumbHeight;
+  String? directors;
+  String? publisher;
+  String? actors;
+  String? category;
+  late String categoryIds;
+  String? tags;
+  String? selfTag;
+  String? tagsId;
+  String? via;
+  String? onshelfTm;
+  int? rating;
+  int? countPlay;
   dynamic countFavorites;
-  int countLike;
-  int countComment;
-  int countReward;
-  int countPay;
-  int incomeCoins;
-  String createdAt;
-  String refreshAt;
-  String updatedAt;
-  String callbackAt;
-  int isfree;
-  int status;
-  int thumbStartTime;
-  int thumbDuration;
-  int isHide;
-  int coins;
-  int musicId;
-  int enableBackground;
-  int enableSoundtrack;
-  int isDelete;
+  int? countLike;
+  int? countComment;
+  int? countReward;
+  int? countPay;
+  int? incomeCoins;
+  String? createdAt;
+  String? refreshAt;
+  String? updatedAt;
+  String? callbackAt;
+  int? isfree;
+  int? status;
+  int? thumbStartTime;
+  int? thumbDuration;
+  int? isHide;
+  int? coins;
+  int? musicId;
+  int? enableBackground;
+  int? enableSoundtrack;
+  int? isDelete;
   dynamic rejectReason;
-  int rejectAt;
-  int isTop;
-  int clubId;
-  int isTester;
-  String desc;
-  int isPopular;
-  int isTiptop;
-  int userFavorites;
-  int userLike;
-  String coverThumbHorizontal;
-  String coverOriginalVertical;
-  String coverOriginalHorizontal;
-  int discountCoins;
-  int favorites;
-  String preview;
+  int? rejectAt;
+  int? isTop;
+  int? clubId;
+  int? isTester;
+  String? desc;
+  int? isPopular;
+  int? isTiptop;
+  int? userFavorites;
+  int? userLike;
+  String? coverThumbHorizontal;
+  String? coverOriginalVertical;
+  String? coverOriginalHorizontal;
+  int? discountCoins;
+  int? favorites;
+  String? preview;
   factory DetailData.fromJson(Map<String, dynamic> json) => DetailData(
       id: json["id"] == null ? null : json["id"],
       memberUuid: json["member_uuid"] == null ? null : json["member_uuid"],

@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 MyInvitationModel myInvitationModelFromJson(String str) =>
     MyInvitationModel.fromJson(json.decode(str));
@@ -15,11 +15,11 @@ class MyInvitationModel {
     this.isVip,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory MyInvitationModel.fromJson(Map<String, dynamic> json) =>
       MyInvitationModel(
@@ -31,7 +31,7 @@ class MyInvitationModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -46,9 +46,9 @@ class Data {
     this.moneyNum,
   });
 
-  int allNum;
-  int regNum;
-  int moneyNum;
+  int? allNum;
+  int? regNum;
+  int? moneyNum;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         allNum: json["all_num"] == null ? null : json["all_num"],

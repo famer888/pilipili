@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart' hide RefreshIndicator, RefreshIndicatorState;
 import 'package:flutter/cupertino.dart';
@@ -24,7 +24,7 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
   }
 
   @override
-  void onModeChange(RefreshStatus mode) {
+  void onModeChange(RefreshStatus? mode) {
     if (mode == RefreshStatus.refreshing) {}
     super.onModeChange(mode);
   }
@@ -59,20 +59,20 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
 
 // ignore: must_be_immutable
 class PullRefreshList extends StatefulWidget {
-  PullRefreshList({Key key, this.child, this.onRefresh, this.offset = 0, this.onLoading, this.color}) : super(key: key);
-  Widget child;
+  PullRefreshList({Key? key, this.child, this.onRefresh, this.offset = 0, this.onLoading, this.color}) : super(key: key);
+  Widget? child;
   double offset;
-  Color color;
-  Function onRefresh;
-  Function onLoading;
+  Color? color;
+  Function? onRefresh;
+  Function? onLoading;
   @override
   _PullRefreshListState createState() => _PullRefreshListState();
 }
 
 class _PullRefreshListState extends State<PullRefreshList> {
-  RefreshController _refreshController;
-  Timer _timerout;
-  Timer _timer;
+  late RefreshController _refreshController;
+  late Timer _timerout;
+  late Timer _timer;
   bool startReq = false;
   @override
   void initState() {
@@ -108,13 +108,13 @@ class _PullRefreshListState extends State<PullRefreshList> {
         _refreshController.refreshCompleted();
       }
     });
-    await widget.onRefresh();
+    await widget.onRefresh!();
     startReq = false;
     }
 
   void _onLoading() async {
     // 加载更多数据
-    widget.onLoading();
+    widget.onLoading!();
     _refreshController.loadComplete();
     }
 
@@ -131,7 +131,7 @@ class _PullRefreshListState extends State<PullRefreshList> {
           backgroundColor: widget.color ?? DefaultStyle.themeColor,
         ),
         footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus mode) {
+          builder: (BuildContext context, LoadStatus? mode) {
             Widget body;
             if (mode == LoadStatus.idle) {
               body = Text("再拉一点");

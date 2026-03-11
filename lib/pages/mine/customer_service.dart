@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
@@ -25,14 +25,13 @@ import 'package:pilipili/shims/fake_native_widget.dart'
     if (dart.library.html) 'package:pilipili/shims/real_web_widget.dart' as ui;
 
 class CustomerService extends StatefulWidget {
-  CustomerService({Key key}) : super(key: key);
+  CustomerService({Key? key}) : super(key: key);
 
   @override
   _CustomerServiceState createState() => _CustomerServiceState();
 }
 
-class _CustomerServiceState extends State<CustomerService>
-    with WidgetsBindingObserver {
+class _CustomerServiceState extends State<CustomerService> with WidgetsBindingObserver {
   bool isInit = true;
   bool fetching = false;
   bool networkErr = false;
@@ -40,13 +39,14 @@ class _CustomerServiceState extends State<CustomerService>
     r"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?",
     multiLine: true,
   );
-  String thumb;
+  late String thumb;
   int page = 1;
   TextEditingController editingController = TextEditingController();
   ScrollController scrollControllerFalse = ScrollController();
-  List helpList;
-  List msgList;
+  late List helpList;
+  late List msgList;
   bool isAll = false;
+
   getMsgPath(String msg, int status) {
     var isPath = regExp.hasMatch(msg);
     var pathMsg = msg.replaceAll('http', '[youyu]http');
@@ -57,10 +57,7 @@ class _CustomerServiceState extends State<CustomerService>
         var newMsg = regExp.stringMatch(pathList[i]) == null
             ? pathList[i]
             : pathList[i].replaceAll(
-                regExp.stringMatch(pathList[i]),
-                '[youyu]' +
-                    regExp.stringMatch(pathList[i]).toString() +
-                    '[youyu]');
+                regExp.stringMatch(pathList[i])!, '[youyu]' + regExp.stringMatch(pathList[i]).toString() + '[youyu]');
         textList.addAll(newMsg.split('[youyu]'));
       } else {
         textList.add(pathList[i]);
@@ -76,12 +73,8 @@ class _CustomerServiceState extends State<CustomerService>
                       text: textList[e],
                       style: TextStyle(
                         fontSize: ScreenUtil().setSp(15),
-                        color: regExp.hasMatch(textList[e])
-                            ? Color(0xff7bf7ff)
-                            : Color(0xffd7d7d7),
-                        decoration: regExp.hasMatch(textList[e])
-                            ? TextDecoration.underline
-                            : null,
+                        color: regExp.hasMatch(textList[e]) ? Color(0xff7bf7ff) : Color(0xffd7d7d7),
+                        decoration: regExp.hasMatch(textList[e]) ? TextDecoration.underline : null,
                         height: 1.7,
                       ),
                       recognizer: TapGestureRecognizer()
@@ -111,7 +104,7 @@ class _CustomerServiceState extends State<CustomerService>
     var feedback = await getFeedbackList(page: page);
     if (page == 1) {
       if (feedback.status != 0) {
-        msgList = feedback.data;
+        msgList = feedback.data!;
         // Datum msgResult = Datum.fromJson({
         //   "messageType": 1,
         //   "status": 0,
@@ -129,9 +122,9 @@ class _CustomerServiceState extends State<CustomerService>
         return;
       }
     } else {
-      if (feedback.status != 0 && feedback.data.length > 0) {
+      if (feedback.status != 0 && feedback.data!.length > 0) {
         setState(() {
-          msgList.addAll(feedback.data);
+          msgList.addAll(feedback.data!);
         });
       } else {
         isAll = true;
@@ -151,13 +144,8 @@ class _CustomerServiceState extends State<CustomerService>
       var msg = await sendFeeding(text, 1, 0);
       if (msg.status != 0) {
         setState(() {
-          Datum msgResult = Datum.fromJson({
-            "messageType": 1,
-            "status": 1,
-            "createdAt": null,
-            "message": text,
-            "thumb": thumb
-          });
+          Datum msgResult =
+              Datum.fromJson({"messageType": 1, "status": 1, "createdAt": null, "message": text, "thumb": thumb});
           msgList.insert(0, msgResult);
         });
       } else {
@@ -174,7 +162,8 @@ class _CustomerServiceState extends State<CustomerService>
     });
   }
 
-  html.InputElement uploadInput;
+  late html.FileUploadInputElement uploadInput;
+
   @override
   void initState() {
     super.initState();
@@ -196,14 +185,13 @@ class _CustomerServiceState extends State<CustomerService>
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;
-            final file = files[0];
+            final file = files![0];
             html.FileReader reader = html.FileReader();
             getBase64(file, (base64) {
               reader.onLoadEnd.listen((_event) {
                 upImage(
-                    MultipartFile.fromBytes(reader.result,
-                        filename: file.name,
-                        contentType: MediaType.parse(file.type)),
+                    MultipartFile.fromBytes((reader.result as List<int>),
+                        filename: file.name, contentType: MediaType.parse(file.type)),
                     imgfile: base64);
               });
               reader.readAsArrayBuffer(file);
@@ -216,6 +204,7 @@ class _CustomerServiceState extends State<CustomerService>
   }
 
   FocusNode _commentFocus = FocusNode();
+
   @override
   void didChangeMetrics() {
     super.didChangeMetrics();
@@ -231,22 +220,24 @@ class _CustomerServiceState extends State<CustomerService>
   Future<void> loadAssets(String type) async {
     ImagePicker _picker = ImagePicker();
     if (type == 'camera') {
-      _picker.pickImage(source: ImageSource.camera).then((XFile file) {
-        upImage(file.path);
+      _picker.pickImage(source: ImageSource.camera).then((XFile? file) {
+        upImage(file?.path);
       });
     } else {
-      XFile photo = await _picker.pickImage(source: ImageSource.gallery);
-      var formatList = ["heic", "heif", "HEIC", "HEIF"];
-      List imgArr = photo.name.split('.');
-      String type = imgArr[imgArr.length - 1];
-      if (formatList.indexOf(type) == -1) {
-        upImage(photo.path);
-      } else {
-        for (var j = 0; j < formatList.length; j++) {
-          if (photo.path.endsWith(formatList[j])) {
-            String jpegPath;
-            jpegPath = await HeicToJpg.convert(photo.path);
-            upImage(jpegPath);
+      XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+      if (photo != null) {
+        var formatList = ["heic", "heif", "HEIC", "HEIF"];
+        List imgArr = photo.name.split('.');
+        String type = imgArr[imgArr.length - 1];
+        if (formatList.indexOf(type) == -1) {
+          upImage(photo.path);
+        } else {
+          for (var j = 0; j < formatList.length; j++) {
+            if (photo.path.endsWith(formatList[j])) {
+              String? jpegPath;
+              jpegPath = await HeicToJpg.convert(photo.path);
+              upImage(jpegPath);
+            }
           }
         }
       }
@@ -257,9 +248,7 @@ class _CustomerServiceState extends State<CustomerService>
     BotToast.showCustomLoading(toastBuilder: (cancelFunc) {
       return Container(
         padding: const EdgeInsets.all(15),
-        decoration: const BoxDecoration(
-            color: Colors.black54,
-            borderRadius: BorderRadius.all(Radius.circular(8))),
+        decoration: const BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -271,15 +260,13 @@ class _CustomerServiceState extends State<CustomerService>
             ),
             Text(
               '上传中...',
-              style: TextStyle(
-                  color: Colors.white, fontSize: ScreenUtil().setSp(14)),
+              style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(14)),
             )
           ],
         ),
       );
     });
-    var result = await PlatformAwareHttp.uploadImage(
-        imageUrl: filePath, position: 'upload');
+    var result = await PlatformAwareHttp.uploadImage(imageUrl: filePath, position: 'upload');
     var res = jsonDecode(result.data);
     if (res['code'] == 1) {
       var msg = await sendFeeding(res['msg'], 2, 0);
@@ -322,8 +309,7 @@ class _CustomerServiceState extends State<CustomerService>
           return StatefulBuilder(
             builder: (context1, state) {
               return Container(
-                height: ScreenUtil().setWidth(100) +
-                    (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                height: ScreenUtil().setWidth(100) + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                 color: Colors.transparent,
                 child: Container(
                   padding: EdgeInsets.only(
@@ -331,9 +317,7 @@ class _CustomerServiceState extends State<CustomerService>
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                   ),
                   child: Column(children: <Widget>[
                     Container(
@@ -391,9 +375,7 @@ class _CustomerServiceState extends State<CustomerService>
           child: item.createdAt != null
               ? Text(
                   item.createdAt,
-                  style: TextStyle(
-                      color: Color(0xffb4b4b4),
-                      fontSize: ScreenUtil().setSp(13)),
+                  style: TextStyle(color: Color(0xffb4b4b4), fontSize: ScreenUtil().setSp(13)),
                 )
               : Container(),
         ),
@@ -426,14 +408,11 @@ class _CustomerServiceState extends State<CustomerService>
                   Container(
                     margin: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                     decoration: BoxDecoration(
-                        border: Border.all(
-                            width: ScreenUtil().setWidth(0.5),
-                            color: Color(0xffffffff)),
+                        border: Border.all(width: ScreenUtil().setWidth(0.5), color: Color(0xffffffff)),
                         color: Color(0xffffffff),
                         borderRadius: BorderRadius.circular(5)),
                     padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(10.5),
-                        vertical: ScreenUtil().setWidth(6.5)),
+                        horizontal: ScreenUtil().setWidth(10.5), vertical: ScreenUtil().setWidth(6.5)),
                     child: item.messageType == 1
                         ? getMsgPath(item.message, item.status)
                         : (item.isLocal != null
@@ -446,8 +425,7 @@ class _CustomerServiceState extends State<CustomerService>
                             : Container(
                                 width: ScreenUtil().setHeight(150),
                                 height: ScreenUtil().setHeight(150),
-                                child: PlatformAwareNetworkImage(
-                                    url: item.message),
+                                child: PlatformAwareNetworkImage(url: item.message),
                               )),
                   )
                 ],
@@ -476,9 +454,7 @@ class _CustomerServiceState extends State<CustomerService>
           child: item.createdAt != null
               ? Text(
                   item.createdAt,
-                  style: TextStyle(
-                      color: Color(0xffb4b4b4),
-                      fontSize: ScreenUtil().setSp(13)),
+                  style: TextStyle(color: Color(0xffb4b4b4), fontSize: ScreenUtil().setSp(13)),
                 )
               : Container(),
         ),
@@ -495,14 +471,11 @@ class _CustomerServiceState extends State<CustomerService>
                   Container(
                       margin: EdgeInsets.only(right: ScreenUtil().setWidth(9)),
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              width: ScreenUtil().setWidth(0.5),
-                              color: DefaultStyle.themeColor),
+                          border: Border.all(width: ScreenUtil().setWidth(0.5), color: DefaultStyle.themeColor),
                           color: DefaultStyle.themeColor,
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setWidth(10.5),
-                          vertical: ScreenUtil().setWidth(6.5)),
+                          horizontal: ScreenUtil().setWidth(10.5), vertical: ScreenUtil().setWidth(6.5)),
                       child: item.messageType == 1
                           ? getMsgPath(item.message, item.status)
                           : (item.isLocal != null
@@ -518,8 +491,7 @@ class _CustomerServiceState extends State<CustomerService>
                               : Container(
                                   width: ScreenUtil().setHeight(150),
                                   height: ScreenUtil().setHeight(150),
-                                  child: PlatformAwareNetworkImage(
-                                      url: item.message),
+                                  child: PlatformAwareNetworkImage(url: item.message),
                                 ))),
                   Positioned(
                       bottom: ScreenUtil().setHeight(2),
@@ -578,8 +550,7 @@ class _CustomerServiceState extends State<CustomerService>
                             shrinkWrap: true,
                             physics: ScrollPhysics(),
                             padding: EdgeInsets.symmetric(
-                                horizontal: DefaultStyle.pagePadding,
-                                vertical: ScreenUtil().setWidth(30)),
+                                horizontal: DefaultStyle.pagePadding, vertical: ScreenUtil().setWidth(30)),
                             itemBuilder: (BuildContext context, int index) {
                               return msgList[index].status == 1
                                   ? _useDialog(msgList[index], index)
@@ -622,8 +593,7 @@ class _CustomerServiceState extends State<CustomerService>
                               ),
                               kIsWeb
                                   ? Positioned(
-                                      child: HtmlElementView(
-                                          viewType: 'FileInput'),
+                                      child: HtmlElementView(viewType: 'FileInput'),
                                     )
                                   : Container()
                             ],
@@ -632,8 +602,7 @@ class _CustomerServiceState extends State<CustomerService>
                         Expanded(
                             child: Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setHeight(8),
-                              horizontal: ScreenUtil().setWidth(15)),
+                              vertical: ScreenUtil().setHeight(8), horizontal: ScreenUtil().setWidth(15)),
                           child: TextField(
                               autofocus: !kIsWeb,
                               // onSubmitted: _onSubmit,
@@ -646,26 +615,20 @@ class _CustomerServiceState extends State<CustomerService>
                               textInputAction: TextInputAction.done,
                               decoration: InputDecoration(
                                   hintText: '输入回复内容',
-                                  hintStyle:
-                                      TextStyle(color: Color(0xff979797)),
+                                  hintStyle: TextStyle(color: Color(0xff979797)),
                                   contentPadding: EdgeInsets.zero,
                                   disabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
+                                      borderSide: BorderSide(color: Colors.transparent, width: 0)),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
+                                      borderSide: BorderSide(color: Colors.transparent, width: 0)),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
+                                      borderSide: BorderSide(color: Colors.transparent, width: 0)),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 0)))),
+                                      borderSide: BorderSide(color: Colors.transparent, width: 0)))),
                         )),
                         GestureDetector(
                             onTap: _sendMsg,
@@ -675,8 +638,7 @@ class _CustomerServiceState extends State<CustomerService>
                                 height: ScreenUtil().setHeight(30),
                                 decoration: BoxDecoration(
                                     gradient: DefaultStyle.defaluGrandientLine,
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setWidth(50))),
+                                    borderRadius: BorderRadius.circular(ScreenUtil().setWidth(50))),
                                 child: Center(
                                   child: Text(
                                     '发送',

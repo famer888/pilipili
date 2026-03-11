@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -11,8 +11,8 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class TopicDetail extends StatefulWidget {
-  const TopicDetail({Key key, this.id}) : super(key: key);
-  final int id;
+  const TopicDetail({Key? key, this.id}) : super(key: key);
+  final int? id;
   @override
   State<TopicDetail> createState() => _TopicDetailState();
 }
@@ -23,7 +23,7 @@ class _TopicDetailState extends State<TopicDetail>
   bool loading = true;
   ValueNotifier<int> currentTab = ValueNotifier(0);
   Map data = {};
-  ScrollController scrollController;
+  late ScrollController scrollController;
   bool loadFollow = false;
   Map topic = {};
   ValueNotifier<bool> isFollow = ValueNotifier(false);
@@ -31,7 +31,7 @@ class _TopicDetailState extends State<TopicDetail>
   void initState() {
     // TODO: implement initState
     super.initState();
-    getTopicDetail(widget.id).then((res) {
+    getTopicDetail(widget.id!).then((res) {
       if (res['status'] != 0) {
         data = res['data'];
         currentTab.value = data['tab'][0]['id'];

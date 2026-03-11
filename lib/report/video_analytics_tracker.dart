@@ -1,4 +1,4 @@
-import 'package:pilipili/report/app_event_report.dart';
+﻿import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/report/report_utils.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:video_player/video_player.dart';
@@ -19,7 +19,7 @@ class VideoAnalyticsTracker {
   static const Duration _oneMinute = Duration(minutes: 1);
 
   VideoAnalyticsTracker({
-    this.controller,
+    required this.controller,
   });
 
   /// 开始监听
@@ -145,7 +145,7 @@ class VideoAnalyticsTracker {
   // 统一上报封装
   void _sendBehaviorEvent(
     VideoEvenType behaviorKey, {
-    Map<String, dynamic> extra,
+    Map<String, dynamic>? extra,
   }) {
     final v = controller.value;
     final eventMeta = ReportUtils.getVideoEventType(behaviorKey);
@@ -162,7 +162,7 @@ class VideoAnalyticsTracker {
       'video_behavior_name': eventMeta['name'],
     };
 
-    payload.addAll(extra);
+    payload.addAll(extra!);
   
     AppEventReport.instance.track('video_event', payload);
   }

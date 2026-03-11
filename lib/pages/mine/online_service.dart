@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/theme/default.dart';
@@ -8,7 +8,7 @@ import 'package:pilipili/utils/privilege.dart';
 import '../../global.dart';
 
 class OnlineService extends StatefulWidget {
-  OnlineService({Key key}) : super(key: key);
+  OnlineService({Key? key}) : super(key: key);
 
   @override
   _OnlineServiceState createState() => _OnlineServiceState();
@@ -111,9 +111,9 @@ class _OnlineServiceState extends State<OnlineService> {
 }
 
 class QuestionItem extends StatelessWidget {
-  const QuestionItem({Key key, this.data, this.index}) : super(key: key);
+  const QuestionItem({Key? key, this.data, this.index}) : super(key: key);
   final dynamic data;
-  final int index;
+  final int? index;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -122,7 +122,7 @@ class QuestionItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text((index + 1).toString() + "、 " + data['problem'].toString(),
+          Text(((index ?? 0) + 1).toString() + "、 " + data['problem'].toString(),
               style: TextStyle(color: Color(0xff404040), fontWeight: FontWeight.bold, fontSize: 16.sp)),
           SizedBox(
             height: 15.w,

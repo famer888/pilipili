@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +14,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
 
 class WithdrawalsPage extends StatefulWidget {
-  const WithdrawalsPage({Key key}) : super(key: key);
+  const WithdrawalsPage({Key? key}) : super(key: key);
 // final int type;
   @override
   State<WithdrawalsPage> createState() => _WithdrawalsPageState();
@@ -78,7 +78,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
   }
 
   Widget withdraInput(
-      {Function(String) onChanged, String hintText, bool isNumber = false}) {
+      {Function(String)? onChanged, String? hintText, bool isNumber = false}) {
     return Row(
       children: [
         Expanded(
@@ -116,7 +116,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
     );
   }
 
-  Widget withdraItem({bool border = true, title = '', Widget rightChild}) {
+  Widget withdraItem({bool border = true, title = '', Widget? rightChild}) {
     return Container(
       height: 52.w,
       decoration: border
@@ -239,7 +239,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                                   ),
                                   Text(
                                       double.parse((postMoney *
-                                                  (config.withdraw_rate / 100))
+                                                  ((config.withdraw_rate ?? 0) / 100))
                                               .toStringAsFixed(1))
                                           .toString(),
                                       style: TextStyle(
@@ -339,7 +339,7 @@ class _WithdrawalsPageState extends State<WithdrawalsPage> {
                         )),
                   ),
                   Text(
-                    config.withdraw_rule,
+                    config.withdraw_rule!,
                     style: TextStyle(fontSize: 12.sp, color: Color(0xff646464)),
                   )
                 ],

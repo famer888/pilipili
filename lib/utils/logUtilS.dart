@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Tom
  * @Date: 2021-12-14 19:13:42
  * @LastEditTime: 2021-12-14 19:13:42
@@ -19,9 +19,9 @@ class LogUtilS {
   static String _startLine = "$_split$_title$_split";
   static String _endLine = "$_split$_separator$_separator$_separator$_split";
 
-  static void init({String title, @required bool isDebug, int limitLength}) {
-    _title = title;
-    _isDebug = isDebug;
+  static void init({String? title, @required bool? isDebug, int? limitLength}) {
+    _title = title!;
+    _isDebug = isDebug!;
     _limitLength = limitLength ??= _limitLength;
     _startLine = "$_split$_title$_split";
     var endLineStr = StringBuffer();

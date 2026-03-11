@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -14,15 +14,16 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class AppWelfareCenterPage extends StatefulWidget {
-  const AppWelfareCenterPage({Key key}) : super(key: key);
+  const AppWelfareCenterPage({Key? key}) : super(key: key);
 
   @override
   State<AppWelfareCenterPage> createState() => _AppWelfareCenterPageState();
 }
 
 class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
-  TaskHomeData data;
+  late TaskHomeData data;
   bool loading = true;
+
   getTaskIndex() async {
     Basic res = await taskIndex();
     if (res.status != 0) {
@@ -41,7 +42,7 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
         btn = GestureDetector(
             onTap: () async {
               PageStatus.showLoading();
-              Basic res = await taskUpdate(task.id);
+              Basic res = await taskUpdate(task.id!);
               PageStatus.closeLoading();
               if (res.status != 0) {
                 CommonUtils.showText(res.msg ?? '领取成功');
@@ -140,11 +141,11 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                 context.push('/coinRecharge');
                 break;
               case 7: //下载APP
-                Basic res = await taskComplete(task.id);
+                Basic res = await taskComplete(task.id!);
                 if (res.status != 0) {
                   getTaskIndex();
                   // String officeSite = Provider.of<HomeConfig>(context, listen: false).config?.officeSite ?? "";
-                  CommonUtils.launchURL(task.url);
+                  CommonUtils.launchURL(task.url!);
                 } else {
                   CommonUtils.showText(res.msg ?? '错误');
                 }
@@ -230,7 +231,7 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                               height: 5.w,
                             ),
                             Text(
-                              data.freeViewCnt < 999 ? "剩余观看次数：${data.freeViewCnt}/${data.totalFreeViewCnt}" : "无限观影",
+                              data.freeViewCnt! < 999 ? "剩余观看次数：${data.freeViewCnt}/${data.totalFreeViewCnt}" : "无限观影",
                               style: TextStyle(color: Color(0xff999999), fontSize: 12.sp),
                             )
                           ],
@@ -239,7 +240,7 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                     );
                   }),
                 ),
-                if (data.freeViewCnt < 999)
+                if (data.freeViewCnt! < 999)
                   GestureDetector(
                     onTap: () {
                       context.push('/vip');
@@ -312,10 +313,10 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                       }),
                       ListView.separated(
                         shrinkWrap: true,
-                        itemCount: data.task.length,
+                        itemCount: data.task!.length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          Task task = data.task[index];
+                          Task task = data.task![index];
                           return Row(
                             children: [
                               Container(
@@ -381,7 +382,7 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                       GridView.builder(
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
-                        itemCount: data.product.length,
+                        itemCount: data.product!.length,
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -389,7 +390,7 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                             crossAxisSpacing: 9.w,
                             childAspectRatio: 336 / 217),
                         itemBuilder: (context, index) {
-                          Product item = data.product[index];
+                          Product item = data.product![index];
                           return Container(
                             padding: EdgeInsets.all(10.w),
                             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.w)),

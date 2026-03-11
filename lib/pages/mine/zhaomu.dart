@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -8,7 +8,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:provider/provider.dart';
 
 class ZhaomuPage extends StatefulWidget {
-  const ZhaomuPage({Key key});
+  const ZhaomuPage({Key? key});
 
   @override
   State<ZhaomuPage> createState() => _ZhaomuPageState();
@@ -40,7 +40,7 @@ class _ZhaomuPageState extends State<ZhaomuPage> {
                     right: 12.w,
                     child: GestureDetector(
                         onTap: () {
-                          CommonUtils.launchURL(config.tgLink.trim());
+                          CommonUtils.launchURL(config.tgLink!.trim());
                         },
                         child: getImage('assets/images/2023/zhaomu_btn.png',
                             height: 55.w,

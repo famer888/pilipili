@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,10 +12,10 @@ import 'package:pilipili/utils/http.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class FileUploadItem extends StatefulWidget {
-  const FileUploadItem({Key key, this.index, this.type = 1, this.data})
+  const FileUploadItem({Key? key, this.index, this.type = 1, this.data})
       : super(key: key);
-  final int index;
-  final Map data;
+  final int? index;
+  final Map? data;
   final int type;
   @override
   State<FileUploadItem> createState() => FileUploadItemState();
@@ -26,30 +26,30 @@ class FileUploadItemState extends State<FileUploadItem> {
   CancelToken cancelToken = CancelToken();
   ValueNotifier<int> progress = ValueNotifier(0);
   ValueNotifier<bool> showLoad = ValueNotifier(false);
-  Uint8List filePath;
+  late Uint8List filePath;
   bool showWidget = true;
   bool isFile = false;
   getFilepath() async {
-    filePath = await widget.data['file'].readAsBytes();
+    filePath = await widget.data!['file'].readAsBytes();
     setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.data['file'] != null) {
+    if (widget.data!['file'] != null) {
       isFile = true;
       getFilepath();
       widget.type == 1
-          ? uploadFileImg(widget.data['file'])
-          : uploadVideo(widget.data['file']);
+          ? uploadFileImg(widget.data!['file'])
+          : uploadVideo(widget.data!['file']);
     } else {
       dataInfo = {
-        'media_url': widget.data['media_url'],
-        'cover': widget.data['cover'],
-        'type': widget.data['type'],
-        'w': widget.data['w'],
-        'h': widget.data['h'],
+        'media_url': widget.data!['media_url'],
+        'cover': widget.data!['cover'],
+        'type': widget.data!['type'],
+        'w': widget.data!['w'],
+        'h': widget.data!['h'],
       };
     }
   }
@@ -67,9 +67,9 @@ class FileUploadItemState extends State<FileUploadItem> {
     var data;
     showLoad.value = true;
     Uint8List bytes = await file.readAsBytes();
-    final image = img.decodeImage(bytes.toList());
-    int imageWidth = image.width;
-    int imageHeight = image.height;
+    final image = img.decodeImage(bytes);
+    int imageWidth = image!.width;
+    int imageHeight = image!.height;
     if (kIsWeb) {
       data = await PlatformAwareHttp.xfileHtmlUploadImage(
           file: file, position: 'upload');
@@ -81,7 +81,7 @@ class FileUploadItemState extends State<FileUploadItem> {
       String orgURL = data['msg'] ?? '';
       dataInfo = {
         'media_url': orgURL,
-        'cover': AppGlobal.bannerImgBase + orgURL,
+        'cover': (AppGlobal.bannerImgBase ?? '') + orgURL,
         'type': 1,
         'w': imageWidth,
         'h': imageHeight
@@ -246,13 +246,13 @@ class FileUploadItemState extends State<FileUploadItem> {
                       fit: BoxFit.cover,
                     ))
               : PlatformAwareNetworkImage(
-                  url: widget.data['cover'],
+                  url: widget.data!['cover'],
                   fit: BoxFit.cover,
                 ),
           ValueListenableBuilder(
             valueListenable: showLoad,
             builder: (context, value, child) {
-              return value ? child : SizedBox();
+              return value ? child! : SizedBox();
             },
             child: getProgress(),
           )
@@ -269,7 +269,7 @@ class FileUploadItemState extends State<FileUploadItem> {
           ValueListenableBuilder(
             valueListenable: showLoad,
             builder: (context, value, child) {
-              return value ? child : SizedBox();
+              return value ? child! : SizedBox();
             },
             child: getProgress(),
           )

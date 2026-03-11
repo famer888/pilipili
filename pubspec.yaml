@@ -27,9 +27,9 @@ dependencies:
   go_router: ^15.1.2
   # go_router: 
   #   path: plugins/go_router-2.5.7
-  device_info_plus: ^8.2.2
-  package_info_plus: ^3.1.2
-  connectivity_plus: ^7.0.0
+  device_info_plus: ^9.0.0
+  package_info_plus: ^8.3.1
+  connectivity_plus: ^6.0.0
   video_player: ^2.9.5
   # video_player: 
   #   path: plugins/video_player-2.5.1
@@ -76,7 +76,7 @@ dependencies:
   #     url: git@172.105.200.120:rn/video_player_web_hls-0.1.11_6.git
   #     ref: fe05017
   waterfall_flow: ^3.0.2
-  wakelock: ^0.6.1+1
+  wakelock_plus: ^1.0.0
   card_swiper: ^3.0.1
   lpinyin: ^2.0.3
   common_utils: ^2.1.0

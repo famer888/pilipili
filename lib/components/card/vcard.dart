@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -8,7 +8,7 @@ import 'package:pilipili/utils/pp_string.dart';
 // ignore: must_be_immutable
 class Vcard extends StatefulWidget {
   Vcard(
-      {Key key,
+      {Key? key,
       this.width,
       this.thumbUrl,
       this.cardMargin,
@@ -26,22 +26,22 @@ class Vcard extends StatefulWidget {
       this.maxLines = 1,
       this.onTap})
       : super(key: key);
-  final double width;
-  final double height;
-  final String thumbUrl;
-  final EdgeInsets cardMargin;
-  final int tagIconType;
+  final double? width;
+  final double? height;
+  final String? thumbUrl;
+  final EdgeInsets? cardMargin;
+  final int? tagIconType;
   final dynamic cardData;
   final String showField;
-  final int contentType;
+  final int? contentType;
   final dynamic id;
-  final int page;
+  final int? page;
   final bool replace;
   final bool isSearch;
   final bool isLocal;
   final bool isSubtitle;
   final int maxLines;
-  final Function onTap;
+  final Function? onTap;
   @override
   _VcardState createState() => _VcardState();
 }
@@ -126,7 +126,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
 
   @override
   Widget build(BuildContext context) {
-    double thumbHeight = (widget.width / 140) * 194;
+    double thumbHeight = (widget.width! / 140) * 194;
     return callDetail(
         cardData: widget.cardData,
         widget: widget,
@@ -235,7 +235,7 @@ class _VcardState extends State<Vcard> with CardMixin<Vcard> {
                     child: widget.contentType == 11 || widget.contentType == 12
                         ? PlatformAwareAssetImage(
                             url: 'assets/images/pili_12/icon_series.png',
-                            width: widget.width * 0.807,
+                            width: widget.width! * 0.807,
                             fit: BoxFit.fitWidth,
                           )
                         : Container(),

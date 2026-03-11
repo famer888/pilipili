@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:app_installer/app_installer.dart';
 import 'package:crypto/crypto.dart';
@@ -23,12 +23,12 @@ import 'package:provider/provider.dart';
 
 class UpdateModel {
   static void showAnnouncementDialog(BackButtonBehavior backButtonBehavior,
-      {VoidCallback cancel,
-      VoidCallback confirm,
-      VoidCallback confirmApp,
-      BuildContext context,
-      String text,
-      String type}) {
+      {VoidCallback? cancel,
+      VoidCallback? confirm,
+      VoidCallback? confirmApp,
+      BuildContext? context,
+      String? text,
+      String? type}) {
     HtmlUnescape unescape = HtmlUnescape();
     String decodedString = unescape.convert(text ?? '');
     Widget content = Html(
@@ -45,7 +45,7 @@ class UpdateModel {
           textDecoration: TextDecoration.underline,
         )
       },
-      onLinkTap: (url, context, attributes, element) {
+      onLinkTap: (url, attributes, element) {
         CommonUtils.launchURL(url ?? "");
       },
     );
@@ -56,7 +56,7 @@ class UpdateModel {
                   GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel.call();
+                      cancel?.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black38),
@@ -111,7 +111,7 @@ class UpdateModel {
                                               GestureDetector(
                                                   onTap: () {
                                                     cancelFunc();
-                                                    context.push('/walfareIndexPage/1');
+                                                    context!.push('/walfareIndexPage/1');
                                                   },
                                                   child: Container(
                                                       decoration: BoxDecoration(
@@ -147,7 +147,7 @@ class UpdateModel {
                                               GestureDetector(
                                                   onTap: () {
                                                     cancelFunc();
-                                                    confirm.call();
+                                                    confirm!.call();
                                                     // type == "1"
                                                     //     ? confirm?.call()
                                                     //     : confirmApp?.call();
@@ -189,7 +189,7 @@ class UpdateModel {
                                             child: GestureDetector(
                                                 onTap: () {
                                                   cancelFunc();
-                                                  confirm.call();
+                                                  confirm!.call();
                                                   // type == "1"
                                                   //     ? confirm?.call()
                                                   //     : confirmApp?.call();
@@ -238,13 +238,13 @@ class UpdateModel {
   }
 
   static void showUpdateDialog(BackButtonBehavior backButtonBehavior,
-      {VoidCallback cancel,
-      VoidCallback confirm,
-      VoidCallback gowebsite,
-      String version,
-      String text,
-      bool mustupdate}) {
-    var tipSplit = text.split('#');
+      {VoidCallback? cancel,
+      VoidCallback? confirm,
+      VoidCallback? gowebsite,
+      String? version,
+      String? text,
+      bool? mustupdate}) {
+    var tipSplit = text!.split('#');
     tipWidget(String value) {
       return Text(
         value,
@@ -275,9 +275,9 @@ class UpdateModel {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (mustupdate) return;
+                      if (mustupdate!) return;
                       cancelFunc();
-                      cancel.call();
+                      cancel?.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black38),
@@ -333,12 +333,12 @@ class UpdateModel {
                                             child: Center(
                                               child: GestureDetector(
                                                   onTap: () {
-                                                    if (!mustupdate) {
+                                                    if (!mustupdate!) {
                                                       cancelFunc();
-                                                    } else if (mustupdate && Platform.isAndroid) {
+                                                    } else if (mustupdate && Platform.isAndroid!) {
                                                       cancelFunc();
                                                     }
-                                                    confirm.call();
+                                                    confirm!.call();
                                                   },
                                                   child: Container(
                                                     margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(21.5)),
@@ -383,21 +383,21 @@ class UpdateModel {
             ));
   }
 
-  static void androidUpdate(BackButtonBehavior backButtonBehavior, {VoidCallback cancel, String url, String version}) {
+  static void androidUpdate(BackButtonBehavior backButtonBehavior, {VoidCallback? cancel, String? url, String? version}) {
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => DownloadApk(
         url: url,
         version: version,
         onTap: () {
           cancelFunc();
-          cancel.call();
+          cancel?.call();
         },
       ),
     );
   }
 
   static void showAvtivetysDialog(BackButtonBehavior backButtonBehavior,
-      {VoidCallback cancel, VoidCallback confirm, String url, double height, double width}) {
+      {VoidCallback? cancel, VoidCallback? confirm, String? url, double? height, double? width}) {
     if (height == 0) {
       height = 1;
     }
@@ -410,7 +410,7 @@ class UpdateModel {
       toastBuilder: (cancelFunc) => GestureDetector(
         onTap: () {
           cancelFunc();
-          cancel.call();
+          cancel?.call();
         },
         child: Container(
           constraints: BoxConstraints(
@@ -428,7 +428,7 @@ class UpdateModel {
                 GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel.call();
+                      cancel?.call();
                     },
                     child: PlatformAwareAssetImage(
                         url: "assets/images/detail/icon_close.png",
@@ -446,16 +446,16 @@ class UpdateModel {
                     child: GestureDetector(
                         onTap: () {
                           cancelFunc();
-                          confirm.call();
+                          confirm?.call();
                         },
                         child: Container(
                           width: maxW,
-                          height: width == null ? ScreenUtil().setWidth(150) : (maxW / width) * height,
+                          height: width == null ? ScreenUtil().setWidth(150) : (maxW / width) * height!,
                           child: PlatformAwareNetworkImage(
                             nothumb: true,
                             width: maxW,
-                            height: width == null ? ScreenUtil().setWidth(150) : (maxW / width) * height,
-                            url: url.contains('http') ? url : AppGlobal.bannerImgBase + url,
+                            height: width == null ? ScreenUtil().setWidth(150) : (maxW / width) * height!,
+                            url: url!.contains('http') ? url : (AppGlobal.bannerImgBase ?? '') + url!,
                           ),
                         ))),
               ],
@@ -466,7 +466,7 @@ class UpdateModel {
     );
   }
 
-  static void showCompartmentDialog({VoidCallback cancel, String url}) {
+  static void showCompartmentDialog({VoidCallback? cancel, String? url}) {
     if (AppGlobal.popAppAds.isNotEmpty) {
       ReportUtils.adVertising(
           eventType: AdEventType.show,
@@ -482,7 +482,7 @@ class UpdateModel {
         child: GestureDetector(
           onTap: () {
             cancelFunc();
-            cancel.call();
+            cancel?.call();
             ReportUtils.adVertising(
                 eventType: AdEventType.close,
                 advertisingKey: AdType.homePopup,
@@ -502,7 +502,7 @@ class UpdateModel {
                 GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel.call();
+                      cancel?.call();
                       ReportUtils.adVertising(
                           eventType: AdEventType.close,
                           advertisingKey: AdType.homePopup,
@@ -581,11 +581,11 @@ class UpdateModel {
 }
 
 class DownloadApk extends StatefulWidget {
-  final GestureTapCallback onTap;
-  final String url;
-  final String version;
+  final GestureTapCallback? onTap;
+  final String? url;
+  final String? version;
 
-  DownloadApk({Key key, this.onTap, this.url, this.version}) : super(key: key);
+  DownloadApk({Key? key, this.onTap, this.url, this.version}) : super(key: key);
 
   @override
   _DownloadApkState createState() => _DownloadApkState();
@@ -612,8 +612,8 @@ class _DownloadApkState extends State<DownloadApk> {
   void initState() {
     super.initState();
     getExternalStorageDirectory().then((documents) {
-      String savePath = '${documents.path}/youyu.${DateTime.now().millisecondsSinceEpoch}.apk';
-      PlatformAwareHttp.download(widget.url, savePath, onReceiveProgress: (int count, int total) async {
+      String savePath = '${documents!.path}/youyu.${DateTime.now().millisecondsSinceEpoch}.apk';
+      PlatformAwareHttp.download(widget.url!, savePath, onReceiveProgress: (int count, int total) async {
         var tmp = (count / total * 100).toInt();
         if (tmp % 1 == 0) {
           setState(() {
@@ -625,10 +625,10 @@ class _DownloadApkState extends State<DownloadApk> {
             _installApk(savePath);
           } else {
             //关闭升级弹窗
-            widget.onTap.call();
+            widget.onTap!.call();
             //弹出告警提示
-            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
-            YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消',
+            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext!, listen: false).config.officeSite ?? "";
+            YyShowDialog.showdialog(AppGlobal.appContext!, title: '温馨提示', btnText: '去官网下载', cancelText: '取消',
                 callBack: () {
               CommonUtils.launchURL(officeSite);
             }, content: (setDialogState) {

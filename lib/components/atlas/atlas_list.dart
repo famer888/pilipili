@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +12,8 @@ import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class AtilasList extends StatefulWidget {
-  AtilasList({Key key, this.pramas}) : super(key: key);
-  final Map pramas;
+  AtilasList({Key? key, this.pramas}) : super(key: key);
+  final Map? pramas;
 
   @override
   _AtilasListState createState() => _AtilasListState();
@@ -21,7 +21,7 @@ class AtilasList extends StatefulWidget {
 
 class _AtilasListState extends State<AtilasList> {
   int currentIndex = 0;
-  PageController _controller;
+  late PageController _controller;
   List<GlobalKey> keyList = [];
   List<TransformationController> transformationControllerList = [];
 
@@ -30,7 +30,7 @@ class _AtilasListState extends State<AtilasList> {
   @override
   void initState() {
     super.initState();
-    widget.pramas['resources'].forEach((item) {
+    widget.pramas!['resources'].forEach((item) {
       GlobalKey _key = GlobalKey();
       TransformationController transformationController =
           TransformationController();
@@ -40,8 +40,8 @@ class _AtilasListState extends State<AtilasList> {
     if (!kIsWeb) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     }
-    _controller = PageController(initialPage: widget.pramas['index']);
-    currentIndex = widget.pramas['index'];
+    _controller = PageController(initialPage: widget.pramas!['index']);
+    currentIndex = widget.pramas!['index'];
     setState(() {});
   }
 
@@ -95,11 +95,11 @@ class _AtilasListState extends State<AtilasList> {
     );
   }
 
-  Widget comicButtom({String type, Function onTap}) {
+  Widget comicButtom({String? type, Function? onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        onTap();
+        onTap!();
             },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(7.5)),
@@ -167,7 +167,7 @@ class _AtilasListState extends State<AtilasList> {
                     currentIndex = e;
                     setState(() {});
                   },
-                  children: widget.pramas['resources']
+                  children: widget.pramas!['resources']
                       .asMap()
                       .keys
                       .map<Widget>((e) => new InteractiveViewer(
@@ -193,9 +193,9 @@ class _AtilasListState extends State<AtilasList> {
                               key: keyList[e],
                               noVisibilityDetector: true,
                               fit: BoxFit.fitWidth,
-                              url: widget.pramas['resources'][e]
+                              url: widget.pramas!['resources'][e]
                                       ['original_url'] ??
-                                  widget.pramas['resources'][e]['url'])))
+                                  widget.pramas!['resources'][e]['url'])))
                       .toList()),
               Positioned(
                   child: Center(
@@ -223,7 +223,7 @@ class _AtilasListState extends State<AtilasList> {
                           type: 'right',
                           onTap: () {
                             if (currentIndex ==
-                                widget.pramas['resources'].length - 1) {
+                                widget.pramas!['resources'].length - 1) {
                               CommonUtils.showText('已经是最后一张啦～');
                               return;
                             }
@@ -280,7 +280,7 @@ class _AtilasListState extends State<AtilasList> {
                               Text(
                                 (currentIndex + 1).toString() +
                                     '/' +
-                                    widget.pramas['resources'].length
+                                    widget.pramas!['resources'].length
                                         .toString(),
                                 style: DefaultStyle.white18bold,
                               ),

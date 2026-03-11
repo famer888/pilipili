@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pilipili/components/common/scrollnav.dart';
 import 'package:pilipili/components/filter_list.dart';
@@ -12,8 +12,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../utils/api.dart';
 
 class Manhua extends StatefulWidget {
-  Manhua({Key key, this.pos}) : super(key: key);
-  final int pos;
+  Manhua({Key? key, this.pos}) : super(key: key);
+  final int? pos;
   @override
   _ManhuaState createState() => _ManhuaState();
 }
@@ -33,7 +33,7 @@ class _ManhuaState extends State<Manhua> {
 
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(4);
-    data.value.asMap().forEach((index, data) {
+    data.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {
@@ -42,7 +42,7 @@ class _ManhuaState extends State<Manhua> {
           child: Lanmu(
               pos: widget.pos,
               isShow: currentIndex == index,
-              id: int.parse(item.linkUrl),
+              id: int.parse(item.linkUrl!),
               parentName: 'manhua',
               index: index),
         ));

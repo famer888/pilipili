@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final coinDetialModel = coinDetialModelFromJson(jsonString);
 
@@ -19,11 +19,11 @@ class CoinDetialModel {
     this.isVip,
   });
 
-  List<Datum> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<Datum>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory CoinDetialModel.fromJson(Map<String, dynamic> json) =>
       CoinDetialModel(
@@ -39,7 +39,7 @@ class CoinDetialModel {
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -63,18 +63,18 @@ class Datum {
     this.coin,
   });
 
-  int id;
-  int aff;
-  int source;
-  int type;
-  String coinCnt;
-  String desc;
-  int sourceAff;
-  String createdAt;
-  String sourceStr;
-  String typeStr;
-  String sourceName;
-  String coin;
+  int? id;
+  int? aff;
+  int? source;
+  int? type;
+  String? coinCnt;
+  String? desc;
+  int? sourceAff;
+  String? createdAt;
+  String? sourceStr;
+  String? typeStr;
+  String? sourceName;
+  String? coin;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],

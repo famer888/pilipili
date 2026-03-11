@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,8 +26,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
   }
 
   Widget animatedBox(
-      {Widget child,
-      int time,
+      {Widget? child,
+      int? time,
       double left = 0,
       double top = 0,
       double right = 0,
@@ -47,7 +47,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
     );
   }
 
-  Widget head({bool noBack = false, Widget rightWidget}) {
+  Widget head({bool noBack = false, Widget? rightWidget}) {
     return Container(
       height: ScreenUtil().setWidth(44),
       width: double.infinity,
@@ -85,7 +85,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
   }
 
   Future showBuy(data, Function buyFunction) {
-    int money = Provider.of<HomeConfig>(context, listen: false).member.money;
+    int money = Provider.of<HomeConfig>(context, listen: false).member.money!;
     bool isInsufficient = money < data.discountCoins;
     bool isVip = AppGlobal.vipLevel > 0;
     return showModalBottomSheet(
@@ -426,7 +426,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
         });
   }
 
-  Widget coinbuy({dynamic data, Function buyFunction}) {
+  Widget coinbuy({dynamic data, Function? buyFunction}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -438,7 +438,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
         ])),
         GestureDetector(
           onTap: () {
-            showBuy(data, buyFunction);
+            showBuy(data, buyFunction!);
           },
           child: Container(
             margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
@@ -486,13 +486,13 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                 var config =
                     Provider.of<HomeConfig>(context, listen: false).config;
                 ShareMovieModel.showShareMovie(backButtonBehavior,
-                    copyUrl: config.share.affUrlCopy.url,
+                    copyUrl: config.share!.affUrlCopy!.url!,
                     thumb: data?.coverOriginalHorizontal == ''
                         ? data?.coverOriginalVertical
                         : data?.coverOriginalHorizontal,
                     title: data.title,
                     subtitle: data.desc,
-                    url: '${config.share.affUrl}');
+                    url: '${config.share!.affUrl}');
               },
               child: Container(
                   margin: EdgeInsets.only(right: ScreenUtil().setWidth(26)),

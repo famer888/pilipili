@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -35,27 +35,23 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     return result;
   }
 
-  String getRouter(int contentType, {String id, bool replace}) {
-    CommonUtils.debugPrint('----------------------------------当前ContentType--' +
-        contentType.toString());
-    String router;
+  String getRouter(int contentType, {String? id, bool? replace}) {
+    CommonUtils.debugPrint('----------------------------------当前ContentType--' + contentType.toString());
+    String router = "";
     switch (contentType) {
       case 1: //视频
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
             : CommonUtils.getRealHash('videoDetail/$id');
         break;
       case 2: //漫画
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("${PPString.test}comicsdetail/.*"), 'comicsdetail/$id')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}comicsdetail/.*"), 'comicsdetail/$id')
             : CommonUtils.getRealHash('comicsdetail/$id');
         break;
       case 3: //小说
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("${PPString.test}novelDetail/.*"), 'novelDetail/$id')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}novelDetail/.*"), 'novelDetail/$id')
             : CommonUtils.getRealHash('novelDetail/$id');
         break;
       case 4: //链接
@@ -65,31 +61,26 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
         router = CommonUtils.getRealHash('audiobookDetail/0');
         break;
       case 6: //图集
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("${PPString.test}atlasDetail/.*"), 'atlasDetail/$id')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}atlasDetail/.*"), 'atlasDetail/$id')
             : CommonUtils.getRealHash('atlasDetail/$id');
         break;
       case 7: //短视频
-        router = CommonUtils.getRealHash(
-            kIsWeb ? 'webSmallVideo/0' : 'smallVideo/0');
+        router = CommonUtils.getRealHash(kIsWeb ? 'webSmallVideo/0' : 'smallVideo/0');
         break;
       case 10: //动漫
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("${PPString.test}videoDetail/.*"), 'videoDetail/$id')
             : CommonUtils.getRealHash('videoDetail/$id');
         break;
       case 11: //视频系列
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("seriesDetail/.*"), 'seriesDetail/$id/$contentType')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("seriesDetail/.*"), 'seriesDetail/$id/$contentType')
             : CommonUtils.getRealHash('seriesDetail/$id/$contentType');
         break;
       case 12: //漫画系列
-        router = replace
-            ? CommonUtils.getRealHash().replaceAll(
-                RegExp("seriesDetail/.*"), 'seriesDetail/$id/$contentType')
+        router = replace!
+            ? CommonUtils.getRealHash().replaceAll(RegExp("seriesDetail/.*"), 'seriesDetail/$id/$contentType')
             : CommonUtils.getRealHash('seriesDetail/$id/$contentType');
         break;
       default:
@@ -106,8 +97,8 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
   };
 
   Widget callDetail(
-      {Widget child,
-      int contentType,
+      {Widget? child,
+      int? contentType,
       dynamic cardData,
       dynamic widget,
       dynamic smallVideoData,
@@ -116,15 +107,14 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
       double progress = 0,
       bool downloading = false,
       bool isWaiting = false,
-      Function setDownloading,
-      Function onTap}) {
+      Function? setDownloading,
+      Function? onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        onTap();
-              if (privilegeMap[contentType] != null) {
-          bool _isAllowed = Privilege.isAllowed(context,
-              privilegeMap[contentType]['privilege'], PRIVILEGE_TYPE_VIEW);
+        onTap!();
+        if (privilegeMap[contentType] != null) {
+          bool _isAllowed = Privilege.isAllowed(context, privilegeMap[contentType]['privilege'], PRIVILEGE_TYPE_VIEW);
           if (!_isAllowed) {
             YyShowDialog.showdialog(
               context,
@@ -159,11 +149,10 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                   extra: {'videoInfo': cardData});
             } else if (contentType == 2) {
               // 漫画
-              context.push(CommonUtils.getRealHash('localComicsDetatl'),
-                  extra: {'comicsInfo': cardData});
+              context.push(CommonUtils.getRealHash('localComicsDetatl'), extra: {'comicsInfo': cardData});
             }
           } else if (!downloading && !isWaiting) {
-            setDownloading();
+            setDownloading!();
             if (contentType == 1 || contentType == 7) {
               DownloadUtil.createDownloadTask(cardData);
             } else if (contentType == 2) {
@@ -171,9 +160,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
             }
           }
         } else if (contentType != 4) {
-          var id = cardData['related_id'] == null
-              ? cardData['id']
-              : cardData['related_id'];
+          var id = cardData['related_id'] == null ? cardData['id'] : cardData['related_id'];
           AppGlobal.currentDetailRouteExtra = {
             'videoData': smallVideoData,
             'id': id,
@@ -181,12 +168,9 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
             'page': widget.page == null || widget.page == 0 ? 1 : widget.page
           };
           if (replace) {
-            context.push(
-                getRouter(contentType, id: id.toString(), replace: replace),
-                replace: replace);
+            context.pushReplacement(getRouter(contentType!, id: id.toString(), replace: replace));
           } else {
-            context.push(
-                getRouter(contentType, id: id.toString(), replace: replace));
+            context.push(getRouter(contentType!, id: id.toString(), replace: replace));
           }
         } else {
           AppGlobal.currenClickData = cardData;
@@ -198,8 +182,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
             if (urlList.length > 1) {
               urlList[1].split("&").forEach((item) {
                 List stringText = item.split('=');
-                pramas[stringText[0]] =
-                    stringText.length > 1 ? stringText[1] : null;
+                pramas[stringText[0]] = stringText.length > 1 ? stringText[1] : null;
               });
             }
             Map<String, dynamic> pramasObj = {};
@@ -216,8 +199,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
             List urlList = linkUrl.split('?');
             if (urlList.length > 1) {
               if (urlList[0] == 'video') {
-                int _cindex = AppGlobal.navList
-                    .indexWhere((item) => item.name == urlList[1]);
+                int _cindex = AppGlobal.navList.indexWhere((item) => item.name == urlList[1]);
                 //跳转结构
                 try {
                   EventBus().emit('pili_ciyuan', _cindex == null ? 0 : _cindex);
@@ -227,8 +209,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
             }
           } else if (cardData['redirect_type'] == 4) {
             String linkUrl = cardData['link_url'];
-            var members =
-                Provider.of<HomeConfig>(context, listen: false).member;
+            var members = Provider.of<HomeConfig>(context, listen: false).member;
             var aff = members.aff;
             var piliid = members.uuid;
             CommonUtils.launchURL(linkUrl.trim() + '?aff=$aff&piliid=$piliid');
@@ -275,8 +256,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                     height: double.infinity,
                     fit: BoxFit.cover,
                   )
-                : (widget.previewUrl != null &&
-                        widget.previewUrl.indexOf('http') != -1
+                : (widget.previewUrl != null && widget.previewUrl.indexOf('http') != -1
                     ? Container()
                     : PlatformAwareNetworkImage(
                         width: thumbWidth,
@@ -317,12 +297,9 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                         borderRadius: marginBottom != 0
-                            ? BorderRadius.all(
-                                Radius.circular(ScreenUtil().setWidth(5)))
+                            ? BorderRadius.all(Radius.circular(ScreenUtil().setWidth(5)))
                             : BorderRadius.vertical(
-                                bottom: Radius.zero,
-                                top:
-                                    Radius.circular(ScreenUtil().setWidth(5)))),
+                                bottom: Radius.zero, top: Radius.circular(ScreenUtil().setWidth(5)))),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -332,8 +309,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                           width: thumbWidth * progress,
                           decoration: BoxDecoration(
                               color: Color.fromRGBO(255, 35, 126, 1),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(ScreenUtil().setWidth(1)))),
+                              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(1)))),
                         ),
                       ],
                     )),
@@ -344,11 +320,11 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
   }
 
   Widget renderTagIcon(widget) {
-    String _asset;
+    String _asset = "";
     if (widget.tagIconType == 0) {
       _asset = 'assets/images/icon_free.png';
     } else if (widget.tagIconType == 1) {
-      _asset = null; // 'assets/images/icon_vip.png';
+      _asset = null!; // 'assets/images/icon_vip.png';
     } else if (widget.tagIconType == 2) {
       _asset = 'assets/images/icon_hot.png';
     } else if (widget.tagIconType == 3) {

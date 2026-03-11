@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final userInfo = userInfoFromJson(jsonString);
 
@@ -17,11 +17,11 @@ class UserInfo {
     this.isVip,
   });
 
-  UserInfoData data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  UserInfoData? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
         data: json["data"] == null ? null : UserInfoData.fromJson(json["data"]),
@@ -32,7 +32,7 @@ class UserInfo {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -52,15 +52,15 @@ class UserInfoData {
       this.postMoney,
       this.score});
 
-  int money;
-  int exp;
-  int level;
-  String thumb;
-  String nickname;
-  int shortMvFreeTime;
-  int longMvFreeTime;
-  int postMoney;
-  num score;
+  int? money;
+  int? exp;
+  int? level;
+  String? thumb;
+  String? nickname;
+  int? shortMvFreeTime;
+  int? longMvFreeTime;
+  int? postMoney;
+  num? score;
 
   factory UserInfoData.fromJson(Map<String, dynamic> json) => UserInfoData(
       money: json["money"] == null ? null : json["money"],

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/pages/mine/app_center.dart';
@@ -6,15 +6,15 @@ import 'package:pilipili/pages/mine/app_welfare_center_page.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class WalfareIndexPage extends StatefulWidget {
-  final int index;
-  const WalfareIndexPage({Key key, this.index}) : super(key: key);
+  final int? index;
+  const WalfareIndexPage({Key? key, this.index}) : super(key: key);
 
   @override
   State<WalfareIndexPage> createState() => _WalfareIndexPageState();
 }
 
 class _WalfareIndexPageState extends State<WalfareIndexPage> with TickerProviderStateMixin {
-  TabController tabController;
+  late TabController tabController;
   List tabs = <String>['福利中心', '应用推荐'];
   @override
   void initState() {

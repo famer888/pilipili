@@ -1,10 +1,10 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/video/YyVideo.dart';
 
 class LocalVideoDetail extends StatefulWidget {
-  LocalVideoDetail({Key key, this.videoInfo}) : super(key: key);
+  LocalVideoDetail({Key? key, this.videoInfo}) : super(key: key);
   final dynamic videoInfo;
   @override
   _LocalVideoDetailState createState() => _LocalVideoDetailState();

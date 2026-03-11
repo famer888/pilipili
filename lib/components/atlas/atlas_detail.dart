@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -15,15 +15,15 @@ import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 
 class AtlasDetail extends StatefulWidget {
-  AtlasDetail({Key key, this.id}) : super(key: key);
+  AtlasDetail({Key? key, this.id}) : super(key: key);
   final dynamic id;
   @override
   _AtlasDetailState createState() => _AtlasDetailState();
 }
 
 class _AtlasDetailState extends State<AtlasDetail> {
-  Map picDetail;
-  List picList;
+  late Map picDetail;
+  late List picList;
   bool isLike = false;
   int likeNum = 0;
   @override
@@ -45,12 +45,12 @@ class _AtlasDetailState extends State<AtlasDetail> {
     });
   }
 
-  Widget _btnItem({String icon, String name, Color color}) {
+  Widget _btnItem({String? icon, String? name, Color? color}) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         PlatformAwareAssetImage(
-            url: 'assets/pengke/video/' + icon + '.png',
+            url: 'assets/pengke/video/' + icon! + '.png',
             width: ScreenUtil().setWidth(25),
             fit: BoxFit.fitWidth,
             filterQuality: FilterQuality.medium),
@@ -58,7 +58,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
           width: ScreenUtil().setWidth(7),
         ),
         Text(
-          name,
+          name!,
           style: TextStyle(
               color: color != null ? color : Color(0xffffffff),
               fontSize: ScreenUtil().setSp(14)),
@@ -230,7 +230,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
                             isLike = !isLike;
                             setState(() {});
                           } else {
-                            CommonUtils.showText(res.msg);
+                            CommonUtils.showText(res.msg!);
                           }
                         });
                       },
@@ -250,11 +250,11 @@ class _AtlasDetailState extends State<AtlasDetail> {
                             Provider.of<HomeConfig>(context, listen: false)
                                 .config;
                         ShareMovieModel.showShareMovie(BackButtonBehavior.none,
-                            copyUrl: config.share.affUrlCopy.url,
+                            copyUrl: config.share!.affUrlCopy!.url!,
                             thumb: picDetail['thumb'],
                             title: picDetail['title'] ?? '--',
                             subtitle: picDetail['desc'] ?? '--',
-                            url: config.share.affUrl.toString());
+                            url: config.share!.affUrl.toString());
                       },
                       child: _btnItem(icon: 'icon_share', name: '分享'),
                     )
@@ -270,8 +270,8 @@ class _AtlasDetailState extends State<AtlasDetail> {
 }
 
 class YyTap extends StatefulWidget {
-  YyTap({Key key, this.text}) : super(key: key);
-  String text;
+  YyTap({Key? key, this.text}) : super(key: key);
+  String? text;
   @override
   _YyTapState createState() => _YyTapState();
 }

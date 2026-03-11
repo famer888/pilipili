@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
@@ -17,7 +17,7 @@ import 'package:pilipili/utils/logUtilS.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class DownPage extends StatefulWidget {
-  DownPage({Key key}) : super(key: key);
+  DownPage({Key? key}) : super(key: key);
 
   @override
   _DownPageState createState() => _DownPageState();
@@ -25,9 +25,9 @@ class DownPage extends StatefulWidget {
 
 class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
   final myController = TextEditingController();
-  TabController _tabController;
+  late TabController _tabController;
   int currentTab = 0;
-  bool isEdit = false;
+  bool? isEdit = false;
   bool isAll = false;
   List tabList = [
     {
@@ -49,8 +49,8 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
       vsync: this,
     );
     _tabController.addListener(() {
-      if (_tabController.index.toDouble() == _tabController.animation.value) {
-        if (isEdit && isAll) {
+      if (_tabController.index.toDouble() == _tabController.animation!.value) {
+        if (isEdit! && isAll == true) {
           isAll = false;
           EventBus()
               .emit("EDIT_DOWNLOAD", {"isAll": false, "current": currentTab});
@@ -78,7 +78,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
             rightWidget: GestureDetector(
               onTap: () {
                 setState(() {
-                  isEdit = !isEdit;
+                  isEdit = !isEdit!;
                 });
               },
               child: Container(
@@ -187,7 +187,7 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
   Widget renderBottom() {
     String allIcon = 'assets/images/icon_all_choose.png';
     String allNotIcon = 'assets/images/icon_all_choose_not.png';
-    if (!isEdit) {
+    if (!isEdit!) {
       return Container();
     }
     return Container(
@@ -263,12 +263,12 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
 }
 
 class DownList extends StatefulWidget {
-  DownList({Key key, this.type, this.isEdit, this.current, this.changeIsAll})
+  DownList({Key? key, this.type, this.isEdit, this.current, this.changeIsAll})
       : super(key: key);
-  int type;
-  bool isEdit;
-  int current;
-  Function changeIsAll;
+  int? type;
+  bool? isEdit;
+  int? current;
+  Function? changeIsAll;
   @override
   _DownListState createState() => _DownListState();
 }
@@ -297,7 +297,7 @@ class _DownListState extends State<DownList> {
         getVideoDownloadInfo();
     }
     EventBus().on('EDIT_DOWNLOAD', (arg) {
-      if (arg["current"] == widget.type - 1) {
+      if (arg["current"] == widget.type! - 1) {
         if (arg["isAll"] != null && arg["isAll"]) {
           for (var i = 0; i < data.length; i++) {
             data[i]["choosed"] = true;
@@ -323,8 +323,8 @@ class _DownListState extends State<DownList> {
     // data = box.get('download_video_tasks') ?? [];
     for (var i = 0; i < data.length; i++) {
       if (data[i]["choosed"] == true) {
-        String path;
-        String dir;
+        String path = '';
+        String dir = '';
         if (widget.type == 1) {
           DownloadUtil.removeTask(data[i]["id"]);
           path = data[i]["url"];
@@ -381,7 +381,7 @@ class _DownListState extends State<DownList> {
   }
 
   Widget chooseWidget(int index) {
-    return widget.isEdit
+    return widget.isEdit!
         ? Positioned(
             top: 0,
             right: 0,
@@ -397,9 +397,9 @@ class _DownListState extends State<DownList> {
                 }
                 data[index]["choosed"] = !data[index]["choosed"];
                 if (chooseNum < data.length) {
-                  widget.changeIsAll(false);
+                  widget.changeIsAll!(false);
                 } else if (chooseNum == data.length) {
-                  widget.changeIsAll(true);
+                  widget.changeIsAll!(true);
                 }
                 setState(() {});
               },

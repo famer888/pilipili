@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final comicDetail = comicDetailFromJson(jsonString);
 
@@ -18,11 +18,11 @@ class ComicDetail {
     this.isVip,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory ComicDetail.fromJson(Map<String, dynamic> json) => ComicDetail(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -33,7 +33,7 @@ class ComicDetail {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -84,45 +84,45 @@ class Data {
     this.userLike,
   });
 
-  int dataId;
-  String id;
-  String recommendTitle;
-  String title;
-  String description;
-  String author;
-  String categories;
-  String bgThumb;
-  String thumb;
+  int? dataId;
+  String? id;
+  String? recommendTitle;
+  String? title;
+  String? description;
+  String? author;
+  String? categories;
+  String? bgThumb;
+  String? thumb;
   dynamic reThumb;
-  String tags;
-  int isFree;
-  int adult;
-  int finished;
-  int imagesCount;
-  int viewsCount;
-  int likesCount;
+  String? tags;
+  int? isFree;
+  int? adult;
+  int? finished;
+  int? imagesCount;
+  int? viewsCount;
+  int? likesCount;
   dynamic favorites;
-  int cjFinished;
-  int viewMoney;
-  int downloadMoney;
-  int status;
-  String updateTime;
-  int freeTime;
-  int recommend;
-  int indexRecommend;
-  int obtained;
-  int goodLook;
-  int mustAwesome;
-  int whatAwesome;
-  int noAwesome;
-  int from;
-  String refreshAt;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int newestSeries;
-  int watchLog;
+  int? cjFinished;
+  int? viewMoney;
+  int? downloadMoney;
+  int? status;
+  String? updateTime;
+  int? freeTime;
+  int? recommend;
+  int? indexRecommend;
+  int? obtained;
+  int? goodLook;
+  int? mustAwesome;
+  int? whatAwesome;
+  int? noAwesome;
+  int? from;
+  String? refreshAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? newestSeries;
+  int? watchLog;
   dynamic userFavorites;
-  int userLike;
+  int? userLike;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         dataId: json["id"] == null ? null : json["id"],
@@ -209,8 +209,8 @@ class Data {
         "no_awesome": noAwesome == null ? null : noAwesome,
         "from": from == null ? null : from,
         "refresh_at": refreshAt == null ? null : refreshAt,
-        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
-        "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "newest_series": newestSeries == null ? null : newestSeries,
         "watchLog": watchLog == null ? null : watchLog,
         "userFavorites": userFavorites == null ? null : userFavorites,

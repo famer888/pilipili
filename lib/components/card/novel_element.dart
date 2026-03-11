@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class NovelElementCard extends StatelessWidget {
-  const NovelElementCard({Key key, this.data}) : super(key: key);
-  final Map data;
+  const NovelElementCard({Key? key, this.data}) : super(key: key);
+  final Map? data;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/novelDetail/${data['related_id']}');
+        context.push('/novelDetail/${data!['related_id']}');
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 8.w),
@@ -49,7 +49,7 @@ class NovelElementCard extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(3.w))),
                         child: Text(
-                          data['is_end'] == 1 ? '完结' : '连载',
+                          data!['is_end'] == 1 ? '完结' : '连载',
                           style:
                               TextStyle(color: Colors.white, fontSize: 10.sp),
                         ),
@@ -68,7 +68,7 @@ class NovelElementCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    data['title'] ?? data['name'],
+                    data!['title'] ?? data!['name'],
                     style: TextStyle(
                         color: Color(0XFF646464),
                         fontSize: 14.sp,
@@ -80,7 +80,7 @@ class NovelElementCard extends StatelessWidget {
                     height: 4.w,
                   ),
                   Text(
-                    data['description'] ?? data['desc'],
+                    data!['description'] ?? data!['desc'],
                     style: TextStyle(
                         color: Color(0XFF979797),
                         fontSize: 14.sp,
@@ -95,7 +95,7 @@ class NovelElementCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            CommonUtils.renderFixedNumber(data['view_count']),
+                            CommonUtils.renderFixedNumber(data!['view_count']),
                             style: TextStyle(
                                 color: Color(0xff979797),
                                 fontSize: 11.sp,
@@ -104,7 +104,7 @@ class NovelElementCard extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        '${data['is_end'] == 1 ? '已完结' : '连载中'} / 最新${data['chapter_count']}章',
+                        '${data!['is_end'] == 1 ? '已完结' : '连载中'} / 最新${data!['chapter_count']}章',
                         style: TextStyle(
                             color: Color(0xff979797),
                             fontSize: 11.sp,

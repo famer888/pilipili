@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+﻿import 'package:dio/dio.dart';
 import 'package:pilipili/report/router_observer.dart';
 import 'package:pilipili/utils/common.dart';
 import 'page_request_tracker.dart';
@@ -14,7 +14,7 @@ class ApiTimingInterceptor extends Interceptor {
     options.extra['pageKey'] = pageKey;
     options.extra['pageEnterMs'] = enterMs;
 
-    PageRequestTracker.instance.onRequestStart(pageKey, enterMs, now);
+    PageRequestTracker.instance.onRequestStart(pageKey!, enterMs, now);
 
     super.onRequest(options, handler);
   }
@@ -31,7 +31,7 @@ class ApiTimingInterceptor extends Interceptor {
     super.onError(err, handler);
   }
 
-  void _finish(RequestOptions options, {bool success}) {
+  void _finish(RequestOptions options, {bool? success}) {
     final now = DateTime.now().millisecondsSinceEpoch;
 
     final pageKey = (options.extra['pageKey'] as String) ?? 'unknown';

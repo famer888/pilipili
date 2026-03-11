@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/components/filter_list.dart';
 import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
@@ -11,7 +11,7 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import '../../components/common/scrollnav.dart';
 
 class NovelPage extends StatefulWidget {
-  const NovelPage({Key key}) : super(key: key);
+  const NovelPage({Key? key}) : super(key: key);
 
   @override
   State<NovelPage> createState() => _NovelPageState();
@@ -34,7 +34,7 @@ class _NovelPageState extends State<NovelPage> {
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(289);
     loading = false;
-    data.value.asMap().forEach((index, data) {
+    data.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {
@@ -42,7 +42,7 @@ class _NovelPageState extends State<NovelPage> {
         pages.add(PageViewMixin(
           child: Lanmu(
               isShow: currentIndex == index,
-              id: int.parse(item.linkUrl),
+              id: int.parse(item.linkUrl!),
               parentName: 'novel',
               index: index),
         ));

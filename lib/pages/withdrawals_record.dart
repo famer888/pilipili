@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
 
 class WithdrawalsRecord extends StatefulWidget {
-  const WithdrawalsRecord({Key key, this.type = 2}) : super(key: key);
+  const WithdrawalsRecord({Key? key, this.type = 2}) : super(key: key);
   final int type;
   @override
   State<WithdrawalsRecord> createState() => _WithdrawalsRecordState();

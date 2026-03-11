@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'item_positions_notifier.dart';
+import 'scrollable_positioned_list.dart';
 
 /// Provides a listenable iterable of [itemPositions] of items that are on
 /// screen and their locations.
@@ -21,9 +22,9 @@ abstract class ItemPositionsListener {
 class ItemPosition {
   /// Create an [ItemPosition].
   const ItemPosition(
-      {@required this.index,
-      @required this.itemLeadingEdge,
-      @required this.itemTrailingEdge});
+      {required this.index,
+      required this.itemLeadingEdge,
+      required this.itemTrailingEdge});
 
   /// Index of the item.
   final int index;
@@ -56,5 +57,5 @@ class ItemPosition {
 
   @override
   String toString() =>
-      'ItemPosition(index: '+index.toString()+', itemLeadingEdge: '+itemLeadingEdge.toString()+', itemTrailingEdge: '+itemTrailingEdge.toString()+')';
+      'ItemPosition(index: $index, itemLeadingEdge: $itemLeadingEdge, itemTrailingEdge: $itemTrailingEdge)';
 }

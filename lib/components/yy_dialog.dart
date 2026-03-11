@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -6,19 +6,19 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class YyDialog extends StatefulWidget {
-  final Widget child; //子Widget
-  final Function toPageCallback; //当content为null时会触发该事件（点击直接触发，不弹框）
-  final Function callBack; //点击确认时的回调。为null时点击会关闭弹窗
-  final String title; //标题
-  final Function content; //内容
-  final String btnText; //按钮内容
-  final Function clickCallBack; //点击立即触发
-  final bool isClick; //是否开启点击立即触发；
-  final Function changeBtnText;
-  final Function cancelBack;
+  final Widget? child; //子Widget
+  final Function? toPageCallback; //当content为null时会触发该事件（点击直接触发，不弹框）
+  final Function? callBack; //点击确认时的回调。为null时点击会关闭弹窗
+  final String? title; //标题
+  final Function? content; //内容
+  final String? btnText; //按钮内容
+  final Function? clickCallBack; //点击立即触发
+  final bool? isClick; //是否开启点击立即触发；
+  final Function? changeBtnText;
+  final Function? cancelBack;
   final bool clear; //关闭是否修改状态
   YyDialog(
-      {Key key,
+      {Key? key,
       this.child,
       this.clear = false,
       this.callBack,
@@ -41,8 +41,8 @@ class YyDialogState extends State<YyDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.isClick) {
-          widget.clickCallBack();
+        if (widget.isClick!) {
+          widget.clickCallBack!();
           return;
         }
         YyShowDialog.showdialog(context,
@@ -53,7 +53,7 @@ class YyDialogState extends State<YyDialog> {
             changeBtnText: widget.changeBtnText,
             callBack: widget.callBack,
             btnText: widget.btnText ?? '确定');
-            },
+      },
       child: widget.child,
     );
   }
@@ -61,28 +61,26 @@ class YyDialogState extends State<YyDialog> {
 
 class YyShowDialog {
   static Future<dynamic> showdialog(BuildContext context,
-      {String title,
-      Function content,
+      {String? title,
+      Function? content,
       bool clear = false,
-      Function callBack,
-      Function cancelBack,
-      String btnText,
-      String cancelText,
-      Function changeBtnText,
+      Function? callBack,
+      Function? cancelBack,
+      String? btnText,
+      String? cancelText,
+      Function? changeBtnText,
       bool prohibitClose = false}) {
     return showDialog<dynamic>(
       context: context,
-      barrierDismissible: prohibitClose ? null : true,
+      barrierDismissible: prohibitClose ? false : true,
       builder: (context) {
         return StatefulBuilder(builder: (context, setDialogState) {
-          btnText = changeBtnText();
-                  return Dialog(
+          btnText = changeBtnText!();
+          return Dialog(
               backgroundColor: Colors.transparent,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xffFFF4F9),
-                    borderRadius:
-                        BorderRadius.circular(ScreenUtil().setWidth(10))),
+                    color: Color(0xffFFF4F9), borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
                 width: ScreenUtil().setWidth(300),
                 padding: new EdgeInsets.only(
                     left: ScreenUtil().setWidth(24.5),
@@ -102,16 +100,12 @@ class YyShowDialog {
                                     title,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Color(0xff646464),
-                                        fontSize: 16.w,
-                                        fontWeight: FontWeight.bold),
+                                        color: Color(0xff646464), fontSize: 16.w, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                           Container(
-                              margin: new EdgeInsets.only(
-                                  top: ScreenUtil()
-                                      .setWidth(title == null ? 32 : 26)),
-                              child: content(setDialogState)),
+                              margin: new EdgeInsets.only(top: ScreenUtil().setWidth(title == null ? 32 : 26)),
+                              child: content!(setDialogState)),
                           Row(
                             children: [
                               cancelText != null
@@ -119,8 +113,8 @@ class YyShowDialog {
                                       child: Center(
                                       child: GestureDetector(
                                         onTap: () {
-                                          cancelBack();
-                                                                                  context.pop();
+                                          cancelBack!();
+                                          context.pop();
                                         },
                                         child: Container(
                                           margin: EdgeInsets.only(
@@ -129,16 +123,9 @@ class YyShowDialog {
                                               top: ScreenUtil().setWidth(32)),
                                           child: Container(
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(18)),
+                                                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(18)),
                                                 gradient: LinearGradient(
-                                                  colors: [
-                                                    DefaultStyle.btnThemeColor,
-                                                    DefaultStyle
-                                                        .btnLinerThemeColor
-                                                  ],
+                                                  colors: [DefaultStyle.btnThemeColor, DefaultStyle.btnLinerThemeColor],
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
                                                 )),
@@ -148,11 +135,9 @@ class YyShowDialog {
                                               child: Text(
                                                 cancelText,
                                                 style: TextStyle(
-                                                    color:
-                                                        DefaultStyle.themeColor,
+                                                    color: DefaultStyle.themeColor,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14)),
+                                                    fontSize: ScreenUtil().setSp(14)),
                                               ),
                                             ),
                                           ),
@@ -166,8 +151,8 @@ class YyShowDialog {
                                       child: GestureDetector(
                                         onTap: () {
                                           context.pop();
-                                          callBack();
-                                                                                },
+                                          callBack!();
+                                        },
                                         child: Container(
                                           margin: EdgeInsets.only(
                                               left: ScreenUtil().setWidth(5),
@@ -175,15 +160,9 @@ class YyShowDialog {
                                               top: ScreenUtil().setWidth(32)),
                                           child: Container(
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(18)),
+                                                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(18)),
                                                 gradient: LinearGradient(
-                                                  colors: [
-                                                    DefaultStyle.themeColor,
-                                                    DefaultStyle.linerThemeColor
-                                                  ],
+                                                  colors: [DefaultStyle.themeColor, DefaultStyle.linerThemeColor],
                                                   end: Alignment.topCenter,
                                                   begin: Alignment.bottomCenter,
                                                 )),
@@ -195,8 +174,7 @@ class YyShowDialog {
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14)),
+                                                    fontSize: ScreenUtil().setSp(14)),
                                               ),
                                             ),
                                           ),
@@ -216,17 +194,13 @@ class YyShowDialog {
       },
     ).then((value) {
       if (clear) {
-        cancelBack();
+        cancelBack!();
       }
     });
   }
 
   static Future showButtom(context,
-      {String title,
-      double height,
-      Function callback,
-      dynamic content,
-      Function onClose}) {
+      {String? title, double? height, Function? callback, dynamic content, Function? onClose}) {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -244,8 +218,7 @@ class YyShowDialog {
                         topRight: Radius.circular(ScreenUtil().setWidth(12)),
                       )),
                   width: double.infinity,
-                  height: height ??
-                      370.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
+                  height: height ?? 370.w + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -253,25 +226,19 @@ class YyShowDialog {
                         height: ScreenUtil().setWidth(64),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                end: Alignment.bottomCenter,
-                                begin: Alignment.topCenter,
-                                colors: [
-                              Color(0XFFFF89AC),
-                              Color(0XFFFF5B8C),
-                              Color(0XFFFA437A),
-                            ])),
+                            gradient: LinearGradient(end: Alignment.bottomCenter, begin: Alignment.topCenter, colors: [
+                          Color(0XFFFF89AC),
+                          Color(0XFFFF5B8C),
+                          Color(0XFFFA437A),
+                        ])),
                         child: Center(
                           child: Text(
-                            title,
+                            title!,
                             style: DefaultStyle.white18bold,
                           ),
                         ),
                       ),
-                      Expanded(
-                          child: content is Widget
-                              ? content
-                              : content(setBottomSheetState)),
+                      Expanded(child: content is Widget ? content : content(setBottomSheetState)),
                     ],
                   ),
                 ),
@@ -292,7 +259,7 @@ class YyShowDialog {
             );
           });
         }).then((value) {
-      onClose();
-        });
+      onClose!();
+    });
   }
 }

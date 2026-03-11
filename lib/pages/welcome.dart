@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:pilipili/store/search.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
@@ -14,15 +14,15 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
 class Welcome extends StatefulWidget {
-  Welcome({Key key}) : super(key: key);
+  Welcome({Key? key}) : super(key: key);
   @override
   _WelcomeState createState() => _WelcomeState();
 }
 
 class _WelcomeState extends State<Welcome> {
-  Map yyads;
+  late Map yyads={};
   int curTime = 6;
-  Timer _timer;
+  late Timer _timer;
   int currenIndex = 0;
   toHome() async {
     currenIndex = 1;
@@ -41,7 +41,7 @@ class _WelcomeState extends State<Welcome> {
     }, onSuccess: () {
       getHomeConfig(context).then((res) {
         // toInvitation(affCode: "aqw92");
-        yyads = {'img': res.data.ads.imgUrl, 'url': res.data.ads.url};
+        yyads = {'img': res.data!.ads!.imgUrl, 'url': res.data!.ads!.url};
         setState(() {});
         adsCountDown();
             });
@@ -62,7 +62,7 @@ class _WelcomeState extends State<Welcome> {
     });
   }
 
-  DateTime lastPopTime;
+  late DateTime lastPopTime;
   @override
   Widget build(BuildContext context) {
     AppGlobal.appContext = context;
@@ -77,14 +77,14 @@ class _WelcomeState extends State<Welcome> {
             // 退出app
             await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
           }
-          return;
+          return false;
         },
         child: Scaffold(
           body: GestureDetector(
             onTap: () {
               FocusScopeNode currentFocus = FocusScope.of(context);
               if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-                FocusManager.instance.primaryFocus.unfocus();
+                FocusManager.instance.primaryFocus!.unfocus();
               }
             },
             behavior: HitTestBehavior.translucent,

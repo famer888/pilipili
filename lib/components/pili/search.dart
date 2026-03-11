@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/navel_card.dart';
@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 enum SearchPageType { searchPage, searchResultPage }
 
 class SearchPage extends StatefulWidget {
-  SearchPage({Key key}) : super(key: key);
+  SearchPage({Key? key}) : super(key: key);
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -64,11 +64,11 @@ class _SearchPageState extends State<SearchPage> {
       'isFlow': false,
     }
   ];
-  int tabIndex = 0;
+  int? tabIndex = 0;
 
-  PageController pageController = PageController();
+  PageController? pageController = PageController();
   PageController searchController = PageController();
-  Search searchProvider;
+  late Search searchProvider;
   ValueNotifier<bool> hideClearNotifier = ValueNotifier<bool>(true);
   ValueNotifier<SearchPageType> searchPageTypeNotifier = ValueNotifier<SearchPageType>(SearchPageType.searchPage);
 
@@ -184,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   child: Column(
                                                     mainAxisSize: MainAxisSize.min,
                                                     children: [
-                                                      historyTitle,
+                                                      historyTitle!,
                                                       SizedBox(
                                                         height: 36.w * historyTags.length,
                                                         child: ListView.builder(
@@ -293,7 +293,7 @@ class _SearchPageState extends State<SearchPage> {
                                 child: TabHead(
                                     index: tabIndex,
                                     changeHead: (e) {
-                                      pageController.jumpToPage(e);
+                                      pageController!.jumpToPage(e);
                                     }),
                               )),
                         ];
@@ -305,7 +305,7 @@ class _SearchPageState extends State<SearchPage> {
                             GlobalKey<PrimaryScrollContainerState> key = scrollChildKeys[i];
 
                             if (key.currentState != null) {
-                              key.currentState.onPageChange(e == i); //控制是否当��显示
+                              key.currentState!.onPageChange(e == i); //控制是否当��显示
                             }
                           }
                           tabIndex = e;
@@ -357,8 +357,8 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class PageGridView extends StatefulWidget {
-  PageGridView({Key key, this.id}) : super(key: key);
-  final int id;
+  PageGridView({Key? key, this.id}) : super(key: key);
+  final int? id;
   @override
   _PageGridViewState createState() => _PageGridViewState();
 }
@@ -390,8 +390,8 @@ class _PageGridViewState extends State<PageGridView> {
 }
 
 class SearchResult extends StatefulWidget {
-  final String word;
-  SearchResult({Key key, this.word}) : super(key: key);
+  final String? word;
+  SearchResult({Key? key, this.word}) : super(key: key);
 
   @override
   _SearchResultState createState() => _SearchResultState();
@@ -597,9 +597,9 @@ class _SearchResultState extends State<SearchResult> {
 }
 
 class TabHead extends StatefulWidget {
-  TabHead({Key key, this.changeHead, this.index}) : super(key: key);
-  final Function changeHead;
-  final int index;
+  TabHead({Key? key, this.changeHead, this.index}) : super(key: key);
+  final Function? changeHead;
+  final int? index;
   @override
   _TabHeadState createState() => _TabHeadState();
 }
@@ -629,7 +629,7 @@ class _TabHeadState extends State<TabHead> {
   void didUpdateWidget(TabHead oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.index != widget.index) {
-      currentIndex = widget.index;
+      currentIndex = widget.index!;
       setState(() {});
     }
   }
@@ -689,7 +689,7 @@ class _TabHeadState extends State<TabHead> {
                           itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   currentIndex = index;
-                                  widget.changeHead(index);
+                                  widget.changeHead!(index);
                                   setState(() {});
                                 },
                                 behavior: HitTestBehavior.translucent,
@@ -734,20 +734,20 @@ class _TabHeadState extends State<TabHead> {
 
 class SearchHeader extends StatefulWidget {
   const SearchHeader(
-      {Key key, this.pageController, this.hideClearIconNotifier, this.textController, this.searchPage, this.tabIndex})
+      {Key? key, this.pageController, this.hideClearIconNotifier, this.textController, this.searchPage, this.tabIndex})
       : super(key: key);
-  final PageController pageController;
-  final ValueNotifier hideClearIconNotifier;
-  final TextEditingController textController;
-  final SearchPageType searchPage;
-  final int tabIndex;
+  final PageController? pageController;
+  final ValueNotifier? hideClearIconNotifier;
+  final TextEditingController? textController;
+  final SearchPageType? searchPage;
+  final int? tabIndex;
   @override
   State<SearchHeader> createState() => _SearchHeaderState();
 }
 
 class _SearchHeaderState extends State<SearchHeader> {
-  Search searchProvider;
-  String prevText;
+  late Search searchProvider;
+  late String prevText;
   @override
   void initState() {
     searchProvider = context.read<Search>();
@@ -755,9 +755,9 @@ class _SearchHeaderState extends State<SearchHeader> {
   }
 
   void clickSearchBoxClearIcon() {
-    widget.textController.clear();
-    widget.pageController.jumpTo(0);
-    widget.hideClearIconNotifier.value = true;
+    widget.textController!.clear();
+    widget.pageController!.jumpTo(0);
+    widget.hideClearIconNotifier!.value = true;
   }
 
   @override
@@ -790,34 +790,34 @@ class _SearchHeaderState extends State<SearchHeader> {
               height: 36.w,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.w), color: Colors.white),
               child: ValueListenableBuilder(
-                  valueListenable: widget.hideClearIconNotifier,
+                  valueListenable: widget.hideClearIconNotifier!,
                   builder: (context, hideClear, child) {
                     return TextField(
                       autofocus: true,
                       onChanged: (value) {
                         if (!hideClear && value.isEmpty) {
-                          widget.pageController.jumpToPage(0);
-                          widget.hideClearIconNotifier.value = true;
+                          widget.pageController!.jumpToPage(0);
+                          widget.hideClearIconNotifier!.value = true;
                         }
                         if (hideClear && value.isNotEmpty) {
-                          widget.hideClearIconNotifier.value = false;
+                          widget.hideClearIconNotifier!.value = false;
                         }
                       },
                       controller: widget.textController,
                       textInputAction: TextInputAction.search,
                       onSubmitted: (e) {
-                        if (widget.textController.text.isEmpty) {
+                        if (widget.textController!.text.isEmpty) {
                           CommonUtils.showText('请输入搜索关键字～');
                           return;
                         }
-                        if (prevText == widget.textController.text && widget.tabIndex == 1) return;
-                        widget.pageController.jumpToPage(1);
-                        prevText = widget.textController.text;
-                        if (!searchProvider.historyTags.contains(widget.textController.text)) {
+                        if (prevText == widget.textController!.text && widget.tabIndex == 1) return;
+                        widget.pageController!.jumpToPage(1);
+                        prevText = widget.textController!.text;
+                        if (!searchProvider.historyTags.contains(widget.textController!.text)) {
                           if (searchProvider.historyTags.length >= 3) {
                             searchProvider.historyTags.removeAt(0);
                           }
-                          searchProvider.addHistoryTag(widget.textController.text);
+                          searchProvider.addHistoryTag(widget.textController!.text);
                         }
 
                         // Timer(Duration(milliseconds: 200), () {

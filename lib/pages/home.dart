@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -30,7 +30,7 @@ import "package:universal_html/js.dart" as js;
 import 'package:visibility_detector/visibility_detector.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
   ValueNotifier<int> selectedKey = ValueNotifier(0);
   bool loading = true;
 
-  getWebType(int h, int w, double r) {
+  getWebType(int h, int w, num r) {
     webTypeList.forEach((item) {
       if (item['h'] == h && item['w'] == w && item['r'] == r) {
         AppGlobal.webBottomHeight = 15.w;
@@ -137,9 +137,9 @@ class _HomeState extends State<Home> {
     }
     fetchBeforeEnterApp();
     if (kIsWeb) {
-      int _h = html.window.screen.height;
-      int _w = html.window.screen.width;
-      double _ratio = html.window.devicePixelRatio;
+      int _h = html.window.screen!.height!;
+      int _w = html.window.screen!.width!;
+      num _ratio = html.window.devicePixelRatio!;
       getWebType(_h, _w, _ratio);
       // webBottomHeight
     }
@@ -174,8 +174,8 @@ class _HomeState extends State<Home> {
     // "must": "0",     | 更新开关 0 不更新  1 强制更新 2 非强制更新
     // "tips": "",      | 更新描述
     // "message": "",   | 公告描述
-    var _versionLocal = AppGlobal.appinfo['version'];
-    var targetVersion = version.version.replaceAll('.', '');
+    var _versionLocal = AppGlobal.appinfo!['version'];
+    var targetVersion = version.version!.replaceAll('.', '');
     var currentVersion = _versionLocal.replaceAll('.', '');
     // 强制更新 线上版本大于当前版本才更新
     CommonUtils.debugPrint(targetVersion);
@@ -183,17 +183,17 @@ class _HomeState extends State<Home> {
     CommonUtils.debugPrint(version.toJson());
     var needUpdate = int.parse(targetVersion) > int.parse(currentVersion);
     AppGlobal.isNewVersion = !needUpdate;
-    AppGlobal.officeSite = config.officeSite;
+    AppGlobal.officeSite = config.officeSite!;
     if (AppGlobal.yyShow == false) return;
     if (version.must == 1 && needUpdate) {
-      showUpdate(version.version, version.tips, version.apk,
+      showUpdate(version.version!, version.tips!, version.apk!,
           must: version.must, showAnnouncementDialog: false, official: config.officeSite);
       return;
     }
 
     // 非强制更新 无公告 (关闭更新后弹出公告)
     if (version.must == 2 && version.mstatus == 0 && needUpdate) {
-      showUpdate(version.version, version.tips, version.apk,
+      showUpdate(version.version!, version.tips!, version.apk!,
           must: version.must,
           message: version.message,
           showAnnouncementDialog: version.mstatus == 0,
@@ -203,7 +203,7 @@ class _HomeState extends State<Home> {
 
     // 非强制更新 有公告 (关闭更新后弹出公告)
     if (version.must == 2 && version.mstatus == 1 && needUpdate) {
-      showUpdate(version.version, version.tips, version.apk,
+      showUpdate(version.version!, version.tips!, version.apk!,
           must: version.must,
           message: version.message,
           showAnnouncementDialog: version.mstatus == 1,
@@ -215,11 +215,11 @@ class _HomeState extends State<Home> {
       if (AppGlobal.popAppAds.isNotEmpty) {
         UpdateModel.showCompartmentDialog(
           cancel: () {
-            showAnnouncement(version.message);
+            showAnnouncement(version.message!);
           },
         );
       } else {
-        showAnnouncement(version.message);
+        showAnnouncement(version.message!);
       }
     }
   }
@@ -267,20 +267,20 @@ class _HomeState extends State<Home> {
 
   // 更新提示
   void showUpdate(String version, String tips, String apkurl,
-      {int must, String message, bool showAnnouncementDialog, String official}) {
+      {int? must, String? message, bool? showAnnouncementDialog, String? official}) {
     if (showUpdateStatus == true) return;
     UpdateModel.showUpdateDialog(backButtonBehavior, gowebsite: () {
-      CommonUtils.launchURL(official);
+      CommonUtils.launchURL(official!);
     }, cancel: () {
-      if (showAnnouncementDialog) {
-        showAnnouncement(message);
+      if (showAnnouncementDialog!) {
+        showAnnouncement(message!);
         AppGlobal.yyShow = false;
       }
     }, confirm: () {
       AppGlobal.yyShow = false;
       if (kIsWeb) {
         //刷新网页
-        CommonUtils.launchURL(Provider.of<HomeConfig>(context, listen: false).config.officeSite);
+        CommonUtils.launchURL(Provider.of<HomeConfig>(context, listen: false).config.officeSite!);
       } else {
         if (Platform.isAndroid) {
           UpdateModel.androidUpdate(backButtonBehavior, version: version, url: apkurl);
@@ -486,7 +486,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Stack(
       children: loading
-          ? PageStatus.loading(mounted)
+          ? [PageStatus.loading(mounted)!]
           : [
               Positioned.fill(
                   child: PageView.builder(
@@ -504,7 +504,7 @@ class _HomeState extends State<Home> {
                     return ValueListenableBuilder(
                       valueListenable: selectedKey,
                       builder: (context, _value, child) {
-                        return _value == index ? child : PageStatus.loading(mounted);
+                        return _value == index ? child! : PageStatus.loading(mounted);
                       },
                       child: navBarItem[index]['page'],
                     );

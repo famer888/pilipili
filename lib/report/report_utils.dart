@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/report/page_click_listener.dart';
 import 'package:pilipili/report/page_name.dart';
@@ -152,14 +152,14 @@ class ReportUtils {
 
   //应用页面展示日志
   static void appPageView({
-    String pageKey,
-    String pageName,
-    String referrerPageKey,
-    String referrerPageName,
-    String currentPageKey,
-    String currentPageName,
-    int pageLoadTimeSec,
-    int stayTimeMs,
+    String? pageKey,
+    String? pageName,
+    String? referrerPageKey,
+    String? referrerPageName,
+    String? currentPageKey,
+    String? currentPageName,
+    int? pageLoadTimeSec,
+    int? stayTimeMs,
   }) {
     Map data = {
       'user_type': AppEventReport.instance.isVip ? 'vip' : 'normal',
@@ -186,8 +186,8 @@ class ReportUtils {
 
 //APP广告行为
   static adVertising({
-    AdEventType eventType,
-    AdType advertisingKey,
+    AdEventType? eventType,
+    AdType? advertisingKey,
     dynamic advertisingId,
     dynamic adtype, //传 ad_type
     dynamic adSlotKey, // position 或 pos
@@ -212,8 +212,8 @@ class ReportUtils {
     Map data = {
       'event_type': type, //事件类型：click(点击), close(关闭), show(展示)
       'advertising_key': adSlotKey ??
-          getAdType(advertisingKey)['key'], //广告标识：home_popup(首页弹窗), home_banner(首页Banner), video_reward(激励视频)等
-      'advertising_name': adSlotName ?? getAdType(advertisingKey)['name'], //广告标识名称：首页弹窗, 首页Banner, 激励视频
+          getAdType(advertisingKey!)['key'], //广告标识：home_popup(首页弹窗), home_banner(首页Banner), video_reward(激励视频)等
+      'advertising_name': adSlotName ?? getAdType(advertisingKey!)['name'], //广告标识名称：首页弹窗, 首页Banner, 激励视频
       'advertising_id': advertisingId.toString(), //广告ID
     };
 
@@ -227,10 +227,10 @@ class ReportUtils {
       //展示上报
       AppEventReport.instance.track('advertising', data);
       adImpression(
-          adSlotKey: adSlotKey ?? getAdType(advertisingKey)['key'],
-          adSlotName: adSlotName ?? getAdType(advertisingKey)['name'],
+          adSlotKey: adSlotKey ?? getAdType(advertisingKey!)['key'],
+          adSlotName: adSlotName ?? getAdType(advertisingKey!)['name'],
           adId: advertisingId,
-          type: adtype ?? getAdType(advertisingKey)['key'],
+          type: adtype ?? getAdType(advertisingKey!)['key'],
           adType: advertisingKey,
           creativeId: creativeId,
           adPageKey: adPageKey,
@@ -245,7 +245,7 @@ class ReportUtils {
       adClick(
           adId: advertisingId,
           adType: advertisingKey,
-          adtype: adtype ?? getAdType(advertisingKey)['key'],
+          adtype: adtype ?? getAdType(advertisingKey!)['key'],
           adSlotKey: adSlotKey,
           creativeId: creativeId,
           adSlotName: adSlotName,
@@ -258,7 +258,7 @@ class ReportUtils {
   static adClick({
     dynamic adId,
     dynamic creativeId,
-    AdType adType,
+    AdType? adType,
     dynamic adtype,
     dynamic adSlotKey,
     dynamic adSlotName,
@@ -271,11 +271,11 @@ class ReportUtils {
     Map data = {
       'page_key': adPageKey ?? pageKey,
       'page_name': adPageName ?? pageName,
-      'ad_slot_key': adSlotKey ?? getAdType(adType)['key'], //广告位标识：与展示事件一致，如 home_banner_1
-      'ad_slot_name': adSlotName ?? getAdType(adType)['name'], //广告位名称：与展示事件一致
+      'ad_slot_key': adSlotKey ?? getAdType(adType!)['key'], //广告位标识：与展示事件一致，如 home_banner_1
+      'ad_slot_name': adSlotName ?? getAdType(adType!)['name'], //广告位名称：与展示事件一致
       'ad_id': adId, //被点击的广告ID
       'creative_id': creativeId, //素材ID（可选）
-      'ad_type': adtype ?? getAdType(adType)['key'], //广告类型：banner, feed, interstitial, reward_video 等
+      'ad_type': adtype ?? getAdType(adType!)['key'], //广告类型：banner, feed, interstitial, reward_video 等
     };
     AppEventReport.instance.track('ad_click', data);
   }
@@ -286,7 +286,7 @@ class ReportUtils {
     dynamic adSlotName,
     dynamic adId,
     dynamic creativeId,
-    AdType adType,
+    AdType? adType,
     dynamic type,
     dynamic adPageKey,
     dynamic adPageName,
@@ -307,7 +307,7 @@ class ReportUtils {
       'ad_slot_name': adSlotName, //广告位名称：如 首页顶部Banner，第3条信息流广告
       'ad_id': adId, //广告ID, 多个广告ID英文逗号分隔
       'creative_id': creativeId ?? '', //素材id
-      'ad_type': type ?? getAdType(adType)['key'] //广告类型：banner, feed, interstitial, reward_video 等
+      'ad_type': type ?? getAdType(adType!)['key'] //广告类型：banner, feed, interstitial, reward_video 等
     };
     AppEventReport.instance.track('ad_impression', data);
   }
@@ -315,17 +315,17 @@ class ReportUtils {
   //视频事件
   static videoEvent({
     dynamic id, //视频 id
-    String title, //视频标题
-    int typeId, //视频分类ID
-    String typeName, //视频分类名称
-    String tagKey, //标签KEY, 多个标签使用英文逗号分隔
-    String tagName, //标签名称,多个标签使用英文逗号分隔
-    int duration, //视频总时长（秒）
-    int playDuration, //本次播放时长（秒）
-    int playProgress, //播放进度百分比（0-100）
-    String
+    String? title, //视频标题
+    int? typeId, //视频分类ID
+    String? typeName, //视频分类名称
+    String? tagKey, //标签KEY, 多个标签使用英文逗号分隔
+    String? tagName, //标签名称,多个标签使用英文逗号分隔
+    int? duration, //视频总时长（秒）
+    int? playDuration, //本次播放时长（秒）
+    int? playProgress, //播放进度百分比（0-100）
+    String?
         behaviorKey, //视频行为标识：video_view(展示),video_play(播放), video_pause(暂停), video_share(分享), video_complete(播放完成), video_forward(快进), video_rewind(快退)等
-    String behaviorName, //视频行为名称：视频展示,播放, 暂停, 分享, 播放完成, 快进, 快退
+    String? behaviorName, //视频行为名称：视频展示,播放, 暂停, 分享, 播放完成, 快进, 快退
   }) {
     Map data = {
       'video_id': id,
@@ -344,11 +344,11 @@ class ReportUtils {
   }
 
   static keywordClick({
-    String keyword,
-    int id,
-    String typeKey,
-    String typeName,
-    String position,
+    String? keyword,
+    int? id,
+    String? typeKey,
+    String? typeName,
+    String? position,
   }) {
     Map data = {
       'keyword': keyword, //关联关键词

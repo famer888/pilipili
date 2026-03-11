@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -32,8 +32,9 @@ import '../../utils/common.dart';
 import '../../utils/privilege.dart';
 
 class VideoDetail extends StatefulWidget {
-  VideoDetail({Key key, this.id}) : super(key: key);
-  final dynamic id;
+  VideoDetail({Key? key, this.id}) : super(key: key);
+  final dynamic? id;
+
   @override
   _VideoDetailState createState() => _VideoDetailState();
 }
@@ -41,9 +42,9 @@ class VideoDetail extends StatefulWidget {
 class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
   PageController controller = PageController();
-  String videoUrl;
+  late String videoUrl;
   int currentTab = 0;
-  DetailData videoInfo;
+  late DetailData videoInfo;
 
   List recommendList = [];
   List commentList = [];
@@ -59,7 +60,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   bool videoLoading = false;
   int likeCount = 0;
   List _banner = [];
-  Map seriesList;
+  late Map seriesList;
   List firstSeriesList = [];
   int spage = 1;
   int slimit = 15;
@@ -75,6 +76,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       'name': '评论',
     }
   ];
+
   Future<void> getVideoComment() async {
     if (isAll) {
       CommonUtils.showText('已经没有评论啦～');
@@ -96,7 +98,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     }
   }
 
-  Future<void> getSeriesListVideo({Function setBottomSheetState}) async {
+  Future<void> getSeriesListVideo({Function? setBottomSheetState}) async {
     var res = await getSeriesList(id: widget.id, type: 1, page: spage, limit: slimit);
 
     if (res['status'] != 0) {
@@ -112,8 +114,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       } else {
         seriesList['resource'].addAll(res['data']['resource']);
       }
-      setBottomSheetState();
-        } else {
+      setBottomSheetState!();
+    } else {
       CommonUtils.showText(res['msg']);
     }
   }
@@ -131,19 +133,19 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
     AnimationDetail res = await getVideoDetail(id: widget.id);
     if (res.status != 0) {
       AppEventReport.instance.initVideoInfo(
-          id: res.data.id.toString(), title: res.data.title, typeId: '', typeName: '', tagKey: '', tagName: '');
-      isPreview = res.data.source240 == null;
-      videoUrl = res.data.source240 ??= res.data.preview;
-      isFavoriteNotifier.value = res.data.userFavorites == 1;
-      tags = res.data.tags == '' ? [] : res.data.tags.split(',');
-      likeCount = res.data.favorites;
-      videoInfo = res.data;
-      var recommend = await getDetailRecommendList(id: res.data.id, page: 1, limit: 20, tags: res.data.tags);
+          id: res.data!.id.toString(), title: res.data!.title, typeId: '', typeName: '', tagKey: '', tagName: '');
+      isPreview = res.data!.source240 == null;
+      videoUrl = res.data!.source240 ??= res.data!.preview!;
+      isFavoriteNotifier.value = res.data!.userFavorites == 1;
+      tags = res.data!.tags == '' ? [] : res.data!.tags!.split(',');
+      likeCount = res.data!.favorites!;
+      videoInfo = res.data!;
+      var recommend = await getDetailRecommendList(id: res.data!.id, page: 1, limit: 20, tags: res.data!.tags);
       if (recommend['status'] != 0) {
         recommendList = recommend['data'];
       }
     } else {
-      CommonUtils.showText(res.msg);
+      CommonUtils.showText(res.msg!);
       context.pop();
     }
 
@@ -258,7 +260,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
 
   @override
   Widget build(BuildContext context) {
-    int money = Provider.of<HomeConfig>(context, listen: false).member.money;
+    int money = Provider.of<HomeConfig>(context, listen: false).member.money!;
     return Scaffold(
       body: Stack(
         children: [
@@ -403,7 +405,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 Padding(
                                                   padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                                   child: Text(
-                                                    videoInfo.title,
+                                                    videoInfo.title!,
                                                     style: TextStyle(
                                                         color: Color(0xff404040),
                                                         fontWeight: FontWeight.bold,
@@ -426,15 +428,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             children: [
                                                               Text(
                                                                 '演员：' +
-                                                                    (videoInfo.actors == ""
-                                                                            ? "--"
-                                                                            : videoInfo.actors)
+                                                                    (videoInfo.actors == "" ? "--" : videoInfo.actors)
                                                                         .toString(),
                                                                 style: TextStyle(
                                                                     color: Color(0xffFF5B8C), fontSize: 12.sp),
                                                               ),
                                                               Text(
-                                                                "${videoInfo.countPlay}人看过 - ${videoInfo.createdAt.split(' ')[0]}更新",
+                                                                "${videoInfo.countPlay}人看过 - ${videoInfo.createdAt!.split(' ')[0]}更新",
                                                                 style: TextStyle(
                                                                     color: Color(0xff979797), fontSize: 11.sp),
                                                               )
@@ -490,7 +490,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                               buyVideo(
                                                                                       id: videoInfo.id,
                                                                                       coins: (money -
-                                                                                          videoInfo.discountCoins),
+                                                                                          (videoInfo.discountCoins ??
+                                                                                              0)),
                                                                                       context: context)
                                                                                   .then((res) {
                                                                                 if (res.status != 0) {
@@ -506,7 +507,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                                     setState(() {});
                                                                                   });
                                                                                 } else {
-                                                                                  CommonUtils.showText(res.msg);
+                                                                                  CommonUtils.showText(res.msg!);
                                                                                 }
                                                                               });
                                                                             });
@@ -546,7 +547,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         }
                                                                         isFavoriteNotifier.value = !isFavorite;
                                                                       } else {
-                                                                        CommonUtils.showText(res.msg);
+                                                                        CommonUtils.showText(res.msg!);
                                                                       }
                                                                     },
                                                                   );
@@ -563,13 +564,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     Provider.of<HomeConfig>(context, listen: false)
                                                                         .config;
                                                                 ShareMovieModel.showShareMovie(backButtonBehavior,
-                                                                    copyUrl: config.share.affUrlCopy.url,
+                                                                    copyUrl: config.share!.affUrlCopy!.url!,
                                                                     thumb: videoInfo.coverOriginalHorizontal == ''
-                                                                        ? videoInfo.coverOriginalVertical
-                                                                        : videoInfo.coverOriginalHorizontal,
+                                                                        ? (videoInfo.coverOriginalVertical ?? '')
+                                                                        : (videoInfo.coverOriginalHorizontal ?? ''),
                                                                     title: videoInfo.title ?? '--',
                                                                     subtitle: videoInfo.desc ?? '--',
-                                                                    url: config.share.affUrl.toString());
+                                                                    url: config.share!.affUrl.toString());
                                                               },
                                                             )
                                                           ],
@@ -718,11 +719,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         children: firstSeriesList.map((e) {
                                                           return GestureDetector(
                                                             onTap: () {
-                                                              context.push(
-                                                                  CommonUtils.getRealHash().replaceAll(
-                                                                      RegExp("${PPString.test}videoDetail/.*"),
-                                                                      'videoDetail/' + e['id'].toString()),
-                                                                  replace: true);
+                                                              context.pushReplacement(CommonUtils.getRealHash()
+                                                                  .replaceAll(RegExp("${PPString.test}videoDetail/.*"),
+                                                                      'videoDetail/' + e['id'].toString()));
                                                             },
                                                             child: Container(
                                                               width: 160.w,
@@ -893,20 +892,22 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           ? RESOURCE_TYPE_CARTOON_VIDEO
                                                           : RESOURCE_TYPE_LONG_VIDEO,
                                                       PRIVILEGE_TYPE_COMMENT)) {
-                                                    InputDialog.show(context, '请输入您的影评～').then((value) {
-                                                      if (value != '') {
-                                                        publishComment(
-                                                                contentId: widget.id, contentType: 1, reply: value)
-                                                            .then((res) {
-                                                          if (res['status'] != 0) {
-                                                            CommonUtils.showText('影评发布成功,请刷新查看～');
-                                                          } else {
-                                                            CommonUtils.showText(res['msg']);
-                                                          }
-                                                        });
-                                                      } else {
-                                                        CommonUtils.showText('请输入您的影评');
-                                                      }
+                                                    InputDialog.show(context, '请输入您的影评～').then((innerFuture) {
+                                                      innerFuture.then((value) {
+                                                        if (value != '') {
+                                                          publishComment(
+                                                                  contentId: widget.id, contentType: 1, reply: value)
+                                                              .then((res) {
+                                                            if (res['status'] != 0) {
+                                                              CommonUtils.showText('影评发布成功,请刷新查看～');
+                                                            } else {
+                                                              CommonUtils.showText(res['msg']);
+                                                            }
+                                                          });
+                                                        } else {
+                                                          CommonUtils.showText('请输入您的影评');
+                                                        }
+                                                      });
                                                     });
                                                   } else {
                                                     YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消',
@@ -967,17 +968,19 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
 }
 
 class CommentItem extends StatefulWidget {
-  CommentItem({Key key, this.data, this.id, this.children, this.souceType}) : super(key: key);
-  final List<Widget> children;
-  final int souceType;
-  final dynamic data;
-  final int id;
+  CommentItem({Key? key, this.data, this.id, this.children, this.souceType}) : super(key: key);
+  final List<Widget>? children;
+  final int? souceType;
+  final dynamic? data;
+  final int? id;
+
   @override
   _CommentItemState createState() => _CommentItemState();
 }
 
 class _CommentItemState extends State<CommentItem> {
   String inputText = '';
+
   String getCreateTime() {
     DateTime timeint = DateTime.parse(widget.data['created_at']);
     var beforeText = RelativeDateFormat.format(timeint);
@@ -996,18 +999,20 @@ class _CommentItemState extends State<CommentItem> {
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () async {
-              if (Privilege.isAllowed(context, widget.souceType, PRIVILEGE_TYPE_COMMENT)) {
-                InputDialog.show(context, '请输入您的影评～', limitingText: 16).then((value) {
-                  if (value != '') {
-                    publishComment(commentId: widget.data['id'], contentId: widget.id, contentType: 1, reply: value)
-                        .then((res) {
-                      if (res['status'] != 0) {
-                        CommonUtils.showText('影评发布成功,请刷新查看～');
-                      } else {
-                        CommonUtils.showText(res['msg']);
-                      }
-                    });
-                  }
+              if (Privilege.isAllowed(context, widget.souceType!, PRIVILEGE_TYPE_COMMENT)) {
+                InputDialog.show(context, '请输入您的影评～', limitingText: 16).then((innerFuture) {
+                  innerFuture.then((value) {
+                    if (value != '') {
+                      publishComment(commentId: widget.data['id'], contentId: widget.id, contentType: 1, reply: value)
+                          .then((res) {
+                        if (res['status'] != 0) {
+                          CommonUtils.showText('影评发布成功,请刷新查看～');
+                        } else {
+                          CommonUtils.showText(res['msg']);
+                        }
+                      });
+                    }
+                  });
                 });
               } else {
                 YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消', callBack: () {
@@ -1083,12 +1088,12 @@ class _CommentItemState extends State<CommentItem> {
                         margin: EdgeInsets.only(right: 11.w),
                       ),
                       Expanded(
-                          child: widget.children.length == 0
+                          child: widget.children!.length == 0
                               ? const SizedBox()
                               : Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: widget.children,
+                                  children: widget.children!,
                                 ))
                     ],
                   )
@@ -1100,11 +1105,11 @@ class _CommentItemState extends State<CommentItem> {
 }
 
 class ButtonItem extends StatefulWidget {
-  const ButtonItem({Key key, this.name, this.icon, this.color, this.onTap}) : super(key: key);
-  final String name;
-  final String icon;
-  final Color color;
-  final Future Function() onTap;
+  const ButtonItem({Key? key, this.name, this.icon, this.color, this.onTap}) : super(key: key);
+  final String? name;
+  final String? icon;
+  final Color? color;
+  final Future Function()? onTap;
 
   @override
   State<ButtonItem> createState() => _ButtonItemState();
@@ -1126,7 +1131,7 @@ class _ButtonItemState extends State<ButtonItem> {
                 if (mounted) {
                   setState(() {});
                 }
-                await widget.onTap.call();
+                await widget.onTap?.call();
                 isLoading = false;
                 if (mounted) {
                   setState(() {});
@@ -1162,7 +1167,7 @@ class _ButtonItemState extends State<ButtonItem> {
                     height: 3.w,
                   ),
                   Text(
-                    widget.name,
+                    widget.name!,
                     style: TextStyle(
                         color: widget.color == null ? DefaultStyle.themeColor : Colors.white, fontSize: 12.sp),
                   )

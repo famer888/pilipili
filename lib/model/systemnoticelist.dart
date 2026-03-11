@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 SystemNoticeList systemNoticeListFromJson(String str) =>
     SystemNoticeList.fromJson(json.decode(str));
@@ -15,11 +15,11 @@ class SystemNoticeList {
     this.isVip,
   });
 
-  List<Datum> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<Datum>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory SystemNoticeList.fromJson(Map<String, dynamic> json) =>
       SystemNoticeList(
@@ -35,7 +35,7 @@ class SystemNoticeList {
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -54,13 +54,13 @@ class Datum {
     this.title,
   });
 
-  int id;
-  int aff;
-  String content;
-  int read;
+  int? id;
+  int? aff;
+  String? content;
+  int? read;
   dynamic createdAt;
   dynamic updatedAt;
-  String title;
+  String? title;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],

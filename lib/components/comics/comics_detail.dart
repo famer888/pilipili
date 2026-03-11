@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,8 +25,8 @@ import '../../utils/privilege.dart';
 import 'package:pilipili/utils/download_comics.dart';
 
 class ComicsDetatl extends StatefulWidget {
-  ComicsDetatl({Key key, this.id}) : super(key: key);
-  final int id;
+  ComicsDetatl({Key? key, this.id}) : super(key: key);
+  final int? id;
 
   @override
   _ComicsDetatlState createState() => _ComicsDetatlState();
@@ -35,8 +35,8 @@ class ComicsDetatl extends StatefulWidget {
 class _ComicsDetatlState extends State<ComicsDetatl> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool loading = true;
-  int watchLog;
-  Data data;
+  late int watchLog;
+  late Data data;
   List newestSeries = [];
   int newestSeriesNum = 0;
   List recommendList = [];
@@ -44,49 +44,45 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
   bool isOpenAll = false; //是否展开全部章节
   int likeCount = 0;
   bool textmore = false;
-  double scrollto;
+  late double scrollto;
 
-  Map seriesList;
+  late Map seriesList;
   List firstSeriesList = [];
   int spage = 1;
   int slimit = 15;
   bool sisAll = false;
+
   getPageData() {
     newestSeries.clear();
     getComicDetail(id: widget.id).then((res) {
-     CommonUtils.debugPrint(res);
+      CommonUtils.debugPrint(res);
       if (res.status != 0) {
         loading = false;
-        AppGlobal.comicThumb = res.data.thumb;
-        data = res.data;
-        isFavorites = res.data.userFavorites == 1;
-        likeCount = res.data.favorites;
-        watchLog = data.watchLog;
-        newestSeriesNum = res.data.newestSeries;
-        for (var i = 0; i < res.data.newestSeries; i++) {
+        AppGlobal.comicThumb = res.data!.thumb;
+        data = res.data!;
+        isFavorites = res.data!.userFavorites == 1;
+        likeCount = res.data!.favorites;
+        watchLog = data.watchLog!;
+        newestSeriesNum = res.data!.newestSeries!;
+        for (var i = 0; i < res.data!.newestSeries!; i++) {
           newestSeries.add(i + 1);
         }
-        getRecommendComicsList(
-                limit: 27, id: widget.id, category: res.data.categories)
-            .then((res) {
-          recommendList = res.data;
+        getRecommendComicsList(limit: 27, id: widget.id, category: res.data!.categories!).then((res) {
+          recommendList = res.data!;
           setState(() {});
         });
         setState(() {});
       } else {
-        CommonUtils.showText(res.msg);
+        CommonUtils.showText(res.msg!);
         context.pop();
       }
     });
   }
 
-  getSeriesListVideo({Function setBottomSheetState}) {
-    getSeriesList(id: widget.id, type: 2, page: spage, limit: slimit)
-        .then((res) {
+  getSeriesListVideo({Function? setBottomSheetState}) {
+    getSeriesList(id: widget.id, type: 2, page: spage, limit: slimit).then((res) {
       if (res['status'] != 0) {
-        List resdata = res['data'] == null || res['data']['resource'] == null
-            ? []
-            : res['data']['resource'];
+        List resdata = res['data'] == null || res['data']['resource'] == null ? [] : res['data']['resource'];
         sisAll = resdata.length < slimit;
         if (spage == 1) {
           seriesList = res['data'];
@@ -98,8 +94,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
         } else {
           seriesList['resource'].addAll(res['data']['resource']);
         }
-        setBottomSheetState();
-            } else {
+        setBottomSheetState!();
+      } else {
         CommonUtils.showText(res['msg']);
       }
     });
@@ -109,8 +105,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
     if (kIsWeb) {
       CommonUtils.showText('请下载APP使用下载功能！');
     } else {
-      bool canDownload = Privilege.isAllowedWithCount(
-          context, RESOURCE_TYPE_BOOK, PRIVILEGE_TYPE_DOWNLOAD);
+      bool canDownload = Privilege.isAllowedWithCount(context, RESOURCE_TYPE_BOOK, PRIVILEGE_TYPE_DOWNLOAD);
       if (canDownload) {
         DownloadComics.createDownloadTask({
           'id': widget.id,
@@ -131,10 +126,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
           content: (setDialogState) {
             return Text(
               "您没有开启漫画下载权限哦！二次元的天堂等您开启~",
-              style: TextStyle(
-                  color: Color(0xff646464),
-                  fontSize: ScreenUtil().setSp(16),
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
             );
           },
           cancelText: '取消',
@@ -158,7 +150,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
         isFavorites = !isFavorites;
         setState(() {});
       } else {
-        CommonUtils.showText(res.msg);
+        CommonUtils.showText(res.msg!);
       }
     });
   }
@@ -166,11 +158,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
   _share() {
     var config = Provider.of<HomeConfig>(context, listen: false).config;
     ShareMovieModel.showShareMovie(backButtonBehavior,
-        copyUrl: config.share.affUrlCopy.url,
-        thumb: data.thumb,
+        copyUrl: config.share!.affUrlCopy!.url!,
+        thumb: data.thumb!,
         title: data.title ?? '--',
         subtitle: data.description ?? '--',
-        url: config.share.affUrl.toString());
+        url: config.share!.affUrl.toString());
   }
 
   @override
@@ -219,11 +211,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                          color: Color(0XFFffd3e6),
-                          offset: Offset(0, 2),
-                          blurRadius: 4,
-                          spreadRadius: 0)
+                      BoxShadow(color: Color(0XFFffd3e6), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)
                     ]),
                     child: Row(
                       children: [
@@ -234,10 +222,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                             child: Center(
                           child: Text(
                             seriesList['title'],
-                            style: TextStyle(
-                                color: Color(0xffff5b8c),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Color(0xffff5b8c), fontSize: 14.sp, fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -261,12 +246,10 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                           onLoading: () {
                             if (sisAll) return;
                             spage++;
-                            getSeriesListVideo(
-                                setBottomSheetState: setBottomSheetState);
+                            getSeriesListVideo(setBottomSheetState: setBottomSheetState);
                           },
                           child: ListView.builder(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 16.w),
+                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                               itemCount: seriesList['resource'].length,
                               itemBuilder: (context, index) {
                                 return Padding(
@@ -290,11 +273,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
 
   ScrollController scrollController = ScrollController();
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
+
   @override
   Widget build(BuildContext context) {
-    List tags = data == null ? [] : data.tags.split(',');
-    List minWestSeries =
-        newestSeries.length > 8 ? newestSeries.sublist(0, 8) : newestSeries;
+    List tags = data == null ? [] : data.tags!.split(',');
+    List minWestSeries = newestSeries.length > 8 ? newestSeries.sublist(0, 8) : newestSeries;
     return Scaffold(
       key: _scaffoldKey,
       // endDrawer: loading || data == null ? Container() : comicDrawer(),
@@ -308,8 +291,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                   ? PageStatus.loading(mounted)
                   : NestedScrollView(
                       controller: scrollController,
-                      headerSliverBuilder:
-                          (BuildContext context, bool innerBoxIsScrolled) {
+                      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                         return [
                           SliverAppBar(
                               automaticallyImplyLeading: false,
@@ -340,8 +322,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                         padding: EdgeInsets.all(0),
                         children: [
                           Container(
-                            decoration:
-                                BoxDecoration(color: Colors.white, boxShadow: [
+                            decoration: BoxDecoration(color: Colors.white, boxShadow: [
                               BoxShadow(
                                 color: Color.fromRGBO(255, 91, 140, 0.2),
                                 blurRadius: 4,
@@ -357,22 +338,16 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  data.title,
+                                  data.title!,
                                   style: TextStyle(
                                       color: Color(0xff404040),
                                       fontSize: ScreenUtil().setSp(16),
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: ScreenUtil().setWidth(8)),
+                                  padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(8)),
                                   child: Text(
-                                    '作者：' +
-                                        (data.author ==
-                                                        PPString.isnull
-                                                ? "--"
-                                                : data.author)
-                                            .toString(),
+                                    '作者：' + (data.author == PPString.isnull ? "--" : data.author).toString(),
                                     style: TextStyle(
                                       color: Color(0xffFF5B8C),
                                       fontWeight: FontWeight.w500,
@@ -381,8 +356,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                   ),
                                 ),
                                 Text(
-                                  (CommonUtils.renderFixedNumber(double.parse(
-                                          data.viewsCount.toString()))) +
+                                  (CommonUtils.renderFixedNumber(double.parse(data.viewsCount.toString()))) +
                                       '人看过 - 更新至' +
                                       newestSeriesNum.toString() +
                                       '话',
@@ -393,8 +367,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(
-                                      top: ScreenUtil().setWidth(8)),
+                                  margin: EdgeInsets.only(top: ScreenUtil().setWidth(8)),
                                   child: Wrap(
                                       spacing: ScreenUtil().setWidth(4),
                                       runSpacing: ScreenUtil().setWidth(8),
@@ -406,29 +379,17 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                 children: [
                                                   Container(
                                                     alignment: Alignment.center,
-                                                    height: ScreenUtil()
-                                                        .setWidth(21),
+                                                    height: ScreenUtil().setWidth(21),
                                                     decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0XFFFFF5F9),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        5))),
+                                                        color: Color(0XFFFFF5F9),
+                                                        borderRadius: BorderRadius.circular(ScreenUtil().setWidth(5))),
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        12)),
+                                                        EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
                                                     child: Text(
                                                       tags[e],
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xffffadc6),
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(12),
+                                                        color: Color(0xffffadc6),
+                                                        fontSize: ScreenUtil().setSp(12),
                                                       ),
                                                     ),
                                                   )
@@ -441,42 +402,34 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: DefaultStyle.pagePadding,
-                                vertical: ScreenUtil().setWidth(16)),
+                                horizontal: DefaultStyle.pagePadding, vertical: ScreenUtil().setWidth(16)),
                             child: data.description == ''
                                 ? Container()
                                 : Container(
-                                    padding: EdgeInsets.only(
-                                        bottom: ScreenUtil().setWidth(16)),
+                                    padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(16)),
                                     decoration: BoxDecoration(
                                         border: Border(
                                             bottom: BorderSide(
-                                                color: Color(0xffffd1df),
-                                                width: ScreenUtil()
-                                                    .setWidth(0.5)))),
+                                                color: Color(0xffffd1df), width: ScreenUtil().setWidth(0.5)))),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('漫画简介',
                                             style: TextStyle(
                                                 color: Color(0xff404040),
                                                 fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    ScreenUtil().setSp(14))),
+                                                fontSize: ScreenUtil().setSp(14))),
                                         SizedBox(
                                           height: ScreenUtil().setWidth(8),
                                         ),
                                         Stack(
                                           children: [
                                             Text(
-                                              data.description,
+                                              data.description!,
                                               maxLines: textmore ? null : 2,
-                                              style: TextStyle(
-                                                  color: Color(0xff6d6d6d),
-                                                  fontSize:
-                                                      ScreenUtil().setSp(14)),
+                                              style:
+                                                  TextStyle(color: Color(0xff6d6d6d), fontSize: ScreenUtil().setSp(14)),
                                             ),
                                             Positioned(
                                                 bottom: 0,
@@ -487,18 +440,12 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                           textmore = !textmore;
                                                           setState(() {});
                                                         },
-                                                        behavior:
-                                                            HitTestBehavior
-                                                                .translucent,
+                                                        behavior: HitTestBehavior.translucent,
                                                         child: Container(
-                                                          color:
-                                                              Color(0xfffff5f9),
-                                                          child:
-                                                              PlatformAwareAssetImage(
-                                                            url:
-                                                                'assets/images/comics/comics_more.png',
-                                                            width: ScreenUtil()
-                                                                .setWidth(24),
+                                                          color: Color(0xfffff5f9),
+                                                          child: PlatformAwareAssetImage(
+                                                            url: 'assets/images/comics/comics_more.png',
+                                                            width: ScreenUtil().setWidth(24),
                                                           ),
                                                         ),
                                                       )
@@ -524,50 +471,33 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                       activate: false,
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                ScreenUtil().setWidth(4)),
+                                        padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(4)),
                                         child: MyButton.topIcon(
                                             onTap: _useFavorite,
-                                            icon: isFavorites
-                                                ? PPString.iconunLike
-                                                : PPString.iconLike,
-                                            text: CommonUtils.renderFixedNumber(
-                                                likeCount.toDouble()),
+                                            icon: isFavorites ? PPString.iconunLike : PPString.iconLike,
+                                            text: CommonUtils.renderFixedNumber(likeCount.toDouble()),
                                             activate: isFavorites)),
-                                    MyButton.topIcon(
-                                        onTap: _share,
-                                        icon: 'icon_share',
-                                        text: '分享',
-                                        activate: false)
+                                    MyButton.topIcon(onTap: _share, icon: 'icon_share', text: '分享', activate: false)
                                   ],
                                 ),
                                 GestureDetector(
                                     onTap: () {
-                                      swichComic(data.watchLog == 0
-                                          ? 1
-                                          : data.watchLog);
+                                      swichComic(data.watchLog == 0 ? 1! : data.watchLog!);
                                     },
                                     child: Container(
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                ScreenUtil().setWidth(20)),
-                                            gradient: LinearGradient(
-                                                colors: [
-                                                  Color(0xffff84a9),
-                                                  Color(0xffff9e9e),
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight)),
+                                            borderRadius: BorderRadius.circular(ScreenUtil().setWidth(20)),
+                                            gradient: LinearGradient(colors: [
+                                              Color(0xffff84a9),
+                                              Color(0xffff9e9e),
+                                            ], begin: Alignment.centerLeft, end: Alignment.centerRight)),
                                         height: ScreenUtil().setWidth(40),
                                         width: ScreenUtil().setWidth(144),
                                         alignment: Alignment.center,
                                         child: Text(
                                           data.watchLog == 0
                                               ? PPString.startReading
-                                              : '从' +
-                                                  data.watchLog.toString() +
-                                                  '话继续看',
+                                              : '从' + data.watchLog.toString() + '话继续看',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: ScreenUtil().setSp(14),
@@ -593,8 +523,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: DefaultStyle.pagePadding,
-                                vertical: ScreenUtil().setWidth(
-                                    newestSeries.length < 8 ? 0 : 16)),
+                                vertical: ScreenUtil().setWidth(newestSeries.length < 8 ? 0 : 16)),
                             child: newestSeries.length < 8
                                 ? Container()
                                 : GestureDetector(
@@ -603,9 +532,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                         scrollto = scrollController.offset.h;
                                       } else {
                                         scrollController.animateTo(scrollto,
-                                            duration:
-                                                Duration(milliseconds: 200),
-                                            curve: Curves.easeIn);
+                                            duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       }
                                       isOpenAll = !isOpenAll;
                                       setState(() {});
@@ -619,18 +546,12 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                       height: ScreenUtil().setWidth(36),
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              ScreenUtil().setWidth(18)),
+                                          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(18)),
                                           gradient: SweepGradient(
                                               center: Alignment.topCenter,
-                                              colors: [
-                                                Color(0xffffccdb),
-                                                Color(0xffffe4e4)
-                                              ])),
+                                              colors: [Color(0xffffccdb), Color(0xffffe4e4)])),
                                       child: Text(
-                                        isOpenAll
-                                            ? PPString.putAway
-                                            : PPString.allChapters,
+                                        isOpenAll ? PPString.putAway : PPString.allChapters,
                                         style: TextStyle(
                                             color: DefaultStyle.themeColor,
                                             fontWeight: FontWeight.bold,
@@ -642,8 +563,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                           Container(
                             height: 0.5.w,
                             width: double.infinity,
-                            margin: EdgeInsets.only(
-                                left: 16.w, right: 16.w, bottom: 16.w),
+                            margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.w),
                             color: Color(0xffffd1df),
                           ),
                           firstSeriesList.length == 0
@@ -654,55 +574,36 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                     title: '系列详情',
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     style: TextStyle(
-                                        color: Color(0xffff5b8c),
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold),
+                                        color: Color(0xffff5b8c), fontSize: 16.sp, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                           firstSeriesList.length == 0
                               ? Container()
                               : SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: DefaultStyle.pagePadding),
+                                  padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                   child: Row(
                                     children: [
                                       Row(
-                                        children: firstSeriesList
-                                            .asMap()
-                                            .keys
-                                            .map((e) {
+                                        children: firstSeriesList.asMap().keys.map((e) {
                                           return GestureDetector(
                                               onTap: () {
-                                                context.push(
-                                                    CommonUtils.getRealHash()
-                                                        .replaceAll(
-                                                            RegExp(
-                                                                "${PPString.test}comicsdetail/.*"),
-                                                            'comicsdetail/' +
-                                                                firstSeriesList[
-                                                                        e]['id']
-                                                                    .toString()),
-                                                    replace: true);
+                                                context.pushReplacement(CommonUtils.getRealHash().replaceAll(
+                                                    RegExp("${PPString.test}comicsdetail/.*"),
+                                                    'comicsdetail/' + firstSeriesList[e]['id'].toString()));
                                               },
                                               child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 8.w),
+                                                margin: EdgeInsets.only(right: 8.w),
                                                 width: 85.w,
                                                 child: Column(
                                                   children: [
                                                     ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              3.w),
+                                                      borderRadius: BorderRadius.circular(3.w),
                                                       child: Container(
                                                         width: double.infinity,
                                                         height: 125.w,
-                                                        child:
-                                                            PlatformAwareNetworkImage(
-                                                          url:
-                                                              firstSeriesList[e]
-                                                                  ['thumb'],
+                                                        child: PlatformAwareNetworkImage(
+                                                          url: firstSeriesList[e]['thumb'],
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
@@ -711,16 +612,11 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                       height: 8.w,
                                                     ),
                                                     Text(
-                                                      firstSeriesList[e]
-                                                          ['title'],
+                                                      firstSeriesList[e]['title'],
                                                       style: TextStyle(
-                                                          color:
-                                                              Color(0xff646464),
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                          color: Color(0xff646464), fontWeight: FontWeight.bold),
                                                       maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      overflow: TextOverflow.ellipsis,
                                                     )
                                                   ],
                                                 ),
@@ -740,16 +636,12 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                           decoration: BoxDecoration(
                                               boxShadow: [
                                                 BoxShadow(
-                                                    color: Color.fromRGBO(
-                                                        255, 128, 163, 0.5),
+                                                    color: Color.fromRGBO(255, 128, 163, 0.5),
                                                     offset: Offset(0, 2),
                                                     blurRadius: 3,
                                                     spreadRadius: 0)
                                               ],
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      ScreenUtil()
-                                                          .setWidth(50)),
+                                              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(50)),
                                               gradient: LinearGradient(
                                                   begin: Alignment.topLeft,
                                                   end: Alignment.bottomRight,
@@ -769,12 +661,9 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                                 width: ScreenUtil().setWidth(9),
                                               ),
                                               PlatformAwareAssetImage(
-                                                  url:
-                                                      'assets/images/icon_more.png',
-                                                  height:
-                                                      ScreenUtil().setWidth(8),
-                                                  filterQuality:
-                                                      FilterQuality.medium)
+                                                  url: 'assets/images/icon_more.png',
+                                                  height: ScreenUtil().setWidth(8),
+                                                  filterQuality: FilterQuality.medium)
                                             ],
                                           ),
                                         ),
@@ -794,10 +683,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                 )
                               : Padding(
                                   padding: EdgeInsets.only(
-                                      bottom: ScreenUtil().setWidth(50.5) +
-                                          (kIsWeb
-                                              ? 0
-                                              : ScreenUtil().bottomBarHeight),
+                                      bottom: ScreenUtil().setWidth(50.5) + (kIsWeb ? 0 : ScreenUtil().bottomBarHeight),
                                       right: DefaultStyle.pagePadding,
                                       left: DefaultStyle.pagePadding),
                                   child: GridView.count(
@@ -806,8 +692,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                     shrinkWrap: true,
                                     crossAxisSpacing: ScreenUtil().setWidth(7),
                                     childAspectRatio: 0.58,
-                                    children:
-                                        recommendList.asMap().keys.map((e) {
+                                    children: recommendList.asMap().keys.map((e) {
                                       return NewComicsCard(
                                         width: ScreenUtil().setWidth(109),
                                         relace: true,
@@ -847,7 +732,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
 
   //阅读器目录
   Widget comicDrawer() {
-    List allList = List.filled(data.newestSeries, 1);
+    List allList = List.filled(data.newestSeries!, 1);
     return Container(
       height: ScreenUtil().screenHeight,
       width: ScreenUtil().setWidth(286.5),
@@ -858,22 +743,15 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
             height: ScreenUtil().statusBarHeight,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenUtil().setWidth(19),
-                horizontal: ScreenUtil().setWidth(14)),
+            padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(19), horizontal: ScreenUtil().setWidth(14)),
             child: Row(
               children: [
-                Text(
-                    data.finished == 0 ? PPString.serialize : PPString.finished,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(18),
-                        fontWeight: FontWeight.w700)),
+                Text(data.finished == 0 ? PPString.serialize : PPString.finished,
+                    style:
+                        TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(18), fontWeight: FontWeight.w700)),
                 SizedBox(width: ScreenUtil().setWidth(10.5)),
                 Text('更新至' + data.newestSeries.toString() + '话',
-                    style: TextStyle(
-                        color: Color(0xff999999),
-                        fontSize: ScreenUtil().setSp(13))),
+                    style: TextStyle(color: Color(0xff999999), fontSize: ScreenUtil().setSp(13))),
               ],
             ),
           ),
@@ -913,9 +791,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                 child: Text(
                               (e + 1).toString(),
                               style: TextStyle(
-                                  color: watchLog == e + 1
-                                      ? Color(0xff62f7ff)
-                                      : Colors.white,
+                                  color: watchLog == e + 1 ? Color(0xff62f7ff) : Colors.white,
                                   fontSize: ScreenUtil().setSp(15)),
                             )),
                           )

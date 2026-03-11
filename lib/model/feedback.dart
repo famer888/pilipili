@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final feedBack = feedBackFromJson(jsonString);
 
@@ -9,11 +9,11 @@ FeedBack feedBackFromJson(String str) => FeedBack.fromJson(json.decode(str));
 String feedBackToJson(FeedBack data) => json.encode(data.toJson());
 
 class FeedBack {
-  List<Datum> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<Datum>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   FeedBack({
     this.data,
@@ -32,7 +32,7 @@ class FeedBack {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status,
         "msg": msg,
         "crypt": crypt,
@@ -41,15 +41,15 @@ class FeedBack {
 }
 
 class Datum {
-  int id;
-  String nickname;
-  String thumb;
+  int? id;
+  String? nickname;
+  String? thumb;
   dynamic message;
-  int messageType;
-  int status;
-  String createdAt;
-  int isLocal;
-  List<ProblemList> problemList;
+  int? messageType;
+  int? status;
+  String? createdAt;
+  int? isLocal;
+  List<ProblemList>? problemList;
 
   Datum({
     this.id,
@@ -89,13 +89,13 @@ class Datum {
         "isLocal": isLocal == null ? null : isLocal,
         "problemList": problemList == null
             ? null
-            : List<dynamic>.from(problemList.map((x) => x.toJson())),
+            : List<dynamic>.from(problemList!.map((x) => x.toJson())),
       };
 }
 
 class ProblemList {
-  String problem;
-  String reply;
+  String? problem;
+  String? reply;
 
   ProblemList({
     this.problem,

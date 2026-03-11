@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/FlexibleBanner.dart';
 import 'package:pilipili/components/card/hcard.dart';
@@ -16,16 +16,17 @@ import 'package:pilipili/utils/networkImage.dart';
 
 class FilterList extends StatefulWidget {
   FilterList(
-      {Key key, this.data, this.isDark = 0, this.id, this.isShow, this.index, this.tabList, this.parentName, this.pos})
+      {Key? key, this.data, this.isDark = 0, this.id, this.isShow, this.index, this.tabList, this.parentName, this.pos})
       : super(key: key);
   final dynamic data;
-  final int id;
-  final bool isShow;
-  final int index;
-  final List tabList;
-  final String parentName;
+  final int? id;
+  final bool? isShow;
+  final int? index;
+  final List? tabList;
+  final String? parentName;
   final int isDark;
-  final int pos;
+  final int? pos;
+
   @override
   _FilterListState createState() => _FilterListState();
 }
@@ -35,13 +36,13 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
   int page = 1;
   bool isAll = false;
   bool networkErr = false;
-  bool isShow = false;
+  bool? isShow = false;
   dynamic fixedBanner;
-  List filterList;
-  int elementID;
-  int dataType;
+  late List filterList;
+  late int elementID;
+  late int dataType;
   int order = 1;
-  int cardType; //内容类型 1-7
+  late int cardType; //内容类型 1-7
   String cardStyle = 'h'; //h 横向2列  v 竖向三列
   ScrollController _scrollController = ScrollController();
   bool navShow = true;
@@ -50,6 +51,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
     {'title': '推荐', 'order': 2},
     {'title': '随机', 'order': 3}
   ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -79,7 +81,7 @@ class _FilterListState extends State<FilterList> with ElementMixin, CardMixin {
     } else {
       cardStyle = 'v';
     }
-    if (widget.isShow && pageStatus == 0) {
+    if (widget.isShow == true && pageStatus == 0!) {
       pageStatus = 1;
       getPageData();
     }

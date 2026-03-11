@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final constructModel = constructModelFromJson(jsonString);
 
@@ -18,12 +18,12 @@ class ConstructModel {
         this.elements,
     });
 
-    int id;
-    String name;
-    int status;
-    String createdAt;
-    String updatedAt;
-    List<dynamic> elements;
+    int? id;
+    String? name;
+    int? status;
+    String? createdAt;
+    String? updatedAt;
+    List<dynamic>? elements;
 
     factory ConstructModel.fromJson(Map<String, dynamic> json) => ConstructModel(
         id: json["id"],
@@ -40,6 +40,6 @@ class ConstructModel {
         "status": status,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "elements": List<dynamic>.from(elements.map((x) => x)),
+        "elements": List<dynamic>.from(elements!.map((x) => x)),
     };
 }

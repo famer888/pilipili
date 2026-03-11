@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pilipili/components/video/YyVideo.dart';
 import 'package:video_player/video_player.dart';
 
 class FullVideo extends StatefulWidget {
-  FullVideo({Key key, this.controller}) : super(key: key);
-  final VideoPlayerController controller;
+  FullVideo({Key? key, this.controller}) : super(key: key);
+  final VideoPlayerController? controller;
   @override
   _FullVideoState createState() => _FullVideoState();
 }

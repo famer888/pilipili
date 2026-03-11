@@ -1,4 +1,4 @@
-import 'package:country_code_picker/country_code_picker.dart';
+﻿import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -11,9 +11,9 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
 class FillCodePage extends StatefulWidget {
-  final Map args;
+  final Map? args;
 
-  FillCodePage({Key key, this.args}) : super(key: key);
+  FillCodePage({Key? key, this.args}) : super(key: key);
   @override
   _FillCodePageState createState() => _FillCodePageState();
 }
@@ -76,8 +76,8 @@ class _FillCodePageState extends State<FillCodePage> {
   void initState() {
     super.initState();
     // CommonUtils.debugPrint('-**********************************${widget.type}');
-    if (widget.args["type"] != null) {
-      currentIndex = widget.args["type"];
+    if (widget.args!["type"] != null) {
+      currentIndex = widget.args!["type"];
       setState(() {});
     }
   }
@@ -145,8 +145,8 @@ class _FillCodePageState extends State<FillCodePage> {
         }
         PageStatus.showLoading();
         changePhone(
-                oldPhone: widget.args["phone"],
-                oldPhonePrefix: widget.args["phonePrefix"],
+                oldPhone: widget.args!["phone"],
+                oldPhonePrefix: widget.args!["phonePrefix"],
                 oldCode: phoneCode.text,
                 phone: newphone.text,
                 phonePrefix: newcode,
@@ -221,7 +221,7 @@ class _FillCodePageState extends State<FillCodePage> {
             CommonUtils.showText('密码修改成功');
             context.pop();
           } else {
-            CommonUtils.showText(res.msg);
+            CommonUtils.showText(res.msg!);
           }
         });
         PageStatus.closeLoading();
@@ -258,7 +258,7 @@ class _FillCodePageState extends State<FillCodePage> {
             });
             Provider.of<HomeConfig>(context, listen: false).setIsSetpassword(1);
           } else {
-            CommonUtils.showText(res.msg);
+            CommonUtils.showText(res.msg!);
           }
         }).whenComplete(() {
           PageStatus.closeLoading();
@@ -320,7 +320,7 @@ class _FillCodePageState extends State<FillCodePage> {
   }
 
   Widget _bindPhone() {
-    Function startTime;
+    Function? startTime;
     return Column(
       children: [
         YyInput(
@@ -351,10 +351,10 @@ class _FillCodePageState extends State<FillCodePage> {
             sendPhone(phone: phone.text, phonePrefix: code, type: 2)
                 .then((res) {
               if (res.status == 1) {
-                startTime();
+                startTime?.call();
                 CommonUtils.showText('发送成功～');
                             } else {
-                CommonUtils.showText(res.msg);
+                CommonUtils.showText(res.msg!);
               }
               PageStatus.closeLoading();
             });
@@ -422,8 +422,8 @@ class _FillCodePageState extends State<FillCodePage> {
   }
 
   Widget _setPhone() {
-    Function startTime;
-    Function newstartTime;
+    Function? startTime;
+    Function? newstartTime;
 
     return Column(
       children: [
@@ -434,8 +434,8 @@ class _FillCodePageState extends State<FillCodePage> {
             child: Center(
               child: Text(
                 '当前手机号:+' +
-                    widget.args["phonePrefix"].toString() +
-                    widget.args["phone"].toString(),
+                    widget.args!["phonePrefix"].toString() +
+                    widget.args!["phone"].toString(),
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(15),
                     color: Color(0xff6D6D6D),
@@ -453,15 +453,15 @@ class _FillCodePageState extends State<FillCodePage> {
           },
           onSendCode: () {
             sendPhone(
-                    phone: widget.args["phone"],
-                    phonePrefix: widget.args["phonePrefix"],
+                    phone: widget.args!["phone"],
+                    phonePrefix: widget.args!["phonePrefix"],
                     type: 4)
                 .then((res) {
               if (res.status == 1) {
-                startTime();
+                startTime?.call();
                 CommonUtils.showText('发送成功～');
                             } else {
-                CommonUtils.showText(res.msg);
+                CommonUtils.showText(res.msg!);
               }
             });
           },
@@ -489,10 +489,10 @@ class _FillCodePageState extends State<FillCodePage> {
             sendPhone(phone: newphone.text, phonePrefix: newcode, type: 4)
                 .then((res) {
               if (res.status == 1) {
-                newstartTime();
+                newstartTime?.call();
                 CommonUtils.showText('发送成功～');
                             } else {
-                CommonUtils.showText(res.msg);
+                CommonUtils.showText(res.msg!);
               }
             });
           },

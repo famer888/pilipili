@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/report/page_name.dart';
 import 'package:pilipili/report/router_observer.dart';
@@ -7,8 +7,8 @@ class PageClickListener extends StatefulWidget {
   final Widget child;
 
   const PageClickListener({
-    Key key,
-    this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -16,8 +16,8 @@ class PageClickListener extends StatefulWidget {
 }
 
 class _PageClickListenerState extends State<PageClickListener> {
-  Offset _downPosition;
-  Duration _downTime;
+  late Offset _downPosition;
+  late Duration _downTime;
 
   @override
   Widget build(BuildContext context) {

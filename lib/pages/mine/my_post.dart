@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/post_card.dart';
@@ -13,14 +13,14 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:provider/provider.dart';
 
 class MyPostPage extends StatefulWidget {
-  const MyPostPage({Key key}) : super(key: key);
+  const MyPostPage({Key? key}) : super(key: key);
 
   @override
   State<MyPostPage> createState() => _MyPostPageState();
 }
 
 class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   int currentTab = 0;
   int limit = 24;
   List tabList = [
@@ -42,7 +42,7 @@ class _MyPostPageState extends State<MyPostPage> with TickerProviderStateMixin {
       vsync: this,
     );
     _tabController.addListener(() {
-      if (_tabController.index.toDouble() == _tabController.animation.value) {
+      if (_tabController.index.toDouble() == _tabController.animation!.value) {
         setState(() {
           currentTab = _tabController.index;
         });

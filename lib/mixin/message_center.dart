@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/pp_string.dart';
@@ -11,7 +11,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/privilege.dart';
 
 class MessageCenter extends StatefulWidget {
-  MessageCenter({Key key}) : super(key: key);
+  MessageCenter({Key? key}) : super(key: key);
 
   @override
   _MessageCenterState createState() => _MessageCenterState();
@@ -46,7 +46,7 @@ class _MessageCenterState extends State<MessageCenter> {
 }
 
 class MessageOfSystem extends StatelessWidget {
-  const MessageOfSystem({Key key}) : super(key: key);
+  const MessageOfSystem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +54,11 @@ class MessageOfSystem extends StatelessWidget {
       var times;
       var messages = '暂无消息';
       var noticeCount = 0;
-      times = state.systemnotice.data.systemNotice.createdAt;
-      messages = state.systemnotice.data.systemNotice.content == null
+      times = state.systemnotice.data!.systemNotice!.createdAt;
+      messages = state.systemnotice.data!.systemNotice!.content == null
           ? '暂无消息'
-          : state.systemnotice.data.systemNotice.content;
-      noticeCount = state.systemnotice.data.systemNoticeCount;
+          : state.systemnotice.data!.systemNotice!.content ?? '暂无消息';
+      noticeCount = state.systemnotice.data!.systemNoticeCount!;
     
       return MessageActionItem(
         title: '【通知消息】',
@@ -75,7 +75,7 @@ class MessageOfSystem extends StatelessWidget {
 }
 
 class MessageOfNotice extends StatelessWidget {
-  const MessageOfNotice({Key key}) : super(key: key);
+  const MessageOfNotice({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +83,11 @@ class MessageOfNotice extends StatelessWidget {
       var times;
       var messages = '暂无消息';
       var noticeCount = 0;
-      times = state.systemnotice.data.feed.createdAt is String
-          ? state.systemnotice.data.feed.createdAt
-          : CommonUtils.getHMTime(int.parse(state.systemnotice.data.feed.createdAt));
-      messages = state.systemnotice.data.feed.question;
-      noticeCount = state.systemnotice.data.feedCount;
+      times = state.systemnotice.data!.feed!.createdAt is String
+          ? state.systemnotice.data!.feed!.createdAt
+          : CommonUtils.getHMTime(int.parse(state.systemnotice.data!.feed!.createdAt!));
+      messages = state.systemnotice.data!.feed!.question!;
+      noticeCount = state.systemnotice.data!.feedCount!;
           return MessageActionItem(
         title: '【客服回复】',
         message: messages.toString(),
@@ -123,13 +123,13 @@ class MessageOfNotice extends StatelessWidget {
 }
 
 class MessageActionItem extends StatelessWidget {
-  final String title;
-  final String icon;
-  final String message;
-  final String time;
-  final String number;
-  final Function onTap;
-  const MessageActionItem({Key key, this.title, this.icon, this.message, this.time, this.number, this.onTap})
+  final String? title;
+  final String? icon;
+  final String? message;
+  final String? time;
+  final String? number;
+  final Function? onTap;
+  const MessageActionItem({Key? key, this.title, this.icon, this.message, this.time, this.number, this.onTap})
       : super(key: key);
 
   @override
@@ -137,7 +137,7 @@ class MessageActionItem extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: GestureDetector(
-        onTap: onTap,
+        onTap: onTap != null ? () => onTap!() : null,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(15)),
           child: Container(
@@ -162,7 +162,7 @@ class MessageActionItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        title!,
                         style: TextStyle(
                             color: Color(0xFF404040), fontSize: ScreenUtil().setSp(15), fontWeight: FontWeight.w500),
                       ),
@@ -183,7 +183,7 @@ class MessageActionItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      time,
+                      time!,
                       style: TextStyle(color: Color(0xFF979797), fontSize: ScreenUtil().setSp(12)),
                     ),
                     SizedBox(
@@ -197,7 +197,7 @@ class MessageActionItem extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Color(0xfffFE155B), borderRadius: BorderRadius.circular(ScreenUtil().setWidth(7.5))),
                         child: Text(
-                          number,
+                          number!,
                           style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(12)),
                         ),
                       ),

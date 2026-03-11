@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +15,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
 class CommunityPushlish extends StatefulWidget {
-  const CommunityPushlish({Key key}) : super(key: key);
+  const CommunityPushlish({Key? key}) : super(key: key);
 
   @override
   State<CommunityPushlish> createState() => _CommunityPushlishState();
@@ -41,12 +41,13 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
   List tags = [];
   String aiCoins = '0';
   int oImageLength = 0;
+
 //选择视频
   Future<void> videoPickerAssets() async {
     int _length = videoList.value
         .where((element) {
           GlobalKey<FileUploadItemState> _key = element['key'];
-          return _key.currentState.showWidget;
+          return _key.currentState!.showWidget;
         })
         .toList()
         .length;
@@ -54,31 +55,32 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       CommonUtils.showText('最多上传$videoMaxLength个视频');
       return;
     }
-    final XFile file = await _picker.pickVideo(source: ImageSource.gallery);
-    if (kIsWeb) {
-      String ext = file.name.split(".").last.toLowerCase();
-      if (ext == "mp4" || file.mimeType == 'video/quicktime') {
-        videoList.value = [
-          ...videoList.value,
-          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
-        ];
-      } else {
-        CommonUtils.showText('请选择mp4格式的视频');
-      }
-    } else {
-      bool flag = await CommonUtils.pngLimitSize(file,
-          size: 100, tips: "请上传100M以内的视频");
-      if (flag) return;
-      String ext = file.name.split(".").last.toLowerCase();
-      if (ext == "mp4" || file.mimeType == 'video/quicktime') {
-        videoList.value = [
-          ...videoList.value,
-          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
-        ];
-      } else {
-        CommonUtils.showText('请选择mp4格式的视频');
-      }
+    final XFile? file = await _picker.pickVideo(source: ImageSource.gallery);
+    if (file != null) {
+      if (kIsWeb) {
+        String ext = file.name.split(".").last.toLowerCase();
+        if (ext == "mp4" || file.mimeType == 'video/quicktime') {
+          videoList.value = [
+            ...videoList.value,
+            {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+          ];
+        } else {
+          CommonUtils.showText('请选择mp4格式的视频');
         }
+      } else {
+        bool flag = await CommonUtils.pngLimitSize(file, size: 100, tips: "请上传100M以内的视频");
+        if (flag) return;
+        String ext = file.name.split(".").last.toLowerCase();
+        if (ext == "mp4" || file.mimeType == 'video/quicktime') {
+          videoList.value = [
+            ...videoList.value,
+            {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+          ];
+        } else {
+          CommonUtils.showText('请选择mp4格式的视频');
+        }
+      }
+    }
   }
 
   //选择图片
@@ -86,7 +88,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     int _length = imageList.value
         .where((element) {
           GlobalKey<FileUploadItemState> _key = element['key'];
-          return _key.currentState.showWidget;
+          return _key.currentState!.showWidget;
         })
         .toList()
         .length;
@@ -94,20 +96,22 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
       CommonUtils.showText('最多上传$maxLength张图片');
       return;
     }
-    final XFile file = await _picker.pickImage(source: ImageSource.gallery);
-    if (kIsWeb) {
-      imageList.value = [
-        ...imageList.value,
-        {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
-      ];
-    } else {
-      bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
-      if (flag) return;
-      imageList.value = [
-        ...imageList.value,
-        {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
-      ];
-        }
+    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      if (kIsWeb) {
+        imageList.value = [
+          ...imageList.value,
+          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+        ];
+      } else {
+        bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
+        if (flag) return;
+        imageList.value = [
+          ...imageList.value,
+          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+        ];
+      }
+    }
   }
 
   isSelect(List _tags, int id) {
@@ -138,27 +142,23 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
               })
               .toList()
               .isNotEmpty;
-          List newImageList = List.from(info['medias'])
-              .where((item) => item['type'] == 1)
-              .toList();
+          List newImageList = List.from(info['medias']).where((item) => item['type'] == 1).toList();
           imageList.value = newImageList.map((e) {
             return {
               'key': new GlobalKey<FileUploadItemState>(),
               'media_url': e['ori_media_url'],
-              'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
+              'cover': (AppGlobal.bannerImgBase ?? '') + e['ori_media_url'],
               'type': 1,
               'w': e['thumb_width'],
               'h': e['thumb_height'],
             };
           }).toList();
-          List newVideoList = List.from(info['medias'])
-              .where((item) => item['type'] == 2)
-              .toList();
+          List newVideoList = List.from(info['medias']).where((item) => item['type'] == 2).toList();
           videoList.value = newVideoList.map((e) {
             return {
               'key': new GlobalKey<FileUploadItemState>(),
               'media_url': e['ori_media_url'],
-              'cover': AppGlobal.bannerImgBase + e['ori_media_url'],
+              'cover': (AppGlobal.bannerImgBase ?? '') + e['ori_media_url'],
               'type': 2,
               'w': e['thumb_width'],
               'h': e['thumb_height'],
@@ -188,7 +188,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     int imageLength = imageList.value
         .where((element) {
           GlobalKey<FileUploadItemState> _key = element['key'];
-          return _key.currentState.showLoad.value;
+          return _key.currentState!.showLoad.value;
         })
         .toList()
         .length;
@@ -197,7 +197,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         : videoList.value
             .where((element) {
               GlobalKey<FileUploadItemState> _key = element['key'];
-              return _key.currentState.showLoad.value;
+              return _key.currentState!.showLoad.value;
             })
             .toList()
             .length;
@@ -206,8 +206,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
 
   publishAiPost() {
     if (isChange) {
-      YyShowDialog.showdialog(context,
-          title: '温馨提示', btnText: '立即购买', cancelText: '取消', callBack: () {
+      YyShowDialog.showdialog(context, title: '温馨提示', btnText: '立即购买', cancelText: '取消', callBack: () {
         publishPost();
       }, content: (setDialogState) {
         return DefaultTextStyle(
@@ -228,7 +227,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     int imageLength = imageList.value
         .where((element) {
           GlobalKey<FileUploadItemState> _key = element['key'];
-          return _key.currentState.showWidget;
+          return _key.currentState!.showWidget;
         })
         .toList()
         .length;
@@ -237,7 +236,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         : videoList.value
             .where((element) {
               GlobalKey<FileUploadItemState> _key = element['key'];
-              return _key.currentState.showWidget;
+              return _key.currentState!.showWidget;
             })
             .toList()
             .length;
@@ -278,14 +277,13 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     //   CommonUtils.showText('请上传视频');
     //   return;
     // }
-    List newFilelist =
-        [...imageList.value, ...(isAI ? [] : videoList.value)].where((element) {
+    List newFilelist = [...imageList.value, ...(isAI ? [] : videoList.value)].where((element) {
       GlobalKey<FileUploadItemState> _key = element['key'];
-      return _key.currentState.showWidget;
+      return _key.currentState!.showWidget;
     }).toList();
     List fileList = newFilelist.map((e) {
       GlobalKey<FileUploadItemState> _key = e['key'];
-      Map dataInfo = _key.currentState.dataInfo;
+      Map dataInfo = _key.currentState!.dataInfo;
       return {
         'media_url': dataInfo['media_url'],
         'type': dataInfo['type'],
@@ -305,9 +303,8 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         .then((value) {
       if (value['status'] != 0) {
         context.pop();
-        YyShowDialog.showdialog(context,
-            title: '发布成功', btnText: '查看帖子', cancelText: '取消', callBack: () {
-          AppGlobal.appContext.push('/myPost');
+        YyShowDialog.showdialog(context, title: '发布成功', btnText: '查看帖子', cancelText: '取消', callBack: () {
+          AppGlobal.appContext!.push('/myPost');
         }, content: (setDialogState) {
           return DefaultTextStyle(
               style: TextStyle(
@@ -346,38 +343,28 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
     selectTopic.dispose();
   }
 
-  static TextStyle titleStyle = TextStyle(
-      fontSize: 14.sp, fontWeight: FontWeight.w700, color: Color(0xff6d6d6d));
-  static TextStyle subtitleStyle = TextStyle(
-      fontSize: 12.sp, fontWeight: FontWeight.w400, color: Color(0xff979797));
-  static TextStyle btnStyle = TextStyle(
-      fontSize: 12.sp, fontWeight: FontWeight.w700, color: Colors.white);
+  static TextStyle titleStyle = TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700, color: Color(0xff6d6d6d));
+  static TextStyle subtitleStyle = TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: Color(0xff979797));
+  static TextStyle btnStyle = TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: Colors.white);
+
   Widget tapBtn(String text, {bool status = true}) {
     return Container(
       height: 30.w,
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          gradient: status
-              ? DefaultStyle.defaluGrandientLine
-              : DefaultStyle.whiteGrandientLine,
+          gradient: status ? DefaultStyle.defaluGrandientLine : DefaultStyle.whiteGrandientLine,
           borderRadius: BorderRadius.circular(50.w)),
       child: Text(
         text,
-        style: status
-            ? btnStyle
-            : TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w700,
-                color: Color(0xffFF84A9)),
+        style: status ? btnStyle : TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: Color(0xffFF84A9)),
       ),
     );
   }
 
   showQuanzi() {
     tags = [...selectTopic.value];
-    YyShowDialog.showdialog(context,
-        title: '选择圈子', btnText: '确定', cancelText: '取消', callBack: () {
+    YyShowDialog.showdialog(context, title: '选择圈子', btnText: '确定', cancelText: '取消', callBack: () {
       selectTopic.value = tags;
       isAI = selectTopic.value
           .where((element) {
@@ -409,8 +396,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
               return InkWell(
                 onTap: () {
                   if (isSelect(tags, topics[index]['topic_id'])) {
-                    int _index = tags.indexWhere((element) =>
-                        element['id'] == topics[index]['topic_id'].toString());
+                    int _index = tags.indexWhere((element) => element['id'] == topics[index]['topic_id'].toString());
                     tags.removeAt(_index);
                   } else {
                     tags.add({
@@ -425,9 +411,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
-                      color: isSelect(tags, topics[index]['topic_id'])
-                          ? Color(0xffFF84A9)
-                          : Colors.white,
+                      color: isSelect(tags, topics[index]['topic_id']) ? Color(0xffFF84A9) : Colors.white,
                       boxShadow: [
                         BoxShadow(
                             color: isSelect(tags, topics[index]['topic_id'])
@@ -442,9 +426,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                     style: TextStyle(
                         color: isSelect(tags, topics[index]['topic_id'])
                             ? Colors.white
-                            : (topics[index]['is_ai'] != 0
-                                ? Color(0xffFE155B)
-                                : Color(0xff828181)),
+                            : (topics[index]['is_ai'] != 0 ? Color(0xffFE155B) : Color(0xff828181)),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700),
                   ),
@@ -473,8 +455,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                 child: loading
                     ? PageStatus.loading(true)
                     : ListView(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 8.w),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
                         children: [
                           Text(
                             '選擇圈子',
@@ -490,24 +471,16 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                             child: SizedBox(
                               height: 36.w,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   ValueListenableBuilder(
                                       valueListenable: selectTopic,
                                       builder: (context, _val, child) {
                                         return Expanded(
                                             child: Text(
-                                          _val.isEmpty
-                                              ? '#選擇圈子'
-                                              : _val
-                                                  .map((e) => '#${e['title']}')
-                                                  .toList()
-                                                  .join(','),
+                                          _val.isEmpty ? '#選擇圈子' : _val.map((e) => '#${e['title']}').toList().join(','),
                                           style: TextStyle(
-                                              color: Color(0xff6d6d6d),
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w400),
+                                              color: Color(0xff6d6d6d), fontSize: 14.sp, fontWeight: FontWeight.w400),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ));
@@ -521,9 +494,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                           isAI
                               ? Text(
                                   aiMsg.toString(),
-                                  style: TextStyle(
-                                      color: Color(0xffFE155B),
-                                      fontSize: 12.sp),
+                                  style: TextStyle(color: Color(0xffFE155B), fontSize: 12.sp),
                                 )
                               : SizedBox(),
                           isAI
@@ -531,16 +502,13 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                               : Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.w),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -564,9 +532,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                               ),
                                             ],
                                           ),
-                                          GestureDetector(
-                                              onTap: videoPickerAssets,
-                                              child: tapBtn('新增影片'))
+                                          GestureDetector(onTap: videoPickerAssets, child: tapBtn('新增影片'))
                                         ],
                                       ),
                                       SizedBox(
@@ -574,24 +540,16 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                       ),
                                       ValueListenableBuilder(
                                           valueListenable: videoList,
-                                          builder:
-                                              (context, List videos, child) {
+                                          builder: (context, List videos, child) {
                                             return videos.isEmpty
                                                 ? Container()
                                                 : Wrap(
                                                     spacing: 4.w,
                                                     runSpacing: 4.w,
-                                                    alignment: WrapAlignment
-                                                        .spaceBetween,
-                                                    children: videos
-                                                        .asMap()
-                                                        .keys
-                                                        .map((index) {
+                                                    alignment: WrapAlignment.spaceBetween,
+                                                    children: videos.asMap().keys.map((index) {
                                                       return FileUploadItem(
-                                                          type: 2,
-                                                          key: videos[index]
-                                                              ['key'],
-                                                          data: videos[index]);
+                                                          type: 2, key: videos[index]['key'], data: videos[index]);
                                                     }).toList(),
                                                   );
                                           })
@@ -604,12 +562,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -645,20 +601,13 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                       return imgs.isEmpty
                                           ? Container()
                                           : Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 8.w),
+                                              padding: EdgeInsets.only(top: 8.w),
                                               child: Wrap(
                                                 spacing: 4.w,
                                                 runSpacing: 4.w,
-                                                alignment:
-                                                    WrapAlignment.spaceBetween,
-                                                children: imgs
-                                                    .asMap()
-                                                    .keys
-                                                    .map((index) {
-                                                  return FileUploadItem(
-                                                      key: imgs[index]['key'],
-                                                      data: imgs[index]);
+                                                alignment: WrapAlignment.spaceBetween,
+                                                children: imgs.asMap().keys.map((index) {
+                                                  return FileUploadItem(key: imgs[index]['key'], data: imgs[index]);
                                                 }).toList(),
                                               ),
                                             );
@@ -686,9 +635,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                   isDense: true,
                                   counterText: '',
                                   hintText: '請輸入文字...',
-                                  hintStyle: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Color(0xffc2c2c2)),
+                                  hintStyle: TextStyle(fontSize: 14.sp, color: Color(0xffc2c2c2)),
                                   contentPadding: EdgeInsets.zero,
                                   border: InputBorder.none),
                               style: TextStyle(
@@ -718,9 +665,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                   isDense: true,
                                   helperMaxLines: 66,
                                   hintText: '請輸入文字...',
-                                  hintStyle: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Color(0xffc2c2c2)),
+                                  hintStyle: TextStyle(fontSize: 14.sp, color: Color(0xffc2c2c2)),
                                   contentPadding: EdgeInsets.zero,
                                   border: InputBorder.none),
                               style: TextStyle(
@@ -757,9 +702,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                         child: Text(
                                           '僅限自己觀看',
                                           style: TextStyle(
-                                              color: isPublic == 1
-                                                  ? Colors.white
-                                                  : Color(0xff828181),
+                                              color: isPublic == 1 ? Colors.white : Color(0xff828181),
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w700),
                                         ),
@@ -777,20 +720,15 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                             child: Container(
                                               height: 36.w,
                                               decoration: isPublic == 0
-                                                  ? DefaultStyle
-                                                      .activeDecoration
-                                                  : DefaultStyle
-                                                      .defaultDecoration,
+                                                  ? DefaultStyle.activeDecoration
+                                                  : DefaultStyle.defaultDecoration,
                                               alignment: Alignment.center,
                                               child: Text(
                                                 '公開發佈帖子',
                                                 style: TextStyle(
-                                                    color: isPublic == 0
-                                                        ? Colors.white
-                                                        : Color(0xff828181),
+                                                    color: isPublic == 0 ? Colors.white : Color(0xff828181),
                                                     fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                                    fontWeight: FontWeight.w700),
                                               ),
                                             )))
                                   ],
@@ -801,8 +739,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                               : Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.w),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
@@ -825,12 +762,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                           builder: (context, value, child) {
                                             return GestureDetector(
                                               onTap: () {
-                                                showCoinInput.value =
-                                                    !showCoinInput.value;
+                                                showCoinInput.value = !showCoinInput.value;
                                                 coin.text = '';
                                               },
-                                              child: tapBtn(value ? '關閉' : '開啟',
-                                                  status: !showCoinInput.value),
+                                              child: tapBtn(value ? '關閉' : '開啟', status: !showCoinInput.value),
                                             );
                                           })
                                     ],
@@ -841,11 +776,10 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                               : ValueListenableBuilder(
                                   valueListenable: showCoinInput,
                                   builder: (context, value, child) {
-                                    return value ? child : Container();
+                                    return value ? (child ?? Container()) : Container();
                                   },
                                   child: Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8.w),
+                                    padding: EdgeInsets.symmetric(horizontal: 8.w),
                                     alignment: Alignment.center,
                                     child: TextField(
                                       autofocus: true,
@@ -853,20 +787,15 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                       maxLength: 20,
                                       cursorColor: Color(0xffFF84A9),
                                       textInputAction: TextInputAction.done,
-                                      keyboardType:
-                                          TextInputType.numberWithOptions(
-                                              decimal: true),
+                                      keyboardType: TextInputType.numberWithOptions(decimal: true),
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp(r'[0-9]')),
+                                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                       ],
                                       decoration: InputDecoration(
                                           isDense: true,
                                           counterText: '',
                                           hintText: '請輸入金額',
-                                          hintStyle: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: Color(0xffc2c2c2)),
+                                          hintStyle: TextStyle(fontSize: 14.sp, color: Color(0xffc2c2c2)),
                                           contentPadding: EdgeInsets.zero,
                                           border: InputBorder.none),
                                       style: TextStyle(
@@ -889,10 +818,7 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
                                     gradient: DefaultStyle.defaluGrandientLine),
                                 child: Text(
                                   '立即發布',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w700),
+                                  style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.w700),
                                 ),
                               ),
                             ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
@@ -19,13 +19,13 @@ import '../global.dart';
 import 'common/pullrefreshlist.dart';
 
 class Wode extends StatefulWidget {
-  Wode({Key key}) : super(key: key);
+  Wode({Key? key}) : super(key: key);
   @override
   _WodeState createState() => _WodeState();
 }
 
 class _WodeState extends State<Wode> {
-  bool networkErr = false;
+  bool? networkErr = false;
   int pageStatus = 0;
 
   void initState() {
@@ -89,7 +89,7 @@ class _WodeState extends State<Wode> {
             ? Container()
             : Consumer<HomeConfig>(
                 builder: (context, counter, _) {
-                  bool isLogin = false;
+                  bool? isLogin = false;
                   if (['', null, false].contains(AppGlobal.apiToken)) {
                     isLogin = false;
                   } else {
@@ -105,13 +105,13 @@ class _WodeState extends State<Wode> {
         Expanded(
             child: PullRefreshList(
           onRefresh: () {
-            if (networkErr) {
+            if (networkErr!) {
               networkErr = false;
               setState(() {});
             }
             initInfo();
           },
-          child: networkErr
+          child: networkErr!
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -159,12 +159,12 @@ class _WodeState extends State<Wode> {
 }
 
 class SystemNoticeIcon extends StatelessWidget {
-  const SystemNoticeIcon({Key key}) : super(key: key);
+  const SystemNoticeIcon({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeConfig>(builder: (ctx, state, child) {
-      CommonUtils.debugPrint(state.systemnotice.data.systemNoticeCount != 0);
+      CommonUtils.debugPrint(state.systemnotice.data!.systemNoticeCount != 0);
       return GestureDetector(
         onTap: () {
           context.push('/messagecenter');
@@ -172,7 +172,7 @@ class SystemNoticeIcon extends StatelessWidget {
         child: PlatformAwareAssetImage(
             url:
                 // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
-                (state.systemnotice.data.systemNoticeCount != 0 || state.systemnotice.data.feedCount != 0)
+                (state.systemnotice.data!.systemNoticeCount != 0 || state.systemnotice.data!.feedCount != 0)
                     ? PPAssetsPath.chatCircleDotsActive
                     : PPAssetsPath.chatCircleDots,
             width: 24.w,
@@ -184,7 +184,7 @@ class SystemNoticeIcon extends StatelessWidget {
 }
 
 class UserAvatar extends StatelessWidget {
-  const UserAvatar({Key key}) : super(key: key);
+  const UserAvatar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -205,10 +205,10 @@ class UserAvatar extends StatelessWidget {
 }
 
 class Header extends StatelessWidget {
-  const Header({Key key, this.members, this.isLogin, this.networkErr}) : super(key: key);
-  final Member members;
-  final bool isLogin;
-  final bool networkErr;
+  const Header({Key? key, this.members, this.isLogin, this.networkErr}) : super(key: key);
+  final Member? members;
+  final bool? isLogin;
+  final bool? networkErr;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -243,7 +243,7 @@ class Header extends StatelessWidget {
                           filterQuality: FilterQuality.medium)),
                 ],
               ),
-              networkErr
+              networkErr!
                   ? Container()
                   : Container(
                       margin: EdgeInsets.only(
@@ -271,7 +271,7 @@ class Header extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  members.nickname ?? "pilpil用户",
+                                  members!.nickname ?? "pilpil用户",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18.sp,
@@ -296,7 +296,7 @@ class Header extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'ID:' + (members.aff ?? '0000000').toString(),
+                                            'ID:' + (members!.aff ?? '0000000').toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.bold),
@@ -307,7 +307,7 @@ class Header extends StatelessWidget {
                               ],
                             ),
                           ),
-                          isLogin
+                          isLogin!
                               ? Container()
                               : Column(
                                   children: [
@@ -353,12 +353,12 @@ class Header extends StatelessWidget {
 }
 
 class HandleList extends StatelessWidget {
-  const HandleList({Key key, this.menuList}) : super(key: key);
-  final List menuList;
+  const HandleList({Key? key, this.menuList}) : super(key: key);
+  final List? menuList;
   @override
   Widget build(BuildContext context) {
     List<Widget> tempList = [];
-    for (var item in menuList) {
+    for (var item in menuList!) {
       tempList.add(
         GestureDetector(
           onTap: () {
@@ -405,8 +405,8 @@ class HandleList extends StatelessWidget {
 }
 
 class CardList extends StatelessWidget {
-  const CardList({Key key, this.member}) : super(key: key);
-  final Member member;
+  const CardList({Key? key, this.member}) : super(key: key);
+  final Member? member;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -447,7 +447,7 @@ class CardList extends StatelessWidget {
                         height: 5.h,
                       ),
                       Text(
-                        "您有" + (member.level ?? 0).toString() + "张会员卡",
+                        "您有" + (member!.level ?? 0).toString() + "张会员卡",
                         style: TextStyle(fontSize: 14.sp, color: Colors.white, fontWeight: FontWeight.bold),
                       )
                     ],
@@ -501,7 +501,7 @@ class CardList extends StatelessWidget {
                               style: TextStyle(fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "余额:" + (member.money ?? 0).toString(),
+                              "余额:" + (member!.money ?? 0).toString(),
                               style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold),
                             )
                           ],

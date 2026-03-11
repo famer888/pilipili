@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,15 +20,16 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
-  ListPage({Key key, this.title, this.id, this.isShow, this.index, this.parentName, this.isDark = 0, this.pos})
+  ListPage({Key? key, this.title, this.id, this.isShow, this.index, this.parentName, this.isDark = 0, this.pos})
       : super(key: key);
-  final String title;
-  final String id;
-  final bool isShow;
+  final String? title;
+  final String? id;
+  final bool? isShow;
   final int isDark;
-  final int index;
-  final String parentName;
-  final int pos;
+  final int? index;
+  final String? parentName;
+  final int? pos;
+
   @override
   _ListPageState createState() => _ListPageState();
 }
@@ -37,7 +38,7 @@ class _ListPageState extends State<ListPage> with CardMixin {
   int pageStatus = 0;
   bool isAll = false;
   bool networkErr = false;
-  int cardType; //1 视频 2漫画 3小说 4链接 5有声小说  6图集 7短视频；
+  late int cardType; //1 视频 2漫画 3小说 4链接 5有声小说  6图集 7短视频；
   int page = 1;
   int limit = 24;
   List data = [];
@@ -48,12 +49,13 @@ class _ListPageState extends State<ListPage> with CardMixin {
   bool isFall = false; //是否瀑布流
   bool isTansuo = false; //是否是探索栏目
   dynamic fixedBanner;
-  int elementID;
-  String listType;
+  late int elementID;
+  late String listType;
+
   @override
   void initState() {
     super.initState();
-    String _prams = widget.id; // type 1长视频 2短视频 3漫画
+    String _prams = widget.id!; // type 1长视频 2短视频 3漫画
     List _pramsString = _prams.split(',');
     Map _pramsMap = {};
     _pramsString.forEach((item) {
@@ -70,7 +72,7 @@ class _ListPageState extends State<ListPage> with CardMixin {
         CommonUtils.showText('element_id必须是数字');
       }
     }
-    if (widget.isShow && pageStatus == 0) {
+    if (widget.isShow == true && pageStatus == 0!) {
       pageStatus = 1;
       getBanner();
     }

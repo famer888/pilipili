@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -16,8 +16,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ShareMovieModel {
   static void showShareMovie(BackButtonBehavior backButtonBehavior,
-      {VoidCallback cancel,
-      VoidCallback confirm,
+      {VoidCallback? cancel,
+      VoidCallback? confirm,
       String thumb = 'undefine',
       String title = 'undefine',
       double width = 1,
@@ -29,22 +29,22 @@ class ShareMovieModel {
 
     localStorageImage() async {
       RenderRepaintBoundary boundary =
-          certificateWidgetKey.currentContext.findRenderObject();
+          (certificateWidgetKey.currentContext!.findRenderObject()!) as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData.buffer.asUint8List();
-      final result =
-          await ImageGallerySaver.saveImage(pngBytes); //这个是核心的保存图片的插件
-      if (result['isSuccess']) {
-        CommonUtils.showText(
-          '信息保存成功,请勿丢失～',
-        );
-      } else if (Platform.isAndroid) {
-        if (result.length > 0) {
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData != null) {
+        Uint8List pngBytes = byteData.buffer.asUint8List();
+        final result = await ImageGallerySaver.saveImage(pngBytes); //这个是核心的保存图片的插件
+        if (result['isSuccess']) {
           CommonUtils.showText(
             '信息保存成功,请勿丢失～',
           );
+        } else if (Platform.isAndroid) {
+          if (result.length > 0) {
+            CommonUtils.showText(
+              '信息保存成功,请勿丢失～',
+            );
+          }
         }
       }
     }
@@ -68,8 +68,7 @@ class ShareMovieModel {
         PermissionStatus storageStatus = await Permission.storage.status;
         if (storageStatus == PermissionStatus.denied) {
           storageStatus = await Permission.storage.request();
-          if (storageStatus == PermissionStatus.denied ||
-              storageStatus == PermissionStatus.permanentlyDenied) {
+          if (storageStatus == PermissionStatus.denied || storageStatus == PermissionStatus.permanentlyDenied) {
             CommonUtils.showText(
               '您拒绝了存储权限，请前往设置中打开权限',
             );
@@ -100,8 +99,7 @@ class ShareMovieModel {
 
     Widget _header() {
       return Container(
-        padding: EdgeInsets.only(
-            left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(100)),
+        padding: EdgeInsets.only(left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(100)),
         height: ScreenUtil().setWidth(80),
         alignment: Alignment.centerLeft,
         clipBehavior: Clip.antiAlias,
@@ -153,11 +151,8 @@ class ShareMovieModel {
               child: SizedBox(
                 width: double.infinity,
                 height: width == 1 || height == 1
-                    ? (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)) *
-                        9 /
-                        16
-                    : (height / width) *
-                        (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)),
+                    ? (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)) * 9 / 16
+                    : (height / width) * (ScreenUtil().screenWidth - ScreenUtil().setWidth(65)),
                 child: PlatformAwareNetworkImage(
                   fit: BoxFit.cover,
                   url: thumb.toString(),
@@ -165,9 +160,7 @@ class ShareMovieModel {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: ScreenUtil().setWidth(10),
-                  top: DefaultStyle.pagePadding),
+              padding: EdgeInsets.only(left: ScreenUtil().setWidth(10), top: DefaultStyle.pagePadding),
               child: Row(
                 children: [
                   Container(
@@ -178,17 +171,14 @@ class ShareMovieModel {
                       color: Colors.white,
                       boxShadow: [
                         //阴影
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 0),
-                            blurRadius: ScreenUtil().setWidth(6.5))
+                        BoxShadow(color: Colors.black12, offset: Offset(0, 0), blurRadius: ScreenUtil().setWidth(6.5))
                       ],
                     ),
-                    child: QrImage(
-                      data: '$url',
-                      padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
-                      version: QrVersions.auto,
-                    ),
+                    // child: QrImage(
+                    //   data: '$url',
+                    //   padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+                    //   version: QrVersions.auto,
+                    // ),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -197,9 +187,7 @@ class ShareMovieModel {
                       Row(
                         children: [
                           Container(
-                            width: ScreenUtil().screenWidth -
-                                DefaultStyle.pagePadding * 3 -
-                                ScreenUtil().setWidth(180),
+                            width: ScreenUtil().screenWidth - DefaultStyle.pagePadding * 3 - ScreenUtil().setWidth(180),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -223,8 +211,7 @@ class ShareMovieModel {
                             ),
                           ),
                           Padding(
-                            padding:
-                                EdgeInsets.only(left: ScreenUtil().setWidth(5)),
+                            padding: EdgeInsets.only(left: ScreenUtil().setWidth(5)),
                             child: PlatformAwareAssetImage(
                                 url: "assets/images/icon_logo.png",
                                 width: ScreenUtil().setWidth(45),
@@ -234,9 +221,7 @@ class ShareMovieModel {
                         ],
                       ),
                       Container(
-                        width: ScreenUtil().screenWidth -
-                            DefaultStyle.pagePadding * 3 -
-                            ScreenUtil().setWidth(150),
+                        width: ScreenUtil().screenWidth - DefaultStyle.pagePadding * 3 - ScreenUtil().setWidth(150),
                         padding: EdgeInsets.only(top: ScreenUtil().setWidth(0)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,11 +264,9 @@ class ShareMovieModel {
                 GestureDetector(
                   onTap: _saveImgShare,
                   child: Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(10)),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(18),
-                        vertical: ScreenUtil().setWidth(8)),
+                    margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(18), vertical: ScreenUtil().setWidth(8)),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
                         boxShadow: [
@@ -293,13 +276,10 @@ class ShareMovieModel {
                               offset: Offset(0, 0),
                               blurRadius: ScreenUtil().setWidth(4))
                         ],
-                        gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(255, 132, 169, 1),
-                              Color.fromRGBO(255, 158, 158, 1),
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter)),
+                        gradient: LinearGradient(colors: [
+                          Color.fromRGBO(255, 132, 169, 1),
+                          Color.fromRGBO(255, 158, 158, 1),
+                        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                     child: Text(
                       '保存图片分享',
                       style: DefaultStyle.white15bold,
@@ -348,7 +328,7 @@ class ShareMovieModel {
                   GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel.call();
+                      cancel?.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black54),
@@ -357,8 +337,7 @@ class ShareMovieModel {
                   Positioned(
                     child: Center(
                       child: Container(
-                        width: ScreenUtil().screenWidth -
-                            ScreenUtil().setWidth(40),
+                        width: ScreenUtil().screenWidth - ScreenUtil().setWidth(40),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -371,18 +350,14 @@ class ShareMovieModel {
                                       children: [
                                         Column(
                                           children: [
-                                            SizedBox(
-                                                height:
-                                                    ScreenUtil().setWidth(60)),
+                                            SizedBox(height: ScreenUtil().setWidth(60)),
                                             Container(
                                               width: double.infinity,
                                               clipBehavior: Clip.antiAlias,
                                               decoration: BoxDecoration(
                                                   color: Color(0xfffff4f9),
-                                                  borderRadius: BorderRadius
-                                                      .all(Radius.circular(
-                                                          ScreenUtil()
-                                                              .setWidth(10)))),
+                                                  borderRadius:
+                                                      BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10)))),
                                               child: Column(
                                                 children: [_header(), _body()],
                                               ),
@@ -393,13 +368,10 @@ class ShareMovieModel {
                                             top: 0,
                                             right: 0,
                                             child: PlatformAwareAssetImage(
-                                                url:
-                                                    "assets/images/share_bg.png",
-                                                height:
-                                                    ScreenUtil().setWidth(140),
+                                                url: "assets/images/share_bg.png",
+                                                height: ScreenUtil().setWidth(140),
                                                 fit: BoxFit.fitHeight,
-                                                filterQuality:
-                                                    FilterQuality.medium))
+                                                filterQuality: FilterQuality.medium))
                                       ],
                                     ),
                                   ),

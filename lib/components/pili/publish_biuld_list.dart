@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+﻿import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,30 +9,31 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/http.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
-typedef BuildWidgetData = Function(BuildContext context, int index,
-    dynamic data, int page, int limit, Function getListData);
+typedef BuildWidgetData = Function(
+    BuildContext context, int index, dynamic data, int page, int limit, Function getListData);
 
 class PublicBuildList extends StatefulWidget {
-  final bool isShow; //是否展示
-  final BuildWidgetData itemBuild;
-  final String api; //接口地址
-  final Map data; //传递参数
+  final bool? isShow; //是否展示
+  final BuildWidgetData? itemBuild;
+  final String? api; //接口地址
+  final Map? data; //传递参数
   final int limit;
   final bool isFlow; //是否瀑布流
   final int row;
   final bool noRefresh;
   final double bottomPadding;
   final double aspectRatio;
-  final String nullText;
+  final String? nullText;
   final bool isController;
   final double paddingTop;
   final double paddingLeft;
   final double paddingRight;
-  final Widget head;
-  final double mainAxisSpacing;
-  final double crossAxisSpacing;
+  final Widget? head;
+  final double? mainAxisSpacing;
+  final double? crossAxisSpacing;
+
   PublicBuildList({
-    Key key,
+    Key? key,
     this.isShow,
     @required this.api,
     this.data,
@@ -64,7 +65,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
   bool networkErr = false;
   bool initPage = false;
   Map reqData = {'page': 1, 'limit': 20};
-  List searchData;
+  late List searchData;
+
   Future getSearchResult() async {
     if (networkErr) {
       reqData = {'page': 1, 'limit': 20};
@@ -74,8 +76,7 @@ class _PublicBuildListState extends State<PublicBuildList> {
       setState(() {});
     }
     try {
-      Response<dynamic> res =
-          await PlatformAwareHttp.post(widget.api, data: reqData);
+      Response<dynamic> res = await PlatformAwareHttp.post(widget.api!, data: reqData);
       List resdata;
       CommonUtils.debugPrint("--${widget.api}------请求的返回${res.data}");
       if (res.data['status'] != 0) {
@@ -84,16 +85,11 @@ class _PublicBuildListState extends State<PublicBuildList> {
         } else {
           List _list = (res.data['data'] == null
               ? []
-              : res.data['data']['result'] ??
-                  res.data['data']['list'] ??
-                  res.data['data'] ??
-                  []);
+              : res.data['data']['result'] ?? res.data['data']['list'] ?? res.data['data'] ?? []);
           resdata = _list;
         }
 
-        if (widget.api.indexOf('dynamic/myDynamic') != -1 &&
-            resdata.length > 0 &&
-            resdata[0]['aff'] == null) {
+        if (widget.api!.indexOf('dynamic/myDynamic') != -1 && resdata.length > 0 && resdata[0]['aff'] == null) {
           resdata.removeAt(0);
         }
         isAll = resdata.length < reqData['limit'];
@@ -121,9 +117,9 @@ class _PublicBuildListState extends State<PublicBuildList> {
   @override
   void initState() {
     super.initState();
-    reqData.addAll(widget.data);
-      reqData['limit'] = widget.limit;
-    if (widget.isShow && !initPage) {
+    reqData.addAll(widget.data!);
+    reqData['limit'] = widget.limit;
+    if (widget.isShow == true && !initPage!) {
       initPage = true;
       getSearchResult();
     }
@@ -133,8 +129,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
   void didUpdateWidget(PublicBuildList oldWidget) {
     super.didUpdateWidget(oldWidget);
     bool isSame = true;
-    widget.data.forEach((key, value) {
-      if (widget.data[key] != oldWidget.data[key]) {
+    widget.data!.forEach((key, value) {
+      if (widget.data![key] != oldWidget.data![key]) {
         isSame = false;
       }
     });
@@ -144,13 +140,13 @@ class _PublicBuildListState extends State<PublicBuildList> {
       isAll = false;
       initPage = false;
       setState(() {});
-      reqData.addAll(widget.data);
-          if (widget.isShow) {
+      reqData.addAll(widget.data!);
+      if (widget.isShow!) {
         initPage = true;
         getSearchResult();
       }
     }
-    if (widget.isShow && !initPage) {
+    if (widget.isShow == true && !initPage!) {
       initPage = true;
       getSearchResult();
     }
@@ -166,16 +162,14 @@ class _PublicBuildListState extends State<PublicBuildList> {
                   top: widget.paddingTop,
                   left: widget.paddingLeft,
                   right: widget.paddingRight,
-                  bottom: MediaQuery.of(context).padding.bottom +
-                      AppGlobal.webBottomHeight,
+                  bottom: MediaQuery.of(context).padding.bottom + AppGlobal.webBottomHeight,
                 ),
                 shrinkWrap: true,
                 cacheExtent: 10.sh,
                 controller: widget.isController ? _controller : null,
                 itemCount: searchData.length,
                 itemBuilder: (context, index) {
-                  return widget.itemBuild(context, index, searchData[index],
-                      reqData['page'], reqData['limit'], () {
+                  return widget.itemBuild!(context, index, searchData[index], reqData['page'], reqData['limit'], () {
                     return searchData;
                   });
                 })
@@ -187,20 +181,18 @@ class _PublicBuildListState extends State<PublicBuildList> {
                     physics: ClampingScrollPhysics(),
                     padding: EdgeInsets.only(
                         top: 10.w,
-                        bottom: MediaQuery.of(context).padding.bottom +
-                            AppGlobal.webBottomHeight +
-                            widget.bottomPadding,
+                        bottom:
+                            MediaQuery.of(context).padding.bottom + AppGlobal.webBottomHeight + widget.bottomPadding,
                         left: 10.w,
                         right: 10.w),
                     itemCount: searchData.length,
-                    gridDelegate:
-                        SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: widget.row,
-                            mainAxisSpacing: ScreenUtil().setWidth(10),
-                            crossAxisSpacing: ScreenUtil().setWidth(10)),
+                    gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: widget.row,
+                        mainAxisSpacing: ScreenUtil().setWidth(10),
+                        crossAxisSpacing: ScreenUtil().setWidth(10)),
                     itemBuilder: (BuildContext context, int index) {
-                      return widget.itemBuild(context, index, searchData[index],
-                          reqData['page'], reqData['limit'], () {
+                      return widget.itemBuild!(context, index, searchData[index], reqData['page'], reqData['limit'],
+                          () {
                         return searchData;
                       });
                     })
@@ -212,9 +204,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
                     padding: EdgeInsets.only(
                         left: 10.w,
                         right: 10.w,
-                        bottom: MediaQuery.of(context).padding.bottom +
-                            AppGlobal.webBottomHeight +
-                            widget.bottomPadding,
+                        bottom:
+                            MediaQuery.of(context).padding.bottom + AppGlobal.webBottomHeight + widget.bottomPadding,
                         top: 20.w),
                     itemCount: searchData.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -224,8 +215,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
                       childAspectRatio: widget.aspectRatio,
                     ),
                     itemBuilder: (context, index) {
-                      return widget.itemBuild(context, index, searchData[index],
-                          reqData['page'], reqData['limit'], () {
+                      return widget.itemBuild!(context, index, searchData[index], reqData['page'], reqData['limit'],
+                          () {
                         return searchData;
                       });
                     }));

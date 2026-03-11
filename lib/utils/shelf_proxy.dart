@@ -1,4 +1,4 @@
-// Copyright (c) 2014, the Dart project authors.  Please see the AUTHORS file
+﻿// Copyright (c) 2014, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
@@ -35,8 +35,8 @@ int static_port = 9999;
 
 Future createServer(String url) async {
   RegExp domainReg = new RegExp("${PPString.test}(http|https):\/\/[^\/]*");
-  String domainStr = domainReg.stringMatch(url);
-  int _port;
+  String domainStr = domainReg.stringMatch(url)!;
+  int _port = 0;
   bool _flag = servers.any((element) {
     if (element.keys.first == domainStr) {
       _port = element.values.first;
@@ -50,17 +50,12 @@ Future createServer(String url) async {
   } else {
     if (!_flag) {
       // 创建服务器
-      var _server = await shelf_io.serve(
-          proxyHandler(domainStr), '127.0.0.1', current_port,
-          shared: true);
+      var _server = await shelf_io.serve(proxyHandler(domainStr), '127.0.0.1', current_port, shared: true);
       servers.add({domainStr: current_port});
       current_port++;
-      return {
-        "origin": domainStr,
-        "localproxy": "http://127.0.0.1:"+(current_port - 1).toString()
-      };
+      return {"origin": domainStr, "localproxy": "http://127.0.0.1:" + (current_port - 1).toString()};
     } else {
-      return {"origin": domainStr, "localproxy": "http://127.0.0.1:$_port"};
+      return {"origin": domainStr, "localproxy": "http://127.0.0.1:${_port}"};
     }
   }
 }
@@ -68,7 +63,7 @@ Future createServer(String url) async {
 Future createStaticServer(String url) async {
   List<String> urls = url.split('/');
   String fileName = urls[urls.length - 1];
-  int _port;
+  int _port = 0;
   bool _flag = servers.any((element) {
     if (element.keys.first == fileName) {
       _port = element.values.first;
@@ -78,9 +73,7 @@ Future createStaticServer(String url) async {
   });
   Future _createServer() async {
     try {
-      var handler = await createStaticHandler(
-          url.substring(0, url.lastIndexOf('/')),
-          defaultDocument: fileName);
+      var handler = await createStaticHandler(url.substring(0, url.lastIndexOf('/')), defaultDocument: fileName);
       var _server;
       _server = await shelf_io.serve(handler, '127.0.0.1', static_port);
       servers.add({fileName: static_port});
@@ -101,7 +94,7 @@ Future createStaticServer(String url) async {
   }
 }
 
-Handler proxyHandler(url, {http.Client client, String proxyName}) {
+Handler proxyHandler(url, {http.Client? client, String? proxyName}) {
   Uri uri;
   if (url is String) {
     uri = Uri.parse(url);
@@ -148,19 +141,15 @@ Handler proxyHandler(url, {http.Client client, String proxyName}) {
 
       // Add a Warning header. See
       // http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.5.2
-      _addHeader(
-          clientResponse.headers, 'warning', '214 $proxyName "GZIP decoded"');
+      _addHeader(clientResponse.headers, 'warning', '214 $proxyName "GZIP decoded"');
     }
 
     // Make sure the Location header is pointing to the proxy server rather
     // than the destination server, if possible.
-    if (clientResponse.isRedirect &&
-        clientResponse.headers.containsKey('location')) {
-      final location =
-          requestUrl.resolve(clientResponse.headers['location']).toString();
+    if (clientResponse.isRedirect && clientResponse.headers.containsKey('location')) {
+      final location = requestUrl.resolve(clientResponse.headers['location']!).toString();
       if (p.url.isWithin(uri.toString(), location)) {
-        clientResponse.headers['location'] =
-            '/'+p.url.relative(location, from: uri.toString());
+        clientResponse.headers['location'] = '/' + p.url.relative(location, from: uri.toString());
       } else {
         clientResponse.headers['location'] = location;
       }
@@ -170,18 +159,16 @@ Handler proxyHandler(url, {http.Client client, String proxyName}) {
       var encryptData = await clientResponse.stream.bytesToString();
       var decryptData = PlatformAwareCrypto.decryptM3U8(encryptData);
       var str = await _parseM3U8(decryptData, requestUrl.toString());
-      return Response(clientResponse.statusCode,
-          body: str, headers: clientResponse.headers);
+      return Response(clientResponse.statusCode, body: str, headers: clientResponse.headers);
     } else {
-      return Response(clientResponse.statusCode,
-          body: clientResponse.stream, headers: clientResponse.headers);
+      return Response(clientResponse.statusCode, body: clientResponse.stream, headers: clientResponse.headers);
     }
   };
 }
 
 Future _parseM3U8(String str, String m3u8_url) async {
   RegExp domainReg = new RegExp("${PPString.test}(http|https):\/\/[^\/]*");
-  String domainStr = domainReg.stringMatch(str);
+  String domainStr = domainReg.stringMatch(str)!;
   String resultStr = "";
   if (domainStr.isNotEmpty) {
     // 如果ts自带域名则建立新的代理服务器

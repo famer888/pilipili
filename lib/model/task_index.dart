@@ -1,14 +1,14 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final taskIndex = taskIndexFromJson(jsonString);
 
 class TaskHomeData {
-  int score;
-  int invitedNum;
-  List<Task> task;
-  List<Product> product;
-  int freeViewCnt;
-  int totalFreeViewCnt;
+  int? score;
+  int? invitedNum;
+  List<Task>? task;
+  List<Product>? product;
+  int? freeViewCnt = 0;
+  int? totalFreeViewCnt;
 
   TaskHomeData({this.score, this.invitedNum, this.task, this.product, this.freeViewCnt, this.totalFreeViewCnt});
 
@@ -26,39 +26,39 @@ class TaskHomeData {
         "total_free_view_cnt": totalFreeViewCnt,
         "score": score,
         "invited_num": invitedNum,
-        "task": List<dynamic>.from(task.map((x) => x.toJson())),
-        "product": List<dynamic>.from(product.map((x) => x.toJson())),
+        "task": List<dynamic>.from(task!.map((x) => x.toJson())),
+        "product": List<dynamic>.from(product!.map((x) => x.toJson())),
       };
 }
 
 class Product {
-  int id;
-  int type;
-  String pname;
-  String img;
-  String secondImg;
-  String price;
-  String promoPrice;
+  int? id;
+  int? type;
+  String? pname;
+  String? img;
+  String? secondImg;
+  String? price;
+  String? promoPrice;
   dynamic promoExpireTime;
-  int discount;
-  int validDate;
-  int coins;
-  int freeCoins;
-  int forever;
-  int relatedSuperGoldCardId;
-  int status;
-  int sortOrder;
-  String description;
-  DateTime updatedAt;
-  DateTime createdAt;
-  int vipLevel;
-  int showMore;
-  int giveCoinsTotalDays;
-  int dailyGiveCoins;
-  String imgUrl;
-  String secondImgUrl;
+  int? discount;
+  int? validDate;
+  int? coins;
+  int? freeCoins;
+  int? forever;
+  int? relatedSuperGoldCardId;
+  int? status;
+  int? sortOrder;
+  String? description;
+  DateTime? updatedAt;
+  DateTime? createdAt;
+  int? vipLevel;
+  int? showMore;
+  int? giveCoinsTotalDays;
+  int? dailyGiveCoins;
+  String? imgUrl;
+  String? secondImgUrl;
   dynamic right;
-  List<dynamic> pay;
+  List<dynamic>? pay;
 
   Product({
     this.id,
@@ -138,8 +138,8 @@ class Product {
         "status": status,
         "sort_order": sortOrder,
         "description": description,
-        "updated_at": updatedAt.toIso8601String(),
-        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
+        "created_at": createdAt!.toIso8601String(),
         "vip_level": vipLevel,
         "show_more": showMore,
         "give_coins_total_days": giveCoinsTotalDays,
@@ -147,21 +147,21 @@ class Product {
         "img_url": imgUrl,
         "second_img_url": secondImgUrl,
         "right": right,
-        "pay": List<dynamic>.from(pay.map((x) => x)),
+        "pay": List<dynamic>.from(pay!.map((x) => x)),
       };
 }
 
 class Task {
-  int id;
-  String title;
-  String description;
-  int group;
-  String icon;
-  int day;
-  String url;
-  int point;
-  int sort;
-  int completed;
+  int? id;
+  String? title;
+  String? description;
+  int? group;
+  String? icon;
+  int? day;
+  String? url;
+  int? point;
+  int? sort;
+  int? completed;
 
   Task({
     this.id,

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -34,23 +34,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../utils/privilege.dart';
 
 class SmallVideo extends StatefulWidget {
-  SmallVideo({Key key, this.id, this.elementId, this.page = 1, this.videoData}) : super(key: key);
-  final int id;
-  final int elementId;
+  SmallVideo({Key? key, this.id, this.elementId, this.page = 1, this.videoData}) : super(key: key);
+  final int? id;
+  final int? elementId;
   final int page;
   final dynamic videoData;
+
   @override
   _SmallVideoState createState() => _SmallVideoState();
 }
 
 class _SmallVideoState extends State<SmallVideo> {
-  PreloadPageController controller;
-  int currentIndex = 0;
+  late PreloadPageController controller;
+  int? currentIndex = 0;
   double startMoveY = 0.0;
   int page = 1;
   int topPage = 1;
@@ -62,33 +63,34 @@ class _SmallVideoState extends State<SmallVideo> {
   List<VideoItem> videoData = [];
 
   Map<int, VideoPlayerController> vControllerMaps = {};
-  getSmallVideolist({int videoPage, bool isCreate = false}) {
+
+  getSmallVideolist({int? videoPage, bool isCreate = false}) {
     if (widget.videoData != null) return;
     loading = true;
     setState(() {});
     Map _pramas = {'page': videoPage == null ? page : videoPage, 'limit': AppGlobal.smallVideoLimit};
-    _pramas.addAll(AppGlobal.smallVideoPramas);
-    PlatformAwareHttp.post(AppGlobal.smallVideoApi, data: _pramas).then((json) {
+    _pramas.addAll(AppGlobal.smallVideoPramas!);
+    PlatformAwareHttp.post(AppGlobal.smallVideoApi!, data: _pramas).then((json) {
       VideoList res = VideoList.fromJson(json.data);
       if (res.status != 0) {
-        if (res.data.length < AppGlobal.smallVideoLimit) {
+        if (res.data!.length < AppGlobal.smallVideoLimit) {
           isAll = true;
-          CommonUtils.showText('已为您加载完最后' + res.data.length.toString() + '部视频～');
+          CommonUtils.showText('已为您加载完最后' + res.data!.length.toString() + '部视频～');
         }
         loading = false;
         pageLoading = false;
         int cIndex = 0;
         if (!initVideoPage) {
           initVideoPage = true;
-          page = videoPage;
-          topPage = videoPage;
-          videoList.addAll(res.data);
-          int videoIndex = res.data.indexWhere((item) => item.datumId == widget.id);
+          page = videoPage!;
+          topPage = videoPage!;
+          videoList.addAll(res.data!);
+          int videoIndex = res.data!.indexWhere((item) => item.datumId == widget.id);
 
           //需要加载上一页
           bool isT = videoIndex <= 5 && topPage > 1;
           //需要加载下一页
-          bool isB = videoIndex >= res.data.length - 5 && !isAll;
+          bool isB = videoIndex >= res.data!.length - 5 && !isAll;
           if (isT) {
             topPage--;
             getSmallVideolist(videoPage: topPage, isCreate: true);
@@ -97,15 +99,15 @@ class _SmallVideoState extends State<SmallVideo> {
             page++;
             getSmallVideolist(videoPage: page, isCreate: true);
           }
-                  if (!isT && !isB) {
+          if (!isT && !isB) {
             currentIndex = videoIndex;
             setState(() {});
             createController(videoIndex);
           }
         } else {
-          if (videoPage < page) {
+          if ((videoPage ?? 0) < page) {
             videoData.clear();
-            videoData.addAll(res.data);
+            videoData.addAll(res.data!);
             videoData.addAll(videoList);
             videoList = videoData;
             if (isCreate) {
@@ -114,11 +116,11 @@ class _SmallVideoState extends State<SmallVideo> {
               setState(() {});
               createController(cIndex);
             } else {
-              currentIndex = controller.page.toInt();
-              controller.jumpToPage(res.data.length + currentIndex);
+              currentIndex = (controller.page ?? 0).toInt();
+              controller.jumpToPage(res.data!.length + currentIndex!);
             }
           } else {
-            videoList.addAll(res.data);
+            videoList.addAll(res.data!);
             if (isCreate) {
               cIndex = videoList.indexWhere((item) => item.datumId == widget.id);
               currentIndex = cIndex;
@@ -129,7 +131,7 @@ class _SmallVideoState extends State<SmallVideo> {
         }
         setState(() {});
       } else {
-        CommonUtils.showText(res.msg);
+        CommonUtils.showText(res.msg!);
       }
     });
   }
@@ -137,8 +139,8 @@ class _SmallVideoState extends State<SmallVideo> {
   createController(int index) {
     controller = PreloadPageController(initialPage: index);
     controller.addListener(() {
-      if (controller.page % 1 == 0) {
-        currentIndex = controller.page.toInt();
+      if ((controller.page ?? 0) % 1 == 0) {
+        currentIndex = (controller.page ?? 0).toInt();
         setState(() {});
       }
     });
@@ -147,16 +149,16 @@ class _SmallVideoState extends State<SmallVideo> {
   @override
   void initState() {
     super.initState();
-    Wakelock.enable();
+    WakelockPlus.enable();
     if (widget.videoData == null) {
       getSmallVideolist(videoPage: widget.page);
     } else {
       getVideoDetail(id: widget.videoData['id'] == null ? widget.videoData['related_id'] : widget.videoData['id'])
           .then((res) {
         if (res.status != 0) {
-          VideoItem videoDetail = VideoItem.fromJson(res.data.toJson());
+          VideoItem videoDetail = VideoItem.fromJson(res.data!.toJson());
           videoDetail.coverThumbVertical = CommonUtils.getThumb(widget.videoData);
-          videoDetail.countLike = res.data.favorites;
+          videoDetail.countLike = res.data!.favorites;
           videoList = [videoDetail];
           controller = PreloadPageController();
           initVideoPage = true;
@@ -176,7 +178,7 @@ class _SmallVideoState extends State<SmallVideo> {
     AppEventReport.instance.videoDispose();
     AppGlobal.smallVideoApi = null;
     AppGlobal.smallVideoPramas = null;
-    Wakelock.disable();
+    WakelockPlus.disable();
     if (!kIsWeb) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     }
@@ -205,22 +207,22 @@ class _SmallVideoState extends State<SmallVideo> {
                   scrollDirection: Axis.vertical,
                   onPageChanged: (index) {
                     if (vControllerMaps[index - 1] != null) {
-                      if (vControllerMaps[index - 1].value.isInitialized &&
-                          vControllerMaps[index - 1].value.isPlaying) {
-                        vControllerMaps[index - 1].pause();
+                      if (vControllerMaps[index - 1]!.value.isInitialized &&
+                          vControllerMaps[index - 1]!.value.isPlaying) {
+                        vControllerMaps[index - 1]!.pause();
                       }
                     }
                     if (vControllerMaps[index + 1] != null) {
-                      if (vControllerMaps[index + 1].value.isInitialized &&
-                          vControllerMaps[index + 1].value.isPlaying) {
-                        vControllerMaps[index + 1].pause();
+                      if (vControllerMaps[index + 1]!.value.isInitialized &&
+                          vControllerMaps[index + 1]!.value.isPlaying) {
+                        vControllerMaps[index + 1]!.pause();
                       }
                     }
                     if (vControllerMaps[index] != null) {
-                      if (vControllerMaps[index].value.isInitialized &&
-                          !vControllerMaps[index].value.isPlaying &&
+                      if (vControllerMaps[index]!.value.isInitialized &&
+                          !vControllerMaps[index]!.value.isPlaying &&
                           !kIsWeb) {
-                        vControllerMaps[index].play();
+                        vControllerMaps[index]!.play();
                         AppGlobal.videoPageIsActive = true;
                       }
                     }
@@ -252,7 +254,7 @@ class _SmallVideoState extends State<SmallVideo> {
                         vControllerMaps[index] = _controller;
                       },
                       onVideoControllerDisposed: () {
-                        vControllerMaps[index] = null;
+                        vControllerMaps[index] = null!;
                       },
                       currentIndex: currentIndex,
                       data: videoList[index],
@@ -312,24 +314,30 @@ class _SmallVideoState extends State<SmallVideo> {
 
 class SmallVideoPlayer extends StatefulWidget {
   SmallVideoPlayer(
-      {Key key, this.onVideoControllerInited, this.onVideoControllerDisposed, this.currentIndex, this.index, this.data})
+      {Key? key,
+      this.onVideoControllerInited,
+      this.onVideoControllerDisposed,
+      this.currentIndex,
+      this.index,
+      this.data})
       : super(key: key);
-  Function onVideoControllerInited;
-  Function onVideoControllerDisposed;
-  final int currentIndex;
-  final int index;
-  final VideoItem data;
+  Function? onVideoControllerInited;
+  Function? onVideoControllerDisposed;
+  final int? currentIndex;
+  final int? index;
+  final VideoItem? data;
+
   @override
   _SmallVideoPlayerState createState() => _SmallVideoPlayerState();
 }
 
 class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMixin {
-  VideoPlayerController _controller;
+  late VideoPlayerController _controller;
   bool videoInit = false; //视频是否初始化
   double videoValue = 0.0; //当前视频播放时间
   double videoMaxTime = 0.0; //视频总播放时间
   bool showControl = false; //中间播放暂停按钮的展示
-  Timer timerfc; //播放暂停按钮的隐藏定时器
+  late Timer timerfc; //播放暂停按钮的隐藏定时器
   bool changeStartIsPlay = false; //拖动进度条时视频是否处于播放状态
   bool isNovideo = true;
   bool isLike = false;
@@ -344,12 +352,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
   bool commentShow = false;
   bool usecheck = false;
   bool videoPlayErr = false;
+
   getVideoComment(Function setBottomSheetState) {
     if (isAll) {
       CommonUtils.showText('已经没有评论啦～');
       return;
     }
-    getCommentList(contentId: widget.data.datumId, contentType: 7, page: page, limit: limit).then((res) {
+    getCommentList(contentId: widget.data!.datumId, contentType: 7, page: page, limit: limit).then((res) {
       if (res['status'] != 0) {
         commentLoading = false;
         List resdata = res['data'] == null ? [] : res['data'];
@@ -378,7 +387,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
       setState(() {});
       time.cancel();
     });
-    }
+  }
 
   Widget _itemContainer(Widget child) {
     return Container(
@@ -401,25 +410,25 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
   }
 
   buySmallVideo(int money) {
-    buyVideo(id: widget.data.datumId, coins: (money - widget.data.discountCoins), context: context).then((res) {
+    buyVideo(id: widget.data!.datumId, coins: (money - widget.data!.discountCoins!), context: context).then((res) {
       if (res.status != 0) {
         CommonUtils.showText('购买成功');
         isNovideo = false;
         CommonUtils.debugPrint('购买视频地址:' + res.data.toString());
-        widget.data.source240 = res.data;
+        widget.data!.source240 = res.data;
         setState(() {});
         initVideo(res.data);
       } else {
-        CommonUtils.showText(res.msg);
+        CommonUtils.showText(res.msg!);
       }
     });
   }
 
   showBuyVip() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.data.isfree == 2) {
-        int money = Provider.of<HomeConfig>(context, listen: false).member.money;
-        bool isInsufficient = money < widget.data.discountCoins;
+      if (widget.data!.isfree == 2) {
+        int money = Provider.of<HomeConfig>(context, listen: false).member.money!;
+        bool isInsufficient = money < widget.data!.discountCoins!;
         YyShowDialog.showdialog(context, btnText: isInsufficient ? PPString.goldInsufficient : PPString.buySee,
             callBack: () {
           if (isInsufficient) {
@@ -435,7 +444,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                 children: [
                   Text.rich(TextSpan(text: '该视频需要花费', children: [
                     TextSpan(
-                        text: widget.data.discountCoins.toString() + 'G',
+                        text: widget.data!.discountCoins.toString() + 'G',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: DefaultStyle.themeColor,
@@ -450,11 +459,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
             cancelBack: () {
               var config = Provider.of<HomeConfig>(context, listen: false).config;
               ShareMovieModel.showShareMovie(backButtonBehavior,
-                  copyUrl: config.share.affUrlCopy.url,
-                  thumb: widget.data.coverThumbVertical,
-                  title: widget.data.title,
-                  subtitle: widget.data.desc,
-                  url: '${config.share.affUrl}');
+                  copyUrl: config.share!.affUrlCopy!.url!,
+                  thumb: widget.data!.coverThumbVertical!,
+                  title: widget.data!.title!,
+                  subtitle: widget.data!.desc!,
+                  url: '${config.share!.affUrl}');
             },
             cancelText: '分享无限看',
             callBack: () {
@@ -487,9 +496,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
   void initState() {
     // TODO: implement initState
     super.initState();
-    likeNum = widget.data.favorites;
-    isLike = widget.data.userFavorites == 1;
-    isNovideo = widget.data.source240 == null;
+    likeNum = widget.data!.favorites!;
+    isLike = widget.data!.userFavorites == 1;
+    isNovideo = widget.data!.source240 == null;
     EventBus().on('stop-current-play', (arg) {
       if (_controller.value.isPlaying) {
         _controller.pause();
@@ -504,7 +513,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
     timerfc.cancel();
     _controller.removeListener(setVideovalue);
     _controller.dispose();
-    widget.onVideoControllerDisposed();
+    widget.onVideoControllerDisposed!();
     EventBus().off('stop-current-play');
   }
 
@@ -577,12 +586,12 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                           itemBuilder: (BuildContext context, int index) {
                                             return CommentItem(
                                               souceType: RESOURCE_TYPE_SHORT_VIDEO,
-                                              id: widget.data.datumId,
+                                              id: widget.data!.datumId,
                                               data: commentList[index],
                                               children: commentList[index]['child_comment'].map<Widget>((childComment) {
                                                 return CommentItem(
                                                     souceType: RESOURCE_TYPE_SHORT_VIDEO,
-                                                    id: widget.data.datumId,
+                                                    id: widget.data!.datumId,
                                                     data: childComment);
                                               }).toList(),
                                             );
@@ -592,19 +601,24 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           if (Privilege.isAllowed(context, RESOURCE_TYPE_SHORT_VIDEO, PRIVILEGE_TYPE_COMMENT)) {
-                            InputDialog.show(context, '请输入您的影评～').then((value) {
-                              if (value != '') {
-                                publishComment(contentId: widget.data.datumId, contentType: 7, reply: value)
-                                    .then((res) {
-                                  if (res['status'] != 0) {
-                                    CommonUtils.showText('影评发布成功,请刷新查看');
-                                  } else {
-                                    CommonUtils.showText(res['msg']);
-                                  }
-                                });
-                              } else {
-                                CommonUtils.showText('请输入您的影评');
-                              }
+                            InputDialog.show(context, '请输入您的影评～').then((innerFuture) {
+                              innerFuture.then((String? value) {
+                                if (value != null && value.isNotEmpty) {
+                                  publishComment(
+                                    contentId: widget.data!.datumId,
+                                    contentType: 7,
+                                    reply: value,
+                                  ).then((res) {
+                                    if (res['status'] != 0) {
+                                      CommonUtils.showText('影评发布成功,请刷新查看');
+                                    } else {
+                                      CommonUtils.showText(res['msg']);
+                                    }
+                                  });
+                                } else {
+                                  CommonUtils.showText('请输入您的影评');
+                                }
+                              });
                             });
                           } else {
                             YyShowDialog.showdialog(context, btnText: '升级VIP', cancelText: '取消', callBack: () {
@@ -694,21 +708,21 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
 
   createVideo(url) {
     _controller.dispose();
-    widget.onVideoControllerDisposed();
-      _controller = VideoPlayerController.network(url);
-    widget.onVideoControllerInited(_controller);
+    widget.onVideoControllerDisposed!();
+    _controller = VideoPlayerController.network(url);
+    widget.onVideoControllerInited!(_controller);
     _controller.initialize().then((_) {
       handleRecordWatch();
       _controller.setLooping(true);
       videoMaxTime = _controller.value.duration.inMilliseconds.toDouble();
       Timer.periodic(new Duration(seconds: 10), (timer) {
         timer.cancel();
-        startWatchRecordTimer(AppGlobal.smallVideoWatchRecordBox, widget.data.datumId,
-            chapterId: widget.data.datumId,
+        startWatchRecordTimer(AppGlobal.smallVideoWatchRecordBox!, widget.data!.datumId!,
+            chapterId: widget.data!.datumId,
             offset: videoValue,
-            thumb: widget.data.coverThumbVertical ?? widget.data.coverThumbHorizontal,
-            isFree: widget.data.isfree,
-            title: widget.data.title);
+            thumb: widget.data!.coverThumbVertical ?? widget.data!.coverThumbHorizontal,
+            isFree: widget.data!.isfree,
+            title: widget.data!.title);
       });
       if (mounted) {
         setState(() {});
@@ -717,12 +731,12 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
       if (widget.currentIndex == widget.index && AppGlobal.videoPageIsActive) {
         if (!kIsWeb) {
           AppEventReport.instance.initVideoInfo(
-              id: widget.data.id.toString(),
-              title: widget.data.title,
+              id: widget.data!.id.toString(),
+              title: widget.data!.title,
               typeId: '',
               typeName: '',
-              tagKey: widget.data.tagsId,
-              tagName: widget.data.tags);
+              tagKey: widget.data!.tagsId,
+              tagName: widget.data!.tags);
           AppEventReport.instance.videoControllerInit(_controller);
           _controller.play();
         }
@@ -774,19 +788,20 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
   }
 
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
+
   @override
   Widget build(BuildContext context) {
-    if (widget.currentIndex >= widget.index - 1 &&
-        widget.currentIndex <= widget.index + 1 &&
+    if ((widget.currentIndex ?? 0) >= (widget.index ?? 0) - 1 &&
+        (widget.currentIndex ?? 0) <= (widget.index ?? 0) + 1 &&
         !videoInit &&
         _controller == null) {
       videoInit = true;
       CommonUtils.debugPrint('===============视频地址:' +
-          widget.data.source240.toString() +
+          widget.data!.source240.toString() +
           '==预览视频=' +
-          widget.data.preview.toString() +
+          widget.data!.preview.toString() +
           '================');
-      initVideo(isNovideo ? widget.data.preview : widget.data.source240);
+      initVideo(isNovideo ? widget.data!.preview : widget.data!.source240);
     }
     return GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -837,7 +852,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                     children: [
                                       PlatformAwareNetworkImage(
                                           fit: BoxFit.contain,
-                                          url: widget.data.coverThumbVertical ?? widget.data.coverThumbHorizontal),
+                                          url: widget.data!.coverThumbVertical ?? widget.data!.coverThumbHorizontal),
                                       Positioned(
                                           child: Center(
                                         child: Container(
@@ -860,7 +875,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                           children: [
                             PlatformAwareNetworkImage(
                                 fit: BoxFit.contain,
-                                url: widget.data.coverThumbVertical ?? widget.data.coverThumbHorizontal),
+                                url: widget.data!.coverThumbVertical ?? widget.data!.coverThumbHorizontal),
                             Positioned(
                                 child: Center(
                               child: Container(
@@ -906,7 +921,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            initVideo(isNovideo ? widget.data.preview : widget.data.source240);
+                                            initVideo(isNovideo ? widget.data!.preview : widget.data!.source240);
                                           },
                                           child: Container(
                                             margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
@@ -970,10 +985,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                               ? Container()
                                               : GestureDetector(
                                                   onTap: () {
-                                                    if (widget.data.isfree == 2) {
+                                                    if (widget.data!.isfree == 2) {
                                                       int money =
-                                                          Provider.of<HomeConfig>(context, listen: false).member.money;
-                                                      bool isInsufficient = money < widget.data.discountCoins;
+                                                          Provider.of<HomeConfig>(context, listen: false).member.money!;
+                                                      bool isInsufficient = money < widget.data!.discountCoins!;
                                                       YyShowDialog.showdialog(context,
                                                           title: 'GOLD视频',
                                                           btnText: isInsufficient
@@ -995,7 +1010,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                               children: [
                                                                 Text.rich(TextSpan(text: '该视频需要花费', children: [
                                                                   TextSpan(
-                                                                      text: widget.data.discountCoins.toString() + 'G',
+                                                                      text: widget.data!.discountCoins.toString() + 'G',
                                                                       style: TextStyle(
                                                                           fontWeight: FontWeight.bold,
                                                                           color: DefaultStyle.themeColor,
@@ -1015,10 +1030,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                           borderRadius:
                                                               BorderRadius.circular(ScreenUtil().setWidth(11)),
                                                           gradient: LinearGradient(colors: [
-                                                            widget.data.isfree == 1
+                                                            widget.data!.isfree == 1
                                                                 ? Color.fromRGBO(255, 132, 169, 0.7)
                                                                 : Color.fromRGBO(255, 210, 49, 0.7),
-                                                            widget.data.isfree == 1
+                                                            widget.data!.isfree == 1
                                                                 ? Color.fromRGBO(255, 132, 169, 0.7)
                                                                 : Color.fromRGBO(237, 34, 34, 0.7),
                                                           ])),
@@ -1027,10 +1042,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                       height: ScreenUtil().setWidth(22),
                                                       child: Text.rich(TextSpan(children: [
                                                         TextSpan(
-                                                            text: widget.data.isfree == 1
+                                                            text: widget.data!.isfree == 1
                                                                 ? PPString.vipNowSeeVideo
                                                                 : '支付' +
-                                                                    widget.data.discountCoins.toString() +
+                                                                    widget.data!.discountCoins.toString() +
                                                                     '币即可观看完整版',
                                                             style: TextStyle(
                                                                 color: Colors.white,
@@ -1043,17 +1058,17 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                           SizedBox(
                                             height: ScreenUtil().setWidth(10),
                                           ),
-                                          widget.data.tags != ''
+                                          widget.data!.tags != ''
                                               ? Container(
                                                   margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                                                   child: Text(
-                                                    '#' + widget.data.tags.replaceAll(',', ' #'),
+                                                    '#' + widget.data!.tags!.replaceAll(',', ' #'),
                                                     style: DefaultStyle.white14,
                                                   ),
                                                 )
                                               : Container(),
                                           Text(
-                                            widget.data.title,
+                                            widget.data!.title!,
                                             style: TextStyle(
                                                 height: 1.25,
                                                 color: Color.fromRGBO(255, 255, 255, 1),
@@ -1062,15 +1077,15 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          widget.data.desc == ''
+                                          widget.data!.desc == ''
                                               ? Container()
                                               : SizedBox(
                                                   height: ScreenUtil().setWidth(13),
                                                 ),
-                                          widget.data.desc == ''
+                                          widget.data!.desc == ''
                                               ? Container()
                                               : Text(
-                                                  widget.data.desc,
+                                                  widget.data!.desc!,
                                                   style: TextStyle(
                                                       color: Color.fromRGBO(255, 255, 255, 1),
                                                       fontSize: ScreenUtil().setSp(14),
@@ -1084,16 +1099,14 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              PersistentState.getState('small_video').then((value) {
-                                                
-                                              });
-                                              userFavorites(type: 10, id: widget.data.datumId).then((res) {
+                                              PersistentState.getState('small_video').then((value) {});
+                                              userFavorites(type: 10, id: widget.data!.datumId).then((res) {
                                                 if (res.status != 0) {
                                                   isLike ? likeNum-- : likeNum++;
                                                   isLike = !isLike;
                                                   setState(() {});
                                                 } else {
-                                                  CommonUtils.showText(res.msg);
+                                                  CommonUtils.showText(res.msg!);
                                                 }
                                               });
                                             },
@@ -1118,11 +1131,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                             onTap: () {
                                               var config = Provider.of<HomeConfig>(context, listen: false).config;
                                               ShareMovieModel.showShareMovie(backButtonBehavior,
-                                                  copyUrl: config.share.affUrlCopy.url,
-                                                  thumb: widget.data.coverThumbVertical,
-                                                  title: widget.data.title ?? '--',
-                                                  subtitle: widget.data.desc ?? '--',
-                                                  url: config.share.affUrl.toString());
+                                                  copyUrl: config.share!.affUrlCopy!.url!,
+                                                  thumb: widget.data!.coverThumbVertical!,
+                                                  title: widget.data!.title ?? '--',
+                                                  subtitle: widget.data!.desc ?? '--',
+                                                  url: config.share!.affUrl.toString());
                                               AppEventReport.instance.videoShare();
                                             },
                                             child: _itemContainer(Column(
@@ -1156,7 +1169,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                 SizedBox(
                                                   height: ScreenUtil().setWidth(5.5),
                                                 ),
-                                                Text(widget.data.countComment.toString(), style: DefaultStyle.white11)
+                                                Text(widget.data!.countComment.toString(), style: DefaultStyle.white11)
                                               ],
                                             )),
                                           ),
@@ -1169,16 +1182,16 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                 CommonUtils.showText('请下载APP使用下载功能～');
                                               } else {
                                                 PageStatus.showLoading();
-                                                getDownloadUrl(id: widget.data.datumId).then((res) {
+                                                getDownloadUrl(id: widget.data!.datumId).then((res) {
                                                   if (res['status'] != 0) {
                                                     Map taskInfo = {
-                                                      "id": widget.data.datumId.toString(),
+                                                      "id": widget.data!.datumId.toString(),
                                                       "urlPath": res['data']['downloadUrl'],
-                                                      "title": widget.data.title,
-                                                      "desc": widget.data.desc,
-                                                      "thumbCover": widget.data.coverThumbHorizontal ??
-                                                          widget.data.coverThumbVertical,
-                                                      "tags": widget.data.tags.split(",").join("/"),
+                                                      "title": widget.data!.title,
+                                                      "desc": widget.data!.desc,
+                                                      "thumbCover": widget.data!.coverThumbHorizontal ??
+                                                          widget.data!.coverThumbVertical,
+                                                      "tags": widget.data!.tags!.split(",").join("/"),
                                                       "contentType": 7,
                                                       "downloading": false,
                                                       "isWaiting": true
@@ -1189,7 +1202,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                       context,
                                                       content: (setDialogState) {
                                                         return Text(
-                                                          widget.data.isfree == 2
+                                                          widget.data!.isfree == 2
                                                               ? PPString.noBuyVideoCacheHint
                                                               : PPString.noVipVideoCachHint,
                                                           style: TextStyle(
@@ -1199,15 +1212,15 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                         );
                                                       },
                                                       cancelText: '取消',
-                                                      btnText: widget.data.isfree == 2
+                                                      btnText: widget.data!.isfree == 2
                                                           ? PPString.buyNow
                                                           : PPString.upgradeNuw,
                                                       callBack: () {
-                                                        if (widget.data.isfree == 2) {
+                                                        if (widget.data!.isfree == 2) {
                                                           int money = Provider.of<HomeConfig>(context, listen: false)
                                                               .member
-                                                              .money;
-                                                          bool isInsufficient = money < widget.data.discountCoins;
+                                                              .money!;
+                                                          bool isInsufficient = money < widget.data!.discountCoins!;
                                                           YyShowDialog.showdialog(context,
                                                               btnText: isInsufficient
                                                                   ? PPString.goldInsufficient
@@ -1228,7 +1241,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                                                   children: [
                                                                     Text.rich(TextSpan(text: '该视频需要花费', children: [
                                                                       TextSpan(
-                                                                          text: widget.data.discountCoins.toString() +
+                                                                          text: widget.data!.discountCoins.toString() +
                                                                               'G',
                                                                           style: TextStyle(
                                                                               fontWeight: FontWeight.bold,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/input/InputDailog.dart';
@@ -10,26 +10,21 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class YuemeiCard extends StatefulWidget {
-  YuemeiCard(
-      {Key key,
-      this.isShowInfo = true,
-      this.w,
-      this.h,
-      this.data,
-      this.isBuy = false})
-      : super(key: key);
+  YuemeiCard({Key? key, this.isShowInfo = true, this.w, this.h, this.data, this.isBuy = false}) : super(key: key);
   final bool isShowInfo;
-  final double w;
-  final double h;
-  Map data;
+  final double? w;
+  final double? h;
+  Map? data;
   final bool isBuy;
+
   @override
   _YuemeiCardState createState() => _YuemeiCardState();
 }
 
 class _YuemeiCardState extends State<YuemeiCard> {
   String scoreString = '';
-  Widget yuepaoCard({double h, double w}) {
+
+  Widget yuepaoCard({double? h, double? w}) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -47,11 +42,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
           decoration: BoxDecoration(
             color: Color(0xffffebd3),
             boxShadow: [
-              BoxShadow(
-                  color: Color.fromRGBO(255, 128, 163, 0.5),
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
-                  spreadRadius: 0)
+              BoxShadow(color: Color.fromRGBO(255, 128, 163, 0.5), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)
             ],
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(18.w),
@@ -69,7 +60,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                   bottomRight: Radius.circular(10.w),
                   bottomLeft: Radius.circular(38.w)),
               child: PlatformAwareNetworkImage(
-                url: widget.data['cover'],
+                url: widget.data!['cover'],
                 fit: BoxFit.cover,
               ),
             ),
@@ -85,10 +76,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
       content: (setDialogState) {
         return Text(
           '您已发表过评价了',
-          style: TextStyle(
-              color: Color(0xff646464),
-              fontWeight: FontWeight.bold,
-              fontSize: ScreenUtil().setSp(16)),
+          style: TextStyle(color: Color(0xff646464), fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(16)),
         );
       },
       btnText: '朕知道了',
@@ -99,8 +87,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push(CommonUtils.getRealHash(
-            'yuemeiDetail/' + widget.data['id'].toString()));
+        context.push(CommonUtils.getRealHash('yuemeiDetail/' + widget.data!['id'].toString()));
       },
       child: !widget.isShowInfo
           ? Stack(
@@ -110,8 +97,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                 Positioned(
                     bottom: 0,
                     right: -4.w,
-                    child: widget.data['buy_count'] != null &&
-                            widget.data['buy_count'] > 10
+                    child: widget.data!['buy_count'] != null && widget.data!['buy_count'] > 10
                         ? PlatformAwareAssetImage(
                             url: 'assets/images/pili_12/yuemei_jingpin.png',
                             width: 54.w,
@@ -130,8 +116,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                     clipBehavior: Clip.none,
                     children: [
                       Container(
-                        margin:
-                            EdgeInsets.only(top: 20.w, left: 1.w, right: 4.w),
+                        margin: EdgeInsets.only(top: 20.w, left: 1.w, right: 4.w),
                         decoration: BoxDecoration(
                           color: Color(0xffffebd3),
                           boxShadow: [
@@ -148,11 +133,9 @@ class _YuemeiCardState extends State<YuemeiCard> {
                         ),
                         height: 112.w,
                         width: double.infinity,
-                        padding:
-                            EdgeInsets.only(right: 2.w, top: 2.w, bottom: 2.w),
+                        padding: EdgeInsets.only(right: 2.w, top: 2.w, bottom: 2.w),
                         child: Container(
-                          padding: EdgeInsets.only(
-                              left: 14.w, right: 14.w, top: 12.w),
+                          padding: EdgeInsets.only(left: 14.w, right: 14.w, top: 12.w),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
@@ -164,23 +147,19 @@ class _YuemeiCardState extends State<YuemeiCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.data['title'].toString(),
+                                widget.data!['title'].toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Color(0xff6d6d6d), fontSize: 14.sp),
+                                style: TextStyle(color: Color(0xff6d6d6d), fontSize: 14.sp),
                               ),
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 2.w),
                                 child: Text(
-                                  (widget.data['girl_age'] ?? '- -')
-                                          .toString() +
+                                  (widget.data!['girl_age'] ?? '- -').toString() +
                                       '岁/' +
-                                      (widget.data['girl_height'] ?? '- -')
-                                          .toString() +
+                                      (widget.data!['girl_height'] ?? '- -').toString() +
                                       'cm/' +
-                                      (widget.data['girl_cup'] ?? '- -')
-                                          .toString() +
+                                      (widget.data!['girl_cup'] ?? '- -').toString() +
                                       '杯',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -192,7 +171,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(bottom: 4.w),
-                                child: Text(widget.data['girl_tags'].toString(),
+                                child: Text(widget.data!['girl_tags'].toString(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -200,20 +179,17 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                       fontSize: 11.sp,
                                     )),
                               ),
-                              widget.isBuy && widget.data['is_comment'] == 0
+                              widget.isBuy && widget.data!['is_comment'] == 0
                                   ? Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            if (widget.data['is_comment'] !=
-                                                0) {
+                                            if (widget.data!['is_comment'] != 0) {
                                               return publishComment();
                                             }
                                             Map _comment = {};
-                                            YyShowDialog.showButtom(context,
-                                                title: '体验评价',
-                                                height: 380.w, onClose: () {
+                                            YyShowDialog.showButtom(context, title: '体验评价', height: 380.w, onClose: () {
                                               scoreString = '';
                                             }, content: (setButtom) {
                                               return Container(
@@ -221,49 +197,31 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                                 child: Column(
                                                   children: [
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 24.w,
-                                                          bottom: 24.w),
+                                                      margin: EdgeInsets.only(top: 24.w, bottom: 24.w),
                                                       padding: EdgeInsets.only(
-                                                          left: 16.w,
-                                                          right: 16.w,
-                                                          bottom: 16.w,
-                                                          top: 24.w),
+                                                          left: 16.w, right: 16.w, bottom: 16.w, top: 24.w),
                                                       width: 311.w,
                                                       decoration: BoxDecoration(
                                                           color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.w),
+                                                          borderRadius: BorderRadius.circular(10.w),
                                                           boxShadow: [
                                                             BoxShadow(
-                                                                color: Color(
-                                                                    0XFFffd3e6),
-                                                                offset: Offset(
-                                                                    0, 2),
+                                                                color: Color(0XFFffd3e6),
+                                                                offset: Offset(0, 2),
                                                                 blurRadius: 4,
                                                                 spreadRadius: 0)
                                                           ]),
                                                       child: DefaultTextStyle(
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xffff5b8c),
-                                                              fontSize: 14.sp),
+                                                          style: TextStyle(color: Color(0xffff5b8c), fontSize: 14.sp),
                                                           child: Column(
                                                             children: [
                                                               Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
+                                                                mainAxisSize: MainAxisSize.min,
                                                                 children: [
                                                                   Text('服务 ：'),
                                                                   YuemeiScore(
-                                                                    scoreFunction:
-                                                                        (score) {
-                                                                      _comment[
-                                                                              'service'] =
-                                                                          score;
+                                                                    scoreFunction: (score) {
+                                                                      _comment['service'] = score;
                                                                     },
                                                                   )
                                                                 ],
@@ -272,38 +230,24 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                                                 height: 16.w,
                                                               ),
                                                               Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
+                                                                mainAxisSize: MainAxisSize.min,
                                                                 children: [
                                                                   Text('颜值 ：'),
                                                                   YuemeiScore(
-                                                                    scoreFunction:
-                                                                        (score) {
-                                                                      _comment[
-                                                                              'face'] =
-                                                                          score;
+                                                                    scoreFunction: (score) {
+                                                                      _comment['face'] = score;
                                                                     },
                                                                   )
                                                                 ],
                                                               ),
                                                               GestureDetector(
                                                                 onTap: () {
-                                                                  InputDialog.show(
-                                                                          context,
-                                                                          '可以描述下服务过程（选填）',
-                                                                          btnText:
-                                                                              '完成',
-                                                                          value:
-                                                                              scoreString)
-                                                                      .then(
-                                                                          (value) {
-                                                                    if (value !=
-                                                                            '') {
-                                                                      scoreString =
-                                                                          value;
-                                                                      setButtom(
-                                                                          () {});
+                                                                  InputDialog.show(context, '可以描述下服务过程（选填）',
+                                                                          btnText: '完成', value: scoreString)
+                                                                      .then((value) {
+                                                                    if (value != '') {
+                                                                      scoreString = "${value}";
+                                                                      setButtom(() {});
                                                                     }
                                                                   });
                                                                 },
@@ -311,13 +255,17 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                                                     height: 96.w,
                                                                     width: double.infinity,
                                                                     margin: EdgeInsets.only(top: 16.w),
-                                                                    decoration: BoxDecoration(color: Color(0xFFffe6eb), borderRadius: BorderRadius.circular(10)),
+                                                                    decoration: BoxDecoration(
+                                                                        color: Color(0xFFffe6eb),
+                                                                        borderRadius: BorderRadius.circular(10)),
                                                                     child: Padding(
                                                                         padding: EdgeInsets.all(8.0),
                                                                         child: scoreString == ''
                                                                             ? Text(
                                                                                 '可以描述下服务过程（选填）',
-                                                                                style: TextStyle(fontSize: 14.sp, color: Color(0xff6d6d6d)),
+                                                                                style: TextStyle(
+                                                                                    fontSize: 14.sp,
+                                                                                    color: Color(0xff6d6d6d)),
                                                                               )
                                                                             : SingleChildScrollView(
                                                                                 child: Text(
@@ -334,87 +282,50 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
-                                                        if (_comment['face'] ==
-                                                                null ||
-                                                            _comment[
-                                                                    'service'] ==
-                                                                null) {
-                                                          return CommonUtils
-                                                              .showText(
-                                                                  '请对本次体验进行评分');
+                                                        if (_comment['face'] == null || _comment['service'] == null) {
+                                                          return CommonUtils.showText('请对本次体验进行评分');
                                                         }
                                                         yuepaoComment(
-                                                                girlMeetId:
-                                                                    widget.data[
-                                                                        'id'],
-                                                                comment:
-                                                                    scoreString,
-                                                                face: _comment[
-                                                                    'face'],
-                                                                service: _comment[
-                                                                    'service'])
+                                                                girlMeetId: widget.data!['id'],
+                                                                comment: scoreString,
+                                                                face: _comment['face'],
+                                                                service: _comment['service'])
                                                             .then((res) {
-                                                          if (res['status'] !=
-                                                              0) {
-                                                            widget.data[
-                                                                'is_comment'] = 1;
+                                                          if (res['status'] != 0) {
+                                                            widget.data!['is_comment'] = 1;
                                                             setState(() {});
-                                                            CommonUtils
-                                                                .showText(
-                                                                    '发表评价成功');
+                                                            CommonUtils.showText('发表评价成功');
                                                           } else {
-                                                            CommonUtils
-                                                                .showText(
-                                                                    res['msg']);
+                                                            CommonUtils.showText(res['msg']);
                                                           }
                                                         });
                                                         context.pop();
                                                       },
                                                       child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(20
-                                                                            .w),
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                      color: Color.fromRGBO(
-                                                                          255,
-                                                                          128,
-                                                                          163,
-                                                                          0.5),
-                                                                      offset:
-                                                                          Offset(0,
-                                                                              2),
-                                                                      blurRadius:
-                                                                          4,
-                                                                      spreadRadius:
-                                                                          0)
-                                                                ],
-                                                                gradient: LinearGradient(
-                                                                    begin: Alignment
-                                                                        .topCenter,
-                                                                    end: Alignment
-                                                                        .bottomCenter,
-                                                                    colors: [
-                                                                      Color(
-                                                                          0xffFF9E9E),
-                                                                      Color(
-                                                                          0xffFF84A9),
-                                                                    ])),
+                                                        alignment: Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(20.w),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                  color: Color.fromRGBO(255, 128, 163, 0.5),
+                                                                  offset: Offset(0, 2),
+                                                                  blurRadius: 4,
+                                                                  spreadRadius: 0)
+                                                            ],
+                                                            gradient: LinearGradient(
+                                                                begin: Alignment.topCenter,
+                                                                end: Alignment.bottomCenter,
+                                                                colors: [
+                                                                  Color(0xffFF9E9E),
+                                                                  Color(0xffFF84A9),
+                                                                ])),
                                                         width: 327.w,
                                                         height: 40.w,
                                                         child: Text(
                                                           '发表评价',
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.bold,
                                                               fontSize: 16.sp),
                                                         ),
                                                       ),
@@ -427,14 +338,10 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                           child: Container(
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        ScreenUtil()
-                                                            .setWidth(12)),
+                                                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(12)),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                      color: Color.fromRGBO(
-                                                          255, 128, 163, 0.3),
+                                                      color: Color.fromRGBO(255, 128, 163, 0.3),
                                                       offset: Offset(0, 2),
                                                       blurRadius: 4,
                                                       spreadRadius: 0)
@@ -451,8 +358,7 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                             child: Text(
                                               '体验评价', //查看联系方式
                                               style: TextStyle(
-                                                  color:
-                                                      DefaultStyle.themeColor,
+                                                  color: DefaultStyle.themeColor,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12.sp),
                                             ),
@@ -461,36 +367,28 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                       ],
                                     )
                                   : DefaultTextStyle(
-                                      style: TextStyle(
-                                          color: Color(0xff979797),
-                                          fontSize: 11.sp),
+                                      style: TextStyle(color: Color(0xff979797), fontSize: 11.sp),
                                       child: Row(
                                         children: [
                                           Row(
                                             children: [
                                               PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/pili_12/icon_location_red.png',
+                                                url: 'assets/images/pili_12/icon_location_red.png',
                                                 width: 18.w,
                                                 fit: BoxFit.fitWidth,
                                               ),
-                                              Text((widget.data['cityName'] ??
-                                                      '未知')
-                                                  .toString())
+                                              Text((widget.data!['cityName'] ?? '未知').toString())
                                             ],
                                           ),
                                           SizedBox(width: 16.w),
                                           Row(
                                             children: [
                                               PlatformAwareAssetImage(
-                                                url:
-                                                    'assets/images/pili_12/icon_lock.png',
+                                                url: 'assets/images/pili_12/icon_lock.png',
                                                 width: 18.w,
                                                 fit: BoxFit.fitWidth,
                                               ),
-                                              Text((widget.data['buy_count'] ??
-                                                      0)
-                                                  .toString())
+                                              Text((widget.data!['buy_count'] ?? 0).toString())
                                             ],
                                           )
                                         ],
@@ -502,12 +400,9 @@ class _YuemeiCardState extends State<YuemeiCard> {
                       Positioned(
                           bottom: 0,
                           right: -4.w,
-                          child: widget.data['buy_count'] != null &&
-                                  widget.data['buy_count'] > 10 &&
-                                  !widget.isBuy
+                          child: widget.data!['buy_count'] != null && widget.data!['buy_count'] > 10 && !widget.isBuy
                               ? PlatformAwareAssetImage(
-                                  url:
-                                      'assets/images/pili_12/yuemei_jingpin.png',
+                                  url: 'assets/images/pili_12/yuemei_jingpin.png',
                                   width: 54.w,
                                   fit: BoxFit.fitWidth,
                                 )

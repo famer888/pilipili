@@ -31,6 +31,16 @@
   <meta name="apple-mobile-web-app-title" content="pilipili">
 
   <title>pilipili</title>
+  <script>
+    {{flutter_js}}
+    {{flutter_build_config}}
+    _flutter.loader.load({
+      onEntrypointLoaded: async function (engineInitializer) {
+        const appRunner = await engineInitializer.initializeEngine();
+        await appRunner.runApp();
+      }
+    });
+  </script>
   <script src="script.js" defer></script>
   <script async>
     var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); 
@@ -79,28 +89,20 @@
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script src="js/hls.js" type="application/javascript"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
+    window.addEventListener('flutter-first-frame', function () {
+      if ('serviceWorker' in navigator) {
         var customServiceWorkerUrl = './sw.js';
         navigator.serviceWorker.register(customServiceWorkerUrl, { scope: '.' }).then(function (registration) {
           // Registration was successful
           console.log('CustomServiceWorker registration successful with scope: ', registration.scope);
         }, function (err) {
-          // registration failed 
+          // registration failed
           console.log('CustomServiceWorker registration failed: ', err);
         });
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
+      }
+    });
   </script>
-  <script>
-    (function (ele, time1) {
-      ele.src = "main.dart.js?t=" + Math.ceil(time1);
-      ele.type = "application/javascript";
-      document.body.append(ele)
-    })(document.createElement('script'), (new Date).getTime() / 60000);
-  </script>
-  <!-- <script src="main.dart.js" type="application/javascript"></script> -->
+
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -45,7 +45,7 @@ class CommonUtils {
     }
   }
 
-  static Future<bool> pngLimitSize(XFile file, {int size = 5, String tips}) async {
+  static Future<bool> pngLimitSize(XFile file, {int size = 5, String? tips}) async {
     if (kIsWeb) return true;
     int length = await file.length();
     if (length / (1024 * 1024) > size) {
@@ -55,7 +55,7 @@ class CommonUtils {
     return false;
   }
 
-  static bannerTopath(BuildContext context, {dynamic type, String url}) {
+  static bannerTopath(BuildContext context, {dynamic type, String? url}) {
     var _adsUrl = url;
     if (['', null, false].contains(_adsUrl)) {
       BotToast.showText(text: '未配置跳转链接', align: Alignment(0, 0));
@@ -68,17 +68,17 @@ class CommonUtils {
         CommonUtils.launchURL("$_adsUrl");
         break;
       case 2: //内部
-        context.push(url);
+        context.push(url!);
         break;
       case 3: //内部
-        context.push(url);
+        context.push(url!);
         break;
       case 4:
         // 外部浏览器
         var members = Provider.of<HomeConfig>(context, listen: false).member;
         var aff = members.aff;
         var piliid = members.uuid;
-        CommonUtils.launchURL(_adsUrl + '?aff=$aff&piliid=$piliid');
+        CommonUtils.launchURL((_adsUrl ?? '') + '?aff=$aff&piliid=$piliid');
         break;
         break;
       default:
@@ -108,8 +108,8 @@ class CommonUtils {
   static Widget getContentSpan(
     String text, {
     bool isCopy = false,
-    TextStyle style,
-    TextStyle lightStyle,
+    TextStyle? style,
+    TextStyle? lightStyle,
   }) {
     style = style ?? TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp);
     lightStyle = lightStyle ?? TextStyle(color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
@@ -178,7 +178,7 @@ class CommonUtils {
     }
   }
 
-  static showText(String text, {int time}) {
+  static showText(String text, {int? time}) {
     return BotToast.showText(
         text: text,
         textStyle: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(15), decoration: TextDecoration.none),
@@ -260,13 +260,13 @@ class CommonUtils {
     }
   }
 
-  static String getRealHash([String value]) {
+  static String getRealHash([String? value]) {
     if (kIsWeb) {
       var currentHash = html.window.location.hash.replaceAll('#', '');
     } else {
       
     }
-    return '/' + value ?? '';
+    return '/' + (value ?? '');
   }
 
   static void debugPrint(value) {
@@ -280,13 +280,13 @@ class CommonUtils {
   static List<List> tasks = [];
   static List<bool> wdsRuningStatuses = List.generate(AppGlobal.decryptProcessLimit, (index) => false);
   static void getRealImage(
-      {dynamic url, dynamic imgUrl, Function setUrl, Function retryHandler, bool isNovel = false}) {
+      {dynamic url, dynamic imgUrl, Function? setUrl, Function? retryHandler, bool isNovel = false}) {
     if (url == null) return CommonUtils.debugPrint('无封面图');
     void doWork(args, _freeIndex) async {
       if (args[0] != null || args[1] != null || args[0] != '') {
         dynamic decrypted;
         String data;
-        decrypted = AppGlobal.imageCacheBox.get(args[0]) ?? AppGlobal.imageAssetBox.get(args[0]);
+        decrypted = AppGlobal.imageCacheBox!.get(args[0]) ?? AppGlobal.imageAssetBox!.get(args[0]);
         if (decrypted == null) {
           try {
             data = await PlatformAwareHttp.getImage(args[0]);
@@ -298,9 +298,9 @@ class CommonUtils {
                   decrypted = utf8.decode(decrypted);
                 }
                 if (args[0].toString().indexOf('assets/pilipili/') != -1) {
-                  AppGlobal.imageAssetBox.put(args[0], decrypted);
+                  AppGlobal.imageAssetBox!.put(args[0], decrypted);
                 } else {
-                  AppGlobal.imageCacheBox.put(args[0], decrypted);
+                  AppGlobal.imageCacheBox!.put(args[0], decrypted);
                 }
               }
             }
@@ -315,7 +315,7 @@ class CommonUtils {
           args[3]();
         }
         decrypted = null;
-        data = null;
+        data = null!;
       }
       wdsRuningStatuses[_freeIndex] = false;
       int f = wdsRuningStatuses.indexWhere((element) => !element);
@@ -413,7 +413,7 @@ class CommonUtils {
     return str;
   }
 
-  static Widget shadowBtn(String icon, {String text = '', bool isActive = false, double size}) {
+  static Widget shadowBtn(String icon, {String text = '', bool isActive = false, double? size}) {
     return Container(
       margin: EdgeInsets.only(left: 4.w),
       alignment: Alignment.center,
@@ -473,7 +473,7 @@ class CommonUtils {
   }
 
   static String getPromotionCountDownTime(DateTime now) {
-    int seconds = 48 * 60 * 60 - now.difference(AppGlobal.firstVisitTime).inSeconds;
+    int seconds = 48 * 60 * 60 - now.difference(AppGlobal.firstVisitTime!).inSeconds;
     int h = seconds ~/ 60 ~/ 60;
     int m = seconds % (60 * 60) ~/ 60;
     int s = seconds % 60;
@@ -543,9 +543,9 @@ class CommonUtils {
     }
   }
 
-  static void checkline({Function onSuccess, Function onFailed}) async {
+  static void checkline({Function? onSuccess, Function? onFailed}) async {
     int _timeout = 30;
-    Box box = AppGlobal.appBox;
+    Box box = AppGlobal.appBox!;
     List apiLines = box.get('api_lines') ?? [];
     List<dynamic> unChecklines = apiLines.length > 0 ? apiLines : AppGlobal.apiLines;
     List<Map> errorLines = [];
@@ -568,13 +568,13 @@ class CommonUtils {
     Function handleResult = (String line) async {
       AppGlobal.apiBaseURL = line;
       await reportErrorLines();
-      onSuccess();
+      onSuccess!();
         };
 
-    doCheck = ({String line, bool isPub}) async {
+    doCheck = ({String? line, bool? isPub}) async {
       dynamic result;
-      List<InternetAddress> ip4;
-      Uri _uri = Uri.parse(line);
+      List<InternetAddress> ip4 = [];
+      Uri _uri = Uri.parse(line ?? '');
       if (!kIsWeb) {
         ip4 = await InternetAddress.lookup(_uri.host, type: InternetAddressType.IPv4);
       }
@@ -587,24 +587,25 @@ class CommonUtils {
           result = 'error';
         }
       }
-      if (result == 'error' && !isPub) {
+      if (result == 'error' && !(isPub ?? false)) {
         // errorCount++;
         errorLines.add({'url': line});
         // 备用github线路检测逻辑
         // if (errorCount == unChecklines.length) {
         //   checkBackUpLine();
         // }
-      } else if (isPub) {
+      } else if (isPub == true) {
         if (result.toString() == '200') {
           handleResult(line);
         } else {
-          onFailed();
+          onFailed!();
         }
       }
       return result;
     };
 
-    ConnectivityResult connectivityResult = await Connectivity().checkConnectivity();
+    List<ConnectivityResult> connectivityResults = await Connectivity().checkConnectivity();
+    ConnectivityResult connectivityResult = connectivityResults.isNotEmpty ? connectivityResults.first : ConnectivityResult.none;
     if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
       Future.any(unChecklines.map((line) {
         return doCheck(line: line.toString(), isPub: false).then((value) {
@@ -620,7 +621,7 @@ class CommonUtils {
         handleResult(line);
       });
     } else {
-      onFailed();
+      onFailed!();
     }
   }
 }

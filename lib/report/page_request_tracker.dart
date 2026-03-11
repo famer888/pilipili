@@ -1,8 +1,8 @@
-import 'package:pilipili/utils/common.dart';
+﻿import 'package:pilipili/utils/common.dart';
 
 class _PageSessionKey {
-  final String pageKey;
-  final int enterTimeMs;
+  final String? pageKey;
+  final int? enterTimeMs;
 
   _PageSessionKey(this.pageKey, this.enterTimeMs);
 
@@ -16,8 +16,8 @@ class _PageSessionKey {
 }
 
 class _RequestRecord {
-  final int startMs;
-  int endMs;
+  final int? startMs;
+  late int endMs;
   bool isInit;
 
   _RequestRecord(this.startMs, {this.isInit = false});
@@ -35,8 +35,8 @@ class PageRequestTracker {
   // 后续初始化请求：开始时间 - 上一条 init 请求的结束时间 < 300ms
   static const int nextRequestGapMs = 300;
 
-  // 存储"最后一条初始化请求结束时间"
-  final Map<_PageSessionKey, int> _lastInitEnd = {};
+  // 存储"最后一条初始化请求结束时间"（null 表示尚无请求结束）
+  final Map<_PageSessionKey, int?> _lastInitEnd = {};
 
   // 存储是否已经关闭初始化链
   final Map<_PageSessionKey, bool> _initClosed = {};
@@ -51,7 +51,7 @@ class PageRequestTracker {
   void onPageLeave(
     String pageKey,
     int enterTimeMs, {
-    void Function(int initDurationMs) onInitDuration,
+    void Function(int initDurationMs)? onInitDuration,
   }) {
     final key = _PageSessionKey(pageKey, enterTimeMs);
     final lastEnd = _lastInitEnd[key];
@@ -61,7 +61,7 @@ class PageRequestTracker {
       initDuration = lastEnd - enterTimeMs;
     }
 
-    onInitDuration(initDuration);
+    onInitDuration?.call(initDuration);
 
     CommonUtils.debugPrint(
       '[InitAgg] pageKey=$pageKey initRequestDuration=${initDuration}ms',
@@ -78,19 +78,25 @@ class PageRequestTracker {
     if (list == null) return;
 
     bool closed = _initClosed[key] ?? false;
-    int lastEnd = _lastInitEnd[key];
+    final int? lastEnd = _lastInitEnd[key];
 
     bool isInit = false;
 
     if (!closed) {
-      // 后续请求：下一条请求开始时间 - 上一条初始化请求结束时间 < 300ms
-      if ((nowMs - lastEnd) < nextRequestGapMs) {
-        isInit = true;
+      if (lastEnd == null) {
+        // 还没有请求结束过，判断第一条请求是否在进入页面的窗口期内
+        isInit = (nowMs - pageEnterMs) < firstRequestWindowMs;
+        if (!isInit) _initClosed[key] = true;
       } else {
-        _initClosed[key] = true;
-        isInit = false;
-      }
+        // 后续请求：开始时间 - 上一条 init 请求结束时间 < 300ms
+        if ((nowMs - lastEnd) < nextRequestGapMs) {
+          isInit = true;
+        } else {
+          _initClosed[key] = true;
+          isInit = false;
         }
+      }
+    }
 
     list.add(_RequestRecord(nowMs, isInit: isInit));
   }

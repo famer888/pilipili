@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -20,28 +20,28 @@ import 'package:http_parser/http_parser.dart';
 bool isJump = false;
 bool _warnJump = false;
 Dio _imageDio = new Dio(new BaseOptions(
-  connectTimeout: 10 * 1000,
-  receiveTimeout: 60 * 1000,
+  connectTimeout: Duration(milliseconds: 10 * 1000),
+  receiveTimeout: Duration(milliseconds: 60 * 1000),
   responseType: ResponseType.bytes,
   validateStatus: (status) {
-    return status < 500;
+    return (status ?? 0) < 500;
   },
 ));
 getToken() {
-  Box box = AppGlobal.appBox;
+  Box box = AppGlobal.appBox!;
   return box.get('yy_token');
 }
 
 Dio _uploadDio = new Dio(new BaseOptions(
-  connectTimeout: 60 * 1000,
-  receiveTimeout: 300 * 1000,
+  connectTimeout: Duration(milliseconds: 60 * 1000),
+  receiveTimeout: Duration(milliseconds: 300 * 1000),
 ));
 
 Dio _apiDio = new Dio(new BaseOptions(
-    connectTimeout: 60 * 1000,
-    receiveTimeout: 300 * 1000,
+    connectTimeout: Duration(milliseconds: 60 * 1000),
+    receiveTimeout: Duration(milliseconds: 300 * 1000),
     validateStatus: (status) {
-      return status < 500;
+      return (status ?? 0) < 500;
     },
     contentType: Headers.formUrlEncodedContentType))
   ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
@@ -50,7 +50,7 @@ Dio _apiDio = new Dio(new BaseOptions(
     if (yytoken != '') {
       AppGlobal.apiToken = yytoken;
     }
-    _data.addAll(AppGlobal.appinfo);
+    _data.addAll(AppGlobal.appinfo!);
     _data.addAll({'token': AppGlobal.apiToken});
     if (options.data != null) {
       _data.addAll(options.data);
@@ -68,8 +68,8 @@ Dio _apiDio = new Dio(new BaseOptions(
       String sign = result.remove("sign").toString();
       if (PlatformAwareCrypto.makeSign(result, appkey) != sign && !_warnJump) {
         _warnJump = true;
-        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
-        YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
+        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext!, listen: false).config.officeSite ?? "";
+        YyShowDialog.showdialog(AppGlobal.appContext!, title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
           CommonUtils.launchURL(officeSite);
         }, content: (setDialogState) {
           return DefaultTextStyle(
@@ -84,10 +84,10 @@ Dio _apiDio = new Dio(new BaseOptions(
       CommonUtils.showText("token失效,请重新登录");
       isJump = true;
       AppGlobal.apiToken = '';
-      Box box = AppGlobal.appBox;
+      Box box = AppGlobal.appBox!;
       box.delete('yy_token');
       if (AppGlobal.routerReplace) {
-        AppGlobal.appContext.pop();
+        AppGlobal.appContext!.pop();
       }
       Future.delayed(Duration(seconds: 3), () {
         isJump = false;
@@ -119,9 +119,9 @@ class PlatformAwareHttp {
   }
 
   static Future uploadImage(
-      {dynamic imageUrl, String id, String position = 'head', ProgressCallback progressCallback}) async {
+      {dynamic imageUrl, String? id, String position = 'head', ProgressCallback? progressCallback}) async {
     try {
-      var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
+      var imgKey = AppGlobal.uploadImgKey!.replaceFirst('head', '');
       var newKey = 'id=$id&position=$position$imgKey';
       var tmpSha256 = CommonUtils.gvSha256(newKey);
       var sign = CommonUtils.gvMD5(tmpSha256);
@@ -130,7 +130,7 @@ class PlatformAwareHttp {
       if (!kIsWeb && imgUrlSplit.length <= 1) {
         imageType = 'png';
       }
-      var imageName = CommonUtils.gvMD5(id);
+      var imageName = CommonUtils.gvMD5(id!);
       FormData formData = FormData.fromMap({
         'id': id,
         'position': position,
@@ -143,7 +143,7 @@ class PlatformAwareHttp {
                 contentType: MediaType.parse('image/$imageType'),
               ),
       });
-      Response response = await _uploadDio.post(AppGlobal.uploadImgUrl,
+      Response response = await _uploadDio.post(AppGlobal.uploadImgUrl!,
           data: formData, onSendProgress: progressCallback, options: Options(contentType: 'multipart/form-data'));
       return response;
     } catch (e) {
@@ -152,31 +152,31 @@ class PlatformAwareHttp {
   }
 
   static Future xfileUploadImage({
-    XFile file,
-    String id,
+    XFile? file,
+    String? id,
     String position = 'head',
-    ProgressCallback progressCallback,
+    ProgressCallback? progressCallback,
   }) async {
     try {
       id ??= DateTime.now().millisecondsSinceEpoch.toString();
-      var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
+      var imgKey = AppGlobal.uploadImgKey!.replaceFirst('head', '');
       var newKey = 'id=$id&position=$position$imgKey';
       var tmpSha256 = CommonUtils.gvSha256(newKey);
       var sign = CommonUtils.gvMD5(tmpSha256);
-      var ext = file.name.split(".").last;
+      var ext = file!.name.split(".").last;
 
       FormData formData = FormData.fromMap({
         'id': id,
         'position': position,
         'sign': sign,
         'cover': await MultipartFile.fromFile(
-          file.path ?? "",
-          filename: file.name ?? "",
+          file!.path ?? "",
+          filename: file!.name ?? "",
           contentType: MediaType.parse('image/$ext'),
         ),
       });
       Response response = await _uploadDio.post(
-        AppGlobal.uploadImgUrl,
+        AppGlobal.uploadImgUrl!,
         data: formData,
         onSendProgress: progressCallback,
         options: Options(contentType: 'multipart/form-data'),
@@ -189,14 +189,14 @@ class PlatformAwareHttp {
   }
 
   static Future xfileHtmlUploadImage(
-      {XFile file, String id, String position = 'head', Function(html.ProgressEvent) progressCallback}) async {
+      {XFile? file, String? id, String position = 'head', Function(html.ProgressEvent)? progressCallback}) async {
     try {
       id ??= DateTime.now().millisecondsSinceEpoch.toString();
-      var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
+      var imgKey = AppGlobal.uploadImgKey!.replaceFirst('head', '');
       var newKey = 'id=$id&position=$position$imgKey';
       var tmpSha256 = CommonUtils.gvSha256(newKey);
       var sign = CommonUtils.gvMD5(tmpSha256);
-      var ext = file.name.split(".").last;
+      var ext = file!.name.split(".").last;
 
       html.Blob blob = html.Blob([await file.readAsBytes()], "image/$ext");
       String url = html.Url.createObjectUrl(blob);
@@ -209,7 +209,7 @@ class PlatformAwareHttp {
           blob,
         );
 
-      html.HttpRequest httpRequest = await html.HttpRequest.request(AppGlobal.uploadImgUrl,
+      html.HttpRequest httpRequest = await html.HttpRequest.request(AppGlobal.uploadImgUrl!,
           method: "POST", mimeType: "image/$ext", sendData: formData, onProgress: progressCallback);
       html.Url.revokeObjectUrl(url);
       return jsonDecode(httpRequest.response);
@@ -220,10 +220,10 @@ class PlatformAwareHttp {
   }
 
   static Future xfileBytesUploadMp4(
-      {XFile file, String position = 'head', CancelToken cancelToken, ProgressCallback progressCallback}) async {
+      {XFile? file, String position = 'head', CancelToken? cancelToken, ProgressCallback? progressCallback}) async {
     try {
       String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-      var videoKey = AppGlobal.uploadMp4Key.replaceFirst('head', '');
+      var videoKey = AppGlobal.uploadMp4Key!.replaceFirst('head', '');
       var newKey = '$timeStamp$videoKey';
       var sign = CommonUtils.gvMD5(newKey);
 
@@ -232,14 +232,14 @@ class PlatformAwareHttp {
         'uuid': AppGlobal.uuid,
         'sign': sign,
         'video': MultipartFile.fromBytes(
-          await file.readAsBytes() ?? [],
-          filename: file.name,
+          await file!.readAsBytes() ?? [],
+          filename: file!.name,
           contentType: MediaType.parse('video/mp4'),
         ),
       });
 
       Response response = await _uploadDio.post(
-        AppGlobal.uploadMp4Url,
+        AppGlobal.uploadMp4Url!,
         data: formData,
         onSendProgress: progressCallback,
         options: Options(contentType: 'multipart/form-data'),
@@ -253,10 +253,10 @@ class PlatformAwareHttp {
   }
 
   static Future xfileUploadMp4(
-      {XFile file, String position = 'head', CancelToken cancelToken, ProgressCallback progressCallback}) async {
+      {XFile? file, String position = 'head', CancelToken? cancelToken, ProgressCallback? progressCallback}) async {
     try {
       String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-      var videoKey = AppGlobal.uploadMp4Key.replaceFirst('head', '');
+      var videoKey = AppGlobal.uploadMp4Key!.replaceFirst('head', '');
       var newKey = '$timeStamp$videoKey';
       var sign = CommonUtils.gvMD5(newKey);
       var imageName = CommonUtils.gvMD5(timeStamp);
@@ -267,12 +267,12 @@ class PlatformAwareHttp {
         'uuid': AppGlobal.uuid,
         'sign': sign,
         'video': await MultipartFile.fromFile(
-          file.path ?? "",
+          file!.path ?? "",
           filename: filename,
           contentType: MediaType.parse('video/mp4'),
         ),
       });
-      Response response = await _uploadDio.post(AppGlobal.uploadMp4Url,
+      Response response = await _uploadDio.post(AppGlobal.uploadMp4Url!,
           data: formData,
           onSendProgress: progressCallback,
           cancelToken: cancelToken,
@@ -284,13 +284,13 @@ class PlatformAwareHttp {
     }
   }
 
-  static Future<Response> download(String urlPath, String savePath, {ProgressCallback onReceiveProgress}) {
+  static Future<Response> download(String urlPath, String savePath, {ProgressCallback? onReceiveProgress}) {
 //    if(_dio == null) return;
     return _uploadDio.download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
   }
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
-  static Future post(String path, {Map data, CancelToken cancelToken}) {
+  static Future post(String path, {Map? data, CancelToken? cancelToken}) {
     // AppGlobal.apiBaseURL = 'https://pili.yesebo.net/api.php';
     return _apiDio.post(AppGlobal.apiBaseURL + path, data: data, cancelToken: cancelToken);
   }

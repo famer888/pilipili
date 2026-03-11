@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 SystemNotice systemNoticeFromJson(String str) =>
     SystemNotice.fromJson(json.decode(str));
@@ -14,11 +14,11 @@ class SystemNotice {
     this.isVip,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory SystemNotice.fromJson(Map<String, dynamic> json) => SystemNotice(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -29,7 +29,7 @@ class SystemNotice {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -45,10 +45,10 @@ class Data {
     this.feed,
   });
 
-  int systemNoticeCount;
-  int feedCount;
-  SystemNotices systemNotice;
-  Feed feed;
+  int? systemNoticeCount;
+  int? feedCount;
+  SystemNotices? systemNotice;
+  Feed? feed;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         systemNoticeCount: json["systemNoticeCount"] == null
@@ -64,8 +64,8 @@ class Data {
   Map<String, dynamic> toJson() => {
         "systemNoticeCount": systemNoticeCount == null ? 0 : systemNoticeCount,
         "feedCount": feedCount == null ? 0 : feedCount,
-        "systemNotice": systemNotice == null ? null : systemNotice.toJson(),
-        "feed": feed == null ? null : feed.toJson(),
+        "systemNotice": systemNotice == null ? null : systemNotice!.toJson(),
+        "feed": feed == null ? null : feed!.toJson(),
       };
 }
 
@@ -90,19 +90,19 @@ class Feed {
     this.isReplay,
   });
 
-  int id;
-  String uuid;
-  String userIp;
-  String question;
-  int messageType;
+  int? id;
+  String? uuid;
+  String? userIp;
+  String? question;
+  int? messageType;
   dynamic helpType;
-  String image1;
-  int status;
-  int isRead;
-  int evaluation;
-  String createdAt;
-  String updatedAt;
-  int isReplay;
+  String? image1;
+  int? status;
+  int? isRead;
+  int? evaluation;
+  String? createdAt;
+  String? updatedAt;
+  int? isReplay;
 
   factory Feed.fromJson(Map<String, dynamic> json) => Feed(
         id: json["id"],
@@ -152,13 +152,13 @@ class SystemNotices {
     this.updatedAt,
   });
 
-  int id;
-  int aff;
-  String content;
-  String title;
-  int messageType;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  int? aff;
+  String? content;
+  String? title;
+  int? messageType;
+  String? createdAt;
+  String? updatedAt;
 
   factory SystemNotices.fromJson(Map<String, dynamic> json) => SystemNotices(
         id: json["id"],

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
@@ -12,11 +12,11 @@ import 'package:pilipili/utils/common.dart';
 
 // ignore: must_be_immutable
 class PackageDetail extends StatefulWidget {
-  PackageDetail({Key key, this.id, this.contentType, this.title})
+  PackageDetail({Key? key, this.id, this.contentType, this.title})
       : super(key: key);
-  final int id;
-  final int contentType;
-  final String title;
+  final int? id;
+  final int? contentType;
+  final String? title;
   @override
   _PackageDetailState createState() => _PackageDetailState();
 }
@@ -27,7 +27,7 @@ class _PackageDetailState extends State<PackageDetail>
   int page = 1;
   int limit = 14;
   bool isAll = false;
-  List data;
+  late List data;
 
   @override
   void initState() {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/vcard.dart';
@@ -10,7 +10,7 @@ import 'package:pilipili/utils/common.dart';
 
 class ThreeVColumn extends StatefulWidget {
   ThreeVColumn(
-      {Key key,
+      {Key? key,
       this.data,
       this.title,
       this.moreButton,
@@ -21,13 +21,13 @@ class ThreeVColumn extends StatefulWidget {
       this.id,
       this.element})
       : super(key: key);
-  final List<dynamic> data;
-  final String title;
-  final bool moreButton;
-  final int morePageType;
-  final String showField;
-  final int contentType;
-  final int limit;
+  final List<dynamic>? data;
+  final String? title;
+  final bool? moreButton;
+  final int? morePageType;
+  final String? showField;
+  final int? contentType;
+  final int? limit;
   final dynamic id;
   final dynamic element;
   @override
@@ -35,13 +35,13 @@ class ThreeVColumn extends StatefulWidget {
 }
 
 class _ThreeVColumnState extends State<ThreeVColumn> {
-  List<dynamic> dataList;
+  late List<dynamic> dataList;
   int page = 1;
   bool loading = false;
   bool isAll = false;
   @override
   void initState() {
-    dataList = widget.data;
+    dataList = widget.data!;
     super.initState();
   }
 
@@ -98,11 +98,11 @@ class _ThreeVColumnState extends State<ThreeVColumn> {
                       width: ScreenUtil().setWidth(109),
                       thumbUrl: CommonUtils.getThumb(dataList[e]),
                       tagIconType: dataList[e]['isfree'],
-                      showField: widget.showField,
+                      showField: widget.showField!,
                     ))
                 .toList(),
           ),
-          !widget.moreButton
+          !widget.moreButton!
               ? Container()
               : GestureDetector(
                   onTap: () {

@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +14,8 @@ import 'package:pilipili/components/page_status.dart';
 import '../utils/api.dart';
 
 class ActivityDetail extends StatefulWidget {
-  ActivityDetail({Key key, this.id}) : super(key: key);
-  final String id;
+  ActivityDetail({Key? key, this.id}) : super(key: key);
+  final String? id;
   @override
   State<ActivityDetail> createState() => _ActivityDetailState();
 }
@@ -55,7 +55,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                           Provider.of<HomeConfig>(context, listen: false)
                               .config;
                       ShareMovieModel.showShareMovie(backButtonBehavior,
-                          copyUrl: config.share.affUrlCopy.url,
+                          copyUrl: config.share!.affUrlCopy!.url!,
                           thumb: activityInfo['resource'][0]['url'],
                           width: activityInfo['resource'][0]['width'] == null
                               ? 1
@@ -69,7 +69,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   .toString()),
                           title: activityInfo['title'] ?? '--',
                           subtitle: activityInfo['desc'] ?? '--',
-                          url: config.share.affUrl);
+                          url: config.share!.affUrl!);
                     },
                     child: Container(
                       child: PlatformAwareAssetImage(
@@ -226,7 +226,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                     try {
                                       _tab = int.parse(linkUrl.split('?')[1]);
                                     } catch (e) {
-                                      _tab = null;
+                                      _tab = null!;
                                     }
                                     EventBus().emit('pili_ciyuan', _tab ?? 0);
                                     return;

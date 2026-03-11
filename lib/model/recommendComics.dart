@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final recommendComics = recommendComicsFromJson(jsonString);
 
@@ -17,11 +17,11 @@ class RecommendComics {
         this.isVip,
     });
 
-    List<Datum> data;
-    int status;
-    String msg;
-    bool crypt;
-    bool isVip;
+    List<Datum>? data;
+    int? status;
+    String? msg;
+    bool? crypt;
+    bool? isVip;
 
     factory RecommendComics.fromJson(Map<String, dynamic> json) => RecommendComics(
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
@@ -32,7 +32,7 @@ class RecommendComics {
     );
 
     Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status,
         "msg": msg,
         "crypt": crypt,
@@ -80,42 +80,42 @@ class Datum {
         this.newestSeries,
     });
 
-    int datumId;
-    String id;
+    int? datumId;
+    String? id;
     dynamic recommendTitle;
-    String title;
-    String description;
-    String author;
-    String categories;
-    String bgThumb;
-    String thumb;
+    String? title;
+    String? description;
+    String? author;
+    String? categories;
+    String? bgThumb;
+    String? thumb;
     dynamic reThumb;
-    String tags;
-    int isFree;
-    int adult;
-    int finished;
-    int imagesCount;
-    int viewsCount;
-    int likesCount;
-    int favorites;
-    int cjFinished;
-    int viewMoney;
-    int downloadMoney;
-    int status;
-    String updateTime;
-    int freeTime;
-    int recommend;
-    int indexRecommend;
-    int obtained;
-    int goodLook;
-    int mustAwesome;
-    int whatAwesome;
-    int noAwesome;
-    int from;
-    DateTime refreshAt;
-    DateTime createdAt;
-    DateTime updatedAt;
-    int newestSeries;
+    String? tags;
+    int? isFree;
+    int? adult;
+    int? finished;
+    int? imagesCount;
+    int? viewsCount;
+    int? likesCount;
+    int? favorites;
+    int? cjFinished;
+    int? viewMoney;
+    int? downloadMoney;
+    int? status;
+    String? updateTime;
+    int? freeTime;
+    int? recommend;
+    int? indexRecommend;
+    int? obtained;
+    int? goodLook;
+    int? mustAwesome;
+    int? whatAwesome;
+    int? noAwesome;
+    int? from;
+    DateTime? refreshAt;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    int? newestSeries;
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         datumId: json["id"],
@@ -189,9 +189,9 @@ class Datum {
         "what_awesome": whatAwesome,
         "no_awesome": noAwesome,
         "from": from,
-        "refresh_at": refreshAt.toIso8601String(),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "refresh_at": refreshAt!.toIso8601String(),
+        "created_at": createdAt!.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
         "newest_series": newestSeries == null ? null : newestSeries,
     };
 }

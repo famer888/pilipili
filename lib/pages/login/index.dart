@@ -1,4 +1,4 @@
-import 'package:country_code_picker/country_code_picker.dart';
+﻿import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +15,8 @@ import 'package:pilipili/utils/pp_string.dart';
 import 'login_box.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.type, this.isExpired = false}) : super(key: key);
-  final int type;
+  LoginPage({Key? key, this.type, this.isExpired = false}) : super(key: key);
+  final int? type;
   final bool isExpired;
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -26,19 +26,19 @@ class _LoginPageState extends State<LoginPage> {
   int currentIndex = 0;
 
   int loginType = 1; //0 手机 1 账号密码
-  String retrieveName;
+  late String retrieveName;
   @override
   void initState() {
     super.initState();
     if (widget.isExpired) {
       // getHomeConfig(context);
     }
-    currentIndex = widget.type;
+    currentIndex = widget.type!;
     setState(() {});
     }
 
   setToken(String value) async {
-    Box box = AppGlobal.appBox;
+    Box box = AppGlobal.appBox!;
     box.put('yy_token', value);
   }
 
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     final username = TextEditingController();
     final userPassword = TextEditingController();
     final phoneCode = TextEditingController();
-    Function startTime;
+    Function? startTime;
     String code = '86';
     return LoginBox(
       btnText: loginType == 1 ? [PPString.register, PPString.login] : PPString.login,
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
               );
             });
           } else {
-            CommonUtils.showText(res.msg);
+            CommonUtils.showText(res.msg!);
           }
         }).whenComplete(() {
           PageStatus.closeLoading();
@@ -188,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                 context.pop('login');
               });
             } else {
-              CommonUtils.showText(res.msg);
+              CommonUtils.showText(res.msg!);
             }
           }).whenComplete(() {
             PageStatus.closeLoading();
@@ -213,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                 context.pop('login');
               });
             } else {
-              CommonUtils.showText(res.msg);
+              CommonUtils.showText(res.msg!);
             }
           }).whenComplete(() {
             PageStatus.closeLoading();
@@ -246,10 +246,10 @@ class _LoginPageState extends State<LoginPage> {
                   sendPhone(phone: phone.text, phonePrefix: code, type: 1)
                       .then((res) {
                     if (res.status == 1) {
-                      startTime();
+                      startTime?.call();
                       CommonUtils.showText('发送成功～');
                                         } else {
-                      CommonUtils.showText(res.msg);
+                      CommonUtils.showText(res.msg!);
                     }
                     PageStatus.closeLoading();
                   });

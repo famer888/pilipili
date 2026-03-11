@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/components/video/YyVideo.dart';
 
 class VideoPreview extends StatefulWidget {
-  const VideoPreview({Key key, this.url, this.cover}) : super(key: key);
-  final String url;
-  final String cover;
+  const VideoPreview({Key? key, this.url, this.cover}) : super(key: key);
+  final String? url;
+  final String? cover;
   @override
   State<VideoPreview> createState() => _VideoPreviewState();
 }

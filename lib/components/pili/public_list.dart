@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+﻿import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,20 +14,21 @@ import 'package:waterfall_flow/waterfall_flow.dart';
 
 class PublicList extends StatefulWidget {
   @required
-  final bool isShow; //是否展示
-  final String api; //接口地址
-  final Map data; //传递参数
-  final int width;
+  final bool? isShow; //是否展示
+  final String? api; //接口地址
+  final Map? data; //传递参数
+  final int? width;
   final int crossAxisCount;
   final int limit;
   final bool isFlow; //是否瀑布流
-  final String cartType; //  "h" 横向card  "v"竖向card
-  final int contentType; //参照 cardMixin.dart 文件
+  final String? cartType; //  "h" 横向card  "v"竖向card
+  final int? contentType; //参照 cardMixin.dart 文件
   final bool noRefresh;
   final bool isSearch;
   final bool isReport;
+
   PublicList(
-      {Key key,
+      {Key? key,
       this.isShow,
       this.api,
       this.data,
@@ -51,7 +52,7 @@ class _PublicListState extends State<PublicList> {
   bool loading = true;
   bool initPage = false;
   Map reqData = {'page': 1, 'limit': 20};
-  List searchData;
+  late List searchData;
 
   Map getType() {
     Map info = {'key': '', 'name': ''};
@@ -87,7 +88,7 @@ class _PublicListState extends State<PublicList> {
 
   Future getSearchResult() async {
     try {
-      Response<dynamic> res = await PlatformAwareHttp.post(widget.api, data: reqData);
+      Response<dynamic> res = await PlatformAwareHttp.post(widget.api!, data: reqData);
       if (res.data['status'] != 0) {
         List resdata = res.data['data'] == null ? [] : res.data['data'];
         isAll = resdata.length < reqData['limit'];
@@ -109,9 +110,9 @@ class _PublicListState extends State<PublicList> {
   @override
   void initState() {
     super.initState();
-    reqData.addAll(widget.data);
-      reqData['limit'] = widget.limit;
-    if (widget.isShow && !initPage) {
+    reqData.addAll(widget.data!);
+    reqData['limit'] = widget.limit;
+    if (widget.isShow == true && !initPage) {
       initPage = true;
       getSearchResult();
     }
@@ -121,8 +122,8 @@ class _PublicListState extends State<PublicList> {
   void didUpdateWidget(PublicList oldWidget) {
     super.didUpdateWidget(oldWidget);
     bool isSame = true;
-    widget.data.forEach((key, value) {
-      if (widget.data[key] != oldWidget.data[key]) {
+    widget.data!.forEach((key, value) {
+      if (widget.data![key] != oldWidget.data![key]) {
         isSame = false;
       }
     });
@@ -132,13 +133,13 @@ class _PublicListState extends State<PublicList> {
       isAll = false;
       initPage = false;
       setState(() {});
-      reqData.addAll(widget.data);
-          if (widget.isShow) {
+      reqData.addAll(widget.data!);
+      if (widget.isShow!) {
         initPage = true;
         getSearchResult();
       }
     }
-    if (widget.isShow && !initPage) {
+    if (widget.isShow == true && !initPage!) {
       initPage = true;
       getSearchResult();
     }
@@ -194,7 +195,7 @@ class _PublicListState extends State<PublicList> {
                                       cardData: searchData[index],
                                       showField: 'title')
                                   .withSearchReport(widget.isReport, {
-                                  'keyword': widget.data['word'],
+                                  'keyword': widget.data!['word'],
                                   'click_item_id': searchData[index]['related_id'] ?? searchData[index]['id'],
                                   'click_item_type_key': 'search_${getType()['key']}',
                                   'click_item_type_name': getType()['name'],
@@ -212,7 +213,7 @@ class _PublicListState extends State<PublicList> {
                                       cardData: searchData[index],
                                       showField: 'title')
                                   .withSearchReport(widget.isReport, {
-                                  'keyword': widget.data['word'],
+                                  'keyword': widget.data!['word'],
                                   'click_item_id': searchData[index]['related_id'] ?? searchData[index]['id'],
                                   'click_item_type_key': 'search_${getType()['key']}',
                                   'click_item_type_name': getType()['name'],
@@ -245,7 +246,7 @@ class _PublicListState extends State<PublicList> {
                                       cardData: searchData[index],
                                       showField: 'title')
                                   .withSearchReport(widget.isReport, {
-                                  'keyword': widget.data['word'],
+                                  'keyword': widget.data!['word'],
                                   'click_item_id': searchData[index]['related_id'] ?? searchData[index]['id'],
                                   'click_item_type_key': 'search_${getType()['key']}',
                                   'click_item_type_name': getType()['name'],
@@ -263,7 +264,7 @@ class _PublicListState extends State<PublicList> {
                                       cardData: searchData[index],
                                       showField: 'title')
                                   .withSearchReport(widget.isReport, {
-                                  'keyword': widget.data['word'],
+                                  'keyword': widget.data!['word'],
                                   'click_item_id': searchData[index]['related_id'] ?? searchData[index]['id'],
                                   'click_item_type_key': 'search_${getType()['key']}',
                                   'click_item_type_name': getType()['name'],

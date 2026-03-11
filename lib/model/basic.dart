@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final basic = basicFromJson(jsonString);
 
@@ -18,10 +18,10 @@ class Basic {
     });
 
     dynamic data;
-    int status;
-    String msg;
-    bool crypt;
-    bool isVip;
+    int? status;
+    String? msg;
+    bool? crypt;
+    bool? isVip;
 
     factory Basic.fromJson(Map<String, dynamic> json) => Basic(
         data: json["data"] == null ? null : json["data"],

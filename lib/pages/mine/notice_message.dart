@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -9,9 +9,9 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class NoticeMessage extends StatefulWidget {
-  final Map args;
+  final Map? args;
 
-  NoticeMessage({Key key, this.args}) : super(key: key);
+  NoticeMessage({Key? key, this.args}) : super(key: key);
 
   @override
   _MessageCenterState createState() => _MessageCenterState();
@@ -33,14 +33,14 @@ class _MessageCenterState extends State<NoticeMessage> {
         await getSystemNoticeList(page: page, limit: limit);
     if (result.status == 1) {
       if (page == 1) {
-        messageList = result.data;
+        messageList = result.data!;
       } else {
-        messageList.addAll(result.data);
+        messageList.addAll(result.data!);
       }
       loading = false;
       setState(() {});
     } else {
-      CommonUtils.showText(result.msg);
+      CommonUtils.showText(result.msg!);
     }
   }
 
@@ -51,7 +51,7 @@ class _MessageCenterState extends State<NoticeMessage> {
       children: [
         PageTitleBar(
           paddingTop: ScreenUtil().statusBarHeight,
-          title: widget.args['title'],
+          title: widget.args!['title'],
         ),
         Expanded(
             child: Padding(
@@ -96,10 +96,10 @@ class _MessageCenterState extends State<NoticeMessage> {
 }
 
 class NoticeItem extends StatelessWidget {
-  final String title;
-  final String content;
-  final String time;
-  const NoticeItem({Key key, this.title, this.content, this.time})
+  final String? title;
+  final String? content;
+  final String? time;
+  const NoticeItem({Key? key, this.title, this.content, this.time})
       : super(key: key);
 
   @override
@@ -143,11 +143,11 @@ class NoticeItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title,
+                      Text(title!,
                           style: TextStyle(
                               color: Color(0xff6D6D6D),
                               fontSize: ScreenUtil().setSp(15))),
-                      Text(content,
+                      Text(content!,
                           style: TextStyle(
                               color: Color(0xff6D6D6D),
                               fontSize: ScreenUtil().setSp(12))),
@@ -167,7 +167,7 @@ class NoticeItem extends StatelessWidget {
                         right: ScreenUtil().setWidth(10),
                       ),
                       child: Text(
-                        time,
+                        time!,
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(13),
                             color: Color(0xffd7d7d7)),

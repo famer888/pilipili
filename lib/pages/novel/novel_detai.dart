@@ -1,4 +1,4 @@
-import 'package:animated_size_and_fade/animated_size_and_fade.dart';
+﻿import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart';
@@ -26,8 +26,8 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class NovelDetail extends StatefulWidget {
-  const NovelDetail({Key key, this.id}) : super(key: key);
-  final int id;
+  const NovelDetail({Key? key, this.id}) : super(key: key);
+  final int? id;
   @override
   State<NovelDetail> createState() => _NovelDetailState();
 }
@@ -47,7 +47,7 @@ class _NovelDetailState extends State<NovelDetail> {
   @override
   void initState() {
     super.initState();
-    novelLocal = AppGlobal.appBox.get('novel_local') ?? {};
+    novelLocal = AppGlobal.appBox!.get('novel_local') ?? {};
     getDetail();
   }
 
@@ -123,7 +123,7 @@ class _NovelDetailState extends State<NovelDetail> {
             context.push('/novelReader/${item['id']}');
           } else {
             int money =
-                Provider.of<HomeConfig>(context, listen: false).member.money;
+                Provider.of<HomeConfig>(context, listen: false).member.money!;
             bool isInsufficient =
                 money < double.parse(item['coins'].toString());
             YyShowDialog.showdialog(context,
@@ -134,7 +134,7 @@ class _NovelDetailState extends State<NovelDetail> {
                 context.push('/coinRecharge');
               } else {
                 PageStatus.showLoading();
-                novelBuy(widget.id).then((res) async {
+                novelBuy(widget.id!).then((res) async {
                   print(res);
                   if (res['status'] != 0) {
                     CommonUtils.showText('购买成功');
@@ -242,11 +242,11 @@ class _NovelDetailState extends State<NovelDetail> {
   _share() {
     var config = Provider.of<HomeConfig>(context, listen: false).config;
     ShareMovieModel.showShareMovie(BackButtonBehavior.none,
-        copyUrl: config.share.affUrlCopy.url,
+        copyUrl: config.share!.affUrlCopy!.url!,
         thumb: data['thumbnail'],
         title: data['name'] ?? '--',
         subtitle: data['tags'] ?? '--',
-        url: config.share.affUrl.toString());
+        url: config.share!.affUrl.toString());
   }
 
   _useFavorite() {
@@ -256,7 +256,7 @@ class _NovelDetailState extends State<NovelDetail> {
     }
     ;
     isTap = true;
-    novelLikeToggle(widget.id).then((res) {
+    novelLikeToggle(widget.id!).then((res) {
       if (res['status'] != 0) {
         if (isFavorites) {
           likeCount--;

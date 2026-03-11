@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/components/card/navel_card.dart';
 import 'package:pilipili/components/card/post_card.dart';
 import 'package:pilipili/components/card/yuemei_card.dart';
@@ -14,7 +14,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class CollectPage extends StatefulWidget {
-  CollectPage({Key key}) : super(key: key);
+  CollectPage({Key? key}) : super(key: key);
 
   @override
   _CollectPageState createState() => _CollectPageState();
@@ -23,7 +23,7 @@ class CollectPage extends StatefulWidget {
 class _CollectPageState extends State<CollectPage>
     with TickerProviderStateMixin {
   final myController = TextEditingController();
-  TabController _tabController;
+  late TabController _tabController;
   int currentTab = 0;
   int limit = 24;
   List tabList = [
@@ -98,7 +98,7 @@ class _CollectPageState extends State<CollectPage>
       vsync: this,
     );
     _tabController.addListener(() {
-      if (_tabController.index.toDouble() == _tabController.animation.value) {
+      if (_tabController.index.toDouble() == _tabController.animation!.value) {
         setState(() {
           currentTab = _tabController.index;
         });

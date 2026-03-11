@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final comicReading = comicReadingFromJson(jsonString);
 
@@ -17,11 +17,11 @@ class ComicReading {
         this.isVip,
     });
 
-    List<Datum> data;
-    int status;
-    String msg;
-    bool crypt;
-    bool isVip;
+    List<Datum>? data;
+    int? status;
+    String? msg;
+    bool? crypt;
+    bool? isVip;
 
     factory ComicReading.fromJson(Map<String, dynamic> json) => ComicReading(
         data: json["data"] == null ? null : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
@@ -32,7 +32,7 @@ class ComicReading {
     );
 
     Map<String, dynamic> toJson() => {
-        "data": data == null ? null : List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data == null ? null : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -48,10 +48,10 @@ class Datum {
         this.imgHeight,
     });
 
-    int short;
-    String imgUrl;
-    String imgWidth;
-    String imgHeight;
+    int? short;
+    String? imgUrl;
+    String? imgWidth;
+    String? imgHeight;
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         short: json["short"] == null ? null : json["short"],

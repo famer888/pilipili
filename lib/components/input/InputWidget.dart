@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
@@ -12,13 +12,13 @@ import 'package:pilipili/utils/pp_string.dart';
 // 返回的内容去除所有空格
 
 class InputWidget extends StatefulWidget {
-  final String tips;
+  final String? tips;
   final int limitingText;
   final TextInputType boardType;
-  final String btnText;
-  final String value;
+  final String? btnText;
+  final String? value;
   InputWidget(
-      {Key key,
+      {Key? key,
       this.tips,
       this.limitingText = 30,
       this.boardType = TextInputType.text,
@@ -36,7 +36,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    editingController.text = widget.value;
+    editingController.text = widget.value!;
       if (kIsWeb) {
       WidgetsBinding.instance.addObserver(this);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -119,7 +119,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                                   context.pop(value);
                                 } else {
                                   BotToast.showText(
-                                      text: widget.tips,
+                                      text: widget.tips!,
                                       align: Alignment(0, 0));
                                 }
                               },
@@ -151,7 +151,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                             if (text.isNotEmpty) {
                               context.pop(text);
                             } else {
-                              CommonUtils.showText(widget.tips);
+                              CommonUtils.showText(widget.tips!);
                             }
                           }),
                           child: Container(
@@ -163,7 +163,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                             height: ScreenUtil().setWidth(30),
                             alignment: Alignment.center,
                             child: Text(
-                              widget.btnText == null ? '提交' : widget.btnText,
+                              "${widget.btnText == null ? '提交' : widget.btnText}",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: ScreenUtil().setSp(14)),

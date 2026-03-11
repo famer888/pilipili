@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/navel_card.dart';
@@ -14,7 +14,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class BuyPage extends StatefulWidget {
-  BuyPage({Key key}) : super(key: key);
+  BuyPage({Key? key}) : super(key: key);
 
   @override
   _BuyPageState createState() => _BuyPageState();
@@ -22,7 +22,7 @@ class BuyPage extends StatefulWidget {
 
 class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
   final myController = TextEditingController();
-  TabController _tabController;
+  late TabController _tabController;
   int currentTab = 0;
   List tabList = [
     {
@@ -96,7 +96,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
       vsync: this,
     );
     _tabController.addListener(() {
-      if (_tabController.index.toDouble() == _tabController.animation.value) {
+      if (_tabController.index.toDouble() == _tabController.animation!.value) {
         setState(() {
           currentTab = _tabController.index;
         });

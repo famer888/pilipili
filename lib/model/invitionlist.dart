@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 InvitionList invitionListFromJson(String str) =>
     InvitionList.fromJson(json.decode(str));
@@ -14,11 +14,11 @@ class InvitionList {
     this.isVip,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory InvitionList.fromJson(Map<String, dynamic> json) => InvitionList(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -29,7 +29,7 @@ class InvitionList {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data.toJson(),
+        "data": data == null ? null : data!.toJson(),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -43,8 +43,8 @@ class Data {
     this.count,
   });
 
-  List<ListElement> list;
-  Count count;
+  List<ListElement>? list;
+  Count? count;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         list: json["list"] == null
@@ -57,8 +57,8 @@ class Data {
   Map<String, dynamic> toJson() => {
         "list": list == null
             ? null
-            : List<dynamic>.from(list.map((x) => x.toJson())),
-        "count": count == null ? null : count.toJson(),
+            : List<dynamic>.from(list!.map((x) => x.toJson())),
+        "count": count == null ? null : count!.toJson(),
       };
 }
 
@@ -68,8 +68,8 @@ class Count {
     this.regNum,
   });
 
-  int allNum;
-  int regNum;
+  int? allNum;
+  int? regNum;
 
   factory Count.fromJson(Map<String, dynamic> json) => Count(
         allNum: json["all_num"] == null ? null : json["all_num"],
@@ -89,9 +89,9 @@ class ListElement {
     this.register,
   });
 
-  String nickname;
-  String createdAt;
-  String register;
+  String? nickname;
+  String? createdAt;
+  String? register;
 
   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         nickname: json["nickname"] == null ? null : json["nickname"],

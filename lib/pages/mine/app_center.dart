@@ -1,4 +1,4 @@
-import 'package:card_swiper/card_swiper.dart';
+﻿import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pullrefreshlist.dart';
@@ -12,7 +12,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class AppCenter extends StatefulWidget {
-  AppCenter({Key key}) : super(key: key);
+  AppCenter({Key? key}) : super(key: key);
 
   @override
   _AppCenterState createState() => _AppCenterState();
@@ -32,15 +32,15 @@ class _AppCenterState extends State<AppCenter> {
   getData() async {
     AppCenterModel result = await getAppCenter();
     setState(() {
-      banner.addAll(result.data.banner);
-      appList.addAll(result.data.apps);
+      banner.addAll(result.data!.banner!);
+      appList.addAll(result.data!.apps!);
       ReportUtils.adVertising(
           eventType: AdEventType.show,
           advertisingKey: AdType.appsList,
-          advertisingId: result.data.apps.map((e) => e['id']).toList().join(','),
-          adSlotKey: result.data.apps.first['advertise_location_code'],
-          adSlotName: result.data.apps.first['ad_slot_name'],
-          adtype: result.data.apps.first['ad_type']);
+          advertisingId: result.data!.apps!.map((e) => e['id']).toList().join(','),
+          adSlotKey: result.data!.apps!.first['advertise_location_code'],
+          adSlotName: result.data!.apps!.first['ad_slot_name'],
+          adtype: result.data!.apps!.first['ad_type']);
       isLoading = false;
     });
     }
@@ -124,8 +124,8 @@ class _AppCenterState extends State<AppCenter> {
 }
 
 class SwiperContainer extends StatefulWidget {
-  final List banner;
-  SwiperContainer({Key key, this.banner}) : super(key: key);
+  final List? banner;
+  SwiperContainer({Key? key, this.banner}) : super(key: key);
 
   @override
   _SwiperContainerState createState() => _SwiperContainerState();
@@ -136,7 +136,7 @@ class _SwiperContainerState extends State<SwiperContainer> {
   @override
   void initState() {
     super.initState();
-    _banner = widget.banner;
+    _banner = widget.banner!;
   }
 
   adVertising(AdEventType eventType, Map data) {
@@ -211,14 +211,14 @@ class _SwiperContainerState extends State<SwiperContainer> {
 }
 
 class ApplicationItem extends StatefulWidget {
-  final int id;
-  final String appname;
-  final String iconurl;
-  final String des;
-  final int clicked;
-  final String link;
-  final Map app;
-  ApplicationItem({Key key, this.appname, this.iconurl, this.des, this.link, this.clicked, this.id, this.app})
+  final int? id;
+  final String? appname;
+  final String? iconurl;
+  final String? des;
+  final int? clicked;
+  final String? link;
+  final Map? app;
+  ApplicationItem({Key? key, this.appname, this.iconurl, this.des, this.link, this.clicked, this.id, this.app})
       : super(key: key);
 
   @override
@@ -254,7 +254,7 @@ class _ApplicationItemState extends State<ApplicationItem> {
   @override
   void initState() {
     super.initState();
-    clickNumber = renderFixedNumber(widget.clicked * 1.0);
+    clickNumber = renderFixedNumber(widget.clicked! * 1.0);
   }
 
   @override
@@ -264,10 +264,10 @@ class _ApplicationItemState extends State<ApplicationItem> {
           ReportUtils.adVertising(
               eventType: AdEventType.click,
               advertisingKey: AdType.appsList,
-              advertisingId: widget.app['id'],
-              adSlotKey: widget.app['advertise_location_code'],
-              adSlotName: widget.app['ad_slot_name'],
-              adtype: widget.app['ad_type']);
+              advertisingId: widget.app!['id'],
+              adSlotKey: widget.app!['advertise_location_code'],
+              adSlotName: widget.app!['ad_slot_name'],
+              adtype: widget.app!['ad_type']);
           CommonUtils.bannerTopath(context, url: widget.link, type: 1);
         },
         child: Padding(

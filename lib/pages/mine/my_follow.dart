@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -10,7 +10,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 
 class MyFollowPage extends StatefulWidget {
-  const MyFollowPage({Key key}) : super(key: key);
+  const MyFollowPage({Key? key}) : super(key: key);
 
   @override
   State<MyFollowPage> createState() => _MyFollowPageState();
@@ -54,14 +54,14 @@ class _MyFollowPageState extends State<MyFollowPage> {
 
 class _FollowUserItem extends StatefulWidget {
   const _FollowUserItem({this.data, this.isFollow});
-  final Map data;
-  final bool isFollow;
+  final Map? data;
+  final bool? isFollow;
   @override
   State<_FollowUserItem> createState() => __FollowUserItemState();
 }
 
 class __FollowUserItemState extends State<_FollowUserItem> {
-  bool isFollow = false;
+  bool? isFollow = false;
   bool loadFollow = false;
   @override
   void initState() {
@@ -91,7 +91,7 @@ class __FollowUserItemState extends State<_FollowUserItem> {
                   width: 40.w,
                   height: 40.w,
                   child: PlatformAwareNetworkImage(
-                    url: widget.data['thumb'],
+                    url: widget.data!['thumb'],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -105,7 +105,7 @@ class __FollowUserItemState extends State<_FollowUserItem> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    widget.data['nickname'],
+                    widget.data!['nickname'],
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -119,15 +119,15 @@ class __FollowUserItemState extends State<_FollowUserItem> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      widget.data['vip_level'] > 0
+                      widget.data!['vip_level'] > 0
                           ? CommonUtils.vipLevel(
-                              text: 'LV${widget.data['vip_level']}')
+                              text: 'LV${widget.data!['vip_level']}')
                           : SizedBox(),
                       SizedBox(
-                        width: widget.data['vip_level'] > 0 ? 4.w : 0,
+                        width: widget.data!['vip_level'] > 0 ? 4.w : 0,
                       ),
                       Text(
-                        '${widget.data['post_num']}篇文章',
+                        '${widget.data!['post_num']}篇文章',
                         style: TextStyle(
                             color: Color(0xff979797),
                             fontSize: 12.sp,
@@ -146,11 +146,11 @@ class __FollowUserItemState extends State<_FollowUserItem> {
                 return;
               }
               loadFollow = true;
-              toggleFollow(widget.data['aff']).then((res) {
+              toggleFollow(widget.data!['aff']).then((res) {
                 if (res['status'] != 0) {
                   isFollow = res['data']['is_follow'] == 1;
                   Provider.of<CommunityStore>(context, listen: false)
-                      .setFollowData(widget.data['aff'], isFollow);
+                      .setFollowData(widget.data!['aff'], isFollow!);
                 } else {
                   CommonUtils.showText(res['msg'] ?? '系统错误,请稍后重试');
                 }
@@ -160,7 +160,7 @@ class __FollowUserItemState extends State<_FollowUserItem> {
             },
             child: Selector<CommunityStore, Map>(
               builder: (context, followData, child) {
-                int _aff = widget.data['aff'];
+                int _aff = widget.data!['aff'];
                 return CommonUtils.shadowBtn(
                     'assets/images/2023/icon_${(followData[_aff] ?? isFollow) ? "unfollow" : "follow"}.png',
                     text: (followData[_aff] ?? isFollow) ? '已關注' : '關注',

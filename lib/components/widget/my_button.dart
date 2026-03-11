@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
 
@@ -6,17 +6,17 @@ import '../../utils/networkImage.dart';
 
 class MyButton extends StatelessWidget {
   MyButton({
-    Key key,
+    Key? key,
     this.onTap,
     this.type,
     this.text,
     this.icon,
     this.activate = false,
   }) : super(key: key);
-  final Function onTap;
-  final ButtonType type;
-  final String icon;
-  final String text;
+  final Function? onTap;
+  final ButtonType? type;
+  final String? icon;
+  final String? text;
   final bool activate;
   MyButton.text({this.onTap, this.text, this.activate = false})
       : type = ButtonType.text,
@@ -35,7 +35,7 @@ class MyButton extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 borderRadius: BorderRadius.circular(5.w),
                 child: GestureDetector(
-                    onTap: () => onTap.call(),
+                    onTap: () => onTap!.call(),
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5.w),
@@ -43,13 +43,13 @@ class MyButton extends StatelessWidget {
                       width: 83.w,
                       height: 36.w,
                       child: Center(
-                        child: Text(text,
+                        child: Text(text!,
                             style: DefaultStyle.buttonClickedTextStyle),
                       ),
                     )),
               )
             : GestureDetector(
-                onTap: () => onTap.call(),
+                onTap: () => onTap!.call(),
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
@@ -59,7 +59,7 @@ class MyButton extends StatelessWidget {
                   height: 36.w,
                   child: Center(
                     child:
-                        Text(text, style: DefaultStyle.buttonUnClickTextStyle),
+                        Text(text!, style: DefaultStyle.buttonUnClickTextStyle),
                   ),
                 ));
         break;
@@ -69,7 +69,7 @@ class MyButton extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 borderRadius: BorderRadius.circular(8.w),
                 child: GestureDetector(
-                    onTap: () => onTap.call(),
+                    onTap: () => onTap!.call(),
                     child: Container(
                       width: 60.w,
                       height: 24.w,
@@ -92,7 +92,7 @@ class MyButton extends StatelessWidget {
                             width: 4.w,
                           ),
                           Text(
-                            text,
+                            text!,
                             style: DefaultStyle.iconButtonClickedTextStyle,
                           )
                         ],
@@ -100,7 +100,7 @@ class MyButton extends StatelessWidget {
                     )),
               )
             : GestureDetector(
-                onTap: () => onTap.call(),
+                onTap: () => onTap!.call(),
                 child: Container(
                   width: 60.w,
                   height: 24.w,
@@ -124,7 +124,7 @@ class MyButton extends StatelessWidget {
                         width: 4.w,
                       ),
                       Text(
-                        text,
+                        text!,
                         style: DefaultStyle.iconButtonUnClickTextStyle,
                       )
                     ],
@@ -137,7 +137,7 @@ class MyButton extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 borderRadius: BorderRadius.circular(8.w),
                 child: GestureDetector(
-                    onTap: () => onTap.call(),
+                    onTap: () => onTap!.call(),
                     child: Container(
                       width: 40.w,
                       height: 40.w,
@@ -155,14 +155,14 @@ class MyButton extends StatelessWidget {
                               height: 12.w,
                               fit: BoxFit.fitWidth,
                               filterQuality: FilterQuality.medium),
-                          Text(text,
+                          Text(text!,
                               style: DefaultStyle.iconButtonClickedTextStyle)
                         ],
                       ),
                     )),
               )
             : GestureDetector(
-                onTap: () => onTap.call(),
+                onTap: () => onTap!.call(),
                 child: Container(
                   width: 40.w,
                   height: 40.w,
@@ -182,15 +182,17 @@ class MyButton extends StatelessWidget {
                           fit: BoxFit.fitWidth,
                           filterQuality: FilterQuality.medium),
                       Text(
-                        text,
+                        text!,
                         style: DefaultStyle.iconButtonUnClickTextStyle,
                       )
                     ],
                   ),
                 ));
+      case null:
+        // TODO: Handle this case.
     }
     return GestureDetector(
-        onTap: () => onTap.call(),
+        onTap: () => onTap!.call(),
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -201,7 +203,7 @@ class MyButton extends StatelessWidget {
               gradient: activate ? null : DefaultStyle.buttonGradient),
           width: 83.w,
           height: 36.w,
-          child: Text(text,
+          child: Text(text!,
               style: activate
                   ? DefaultStyle.buttonClickedTextStyle
                   : DefaultStyle.buttonUnClickTextStyle),

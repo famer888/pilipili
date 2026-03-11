@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -12,8 +12,8 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/privilege.dart';
 
 class RechargeRecord extends StatefulWidget {
-  final Map args;
-  RechargeRecord({Key key, this.args}) : super(key: key);
+  final Map? args;
+  RechargeRecord({Key? key, this.args}) : super(key: key);
 
   @override
   _RechargeRecordState createState() => _RechargeRecordState();
@@ -33,7 +33,7 @@ class _RechargeRecordState extends State<RechargeRecord> {
   }
 
   getData() async {
-    if (widget.args['type'] == null) {
+    if (widget.args!['type'] == null) {
       isLoading = false;
       recordList = [];
       setState(() {});
@@ -41,9 +41,9 @@ class _RechargeRecordState extends State<RechargeRecord> {
       CommonUtils.showText('请传入type');
       return;
     }
-    CoinOrVipModel result = await getOrderList(page: page, type: widget.args['type'], limit: limit);
+    CoinOrVipModel result = await getOrderList(page: page, type: widget.args!['type'], limit: limit);
     if (result.status != 0) {
-      List resData = result.data == null ? [] : result.data;
+      List resData = result.data ?? [];
       isAll = resData.length < limit;
       if (page == 1) {
         recordList = resData;
@@ -53,7 +53,7 @@ class _RechargeRecordState extends State<RechargeRecord> {
       isLoading = false;
       setState(() {});
     } else {
-      CommonUtils.showText(result.msg);
+      CommonUtils.showText(result.msg!);
     }
   }
 
@@ -128,8 +128,8 @@ class _RechargeRecordState extends State<RechargeRecord> {
 }
 
 class OrderItem extends StatelessWidget {
-  final Datum orderData;
-  const OrderItem({Key key, this.orderData}) : super(key: key);
+  final Datum? orderData;
+  const OrderItem({Key? key, this.orderData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -149,12 +149,12 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '订单编号：' + orderData.id.toString(),
+                '订单编号：' + orderData!.id.toString(),
                 style: DefaultStyle.lgray12,
               ),
               GestureDetector(
                 onTap: () {
-                  Clipboard.setData(ClipboardData(text: '订单编号：' + orderData.id.toString()));
+                  Clipboard.setData(ClipboardData(text: '订单编号：' + orderData!.id.toString()));
                   CommonUtils.showText('复制成功');
                 },
                 child: Row(
@@ -194,10 +194,10 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                orderData.descp.toString(),
+                orderData!.descp.toString(),
                 style: DefaultStyle.black16bold,
               ),
-              Text(orderData.amount.toString(), style: DefaultStyle.black16bold),
+              Text(orderData!.amount.toString(), style: DefaultStyle.black16bold),
             ],
           ),
           SizedBox(
@@ -206,9 +206,9 @@ class OrderItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(orderData.createdAt.toString(), style: DefaultStyle.lgray12),
+              Text(orderData!.createdAt.toString(), style: DefaultStyle.lgray12),
               Text(
-                orderData.statusText.toString(),
+                orderData!.statusText.toString(),
                 style: DefaultStyle.lgray12,
               ),
             ],

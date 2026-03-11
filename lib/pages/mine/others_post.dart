@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/post_card.dart';
@@ -11,8 +11,8 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:provider/provider.dart';
 
 class OthersPostPage extends StatefulWidget {
-  const OthersPostPage({Key key, this.aff}) : super(key: key);
-  final int aff;
+  const OthersPostPage({Key? key, this.aff}) : super(key: key);
+  final int? aff;
   @override
   State<OthersPostPage> createState() => _OthersPostPageState();
 }
@@ -22,7 +22,7 @@ class _OthersPostPageState extends State<OthersPostPage> {
   bool loadFollow = false;
   ValueNotifier<Map> userInfo = ValueNotifier({});
   getUserInfo() {
-    otherHomeInfo(widget.aff).then((res) {
+    otherHomeInfo(widget.aff!).then((res) {
       CommonUtils.debugPrint(res);
       if (res['status'] != 0) {
         userInfo.value = res['data'];

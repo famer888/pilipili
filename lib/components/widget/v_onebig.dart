@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +10,7 @@ import 'package:pilipili/utils/common.dart';
 
 class VoneBig extends StatefulWidget {
   VoneBig({
-    Key key,
+    Key? key,
     this.title,
     this.cardStyle,
     this.cardSpacing,
@@ -22,15 +22,15 @@ class VoneBig extends StatefulWidget {
     this.showField,
     this.element,
   }) : super(key: key);
-  final String title;
-  final String cardStyle;
-  final EdgeInsets cardSpacing;
+  final String? title;
+  final String? cardStyle;
+  final EdgeInsets? cardSpacing;
   final dynamic id;
-  final List<dynamic> data;
-  final int contentType;
-  final bool moreButton;
-  final int morePageType;
-  final String showField;
+  final List<dynamic>? data;
+  final int? contentType;
+  final bool? moreButton;
+  final int? morePageType;
+  final String? showField;
   final dynamic element;
   @override
   _VoneBigState createState() => _VoneBigState();
@@ -44,7 +44,7 @@ class _VoneBigState extends State<VoneBig> {
 
   @override
   Widget build(BuildContext context) {
-    List dataList = widget.data.getRange(1, widget.data.length).toList();
+    List dataList = widget.data!.getRange(1, widget.data!.length).toList();
     return Container(
       margin: EdgeInsets.only(
           bottom:
@@ -58,12 +58,12 @@ class _VoneBigState extends State<VoneBig> {
               : Container(),
           Hcard(
             page: ((1) / AppGlobal.smallVideoLimit).ceil(),
-            tagIconType: widget.data[0]['isfree'],
+            tagIconType: widget.data![0]['isfree'],
             width: ScreenUtil().setWidth(342),
             contentType: widget.contentType,
-            thumbUrl: CommonUtils.getThumb(widget.data[0]),
-            cardData: widget.data[0],
-            showField: widget.showField,
+            thumbUrl: CommonUtils.getThumb(widget.data![0]),
+            cardData: widget.data![0],
+            showField: widget.showField!,
           ),
           SizedBox(
             height: ScreenUtil().setWidth(16),
@@ -80,13 +80,13 @@ class _VoneBigState extends State<VoneBig> {
                       tagIconType: dataList[e]['isfree'],
                       contentType: widget.contentType,
                       cardData: dataList[e],
-                      showField: widget.showField,
+                      showField: widget.showField!,
                       width: ScreenUtil().setWidth(167),
                       thumbUrl: CommonUtils.getThumb(dataList[e]),
                     ))
                 .toList(),
           ),
-          !widget.moreButton
+          !widget.moreButton!
               ? Container()
               : GestureDetector(
                   onTap: () {

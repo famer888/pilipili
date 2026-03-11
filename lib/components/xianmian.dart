@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
@@ -11,7 +11,7 @@ import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:pilipili/theme/default.dart';
 
 class Xianmian extends StatefulWidget {
-  Xianmian({Key key}) : super(key: key);
+  Xianmian({Key? key}) : super(key: key);
 
   @override
   State<Xianmian> createState() => _XianmianState();
@@ -21,7 +21,7 @@ class _XianmianState extends State<Xianmian> {
   int pageStatus = 0;
   bool isAll = false;
   bool networkErr = false;
-  int cardType; //1 视频 2漫画 3小说 4链接 5有声小说  6图集 7短视频；
+  late int cardType; //1 视频 2漫画 3小说 4链接 5有声小说  6图集 7短视频；
   int page = 1;
   int limit = 24;
   List data = [];
@@ -29,7 +29,7 @@ class _XianmianState extends State<Xianmian> {
   bool isListView = false;
   bool isActivity = false;
   bool isFall = false;
-  ScrollController _controller;
+  late ScrollController _controller;
 
   getPageData() async {
     var res = await getChangVideoList(limit: limit, page: page, isfree: 0);

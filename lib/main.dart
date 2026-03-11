@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
@@ -65,10 +65,10 @@ void main() async {
   // }
   // 初始化全局路由
   // 初始化APP基础信息
-  AppGlobal.apiToken = AppGlobal.appBox.get('apiToken') ?? "";
-  AppGlobal.firstVisitTime = AppGlobal.appBox.get('firstVisitTime') ?? DateTime.now();
-  AppGlobal.appBox.put('firstVisitTime', DateTime.now());
-  String oauthId = AppGlobal.appBox.get('oauth_id') ??
+  AppGlobal.apiToken = AppGlobal.appBox!.get('apiToken') ?? "";
+  AppGlobal.firstVisitTime = AppGlobal.appBox!.get('firstVisitTime') ?? DateTime.now();
+  AppGlobal.appBox!.put('firstVisitTime', DateTime.now());
+  String oauthId = AppGlobal.appBox!.get('oauth_id') ??
       CommonUtils.randomId(16).toString() + '_' + DateTime.now().millisecondsSinceEpoch.toString().toString();
 
   String userAgent = '';
@@ -80,18 +80,18 @@ void main() async {
     if (kIsWeb) {
       Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       affCode = u.queryParameters["sq_aff"] ?? "";
-      String tId = u.queryParameters['trace_id'];
+      String tId = u.queryParameters['trace_id']!;
       traceId = tId;
-      await AppGlobal.appBox.put('trace_id', tId);
+      await AppGlobal.appBox!.put('trace_id', tId);
         } else {
       await Clipboard.getData(Clipboard.kTextPlain).then((value) async {
         try {
           if (value?.text != null) {
             final params = Uri.splitQueryString(value?.text ?? '');
-            String tId = params['trace_id'];
+            String tId = params['trace_id']!;
             affCode = params["sq_aff"] ?? "";
             traceId = tId;
-            await AppGlobal.appBox.put('trace_id', tId);
+            await AppGlobal.appBox!.put('trace_id', tId);
                     }
         } catch (e) {
           print('剪切板文本错误');
@@ -134,8 +134,8 @@ void main() async {
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       AppGlobal.appinfo = {
-        "oauth_id": androidInfo.androidId,
-        "device_id": androidInfo.androidId,
+        "oauth_id": androidInfo.id,
+        "device_id": androidInfo.id,
         "bundleId": packageInfo.packageName,
         "version": packageInfo.version,
         "oauth_type": "android",
@@ -152,7 +152,7 @@ void main() async {
       };
     }
   } else {
-    AppGlobal.appBox.put('oauth_id', AppGlobal.appinfo['oauth_id']);
+    AppGlobal.appBox!.put('oauth_id', AppGlobal.appinfo!['oauth_id']);
   }
   runApp(MultiProvider(
     providers: [
@@ -168,7 +168,7 @@ void main() async {
 final _router = AppGlobal.appRouter = Routes.init();
 
 class Pilipili extends StatefulWidget {
-  Pilipili({Key key}) : super(key: key);
+  Pilipili({Key? key}) : super(key: key);
   @override
   _PilipiliState createState() => _PilipiliState();
 }
@@ -185,9 +185,8 @@ class _PilipiliState extends State<Pilipili> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return ScreenUtilInit(
       designSize: Size(375, 667),
-      builder: () => MaterialApp.router(
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
+      builder: (context, child) => MaterialApp.router(
+        routerConfig: _router,
         title: 'pilipili',
         builder: (context, widget) {
           widget = botToastBuilder(context, widget);

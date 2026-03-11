@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/mixin/cardMixin.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class HomeNavBtn extends StatefulWidget {
   HomeNavBtn(
-      {Key key,
+      {Key? key,
       this.cardData,
       this.contentType,
       this.id,
@@ -13,10 +13,10 @@ class HomeNavBtn extends StatefulWidget {
       this.page})
       : super(key: key);
   final dynamic cardData;
-  final int contentType;
+  final int? contentType;
   final dynamic id;
   final bool replace;
-  final int page;
+  final int? page;
   @override
   _HomeNavBtnState createState() => _HomeNavBtnState();
 }

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart';
@@ -7,7 +7,7 @@ import 'package:pilipili/utils/common.dart';
 
 class PlatformAwareAssetImage extends StatefulWidget {
   PlatformAwareAssetImage(
-      {Key key,
+      {Key? key,
       this.url,
       this.width,
       this.height,
@@ -16,9 +16,9 @@ class PlatformAwareAssetImage extends StatefulWidget {
       this.filterQuality = FilterQuality.medium,
       this.alignment = Alignment.center})
       : super(key: key);
-  final String url;
-  final double width;
-  final double height;
+  final String? url;
+  final double? width;
+  final double? height;
   final BoxFit fit;
   final AlignmentGeometry alignment;
   final Clip clipBehavior;
@@ -91,7 +91,7 @@ class _PlatformAwareAssetImageState extends State<PlatformAwareAssetImage> {
 
 class PlatformAwareNetworkImage extends StatefulWidget {
   PlatformAwareNetworkImage(
-      {Key key,
+      {Key? key,
       this.url,
       this.width,
       this.height,
@@ -110,13 +110,13 @@ class PlatformAwareNetworkImage extends StatefulWidget {
   final bool isVideoThumb;
   final AlignmentGeometry alignment;
   final bool noVisibilityDetector;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
   final Clip clipBehavior;
   final FilterQuality filterQuality;
-  final Color background;
-  final double width;
-  final double height;
-  final bool nothumb;
+  final Color? background;
+  final double? width;
+  final double? height;
+  final bool? nothumb;
   @override
   _PlatformAwareNetworkImageState createState() =>
       _PlatformAwareNetworkImageState();
@@ -146,7 +146,7 @@ class _PlatformAwareNetworkImageState extends State<PlatformAwareNetworkImage> {
 
 class AwareNetworkImage extends StatefulWidget {
   AwareNetworkImage(
-      {Key key,
+      {Key? key,
       this.url,
       this.nothumb,
       this.width,
@@ -165,13 +165,13 @@ class AwareNetworkImage extends StatefulWidget {
   final bool isVideoThumb;
   final AlignmentGeometry alignment;
   final bool noVisibilityDetector;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
   final Clip clipBehavior;
   final FilterQuality filterQuality;
-  final Color background;
-  final double width;
-  final double height;
-  final bool nothumb;
+  final Color? background;
+  final double? width;
+  final double? height;
+  final bool? nothumb;
   @override
   _AwareNetworkImageState createState() => _AwareNetworkImageState();
 }
@@ -181,7 +181,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
   GlobalKey _key = GlobalKey();
   bool isAnimated = true;
   int isLoad = 0;
-  Timer delayload;
+  late Timer delayload;
   @override
   void initState() {
     // TODO: implement initState
@@ -196,11 +196,11 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
     if (isLoad != 0) return;
     if (widget.isVideoThumb) return;
     var thumbUrl = '';
-    if (!widget.nothumb) {
+    if (!widget.nothumb!) {
       int idx = widget.url.toString().lastIndexOf('.');
       String prev = widget.url.toString().substring(0, idx);
       String sufix = widget.url.toString().substring(idx);
-      double realWidth = widget.width * (window.devicePixelRatio ?? 1);
+      double realWidth = (widget.width ?? 0) * (window.devicePixelRatio ?? 1);
       if (realWidth < 180) {
         thumbUrl = '$prev!360x0$sufix';
       }
@@ -263,7 +263,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
       var visiblePercentage = info.visibleFraction * 100;
       if (visiblePercentage == 0) {
         delayload.cancel();
-        delayload = null;
+        delayload = null!;
       } else {
         
       }
@@ -285,7 +285,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
               ? Center(
                   child: PlatformAwareAssetImage(
                       url: 'assets/images/logo.png',
-                      width: widget.width * 0.7,
+                      width: (widget.width ?? 0) * 0.7,
                       fit: BoxFit.fitWidth,
                       filterQuality: FilterQuality.medium),
                 )

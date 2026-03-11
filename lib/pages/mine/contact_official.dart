@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
@@ -11,7 +11,7 @@ import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 
 class ContactOfficial extends StatefulWidget {
-  ContactOfficial({Key key}) : super(key: key);
+  ContactOfficial({Key? key}) : super(key: key);
 
   @override
   _ContactOfficialState createState() => _ContactOfficialState();
@@ -89,9 +89,9 @@ class _ContactOfficialState extends State<ContactOfficial> {
 }
 
 class AppInfo extends StatelessWidget {
-  final Map info;
-  final Map downloadLink;
-  const AppInfo({Key key, this.info, this.downloadLink}) : super(key: key);
+  final Map? info;
+  final Map? downloadLink;
+  const AppInfo({Key? key, this.info, this.downloadLink}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class AppInfo extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     getImage(
-                        info['type'] == 'Telegram'
+                        info!['type'] == 'Telegram'
                             ? PPAssetsPath.iconTG
                             : PPAssetsPath.iconPT,
                         width: 38.8.w,
@@ -124,14 +124,14 @@ class AppInfo extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          info['name'].toString(),
+                          info!['name'].toString(),
                           style: DefaultStyle.black13bold,
                         ),
                         SizedBox(
                           height: 5.h,
                         ),
                         Text(
-                          info['decs'].toString(),
+                          info!['decs'].toString(),
                           style: DefaultStyle.lgray12,
                         ),
                       ],
@@ -140,7 +140,7 @@ class AppInfo extends StatelessWidget {
                 )),
                 GestureDetector(
                   onTap: () {
-                    CommonUtils.launchURL(info['url']);
+                    CommonUtils.launchURL(info!['url']);
                   },
                   child: Container(
                     height: 30.w,
@@ -159,7 +159,7 @@ class AppInfo extends StatelessWidget {
                 )
               ],
             ),
-            info['type'] == 'Telegram'
+            info!['type'] == 'Telegram'
                 ? GestureDetector(
                     onTap: () {
                       YyShowDialog.showdialog(context, title: '无法加入TG社群解决方法',
@@ -184,11 +184,11 @@ class AppInfo extends StatelessWidget {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AppItem(
-                                          href: downloadLink['antDownload'],
+                                          href: downloadLink!['antDownload'],
                                           type: 'my',
                                           text: '下载免费VPN'),
                                       AppItem(
-                                          href: downloadLink['tgDownload'],
+                                          href: downloadLink!['tgDownload'],
                                           type: 'tg',
                                           text: '下载TG'),
                                     ],
@@ -246,10 +246,10 @@ class AppInfo extends StatelessWidget {
 }
 
 class ContactItem extends StatelessWidget {
-  const ContactItem({Key key, this.itemData, this.downloadLink})
+  const ContactItem({Key? key, this.itemData, this.downloadLink})
       : super(key: key);
-  final Map itemData;
-  final Map downloadLink;
+  final Map? itemData;
+  final Map? downloadLink;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -257,13 +257,13 @@ class ContactItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          itemData['name'].toString(),
+          itemData!['name'].toString(),
           style: DefaultStyle.black16bold,
         ),
         SizedBox(
           height: 8.w,
         ),
-        Text(itemData['decs'].toString(),
+        Text(itemData!['decs'].toString(),
             style: TextStyle(color: Color(0xff6D6D6D))),
         Container(
           margin: EdgeInsets.only(top: 11.5.w, bottom: 20.w),
@@ -273,7 +273,7 @@ class ContactItem extends StatelessWidget {
           width: double.infinity,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: itemData['list']
+            children: itemData!['list']
                 .map<Widget>((value) => AppInfo(
                       downloadLink: downloadLink,
                       info: value,
@@ -287,10 +287,10 @@ class ContactItem extends StatelessWidget {
 }
 
 class AppItem extends StatelessWidget {
-  const AppItem({Key key, this.type, this.href, this.text}) : super(key: key);
-  final String type;
-  final String href;
-  final String text;
+  const AppItem({Key? key, this.type, this.href, this.text}) : super(key: key);
+  final String? type;
+  final String? href;
+  final String? text;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -308,10 +308,10 @@ class AppItem extends StatelessWidget {
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
             onPressed: () {
-              CommonUtils.launchURL(href);
+              CommonUtils.launchURL(href!);
             },
             child: Text(
-              text,
+              text!,
               style: TextStyle(color: Colors.white, fontSize: 12.sp),
             ),
           ),

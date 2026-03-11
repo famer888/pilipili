@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Tom
  * @Date: 2021-12-27 16:56:56
  * @LastEditTime: 2021-12-27 17:00:56
@@ -15,14 +15,14 @@ import 'package:pilipili/utils/pp_asset_path.dart';
 
 // ignore: must_be_immutable
 class PageTitleBar extends StatefulWidget {
-  PageTitleBar({Key key, this.title, this.rightWidget, this.cWidget, this.height, this.paddingTop = 0, this.bgColor})
+  PageTitleBar({Key? key, this.title, this.rightWidget, this.cWidget, this.height, this.paddingTop = 0, this.bgColor})
       : super(key: key);
-  String title;
-  Widget rightWidget;
-  final Widget cWidget;
-  double height;
+  String? title;
+  Widget? rightWidget;
+  final Widget? cWidget;
+  double? height;
   double paddingTop;
-  Color bgColor;
+  Color? bgColor;
   @override
   _PageTitleBarState createState() => _PageTitleBarState();
 }
@@ -49,7 +49,7 @@ class _PageTitleBarState extends State<PageTitleBar> {
               width: ScreenUtil().screenWidth * 0.8,
               child: widget.cWidget ??
                   Text(
-                    widget.title != null ? widget.title : '',
+                    widget.title != null ? widget.title! : '',
                     style: DefaultStyle.white16bold,
                   ),
             )),

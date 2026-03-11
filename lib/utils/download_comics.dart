@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Tom
  * @Date: 2021-12-28 09:46:10
  * @LastEditTime: 2021-12-28 10:01:36
@@ -216,7 +216,7 @@ class DownloadComics {
           "id": taskInfo["id"],
           "progress": finishCount,
           'currentImg': tasks_1[taskNum_1]["sets"][finishCount].length + 1,
-          'imgTotal': res.data.length
+          'imgTotal': res.data!.length
         });
         // 创建单集下载文件夹
         String setUrl =
@@ -282,10 +282,10 @@ class DownloadComics {
         List tasks1 = taskBox1["tasks"];
         int taskNum1 = taskBox1["taskNum"];
         tasks1[taskNum1]['sets'][finishCount].add({
-          'short': dataList.data[currentImgIndex].short,
+          'short': dataList.data![currentImgIndex].short,
           'imgUrl': url,
-          'imgWidth': dataList.data[currentImgIndex].imgWidth,
-          'imgHeight': dataList.data[currentImgIndex].imgHeight,
+          'imgWidth': dataList.data![currentImgIndex].imgWidth,
+          'imgHeight': dataList.data![currentImgIndex].imgHeight,
         });
         currentImgIndex++;
         if (url != '') {
@@ -295,7 +295,7 @@ class DownloadComics {
           LogUtilS.d("图片为空");
         }
         errlimit = 0;
-        if (currentImgIndex >= dataList.data.length) {
+        if (currentImgIndex >= dataList.data!.length) {
           finishCount++;
           tasks1[taskNum1]["progress"] = finishCount;
           box.put("download_comics_tasks", tasks1);
@@ -303,7 +303,7 @@ class DownloadComics {
             "id": id,
             "progress": finishCount,
             'currentImg': currentImgIndex,
-            'imgTotal': dataList.data.length
+            'imgTotal': dataList.data!.length
           });
           return finishCount;
         } else {
@@ -311,7 +311,7 @@ class DownloadComics {
             "id": id,
             "progress": finishCount,
             'currentImg': currentImgIndex + 1,
-            'imgTotal': dataList.data.length
+            'imgTotal': dataList.data!.length
           });
           box.put("download_comics_tasks", tasks1);
           return start();
@@ -323,7 +323,7 @@ class DownloadComics {
         // LogUtil.d(
         //     "开始下载----第${currentImgIndex + 1}张图---共${dataList.data.length}张图---当前章节：${finishCount + 1}");
         String data = await PlatformAwareHttp.getImage(
-            dataList.data[currentImgIndex].imgUrl);
+            dataList.data![currentImgIndex].imgUrl);
         if (data != '') {
           dynamic decrypted = await IsolatedWorker()
               .run(PlatformAwareCrypto.decryptImage, data);

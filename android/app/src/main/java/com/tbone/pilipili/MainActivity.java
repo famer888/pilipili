@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.StrictMode;
-import android.widget.ImageView;
-import androidx.core.content.res.ResourcesCompat;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
@@ -14,9 +12,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import io.flutter.embedding.android.DrawableSplashScreen;
 import io.flutter.embedding.android.FlutterActivity;
-import io.flutter.embedding.android.SplashScreen;
 
 import java.io.File;
 import java.util.HashMap;
@@ -64,8 +60,4 @@ public class MainActivity extends FlutterActivity {
       return availableMemory;
     }
 
-    @Override
-    public SplashScreen provideSplashScreen() {
-        return new DrawableSplashScreen(ResourcesCompat.getDrawable(getResources(), R.drawable.background, null), ImageView.ScaleType.FIT_XY, 0);
-    }
 }

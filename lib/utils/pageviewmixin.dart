@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class PageViewMixin extends StatefulWidget {
-  Widget child;
-  PageViewMixin({Key key, this.child}) : super(key: key);
+  Widget? child;
+  PageViewMixin({Key? key, this.child}) : super(key: key);
 
   @override
   _PageViewMixinState createState() => _PageViewMixinState();
@@ -13,7 +13,7 @@ class _PageViewMixinState extends State<PageViewMixin> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
      super.build(context);
-    return widget.child;
+    return widget.child!;
   }
   @override
   bool get wantKeepAlive => true;

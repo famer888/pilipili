@@ -17,12 +17,12 @@ class EventBus {
   //添加订阅者
   void on(eventName, EventCallback f) {
     if (eventName == null) return;
-    _emap[eventName] ??= new List<EventCallback>();
-    _emap[eventName].add(f);
+    _emap[eventName] ??= <EventCallback>[];
+    _emap[eventName]!.add(f);
   }
 
   //移除订阅者
-  void off(eventName, [EventCallback f]) {
+  void off(eventName, [EventCallback? f]) {
     var list = _emap[eventName];
     if (eventName == null || list == null) return;
     list.remove(f);

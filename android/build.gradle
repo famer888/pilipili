@@ -1,21 +1,45 @@
-buildscript {
-    ext.kotlin_version = '1.9.22'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 allprojects {
     repositories {
         google()
         mavenCentral()
-        // jcenter()
+    }
+}
+
+// 兼容旧版 Flutter 插件
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            // 1. 自动为缺少 namespace 声明的插件注入 namespace（兼容 AGP 8.x）
+            if (project.android.namespace == null) {
+                try {
+                    def manifestFile = project.android.sourceSets.main.manifest.srcFile
+                    if (manifestFile.exists()) {
+                        def packageName = new groovy.xml.XmlSlurper()
+                                .parse(manifestFile)
+                                .@package
+                                .text()
+                        if (packageName) {
+                            project.android.namespace = packageName
+                        }
+                    }
+                } catch (Exception ignored) {}
+            }
+            // 2. 修复 Java 与 Kotlin JVM target 不一致问题（如 heic_to_jpg）
+            //    同时确保 compileSdk 足够高（Java 9+ 源码要求 compileSdk >= 30）
+            try {
+                if (project.android.compileSdk == null || project.android.compileSdk < 34) {
+                    project.android.compileSdk = 34
+                }
+            } catch (Exception ignored) {
+                project.android.compileSdk = 34
+            }
+            project.android.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+            project.android.compileOptions.targetCompatibility = JavaVersion.VERSION_17
+            // 同步 Kotlin JVM target，避免 Java 17 与 Kotlin 1.8 不一致
+            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                kotlinOptions.jvmTarget = '17'
+            }
+        }
     }
 }
 
@@ -27,6 +51,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -11,8 +11,8 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class YuemeiShequ extends StatefulWidget {
-  const YuemeiShequ({Key key, this.pos}) : super(key: key);
-  final int pos;
+  const YuemeiShequ({Key? key, this.pos}) : super(key: key);
+  final int? pos;
   @override
   State<YuemeiShequ> createState() => _YuemeiShequState();
 }

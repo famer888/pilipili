@@ -11,7 +11,7 @@ import 'package:pilipili/utils/pp_asset_path.dart';
 
 //基类
 abstract class BaseWidget extends StatefulWidget {
-  const BaseWidget({this.key}) : super(key: key);
+  const BaseWidget({required this.key}) : super(key: key);
   @override
   final Key key;
 
@@ -29,15 +29,17 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   Color _lineColor = Colors.transparent;
   bool _navBack = false;
   bool _isOverscroll = false;
-  BuildContext _mContext;
-  Widget _rightW;
+  late BuildContext _mContext;
+  late Widget _rightW;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     // 这个跑起来要报错 先注释了
-    ModalRoute<dynamic> route = ModalRoute.of<dynamic>(context);
+    // ModalRoute<dynamic> route = ModalRoute.of<dynamic>(context);
+    ModalRoute? route = ModalRoute.of<dynamic>(context);
+
   }
 
   @override
@@ -123,7 +125,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     String title = "",
     Color navColor = Colors.transparent,
     Color bgColor = const Color(0XFFF7F7F7),
-    Widget rightW,
+    required Widget rightW,
     Color lineColor = Colors.transparent,
   }) {
     _appTitle = title;

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
 
 class IncomeDetail extends StatefulWidget {
-  const IncomeDetail({Key key}) : super(key: key);
+  const IncomeDetail({Key? key}) : super(key: key);
 
   @override
   State<IncomeDetail> createState() => _IncomeDetailState();

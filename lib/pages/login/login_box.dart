@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
 
 class LoginBox extends StatefulWidget {
   LoginBox(
-      {Key key,
+      {Key? key,
       this.children,
       this.title,
       this.btnText,
@@ -14,14 +14,14 @@ class LoginBox extends StatefulWidget {
       this.btnMargin,
       this.footer})
       : super(key: key);
-  List<Widget> children;
-  String title;
+  List<Widget>? children;
+  String? title;
   dynamic btnText;
-  Function onTap;
-  Widget topText;
-  Function onLeftTap;
-  Widget footer;
-  num btnMargin;
+  Function? onTap;
+  Widget? topText;
+  Function? onLeftTap;
+  Widget? footer;
+  num? btnMargin;
   @override
   _LoginBoxState createState() => _LoginBoxState();
 }
@@ -40,20 +40,22 @@ class _LoginBoxState extends State<LoginBox> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: widget.children,
+              children: widget.children!,
             ),
-            widget.topText != null ? widget.topText : Container(),
+            widget.topText != null ? widget.topText! : Container(),
             widget.btnText is List
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: widget.onLeftTap,
+                        onTap: (){
+                          widget.onLeftTap?.call();
+                        },
                         child: Container(
                             margin: EdgeInsets.only(
                                 top: ScreenUtil().setWidth(30),
                                 bottom: widget.btnMargin != null
-                                    ? widget.btnMargin
+                                    ? widget.btnMargin!.toDouble()
                                     : ScreenUtil().setWidth(48)),
                             child: Center(
                               child: Container(
@@ -86,12 +88,14 @@ class _LoginBoxState extends State<LoginBox> {
                             )),
                       ),
                       GestureDetector(
-                        onTap: widget.onTap,
+                        onTap: (){
+                          widget.onTap?.call();
+                        },
                         child: Container(
                             margin: EdgeInsets.only(
                                 top: ScreenUtil().setWidth(30),
                                 bottom: widget.btnMargin != null
-                                    ? widget.btnMargin
+                                    ? widget.btnMargin!.toDouble()
                                     : ScreenUtil().setWidth(48)),
                             child: Center(
                               child: Container(
@@ -126,12 +130,14 @@ class _LoginBoxState extends State<LoginBox> {
                     ],
                   )
                 : GestureDetector(
-                    onTap: widget.onTap,
+                    onTap: (){
+                      widget.onTap?.call();
+                    },
                     child: Container(
                         margin: EdgeInsets.only(
                             top: ScreenUtil().setWidth(30),
                             bottom: widget.btnMargin != null
-                                ? widget.btnMargin
+                                ? widget.btnMargin!.toDouble()
                                 : ScreenUtil().setWidth(48)),
                         child: Center(
                           child: Container(
@@ -164,7 +170,7 @@ class _LoginBoxState extends State<LoginBox> {
                           ),
                         )),
                   ),
-            widget.footer != null ? widget.footer : Container()
+            widget.footer != null ? widget.footer! : Container()
           ],
         ));
   }

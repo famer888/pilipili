@@ -1,4 +1,4 @@
-import 'package:card_swiper/card_swiper.dart';
+﻿import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class SwBanner extends StatefulWidget {
-  SwBanner({Key key, this.data, this.element}) : super(key: key);
+  SwBanner({Key? key, this.data, this.element}) : super(key: key);
   final dynamic data;
   final dynamic element;
   @override

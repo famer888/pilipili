@@ -1,4 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
+﻿import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
@@ -6,7 +6,7 @@ import 'package:pilipili/utils/networkImage.dart';
 
 class PageStatus {
   //全屏式loding
-  static Function showLoading({String text}) {
+  static Function showLoading({String? text}) {
     return BotToast.showLoading(
         backgroundColor: Colors.black45,
         wrapToastAnimation: (AnimationController animation, fc, Widget child) {
@@ -31,7 +31,7 @@ class PageStatus {
   }
 
 //列表loding
-  static Widget loading(bool mouted, {String text}) {
+  static Widget loading(bool mouted, {String? text}) {
     if (mouted) {
       return SafeArea(
           child: Container(
@@ -68,7 +68,7 @@ class PageStatus {
   }
 
 //无数据
-  static Widget noData({String text}) {
+  static Widget noData({String? text}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(100)),
       alignment: Alignment.topCenter,
@@ -94,10 +94,10 @@ class PageStatus {
   }
 
 //网络错误
-  static Widget noNetWork({String text, Function onTap}) {
+  static Widget noNetWork({String? text, Function? onTap}) {
     return InkWell(
       onTap: () {
-        onTap();
+        onTap!();
             },
       child: Container(
         alignment: Alignment.topCenter,

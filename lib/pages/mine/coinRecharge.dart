@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +15,7 @@ import 'package:pilipili/mixin/payMixin.dart';
 import 'package:go_router/go_router.dart';
 
 class Coinrecharge extends StatefulWidget {
-  const Coinrecharge({Key key}) : super(key: key);
+  const Coinrecharge({Key? key}) : super(key: key);
 
   @override
   _CoinrechargeState createState() => _CoinrechargeState();
@@ -23,11 +23,11 @@ class Coinrecharge extends StatefulWidget {
 
 class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   String pageStatus = 'loading';
-  Map spcard;
-  List products;
-  Map cardStatus;
+  late Map spcard;
+  late List products;
+  late Map cardStatus;
   bool networkErr = false;
-  Map adData;
+  late Map adData;
   @override
   void initState() {
     super.initState();
@@ -52,7 +52,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
           });
         }
       } else {
-        CommonUtils.showText(product.msg);
+        CommonUtils.showText(product.msg!);
       }
     });
   }
@@ -75,7 +75,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
       setState(() {});
       getCardStatus();
     } else {
-      CommonUtils.showText(res.msg);
+      CommonUtils.showText(res.msg!);
     }
   }
 

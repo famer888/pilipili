@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +12,7 @@ import '../../utils/api.dart';
 import '../../utils/common.dart';
 
 class YouxuanCard extends StatefulWidget {
-  YouxuanCard({Key key, this.isHorizontal = true, this.data}) : super(key: key);
+  YouxuanCard({Key? key, this.isHorizontal = true, this.data}) : super(key: key);
   final bool isHorizontal;
   final dynamic data;
   @override

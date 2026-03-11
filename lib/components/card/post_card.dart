@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/images.dart';
@@ -13,18 +13,18 @@ import 'package:provider/provider.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
-    Key key,
+    Key? key,
     this.data,
     this.showFollow = true,
     this.showLike = true,
     this.showEdit = false,
     this.topic,
   }) : super(key: key);
-  final Map data;
+  final Map? data;
   final bool showFollow;
   final bool showLike;
   final bool showEdit;
-  final Map topic;
+  final Map? topic;
   @override
   State<PostCard> createState() => _PostCardState();
 }
@@ -34,14 +34,14 @@ class _PostCardState extends State<PostCard> {
   bool isLike = false;
   bool loadFollow = false;
   bool loadLike = false;
-  Map user;
-  Map data;
+  late Map user;
+  late Map data;
   List medias = [];
   String tag = '';
   @override
   void initState() {
     super.initState();
-    data = widget.data;
+    data = widget.data!;
     user = data['user'];
     isFollow = user['is_follow'] == 1 ?? false;
       isLike = (data['is_like'] ?? 0) == 1;
@@ -55,7 +55,7 @@ class _PostCardState extends State<PostCard> {
   }
 
   String getCreateTime() {
-    DateTime timeint = DateTime.parse(widget.data['created_at']);
+    DateTime timeint = DateTime.parse(widget.data!['created_at']);
     var beforeText = RelativeDateFormat.format(timeint);
     return beforeText;
   }
@@ -395,7 +395,7 @@ class _PostCardState extends State<PostCard> {
                     
                   },
                   child: Text(
-                    widget.topic == null ? '#$tag' : '#${widget.topic['name']}',
+                    widget.topic == null ? '#$tag' : '#${widget.topic!['name']}',
                     style: TextStyle(
                         color: Color(0xffFF5B8C),
                         fontWeight: FontWeight.w700,

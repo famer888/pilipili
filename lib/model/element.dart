@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final element = elementFromJson(jsonString);
 
@@ -23,21 +23,21 @@ class ElementModel {
     this.value,
   });
 
-  int id;
-  int constructId;
-  int type;
-  int contentType;
-  String title;
-  int moreButton;
-  int morePageShowType;
-  int maxNum;
-  String showField;
-  int changeButton;
-  int sort;
-  int status;
-  String createdAt;
-  String updatedAt;
-  List value;
+  int? id;
+  int? constructId;
+  int? type;
+  int? contentType;
+  String? title;
+  int? moreButton;
+  int? morePageShowType;
+  int? maxNum;
+  String? showField;
+  int? changeButton;
+  int? sort;
+  int? status;
+  String? createdAt;
+  String? updatedAt;
+  List? value;
 
   factory ElementModel.fromJson(Map<String, dynamic> json) {
     return ElementModel(
@@ -93,17 +93,17 @@ class LinkModel {
     this.updatedAt,
   });
 
-  int id;
+  int? id;
   dynamic relatedId;
-  int elementId;
-  String linkUrl;
-  String resourceUrl;
-  int redirectType;
-  String name;
-  String desc;
-  int sort;
-  String createdAt;
-  String updatedAt;
+  int? elementId;
+  String? linkUrl;
+  String? resourceUrl;
+  int? redirectType;
+  String? name;
+  String? desc;
+  int? sort;
+  String? createdAt;
+  String? updatedAt;
 
   factory LinkModel.fromJson(Map<String, dynamic> json) => LinkModel(
         id: json["id"],

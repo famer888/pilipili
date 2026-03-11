@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/cupertino.dart';
 
 /// ------------------------------
 /// PrimaryScrollContainer
@@ -18,14 +18,14 @@ class PrimaryScrollContainer extends StatefulWidget {
 }
 
 class PrimaryScrollContainerState extends State<PrimaryScrollContainer> {
-  ScrollControllerWrapper _scrollController;
+  late ScrollControllerWrapper _scrollController;
 
   get scrollController {
     final PrimaryScrollController primaryScrollController =
-        context.dependOnInheritedWidgetOfExactType(aspect: PrimaryScrollController);
+        context.dependOnInheritedWidgetOfExactType(aspect: PrimaryScrollController)!;
 
-    _scrollController.inner = primaryScrollController.controller;
-  
+    _scrollController.inner = primaryScrollController.controller!;
+
     return _scrollController;
   }
 
@@ -55,12 +55,12 @@ class PrimaryScrollContainerState extends State<PrimaryScrollContainer> {
 /// 适配 Flutter 3.3.0（无 null-safety）
 /// ------------------------------
 class PrimaryScrollControllerWrapper extends InheritedWidget implements PrimaryScrollController {
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   const PrimaryScrollControllerWrapper({
-    Key key,
-    @required Widget child,
-    @required this.scrollController,
+    Key? key,
+    required Widget child,
+    required this.scrollController,
   }) : super(key: key, child: child);
 
   /// 让 Flutter 识别为 PrimaryScrollController
@@ -68,7 +68,7 @@ class PrimaryScrollControllerWrapper extends InheritedWidget implements PrimaryS
   Type get runtimeType => PrimaryScrollController;
 
   @override
-  ScrollController get controller => scrollController;
+  ScrollController get controller => scrollController!;
 
   /// 更新机制
   @override
@@ -99,12 +99,12 @@ class PrimaryScrollControllerWrapper extends InheritedWidget implements PrimaryS
 class ScrollControllerWrapper implements ScrollController {
   static int a = 1;
 
-  ScrollController inner;
+  late ScrollController inner;
 
   int code = a++;
 
-  ScrollPosition interceptedAttachPosition;
-  ScrollPosition lastPosition;
+  late ScrollPosition interceptedAttachPosition;
+  late ScrollPosition lastPosition;
 
   bool showing = true;
 
@@ -112,8 +112,8 @@ class ScrollControllerWrapper implements ScrollController {
   void addListener(listener) => inner.addListener(listener);
 
   @override
-  Future<void> animateTo(double offset, {Duration duration, Curve curve}) =>
-      inner.animateTo(offset, duration: duration, curve: curve);
+  Future<void> animateTo(double offset, {Duration? duration, Curve? curve}) =>
+      inner.animateTo(offset, duration: duration!, curve: curve!);
 
   @override
   void attach(ScrollPosition position) {
@@ -134,10 +134,10 @@ class ScrollControllerWrapper implements ScrollController {
     }
 
     if (position == interceptedAttachPosition && !fake) {
-      interceptedAttachPosition = null;
+      interceptedAttachPosition = null!;
     }
     if (position == lastPosition && !fake) {
-      lastPosition = null;
+      lastPosition = null!;
     }
 
     if (fake) {
@@ -156,14 +156,20 @@ class ScrollControllerWrapper implements ScrollController {
   }
 
   @override
-  ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) =>
+  ScrollControllerCallback? get onAttach => inner.onAttach;
+
+  @override
+  ScrollControllerCallback? get onDetach => inner.onDetach;
+
+  @override
+  ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition? oldPosition) =>
       inner.createScrollPosition(physics, context, oldPosition);
 
   @override
   void debugFillDescription(List<String> description) => inner.debugFillDescription(description);
 
   @override
-  String get debugLabel => inner.debugLabel;
+  String get debugLabel => inner.debugLabel!;
 
   @override
   void dispose() => inner.dispose();

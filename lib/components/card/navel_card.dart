@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/yy_dialog.dart';
@@ -8,8 +8,8 @@ import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/privilege.dart';
 
 class NovelCard extends StatelessWidget {
-  const NovelCard({Key key, this.data}) : super(key: key);
-  final Map data;
+  const NovelCard({Key? key, this.data}) : super(key: key);
+  final Map? data;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,7 +37,7 @@ class NovelCard extends StatelessWidget {
           );
           return;
         }
-        context.push('/novelDetail/${data['id']}', isNoRepeat: true);
+        context.push('/novelDetail/${data!['id']}');
       },
       child: Column(
         children: [
@@ -70,7 +70,7 @@ class NovelCard extends StatelessWidget {
                         borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(3.w))),
                     child: Text(
-                      data['is_end'] == 1 ? '完结' : '连载',
+                      data!['is_end'] == 1 ? '完结' : '连载',
                       style: TextStyle(color: Colors.white, fontSize: 10.sp),
                     ),
                   ))
@@ -80,7 +80,7 @@ class NovelCard extends StatelessWidget {
             height: 4.w,
           ),
           Text(
-            data['name'] ?? '标题',
+            data!['name'] ?? '标题',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

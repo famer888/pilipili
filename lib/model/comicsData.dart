@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-ComicsData comicsDataFromJson(String str) =>
-    ComicsData.fromJson(json.decode(str));
+ComicsData comicsDataFromJson(String str) => ComicsData.fromJson(json.decode(str));
 
 String comicsDataToJson(ComicsData data) => json.encode(data.toJson());
 
@@ -18,16 +17,14 @@ class ComicsData {
     this.isVip,
   });
 
-  List<Datum> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<Datum>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory ComicsData.fromJson(Map<String, dynamic> json) => ComicsData(
-        data: json["data"] == null
-            ? []
-            : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         status: json["status"] == null ? null : json["status"],
         msg: json["msg"] == null ? null : json["msg"],
         crypt: json["crypt"] == null ? null : json["crypt"],
@@ -35,8 +32,7 @@ class ComicsData {
       );
 
   Map<String, dynamic> toJson() => {
-        "data":
-            data == null ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -84,49 +80,48 @@ class Datum {
       this.favorites,
       this.sort});
 
-  int datumId;
-  String id;
-  String recommendTitle;
-  String title;
-  String description;
-  String author;
-  String categories;
-  String bgThumb;
-  String thumb;
-  String reThumb;
-  String tags;
-  int isFree;
-  int adult;
-  int finished;
-  int imagesCount;
-  int viewsCount;
-  int likesCount;
-  int cjFinished;
-  int viewMoney;
-  int downloadMoney;
-  int status;
-  String updateTime;
-  int freeTime;
-  int recommend;
-  String refreshAt;
-  String createdAt;
-  String updatedAt;
-  int indexRecommend;
-  int obtained;
-  int goodLook;
-  int mustAwesome;
-  int whatAwesome;
-  int noAwesome;
-  int from;
-  int newestSeries;
-  int favorites;
-  int sort;
+  int? datumId;
+  String? id = "";
+  String? recommendTitle = "";
+  String? title = "";
+  String? description = "";
+  String? author = "";
+  String? categories = "";
+  String? bgThumb = "";
+  String? thumb = "";
+  String? reThumb = "";
+  String? tags = "";
+  int? isFree;
+  int? adult;
+  int? finished;
+  int? imagesCount;
+  int? viewsCount;
+  int? likesCount;
+  int? cjFinished;
+  int? viewMoney;
+  int? downloadMoney;
+  int? status;
+  String? updateTime = "";
+  int? freeTime;
+  int? recommend;
+  String? refreshAt = "";
+  String? createdAt = "";
+  String? updatedAt = "";
+  int? indexRecommend;
+  int? obtained;
+  int? goodLook;
+  int? mustAwesome;
+  int? whatAwesome;
+  int? noAwesome;
+  int? from;
+  int? newestSeries;
+  int? favorites;
+  int? sort;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         datumId: json["id"] == null ? null : json["id"],
         id: json["_id"] == null ? null : json["_id"],
-        recommendTitle:
-            json["recommend_title"] == null ? null : json["recommend_title"],
+        recommendTitle: json["recommend_title"] == null ? null : json["recommend_title"],
         title: json["title"] == null ? null : json["title"],
         description: json["description"] == null ? null : json["description"],
         author: json["author"] == null ? null : json["author"],
@@ -143,8 +138,7 @@ class Datum {
         likesCount: json["likes_count"] == null ? null : json["likes_count"],
         cjFinished: json["cj_finished"] == null ? null : json["cj_finished"],
         viewMoney: json["view_money"] == null ? null : json["view_money"],
-        downloadMoney:
-            json["download_money"] == null ? null : json["download_money"],
+        downloadMoney: json["download_money"] == null ? null : json["download_money"],
         status: json["status"] == null ? null : json["status"],
         updateTime: json["update_time"] == null ? null : json["update_time"],
         freeTime: json["free_time"] == null ? null : json["free_time"],
@@ -152,16 +146,14 @@ class Datum {
         refreshAt: json["refresh_at"] == null ? null : json["refresh_at"],
         createdAt: json["created_at"] == null ? null : json["created_at"],
         updatedAt: json["updated_at"] == null ? null : json["updated_at"],
-        indexRecommend:
-            json["index_recommend"] == null ? null : json["index_recommend"],
+        indexRecommend: json["index_recommend"] == null ? null : json["index_recommend"],
         obtained: json["obtained"] == null ? null : json["obtained"],
         goodLook: json["good_look"] == null ? null : json["good_look"],
         mustAwesome: json["must_awesome"] == null ? null : json["must_awesome"],
         whatAwesome: json["what_awesome"] == null ? null : json["what_awesome"],
         noAwesome: json["no_awesome"] == null ? null : json["no_awesome"],
         from: json["from"] == null ? null : json["from"],
-        newestSeries:
-            json["newest_series"] == null ? null : json["newest_series"],
+        newestSeries: json["newest_series"] == null ? null : json["newest_series"],
         favorites: json["favorites"] == null ? null : json["favorites"],
         sort: json["sort"] == null ? null : json["sort"],
       );

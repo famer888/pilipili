@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -19,8 +19,8 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:provider/provider.dart';
 
 class AnwangPage extends StatefulWidget {
-  const AnwangPage({Key key, this.pos}) : super(key: key);
-  final int pos;
+  const AnwangPage({Key? key, this.pos}) : super(key: key);
+  final int? pos;
   @override
   State<AnwangPage> createState() => _AnwangPageState();
 }
@@ -42,7 +42,7 @@ class _AnwangPageState extends State<AnwangPage> {
   void getPageData() async {
     ElementModel data = await getFisrtTopNavConfig(213);
     loading = false;
-    data.value.asMap().forEach((index, data) {
+    data.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {
@@ -51,7 +51,7 @@ class _AnwangPageState extends State<AnwangPage> {
           child: Lanmu(
               pos: widget.pos,
               isShow: currentIndex == index,
-              id: int.parse(item.linkUrl),
+              id: int.parse(item.linkUrl!),
               parentName: 'anwang',
               index: index),
         ));

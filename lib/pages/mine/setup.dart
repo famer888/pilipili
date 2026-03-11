@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -28,7 +28,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:pilipili/utils/privilege.dart';
 
 class SetupPage extends StatefulWidget {
-  SetupPage({Key key}) : super(key: key);
+  SetupPage({Key? key}) : super(key: key);
 
   @override
   _SetupPageState createState() => _SetupPageState();
@@ -37,10 +37,10 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
   final ImagePicker _picker = ImagePicker();
-  String fileUrl;
+  late String fileUrl;
   double progress = 0.0;
   bool avatarLoadding = false;
-  html.InputElement uploadInput;
+  late html.FileUploadInputElement uploadInput;
 
   @override
   void initState() {
@@ -54,12 +54,12 @@ class _SetupPageState extends State<SetupPage> {
         uploadInput.onChange.listen((event) {
           if (uploadInput.files != null) {
             final files = uploadInput.files;
-            final file = files[0];
+            final file = files![0];
             html.FileReader reader = html.FileReader();
             getBase64(file, (base64) {
               reader.onLoadEnd.listen((_event) {
                 upImage(
-                    MultipartFile.fromBytes(reader.result,
+                    MultipartFile.fromBytes((reader.result as List<int>),
                         filename: file.name, contentType: MediaType.parse(file.type)),
                     imgfile: base64);
               });
@@ -73,28 +73,30 @@ class _SetupPageState extends State<SetupPage> {
   }
 
   clearToken() {
-    Box box = AppGlobal.appBox;
+    Box box = AppGlobal.appBox!;
     box.delete('yy_token');
   }
 
   Future<void> loadAssets(String type) async {
     if (type == 'camera') {
-      _picker.pickImage(source: ImageSource.camera).then((XFile file) {
-        upImage(file.path);
+      _picker.pickImage(source: ImageSource.camera).then((XFile? file) {
+        upImage(file?.path);
       });
     } else {
-      XFile photo = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
-      var formatList = ["heic", "heif", "HEIC", "HEIF"];
-      List imgArr = photo.name.split('.');
-      String type = imgArr[imgArr.length - 1];
-      if (formatList.indexOf(type) == -1) {
-        upImage(photo.path);
-      } else {
-        for (var j = 0; j < formatList.length; j++) {
-          if (photo.path.endsWith(formatList[j])) {
-            String jpegPath;
-            jpegPath = await HeicToJpg.convert(photo.path);
-            upImage(jpegPath);
+      XFile? photo = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+      if (photo != null) {
+        var formatList = ["heic", "heif", "HEIC", "HEIF"];
+        List imgArr = photo.name.split('.');
+        String type = imgArr[imgArr.length - 1];
+        if (formatList.indexOf(type) == -1) {
+          upImage(photo.path);
+        } else {
+          for (var j = 0; j < formatList.length; j++) {
+            if (photo.path.endsWith(formatList[j])) {
+              String? jpegPath;
+              jpegPath = await HeicToJpg.convert(photo.path);
+              upImage(jpegPath);
+            }
           }
         }
       }
@@ -143,11 +145,11 @@ class _SetupPageState extends State<SetupPage> {
         Future.delayed(Duration(seconds: 1), () async {
           var resultUserInfo = await getUserInfo(context);
           if (resultUserInfo.status != 0) {
-            Provider.of<HomeConfig>(context, listen: false).setAvatar(resultUserInfo.data.thumb);
+            Provider.of<HomeConfig>(context, listen: false).setAvatar(resultUserInfo.data!.thumb);
           }
         });
       } else {
-        CommonUtils.showText(result.msg);
+        CommonUtils.showText(result.msg!);
       }
       BotToast.closeAllLoading();
     } else {
@@ -244,7 +246,7 @@ class _SetupPageState extends State<SetupPage> {
   Widget build(BuildContext context) {
     var members = Provider.of<HomeConfig>(context, listen: false).member;
     var config = Provider.of<HomeConfig>(context, listen: false).config;
-    int isSetPassword = members.isSetPassword;
+    int isSetPassword = members.isSetPassword!;
     bool isLogin = false;
     if (['', null, false].contains(AppGlobal.apiToken)) {
       isLogin = false;
@@ -384,14 +386,14 @@ class _SetupPageState extends State<SetupPage> {
                   onTap: () {
                     CertificateModel.showCertificate(backButtonBehavior,
                         id: (members.aff ?? '0000000').toString(),
-                        code: (config.share.affCode ?? '0000').toString(),
-                        url: (config.share.affUrl ?? '').toString());
+                        code: (config.share!.affCode ?? '0000').toString(),
+                        url: (config.share!.affUrl ?? '').toString());
                   }),
               Line(),
               SetupItem(
                   title: '清除缓存',
                   onTap: () {
-                    AppGlobal.imageCacheBox.clear();
+                    AppGlobal.imageCacheBox!.clear();
                     CommonUtils.showText('已清除缓存,请重启App');
                   }),
               Line(),
@@ -399,7 +401,7 @@ class _SetupPageState extends State<SetupPage> {
                   isBottomRadius: true,
                   title: '版本更新',
                   rightText: AppGlobal.isNewVersion
-                      ? '已是最新版本(' + AppGlobal.appinfo['version'].toString() + ')'
+                      ? '已是最新版本(' + AppGlobal.appinfo!['version'].toString() + ')'
                       : PPString.isNewVersion,
                   rightStyle:
                       TextStyle(color: Color(0xff979797), decoration: TextDecoration.underline, fontSize: 14.sp),
@@ -454,7 +456,7 @@ class _SetupPageState extends State<SetupPage> {
 }
 
 class UserAvatar extends StatelessWidget {
-  const UserAvatar({Key key}) : super(key: key);
+  const UserAvatar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -475,7 +477,7 @@ class UserAvatar extends StatelessWidget {
 
 class SetupItem extends StatelessWidget {
   const SetupItem(
-      {Key key,
+      {Key? key,
       this.title,
       this.rightText,
       this.isTips = false,
@@ -488,23 +490,23 @@ class SetupItem extends StatelessWidget {
       this.rightStyle})
       : super(key: key);
 
-  final String title;
-  final String rightText;
+  final String? title;
+  final String? rightText;
   final bool isTips;
-  final Function onTap;
+  final Function? onTap;
   final bool isAllRadius;
   final bool isTopRadius;
   final bool isBottomRadius;
   final bool isMarginBottom;
   final bool isBorderBottom;
-  final TextStyle rightStyle;
+  final TextStyle? rightStyle;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          onTap();
-                },
+          onTap!();
+        },
         behavior: HitTestBehavior.translucent,
         child: Stack(
           children: [
@@ -537,7 +539,7 @@ class SetupItem extends StatelessWidget {
                               )
                             : Container(),
                         Text(
-                          title,
+                          title!,
                           style: TextStyle(
                               color: Color(0xff6d6d6d),
                               fontSize: 12.sp,
@@ -551,7 +553,7 @@ class SetupItem extends StatelessWidget {
                       children: [
                         rightText != null
                             ? Text(
-                                rightText,
+                                rightText!,
                                 style: rightStyle == null
                                     ? TextStyle(color: Color(0xff979797), fontSize: 14.sp)
                                     : rightStyle,
@@ -591,7 +593,7 @@ class SetupItem extends StatelessWidget {
 }
 
 class Line extends StatelessWidget {
-  const Line({Key key}) : super(key: key);
+  const Line({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

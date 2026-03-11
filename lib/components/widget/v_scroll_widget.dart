@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +11,7 @@ import 'package:pilipili/utils/networkImage.dart';
 
 class VscrollWidget extends StatefulWidget {
   VscrollWidget(
-      {Key key,
+      {Key? key,
       this.data,
       this.title,
       this.moreButton,
@@ -23,12 +23,12 @@ class VscrollWidget extends StatefulWidget {
       : super(
           key: key,
         );
-  final List<dynamic> data;
-  final String title;
-  final bool moreButton;
-  final int morePageType;
-  final String showField;
-  final int contentType;
+  final List<dynamic>? data;
+  final String? title;
+  final bool? moreButton;
+  final int? morePageType;
+  final String? showField;
+  final int? contentType;
   final dynamic id;
   final dynamic element;
   @override
@@ -66,24 +66,24 @@ class _VscrollWidgetState extends State<VscrollWidget> {
                 children: [
                   Row(
                     children: widget.data
-                        .asMap()
+                        !.asMap()
                         .keys
                         .map((e) => Vcard(
-                              tagIconType: widget.data[e]['isfree'],
+                              tagIconType: widget.data![e]['isfree'],
                               width: ScreenUtil().setWidth(145),
-                              id: widget.data[e]['id'],
+                              id: widget.data![e]['id'],
                               contentType: widget.contentType,
-                              cardData: widget.data[e],
+                              cardData: widget.data![e],
                               page:
                                   ((e + 1) / AppGlobal.smallVideoLimit).ceil(),
                               cardMargin: EdgeInsets.only(
                                   right: ScreenUtil().setWidth(10)),
-                              thumbUrl: CommonUtils.getThumb(widget.data[e]),
-                              showField: widget.showField,
+                              thumbUrl: CommonUtils.getThumb(widget.data![e]),
+                              showField: widget.showField!,
                             ))
                         .toList(),
                   ),
-                  !widget.moreButton
+                  !widget.moreButton!
                       ? Container()
                       : GestureDetector(
                           onTap: () {

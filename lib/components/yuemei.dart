@@ -15,9 +15,9 @@ import 'package:pilipili/utils/networkImage.dart';
 
 class YuemeiPage extends StatefulWidget {
   final bool isShow;
-  final Function scrollDirection;
-  final int pos;
-  YuemeiPage({Key key, this.isShow = false, this.scrollDirection, this.pos}) : super(key: key);
+  final Function? scrollDirection;
+  final int? pos;
+  YuemeiPage({Key? key, this.isShow = false, this.scrollDirection, this.pos}) : super(key: key);
 
   @override
   _YuemeiPageState createState() => _YuemeiPageState();
@@ -100,7 +100,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
   }
 
   scorllAdd() {
-    widget.scrollDirection(_scrollController.position.userScrollDirection);
+    widget.scrollDirection?.call(_scrollController.position.userScrollDirection);
     // if (_scrollController.position.userScrollDirection ==
     //     ScrollDirection.forward) {
     //   // 用户向上滑动

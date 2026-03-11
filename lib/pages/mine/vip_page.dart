@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,14 +18,14 @@ import 'package:pilipili/utils/pp_string.dart';
 import 'package:pilipili/utils/privilege.dart';
 
 class VipPage extends StatefulWidget {
-  VipPage({Key key}) : super(key: key);
+  VipPage({Key? key}) : super(key: key);
 
   @override
   _VipPageState createState() => _VipPageState();
 }
 
 class _VipPageState extends State<VipPage> with PayMixin {
-  PageController tabController;
+  late PageController tabController;
 
   String _assetsPath(String name) {
     return 'assets/images/pment/' + name.toString() + '.png';
@@ -61,10 +61,10 @@ class _VipPageState extends State<VipPage> with PayMixin {
   ];
   int currentTab = 0;
   String pageStatus = 'loading';
-  List products;
-  List channel;
-  int currentPrice = 0;
-  int promoPrice = 0;
+  late List products;
+  late List channel;
+  int? currentPrice = 0;
+  int? promoPrice = 0;
   int swiperIndex = 0;
   bool networkErr = false;
   List rightsList = [];
@@ -103,7 +103,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
           pageStatus = 'ready';
         });
       } else {
-        CommonUtils.showText(res.msg);
+        CommonUtils.showText(res.msg!);
       }
     } catch (err) {
       setState(() {
@@ -112,7 +112,7 @@ class _VipPageState extends State<VipPage> with PayMixin {
     }
   }
 
-  Widget _qyItem({String logo, String title, String text}) {
+  Widget _qyItem({String? logo, String? title, String? text}) {
     return Container(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -137,14 +137,14 @@ class _VipPageState extends State<VipPage> with PayMixin {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  text,
+                  text!,
                   style: TextStyle(
                       color: Color(0xff404040), fontSize: ScreenUtil().setSp(13), fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: ScreenUtil().setSp(3),
                 ),
-                Text(title,
+                Text(title!,
                     style: TextStyle(
                       color: Color(0xff979797),
                       fontSize: ScreenUtil().setSp(10),
@@ -492,14 +492,14 @@ class _VipPageState extends State<VipPage> with PayMixin {
 }
 
 class MyVip extends StatefulWidget {
-  MyVip({Key key, this.isShow = false}) : super(key: key);
+  MyVip({Key? key, this.isShow = false}) : super(key: key);
   final bool isShow;
   @override
   _MyVipState createState() => _MyVipState();
 }
 
 class _MyVipState extends State<MyVip> {
-  List vipList;
+  late List vipList;
   bool isInitPage = false;
   bool loading = true;
   int limit = 15;
@@ -663,19 +663,19 @@ class _MyVipState extends State<MyVip> {
 
 class MoreVipContainer extends StatefulWidget {
   final bool isShow;
-  final Function showPay;
-  MoreVipContainer({Key key, this.isShow = false, this.showPay}) : super(key: key);
+  final Function? showPay;
+  MoreVipContainer({Key? key, this.isShow = false, this.showPay}) : super(key: key);
 
   @override
   _MoreVipContainerState createState() => _MoreVipContainerState();
 }
 
 class _MoreVipContainerState extends State<MoreVipContainer> {
-  List moreProducts;
+  late List moreProducts;
   bool isInitPage = false;
   bool loading = true;
   DateTime now = DateTime.now();
-  Timer t1;
+  late Timer t1;
   @override
   void initState() {
     super.initState();
@@ -701,7 +701,7 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
           loading = false;
           setState(() {});
         } else {
-          CommonUtils.showText(res.msg);
+          CommonUtils.showText(res.msg!);
         }
       });
     }
@@ -728,7 +728,7 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
                 padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(31.5)),
                 itemBuilder: (BuildContext context, int index) => GestureDetector(
                       onTap: () {
-                        widget.showPay(moreProducts[index]);
+                        widget.showPay!(moreProducts[index]);
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(18.5)),
@@ -841,10 +841,10 @@ class _MoreVipContainerState extends State<MoreVipContainer> {
 }
 
 class VIPItemContainer extends StatefulWidget {
-  final Map product;
-  final int currentPrice;
-  final int promoPrice;
-  VIPItemContainer({Key key, this.product, this.currentPrice, this.promoPrice}) : super(key: key);
+  final Map? product;
+  final int? currentPrice;
+  final int? promoPrice;
+  VIPItemContainer({Key? key, this.product, this.currentPrice, this.promoPrice}) : super(key: key);
 
   @override
   _VIPItemContainerState createState() => _VIPItemContainerState();
@@ -860,7 +860,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
           height: ScreenUtil().setWidth(172),
           child: PlatformAwareNetworkImage(
             noVisibilityDetector: true,
-            url: widget.product['img_url'],
+            url: widget.product!['img_url'],
             fit: BoxFit.fill,
           ),
         ),
@@ -880,17 +880,17 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                       height: ScreenUtil().setWidth(20),
                       child: PlatformAwareNetworkImage(
                         noVisibilityDetector: true,
-                        url: widget.product['second_img_url'],
+                        url: widget.product!['second_img_url'],
                         fit: BoxFit.fill,
                       )),
                   Expanded(
                       child: Text(
-                    widget.product['pname'],
+                    widget.product!['pname'],
                     style:
                         TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(20), fontWeight: FontWeight.bold),
                   )),
                   Text(
-                    widget.product['valid_date'] > 2000 ? "永久特权" : widget.product['valid_date'].toString() + '天特权时间',
+                    widget.product!['valid_date'] > 2000 ? '永久特权' : widget.product!['valid_date'].toString() + '天特权时间',
                     textAlign: TextAlign.right,
                     style: TextStyle(
                         color: Color(0xffffffff), //_vipColors(widget.product['pname']),
@@ -905,7 +905,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                   child: SingleChildScrollView(
                 padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(30)),
                 child: Text(
-                  widget.product['description'].toString(),
+                  widget.product!['description'].toString(),
                   style: TextStyle(
                       height: 1.5,
                       color: Color(0xffffffff), //_vipColors(widget.product['pname']),

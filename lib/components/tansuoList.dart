@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/theme/default.dart';
@@ -6,7 +6,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class TansuoList extends StatefulWidget {
-  TansuoList({Key key}) : super(key: key);
+  TansuoList({Key? key}) : super(key: key);
 
   @override
   _TansuoListState createState() => _TansuoListState();

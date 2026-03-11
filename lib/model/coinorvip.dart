@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 CoinOrVipModel coinOrVipModelFromJson(String str) =>
     CoinOrVipModel.fromJson(json.decode(str));
@@ -14,11 +14,11 @@ class CoinOrVipModel {
     this.isVip,
   });
 
-  List<Datum> data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
+  List<Datum>? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
 
   factory CoinOrVipModel.fromJson(Map<String, dynamic> json) => CoinOrVipModel(
         data: json["data"] == null
@@ -33,7 +33,7 @@ class CoinOrVipModel {
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "status": status == null ? null : status,
         "msg": msg == null ? null : msg,
         "crypt": crypt == null ? null : crypt,
@@ -67,28 +67,28 @@ class Datum {
     this.statusText,
   });
 
-  int id;
-  String uuid;
-  String oauthType;
-  int productId;
-  String appOrder;
-  String descp;
-  int orderType;
-  String amount;
-  String payAmount;
-  String payway;
-  String payUrl;
-  int status;
-  String msg;
-  String channel;
-  String updatedAt;
-  String createdAt;
-  int expiredAt;
-  String payType;
-  String descImg;
-  int giftDiamond;
-  String buildId;
-  String statusText;
+  int? id;
+  String? uuid;
+  String? oauthType;
+  int? productId;
+  String? appOrder;
+  String? descp;
+  int? orderType;
+  String? amount;
+  String? payAmount;
+  String? payway;
+  String? payUrl;
+  int? status;
+  String? msg;
+  String? channel;
+  String? updatedAt;
+  String? createdAt;
+  int? expiredAt;
+  String? payType;
+  String? descImg;
+  int? giftDiamond;
+  String? buildId;
+  String? statusText;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],

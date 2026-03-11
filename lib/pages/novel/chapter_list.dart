@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
@@ -14,8 +14,8 @@ import 'package:pilipili/utils/privilege.dart';
 import 'package:provider/provider.dart';
 
 class ChapterList extends StatefulWidget {
-  const ChapterList({Key key, this.id}) : super(key: key);
-  final int id;
+  const ChapterList({Key? key, this.id}) : super(key: key);
+  final int? id;
   @override
   State<ChapterList> createState() => _ChapterListState();
 }
@@ -25,15 +25,13 @@ class _ChapterListState extends State<ChapterList> {
   toChaoter(Map item) {
     if (item['payment_type'] == 'free') {
       //免费
-      context.push('/novelReader/${item['id']}',
-          replace: true, isNoRepeat: true);
+      context.pushReplacement('/novelReader/${item['id']}');
     } else if (item['payment_type'] == 'vip') {
       //vip
       bool isView = Privilege.isAllowed(
           context, RESOURCE_TYPE_STORY, PRIVILEGE_TYPE_VIEW);
       if (isView) {
-        context.push('/novelReader/${item['id']}',
-            replace: true, isNoRepeat: true);
+        context.pushReplacement('/novelReader/${item['id']}');
       } else {
         YyShowDialog.showdialog(context,
             title: '温馨提示', btnText: '开通会员', cancelText: '取消', callBack: () {
@@ -50,11 +48,10 @@ class _ChapterListState extends State<ChapterList> {
     } else {
       //金币
       if (isBuy || item['has_permission']) {
-        context.push('/novelReader/${item['id']}',
-            replace: true, isNoRepeat: true);
+        context.pushReplacement('/novelReader/${item['id']}');
       } else {
         int money =
-            Provider.of<HomeConfig>(context, listen: false).member.money;
+            Provider.of<HomeConfig>(context, listen: false).member.money!;
         bool isInsufficient =
             money < double.parse(item['coins'].toString()).toInt();
         YyShowDialog.showdialog(context,
@@ -69,8 +66,7 @@ class _ChapterListState extends State<ChapterList> {
               if (res['status'] != 0) {
                 CommonUtils.showText('购买成功');
                 isBuy = true;
-                context.push('/novelReader/${item['id']}',
-                    replace: true, isNoRepeat: true);
+                context.pushReplacement('/novelReader/${item['id']}');
               } else {
                 CommonUtils.showText(res['msg'] ?? '系统错误～');
               }

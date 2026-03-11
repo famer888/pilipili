@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:convert' as convert;
@@ -12,7 +12,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class HomePreviewViewPage extends StatefulWidget {
-  HomePreviewViewPage({Key key, this.url = ""}) : super(key: key);
+  HomePreviewViewPage({Key? key, this.url = ""}) : super(key: key);
   String url;
 
   @override
@@ -20,7 +20,7 @@ class HomePreviewViewPage extends StatefulWidget {
 }
 
 class _HomePreviewViewPageState extends State<HomePreviewViewPage> {
-  PageController _controller;
+  late PageController _controller;
   List<GlobalKey> keyList = [];
   List<TransformationController> transformationControllerList = [];
   int _selectedIndex = 0;
@@ -177,25 +177,25 @@ class _HomePreviewViewPageState extends State<HomePreviewViewPage> {
 }
 
 double initScale({
-  @required Size imageSize,
-  @required Size size,
-  double initialScale,
+  @required Size? imageSize,
+  @required Size? size,
+  double? initialScale,
 }) {
-  final double n1 = imageSize.height / imageSize.width;
-  final double n2 = size.height / size.width;
+  final double n1 = imageSize!.height / imageSize!.width;
+  final double n2 = size!.height / size!.width;
   if (n1 > n2) {
     final FittedSizes fittedSizes =
-        applyBoxFit(BoxFit.contain, imageSize, size);
+        applyBoxFit(BoxFit.contain, imageSize!, size!);
     //final Size sourceSize = fittedSizes.source;
     final Size destinationSize = fittedSizes.destination;
-    return size.width / destinationSize.width;
+    return size!.width / destinationSize.width;
   } else if (n1 / n2 < 1 / 4) {
     final FittedSizes fittedSizes =
-        applyBoxFit(BoxFit.contain, imageSize, size);
+        applyBoxFit(BoxFit.contain, imageSize!, size!);
     //final Size sourceSize = fittedSizes.source;
     final Size destinationSize = fittedSizes.destination;
-    return size.height / destinationSize.height;
+    return size!.height / destinationSize.height;
   }
 
-  return initialScale;
+  return initialScale!;
 }

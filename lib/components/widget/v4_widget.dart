@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +12,7 @@ import 'package:pilipili/utils/common.dart';
 
 class V4Column extends StatefulWidget {
   V4Column(
-      {Key key,
+      {Key? key,
       this.data,
       this.title,
       this.moreButton,
@@ -23,13 +23,13 @@ class V4Column extends StatefulWidget {
       this.id,
       this.element})
       : super(key: key);
-  final List<dynamic> data;
-  final String title;
-  final bool moreButton;
-  final int morePageType;
-  final String showField;
-  final int contentType;
-  final int limit;
+  final List<dynamic>? data;
+  final String? title;
+  final bool? moreButton;
+  final int? morePageType;
+  final String? showField;
+  final int? contentType;
+  final int? limit;
   final dynamic id;
   final dynamic element;
   @override
@@ -37,13 +37,13 @@ class V4Column extends StatefulWidget {
 }
 
 class _V4ColumnState extends State<V4Column> {
-  List<dynamic> dataList;
+  late List<dynamic> dataList;
   int page = 1;
   bool isAll = false;
   bool loading = false;
   @override
   void initState() {
-    dataList = widget.data;
+    dataList = widget.data!;
     setState(() {});
     super.initState();
   }
@@ -100,13 +100,13 @@ class _V4ColumnState extends State<V4Column> {
                             tagIconType: dataList[e]['isfree'],
                             contentType: widget.contentType,
                             cardData: dataList[e],
-                            showField: widget.showField,
+                            showField: widget.showField!,
                             width: ScreenUtil().setWidth(167),
                             thumbUrl: CommonUtils.getThumb(dataList[e]),
                           ))
                       .toList(),
                 ),
-          !widget.moreButton
+          !widget.moreButton!
               ? Container()
               : GestureDetector(
                   onTap: () {

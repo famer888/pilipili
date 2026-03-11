@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/FlexibleBanner.dart';
@@ -12,9 +12,9 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key key, this.scrollDirection, this.pos}) : super(key: key);
-  final Function scrollDirection;
-  final int pos;
+  const CommunityPage({Key? key, this.scrollDirection, this.pos}) : super(key: key);
+  final Function? scrollDirection;
+  final int? pos;
   @override
   State<CommunityPage> createState() => _CommunityPageState();
 }
@@ -22,7 +22,7 @@ class CommunityPage extends StatefulWidget {
 class _CommunityPageState extends State<CommunityPage> {
   List postList = [];
 
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
   dynamic fixedBanner;
   bool isListView = true;
   bool networkErr = false;
@@ -113,7 +113,7 @@ class _CommunityPageState extends State<CommunityPage> {
       showTab.value = false;
     }
 
-    widget.scrollDirection(_scrollController.position.userScrollDirection);
+    widget.scrollDirection!(_scrollController.position.userScrollDirection);
   }
 
   @override
@@ -303,7 +303,7 @@ class _CommunityPageState extends State<CommunityPage> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    context.push('/topicDetail/${topics[index]['id']}', isNoRepeat: true);
+                                    context.push('/topicDetail/${topics[index]['id']}');
                                   },
                                   child: topBtn(topics[index]['name'], topics[index]['post_num']),
                                 );

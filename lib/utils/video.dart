@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PlatformAwareVideo extends StatefulWidget {
-  const PlatformAwareVideo({Key key})
+  const PlatformAwareVideo({Key? key})
       : super(key: key);
 
   _PlatformAwareVideoState createState() => _PlatformAwareVideoState();

@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+﻿// To parse this JSON data, do
 //
 //     final updateNumModel = updateNumModelFromJson(jsonString);
 
@@ -19,12 +19,12 @@ class UpdateNumModel {
     this.line,
   });
 
-  Data data;
-  int status;
-  String msg;
-  bool crypt;
-  bool isVip;
-  String line;
+  Data? data;
+  int? status;
+  String? msg;
+  bool? crypt;
+  bool? isVip;
+  String? line;
 
   factory UpdateNumModel.fromJson(Map<String, dynamic> json) => UpdateNumModel(
         data: Data.fromJson(json["data"]),
@@ -36,7 +36,7 @@ class UpdateNumModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "status": status,
         "msg": msg,
         "crypt": crypt,
@@ -56,13 +56,13 @@ class Data {
     this.girlNum,
   });
 
-  int mvNum;
-  int smvNum;
-  int bookNum;
-  int mhNum;
-  int storyNum;
-  int picNum;
-  int girlNum;
+  int? mvNum;
+  int? smvNum;
+  int? bookNum;
+  int? mhNum;
+  int? storyNum;
+  int? picNum;
+  int? girlNum;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         mvNum: json["mvNum"],

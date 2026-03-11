@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 // import 'package:pilipili/components/card/comics_card.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +11,7 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pageviewmixin.dart';
 
 class WatchHistoryPage extends StatefulWidget {
-  WatchHistoryPage({Key key}) : super(key: key);
+  WatchHistoryPage({Key? key}) : super(key: key);
 
   @override
   _WatchHistoryPageState createState() => _WatchHistoryPageState();
@@ -20,7 +20,7 @@ class WatchHistoryPage extends StatefulWidget {
 class _WatchHistoryPageState extends State<WatchHistoryPage>
     with TickerProviderStateMixin {
   final myController = TextEditingController();
-  TabController _tabController;
+  late TabController _tabController;
   int currentTab = 0;
   List tabList = [
     {
@@ -46,7 +46,7 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
       vsync: this,
     );
     _tabController.addListener(() {
-      if (_tabController.index.toDouble() == _tabController.animation.value) {
+      if (_tabController.index.toDouble() == _tabController.animation!.value) {
         setState(() {
           currentTab = _tabController.index;
         });
@@ -149,8 +149,8 @@ class _WatchHistoryPageState extends State<WatchHistoryPage>
 }
 
 class HistoryList extends StatefulWidget {
-  HistoryList({Key key, this.type}) : super(key: key);
-  int type;
+  HistoryList({Key? key, this.type}) : super(key: key);
+  int? type;
   @override
   _HistoryListState createState() => _HistoryListState();
 }
@@ -163,16 +163,16 @@ class _HistoryListState extends State<HistoryList> {
     List boxdata;
     switch (widget.type) {
       case 1:
-        boxdata = AppGlobal.videoWatchRecordBox.values.toList();
+        boxdata = AppGlobal.videoWatchRecordBox!.values.toList();
         break;
       case 2:
-        boxdata = AppGlobal.manhuaWatchRecordBox.values.toList();
+        boxdata = AppGlobal.manhuaWatchRecordBox!.values.toList();
         break;
       case 3:
-        boxdata = AppGlobal.bookWatchRecordBox.values.toList();
+        boxdata = AppGlobal.bookWatchRecordBox!.values.toList();
         break;
       default:
-        boxdata = AppGlobal.smallVideoWatchRecordBox.values.toList();
+        boxdata = AppGlobal.smallVideoWatchRecordBox!.values.toList();
     }
     boxdata.sort(
         (left, right) => right['recordTimer'].compareTo(left['recordTimer']));

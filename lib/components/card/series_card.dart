@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
@@ -7,11 +7,11 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
 class SeriesCard extends StatefulWidget {
-  final Map data;
-  final int type; //1视频  2 漫画
+  final Map? data;
+  final int? type; //1视频  2 漫画
   final bool replace;
-  final Function onTap;
-  SeriesCard({Key key, this.data, this.type, this.replace = false, this.onTap})
+  final Function? onTap;
+  SeriesCard({Key? key, this.data, this.type, this.replace = false, this.onTap})
       : super(key: key);
 
   @override
@@ -23,20 +23,19 @@ class _SeriesCardState extends State<SeriesCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onTap();
-              context.push(
-            widget.replace
+        widget.onTap!();
+              final _path = widget.replace
                 ? (widget.type == 1
                     ? CommonUtils.getRealHash().replaceAll(
                         RegExp("${PPString.test}videoDetail/.*"),
-                        'videoDetail/' + widget.data['id'].toString())
+                        'videoDetail/' + widget.data!['id'].toString())
                     : CommonUtils.getRealHash().replaceAll(
                         RegExp("${PPString.test}comicsdetail/.*"),
-                        'comicsdetail/' + widget.data['id'].toString()))
+                        'comicsdetail/' + widget.data!['id'].toString()))
                 : (CommonUtils.getRealHash(widget.type == 1
-                    ? 'videoDetail/' + widget.data['id'].toString()
-                    : 'comicsdetail/' + widget.data['id'].toString())),
-            replace: widget.replace);
+                    ? 'videoDetail/' + widget.data!['id'].toString()
+                    : 'comicsdetail/' + widget.data!['id'].toString()));
+              widget.replace ? context.pushReplacement(_path) : context.push(_path);
       },
       child: Container(
         child: Row(
@@ -69,7 +68,7 @@ class _SeriesCardState extends State<SeriesCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.data['title'].toString(),
+                        widget.data!['title'].toString(),
                         style: TextStyle(
                             color: Color(0XFF646464),
                             fontSize: 14.sp,
@@ -79,9 +78,9 @@ class _SeriesCardState extends State<SeriesCard> {
                         height: 8.w,
                       ),
                       Text(
-                        (widget.data['second_title'] ?? '') +
+                        (widget.data!['second_title'] ?? '') +
                             '/' +
-                            (widget.data['tags'] ?? '').replaceAll(',', '#'),
+                            (widget.data!['tags'] ?? '').replaceAll(',', '#'),
                         style: TextStyle(
                           color: Color(0xff979797),
                           fontSize: 11.sp,
@@ -95,7 +94,7 @@ class _SeriesCardState extends State<SeriesCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        (widget.data['count_play'] ?? 0).toString() + '人看过',
+                        (widget.data!['count_play'] ?? 0).toString() + '人看过',
                         style: TextStyle(
                           color: Color(0xff979797),
                           fontSize: 11.w,
@@ -134,7 +133,7 @@ class _SeriesCardState extends State<SeriesCard> {
                             ),
                             Text(
                               CommonUtils.renderFixedNumber(double.parse(
-                                  (widget.data['favorites'] ?? 0).toString())),
+                                  (widget.data!['favorites'] ?? 0).toString())),
                               style: TextStyle(
                                   color: DefaultStyle.themeColor,
                                   fontSize: 12.sp),

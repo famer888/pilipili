@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/pili/public_list.dart';
 import 'package:pilipili/global.dart';
@@ -10,14 +10,14 @@ import 'package:pilipili/utils/pageviewmixin.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 
 class SeconedPageDetail extends StatefulWidget {
-  SeconedPageDetail({Key key}) : super(key: key);
+  SeconedPageDetail({Key? key}) : super(key: key);
   @override
   State<SeconedPageDetail> createState() => _SeconedPageDetailState();
 }
 
 class _SeconedPageDetailState extends State<SeconedPageDetail>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   ScrollController _scrollController = ScrollController();
   bool isShow = false;
   Map<int, Map> apiMap = {
@@ -36,15 +36,15 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
   List _tabs = [
     {
       'title': "最新",
-      'data': {'order': 1, 'filter': AppGlobal.seconedPagePramas['link_url']}
+      'data': {'order': 1, 'filter': AppGlobal.seconedPagePramas!['link_url']}
     },
     {
       'title': "推荐",
-      'data': {'order': 2, 'filter': AppGlobal.seconedPagePramas['link_url']}
+      'data': {'order': 2, 'filter': AppGlobal.seconedPagePramas!['link_url']}
     },
     {
       'title': "随机",
-      'data': {'order': 3, 'filter': AppGlobal.seconedPagePramas['link_url']}
+      'data': {'order': 3, 'filter': AppGlobal.seconedPagePramas!['link_url']}
     },
   ];
   // AppGlobal.seconedPagePramas
@@ -74,7 +74,7 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
     }
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.addListener(() {
-      if (_tabController.index.toDouble() == _tabController.animation.value) {
+      if (_tabController.index.toDouble() == _tabController.animation!.value) {
         setState(() {
           currentTab = _tabController.index;
         });
@@ -239,11 +239,11 @@ class _SeconedPageDetailState extends State<SeconedPageDetail>
                           : {
                               ..._tabs[e]['data'],
                               ...apiMap[int.parse(_pramsMap['content_type'])]
-                                  ['data']
+                                  !['data']
                             },
                       api: _pramsMap['content_type'] == null
                           ? '/api/mv/getList'
-                          : apiMap[int.parse(_pramsMap['content_type'])]['api'],
+                          : apiMap[int.parse(_pramsMap['content_type'])]!['api'],
                       isShow: e == currentTab,
                     ),
                   );

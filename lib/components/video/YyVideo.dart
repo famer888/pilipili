@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frhooks/frhooks.dart';
@@ -13,13 +13,13 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 typedef SetControllerCallback = void Function(VideoPlayerController controller);
 
 class YyVideo extends StatefulWidget {
   YyVideo(
-      {Key key,
+      {Key? key,
       this.id,
       this.videoUrl,
       this.cover,
@@ -37,9 +37,9 @@ class YyVideo extends StatefulWidget {
       this.isLocal = false, // 是否为本地视频
       this.isPreview = false})
       : super(key: key);
-  String videoUrl;
-  final String id;
-  final Function setVideoUrl;
+  String? videoUrl;
+  final String? id;
+  final Function? setVideoUrl;
   final bool isCardAuto;
   final bool noBack;
   final bool isFull;
@@ -47,43 +47,43 @@ class YyVideo extends StatefulWidget {
   final bool autoPlay;
   final bool loop;
   final bool noVolume;
-  final VideoPlayerController controller;
-  final SetControllerCallback setController;
+  final VideoPlayerController? controller;
+  final SetControllerCallback? setController;
   final dynamic data;
   final bool isLocal;
   final bool isPreview;
-  final String cover;
+  final String? cover;
 
   @override
   _YyVideoState createState() => _YyVideoState();
 }
 
 class _YyVideoState extends State<YyVideo> with VideoMinxin {
-  VideoPlayerController videoController;
+  VideoPlayerController? videoController;
   bool previewShow = false;
   initPageState() {
     videoController = widget.controller;
-    AppEventReport.instance.videoControllerInit(videoController);
+    AppEventReport.instance.videoControllerInit(videoController!);
     setState(() {});
     }
 
   @override
   void initState() {
     super.initState();
-    Wakelock.enable();
+    WakelockPlus.enable();
     initPageState();
   }
 
   initVideo(dynamic url) {
     videoController = VideoPlayerController.network(url);
-    AppEventReport.instance.videoControllerInit(videoController);
+    AppEventReport.instance.videoControllerInit(videoController!);
     setState(() {});
   }
 
   @override
   void dispose() {
     super.dispose();
-    Wakelock.disable();
+    WakelockPlus.disable();
   }
 
   @override
@@ -92,17 +92,17 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
   }
 
   buySmallVideo() {
-    int money = Provider.of<HomeConfig>(context, listen: false).member.money;
-    buyVideo(id: widget.data.id, coins: (money - widget.data.discountCoins), context: context).then((res) {
+    int money = Provider.of<HomeConfig>(context, listen: false).member.money!;
+    buyVideo(id: widget.data.id, coins: (money - widget.data.discountCoins!).toInt(), context: context).then((res) {
       if (res.status != 0) {
         CommonUtils.showText('购买成功');
         widget.videoUrl = res.data;
         context.pop();
-        widget.setVideoUrl(res.data);
+        widget.setVideoUrl!(res.data);
               setState(() {});
         initPageState();
       } else {
-        CommonUtils.showText(res.msg);
+        CommonUtils.showText(res.msg!);
       }
     });
   }
@@ -117,7 +117,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
           (widget.videoUrl == '') && widget.controller == null
               ? Container()
               : Center(
-                  child: videoController.value.isInitialized
+                  child: videoController!.value.isInitialized
                       ? Hero(
                           tag: 'yyplayr',
                           child: Stack(
@@ -254,7 +254,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                         ),
                       ),
                     )),
-          !videoController.value.isInitialized
+          !videoController!.value.isInitialized
               ? Positioned(
                   child: Padding(
                   padding: EdgeInsets.only(top: widget.cover == null ? 0 : ScreenUtil().statusBarHeight),
@@ -268,20 +268,20 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
 }
 
 class HooksSet extends HookWidget {
-  const HooksSet({this.pramas, this.child, Key key}) : super(key: key);
-  final Widget child;
-  final List pramas;
+  const HooksSet({this.pramas, this.child, Key? key}) : super(key: key);
+  final Widget? child;
+  final List? pramas;
   @override
   Widget build(BuildContext context) {
     return useMemo(() {
-      return child;
+      return child!;
     }, pramas);
   }
 }
 
 class VideoContainer extends HookWidget {
-  const VideoContainer({Key key, this.videoController, this.isSmallVideo = false}) : super(key: key);
-  final VideoPlayerController videoController;
+  const VideoContainer({Key? key, this.videoController, this.isSmallVideo = false}) : super(key: key);
+  final VideoPlayerController? videoController;
   final bool isSmallVideo;
 
   @override
@@ -291,12 +291,12 @@ class VideoContainer extends HookWidget {
           ? Container(
               width: double.infinity,
               height: double.infinity,
-              child: VideoPlayer(videoController),
+              child: VideoPlayer(videoController!),
             )
           : Center(
               child: AspectRatio(
-                aspectRatio: videoController.value.aspectRatio,
-                child: VideoPlayer(videoController),
+                aspectRatio: videoController!.value.aspectRatio,
+                child: VideoPlayer(videoController!),
               ),
             );
     }, [videoController]);

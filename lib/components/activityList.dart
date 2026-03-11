@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/theme/default.dart';
@@ -10,14 +10,14 @@ import 'package:pilipili/utils/networkImage.dart';
 import '../utils/api.dart';
 
 class ActivityList extends StatefulWidget {
-  ActivityList({Key key}) : super(key: key);
+  ActivityList({Key? key}) : super(key: key);
   @override
   State<ActivityList> createState() => _ActivityListState();
 }
 
 class _ActivityListState extends State<ActivityList> {
   bool loading = true;
-  List listData;
+  late List listData;
   @override
   void initState() {
     super.initState();

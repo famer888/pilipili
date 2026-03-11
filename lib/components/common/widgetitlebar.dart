@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
@@ -7,16 +7,16 @@ import 'package:pilipili/utils/networkImage.dart';
 // ignore: must_be_immutable
 class WidgetTitleBar extends StatefulWidget {
   WidgetTitleBar(
-      {Key key,
+      {Key? key,
       this.title,
       this.bottom,
       this.mainAxisAlignment = MainAxisAlignment.center,
       this.style})
       : super(key: key);
-  final String title;
-  final double bottom;
+  final String? title;
+  final double? bottom;
   final MainAxisAlignment mainAxisAlignment;
-  final TextStyle style;
+  final TextStyle? style;
   @override
   _WidgetTitleBarState createState() => _WidgetTitleBarState();
 }
@@ -41,7 +41,7 @@ class _WidgetTitleBarState extends State<WidgetTitleBar> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(8)),
             child: Text(
-              widget.title,
+              widget.title!,
               style: widget.style ?? DefaultStyle.black18bold,
             ),
           ),

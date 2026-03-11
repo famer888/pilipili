@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -19,7 +19,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class Promote extends StatefulWidget {
-  Promote({Key key}) : super(key: key);
+  Promote({Key? key}) : super(key: key);
 
   @override
   _InviteFriendState createState() => _InviteFriendState();
@@ -39,8 +39,7 @@ class _InviteFriendState extends State<Promote> {
       PermissionStatus storageStatus = await Permission.storage.status;
       if (storageStatus == PermissionStatus.denied) {
         storageStatus = await Permission.storage.request();
-        if (storageStatus == PermissionStatus.denied ||
-            storageStatus == PermissionStatus.permanentlyDenied) {
+        if (storageStatus == PermissionStatus.denied || storageStatus == PermissionStatus.permanentlyDenied) {
           CommonUtils.showText(
             '您拒绝了存储权限，请前往设置中打开权限',
           );
@@ -67,34 +66,34 @@ class _InviteFriendState extends State<Promote> {
   }
 
   localStorageImage() async {
-    RenderRepaintBoundary boundary =
-        rootWidgetKey.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary = (rootWidgetKey.currentContext!.findRenderObject()!) as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    final result = await ImageGallerySaver.saveImage(pngBytes); //这个是核心的保存图片的插件
-    if (result['isSuccess']) {
-      CommonUtils.showText(
-        '信息保存成功,请勿丢失～',
-      );
-    } else if (Platform.isAndroid) {
-      if (result.length > 0) {
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData != null) {
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      final result = await ImageGallerySaver.saveImage(pngBytes); //这个是核心的保存图片的插件
+      if (result['isSuccess']) {
         CommonUtils.showText(
           '信息保存成功,请勿丢失～',
         );
+      } else if (Platform.isAndroid) {
+        if (result.length > 0) {
+          CommonUtils.showText(
+            '信息保存成功,请勿丢失～',
+          );
+        }
       }
+      setState(() {
+        isSaving = false;
+      });
     }
-    setState(() {
-      isSaving = false;
-    });
   }
 
   //复制链接分享
   void _copyLinkShare() {
     var config = Provider.of<HomeConfig>(context, listen: false).config;
 
-    Clipboard.setData(
-        ClipboardData(text: config.share.affUrlCopy.url.toString()));
+    Clipboard.setData(ClipboardData(text: config.share!.affUrlCopy!.url.toString()));
     CommonUtils.showText(
       '复制成功,快去分享吧',
     );
@@ -119,8 +118,7 @@ class _InviteFriendState extends State<Promote> {
                     Container(
                       width: ScreenUtil().setWidth(327),
                       child: PlatformAwareAssetImage(
-                          url:
-                              "assets/images/wode/invite_friends_header_bg.png",
+                          url: "assets/images/wode/invite_friends_header_bg.png",
                           fit: BoxFit.fitWidth,
                           filterQuality: FilterQuality.medium),
                     ),
@@ -128,10 +126,8 @@ class _InviteFriendState extends State<Promote> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            bottomLeft:
-                                Radius.circular(ScreenUtil().setWidth(10)),
-                            bottomRight:
-                                Radius.circular(ScreenUtil().setWidth(10))),
+                            bottomLeft: Radius.circular(ScreenUtil().setWidth(10)),
+                            bottomRight: Radius.circular(ScreenUtil().setWidth(10))),
                       ),
                       padding: EdgeInsets.all(ScreenUtil().setWidth(12)),
                       width: ScreenUtil().setWidth(327),
@@ -141,8 +137,7 @@ class _InviteFriendState extends State<Promote> {
                             //剪裁为圆角矩形
                             borderRadius: BorderRadius.circular(5.0),
                             child: PlatformAwareAssetImage(
-                                url:
-                                    "assets/images/wode/invite_friends_content_bg.png",
+                                url: "assets/images/wode/invite_friends_content_bg.png",
                                 width: double.infinity,
                                 fit: BoxFit.fitWidth,
                                 filterQuality: FilterQuality.medium),
@@ -157,12 +152,11 @@ class _InviteFriendState extends State<Promote> {
                                 width: ScreenUtil().setWidth(96),
                                 height: ScreenUtil().setWidth(96),
                                 color: Colors.white,
-                                child: QrImage(
-                                  data: config.share.affUrl.toString(),
-                                  padding:
-                                      EdgeInsets.all(ScreenUtil().setWidth(10)),
-                                  version: QrVersions.auto,
-                                ),
+                                // child: QrImage(
+                                //   data: config.share.affUrl.toString(),
+                                //   padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+                                //   version: QrVersions.auto,
+                                // ),
                               ),
                               SizedBox(
                                 width: ScreenUtil().setWidth(12),
@@ -181,7 +175,7 @@ class _InviteFriendState extends State<Promote> {
                                           fontSize: ScreenUtil().setSp(14),
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: ScreenUtil().setWidth(8)),
-                                  Text('推广码:' + config.share.affCode.toString(),
+                                  Text('推广码:' + config.share!.affCode.toString(),
                                       style: TextStyle(
                                           color: Color(0xff646464),
                                           decoration: TextDecoration.none,
@@ -227,8 +221,7 @@ class _InviteFriendState extends State<Promote> {
           ),
         ),
         Container(
-            margin: EdgeInsets.only(
-                top: ScreenUtil().statusBarHeight + DefaultStyle.navbarHegiht),
+            margin: EdgeInsets.only(top: ScreenUtil().statusBarHeight + DefaultStyle.navbarHegiht),
             child: PlatformAwareAssetImage(
                 url: 'assets/images/wode/invite_header.png',
                 width: double.infinity,
@@ -248,9 +241,7 @@ class _InviteFriendState extends State<Promote> {
                       child: Text(
                         "邀请记录",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: ScreenUtil().setSp(14)),
+                            color: Colors.white, fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(14)),
                       ),
                     )),
                 Expanded(
@@ -265,23 +256,17 @@ class _InviteFriendState extends State<Promote> {
                                   right: ScreenUtil().setWidth(16)),
                               width: double.infinity,
                               padding: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setWidth(20),
-                                  horizontal: ScreenUtil().setWidth(21)),
+                                  vertical: ScreenUtil().setWidth(20), horizontal: ScreenUtil().setWidth(21)),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      ScreenUtil().setWidth(15)),
+                                  borderRadius: BorderRadius.circular(ScreenUtil().setWidth(15)),
                                   gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(255, 255, 255, 0.77),
-                                      Color(0xFFFFE1C5)
-                                    ],
+                                    colors: [Color.fromRGBO(255, 255, 255, 0.77), Color(0xFFFFE1C5)],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   )),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("邀请好友 得免费VIP",
                                       style: TextStyle(
@@ -304,8 +289,7 @@ class _InviteFriendState extends State<Promote> {
                                     //     vertical: ScreenUtil().setWidth(10)),
                                     width: ScreenUtil().setWidth(350),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
@@ -318,18 +302,15 @@ class _InviteFriendState extends State<Promote> {
                                               BoxShadow(
                                                   color: Colors.black12,
                                                   offset: Offset(0, 0),
-                                                  blurRadius:
-                                                      ScreenUtil().setWidth(20))
+                                                  blurRadius: ScreenUtil().setWidth(20))
                                             ],
                                           ),
-                                          child: QrImage(
-                                            size: ScreenUtil().setWidth(134.5),
-                                            data:
-                                                config.share.affUrl.toString(),
-                                            padding: EdgeInsets.all(
-                                                ScreenUtil().setWidth(10)),
-                                            version: QrVersions.auto,
-                                          ),
+                                          // child: QrImage(
+                                          //   size: ScreenUtil().setWidth(134.5),
+                                          //   data: config.share.affUrl.toString(),
+                                          //   padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+                                          //   version: QrVersions.auto,
+                                          // ),
                                         ),
                                         SizedBox(
                                           height: ScreenUtil().setWidth(16),
@@ -341,19 +322,17 @@ class _InviteFriendState extends State<Promote> {
                                               '我的推广码',
                                               style: TextStyle(
                                                   color: Color(0xffAF5A0C),
-                                                  fontSize:
-                                                      ScreenUtil().setSp(18),
+                                                  fontSize: ScreenUtil().setSp(18),
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
                                               height: ScreenUtil().setWidth(8),
                                             ),
                                             Text(
-                                              config.share.affCode.toString(),
+                                              config.share!.affCode.toString(),
                                               style: TextStyle(
                                                   color: Color(0xff7A3C04),
-                                                  fontSize:
-                                                      ScreenUtil().setSp(25.2),
+                                                  fontSize: ScreenUtil().setSp(25.2),
                                                   fontWeight: FontWeight.w700),
                                             )
                                           ],
@@ -362,8 +341,7 @@ class _InviteFriendState extends State<Promote> {
                                           height: ScreenUtil().setWidth(24),
                                         ),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             ActionShareButton(
                                               text: '保存图片分享',
@@ -373,9 +351,7 @@ class _InviteFriendState extends State<Promote> {
                                                       setState(() {
                                                         isSaving = true;
                                                       });
-                                                      SchedulerBinding.instance
-                                                          .addPostFrameCallback(
-                                                              (_) {
+                                                      SchedulerBinding.instance.addPostFrameCallback((_) {
                                                         _saveImgShare();
                                                       });
                                                     },
@@ -395,27 +371,21 @@ class _InviteFriendState extends State<Promote> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(
-                                  top: ScreenUtil().setWidth(35)),
+                              padding: EdgeInsets.only(top: ScreenUtil().setWidth(35)),
                               child: GestureDetector(
                                   onTap: () {
-                                    context.push(CommonUtils.getRealHash(
-                                        'promoteActionList'));
+                                    context.push(CommonUtils.getRealHash('promoteActionList'));
                                   },
                                   child: Container(
                                       width: ScreenUtil().setWidth(200),
                                       height: ScreenUtil().setWidth(36),
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              ScreenUtil().setWidth(20)),
+                                          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(20)),
                                           gradient: LinearGradient(
                                             colors: [
-                                              Color.fromRGBO(
-                                                  255, 255, 255, 0.68),
-                                              Color.fromRGBO(
-                                                  255, 255, 255, 0.374),
-                                              Color.fromRGBO(
-                                                  255, 255, 255, 0.4869),
+                                              Color.fromRGBO(255, 255, 255, 0.68),
+                                              Color.fromRGBO(255, 255, 255, 0.374),
+                                              Color.fromRGBO(255, 255, 255, 0.4869),
                                             ],
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
@@ -443,7 +413,7 @@ class _InviteFriendState extends State<Promote> {
 }
 
 class PromoteActionList extends StatefulWidget {
-  PromoteActionList({Key key}) : super(key: key);
+  PromoteActionList({Key? key}) : super(key: key);
 
   @override
   _PromoteActionListState createState() => _PromoteActionListState();
@@ -464,7 +434,7 @@ class _PromoteActionListState extends State<PromoteActionList> {
         child: Container(
           padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
           child: getImage('assets/images/2023/promete_de.png',
-              width: double.infinity, fit: BoxFit.fitWidth,isAssets: true),
+              width: double.infinity, fit: BoxFit.fitWidth, isAssets: true),
         ),
       ),
     );
@@ -472,11 +442,11 @@ class _PromoteActionListState extends State<PromoteActionList> {
 }
 
 class ActionShareButton extends StatelessWidget {
-  final String text;
-  final GestureTapCallback onTap;
-  final bool isLoadding;
-  const ActionShareButton({Key key, this.text, this.onTap, this.isLoadding})
-      : super(key: key);
+  final String? text;
+  final GestureTapCallback? onTap;
+  final bool? isLoadding;
+
+  const ActionShareButton({Key? key, this.text, this.onTap, this.isLoadding}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -490,16 +460,12 @@ class ActionShareButton extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(ScreenUtil().setWidth(20)),
                 gradient: LinearGradient(
-                  colors: [
-                    Color(0xffFFC2AE),
-                    Color(0xffFF8C68),
-                    Color(0xFFFF7D54)
-                  ],
+                  colors: [Color(0xffFFC2AE), Color(0xffFF8C68), Color(0xFFFF7D54)],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 )),
             child: Center(
-              child: isLoadding
+              child: isLoadding!
                   ? SizedBox(
                       width: ScreenUtil().setWidth(23),
                       height: ScreenUtil().setWidth(23),
@@ -508,11 +474,9 @@ class ActionShareButton extends StatelessWidget {
                         // color: Color(0xff62f7ff),
                       ))
                   : Text(
-                      text,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: ScreenUtil().setSp(14)),
+                      text!,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: ScreenUtil().setSp(14)),
                     ),
             ),
           )

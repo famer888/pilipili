@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pilipili/report/app_event_report.dart';
 
 class ReportSearchClick extends StatefulWidget {
-  final Widget child;
-  final Map data;
-  const ReportSearchClick({Key key, this.child, this.data}) : super(key: key);
+  final Widget? child;
+  final Map? data;
+  const ReportSearchClick({Key? key, this.child, this.data}) : super(key: key);
 
   @override
   State<ReportSearchClick> createState() => _ReportSearchClickState();
 }
 
 class _ReportSearchClickState extends State<ReportSearchClick> {
-  Offset _downPosition;
-  Duration _downTime;
+  late Offset _downPosition;
+  late Duration _downTime;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _ReportSearchClickState extends State<ReportSearchClick> {
           return; // 当成滑动/长按，不上报 click
         }
 
-        AppEventReport.instance.track('keyword_click', widget.data);
+        AppEventReport.instance.track('keyword_click', widget.data!);
       },
       child: widget.child,
     );

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+
 // import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/FlexibleBanner.dart';
@@ -14,13 +15,14 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 
 class Lanmu extends StatefulWidget {
-  Lanmu({Key key, this.data, this.id, this.isShow, this.index, this.parentName, this.pos}) : super(key: key);
+  Lanmu({Key? key, this.data, this.id, this.isShow, this.index, this.parentName, this.pos}) : super(key: key);
   final dynamic data;
-  final int id;
-  final bool isShow;
-  final int index;
-  final String parentName;
-  final int pos;
+  final int? id;
+  final bool? isShow;
+  final int? index;
+  final String? parentName;
+  final int? pos;
+
   @override
   _LanmuState createState() => _LanmuState();
 }
@@ -31,11 +33,12 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
   bool isAll = false;
   int limit = 10;
   bool networkErr = false;
-  bool isShow = false;
+  bool? isShow = false;
   dynamic fixedBanner;
   dynamic fixedNav;
-  ConstructModel cm_data;
+  late ConstructModel cm_data;
   ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +49,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
         await getPageData();
       }
     });
-    if (widget.isShow && pageStatus == 0) {
+    if (widget.isShow == true && pageStatus == 0!) {
       pageStatus = 1;
       getPageData();
     }
@@ -58,10 +61,10 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
       setState(() {});
     }
     await getConstructById(id: widget.id, page: page, limit: limit).then((res) {
-      isAll = res.elements.length < limit;
+      isAll = res.elements!.length < limit;
       if (page == 1) {
         cm_data = res;
-        cm_data.elements.forEach((item) {
+        cm_data.elements!.forEach((item) {
           if (item['type'] == 6) {
             fixedBanner = item;
           } else if (item['type'] == 7) {
@@ -69,7 +72,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
           }
         });
       } else {
-        cm_data.elements.addAll(res.elements);
+        cm_data.elements!.addAll(res.elements!);
       }
     }).whenComplete(() {
       setState(() {
@@ -160,12 +163,12 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                       cm_data.elements == null
                           ? SliverToBoxAdapter()
                           : SliverList(
-                              delegate: SliverChildListDelegate(cm_data.elements
+                              delegate: SliverChildListDelegate(cm_data.elements!
                                   .asMap()
                                   .keys
                                   .map(
                                     (e) => RepaintBoundary(
-                                      child: getElement(element: cm_data.elements[e]),
+                                      child: getElement(element: cm_data.elements![e]),
                                     ),
                                   )
                                   .toList())),

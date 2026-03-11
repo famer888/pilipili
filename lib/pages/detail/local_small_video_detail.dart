@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Tom
  * @Date: 2021-12-21 16:16:22
  * @LastEditTime: 2021-12-27 17:03:31
@@ -22,8 +22,8 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/shelf_proxy.dart';
 
 class LocalSmallVideo extends StatefulWidget {
-  LocalSmallVideo({Key key, this.videoInfo}) : super(key: key);
-  final Map videoInfo;
+  LocalSmallVideo({Key? key, this.videoInfo}) : super(key: key);
+  final Map? videoInfo;
   @override
   _LocalSmallVideoState createState() => _LocalSmallVideoState();
 }
@@ -100,20 +100,20 @@ class _LocalSmallVideoState extends State<LocalSmallVideo> {
 }
 
 class SmallVideoPlayer extends StatefulWidget {
-  SmallVideoPlayer({Key key, this.data}) : super(key: key);
-  final Map data;
+  SmallVideoPlayer({Key? key, this.data}) : super(key: key);
+  final Map? data;
   @override
   _SmallVideoPlayerState createState() => _SmallVideoPlayerState();
 }
 
 class _SmallVideoPlayerState extends State<SmallVideoPlayer>
     with WatchRecordMixin {
-  VideoPlayerController _controller;
+  late VideoPlayerController _controller;
   bool videoInit = false; //视频是否初始化
   double videoValue = 0.0; //当前视频播放时间
   double videoMaxTime = 0.0; //视频总播放时间
   bool showControl = false; //中间播放暂停按钮的展示
-  Timer timerfc; //播放暂停按钮的隐藏定时器
+  late Timer timerfc; //播放暂停按钮的隐藏定时器
   bool changeStartIsPlay = false; //拖动进度条时视频是否处于播放状态
   bool loading = true;
 
@@ -144,7 +144,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   @override
   void initState() {
     super.initState();
-    initVideo(widget.data["url"]);
+    initVideo(widget.data!["url"]);
   }
 
   @override
@@ -203,7 +203,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   initVideo(url) {
     CommonUtils.debugPrint('===============视频地址:'+url.toString()+'===================');
     // 创建本地播放服务
-    createStaticServer(widget.data["url"]).then((url) => createVideo(url));
+    createStaticServer(widget.data!["url"]).then((url) => createVideo(url));
   }
 
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
@@ -339,11 +339,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          widget.data["tags"] != null &&
-                                                  widget.data["tags"].length > 0
+                                          widget.data!["tags"] != null &&
+                                                  widget.data!["tags"].length > 0
                                               ? Text(
                                                   '#' +
-                                                      widget.data["tags"]
+                                                      widget.data!["tags"]
                                                           .split("/")
                                                           .join("#"),
                                                   style: DefaultStyle.white14,
@@ -358,17 +358,17 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                widget.data["title"],
+                                                widget.data!["title"],
                                                 style: DefaultStyle.white18bold,
                                               ),
                                               SizedBox(
                                                 height:
                                                     ScreenUtil().setWidth(13),
                                               ),
-                                              widget.data["desc"] != null &&
-                                                      widget.data["desc"] != ''
+                                              widget.data!["desc"] != null &&
+                                                      widget.data!["desc"] != ''
                                                   ? Text(
-                                                      widget.data["desc"],
+                                                      widget.data!["desc"],
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               255, 255, 255, 1),
