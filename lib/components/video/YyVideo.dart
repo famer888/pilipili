@@ -1,22 +1,17 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frhooks/frhooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/video/video_controller.dart';
-import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/video_mixin.dart';
 import 'package:pilipili/report/app_event_report.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/crypto.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
-import 'package:pilipili/utils/shelf_proxy.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -67,38 +62,10 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
   VideoPlayerController videoController;
   bool previewShow = false;
   initPageState() {
-    if (widget.controller != null) {
-      videoController = widget.controller;
-      AppEventReport.instance.videoControllerInit(videoController);
-      setState(() {});
-    } else {
-      if (kIsWeb) {
-        if (AppGlobal.m3u8_encrypt == '1') {
-          new Dio().get(widget.videoUrl).then((res) {
-            String decrypted = PlatformAwareCrypto.decryptM3U8(res.data);
-            final _blob = html.Blob([decrypted], 'application/x-mpegURL', 'native');
-            final _url = html.Url.createObjectUrl(_blob);
-            CommonUtils.debugPrint(_url);
-            initVideo(_url);
-          });
-        } else {
-          initVideo(widget.videoUrl);
-        }
-      } else if (!widget.isLocal) {
-        if (AppGlobal.m3u8_encrypt == '1') {
-          createServer(widget.videoUrl).then((proxyConfig) {
-            String proxyurl = widget.videoUrl.replaceAll(proxyConfig['origin'], proxyConfig['localproxy']);
-            initVideo(proxyurl);
-          });
-        } else {
-          initVideo(widget.videoUrl);
-        }
-      } else {
-        // 创建本地播放服务
-        createStaticServer(widget.videoUrl).then((url) => initVideo(url));
-      }
+    videoController = widget.controller;
+    AppEventReport.instance.videoControllerInit(videoController);
+    setState(() {});
     }
-  }
 
   @override
   void initState() {
@@ -131,10 +98,8 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
         CommonUtils.showText('购买成功');
         widget.videoUrl = res.data;
         context.pop();
-        if (widget.setVideoUrl != null) {
-          widget.setVideoUrl(res.data);
-        }
-        setState(() {});
+        widget.setVideoUrl(res.data);
+              setState(() {});
         initPageState();
       } else {
         CommonUtils.showText(res.msg);
@@ -149,10 +114,10 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
       color: Colors.black,
       child: Stack(
         children: [
-          (widget.videoUrl == null || widget.videoUrl == '') && widget.controller == null
+          (widget.videoUrl == '') && widget.controller == null
               ? Container()
               : Center(
-                  child: videoController != null && videoController.value.isInitialized
+                  child: videoController.value.isInitialized
                       ? Hero(
                           tag: 'yyplayr',
                           child: Stack(
@@ -181,7 +146,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                             )
                           : Container(),
                 ),
-          widget.videoUrl == null && widget.controller == null || videoController == null
+          widget.videoUrl == null && widget.controller == null
               ? Container()
               : RepaintBoundary(
                   child: Padding(
@@ -223,7 +188,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                   right: 0,
                   left: 0,
                   bottom: 0,
-                  child: (widget.videoUrl == null || widget.videoUrl == '') && widget.controller == null
+                  child: (widget.videoUrl == '') && widget.controller == null
                       ? Container(
                           color: Colors.black54,
                           child: Center(
@@ -234,7 +199,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                         )
                       : Container()),
           Positioned(
-              child: (!widget.isPreview || widget.videoUrl == null || !previewShow)
+              child: (!widget.isPreview || !previewShow)
                   ? Container()
                   : GestureDetector(
                       onTap: () {
@@ -289,7 +254,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                         ),
                       ),
                     )),
-          videoController == null || !videoController.value.isInitialized
+          !videoController.value.isInitialized
               ? Positioned(
                   child: Padding(
                   padding: EdgeInsets.only(top: widget.cover == null ? 0 : ScreenUtil().statusBarHeight),

@@ -41,25 +41,19 @@ class YyDialogState extends State<YyDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.clickCallBack != null && widget.isClick) {
+        if (widget.isClick) {
           widget.clickCallBack();
           return;
         }
-        if (widget.content == null) {
-          if (widget.toPageCallback != null) {
-            widget.toPageCallback();
-          }
-        } else {
-          YyShowDialog.showdialog(context,
-              title: widget.title,
-              clear: widget.clear,
-              content: widget.content,
-              cancelBack: widget.cancelBack,
-              changeBtnText: widget.changeBtnText,
-              callBack: widget.callBack,
-              btnText: widget.btnText ?? '确定');
-        }
-      },
+        YyShowDialog.showdialog(context,
+            title: widget.title,
+            clear: widget.clear,
+            content: widget.content,
+            cancelBack: widget.cancelBack,
+            changeBtnText: widget.changeBtnText,
+            callBack: widget.callBack,
+            btnText: widget.btnText ?? '确定');
+            },
       child: widget.child,
     );
   }
@@ -81,10 +75,8 @@ class YyShowDialog {
       barrierDismissible: prohibitClose ? null : true,
       builder: (context) {
         return StatefulBuilder(builder: (context, setDialogState) {
-          if (changeBtnText != null) {
-            btnText = changeBtnText();
-          }
-          return Dialog(
+          btnText = changeBtnText();
+                  return Dialog(
               backgroundColor: Colors.transparent,
               child: Container(
                 decoration: BoxDecoration(
@@ -127,10 +119,8 @@ class YyShowDialog {
                                       child: Center(
                                       child: GestureDetector(
                                         onTap: () {
-                                          if (cancelBack != null) {
-                                            cancelBack();
-                                          }
-                                          context.pop();
+                                          cancelBack();
+                                                                                  context.pop();
                                         },
                                         child: Container(
                                           margin: EdgeInsets.only(
@@ -175,13 +165,9 @@ class YyShowDialog {
                                       child: Center(
                                       child: GestureDetector(
                                         onTap: () {
-                                          if (callBack == null) {
-                                            context.pop();
-                                          } else {
-                                            context.pop();
-                                            callBack();
-                                          }
-                                        },
+                                          context.pop();
+                                          callBack();
+                                                                                },
                                         child: Container(
                                           margin: EdgeInsets.only(
                                               left: ScreenUtil().setWidth(5),
@@ -229,7 +215,7 @@ class YyShowDialog {
         });
       },
     ).then((value) {
-      if (cancelBack != null && clear) {
+      if (clear) {
         cancelBack();
       }
     });
@@ -306,9 +292,7 @@ class YyShowDialog {
             );
           });
         }).then((value) {
-      if (onClose != null) {
-        onClose();
-      }
-    });
+      onClose();
+        });
   }
 }

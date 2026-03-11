@@ -86,13 +86,12 @@ class _VideoControllerState extends State<VideoController>
       showControl = true;
     }
     EventBus().on('stop-current-play', (arg) {
-      if (widget.videoController != null &&
-          widget.videoController.value.isPlaying) {
+      if (widget.videoController.value.isPlaying) {
         widget.videoController.pause();
       }
       videoPageIsActive = false;
     });
-    if (widget.videoController?.value.isInitialized) {
+    if (widget.videoController.value.isInitialized) {
       videoMaxTime =
           widget.videoController.value.duration.inMilliseconds.toDouble();
       videoValue.value =
@@ -112,10 +111,8 @@ class _VideoControllerState extends State<VideoController>
       ..initialize().then((value) {
         widget.uploadVideo();
         widget.videoController.addListener(setVideoValue);
-        if (widget.setController != null) {
-          widget.setController(widget.videoController);
-        }
-        widget.videoController.setLooping(widget.loop);
+        widget.setController(widget.videoController);
+              widget.videoController.setLooping(widget.loop);
         widget.videoController.setVolume(widget.noVolume ? 0 : 1);
         if (widget.autoPlay &&
             !kIsWeb &&
@@ -157,14 +154,14 @@ class _VideoControllerState extends State<VideoController>
 
   @override
   void dispose() {
-    widget.videoController?.removeListener(setVideoValue);
+    widget.videoController.removeListener(setVideoValue);
     if (!widget.isFull) {
-      widget.videoController?.dispose();
+      widget.videoController.dispose();
       EventBus().off('stop-current-play');
     }
     loading.dispose();
     videoValue.dispose();
-    timerfc?.cancel();
+    timerfc.cancel();
     super.dispose();
   }
 
@@ -215,7 +212,7 @@ class _VideoControllerState extends State<VideoController>
     if (widget.videoController.value.hasError) {
       CommonUtils.debugPrint(widget.videoController.value.errorDescription);
     }
-    if (widget.isPreview && widget.setPreviewShow != null) {
+    if (widget.isPreview) {
       widget.setPreviewShow(widget.videoController.value.isPlaying);
     }
     if (!widget.videoController.value.isPlaying) {
@@ -232,7 +229,7 @@ class _VideoControllerState extends State<VideoController>
         seekHistory = true;
         videoValue.value = boxData[widget.data.id].toDouble();
         widget.videoController
-            ?.seekTo(Duration(milliseconds: boxData[widget.data.id].toInt()));
+            .seekTo(Duration(milliseconds: boxData[widget.data.id].toInt()));
       }
     }
     videoMaxTime =
@@ -260,26 +257,15 @@ class _VideoControllerState extends State<VideoController>
       showControl = true;
       setState(() {});
     }
-    if (widget.videoController == null) return;
-    if (timerfc != null) {
-      timerfc.cancel();
-      timerfc = Timer.periodic(Duration(seconds: 2), (time) {
-        if (widget.videoController.value.isPlaying) {
-          showControl = false;
-          setState(() {});
-        }
-        time.cancel();
-      });
-    } else {
-      timerfc = Timer.periodic(Duration(seconds: 2), (time) {
-        if (widget.videoController.value.isPlaying) {
-          showControl = false;
-          setState(() {});
-        }
-        time.cancel();
-      });
+    timerfc.cancel();
+    timerfc = Timer.periodic(Duration(seconds: 2), (time) {
+      if (widget.videoController.value.isPlaying) {
+        showControl = false;
+        setState(() {});
+      }
+      time.cancel();
+    });
     }
-  }
 
   Widget controlShow() {
     // if (bytes == null) {
@@ -317,7 +303,6 @@ class _VideoControllerState extends State<VideoController>
           bottom: 0,
           right: 0,
           child: (widget.isCardAuto ||
-                  widget.videoController == null ||
                   !widget.videoController.value.isInitialized ||
                   widget.previewShow)
               ? Container()
@@ -397,8 +382,7 @@ class _VideoControllerState extends State<VideoController>
                     ? 0
                     : ScreenUtil().setWidth(-44),
                 opacity: showControl && !isLock && !widget.isPreview ? 1 : 0,
-                child: widget.videoController == null ||
-                        !widget.videoController.value.isInitialized ||
+                child: !widget.videoController.value.isInitialized ||
                         widget.isPreview
                     ? Container()
                     : Container(
@@ -528,8 +512,7 @@ class _VideoControllerState extends State<VideoController>
         animatedBox(
             right: null,
             left: showControl ? 0 : ScreenUtil().setWidth(-100),
-            child: widget.videoController != null &&
-                    widget.videoController.value.isInitialized &&
+            child: widget.videoController.value.isInitialized &&
                     !widget.isPreview
                 ? Center(
                     child: Padding(
@@ -579,8 +562,7 @@ class _VideoControllerState extends State<VideoController>
                 ? Container()
                 : head(
                     noBack: widget.noBack,
-                    rightWidget: widget.videoController != null &&
-                            widget.videoController.value.isInitialized &&
+                    rightWidget: widget.videoController.value.isInitialized &&
                             !widget.isPreview
                         ? GestureDetector(
                             onTap: changeFull,
@@ -659,7 +641,6 @@ class _VideoControllerState extends State<VideoController>
                           onPanStart: (DragStartDetails e) {
                             if (isLock ||
                                 widget.isPreview ||
-                                widget.videoController == null ||
                                 !widget.videoController.value.isInitialized)
                               return;
                             CommonUtils.debugPrint(

@@ -110,7 +110,7 @@ class _CustomerServiceState extends State<CustomerService>
     fetching = true;
     var feedback = await getFeedbackList(page: page);
     if (page == 1) {
-      if (feedback != null && feedback.status != 0) {
+      if (feedback.status != 0) {
         msgList = feedback.data;
         // Datum msgResult = Datum.fromJson({
         //   "messageType": 1,
@@ -143,13 +143,13 @@ class _CustomerServiceState extends State<CustomerService>
 
 //发送消息
   _sendMsg() async {
-    var text = editingController.text?.trim() ?? "";
+    var text = editingController.text.trim() ?? "";
     setState(() {
       editingController.text = '';
     });
     if (text.isNotEmpty) {
       var msg = await sendFeeding(text, 1, 0);
-      if (msg != null && msg.status != 0) {
+      if (msg.status != 0) {
         setState(() {
           Datum msgResult = Datum.fromJson({
             "messageType": 1,

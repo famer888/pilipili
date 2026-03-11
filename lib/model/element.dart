@@ -2,9 +2,7 @@
 //
 //     final element = elementFromJson(jsonString);
 
-import 'dart:convert';
 
-import 'package:pilipili/utils/common.dart';
 
 class ElementModel {
   ElementModel({

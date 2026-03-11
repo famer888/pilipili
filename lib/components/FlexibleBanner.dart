@@ -48,7 +48,7 @@ class _HomeTopBannerState extends State<HomeTopBanner> with CardMixin {
     return FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         background: Stack(clipBehavior: Clip.none, children: [
-          _banner == null || _banner.isEmpty
+          _banner.isEmpty
               ? PlatformAwareAssetImage(
                   url: 'assets/images/demo_bg.png',
                   width: double.infinity,

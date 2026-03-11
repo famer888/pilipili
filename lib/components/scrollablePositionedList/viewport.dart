@@ -6,7 +6,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 
 /// A render object that is bigger on the inside.
 ///
@@ -101,7 +100,6 @@ class UnboundedRenderViewport extends RenderViewport {
 
   @override
   set anchor(double value) {
-    assert(value != null);
     if (value == _anchor) return;
     _anchor = value;
     markNeedsLayout();
@@ -125,11 +123,6 @@ class UnboundedRenderViewport extends RenderViewport {
 
   @override
   Rect describeSemanticsClip(RenderSliver child) {
-    assert(axis != null);
-
-    if (_calculatedCacheExtent == null) {
-      return semanticBounds;
-    }
 
     switch (axis) {
       case Axis.vertical:
@@ -179,7 +172,6 @@ class UnboundedRenderViewport extends RenderViewport {
     double correction;
     var count = 0;
     do {
-      assert(offset.pixels != null);
       correction = _attemptLayout(mainAxisExtent, crossAxisExtent,
           offset.pixels + centerOffsetAdjustment);
       if (correction != 0.0) {
@@ -259,25 +251,23 @@ class UnboundedRenderViewport extends RenderViewport {
 
     final RenderSliver leadingNegativeChild = childBefore(center);
 
-    if (leadingNegativeChild != null) {
-      // negative scroll offsets
-      final double result = layoutChildSequence(
-        child: leadingNegativeChild,
-        scrollOffset: math.max(mainAxisExtent, centerOffset) - mainAxisExtent,
-        overlap: 0.0,
-        layoutOffset: forwardDirectionRemainingPaintExtent,
-        remainingPaintExtent: reverseDirectionRemainingPaintExtent,
-        mainAxisExtent: mainAxisExtent,
-        crossAxisExtent: crossAxisExtent,
-        growthDirection: GrowthDirection.reverse,
-        advance: childBefore,
-        remainingCacheExtent: reverseDirectionRemainingCacheExtent,
-        cacheOrigin:
-            (mainAxisExtent - centerOffset).clamp(-_calculatedCacheExtent, 0.0),
-      );
-      if (result != 0.0) return -result;
-    }
-
+    // negative scroll offsets
+    final double result = layoutChildSequence(
+      child: leadingNegativeChild,
+      scrollOffset: math.max(mainAxisExtent, centerOffset) - mainAxisExtent,
+      overlap: 0.0,
+      layoutOffset: forwardDirectionRemainingPaintExtent,
+      remainingPaintExtent: reverseDirectionRemainingPaintExtent,
+      mainAxisExtent: mainAxisExtent,
+      crossAxisExtent: crossAxisExtent,
+      growthDirection: GrowthDirection.reverse,
+      advance: childBefore,
+      remainingCacheExtent: reverseDirectionRemainingCacheExtent,
+      cacheOrigin:
+          (mainAxisExtent - centerOffset).clamp(-_calculatedCacheExtent, 0.0),
+    );
+    if (result != 0.0) return -result;
+  
     // positive scroll offsets
     return layoutChildSequence(
       child: center,

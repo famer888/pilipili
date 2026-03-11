@@ -23,7 +23,6 @@ class _ReportSearchClickState extends State<ReportSearchClick> {
         _downTime = event.timeStamp;
       },
       onPointerUp: (PointerUpEvent event) {
-        if (_downPosition == null || _downTime == null) return;
         final upPos = event.position;
         final upTime = event.timeStamp;
         // 位移阈值 + 时间阈值，简单判定是“点击”而不是滑动

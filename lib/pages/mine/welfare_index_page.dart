@@ -46,7 +46,7 @@ class _WalfareIndexPageState extends State<WalfareIndexPage> with TickerProvider
             paddingTop: ScreenUtil().statusBarHeight,
             cWidget: TabBar(
               isScrollable: true,
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
+              overlayColor: WidgetStateProperty.all(Colors.transparent),
               splashFactory: NoSplash.splashFactory,
               controller: tabController,
               labelPadding: EdgeInsets.symmetric(horizontal: 18.w),

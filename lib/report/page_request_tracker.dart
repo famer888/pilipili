@@ -73,8 +73,6 @@ class PageRequestTracker {
   }
 
   void onRequestStart(String pageKey, int pageEnterMs, int nowMs) {
-    if (pageKey == null) return;
-
     final key = _PageSessionKey(pageKey, pageEnterMs);
     final list = _records[key];
     if (list == null) return;
@@ -85,47 +83,25 @@ class PageRequestTracker {
     bool isInit = false;
 
     if (!closed) {
-      if (lastEnd == null) {
-        // 第一条请求：必须发生在进入页面300ms内
-        if (nowMs - pageEnterMs <= firstRequestWindowMs) {
-          isInit = true;
-        } else {
-          _initClosed[key] = true;
-          isInit = false;
-        }
+      // 后续请求：下一条请求开始时间 - 上一条初始化请求结束时间 < 300ms
+      if ((nowMs - lastEnd) < nextRequestGapMs) {
+        isInit = true;
       } else {
-        // 后续请求：下一条请求开始时间 - 上一条初始化请求结束时间 < 300ms
-        if ((nowMs - lastEnd) < nextRequestGapMs) {
-          isInit = true;
-        } else {
-          _initClosed[key] = true;
-          isInit = false;
-        }
+        _initClosed[key] = true;
+        isInit = false;
       }
-    }
+        }
 
     list.add(_RequestRecord(nowMs, isInit: isInit));
   }
 
   void onRequestEnd(String pageKey, int pageEnterMs, int nowMs) {
-    if (pageKey == null) return;
-
     final key = _PageSessionKey(pageKey, pageEnterMs);
     final list = _records[key];
     if (list == null || list.isEmpty) return;
 
     for (var i = list.length - 1; i >= 0; i--) {
       final r = list[i];
-      if (r.endMs == null) {
-        r.endMs = nowMs;
-        if (r.isInit) {
-          final prev = _lastInitEnd[key];
-          if (prev == null || nowMs > prev) {
-            _lastInitEnd[key] = nowMs;
-          }
-        }
-        break;
-      }
     }
   }
 }

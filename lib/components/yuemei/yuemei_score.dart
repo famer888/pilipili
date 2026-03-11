@@ -28,10 +28,8 @@ class _YuemeiScoreState extends State<YuemeiScore> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.defaultScore != null) {
-      curentScore = widget.defaultScore;
+    curentScore = widget.defaultScore;
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +40,8 @@ class _YuemeiScoreState extends State<YuemeiScore> {
           onTap: () {
             if (!widget.isSet) return;
             curentScore = e + 1;
-            if (widget.scoreFunction != null) {
-              widget.scoreFunction(curentScore);
-            }
-            setState(() {});
+            widget.scoreFunction(curentScore);
+                      setState(() {});
           },
           child: Padding(
             padding: EdgeInsets.only(left: widget.interval ?? 5.w),

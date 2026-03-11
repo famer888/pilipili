@@ -75,11 +75,11 @@ class _CoinDetailState extends State<CoinDetail> {
             ],
           )),
           Text(
-            (itemdata?.type == 1 ? PPString.add : PPString.reduce).toString() +
+            (itemdata.type == 1 ? PPString.add : PPString.reduce).toString() +
                 ' ' +
-                itemdata?.coin.toString(),
+                itemdata.coin.toString(),
             style: TextStyle(
-                color: itemdata?.type == 1
+                color: itemdata.type == 1
                     ? DefaultStyle.themeColor
                     : Color.fromRGBO(254, 21, 91, 1),
                 fontWeight: FontWeight.bold,

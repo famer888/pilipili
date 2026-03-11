@@ -51,7 +51,7 @@ class _V4ColumnState extends State<V4Column> {
   changeElement() {
     loading = true;
     setState(() {});
-    if (dataList != null && isAll) {
+    if (isAll) {
       page = 1;
     } else {
       page++;

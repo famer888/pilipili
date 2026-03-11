@@ -794,8 +794,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                                               InputDialog.show(
                                                       context, '请输入您的影评～')
                                                   .then((value) {
-                                                if (value != null &&
-                                                    value != '') {
+                                                if (value != '') {
                                                   communityComment({
                                                     'comment_id': coment[index]
                                                         ['id'],
@@ -869,7 +868,7 @@ class _CommunityDetailState extends State<CommunityDetail> {
                 // if (Privilege.isAllowed(
                 //     context, RESOURCE_TYPE_POST, PRIVILEGE_TYPE_COMMENT)) {
                 InputDialog.show(context, '请输入您的影评～').then((value) {
-                  if (value != null && value != '') {
+                  if (value != '') {
                     communityComment({'post_id': widget.id, 'content': value})
                         .then((res) {
                       if (res['status'] != 0) {

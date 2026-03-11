@@ -31,7 +31,7 @@ class _MessageCenterState extends State<NoticeMessage> {
   void initMessageList() async {
     SystemNoticeList result =
         await getSystemNoticeList(page: page, limit: limit);
-    if (result?.status == 1) {
+    if (result.status == 1) {
       if (page == 1) {
         messageList = result.data;
       } else {
@@ -51,7 +51,7 @@ class _MessageCenterState extends State<NoticeMessage> {
       children: [
         PageTitleBar(
           paddingTop: ScreenUtil().statusBarHeight,
-          title: widget?.args['title'],
+          title: widget.args['title'],
         ),
         Expanded(
             child: Padding(

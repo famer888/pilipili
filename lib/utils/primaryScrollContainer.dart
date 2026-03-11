@@ -24,10 +24,8 @@ class PrimaryScrollContainerState extends State<PrimaryScrollContainer> {
     final PrimaryScrollController primaryScrollController =
         context.dependOnInheritedWidgetOfExactType(aspect: PrimaryScrollController);
 
-    if (primaryScrollController != null) {
-      _scrollController.inner = primaryScrollController.controller;
-    }
-
+    _scrollController.inner = primaryScrollController.controller;
+  
     return _scrollController;
   }
 
@@ -151,9 +149,9 @@ class ScrollControllerWrapper implements ScrollController {
     showing = b;
 
     if (!showing) {
-      if (lastPosition != null) detach(lastPosition, fake: true);
+      detach(lastPosition, fake: true);
     } else {
-      if (interceptedAttachPosition != null) attach(interceptedAttachPosition);
+      attach(interceptedAttachPosition);
     }
   }
 

@@ -5,7 +5,6 @@ import 'package:pilipili/components/common/pullrefreshlist.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/model/construct.dart';
-import 'package:pilipili/model/element.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/utils/api.dart';

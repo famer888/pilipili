@@ -299,8 +299,6 @@ class _YuemeiCardState extends State<YuemeiCard> {
                                                                       .then(
                                                                           (value) {
                                                                     if (value !=
-                                                                            null &&
-                                                                        value !=
                                                                             '') {
                                                                       scoreString =
                                                                           value;

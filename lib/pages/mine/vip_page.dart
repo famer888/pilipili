@@ -87,10 +87,6 @@ class _VipPageState extends State<VipPage> with PayMixin {
   _initPage() async {
     try {
       Basic res = await getProductOfVIP(showMore: 1);
-      if (res == null) {
-        networkErr = true;
-        setState(() {});
-      }
       if (res.status != 0) {
         CommonUtils.debugPrint(res.data['product']);
         products = List.from(res.data['product']);

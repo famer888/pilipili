@@ -46,10 +46,8 @@ class MyNavObserver extends NavigatorObserver {
     if (route == _currentRoute) {
       _endPage(route);
     }
-    if (previousRoute != null) {
-      _startPage(previousRoute, route);
-    }
-
+    _startPage(previousRoute, route);
+  
     CommonUtils.debugPrint(
       'didPop: ${route.str} 当前路由=${previousRoute != null ? previousRoute.settings.name : null}',
     );
@@ -61,26 +59,22 @@ class MyNavObserver extends NavigatorObserver {
 
     if (route == _currentRoute) {
       _endPage(route);
-      if (previousRoute != null) {
-        _startPage(previousRoute, route);
-      }
-    }
+      _startPage(previousRoute, route);
+        }
   }
 
   @override
   void didReplace({Route newRoute, Route oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
 
-    if (oldRoute != null && oldRoute == _currentRoute) {
+    if (oldRoute == _currentRoute) {
       _endPage(oldRoute);
     }
-    if (newRoute != null) {
-      _startPage(newRoute, oldRoute);
+    _startPage(newRoute, oldRoute);
     }
-  }
 
   String _cleanRouteName(String name) {
-    if (name == null || name.isEmpty || name == 'unknown') return 'home';
+    if (name.isEmpty || name == 'unknown') return 'home';
     try {
       name = name.split('/')[1];
       if (name.isEmpty) name = 'home';
@@ -94,14 +88,9 @@ class MyNavObserver extends NavigatorObserver {
     final name = _cleanRouteName(route.settings.name);
     if (name.isEmpty) return;
 
-    if (fromRoute != null) {
-      _fromPageName = _cleanRouteName(fromRoute.settings.name);
-      _fromPageKey = _buildPageKey(fromRoute);
-    } else {
-      _fromPageName = '';
-      _fromPageKey = null;
-    }
-
+    _fromPageName = _cleanRouteName(fromRoute.settings.name);
+    _fromPageKey = _buildPageKey(fromRoute);
+  
     _currentRoute = route;
     _enterTimeMs = DateTime.now().millisecondsSinceEpoch;
 
@@ -114,9 +103,6 @@ class MyNavObserver extends NavigatorObserver {
   }
 
   void _endPage(Route route) {
-    if (route == null) return;
-    if (_enterTimeMs == null) return;
-
     final rawName = _cleanRouteName(route.settings.name);
     if (rawName.isEmpty) return;
 

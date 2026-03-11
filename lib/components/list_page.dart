@@ -280,7 +280,7 @@ class _ListPageState extends State<ListPage> with CardMixin {
     double navHeight = 24;
     return isTansuo
         ? TansuoList()
-        : (networkErr || data == null)
+        : (networkErr)
             ? PageStatus.noNetWork(onTap: () {
                 networkErr = false;
                 setState(() {});

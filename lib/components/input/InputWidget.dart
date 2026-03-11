@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/theme/default.dart';
@@ -37,10 +36,8 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    if (widget.value != null) {
-      editingController.text = widget.value;
-    }
-    if (kIsWeb) {
+    editingController.text = widget.value;
+      if (kIsWeb) {
       WidgetsBinding.instance.addObserver(this);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ///获取输入框焦点
@@ -147,7 +144,7 @@ class _InputWidgetState extends State<InputWidget> with WidgetsBindingObserver {
                         ),
                         GestureDetector(
                           onTap: (() {
-                            var text = editingController.text?.replaceAll(
+                            var text = editingController.text.replaceAll(
                                     new RegExp("${PPString.test}\s+\b|\b\s"),
                                     "") ??
                                 "";

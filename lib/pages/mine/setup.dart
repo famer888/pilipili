@@ -84,7 +84,6 @@ class _SetupPageState extends State<SetupPage> {
       });
     } else {
       XFile photo = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
-      if (photo == null) return;
       var formatList = ["heic", "heif", "HEIC", "HEIF"];
       List imgArr = photo.name.split('.');
       String type = imgArr[imgArr.length - 1];
@@ -314,7 +313,7 @@ class _SetupPageState extends State<SetupPage> {
               ),
               SetupItem(
                   title: '昵称',
-                  rightText: members?.nickname.toString(),
+                  rightText: members.nickname.toString(),
                   isMarginBottom: true,
                   isAllRadius: true,
                   isBorderBottom: false,
@@ -341,17 +340,17 @@ class _SetupPageState extends State<SetupPage> {
               Line(),
               SetupItem(
                   isTopRadius: true,
-                  title: members?.phone == null ? PPString.bindPhone : PPString.changeBindPhone,
-                  rightText: members?.phone == null ? PPString.isnull : members.phone.toString(),
+                  title: members.phone == null ? PPString.bindPhone : PPString.changeBindPhone,
+                  rightText: members.phone == null ? PPString.isnull : members.phone.toString(),
                   onTap: () {
                     context.push(CommonUtils.getRealHash('fillcode'), extra: {
-                      'type': members?.phone == null ? 1 : 2,
-                      'phone': members?.phone,
-                      "phonePrefix": members?.phonePrefix
+                      'type': members.phone == null ? 1 : 2,
+                      'phone': members.phone,
+                      "phonePrefix": members.phonePrefix
                     });
                   }),
-              AppGlobal.apiToken == '' && AppGlobal.apiToken != null ? Container() : Line(),
-              AppGlobal.apiToken == '' && AppGlobal.apiToken != null
+              AppGlobal.apiToken == '' ? Container() : Line(),
+              AppGlobal.apiToken == ''
                   ? Container()
                   : SetupItem(
                       title: isSetPassword == 0 ? PPString.setPassword : PPString.changePassword,
@@ -363,9 +362,9 @@ class _SetupPageState extends State<SetupPage> {
               Line(),
               SetupItem(
                   title: '输入邀请码',
-                  rightText: (members?.invitedBy == null ? '' : members.invitedBy).toString(),
+                  rightText: (members.invitedBy == null ? '' : members.invitedBy).toString(),
                   onTap: () {
-                    if (members?.invitedBy == null) {
+                    if (members.invitedBy == null) {
                       context.push(CommonUtils.getRealHash('fillcode'), extra: {'type': 4});
                       // context.push(CommonUtils.getRealHash('fillcode'),
                       //     extra: {'title': '邀请码'});
@@ -384,9 +383,9 @@ class _SetupPageState extends State<SetupPage> {
                   title: '账号凭证',
                   onTap: () {
                     CertificateModel.showCertificate(backButtonBehavior,
-                        id: (members?.aff ?? '0000000').toString(),
-                        code: (config?.share?.affCode ?? '0000').toString(),
-                        url: (config?.share?.affUrl ?? '').toString());
+                        id: (members.aff ?? '0000000').toString(),
+                        code: (config.share.affCode ?? '0000').toString(),
+                        url: (config.share.affUrl ?? '').toString());
                   }),
               Line(),
               SetupItem(
@@ -460,7 +459,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeConfig>(builder: (ctx, state, child) {
-      return state.member?.thumb == null
+      return state.member.thumb == null
           ? PlatformAwareAssetImage(
               url: 'assets/images/wode/setup_avatar.png',
               width: double.infinity,
@@ -504,10 +503,8 @@ class SetupItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          if (onTap != null) {
-            onTap();
-          }
-        },
+          onTap();
+                },
         behavior: HitTestBehavior.translucent,
         child: Stack(
           children: [

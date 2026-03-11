@@ -54,14 +54,12 @@ class MessageOfSystem extends StatelessWidget {
       var times;
       var messages = '暂无消息';
       var noticeCount = 0;
-      if (state.systemnotice?.data?.systemNotice != null) {
-        times = state.systemnotice.data.systemNotice.createdAt;
-        messages = state.systemnotice.data.systemNotice.content == null
-            ? '暂无消息'
-            : state.systemnotice.data.systemNotice.content;
-        noticeCount = state.systemnotice.data.systemNoticeCount;
-      }
-
+      times = state.systemnotice.data.systemNotice.createdAt;
+      messages = state.systemnotice.data.systemNotice.content == null
+          ? '暂无消息'
+          : state.systemnotice.data.systemNotice.content;
+      noticeCount = state.systemnotice.data.systemNoticeCount;
+    
       return MessageActionItem(
         title: '【通知消息】',
         message: messages.toString(),
@@ -85,14 +83,12 @@ class MessageOfNotice extends StatelessWidget {
       var times;
       var messages = '暂无消息';
       var noticeCount = 0;
-      if (state.systemnotice?.data?.feed != null) {
-        times = state.systemnotice.data.feed.createdAt is String
-            ? state.systemnotice.data.feed.createdAt
-            : CommonUtils.getHMTime(int.parse(state.systemnotice.data.feed.createdAt));
-        messages = state.systemnotice.data.feed.question;
-        noticeCount = state.systemnotice.data.feedCount;
-      }
-      return MessageActionItem(
+      times = state.systemnotice.data.feed.createdAt is String
+          ? state.systemnotice.data.feed.createdAt
+          : CommonUtils.getHMTime(int.parse(state.systemnotice.data.feed.createdAt));
+      messages = state.systemnotice.data.feed.question;
+      noticeCount = state.systemnotice.data.feedCount;
+          return MessageActionItem(
         title: '【客服回复】',
         message: messages.toString(),
         icon: 'assets/images/wode/customer_avatar.png',

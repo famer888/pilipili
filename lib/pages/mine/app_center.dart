@@ -31,21 +31,19 @@ class _AppCenterState extends State<AppCenter> {
 
   getData() async {
     AppCenterModel result = await getAppCenter();
-    if (result != null && result.data != null) {
-      setState(() {
-        banner.addAll(result.data.banner);
-        appList.addAll(result.data.apps);
-        ReportUtils.adVertising(
-            eventType: AdEventType.show,
-            advertisingKey: AdType.appsList,
-            advertisingId: result.data.apps.map((e) => e['id']).toList().join(','),
-            adSlotKey: result.data.apps.first['advertise_location_code'],
-            adSlotName: result.data.apps.first['ad_slot_name'],
-            adtype: result.data.apps.first['ad_type']);
-        isLoading = false;
-      });
+    setState(() {
+      banner.addAll(result.data.banner);
+      appList.addAll(result.data.apps);
+      ReportUtils.adVertising(
+          eventType: AdEventType.show,
+          advertisingKey: AdType.appsList,
+          advertisingId: result.data.apps.map((e) => e['id']).toList().join(','),
+          adSlotKey: result.data.apps.first['advertise_location_code'],
+          adSlotName: result.data.apps.first['ad_slot_name'],
+          adtype: result.data.apps.first['ad_type']);
+      isLoading = false;
+    });
     }
-  }
 
   onRefreshPost() {
     banner = [];

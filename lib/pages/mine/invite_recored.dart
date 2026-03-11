@@ -35,7 +35,7 @@ class _InviteRecoredState extends State<InviteRecored> {
 
   _getMoreData() async {
     var result = await getListInvition(page: currentPage, limit: limit);
-    if (result?.status == 1) {
+    if (result.status == 1) {
       isLoading = false;
       List resData = result.data.list == null ? [] : result.data.list;
 

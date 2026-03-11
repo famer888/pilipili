@@ -88,8 +88,8 @@ class Routes {
   static GoRouterModel seconedPage = GoRouterModel(
       key: 'seconedPage/:sctitle/:scid',
       builder: (context, state) => SeconedPage(
-            title: state.params == null || state.params['sctitle'] == null ? null : state.params['sctitle'],
-            id: state.params == null || state.params['scid'] == null ? null : int.parse(state.params['scid']),
+            title: state.params['sctitle'] == null ? null : state.params['sctitle'],
+            id: state.params['scid'] == null ? null : int.parse(state.params['scid']),
           ));
 
   // 网黄、cos、时间表等二级页面详情
@@ -106,14 +106,14 @@ class Routes {
   static GoRouterModel activityDetail = GoRouterModel(
       key: 'activityDetail/:acid',
       builder: (context, state) => ActivityDetail(
-            id: state.params == null || state.params['acid'] == null ? null : '${state.params['acid']}',
+            id: state.params['acid'] == null ? null : '${state.params['acid']}',
           ));
 
 //长视频详情页
   static GoRouterModel videoDetail = GoRouterModel(
       key: 'videoDetail/:vid',
       builder: (context, state) => VideoDetail(
-          id: state.params == null || state.params['vid'] == null ? null : int.parse(state.params['vid'].toString())));
+          id: state.params['vid'] == null ? null : int.parse(state.params['vid'].toString())));
 
 //更多列表
   static GoRouterModel morePage = GoRouterModel(
@@ -130,7 +130,7 @@ class Routes {
   static GoRouterModel register = GoRouterModel(
       key: 'register/:rtype',
       builder: (context, state) => Register(
-          type: state.params == null || state.params['rtype'] == null
+          type: state.params['rtype'] == null
               ? null
               : int.parse(state.params['rtype'].toString())));
 
@@ -143,10 +143,10 @@ class Routes {
       builder: (context, state) {
         final args = AppGlobal.currentDetailRouteExtra;
         return SmallVideo(
-            videoData: args == null || args['videoData'] == null ? null : args['videoData'],
-            elementId: args == null || args['elementId'] == null ? null : int.parse(args['elementId'].toString()),
-            page: args == null || args['page'] == null ? null : int.parse(args['page'].toString()),
-            id: args == null || args['id'] == null ? null : int.parse(args['id'].toString()));
+            videoData: args['videoData'] == null ? null : args['videoData'],
+            elementId: args['elementId'] == null ? null : int.parse(args['elementId'].toString()),
+            page: args['page'] == null ? null : int.parse(args['page'].toString()),
+            id: args['id'] == null ? null : int.parse(args['id'].toString()));
       });
 
 //短视频
@@ -155,10 +155,10 @@ class Routes {
       builder: (context, state) {
         final args = AppGlobal.currentDetailRouteExtra;
         return SmallVideo(
-            videoData: args == null || args['videoData'] == null ? null : args['videoData'],
-            elementId: args == null || args['elementId'] == null ? null : int.parse(args['elementId'].toString()),
-            page: args == null || args['page'] == null ? null : int.parse(args['page'].toString()),
-            id: args == null || args['id'] == null ? null : int.parse(args['id'].toString()));
+            videoData: args['videoData'] == null ? null : args['videoData'],
+            elementId: args['elementId'] == null ? null : int.parse(args['elementId'].toString()),
+            page: args['page'] == null ? null : int.parse(args['page'].toString()),
+            id: args['id'] == null ? null : int.parse(args['id'].toString()));
       });
 
 //填写邀请码兑换码
@@ -190,7 +190,7 @@ class Routes {
       key: 'atlasDetail/:aid',
       builder: (context, state) {
         return AtlasDetail(
-            id: state.params == null || state.params['aid'] == null ? null : int.parse(state.params['aid'].toString()));
+            id: state.params['aid'] == null ? null : int.parse(state.params['aid'].toString()));
       });
 
 //约妹详情
@@ -198,7 +198,7 @@ class Routes {
       key: 'yuemeiDetail/:yid',
       builder: (context, state) {
         return YuemeiDetail(
-            id: state.params == null || state.params['yid'] == null ? null : int.parse(state.params['yid'].toString()));
+            id: state.params['yid'] == null ? null : int.parse(state.params['yid'].toString()));
       });
 
 //系列详情
@@ -206,8 +206,8 @@ class Routes {
       key: 'seriesDetail/:sid/:stype',
       builder: (context, state) {
         return SeriesDetail(
-            id: state.params == null || state.params['sid'] == null ? null : int.parse(state.params['sid'].toString()),
-            type: state.params == null || state.params['sid'] == null
+            id: state.params['sid'] == null ? null : int.parse(state.params['sid'].toString()),
+            type: state.params['sid'] == null
                 ? null
                 : int.parse(state.params['stype'].toString()));
       });
@@ -252,7 +252,7 @@ class Routes {
   static GoRouterModel comicsdetail = GoRouterModel(
       key: 'comicsdetail/:cid',
       builder: (context, state) => ComicsDetatl(
-          id: state.params == null || state.params['cid'] == null ? null : int.parse(state.params['cid'].toString())));
+          id: state.params['cid'] == null ? null : int.parse(state.params['cid'].toString())));
 
 //漫画阅读器
   static GoRouterModel comicReader = GoRouterModel(
@@ -260,11 +260,11 @@ class Routes {
       builder: (context, state) {
         final args = AppGlobal.currentReaderRouteExtra;
         return ComicReader(
-          id: args == null || args['id'] == null ? null : int.parse(args['id'].toString()),
-          episode: args == null || args['episode'] == null ? null : int.parse(args['episode'].toString()),
-          allEpisode: args == null || args['allEpisode'] == null ? null : int.parse(args['allEpisode'].toString()),
-          title: args == null || args['title'] == null ? null : args['title'],
-          type: args == null || args['type'] == null ? null : int.parse(args['type'].toString()),
+          id: args['id'] == null ? null : int.parse(args['id'].toString()),
+          episode: args['episode'] == null ? null : int.parse(args['episode'].toString()),
+          allEpisode: args['allEpisode'] == null ? null : int.parse(args['allEpisode'].toString()),
+          title: args['title'] == null ? null : args['title'],
+          type: args['type'] == null ? null : int.parse(args['type'].toString()),
         );
       });
 
@@ -274,7 +274,7 @@ class Routes {
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
         return LocalVideoDetail(
-          videoInfo: args == null || args['videoInfo'] == null ? null : args['videoInfo'],
+          videoInfo: args['videoInfo'] == null ? null : args['videoInfo'],
         );
       });
 
@@ -284,7 +284,7 @@ class Routes {
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
         return LocalSmallVideo(
-          videoInfo: args == null || args['videoInfo'] == null ? null : args['videoInfo'],
+          videoInfo: args['videoInfo'] == null ? null : args['videoInfo'],
         );
       });
 
@@ -294,7 +294,7 @@ class Routes {
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
         return LocalComicsDetatl(
-          comicsInfo: args == null || args['comicsInfo'] == null ? null : args['comicsInfo'],
+          comicsInfo: args['comicsInfo'] == null ? null : args['comicsInfo'],
         );
       });
 
@@ -304,8 +304,8 @@ class Routes {
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
         return LocalComicsReader(
-          comicsInfo: args == null || args['comicsInfo'] == null ? null : args['comicsInfo'],
-          episode: args == null || args['episode'] == null ? null : args['episode'],
+          comicsInfo: args['comicsInfo'] == null ? null : args['comicsInfo'],
+          episode: args['episode'] == null ? null : args['episode'],
         );
       });
 
@@ -325,11 +325,11 @@ class Routes {
   static GoRouterModel packageDetail = GoRouterModel(
       key: 'packageDetail/:pid/:contentType/:ptitle',
       builder: (context, state) => PackageDetail(
-          id: state.params == null || state.params['pid'] == null ? null : int.parse(state.params['pid'].toString()),
-          contentType: state.params == null || state.params['pid'] == null
+          id: state.params['pid'] == null ? null : int.parse(state.params['pid'].toString()),
+          contentType: state.params['pid'] == null
               ? 1
               : int.parse(state.params['contentType'].toString()),
-          title: state.params == null || state.params['pid'] == null ? '' : state.params['ptitle']));
+          title: state.params['pid'] == null ? '' : state.params['ptitle']));
 
 //邀请好友
   static GoRouterModel invitefriend = GoRouterModel(key: 'invitefriend', builder: (context, state) => InviteFriend());

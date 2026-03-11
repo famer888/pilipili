@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/novel_element.dart';
-import 'package:pilipili/components/card/vcard.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
-import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -49,7 +47,7 @@ class _NovelColumnState extends State<NovelColumn> {
   changeElement() {
     loading = true;
     setState(() {});
-    if (dataList != null && isAll) {
+    if (isAll) {
       page = 1;
     } else {
       page++;

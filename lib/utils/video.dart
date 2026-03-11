@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 class PlatformAwareVideo extends StatefulWidget {
   const PlatformAwareVideo({Key key})

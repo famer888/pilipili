@@ -112,12 +112,8 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       } else {
         seriesList['resource'].addAll(res['data']['resource']);
       }
-      if (setBottomSheetState == null) {
-        setState(() {});
-      } else {
-        setBottomSheetState();
-      }
-    } else {
+      setBottomSheetState();
+        } else {
       CommonUtils.showText(res['msg']);
     }
   }
@@ -139,7 +135,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       isPreview = res.data.source240 == null;
       videoUrl = res.data.source240 ??= res.data.preview;
       isFavoriteNotifier.value = res.data.userFavorites == 1;
-      tags = res.data.tags == '' || res.data.tags == null ? [] : res.data.tags.split(',');
+      tags = res.data.tags == '' ? [] : res.data.tags.split(',');
       likeCount = res.data.favorites;
       videoInfo = res.data;
       var recommend = await getDetailRecommendList(id: res.data.id, page: 1, limit: 20, tags: res.data.tags);
@@ -162,9 +158,9 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     AppEventReport.instance.videoDispose();
-    commentController?.dispose();
+    commentController.dispose();
     isFavoriteNotifier.dispose();
     super.dispose();
   }
@@ -430,7 +426,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             children: [
                                                               Text(
                                                                 '演员：' +
-                                                                    (videoInfo.actors == null || videoInfo.actors == ""
+                                                                    (videoInfo.actors == ""
                                                                             ? "--"
                                                                             : videoInfo.actors)
                                                                         .toString(),
@@ -542,7 +538,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     onTap: () async {
                                                                       var res = await userFavorites(
                                                                           type: 1, id: videoInfo.id);
-                                                                      if (res != null && res.status != 0) {
+                                                                      if (res.status != 0) {
                                                                         if (isFavorite) {
                                                                           likeCount--;
                                                                         } else {
@@ -568,11 +564,11 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .config;
                                                                 ShareMovieModel.showShareMovie(backButtonBehavior,
                                                                     copyUrl: config.share.affUrlCopy.url,
-                                                                    thumb: videoInfo?.coverOriginalHorizontal == ''
-                                                                        ? videoInfo?.coverOriginalVertical
-                                                                        : videoInfo?.coverOriginalHorizontal,
-                                                                    title: videoInfo?.title ?? '--',
-                                                                    subtitle: videoInfo?.desc ?? '--',
+                                                                    thumb: videoInfo.coverOriginalHorizontal == ''
+                                                                        ? videoInfo.coverOriginalVertical
+                                                                        : videoInfo.coverOriginalHorizontal,
+                                                                    title: videoInfo.title ?? '--',
+                                                                    subtitle: videoInfo.desc ?? '--',
                                                                     url: config.share.affUrl.toString());
                                                               },
                                                             )
@@ -580,7 +576,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         )
                                                       ],
                                                     )),
-                                                tags == null || tags.isEmpty
+                                                tags.isEmpty
                                                     ? SizedBox(
                                                         height: 10.w,
                                                       )
@@ -589,7 +585,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                         margin: EdgeInsets.only(bottom: 8.w),
                                                         height: 0.5.w,
                                                       ),
-                                                tags == null || tags.isEmpty
+                                                tags.isEmpty
                                                     ? const SizedBox()
                                                     : Padding(
                                                         padding:
@@ -898,7 +894,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           : RESOURCE_TYPE_LONG_VIDEO,
                                                       PRIVILEGE_TYPE_COMMENT)) {
                                                     InputDialog.show(context, '请输入您的影评～').then((value) {
-                                                      if (value != null && value != '') {
+                                                      if (value != '') {
                                                         publishComment(
                                                                 contentId: widget.id, contentType: 1, reply: value)
                                                             .then((res) {
@@ -1000,10 +996,9 @@ class _CommentItemState extends State<CommentItem> {
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () async {
-              if (widget.children == null) return;
               if (Privilege.isAllowed(context, widget.souceType, PRIVILEGE_TYPE_COMMENT)) {
                 InputDialog.show(context, '请输入您的影评～', limitingText: 16).then((value) {
-                  if (value != null && value != '') {
+                  if (value != '') {
                     publishComment(commentId: widget.data['id'], contentId: widget.id, contentType: 1, reply: value)
                         .then((res) {
                       if (res['status'] != 0) {
@@ -1088,7 +1083,7 @@ class _CommentItemState extends State<CommentItem> {
                         margin: EdgeInsets.only(right: 11.w),
                       ),
                       Expanded(
-                          child: widget.children == null || widget.children.length == 0
+                          child: widget.children.length == 0
                               ? const SizedBox()
                               : Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -1131,7 +1126,7 @@ class _ButtonItemState extends State<ButtonItem> {
                 if (mounted) {
                   setState(() {});
                 }
-                await widget.onTap?.call();
+                await widget.onTap.call();
                 isLoading = false;
                 if (mounted) {
                   setState(() {});

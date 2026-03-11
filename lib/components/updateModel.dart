@@ -56,7 +56,7 @@ class UpdateModel {
                   GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel?.call();
+                      cancel.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black38),
@@ -147,7 +147,7 @@ class UpdateModel {
                                               GestureDetector(
                                                   onTap: () {
                                                     cancelFunc();
-                                                    confirm?.call();
+                                                    confirm.call();
                                                     // type == "1"
                                                     //     ? confirm?.call()
                                                     //     : confirmApp?.call();
@@ -189,7 +189,7 @@ class UpdateModel {
                                             child: GestureDetector(
                                                 onTap: () {
                                                   cancelFunc();
-                                                  confirm?.call();
+                                                  confirm.call();
                                                   // type == "1"
                                                   //     ? confirm?.call()
                                                   //     : confirmApp?.call();
@@ -277,7 +277,7 @@ class UpdateModel {
                     onTap: () {
                       if (mustupdate) return;
                       cancelFunc();
-                      cancel?.call();
+                      cancel.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black38),
@@ -338,7 +338,7 @@ class UpdateModel {
                                                     } else if (mustupdate && Platform.isAndroid) {
                                                       cancelFunc();
                                                     }
-                                                    confirm?.call();
+                                                    confirm.call();
                                                   },
                                                   child: Container(
                                                     margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(21.5)),
@@ -390,7 +390,7 @@ class UpdateModel {
         version: version,
         onTap: () {
           cancelFunc();
-          cancel?.call();
+          cancel.call();
         },
       ),
     );
@@ -410,7 +410,7 @@ class UpdateModel {
       toastBuilder: (cancelFunc) => GestureDetector(
         onTap: () {
           cancelFunc();
-          cancel?.call();
+          cancel.call();
         },
         child: Container(
           constraints: BoxConstraints(
@@ -428,7 +428,7 @@ class UpdateModel {
                 GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel?.call();
+                      cancel.call();
                     },
                     child: PlatformAwareAssetImage(
                         url: "assets/images/detail/icon_close.png",
@@ -446,7 +446,7 @@ class UpdateModel {
                     child: GestureDetector(
                         onTap: () {
                           cancelFunc();
-                          confirm?.call();
+                          confirm.call();
                         },
                         child: Container(
                           width: maxW,
@@ -482,7 +482,7 @@ class UpdateModel {
         child: GestureDetector(
           onTap: () {
             cancelFunc();
-            cancel?.call();
+            cancel.call();
             ReportUtils.adVertising(
                 eventType: AdEventType.close,
                 advertisingKey: AdType.homePopup,
@@ -502,7 +502,7 @@ class UpdateModel {
                 GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel?.call();
+                      cancel.call();
                       ReportUtils.adVertising(
                           eventType: AdEventType.close,
                           advertisingKey: AdType.homePopup,
@@ -625,9 +625,9 @@ class _DownloadApkState extends State<DownloadApk> {
             _installApk(savePath);
           } else {
             //关闭升级弹窗
-            widget.onTap?.call();
+            widget.onTap.call();
             //弹出告警提示
-            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config?.officeSite ?? "";
+            String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
             YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消',
                 callBack: () {
               CommonUtils.launchURL(officeSite);

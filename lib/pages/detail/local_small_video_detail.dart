@@ -123,21 +123,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
       setState(() {});
     }
 
-    if (timerfc != null) {
-      timerfc.cancel();
-      timerfc = Timer.periodic(Duration(seconds: 2), (time) {
-        showControl = false;
-        setState(() {});
-        time.cancel();
-      });
-    } else {
-      timerfc = Timer.periodic(Duration(seconds: 2), (time) {
-        showControl = false;
-        setState(() {});
-        time.cancel();
-      });
+    timerfc.cancel();
+    timerfc = Timer.periodic(Duration(seconds: 2), (time) {
+      showControl = false;
+      setState(() {});
+      time.cancel();
+    });
     }
-  }
 
   getTimeStr(double time) {
     int s = (time / 1000 / 60).truncate();
@@ -158,11 +150,11 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
   @override
   void dispose() {
     super.dispose();
-    _controller?.removeListener(setVideovalue);
-    if (timerfc != null && timerfc.isActive) {
+    _controller.removeListener(setVideovalue);
+    if (timerfc.isActive) {
       timerfc.cancel();
     }
-    _controller?.dispose();
+    _controller.dispose();
   }
 
   setVideovalue() {
@@ -220,7 +212,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer>
     return GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          if (_controller == null || !_controller.value.isInitialized) {
+          if (!_controller.value.isInitialized) {
             return;
           }
           if (_controller.value.isPlaying) {

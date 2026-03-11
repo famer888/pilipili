@@ -33,7 +33,7 @@ class _RechargeRecordState extends State<RechargeRecord> {
   }
 
   getData() async {
-    if (widget?.args['type'] == null) {
+    if (widget.args['type'] == null) {
       isLoading = false;
       recordList = [];
       setState(() {});
@@ -41,12 +41,7 @@ class _RechargeRecordState extends State<RechargeRecord> {
       CommonUtils.showText('请传入type');
       return;
     }
-    CoinOrVipModel result = await getOrderList(page: page, type: widget?.args['type'], limit: limit);
-    if (result == null) {
-      networkErr = true;
-      setState(() {});
-      return;
-    }
+    CoinOrVipModel result = await getOrderList(page: page, type: widget.args['type'], limit: limit);
     if (result.status != 0) {
       List resData = result.data == null ? [] : result.data;
       isAll = resData.length < limit;
@@ -154,12 +149,12 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '订单编号：' + orderData?.id.toString(),
+                '订单编号：' + orderData.id.toString(),
                 style: DefaultStyle.lgray12,
               ),
               GestureDetector(
                 onTap: () {
-                  Clipboard.setData(ClipboardData(text: '订单编号：' + orderData?.id.toString()));
+                  Clipboard.setData(ClipboardData(text: '订单编号：' + orderData.id.toString()));
                   CommonUtils.showText('复制成功');
                 },
                 child: Row(
@@ -199,10 +194,10 @@ class OrderItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                orderData?.descp.toString(),
+                orderData.descp.toString(),
                 style: DefaultStyle.black16bold,
               ),
-              Text(orderData?.amount.toString(), style: DefaultStyle.black16bold),
+              Text(orderData.amount.toString(), style: DefaultStyle.black16bold),
             ],
           ),
           SizedBox(
@@ -211,9 +206,9 @@ class OrderItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(orderData?.createdAt.toString(), style: DefaultStyle.lgray12),
+              Text(orderData.createdAt.toString(), style: DefaultStyle.lgray12),
               Text(
-                orderData?.statusText.toString(),
+                orderData.statusText.toString(),
                 style: DefaultStyle.lgray12,
               ),
             ],

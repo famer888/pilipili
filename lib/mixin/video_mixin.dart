@@ -6,14 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/sharemovie.dart';
 import 'package:pilipili/global.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as ui;
 
 mixin VideoMinxin<T extends StatefulWidget> on State<T> {
   @override
@@ -68,8 +66,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                 ? Container()
                 : GestureDetector(
                     onTap: () {
-                      SystemChrome.setEnabledSystemUIOverlays(
-                          SystemUiOverlay.values);
+                      SystemChrome.setEnabledSystemUIMode(
+                          SystemUiMode.manual, overlays: SystemUiOverlay.values);
                       SystemChrome.setPreferredOrientations(
                           [DeviceOrientation.portraitUp]);
                       context.pop();

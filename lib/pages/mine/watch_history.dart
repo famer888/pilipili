@@ -320,7 +320,7 @@ class _HistoryListState extends State<HistoryList> {
 
   @override
   Widget build(BuildContext context) {
-    return history == null || history.isEmpty
+    return history.isEmpty
         ? PageStatus.noData()
         : getListWidget();
   }

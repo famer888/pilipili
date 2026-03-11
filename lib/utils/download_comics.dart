@@ -324,7 +324,7 @@ class DownloadComics {
         //     "开始下载----第${currentImgIndex + 1}张图---共${dataList.data.length}张图---当前章节：${finishCount + 1}");
         String data = await PlatformAwareHttp.getImage(
             dataList.data[currentImgIndex].imgUrl);
-        if (data != '' && data != null) {
+        if (data != '') {
           dynamic decrypted = await IsolatedWorker()
               .run(PlatformAwareCrypto.decryptImage, data);
           if (decrypted != '' && decrypted != null) {

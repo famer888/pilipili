@@ -23,10 +23,8 @@ class _SeriesCardState extends State<SeriesCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.onTap != null) {
-          widget.onTap();
-        }
-        context.push(
+        widget.onTap();
+              context.push(
             widget.replace
                 ? (widget.type == 1
                     ? CommonUtils.getRealHash().replaceAll(

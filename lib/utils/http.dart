@@ -47,7 +47,7 @@ Dio _apiDio = new Dio(new BaseOptions(
   ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
     Map _data = {};
     String yytoken = getToken();
-    if (yytoken != null && yytoken != '') {
+    if (yytoken != '') {
       AppGlobal.apiToken = yytoken;
     }
     _data.addAll(AppGlobal.appinfo);
@@ -68,7 +68,7 @@ Dio _apiDio = new Dio(new BaseOptions(
       String sign = result.remove("sign").toString();
       if (PlatformAwareCrypto.makeSign(result, appkey) != sign && !_warnJump) {
         _warnJump = true;
-        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config?.officeSite ?? "";
+        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext, listen: false).config.officeSite ?? "";
         YyShowDialog.showdialog(AppGlobal.appContext, title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
           CommonUtils.launchURL(officeSite);
         }, content: (setDialogState) {
@@ -80,7 +80,7 @@ Dio _apiDio = new Dio(new BaseOptions(
       String _data = await PlatformAwareCrypto.decryptResData(response.data);
       response.data = jsonDecode(_data);
     }
-    if (response.data["msg"] == "token无效" && !isJump && AppGlobal.appContext != null && AppGlobal.apInit) {
+    if (response.data["msg"] == "token无效" && !isJump && AppGlobal.apInit) {
       CommonUtils.showText("token失效,请重新登录");
       isJump = true;
       AppGlobal.apiToken = '';
@@ -94,7 +94,7 @@ Dio _apiDio = new Dio(new BaseOptions(
       });
     }
     return handler.next(response);
-  }, onError: (DioError e, handler) {
+  }, onError: (DioException e, handler) {
     return handler.next(e);
   }))
   ..interceptors.add(ApiTimingInterceptor());
@@ -121,7 +121,6 @@ class PlatformAwareHttp {
   static Future uploadImage(
       {dynamic imageUrl, String id, String position = 'head', ProgressCallback progressCallback}) async {
     try {
-      if (id == null) id = '${DateTime.now().millisecondsSinceEpoch}';
       var imgKey = AppGlobal.uploadImgKey.replaceFirst('head', '');
       var newKey = 'id=$id&position=$position$imgKey';
       var tmpSha256 = CommonUtils.gvSha256(newKey);
@@ -164,15 +163,15 @@ class PlatformAwareHttp {
       var newKey = 'id=$id&position=$position$imgKey';
       var tmpSha256 = CommonUtils.gvSha256(newKey);
       var sign = CommonUtils.gvMD5(tmpSha256);
-      var ext = file?.name.split(".").last;
+      var ext = file.name.split(".").last;
 
       FormData formData = FormData.fromMap({
         'id': id,
         'position': position,
         'sign': sign,
         'cover': await MultipartFile.fromFile(
-          file?.path ?? "",
-          filename: file?.name ?? "",
+          file.path ?? "",
+          filename: file.name ?? "",
           contentType: MediaType.parse('image/$ext'),
         ),
       });
@@ -197,9 +196,9 @@ class PlatformAwareHttp {
       var newKey = 'id=$id&position=$position$imgKey';
       var tmpSha256 = CommonUtils.gvSha256(newKey);
       var sign = CommonUtils.gvMD5(tmpSha256);
-      var ext = file?.name.split(".").last;
+      var ext = file.name.split(".").last;
 
-      html.Blob blob = html.Blob([await file?.readAsBytes()], "image/$ext");
+      html.Blob blob = html.Blob([await file.readAsBytes()], "image/$ext");
       String url = html.Url.createObjectUrl(blob);
       final html.FormData formData = html.FormData()
         ..append('id', id)
@@ -233,8 +232,8 @@ class PlatformAwareHttp {
         'uuid': AppGlobal.uuid,
         'sign': sign,
         'video': MultipartFile.fromBytes(
-          await file?.readAsBytes() ?? [],
-          filename: file?.name,
+          await file.readAsBytes() ?? [],
+          filename: file.name,
           contentType: MediaType.parse('video/mp4'),
         ),
       });
@@ -268,7 +267,7 @@ class PlatformAwareHttp {
         'uuid': AppGlobal.uuid,
         'sign': sign,
         'video': await MultipartFile.fromFile(
-          file?.path ?? "",
+          file.path ?? "",
           filename: filename,
           contentType: MediaType.parse('video/mp4'),
         ),

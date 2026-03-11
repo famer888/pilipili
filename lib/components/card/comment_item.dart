@@ -4,7 +4,6 @@ import 'package:pilipili/components/common/images.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:pilipili/utils/pageviewmixin.dart';
 
 class CommentItem extends StatefulWidget {
   const CommentItem({Key key, this.data}) : super(key: key);

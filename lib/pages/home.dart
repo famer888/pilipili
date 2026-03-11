@@ -425,10 +425,8 @@ class _HomeState extends State<Home> {
         if (activeIndex <= activeLength) {
           showIndexActive(activeIndex);
         } else {
-          if (version != null) {
-            checkUpdateAnnouncement(version, config);
-          }
-        }
+          checkUpdateAnnouncement(version, config);
+                }
         ReportUtils.adVertising(
             eventType: AdEventType.close,
             advertisingKey: AdType.homePopup,
@@ -451,10 +449,8 @@ class _HomeState extends State<Home> {
         if (activeIndex <= activeLength) {
           showIndexActive(activeIndex);
         } else {
-          if (version != null) {
-            checkUpdateAnnouncement(version, config);
-          }
-        }
+          checkUpdateAnnouncement(version, config);
+                }
       });
     }
 
@@ -471,10 +467,8 @@ class _HomeState extends State<Home> {
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
         showActivetyDialog(config, version);
       } else {
-        if (version != null) {
-          checkUpdateAnnouncement(version, config);
-        }
-      }
+        checkUpdateAnnouncement(version, config);
+            }
     }
   }
 

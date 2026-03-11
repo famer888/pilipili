@@ -32,8 +32,6 @@ class _PageClickListenerState extends State<PageClickListener> {
         _downTime = event.timeStamp;
       },
       onPointerUp: (PointerUpEvent event) {
-        if (_downPosition == null || _downTime == null) return;
-
         final upPos = event.position;
         final upTime = event.timeStamp;
 

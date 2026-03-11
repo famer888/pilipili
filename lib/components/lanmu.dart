@@ -58,11 +58,6 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
       setState(() {});
     }
     await getConstructById(id: widget.id, page: page, limit: limit).then((res) {
-      if (res == null) {
-        networkErr = true;
-        setState(() {});
-        return;
-      }
       isAll = res.elements.length < limit;
       if (page == 1) {
         cm_data = res;
@@ -162,7 +157,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
                             ),
                           ),
                           flexibleSpace: HomeTopBanner(pos: widget.pos, fixedBanner: fixedBanner)),
-                      cm_data?.elements == null
+                      cm_data.elements == null
                           ? SliverToBoxAdapter()
                           : SliverList(
                               delegate: SliverChildListDelegate(cm_data.elements

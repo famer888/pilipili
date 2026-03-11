@@ -86,10 +86,6 @@ class _PublicListState extends State<PublicList> {
   }
 
   Future getSearchResult() async {
-    if (widget.api == null) {
-      CommonUtils.showText('请传入接口路径');
-      return;
-    }
     try {
       Response<dynamic> res = await PlatformAwareHttp.post(widget.api, data: reqData);
       if (res.data['status'] != 0) {
@@ -113,10 +109,8 @@ class _PublicListState extends State<PublicList> {
   @override
   void initState() {
     super.initState();
-    if (widget.data is Map) {
-      reqData.addAll(widget.data);
-    }
-    reqData['limit'] = widget.limit;
+    reqData.addAll(widget.data);
+      reqData['limit'] = widget.limit;
     if (widget.isShow && !initPage) {
       initPage = true;
       getSearchResult();
@@ -138,12 +132,8 @@ class _PublicListState extends State<PublicList> {
       isAll = false;
       initPage = false;
       setState(() {});
-      if (widget.data != null) {
-        reqData.addAll(widget.data);
-      } else {
-        reqData = {'page': 1, 'limit': widget.limit};
-      }
-      if (widget.isShow) {
+      reqData.addAll(widget.data);
+          if (widget.isShow) {
         initPage = true;
         getSearchResult();
       }

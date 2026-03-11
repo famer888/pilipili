@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -15,7 +13,6 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:universal_html/html.dart' as html;
 
 class ShareMovieModel {
   static void showShareMovie(BackButtonBehavior backButtonBehavior,
@@ -351,7 +348,7 @@ class ShareMovieModel {
                   GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel?.call();
+                      cancel.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black54),

@@ -225,7 +225,7 @@ class _AtlasDetailState extends State<AtlasDetail> {
                     GestureDetector(
                       onTap: () {
                         userFavorites(type: 6, id: picDetail['id']).then((res) {
-                          if (res != null && res.status != 0) {
+                          if (res.status != 0) {
                             isLike ? likeNum-- : likeNum++;
                             isLike = !isLike;
                             setState(() {});

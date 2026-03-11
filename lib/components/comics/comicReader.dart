@@ -8,7 +8,6 @@ import 'package:pilipili/components/gestureZoomBox.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/scrollablePositionedList/item_positions_listener.dart';
 import 'package:pilipili/components/scrollablePositionedList/scrollable_positioned_list.dart';
-import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/mixin/watchRecordMixin.dart';
 import 'package:pilipili/utils/api.dart';
@@ -161,7 +160,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
   void dispose() {
     super.dispose();
     EventBus().off('GETOFFSET');
-    if (_timer != null && _timer.isActive) {
+    if (_timer.isActive) {
       _timer.cancel();
     }
   }
@@ -409,12 +408,12 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
   Widget comicsPageView() {
     return Listener(
       onPointerDown: (PointerDownEvent e) {
-        if (_timer != null && _timer.isActive) {
+        if (_timer.isActive) {
           _timer.cancel();
         }
       },
       onPointerUp: (PointerUpEvent e) {
-        if (_timer != null && !_timer.isActive && isAutomatic) {
+        if (!_timer.isActive && isAutomatic) {
           int time = (timeList[defaultTime] * 1000).toInt();
           _timer = Timer.periodic(Duration(milliseconds: time), (timer) {
             autoPage();
@@ -603,7 +602,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                if (_timer != null && _timer.isActive) {
+                                if (_timer.isActive) {
                                   _timer.cancel();
                                 }
                                 int time =
@@ -629,7 +628,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
                             ),
                             GestureDetector(
                               onTap: () {
-                                if (_timer != null && _timer.isActive) {
+                                if (_timer.isActive) {
                                   _timer.cancel();
                                 }
                                 setState(() {
@@ -777,7 +776,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
       behavior: HitTestBehavior.translucent,
       onPanDown: (DragDownDetails e) {
         CommonUtils.debugPrint('手指触碰');
-        if (_timer != null && _timer.isActive) {
+        if (_timer.isActive) {
           _timer.cancel();
         }
         isTap = true;
@@ -795,7 +794,7 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
       onPanEnd: (DragEndDetails e) {
         isTap = false;
         CommonUtils.debugPrint('手指抬起');
-        if (_timer != null && !_timer.isActive && isAutomatic) {
+        if (!_timer.isActive && isAutomatic) {
           int time = (timeList[defaultTime] * 1000).toInt();
           _timer = Timer.periodic(Duration(milliseconds: time), (timer) {
             autoPage();
@@ -887,10 +886,8 @@ class _ComicReaderState extends State<ComicReader> with WatchRecordMixin {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (onTap != null) {
-          onTap();
-        }
-      },
+        onTap();
+            },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(7.5)),
         width: ScreenUtil().setWidth(45),

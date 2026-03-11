@@ -48,7 +48,7 @@ class _ThreeVColumnState extends State<ThreeVColumn> {
   changeElement() {
     loading = true;
     setState(() {});
-    if (dataList != null && isAll) {
+    if (isAll) {
       page = 1;
     } else {
       page++;

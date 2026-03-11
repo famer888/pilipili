@@ -78,16 +78,9 @@ class _NovelReaderState extends State<NovelReader> {
 
     //文章主题初始化
     Map novelTheme = AppGlobal.appBox.get('novel_theme');
-    if (novelTheme != null) {
-      currentSliderValue.value = novelTheme['fontSize'];
-      themeStyle.value = novelTheme['themeStyle'];
-    } else {
-      AppGlobal.appBox.put('novel_theme', {
-        'fontSize': currentSliderValue.value,
-        'themeStyle': themeStyle.value
-      });
-    }
-    initContent(widget.id);
+    currentSliderValue.value = novelTheme['fontSize'];
+    themeStyle.value = novelTheme['themeStyle'];
+      initContent(widget.id);
   }
 
   changeOffset() {
@@ -177,30 +170,20 @@ class _NovelReaderState extends State<NovelReader> {
 
         //滚动初始化
         novelLocal = AppGlobal.appBox.get('novel_local');
-        if (novelLocal == null) {
-          Map currentInfo = {};
+        Map currentInfo = novelLocal;
+        if (currentInfo[data['novel_id']] == null) {
           currentInfo[data['novel_id']] = {
             'chapter': data['id'],
             'ofsset': {data['id']: 0.0}
           };
-          AppGlobal.appBox.put('novel_local', currentInfo);
-          controller = ScrollController(initialScrollOffset: 0.0);
         } else {
-          Map currentInfo = novelLocal;
-          if (currentInfo[data['novel_id']] == null) {
-            currentInfo[data['novel_id']] = {
-              'chapter': data['id'],
-              'ofsset': {data['id']: 0.0}
-            };
-          } else {
-            currentInfo[data['novel_id']]['chapter'] = data['id'];
-          }
-          AppGlobal.appBox.put('novel_local', currentInfo);
-          controller = ScrollController(
-              initialScrollOffset:
-                  currentInfo[data['novel_id']]['ofsset'][data['id']] ?? 0);
+          currentInfo[data['novel_id']]['chapter'] = data['id'];
         }
-      } else {
+        AppGlobal.appBox.put('novel_local', currentInfo);
+        controller = ScrollController(
+            initialScrollOffset:
+                currentInfo[data['novel_id']]['ofsset'][data['id']] ?? 0);
+            } else {
         CommonUtils.showText(res['msg'] ?? '系统错误～');
       }
       setState(() {});
@@ -209,7 +192,7 @@ class _NovelReaderState extends State<NovelReader> {
   }
 
   void _themeChanged(Function callBack, int time) {
-    if (_debounce?.isActive ?? false) _debounce.cancel();
+    if (_debounce.isActive ?? false) _debounce.cancel();
     _debounce = Timer(Duration(milliseconds: time), () {
       callBack();
     });
@@ -222,7 +205,7 @@ class _NovelReaderState extends State<NovelReader> {
     }
     isTap = true;
     novelLikeToggle(data['novel_id']).then((res) {
-      if (res != null && res['status'] != 0) {
+      if (res['status'] != 0) {
         isFavorites.value = !isFavorites.value;
         setState(() {});
       } else {
@@ -289,7 +272,7 @@ class _NovelReaderState extends State<NovelReader> {
                                         PRIVILEGE_TYPE_COMMENT)) {
                                       InputDialog.show(context, '请输入您的影评～')
                                           .then((value) {
-                                        if (value != null && value != '') {
+                                        if (value != '') {
                                           novelComment(
                                                   novelId: data['novel_id'],
                                                   content: value,
@@ -341,7 +324,7 @@ class _NovelReaderState extends State<NovelReader> {
                               RESOURCE_TYPE_SHORT_VIDEO,
                               PRIVILEGE_TYPE_COMMENT)) {
                             InputDialog.show(context, '请输入您的影评～').then((value) {
-                              if (value != null && value != '') {
+                              if (value != '') {
                                 novelComment(
                                         novelId: data['novel_id'],
                                         content: value)
@@ -436,7 +419,7 @@ class _NovelReaderState extends State<NovelReader> {
     controller.removeListener(changeOffset);
     isShow.dispose();
     currentSliderValue.dispose();
-    _debounce?.cancel();
+    _debounce.cancel();
     themeStyle.dispose();
     isFavorites.dispose();
     controller.dispose();

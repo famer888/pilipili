@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/global.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/common.dart';
@@ -30,7 +29,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     //   result += widget.cardData['second_title'];
     // }
     if (widget.showField.indexOf('tags') != -1) {
-      if (result != '' && result != null) result += '/';
+      if (result != '') result += '/';
       result += widget.cardData['tags'].replaceAll(',', ' ');
     }
     return result;
@@ -122,10 +121,8 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (onTap != null) {
-          onTap();
-        }
-        if (privilegeMap[contentType] != null) {
+        onTap();
+              if (privilegeMap[contentType] != null) {
           bool _isAllowed = Privilege.isAllowed(context,
               privilegeMap[contentType]['privilege'], PRIVILEGE_TYPE_VIEW);
           if (!_isAllowed) {
@@ -357,7 +354,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     } else if (widget.tagIconType == 3) {
       _asset = 'assets/images/icon_ad.png';
     }
-    return widget.tagIconType != null && _asset != null
+    return widget.tagIconType != null
         ? Positioned(
             top: 0,
             right: 0,

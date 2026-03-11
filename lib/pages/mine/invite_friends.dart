@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
-import 'package:pilipili/theme/default.dart';
 import 'package:provider/provider.dart';
 import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/model/myinvitation.dart';
 import 'package:pilipili/model/myreward.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -44,18 +42,14 @@ class _InviteFriendState extends State<InviteFriend> {
   initData() async {
     MyInvitationModel result = await myInvitation();
     MyRewardModel reward = await getMyReward();
-    if (result != null && result.data != null) {
+    setState(() {
+      myInvition = result.data;
+      isLoading = false;
+    });
       setState(() {
-        myInvition = result.data;
-        isLoading = false;
-      });
+      incomeList.addAll(reward.data);
+    });
     }
-    if (reward != null && reward.data != null) {
-      setState(() {
-        incomeList.addAll(reward.data);
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -176,13 +170,13 @@ class _InviteFriendState extends State<InviteFriend> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         MyInviteNumber(
-                                            number: myInvition?.allNum.toString(),
+                                            number: myInvition.allNum.toString(),
                                             label: '邀请人数'),
                                         MyInviteNumber(
-                                            number: myInvition?.regNum.toString(),
+                                            number: myInvition.regNum.toString(),
                                             label: '注册数'),
                                         MyInviteNumber(
-                                            number: myInvition?.moneyNum.toString(),
+                                            number: myInvition.moneyNum.toString(),
                                             label: '皮哩币收入'),
                                       ],
                                     ),
@@ -305,13 +299,13 @@ class IncomeItem extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(incomeListItem?.nickname.toString(),
+              Text(incomeListItem.nickname.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(16),
                       color: Color(0xff7A3C04))),
               SizedBox(height: ScreenUtil().setHeight(10)),
-              Text(incomeListItem?.createdAt.toString(),
+              Text(incomeListItem.createdAt.toString(),
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(13),
                       color: Color(0xff999999))),

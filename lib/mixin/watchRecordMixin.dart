@@ -50,8 +50,7 @@ mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
   }
 
   void stopWatchRecordTimer() {
-    if (watchRcordTimer == null) return;
-    watchRcordTimer?.cancel();
+    watchRcordTimer.cancel();
   }
 
   void handleRecordWatch() {

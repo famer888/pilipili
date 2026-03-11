@@ -102,7 +102,7 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
           behavior: HitTestBehavior.translucent,
           onTap: () {
             cancelToken.cancel();
-            widget.cancel?.call();
+            widget.cancel.call();
           },
           child: Container(
             height: 30.w,

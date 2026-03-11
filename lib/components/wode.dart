@@ -60,12 +60,6 @@ class _WodeState extends State<Wode> {
 
   void initInfo() async {
     UpdateNumModel getUpdateNum = await apiGetUpdateNum();
-    if (getUpdateNum == null) {
-      CommonUtils.showText('请检查网络后重试～');
-      networkErr = true;
-      setState(() {});
-      return;
-    }
     await getHomeConfig(context);
     await CommonUtils.updateSystemNotice(context);
     setState(() {
@@ -170,7 +164,7 @@ class SystemNoticeIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeConfig>(builder: (ctx, state, child) {
-      CommonUtils.debugPrint(state.systemnotice?.data?.systemNoticeCount != 0);
+      CommonUtils.debugPrint(state.systemnotice.data.systemNoticeCount != 0);
       return GestureDetector(
         onTap: () {
           context.push('/messagecenter');
@@ -178,8 +172,7 @@ class SystemNoticeIcon extends StatelessWidget {
         child: PlatformAwareAssetImage(
             url:
                 // 'assets/pengke/wode/Chat_Circle_Dots_active.png',
-                (state.systemnotice?.data ?? false) != null &&
-                        (state.systemnotice.data.systemNoticeCount != 0 || state.systemnotice.data.feedCount != 0)
+                (state.systemnotice.data.systemNoticeCount != 0 || state.systemnotice.data.feedCount != 0)
                     ? PPAssetsPath.chatCircleDotsActive
                     : PPAssetsPath.chatCircleDots,
             width: 24.w,
@@ -278,7 +271,7 @@ class Header extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  members?.nickname ?? "pilpil用户",
+                                  members.nickname ?? "pilpil用户",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18.sp,
@@ -303,7 +296,7 @@ class Header extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'ID:' + (members?.aff ?? '0000000').toString(),
+                                            'ID:' + (members.aff ?? '0000000').toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.bold),

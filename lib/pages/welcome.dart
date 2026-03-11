@@ -41,21 +41,15 @@ class _WelcomeState extends State<Welcome> {
     }, onSuccess: () {
       getHomeConfig(context).then((res) {
         // toInvitation(affCode: "aqw92");
-        if (res?.data?.ads != null && res?.data?.ads?.imgUrl != null) {
-          yyads = {'img': res?.data?.ads?.imgUrl, 'url': res.data.ads.url};
-          setState(() {});
-          adsCountDown();
-        }
-        if (yyads == null) {
-          toHome();
-        }
-      });
+        yyads = {'img': res.data.ads.imgUrl, 'url': res.data.ads.url};
+        setState(() {});
+        adsCountDown();
+            });
       context.read<Search>().init();
     });
   }
 
   void adsCountDown() {
-    if (yyads == null) return;
     _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
       if (curTime <= 0) {
         _timer.cancel();
@@ -75,7 +69,7 @@ class _WelcomeState extends State<Welcome> {
     return WillPopScope(
         onWillPop: () async {
           // 点击返回键的操作
-          if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
+          if (DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
             lastPopTime = DateTime.now();
             BotToast.showText(text: '再按一下退出Pilipili～', align: Alignment(0, 0));
           } else {

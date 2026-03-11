@@ -17,7 +17,6 @@ import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/utils/pp_asset_path.dart';
 import 'package:pilipili/utils/pp_string.dart';
 import 'package:provider/provider.dart';
@@ -99,12 +98,8 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
         } else {
           seriesList['resource'].addAll(res['data']['resource']);
         }
-        if (setBottomSheetState == null) {
-          setState(() {});
-        } else {
-          setBottomSheetState();
-        }
-      } else {
+        setBottomSheetState();
+            } else {
         CommonUtils.showText(res['msg']);
       }
     });
@@ -154,7 +149,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
 
   _useFavorite() {
     userFavorites(type: 2, id: data.dataId).then((res) {
-      if (res != null && res.status != 0) {
+      if (res.status != 0) {
         if (isFavorites) {
           likeCount--;
         } else {
@@ -309,7 +304,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
               padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight),
               width: 1.sw,
               height: 1.sh,
-              child: loading || data == null
+              child: loading
                   ? PageStatus.loading(mounted)
                   : NestedScrollView(
                       controller: scrollController,
@@ -373,8 +368,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                                       vertical: ScreenUtil().setWidth(8)),
                                   child: Text(
                                     '作者：' +
-                                        (data.author == null ||
-                                                    data.author ==
+                                        (data.author ==
                                                         PPString.isnull
                                                 ? "--"
                                                 : data.author)
@@ -449,8 +443,7 @@ class _ComicsDetatlState extends State<ComicsDetatl> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: DefaultStyle.pagePadding,
                                 vertical: ScreenUtil().setWidth(16)),
-                            child: data.description == null ||
-                                    data.description == ''
+                            child: data.description == ''
                                 ? Container()
                                 : Container(
                                     padding: EdgeInsets.only(

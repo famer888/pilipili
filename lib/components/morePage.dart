@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/hcard.dart';
@@ -11,7 +10,6 @@ import 'package:pilipili/global.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/logUtilS.dart';
 
 // ignore: must_be_immutable
 class MorePage extends StatefulWidget {

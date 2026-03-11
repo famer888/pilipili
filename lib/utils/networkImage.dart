@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart';
@@ -197,7 +196,7 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
     if (isLoad != 0) return;
     if (widget.isVideoThumb) return;
     var thumbUrl = '';
-    if (widget.width != null && widget.height != null && !widget.nothumb) {
+    if (!widget.nothumb) {
       int idx = widget.url.toString().lastIndexOf('.');
       String prev = widget.url.toString().substring(0, idx);
       String sufix = widget.url.toString().substring(idx);
@@ -263,14 +262,10 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
     if (_key == info.key) {
       var visiblePercentage = info.visibleFraction * 100;
       if (visiblePercentage == 0) {
-        delayload?.cancel();
+        delayload.cancel();
         delayload = null;
       } else {
-        if (delayload == null) {
-          delayload = Timer(new Duration(milliseconds: 500), () {
-            setImgUrl();
-          });
-        }
+        
       }
     }
   }

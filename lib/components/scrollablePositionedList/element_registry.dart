@@ -71,7 +71,7 @@ class _RegisteredElement extends ProxyElement {
         dependOnInheritedWidgetOfExactType<_InheritedRegistryWidget>();
     _registryWidgetState = _inheritedRegistryWidget.state;
     _registryWidgetState.registeredElements.add(this);
-    _registryWidgetState.widget.elementNotifier?.value =
+    _registryWidgetState.widget.elementNotifier.value =
         _registryWidgetState.registeredElements;
   }
 
@@ -82,14 +82,14 @@ class _RegisteredElement extends ProxyElement {
         dependOnInheritedWidgetOfExactType<_InheritedRegistryWidget>();
     _registryWidgetState = _inheritedRegistryWidget.state;
     _registryWidgetState.registeredElements.add(this);
-    _registryWidgetState.widget.elementNotifier?.value =
+    _registryWidgetState.widget.elementNotifier.value =
         _registryWidgetState.registeredElements;
   }
 
   @override
   void unmount() {
     _registryWidgetState.registeredElements.remove(this);
-    _registryWidgetState.widget.elementNotifier?.value =
+    _registryWidgetState.widget.elementNotifier.value =
         _registryWidgetState.registeredElements;
     super.unmount();
   }

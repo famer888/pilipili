@@ -13,7 +13,6 @@ import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/mixin/payMixin.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pilipili/utils/networkImage.dart';
 
 class Coinrecharge extends StatefulWidget {
   const Coinrecharge({Key key}) : super(key: key);
@@ -70,11 +69,6 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
 
   _initPage() async {
     Basic res = await getProductOfGold(2);
-    if (res == null) {
-      networkErr = true;
-      setState(() {});
-      return;
-    }
     if (res.status != 0) {
       products = List.from(res.data['product']);
       pageStatus = 'ready';
@@ -228,8 +222,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                             padding: EdgeInsets.only(
                                 left: DefaultStyle.pagePadding,
                                 right: DefaultStyle.pagePadding,
-                                top: cardStatus != null &&
-                                        cardStatus['isBuy'] == 1
+                                top: cardStatus['isBuy'] == 1
                                     ? ScreenUtil().setWidth(14)
                                     : ScreenUtil().setWidth(14),
                                 bottom: ScreenUtil().setWidth(8)),
@@ -260,8 +253,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                           height: ScreenUtil().setWidth(3),
                                         ),
                                         Text(
-                                          cardStatus != null &&
-                                                  cardStatus['isBuy'] == 1
+                                          cardStatus['isBuy'] == 1
                                               ? '已领取' +
                                                   cardStatus['days']
                                                       .toString() +
@@ -276,8 +268,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                         )
                                       ],
                                     ),
-                                    cardStatus != null &&
-                                            cardStatus['isBuy'] == 1
+                                    cardStatus['isBuy'] == 1
                                         ? Container()
                                         : Column(
                                             crossAxisAlignment:
@@ -352,7 +343,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                   ],
                                 ),
                                 Text(
-                                  cardStatus != null && cardStatus['isBuy'] == 1
+                                  cardStatus['isBuy'] == 1
                                       ? "到期时间：" +
                                           cardStatus['valid_date'].toString()
                                       : spcard['description'],
@@ -364,7 +355,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                               ],
                             ),
                           )),
-                      cardStatus != null && cardStatus['isBuy'] == 1
+                      cardStatus['isBuy'] == 1
                           ? Positioned(
                               top: ScreenUtil().setWidth(16),
                               right: ScreenUtil().setWidth(16),
@@ -474,7 +465,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                   ),
                 ),
               ),
-        products == null || products.length == 0
+        products.length == 0
             ? PageStatus.noData()
             : Padding(
                 padding: EdgeInsets.only(
@@ -586,49 +577,47 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   }
 
   Widget footer() {
-    if (adData != null) {
-      return GestureDetector(
-        onTap: () {
-          if (adData['type'] == 1) {
-            CommonUtils.launchURL(adData['url'].trim());
-          } else if (adData['type'] == 2) {
-            String linkUrl = adData['url'];
-            List urlList = linkUrl.split('?');
-            Map<String, dynamic> pramas = {};
-            if (urlList.length > 1) {
-              urlList[1].split("&").forEach((item) {
-                List stringText = item.split('=');
-                pramas[stringText[0]] =
-                    stringText.length > 1 ? stringText[1] : null;
-              });
-            }
-            context.push(urlList[0], extra: pramas);
-          } else if (adData['type'] == 4) {
-            var members =
-                Provider.of<HomeConfig>(context, listen: false).member;
-            var aff = members.aff;
-            var piliid = members.uuid;
-            CommonUtils.launchURL(
-                adData['url'].trim().toString() + '?aff=$aff&piliid=$piliid');
+    return GestureDetector(
+      onTap: () {
+        if (adData['type'] == 1) {
+          CommonUtils.launchURL(adData['url'].trim());
+        } else if (adData['type'] == 2) {
+          String linkUrl = adData['url'];
+          List urlList = linkUrl.split('?');
+          Map<String, dynamic> pramas = {};
+          if (urlList.length > 1) {
+            urlList[1].split("&").forEach((item) {
+              List stringText = item.split('=');
+              pramas[stringText[0]] =
+                  stringText.length > 1 ? stringText[1] : null;
+            });
           }
-        },
-        child: Container(
-          width: ScreenUtil().screenWidth - DefaultStyle.pagePadding * 2,
-          height: ScreenUtil().setWidth(126),
-          margin: EdgeInsets.only(
-              bottom: ScreenUtil().bottomBarHeight,
-              top: ScreenUtil().setWidth(0)),
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
-          child: PlatformAwareNetworkImage(
-            url: adData['img_url'],
-            fit: BoxFit.cover,
-          ),
+          context.push(urlList[0], extra: pramas);
+        } else if (adData['type'] == 4) {
+          var members =
+              Provider.of<HomeConfig>(context, listen: false).member;
+          var aff = members.aff;
+          var piliid = members.uuid;
+          CommonUtils.launchURL(
+              adData['url'].trim().toString() + '?aff=$aff&piliid=$piliid');
+        }
+      },
+      child: Container(
+        width: ScreenUtil().screenWidth - DefaultStyle.pagePadding * 2,
+        height: ScreenUtil().setWidth(126),
+        margin: EdgeInsets.only(
+            bottom: ScreenUtil().bottomBarHeight,
+            top: ScreenUtil().setWidth(0)),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
+        child: PlatformAwareNetworkImage(
+          url: adData['img_url'],
+          fit: BoxFit.cover,
         ),
-      );
-    }
-    return Container();
+      ),
+    );
+      return Container();
   }
 
   @override

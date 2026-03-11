@@ -38,10 +38,10 @@ class CommonUtils {
     PageStatus.showLoading();
     Basic res = await customerConf();
     PageStatus.closeLoading();
-    if (res?.status != 0) {
-      context.push('/cgWebview/${Uri.encodeComponent(res?.data['url'])}/在线客服');
+    if (res.status != 0) {
+      context.push('/cgWebview/${Uri.encodeComponent(res.data['url'])}/在线客服');
     } else {
-      showText(res?.msg ?? '系统错误');
+      showText(res.msg ?? '系统错误');
     }
   }
 
@@ -263,9 +263,8 @@ class CommonUtils {
   static String getRealHash([String value]) {
     if (kIsWeb) {
       var currentHash = html.window.location.hash.replaceAll('#', '');
-      if (value == null) return currentHash;
     } else {
-      if (value == null) return AppGlobal.appRouter.location;
+      
     }
     return '/' + value ?? '';
   }
@@ -291,7 +290,7 @@ class CommonUtils {
         if (decrypted == null) {
           try {
             data = await PlatformAwareHttp.getImage(args[0]);
-            if (data != '' && data != null) {
+            if (data != '') {
               decrypted = await WorkerDelegator().run('decryptImage$_freeIndex', data);
               if (decrypted != '' && decrypted != null) {
                 decrypted = base64Decode(decrypted);
@@ -567,14 +566,10 @@ class CommonUtils {
     };
 
     Function handleResult = (String line) async {
-      if (line != null) {
-        AppGlobal.apiBaseURL = line;
-        await reportErrorLines();
-        onSuccess();
-      } else {
-        onFailed();
-      }
-    };
+      AppGlobal.apiBaseURL = line;
+      await reportErrorLines();
+      onSuccess();
+        };
 
     doCheck = ({String line, bool isPub}) async {
       dynamic result;
@@ -583,7 +578,7 @@ class CommonUtils {
       if (!kIsWeb) {
         ip4 = await InternetAddress.lookup(_uri.host, type: InternetAddressType.IPv4);
       }
-      if (ip4?.toString() == "") {
+      if (ip4.toString() == "") {
         result = 'error';
       } else {
         try {

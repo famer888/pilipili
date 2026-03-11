@@ -26,7 +26,7 @@ class ApiTimingInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     _finish(err.requestOptions, success: false);
     super.onError(err, handler);
   }
@@ -40,7 +40,6 @@ class ApiTimingInterceptor extends Interceptor {
     PageRequestTracker.instance.onRequestEnd(pageKey, enterMs, now);
 
     final start = options.extra['startTime'] as int;
-    if (start == null) return;
 
     final duration = now - start;
     final url = options.uri.toString();

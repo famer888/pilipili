@@ -84,47 +84,39 @@ class _PullRefreshListState extends State<PullRefreshList> {
   void dispose() {
     super.dispose();
     _refreshController.dispose();
-    if (_timer != null) {
-      _timer.cancel();
-    }
-    if (_timerout != null) {
+    _timer.cancel();
       _timerout.cancel();
     }
-  }
 
   void _onRefresh() async {
     // 下拉刷新数据
-    if (widget.onRefresh != null) {
-      startReq = true;
-      _timerout = Timer.periodic(Duration(seconds: 10), (time) {
+    startReq = true;
+    _timerout = Timer.periodic(Duration(seconds: 10), (time) {
+      time.cancel();
+      if (_timer.isActive) {
+        _timer.cancel();
+      }
+      CommonUtils.showText('请求超时,请您检查网络');
+      _refreshController.refreshCompleted();
+    });
+    _timer = Timer.periodic(Duration(milliseconds: 1500), (time) {
+      if (!startReq) {
+        if (_timerout.isActive) {
+          _timerout.cancel();
+        }
         time.cancel();
-        if (_timer.isActive) {
-          _timer.cancel();
-        }
-        CommonUtils.showText('请求超时,请您检查网络');
         _refreshController.refreshCompleted();
-      });
-      _timer = Timer.periodic(Duration(milliseconds: 1500), (time) {
-        if (!startReq) {
-          if (_timerout.isActive) {
-            _timerout.cancel();
-          }
-          time.cancel();
-          _refreshController.refreshCompleted();
-        }
-      });
-      await widget.onRefresh();
-      startReq = false;
+      }
+    });
+    await widget.onRefresh();
+    startReq = false;
     }
-  }
 
   void _onLoading() async {
     // 加载更多数据
-    if (widget.onLoading != null) {
-      widget.onLoading();
-      _refreshController.loadComplete();
+    widget.onLoading();
+    _refreshController.loadComplete();
     }
-  }
 
   @override
   Widget build(BuildContext context) {

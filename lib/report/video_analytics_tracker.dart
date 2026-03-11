@@ -162,10 +162,8 @@ class VideoAnalyticsTracker {
       'video_behavior_name': eventMeta['name'],
     };
 
-    if (extra != null) {
-      payload.addAll(extra);
-    }
-
+    payload.addAll(extra);
+  
     AppEventReport.instance.track('video_event', payload);
   }
 }

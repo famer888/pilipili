@@ -92,7 +92,7 @@ class CertificateModel {
                   GestureDetector(
                     onTap: () {
                       cancelFunc();
-                      cancel?.call();
+                      cancel.call();
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.black54),
@@ -309,7 +309,7 @@ class CertificateModel {
                                                       child: GestureDetector(
                                                         onTap: () {
                                                           cancelFunc();
-                                                          cancel?.call();
+                                                          cancel.call();
                                                         },
                                                         child: Icon(
                                                           Icons.close,

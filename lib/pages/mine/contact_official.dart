@@ -9,7 +9,6 @@ import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/networkImage.dart';
 
 class ContactOfficial extends StatefulWidget {
   ContactOfficial({Key key}) : super(key: key);
@@ -307,7 +306,7 @@ class AppItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(50.w)),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Colors.transparent, shadowColor: Colors.transparent),
+                backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
             onPressed: () {
               CommonUtils.launchURL(href);
             },

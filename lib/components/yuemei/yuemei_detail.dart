@@ -12,7 +12,6 @@ import 'package:pilipili/components/video/YyVideo.dart';
 import 'package:pilipili/components/yuemei/yuemei_score.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/store/homeConfig.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
@@ -594,7 +593,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                       setState(() {});
                       getPageData();
                     })
-                  : (loading || girlInfo == null
+                  : (loading
                       ? PageStatus.loading(true)
                       : PullRefreshList(
                           color: Color.fromRGBO(130, 26, 70, 0.44),
@@ -882,8 +881,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                               userFavorites(
                                                       type: 9, id: widget.id)
                                                   .then((res) {
-                                                if (res != null &&
-                                                    res.status != 0) {
+                                                if (res.status != 0) {
                                                   isFavorites = !isFavorites;
                                                   setState(() {});
                                                 } else {
@@ -1389,8 +1387,7 @@ class _YuemeiDetailState extends State<YuemeiDetail> {
                                                               value:
                                                                   scoreString)
                                                           .then((value) {
-                                                        if (value != null &&
-                                                            value != '') {
+                                                        if (value != '') {
                                                           scoreString = value;
                                                           setButtom(() {});
                                                         }

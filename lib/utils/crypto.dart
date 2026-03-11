@@ -128,7 +128,7 @@ class PlatformAwareCrypto {
 
   //验证签名
   static String makeSign(Map<dynamic, dynamic> params, String signKey) {
-    if (params == null || params.isEmpty) {
+    if (params.isEmpty) {
       return '';
     }
     // 1. ksort（按 key 排序）

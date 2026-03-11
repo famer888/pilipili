@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/card/hcard.dart';
 import 'package:pilipili/components/card/vcard.dart';
@@ -68,7 +66,7 @@ class _XianmianState extends State<Xianmian> {
             paddingTop: ScreenUtil().statusBarHeight,
             title: '精彩限免 请你白嫖',
           ),
-          (networkErr || data == null)
+          (networkErr)
               ? PageStatus.noNetWork(onTap: () {
                   networkErr = false;
                   setState(() {});

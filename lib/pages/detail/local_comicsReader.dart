@@ -11,7 +11,6 @@ import 'package:pilipili/components/scrollablePositionedList/scrollable_position
 import 'package:pilipili/mixin/watchRecordMixin.dart';
 import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
-import 'package:pilipili/utils/logUtilS.dart';
 import 'package:pilipili/utils/networkImage.dart';
 import 'package:pilipili/utils/pp_string.dart';
 
@@ -130,7 +129,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   void dispose() {
     super.dispose();
     EventBus().off('GETOFFSET');
-    if (_timer != null && _timer.isActive) {
+    if (_timer.isActive) {
       _timer.cancel();
     }
   }
@@ -378,12 +377,12 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
   Widget comicsPageView() {
     return Listener(
       onPointerDown: (PointerDownEvent e) {
-        if (_timer != null && _timer.isActive) {
+        if (_timer.isActive) {
           _timer.cancel();
         }
       },
       onPointerUp: (PointerUpEvent e) {
-        if (_timer != null && !_timer.isActive && isAutomatic) {
+        if (!_timer.isActive && isAutomatic) {
           int time = (timeList[defaultTime] * 1000).toInt();
           _timer = Timer.periodic(Duration(milliseconds: time), (timer) {
             autoPage();
@@ -576,7 +575,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                           children: [
                             GestureDetector(
                               onTap: () {
-                                if (_timer != null && _timer.isActive) {
+                                if (_timer.isActive) {
                                   _timer.cancel();
                                 }
                                 int time =
@@ -602,7 +601,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
                             ),
                             GestureDetector(
                               onTap: () {
-                                if (_timer != null && _timer.isActive) {
+                                if (_timer.isActive) {
                                   _timer.cancel();
                                 }
                                 setState(() {
@@ -750,7 +749,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
       behavior: HitTestBehavior.translucent,
       onPanDown: (DragDownDetails e) {
         CommonUtils.debugPrint('手指触碰');
-        if (_timer != null && _timer.isActive) {
+        if (_timer.isActive) {
           _timer.cancel();
         }
         isTap = true;
@@ -768,7 +767,7 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
       onPanEnd: (DragEndDetails e) {
         isTap = false;
         CommonUtils.debugPrint('手指抬起');
-        if (_timer != null && !_timer.isActive && isAutomatic) {
+        if (!_timer.isActive && isAutomatic) {
           int time = (timeList[defaultTime] * 1000).toInt();
           _timer = Timer.periodic(Duration(milliseconds: time), (timer) {
             autoPage();
@@ -860,10 +859,8 @@ class _LocalComicsReaderState extends State<LocalComicsReader>
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (onTap != null) {
-          onTap();
-        }
-      },
+        onTap();
+            },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(7.5)),
         width: ScreenUtil().setWidth(45),

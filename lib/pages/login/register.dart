@@ -27,11 +27,9 @@ class _RegisterState extends State<Register> {
   @override
   void initState() {
     super.initState();
-    if (widget.type != null) {
-      currentIndex = widget.type;
-      setState(() {});
+    currentIndex = widget.type;
+    setState(() {});
     }
-  }
 
   Widget _register() {
     final username = TextEditingController();
@@ -174,11 +172,9 @@ class _RegisterState extends State<Register> {
                 onSendCode: () {
                   sendPhone(phone: phone.text, phonePrefix: phonePrefix, type: 5).then((res) {
                     if (res.status == 1) {
-                      if (startTime != null) {
-                        startTime();
-                        CommonUtils.showText('发送成功～');
-                      }
-                    } else {
+                      startTime();
+                      CommonUtils.showText('发送成功～');
+                                        } else {
                       CommonUtils.showText(res.msg);
                     }
                   });
@@ -328,11 +324,9 @@ class _RegisterState extends State<Register> {
                 onSendCode: () {
                   sendPhone(phone: phone.text, phonePrefix: code, type: 3).then((res) {
                     if (res.status == 1) {
-                      if (startTime != null) {
-                        startTime();
-                        CommonUtils.showText('发送成功～');
-                      }
-                    } else {
+                      startTime();
+                      CommonUtils.showText('发送成功～');
+                                        } else {
                       CommonUtils.showText(res.msg);
                     }
                   });

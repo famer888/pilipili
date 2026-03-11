@@ -28,11 +28,11 @@ class _VipExchangePageState extends State<VipExchangePage> {
   bool loading = true;
   getProduct() async {
     Basic res = await getProductOfGold(6);
-    if (res?.status != 0) {
+    if (res.status != 0) {
       product = res.data['product'];
       setState(() {});
     } else {
-      CommonUtils.showText(res?.msg ?? '获取商品失败');
+      CommonUtils.showText(res.msg ?? '获取商品失败');
     }
   }
 
@@ -41,8 +41,8 @@ class _VipExchangePageState extends State<VipExchangePage> {
     onLoading = true;
     Basic res = await taskLogs(page, limit);
     onLoading = false;
-    if (res?.status != 0) {
-      List _data = res?.data ?? [];
+    if (res.status != 0) {
+      List _data = res.data ?? [];
       if (page == 1) {
         logs = _data;
       } else {
@@ -52,7 +52,7 @@ class _VipExchangePageState extends State<VipExchangePage> {
       isAll = _data.length < limit;
       setState(() {});
     } else {
-      CommonUtils.showText(res?.msg ?? '获取失败');
+      CommonUtils.showText(res.msg ?? '获取失败');
     }
   }
 
@@ -156,14 +156,14 @@ class _VipExchangePageState extends State<VipExchangePage> {
                                       YyShowDialog.showdialog(context, title: '温馨提示', btnText: '确认', cancelText: '取消',
                                           callBack: () async {
                                         Basic res = await onOrderExchange(product_id: item['id']);
-                                        if (res?.status != 0) {
-                                          CommonUtils.showText(res?.msg ?? '兑换成功');
+                                        if (res.status != 0) {
+                                          CommonUtils.showText(res.msg ?? '兑换成功');
                                           getUserInfo(context);
                                           page = 1;
                                           isAll = false;
                                           getLogs();
                                         } else {
-                                          CommonUtils.showText(res?.msg ?? '兑换失败');
+                                          CommonUtils.showText(res.msg ?? '兑换失败');
                                         }
                                       }, content: (setDialogState) {
                                         return Text.rich(

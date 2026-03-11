@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -42,9 +41,7 @@ class PositionedList extends StatefulWidget {
     this.addSemanticIndexes = true,
     this.addRepaintBoundaries = true,
     this.addAutomaticKeepAlives = true,
-  })  : assert(itemCount != null),
-        assert(itemBuilder != null),
-        assert((positionedIndex == 0) || (positionedIndex < itemCount));
+  })  : assert((positionedIndex == 0) || (positionedIndex < itemCount));
 
   /// Number of items the [itemBuilder] can produce.
   final int itemCount;
@@ -243,16 +240,16 @@ class _PositionedListState extends State<PositionedList> {
   EdgeInsets get _leadingSliverPadding =>
       (widget.scrollDirection == Axis.vertical
           ? widget.reverse
-              ? widget.padding?.copyWith(top: 0)
-              : widget.padding?.copyWith(bottom: 0)
+              ? widget.padding.copyWith(top: 0)
+              : widget.padding.copyWith(bottom: 0)
           : widget.reverse
-              ? widget.padding?.copyWith(left: 0)
-              : widget.padding?.copyWith(right: 0)) ??
+              ? widget.padding.copyWith(left: 0)
+              : widget.padding.copyWith(right: 0)) ??
       EdgeInsets.all(0);
 
   EdgeInsets get _centerSliverPadding => widget.scrollDirection == Axis.vertical
       ? widget.reverse
-          ? widget.padding?.copyWith(
+          ? widget.padding.copyWith(
                   top: widget.positionedIndex == widget.itemCount - 1
                       ? widget.padding.top
                       : 0,
@@ -260,21 +257,21 @@ class _PositionedListState extends State<PositionedList> {
                       ? widget.padding.bottom
                       : 0) ??
               EdgeInsets.all(0)
-          : widget.padding?.copyWith(
+          : widget.padding.copyWith(
                   top: widget.positionedIndex == 0 ? widget.padding.top : 0,
                   bottom: widget.positionedIndex == widget.itemCount - 1
                       ? widget.padding.bottom
                       : 0) ??
               EdgeInsets.all(0)
       : widget.reverse
-          ? widget.padding?.copyWith(
+          ? widget.padding.copyWith(
                   left: widget.positionedIndex == widget.itemCount - 1
                       ? widget.padding.left
                       : 0,
                   right:
                       widget.positionedIndex == 0 ? widget.padding.right : 0) ??
               EdgeInsets.all(0)
-          : widget.padding?.copyWith(
+          : widget.padding.copyWith(
                 left: widget.positionedIndex == 0 ? widget.padding.left : 0,
                 right: widget.positionedIndex == widget.itemCount - 1
                     ? widget.padding.right
@@ -285,20 +282,16 @@ class _PositionedListState extends State<PositionedList> {
   EdgeInsets get _trailingSliverPadding =>
       widget.scrollDirection == Axis.vertical
           ? widget.reverse
-              ? widget.padding?.copyWith(bottom: 0) ?? EdgeInsets.all(0)
-              : widget.padding?.copyWith(top: 0) ?? EdgeInsets.all(0)
+              ? widget.padding.copyWith(bottom: 0) ?? EdgeInsets.all(0)
+              : widget.padding.copyWith(top: 0) ?? EdgeInsets.all(0)
           : widget.reverse
-              ? widget.padding?.copyWith(right: 0) ?? EdgeInsets.all(0)
-              : widget.padding?.copyWith(left: 0) ?? EdgeInsets.all(0);
+              ? widget.padding.copyWith(right: 0) ?? EdgeInsets.all(0)
+              : widget.padding.copyWith(left: 0) ?? EdgeInsets.all(0);
 
   void _schedulePositionNotificationUpdate() {
     if (!updateScheduled) {
       updateScheduled = true;
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        if (registeredElements.value == null) {
-          updateScheduled = false;
-          return;
-        }
         final positions = <ItemPosition>[];
         RenderViewport viewport;
         for (var element in registeredElements.value) {
@@ -335,7 +328,7 @@ class _PositionedListState extends State<PositionedList> {
                     scrollController.position.viewportDimension));
           }
         }
-        widget.itemPositionsNotifier?.itemPositions?.value = positions;
+        widget.itemPositionsNotifier.itemPositions.value = positions;
         updateScheduled = false;
       });
     }

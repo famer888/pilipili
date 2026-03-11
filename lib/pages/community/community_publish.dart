@@ -1,6 +1,3 @@
-import 'dart:typed_data';
-import 'package:image/image.dart' as img;
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,13 +10,9 @@ import 'package:pilipili/components/page_status.dart';
 import 'package:pilipili/components/yy_dialog.dart';
 import 'package:pilipili/global.dart';
 import 'package:pilipili/pages/community/file_upload_item.dart';
-import 'package:pilipili/pages/community/xfile_progress_toast.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
-import 'package:pilipili/utils/crypto.dart';
-import 'package:pilipili/utils/http.dart';
-import 'package:pilipili/utils/networkImage.dart';
 
 class CommunityPushlish extends StatefulWidget {
   const CommunityPushlish({Key key}) : super(key: key);
@@ -73,21 +66,19 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         CommonUtils.showText('请选择mp4格式的视频');
       }
     } else {
-      if (file != null) {
-        bool flag = await CommonUtils.pngLimitSize(file,
-            size: 100, tips: "请上传100M以内的视频");
-        if (flag) return;
-        String ext = file.name.split(".").last.toLowerCase();
-        if (ext == "mp4" || file.mimeType == 'video/quicktime') {
-          videoList.value = [
-            ...videoList.value,
-            {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
-          ];
-        } else {
-          CommonUtils.showText('请选择mp4格式的视频');
-        }
+      bool flag = await CommonUtils.pngLimitSize(file,
+          size: 100, tips: "请上传100M以内的视频");
+      if (flag) return;
+      String ext = file.name.split(".").last.toLowerCase();
+      if (ext == "mp4" || file.mimeType == 'video/quicktime') {
+        videoList.value = [
+          ...videoList.value,
+          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+        ];
+      } else {
+        CommonUtils.showText('请选择mp4格式的视频');
       }
-    }
+        }
   }
 
   //选择图片
@@ -110,15 +101,13 @@ class _CommunityPushlishState extends State<CommunityPushlish> {
         {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
       ];
     } else {
-      if (file != null) {
-        bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
-        if (flag) return;
-        imageList.value = [
-          ...imageList.value,
-          {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
-        ];
-      }
-    }
+      bool flag = await CommonUtils.pngLimitSize(file, tips: "请上传5M以内的图片");
+      if (flag) return;
+      imageList.value = [
+        ...imageList.value,
+        {'file': file, 'key': new GlobalKey<FileUploadItemState>()}
+      ];
+        }
   }
 
   isSelect(List _tags, int id) {

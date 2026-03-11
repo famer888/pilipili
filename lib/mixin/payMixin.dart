@@ -226,8 +226,6 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                       GestureDetector(
                           onTap: () {
                             payMoney() async {
-                              if (currentPay == null)
-                                return BotToast.showText(text: '请选择支付方式！');
                               PageStatus.showLoading(text: '正在请求支付');
                               if (pays[currentPay]['channel'] == 'money') {
                                 try {
@@ -264,19 +262,12 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                     } else {
                                       CommonUtils.launchURL(res.data['payUrl']);
                                     }
-                                  } else if (res.msg != null) {
-                                    if (kIsWeb) {
-                                      winRef.close();
-                                      payErr();
-                                    }
-                                    BotToast.showText(text: res.data['msg']);
-                                  } else {
-                                    if (kIsWeb) {
-                                      winRef.close();
-                                      payErr();
-                                    }
-                                    BotToast.showText(text: '创建订单失败，请稍后重试');
+                                  } else                                  if (kIsWeb) {
+                                    winRef.close();
+                                    payErr();
                                   }
+                                  BotToast.showText(text: res.data['msg']);
+                                
                                 } catch (err) {
                                   print('错误：${err}');
                                   if (kIsWeb) {
@@ -330,15 +321,15 @@ mixin PayMixin<T extends StatefulWidget> on State<T> {
                                                       CertificateModel.showCertificate(
                                                           BackButtonBehavior
                                                               .none,
-                                                          id: (members?.aff ??
+                                                          id: (members.aff ??
                                                                   '0000000')
                                                               .toString(),
-                                                          code: (config?.share
-                                                                      ?.affCode ??
+                                                          code: (config.share
+                                                                      .affCode ??
                                                                   '0000')
                                                               .toString(),
-                                                          url: (config?.share
-                                                                      ?.affUrl ??
+                                                          url: (config.share
+                                                                      .affUrl ??
                                                                   '')
                                                               .toString());
                                                     },

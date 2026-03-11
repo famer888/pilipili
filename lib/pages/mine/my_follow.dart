@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/pili/publish_biuld_list.dart';
-import 'package:pilipili/components/wode.dart';
 import 'package:pilipili/store/community.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/common.dart';
@@ -54,7 +53,7 @@ class _MyFollowPageState extends State<MyFollowPage> {
 }
 
 class _FollowUserItem extends StatefulWidget {
-  const _FollowUserItem({Key key, this.data, this.isFollow});
+  const _FollowUserItem({this.data, this.isFollow});
   final Map data;
   final bool isFollow;
   @override

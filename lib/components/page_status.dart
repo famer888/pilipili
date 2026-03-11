@@ -97,10 +97,8 @@ class PageStatus {
   static Widget noNetWork({String text, Function onTap}) {
     return InkWell(
       onTap: () {
-        if (onTap != null) {
-          onTap();
-        }
-      },
+        onTap();
+            },
       child: Container(
         alignment: Alignment.topCenter,
         child: Padding(

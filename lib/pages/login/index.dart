@@ -33,11 +33,9 @@ class _LoginPageState extends State<LoginPage> {
     if (widget.isExpired) {
       // getHomeConfig(context);
     }
-    if (widget.type != null) {
-      currentIndex = widget.type;
-      setState(() {});
+    currentIndex = widget.type;
+    setState(() {});
     }
-  }
 
   setToken(String value) async {
     Box box = AppGlobal.appBox;
@@ -248,11 +246,9 @@ class _LoginPageState extends State<LoginPage> {
                   sendPhone(phone: phone.text, phonePrefix: code, type: 1)
                       .then((res) {
                     if (res.status == 1) {
-                      if (startTime != null) {
-                        startTime();
-                        CommonUtils.showText('发送成功～');
-                      }
-                    } else {
+                      startTime();
+                      CommonUtils.showText('发送成功～');
+                                        } else {
                       CommonUtils.showText(res.msg);
                     }
                     PageStatus.closeLoading();

@@ -99,10 +99,8 @@ class _AtilasListState extends State<AtilasList> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (onTap != null) {
-          onTap();
-        }
-      },
+        onTap();
+            },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(7.5)),
         width: ScreenUtil().setWidth(45),

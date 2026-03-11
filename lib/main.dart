@@ -81,26 +81,18 @@ void main() async {
       Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       affCode = u.queryParameters["sq_aff"] ?? "";
       String tId = u.queryParameters['trace_id'];
-      if (tId != null) {
-        traceId = tId;
-        await AppGlobal.appBox?.put('trace_id', tId);
-      } else {
-        traceId = await AppGlobal.appBox?.get('trace_id') ?? "";
-      }
-    } else {
+      traceId = tId;
+      await AppGlobal.appBox.put('trace_id', tId);
+        } else {
       await Clipboard.getData(Clipboard.kTextPlain).then((value) async {
         try {
           if (value?.text != null) {
             final params = Uri.splitQueryString(value?.text ?? '');
             String tId = params['trace_id'];
             affCode = params["sq_aff"] ?? "";
-            if (tId != null) {
-              traceId = tId;
-              await AppGlobal.appBox?.put('trace_id', tId);
-            } else {
-              traceId = await AppGlobal.appBox?.get('trace_id') ?? "";
-            }
-          }
+            traceId = tId;
+            await AppGlobal.appBox.put('trace_id', tId);
+                    }
         } catch (e) {
           print('剪切板文本错误');
         }
@@ -201,7 +193,7 @@ class _PilipiliState extends State<Pilipili> {
           widget = botToastBuilder(context, widget);
           widget = MediaQuery(
             //设置文字大小不随系统设置改变
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
             child: widget,
           );
           return widget.withPageClickLog();

@@ -131,7 +131,7 @@ class _CityPickerState extends State<CityPicker> {
   }
 
   _onTagChange(String alpha) {
-    if (_changeTimer?.isActive ?? false) {
+    if (_changeTimer.isActive ?? false) {
       _changeTimer.cancel();
     }
     _changeTimer = Timer(const Duration(milliseconds: 100), () {
@@ -372,10 +372,8 @@ class _CityPickerState extends State<CityPicker> {
                 _tagName = alpha;
               });
               // _initOffsetRangList();
-              if (alpha != null) {
-                _onTagChange(alpha);
-              }
-            },
+              _onTagChange(alpha);
+                        },
           ),
         )
       ],
@@ -472,7 +470,7 @@ class AlphaState extends State<Alpha> {
   }
 
   _onAlphaChange([String tag]) {
-    if (widget.onAlphaChange != null && tag != _lastTag) {
+    if (tag != _lastTag) {
       _lastTag = tag;
       widget.onAlphaChange(tag);
     }
@@ -484,30 +482,22 @@ class AlphaState extends State<Alpha> {
     });
     _onAlphaChange(tag);
 
-    if (widget.onTouchStart != null) {
-      widget.onTouchStart();
+    widget.onTouchStart();
     }
-  }
 
   _touchMoveEvent(String tag) {
     _onAlphaChange(tag);
-    if (widget.onTouchMove != null) {
-      widget.onTouchMove();
+    widget.onTouchMove();
     }
-  }
 
   _touchEndEvent() {
     setState(() {
       isTouched = false;
     });
     // 这里本可以不用再触发一次的. 但是为了数据的准备, 最后再触发一次
-    if (_lastTag != null) {
-      _onAlphaChange(_lastTag);
-    }
-    if (widget.onTouchEnd != null) {
+    _onAlphaChange(_lastTag);
       widget.onTouchEnd();
     }
-  }
 
   _buildAlpha() {
     List<Widget> result = [];
@@ -557,18 +547,14 @@ class AlphaState extends State<Alpha> {
         int touchOffset2Begin =
             ((details.localPosition.dy - pyPading) / (widget.alphaItemSize + (alphaPading * 2))).truncate();
         String tag = _getHitAlpha(touchOffset2Begin);
-        if (tag != null) {
-          _touchStartEvent(tag);
-        }
-      },
+        _touchStartEvent(tag);
+            },
       onVerticalDragUpdate: (DragUpdateDetails details) {
         int touchOffset2Begin =
             ((details.localPosition.dy - pyPading) / (widget.alphaItemSize + (alphaPading * 2))).truncate();
         String tag = _getHitAlpha(touchOffset2Begin);
-        if (tag != null) {
-          _touchMoveEvent(tag);
-        }
-      },
+        _touchMoveEvent(tag);
+            },
       onVerticalDragEnd: (DragEndDetails details) {
         _touchEndEvent();
       },

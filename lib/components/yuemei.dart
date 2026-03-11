@@ -141,7 +141,7 @@ class _YuemeiPageState extends State<YuemeiPage> with CardMixin {
     // location = Provider.of<GlobleValue>(context, listen: false).yplocation;
     return Stack(
       children: [
-        (networkErr || yuepaoList == null)
+        (networkErr)
             ? PageStatus.noNetWork(onTap: () {
                 networkErr = false;
                 setState(() {});

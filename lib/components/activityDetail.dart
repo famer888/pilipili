@@ -218,7 +218,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                             : GestureDetector(
                                 onTap: () {
                                   String linkUrl = activityInfo['link'];
-                                  if (linkUrl == '' || linkUrl == null) return;
+                                  if (linkUrl == '') return;
                                   List urlList = linkUrl.split('?');
                                   if (linkUrl.indexOf('toTab') != -1) {
                                     context.go('/');

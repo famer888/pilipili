@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/components/card/comment_item.dart';
 import 'package:pilipili/components/card/navel_card.dart';
-import 'package:pilipili/components/card/newComicsCard.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/common/widgetitlebar.dart';
 import 'package:pilipili/components/page_status.dart';
@@ -258,7 +257,7 @@ class _NovelDetailState extends State<NovelDetail> {
     ;
     isTap = true;
     novelLikeToggle(widget.id).then((res) {
-      if (res != null && res['status'] != 0) {
+      if (res['status'] != 0) {
         if (isFavorites) {
           likeCount--;
         } else {

@@ -62,7 +62,7 @@ class _SeriesDetailState extends State<SeriesDetail> {
             title: seriesInfo == null ? '' : seriesInfo['title'].toString(),
           ),
           Expanded(
-            child: (networkErr || data == null)
+            child: (networkErr)
                 ? PageStatus.noNetWork(onTap: () {
                     networkErr = false;
                     setState(() {});

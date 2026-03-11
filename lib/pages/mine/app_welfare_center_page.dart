@@ -25,7 +25,7 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
   bool loading = true;
   getTaskIndex() async {
     Basic res = await taskIndex();
-    if (res != null && res.status != 0) {
+    if (res.status != 0) {
       data = TaskHomeData.fromJson(res.data);
       loading = false;
       setState(() {});
@@ -43,12 +43,12 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
               PageStatus.showLoading();
               Basic res = await taskUpdate(task.id);
               PageStatus.closeLoading();
-              if (res?.status != 0) {
-                CommonUtils.showText(res?.msg ?? '领取成功');
+              if (res.status != 0) {
+                CommonUtils.showText(res.msg ?? '领取成功');
                 getUserInfo(context);
                 getTaskIndex();
               } else {
-                CommonUtils.showText(res?.msg ?? '领取失败');
+                CommonUtils.showText(res.msg ?? '领取失败');
               }
             },
             child: Container(
@@ -141,12 +141,12 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                 break;
               case 7: //下载APP
                 Basic res = await taskComplete(task.id);
-                if (res != null && res.status != 0) {
+                if (res.status != 0) {
                   getTaskIndex();
                   // String officeSite = Provider.of<HomeConfig>(context, listen: false).config?.officeSite ?? "";
                   CommonUtils.launchURL(task.url);
                 } else {
-                  CommonUtils.showText(res?.msg ?? '错误');
+                  CommonUtils.showText(res.msg ?? '错误');
                 }
 
                 break;
@@ -431,11 +431,11 @@ class _AppWelfareCenterPageState extends State<AppWelfareCenterPage> {
                                     YyShowDialog.showdialog(context, title: '温馨提示', btnText: '确认', cancelText: '取消',
                                         callBack: () async {
                                       Basic res = await onOrderExchange(product_id: item.id);
-                                      if (res?.status != 0) {
-                                        CommonUtils.showText(res?.msg ?? '兑换成功');
+                                      if (res.status != 0) {
+                                        CommonUtils.showText(res.msg ?? '兑换成功');
                                         getUserInfo(context);
                                       } else {
-                                        CommonUtils.showText(res?.msg ?? '兑换失败');
+                                        CommonUtils.showText(res.msg ?? '兑换失败');
                                       }
                                     }, content: (setDialogState) {
                                       return Text.rich(

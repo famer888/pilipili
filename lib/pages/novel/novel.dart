@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/components/filter_list.dart';
 import 'package:pilipili/components/lanmu.dart';
 import 'package:pilipili/components/list_page.dart';
 import 'package:pilipili/components/page_status.dart';
-import 'package:pilipili/global.dart';
 import 'package:pilipili/model/element.dart';
 import 'package:pilipili/utils/api.dart';
 import 'package:pilipili/utils/index.dart';

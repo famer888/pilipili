@@ -71,7 +71,6 @@ class _SmallVideoState extends State<SmallVideo> {
     PlatformAwareHttp.post(AppGlobal.smallVideoApi, data: _pramas).then((json) {
       VideoList res = VideoList.fromJson(json.data);
       if (res.status != 0) {
-        if (res.data == null) return;
         if (res.data.length < AppGlobal.smallVideoLimit) {
           isAll = true;
           CommonUtils.showText('已为您加载完最后' + res.data.length.toString() + '部视频～');
@@ -90,17 +89,15 @@ class _SmallVideoState extends State<SmallVideo> {
           bool isT = videoIndex <= 5 && topPage > 1;
           //需要加载下一页
           bool isB = videoIndex >= res.data.length - 5 && !isAll;
-          if (videoIndex != null) {
-            if (isT) {
-              topPage--;
-              getSmallVideolist(videoPage: topPage, isCreate: true);
-            }
-            if (isB) {
-              page++;
-              getSmallVideolist(videoPage: page, isCreate: true);
-            }
+          if (isT) {
+            topPage--;
+            getSmallVideolist(videoPage: topPage, isCreate: true);
           }
-          if (!isT && !isB) {
+          if (isB) {
+            page++;
+            getSmallVideolist(videoPage: page, isCreate: true);
+          }
+                  if (!isT && !isB) {
             currentIndex = videoIndex;
             setState(() {});
             createController(videoIndex);
@@ -150,12 +147,6 @@ class _SmallVideoState extends State<SmallVideo> {
   @override
   void initState() {
     super.initState();
-    if (AppGlobal.smallVideoApi == null) {
-      AppGlobal.smallVideoApi = '/api/mv/getListFromElement';
-      AppGlobal.smallVideoPramas = {
-        'elementId': widget.elementId,
-      };
-    }
     Wakelock.enable();
     if (widget.videoData == null) {
       getSmallVideolist(videoPage: widget.page);
@@ -189,7 +180,7 @@ class _SmallVideoState extends State<SmallVideo> {
     if (!kIsWeb) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     }
-    controller?.dispose();
+    controller.dispose();
   }
 
   @override
@@ -198,7 +189,7 @@ class _SmallVideoState extends State<SmallVideo> {
       backgroundColor: Color(0xffFFDFE9),
       body: Stack(
         children: [
-          pageLoading || controller == null
+          pageLoading
               ? mounted
                   ? Center(
                       child: Container(
@@ -381,21 +372,13 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
       setState(() {});
     }
 
-    if (timerfc != null) {
-      timerfc.cancel();
-      timerfc = Timer.periodic(Duration(seconds: 2), (time) {
-        showControl = false;
-        setState(() {});
-        time.cancel();
-      });
-    } else {
-      timerfc = Timer.periodic(Duration(seconds: 2), (time) {
-        showControl = false;
-        setState(() {});
-        time.cancel();
-      });
+    timerfc.cancel();
+    timerfc = Timer.periodic(Duration(seconds: 2), (time) {
+      showControl = false;
+      setState(() {});
+      time.cancel();
+    });
     }
-  }
 
   Widget _itemContainer(Widget child) {
     return Container(
@@ -508,7 +491,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
     isLike = widget.data.userFavorites == 1;
     isNovideo = widget.data.source240 == null;
     EventBus().on('stop-current-play', (arg) {
-      if (_controller != null && _controller.value.isPlaying) {
+      if (_controller.value.isPlaying) {
         _controller.pause();
       }
       AppGlobal.videoPageIsActive = false;
@@ -518,9 +501,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
   @override
   void dispose() {
     super.dispose();
-    timerfc?.cancel();
-    _controller?.removeListener(setVideovalue);
-    _controller?.dispose();
+    timerfc.cancel();
+    _controller.removeListener(setVideovalue);
+    _controller.dispose();
     widget.onVideoControllerDisposed();
     EventBus().off('stop-current-play');
   }
@@ -610,7 +593,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                         onTap: () {
                           if (Privilege.isAllowed(context, RESOURCE_TYPE_SHORT_VIDEO, PRIVILEGE_TYPE_COMMENT)) {
                             InputDialog.show(context, '请输入您的影评～').then((value) {
-                              if (value != null && value != '') {
+                              if (value != '') {
                                 publishComment(contentId: widget.data.datumId, contentType: 7, reply: value)
                                     .then((res) {
                                   if (res['status'] != 0) {
@@ -710,11 +693,9 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
   }
 
   createVideo(url) {
-    if (_controller != null) {
-      _controller.dispose();
-      widget.onVideoControllerDisposed();
-    }
-    _controller = VideoPlayerController.network(url);
+    _controller.dispose();
+    widget.onVideoControllerDisposed();
+      _controller = VideoPlayerController.network(url);
     widget.onVideoControllerInited(_controller);
     _controller.initialize().then((_) {
       handleRecordWatch();
@@ -810,7 +791,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
     return GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          if (_controller == null || !_controller.value.isInitialized) {
+          if (!_controller.value.isInitialized) {
             return;
           }
           if (_controller.value.isPlaying) {
@@ -1062,7 +1043,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                           SizedBox(
                                             height: ScreenUtil().setWidth(10),
                                           ),
-                                          widget.data.tags != null && widget.data.tags != ''
+                                          widget.data.tags != ''
                                               ? Container(
                                                   margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                                                   child: Text(
@@ -1081,12 +1062,12 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          widget.data.desc == '' || widget.data.desc == null
+                                          widget.data.desc == ''
                                               ? Container()
                                               : SizedBox(
                                                   height: ScreenUtil().setWidth(13),
                                                 ),
-                                          widget.data.desc == '' || widget.data.desc == null
+                                          widget.data.desc == ''
                                               ? Container()
                                               : Text(
                                                   widget.data.desc,
@@ -1104,23 +1085,10 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                           GestureDetector(
                                             onTap: () {
                                               PersistentState.getState('small_video').then((value) {
-                                                if (value == null) {
-                                                  YyShowDialog.showdialog(context, btnText: '朕知道了',
-                                                      content: (setDialogStatus) {
-                                                    return Text(
-                                                      '点击喜欢后可前往【我的】-【我的收藏】中查看该视频',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Color(0xff646464),
-                                                          fontSize: ScreenUtil().setSp(14)),
-                                                      textAlign: TextAlign.center,
-                                                    );
-                                                  });
-                                                  PersistentState.saveState('small_video', 'isshow');
-                                                }
+                                                
                                               });
                                               userFavorites(type: 10, id: widget.data.datumId).then((res) {
-                                                if (res != null && res.status != 0) {
+                                                if (res.status != 0) {
                                                   isLike ? likeNum-- : likeNum++;
                                                   isLike = !isLike;
                                                   setState(() {});
@@ -1359,7 +1327,7 @@ class _SmallVideoPlayerState extends State<SmallVideoPlayer> with WatchRecordMix
                                 ],
                               ),
                             )),
-                        _controller == null || (_controller != null && !_controller.value.isInitialized)
+                        (!_controller.value.isInitialized)
                             ? Container()
                             : Positioned(
                                 top: 0,

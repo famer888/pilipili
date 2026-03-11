@@ -156,8 +156,8 @@ class _GestureZoomBoxState extends State<GestureZoomBox>
 
   @override
   void dispose() {
-    _scaleAnimController?.dispose();
-    _offsetAnimController?.dispose();
+    _scaleAnimController.dispose();
+    _offsetAnimController.dispose();
     super.dispose();
   }
 
@@ -202,8 +202,8 @@ class _GestureZoomBoxState extends State<GestureZoomBox>
   }
 
   _onScaleStart(ScaleStartDetails details) {
-    _scaleAnimController?.stop();
-    _offsetAnimController?.stop();
+    _scaleAnimController.stop();
+    _offsetAnimController.stop();
     _isScaling = false;
     _isDragging = false;
     _latestScaleUpdateDetails = null;
@@ -226,10 +226,6 @@ class _GestureZoomBoxState extends State<GestureZoomBox>
       return;
     }
     _isScaling = true;
-    if (_latestScaleUpdateDetails == null) {
-      _latestScaleUpdateDetails = details;
-      return;
-    }
 
     // 计算缩放比例
     double scaleIncrement = details.scale - _latestScaleUpdateDetails.scale;
@@ -266,10 +262,6 @@ class _GestureZoomBoxState extends State<GestureZoomBox>
       return;
     }
     _isDragging = true;
-    if (_latestScaleUpdateDetails == null) {
-      _latestScaleUpdateDetails = details;
-      return;
-    }
 
     // 计算本次拖动增量
     double offsetXIncrement = (details.localFocalPoint.dx -
@@ -377,7 +369,7 @@ class _GestureZoomBoxState extends State<GestureZoomBox>
 
   /// 执行动画缩放内容到 [targetScale]
   _animationScale(double targetScale) {
-    _scaleAnimController?.dispose();
+    _scaleAnimController.dispose();
     _scaleAnimController =
         AnimationController(vsync: this, duration: widget.duration);
     Animation anim = Tween<double>(begin: _scale, end: targetScale)
@@ -403,7 +395,7 @@ class _GestureZoomBoxState extends State<GestureZoomBox>
 
   /// 执行动画偏移内容到 [targetOffset]
   _animationOffset(Offset targetOffset) {
-    _offsetAnimController?.dispose();
+    _offsetAnimController.dispose();
     _offsetAnimController =
         AnimationController(vsync: this, duration: widget.duration);
     Animation anim = _offsetAnimController

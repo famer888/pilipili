@@ -121,10 +121,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
   @override
   void initState() {
     super.initState();
-    if (widget.data is Map) {
-      reqData.addAll(widget.data);
-    }
-    reqData['limit'] = widget.limit;
+    reqData.addAll(widget.data);
+      reqData['limit'] = widget.limit;
     if (widget.isShow && !initPage) {
       initPage = true;
       getSearchResult();
@@ -146,12 +144,8 @@ class _PublicBuildListState extends State<PublicBuildList> {
       isAll = false;
       initPage = false;
       setState(() {});
-      if (widget.data != null) {
-        reqData.addAll(widget.data);
-      } else {
-        reqData = {'page': 1, 'limit': widget.limit};
-      }
-      if (widget.isShow) {
+      reqData.addAll(widget.data);
+          if (widget.isShow) {
         initPage = true;
         getSearchResult();
       }

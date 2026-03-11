@@ -52,10 +52,8 @@ class _YyInputState extends State<YyInput> {
   @override
   void dispose() {
     super.dispose();
-    if (timefc != null) {
-      timefc.cancel();
+    timefc.cancel();
     }
-  }
 
   @override
   void initState() {
@@ -148,15 +146,11 @@ class _YyInputState extends State<YyInput> {
                   keyboardType: widget.type,
                   autofocus: widget.autofocus,
                   onChanged: (e) {
-                    if (widget.onChange != null) {
-                      widget.onChange(e);
-                    }
-                  },
+                    widget.onChange(e);
+                                    },
                   onSubmitted: (e) {
-                    if (widget.onSubmit != null) {
-                      widget.onSubmit(e);
-                    }
-                  },
+                    widget.onSubmit(e);
+                                    },
                   controller: widget.controller != null
                       ? widget.controller
                       : inputController,
@@ -198,13 +192,9 @@ class _YyInputState extends State<YyInput> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          if (widget.onSendCode != null) {
-                            if (widget != null) {
-                              widget.initTime(_startTime);
-                            }
-                            widget.onSendCode();
-                          }
-                        },
+                          widget.initTime(_startTime);
+                                                  widget.onSendCode();
+                                                },
                         child: Container(
                           width: ScreenUtil().setWidth(75),
                           height: ScreenUtil().setWidth(24.5),

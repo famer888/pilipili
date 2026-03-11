@@ -78,8 +78,8 @@ class AppEventReport {
   }
 
   videoControllerInit(VideoPlayerController c) {
-    _tracker?.dispose();
-    if (videoInfo == null || videoInfo.isEmpty) return;
+    _tracker.dispose();
+    if (videoInfo.isEmpty) return;
     _tracker = VideoAnalyticsTracker(
       controller: c,
     )..init();
@@ -87,11 +87,11 @@ class AppEventReport {
 
   videoDispose() {
     videoInfo = {};
-    _tracker?.dispose();
+    _tracker.dispose();
   }
 
   videoShare() {
-    _tracker?.trackShare();
+    _tracker.trackShare();
   }
 
   //-----------------视频相关操作---end------------------
@@ -189,7 +189,7 @@ class AppEventReport {
           onResponse: (response, handler) async {
             return handler.next(response);
           },
-          onError: (DioError e, handler) async {
+          onError: (DioException e, handler) async {
             CommonUtils.debugPrint(e);
             return handler.next(e);
           },
@@ -219,7 +219,6 @@ class AppEventReport {
   /// 事件上报
   void track(String event, Map data) {
     Dio dio = _reportDio;
-    if (dio == null) return;
 
     ///上报拦截
     if (reportConfig.isReportAdvertising != 1 && event == "advertising") {
@@ -287,7 +286,7 @@ WebDeviceType detectWebDevice() {
 
   try {
     final dynamic uaData = (nav as dynamic).userAgentData;
-    final String platform = (uaData?.platform as String)?.toLowerCase() ?? '';
+    final String platform = (uaData?.platform as String).toLowerCase() ?? '';
     final bool isMobile = uaData?.mobile == true;
 
     if (platform.isNotEmpty) {

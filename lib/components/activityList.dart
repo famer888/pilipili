@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/components/common/pagetitlebar.dart';
 import 'package:pilipili/theme/default.dart';
@@ -121,7 +120,7 @@ class _ActivityListState extends State<ActivityList> {
           Expanded(
               child: loading
                   ? PageStatus.loading(mounted)
-                  : listData == null || listData.length == 0
+                  : listData.length == 0
                       ? PageStatus.noData()
                       : SingleChildScrollView(
                           padding: EdgeInsets.all(DefaultStyle.pagePadding),

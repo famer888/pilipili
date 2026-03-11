@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pilipili/model/element.dart';
-import 'package:pilipili/routers.dart';
 import 'package:pilipili/theme/default.dart';
 import 'package:pilipili/utils/index.dart';
 import 'package:pilipili/utils/networkImage.dart';
@@ -42,20 +41,16 @@ class _ScrollnavState extends State<Scrollnav> {
     for (int i = 0; i < widget.navitems.length; i++) {
       keys.add(GlobalKey(debugLabel: 'navitems-' + i.toString()));
     }
-    if (widget.emitName != null) {
-      EventBus().on(widget.emitName, (arg) {
-        _pageController.jumpToPage(arg);
-      });
+    EventBus().on(widget.emitName, (arg) {
+      _pageController.jumpToPage(arg);
+    });
     }
-  }
 
   @override
   void dispose() {
     super.dispose();
-    if (widget.emitName != null) {
-      EventBus().off(widget.emitName);
-    }
-    _controller.dispose();
+    EventBus().off(widget.emitName);
+      _controller.dispose();
     _pageController.dispose();
   }
 
@@ -71,15 +66,13 @@ class _ScrollnavState extends State<Scrollnav> {
         .animateTo(offset,
             duration: Duration(milliseconds: 200), curve: Curves.easeInOut)
         .then((value) {
-      if (widget.onNavIndexChanged != null) {
-        widget.onNavIndexChanged(pos);
-      }
-    });
+      widget.onNavIndexChanged(pos);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    return (widget.navitems != null && widget.pages != null)
+    return (widget.pages != null)
         ? Stack(
             children: [
               PageView(

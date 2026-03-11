@@ -76,8 +76,8 @@ class _FillCodePageState extends State<FillCodePage> {
   void initState() {
     super.initState();
     // CommonUtils.debugPrint('-**********************************${widget.type}');
-    if (widget?.args["type"] != null) {
-      currentIndex = widget?.args["type"];
+    if (widget.args["type"] != null) {
+      currentIndex = widget.args["type"];
       setState(() {});
     }
   }
@@ -351,11 +351,9 @@ class _FillCodePageState extends State<FillCodePage> {
             sendPhone(phone: phone.text, phonePrefix: code, type: 2)
                 .then((res) {
               if (res.status == 1) {
-                if (startTime != null) {
-                  startTime();
-                  CommonUtils.showText('发送成功～');
-                }
-              } else {
+                startTime();
+                CommonUtils.showText('发送成功～');
+                            } else {
                 CommonUtils.showText(res.msg);
               }
               PageStatus.closeLoading();
@@ -370,7 +368,7 @@ class _FillCodePageState extends State<FillCodePage> {
     var member = Provider.of<HomeConfig>(context, listen: false).member;
     return Column(
       children: [
-        member?.username == null
+        member.username == null
             ? SizedBox()
             : YyInput(
                 isLogin: false,
@@ -460,11 +458,9 @@ class _FillCodePageState extends State<FillCodePage> {
                     type: 4)
                 .then((res) {
               if (res.status == 1) {
-                if (startTime != null) {
-                  startTime();
-                  CommonUtils.showText('发送成功～');
-                }
-              } else {
+                startTime();
+                CommonUtils.showText('发送成功～');
+                            } else {
                 CommonUtils.showText(res.msg);
               }
             });
@@ -493,11 +489,9 @@ class _FillCodePageState extends State<FillCodePage> {
             sendPhone(phone: newphone.text, phonePrefix: newcode, type: 4)
                 .then((res) {
               if (res.status == 1) {
-                if (newstartTime != null) {
-                  newstartTime();
-                  CommonUtils.showText('发送成功～');
-                }
-              } else {
+                newstartTime();
+                CommonUtils.showText('发送成功～');
+                            } else {
                 CommonUtils.showText(res.msg);
               }
             });

@@ -51,7 +51,7 @@ class _H4ColumnState extends State<H4Column> {
   changeElement() {
     loading = true;
     setState(() {});
-    if (dataList != null && isAll) {
+    if (isAll) {
       page = 1;
     } else {
       page++;

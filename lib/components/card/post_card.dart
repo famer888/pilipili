@@ -43,10 +43,8 @@ class _PostCardState extends State<PostCard> {
     super.initState();
     data = widget.data;
     user = data['user'];
-    if (user != null) {
-      isFollow = user['is_follow'] == 1 ?? false;
-    }
-    isLike = (data['is_like'] ?? 0) == 1;
+    isFollow = user['is_follow'] == 1 ?? false;
+      isLike = (data['is_like'] ?? 0) == 1;
     if (data['medias'].length > 2) {
       medias = data['medias'].sublist(0, 2);
     } else {
@@ -394,10 +392,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (widget.topic == null) {
-                      context.push('/topicDetail/${data['topic_ary'][0]}',
-                          isNoRepeat: true);
-                    }
+                    
                   },
                   child: Text(
                     widget.topic == null ? '#$tag' : '#${widget.topic['name']}',
