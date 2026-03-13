@@ -24,7 +24,7 @@ class AppEventReport {
   int eventLength = 10;
 
   bool isProd = true; //是否正式服
-  late VideoAnalyticsTracker _tracker;
+  VideoAnalyticsTracker? _tracker;
   Map videoInfo = {}; //视频信息
   late Dio _reportDio;
   bool isVip = false;
@@ -78,7 +78,7 @@ class AppEventReport {
   }
 
   videoControllerInit(VideoPlayerController c) {
-    _tracker.dispose();
+    _tracker?.dispose();
     if (videoInfo.isEmpty) return;
     _tracker = VideoAnalyticsTracker(
       controller: c,
@@ -87,11 +87,12 @@ class AppEventReport {
 
   videoDispose() {
     videoInfo = {};
-    _tracker.dispose();
+    _tracker?.dispose();
+    _tracker = null;
   }
 
   videoShare() {
-    _tracker.trackShare();
+    _tracker?.trackShare();
   }
 
   //-----------------视频相关操作---end------------------
@@ -196,9 +197,12 @@ class AppEventReport {
         ),
       );
     if (reportConfig.isEncryption == 1) {
-      final secretValue =
-          PlatformAwareCrypto.encryptSecret('${reportConfig.authenticationKey}_${reportConfig.authenticationTime}');
-      _reportDio.options.headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Cf-Ray-Xf': secretValue};
+      final secretValue = PlatformAwareCrypto.encryptSecret(
+          '${reportConfig.authenticationKey}_${reportConfig.authenticationTime}');
+      _reportDio.options.headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cf-Ray-Xf': secretValue
+      };
 
       _reportDio.interceptors.add(
         InterceptorsWrapper(onRequest: (options, handler) {
@@ -227,7 +231,8 @@ class AppEventReport {
     } else if (reportConfig.isReportAdClick != 1 && event == "ad_click") {
       //广告点击
       return;
-    } else if (reportConfig.isReportAdImpression != 1 && event == "ad_impression") {
+    } else if (reportConfig.isReportAdImpression != 1 &&
+        event == "ad_impression") {
       //广告展示
       return;
     } else if (reportConfig.isReportNavigation != 1 && event == "navigation") {
@@ -236,13 +241,15 @@ class AppEventReport {
     } else if (reportConfig.isReportPageClick != 1 && event == "page_click") {
       //应用页面点击
       return;
-    } else if (reportConfig.isReportAppPageView != 1 && event == "app_page_view") {
+    } else if (reportConfig.isReportAppPageView != 1 &&
+        event == "app_page_view") {
       //应用页面展示
       return;
     } else if (reportConfig.isReportVideoEvent != 1 && event == "video_event") {
       //视频事件
       return;
-    } else if (reportConfig.isReportKeywordClick != 1 && event == "keyword_click") {
+    } else if (reportConfig.isReportKeywordClick != 1 &&
+        event == "keyword_click") {
       //关键词搜索点击
       return;
     }
@@ -256,7 +263,8 @@ class AppEventReport {
     });
 
     if (eventList.length >= eventLength) {
-      final List<Map<String, dynamic>> batch = List<Map<String, dynamic>>.from(eventList);
+      final List<Map<String, dynamic>> batch =
+          List<Map<String, dynamic>>.from(eventList);
       eventList.clear();
 
       dio
@@ -291,7 +299,9 @@ WebDeviceType detectWebDevice() {
 
     if (platform.isNotEmpty) {
       if (platform.contains('android')) return WebDeviceType.android;
-      if (platform.contains('ios') || platform.contains('iphone') || platform.contains('ipad')) {
+      if (platform.contains('ios') ||
+          platform.contains('iphone') ||
+          platform.contains('ipad')) {
         return WebDeviceType.ios;
       }
       if (platform.contains('mac') ||
@@ -315,12 +325,17 @@ WebDeviceType detectWebDevice() {
   final plat = (nav.platform ?? '').toLowerCase();
   final isIpadOS = plat == 'macintel' && (nav.maxTouchPoints ?? 0) > 1;
 
-  final bool uaLikeAndroid =
-      ua.contains('android') && !ua.contains('windows') && !ua.contains('macintosh') && !ua.contains('cros');
+  final bool uaLikeAndroid = ua.contains('android') &&
+      !ua.contains('windows') &&
+      !ua.contains('macintosh') &&
+      !ua.contains('cros');
 
   if (uaLikeAndroid) return WebDeviceType.android;
 
-  if (ua.contains('iphone') || ua.contains('ipad') || ua.contains('ipod') || isIpadOS) {
+  if (ua.contains('iphone') ||
+      ua.contains('ipad') ||
+      ua.contains('ipod') ||
+      isIpadOS) {
     return WebDeviceType.ios;
   }
 

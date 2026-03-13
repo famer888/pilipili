@@ -62,7 +62,7 @@ class _SmallVideoState extends State<SmallVideo> {
   bool initVideoPage = false;
   List<VideoItem> videoData = [];
 
-  Map<int, VideoPlayerController> vControllerMaps = {};
+  Map<int, VideoPlayerController?> vControllerMaps = {};
 
   getSmallVideolist({int? videoPage, bool isCreate = false}) {
     if (widget.videoData != null) return;
@@ -155,7 +155,7 @@ class _SmallVideoState extends State<SmallVideo> {
     } else {
       getVideoDetail(id: widget.videoData['id'] == null ? widget.videoData['related_id'] : widget.videoData['id'])
           .then((res) {
-        if (res.status != 0) {
+        if (res!.status != 0) {
           VideoItem videoDetail = VideoItem.fromJson(res.data!.toJson());
           videoDetail.coverThumbVertical = CommonUtils.getThumb(widget.videoData);
           videoDetail.countLike = res.data!.favorites;
@@ -254,7 +254,7 @@ class _SmallVideoState extends State<SmallVideo> {
                         vControllerMaps[index] = _controller;
                       },
                       onVideoControllerDisposed: () {
-                        vControllerMaps[index] = null!;
+                        vControllerMaps[index] = null;
                       },
                       currentIndex: currentIndex,
                       data: videoList[index],

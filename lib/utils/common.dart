@@ -283,8 +283,8 @@ class CommonUtils {
     if (url == null) return CommonUtils.debugPrint('无封面图');
     void doWork(args, _freeIndex) async {
       if (args[0] != null || args[1] != null || args[0] != '') {
-        dynamic decrypted;
-        String data;
+        dynamic? decrypted;
+        String? data;
         decrypted = AppGlobal.imageCacheBox!.get(args[0]) ?? AppGlobal.imageAssetBox!.get(args[0]);
         if (decrypted == null) {
           try {
@@ -314,7 +314,7 @@ class CommonUtils {
           args[3]();
         }
         decrypted = null;
-        data = null!;
+        data = null;
       }
       wdsRuningStatuses[_freeIndex] = false;
       int f = wdsRuningStatuses.indexWhere((element) => !element);

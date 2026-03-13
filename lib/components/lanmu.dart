@@ -61,7 +61,7 @@ class _LanmuState extends State<Lanmu> with ElementMixin, CardMixin {
       setState(() {});
     }
     await getConstructById(id: widget.id, page: page, limit: limit).then((res) {
-      isAll = res.elements!.length < limit;
+      isAll = res!.elements!.length < limit;
       if (page == 1) {
         cm_data = res;
         cm_data.elements!.forEach((item) {

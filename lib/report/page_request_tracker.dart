@@ -72,7 +72,7 @@ class PageRequestTracker {
     _initClosed.remove(key);
   }
 
-  void onRequestStart(String pageKey, int pageEnterMs, int nowMs) {
+  void onRequestStart(String? pageKey, int pageEnterMs, int nowMs) {
     final key = _PageSessionKey(pageKey, pageEnterMs);
     final list = _records[key];
     if (list == null) return;

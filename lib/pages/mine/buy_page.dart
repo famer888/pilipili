@@ -241,7 +241,9 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                               isFlow: false,
                               isShow: true,
                               row: tabList[e]['row'],
-                              aspectRatio: tabList[e]['aspectRatio'],
+                              aspectRatio: (tabList[e]['aspectRatio'] as num?)
+                                      ?.toDouble() ??
+                                  1.0,
                               data: {
                                 'category': tabList[e]['index'] == 3 ? 1 : null,
                                 'type': tabList[e]['id']

@@ -32,8 +32,8 @@ class _DongmanState extends State<Dongman> {
   }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig(3);
-    data.value!.asMap().forEach((index, data) {
+    ElementModel? data = await getFisrtTopNavConfig(3);
+    data?.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {

@@ -40,9 +40,9 @@ class _AnwangPageState extends State<AnwangPage> {
   }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig(213);
+    ElementModel? data = await getFisrtTopNavConfig(213);
     loading = false;
-    data.value!.asMap().forEach((index, data) {
+    data?.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {

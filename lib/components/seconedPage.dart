@@ -29,7 +29,7 @@ class _SeconedPageState extends State<SeconedPage> {
   late ConstructModel cm_data;
   void getPageData() async {
     getConstructById(id: widget.id, page: page, limit: limit).then((res) {
-      isAll = res.elements!.length < limit;
+      isAll = res!.elements!.length < limit;
       if (page == 1) {
         cm_data = res;
       } else {

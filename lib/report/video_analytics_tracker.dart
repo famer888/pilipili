@@ -108,7 +108,11 @@ class VideoAnalyticsTracker {
 
     if (_accumulatedPlayTime >= _oneMinute) {
       _hasLoggedOneMinute = true;
-      mvView(int.parse(AppEventReport.instance.videoInfo['video_id'].toString()));
+      final videoId = int.tryParse(
+          AppEventReport.instance.videoInfo['video_id']?.toString() ?? '');
+      if (videoId != null) {
+        mvView(videoId);
+      }
     }
   }
 
@@ -162,8 +166,10 @@ class VideoAnalyticsTracker {
       'video_behavior_name': eventMeta['name'],
     };
 
-    payload.addAll(extra!);
-  
+    if (extra != null) {
+      payload.addAll(extra);
+    }
+
     AppEventReport.instance.track('video_event', payload);
   }
 }

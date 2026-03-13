@@ -43,7 +43,7 @@ class InputOverlay extends ModalRoute<String> {
   Color get barrierColor => const Color(0x01000000);
 
   @override
-  String get barrierLabel => null!;
+  String? get barrierLabel => null;
 
   @override
   bool get maintainState => true;

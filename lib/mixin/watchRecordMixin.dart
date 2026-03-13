@@ -6,7 +6,7 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/index.dart';
 
 mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
-  late Timer watchRcordTimer;
+  Timer? watchRcordTimer;
 
   @override
   void dispose() {
@@ -32,7 +32,7 @@ mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
       int? current, //小说  当前章节index
       dynamic offset}) {
     CommonUtils.debugPrint('startWatchRecordTimer');
-    CommonUtils.debugPrint('-----上次播放至:'+offset.toString()+'');
+    CommonUtils.debugPrint('-----上次播放至:' + offset.toString() + '');
     CommonUtils.debugPrint('send record_watch');
     EventBus().emit('record_watch', [
       theBox,
@@ -50,7 +50,8 @@ mixin WatchRecordMixin<T extends StatefulWidget> on State<T> {
   }
 
   void stopWatchRecordTimer() {
-    watchRcordTimer.cancel();
+    watchRcordTimer?.cancel();
+    watchRcordTimer = null;
   }
 
   void handleRecordWatch() {

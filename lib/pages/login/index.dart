@@ -33,9 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     if (widget.isExpired) {
       // getHomeConfig(context);
     }
-    currentIndex = widget.type!;
-    setState(() {});
-    }
+    currentIndex = widget.type ?? 0;
+  }
 
   setToken(String value) async {
     Box box = AppGlobal.appBox!;
@@ -50,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
     Function? startTime;
     String code = '86';
     return LoginBox(
-      btnText: loginType == 1 ? [PPString.register, PPString.login] : PPString.login,
+      btnText:
+          loginType == 1 ? [PPString.register, PPString.login] : PPString.login,
       btnMargin: ScreenUtil().setWidth(60),
       topText: Container(
         margin: EdgeInsets.only(top: ScreenUtil().setWidth(16)),
@@ -78,7 +78,9 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                   padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
                   child: Text(
-                    loginType == 0 ? PPString.acountPasswodLogin : PPString.phoneCodeLogin,
+                    loginType == 0
+                        ? PPString.acountPasswodLogin
+                        : PPString.phoneCodeLogin,
                     style: TextStyle(
                         color: Color(0xffffffff),
                         fontWeight: FontWeight.bold,
@@ -248,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (res.status == 1) {
                       startTime?.call();
                       CommonUtils.showText('发送成功～');
-                                        } else {
+                    } else {
                       CommonUtils.showText(res.msg!);
                     }
                     PageStatus.closeLoading();

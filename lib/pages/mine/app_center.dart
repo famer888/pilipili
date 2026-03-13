@@ -31,19 +31,25 @@ class _AppCenterState extends State<AppCenter> {
 
   getData() async {
     AppCenterModel result = await getAppCenter();
+    if (!mounted) return;
+    final List banners = result.data?.banner ?? [];
+    final List apps = result.data?.apps ?? [];
     setState(() {
-      banner.addAll(result.data!.banner!);
-      appList.addAll(result.data!.apps!);
-      ReportUtils.adVertising(
-          eventType: AdEventType.show,
-          advertisingKey: AdType.appsList,
-          advertisingId: result.data!.apps!.map((e) => e['id']).toList().join(','),
-          adSlotKey: result.data!.apps!.first['advertise_location_code'],
-          adSlotName: result.data!.apps!.first['ad_slot_name'],
-          adtype: result.data!.apps!.first['ad_type']);
+      banner.addAll(banners);
+      appList.addAll(apps);
+      if (apps.isNotEmpty) {
+        final firstApp = apps.first;
+        ReportUtils.adVertising(
+            eventType: AdEventType.show,
+            advertisingKey: AdType.appsList,
+            advertisingId: apps.map((e) => e['id']).toList().join(','),
+            adSlotKey: firstApp['advertise_location_code'],
+            adSlotName: firstApp['ad_slot_name'],
+            adtype: firstApp['ad_type']);
+      }
       isLoading = false;
     });
-    }
+  }
 
   onRefreshPost() {
     banner = [];
@@ -74,10 +80,14 @@ class _AppCenterState extends State<AppCenter> {
                           banner: banner,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 24.w, left: 16.w, bottom: 16.w),
+                          padding: EdgeInsets.only(
+                              top: 24.w, left: 16.w, bottom: 16.w),
                           child: Text(
                             '推荐APP',
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp),
                           ),
                         )
                       ],
@@ -157,11 +167,13 @@ class _SwiperContainerState extends State<SwiperContainer> {
             child: Swiper(
               onTap: (index) {
                 adVertising(AdEventType.click, _banner[index]);
-                CommonUtils.bannerTopath(context, url: _banner[index]['url'], type: _banner[index]['type']);
+                CommonUtils.bannerTopath(context,
+                    url: _banner[index]['url'], type: _banner[index]['type']);
               },
               itemBuilder: (BuildContext context, int index) {
                 return VisibilityDetector(
-                    key: Key('${ReportUtils.getAdType(AdType.welfareBanner)['key']}_Banner_${_banner[index]['id']}'),
+                    key: Key(
+                        '${ReportUtils.getAdType(AdType.welfareBanner)['key']}_Banner_${_banner[index]['id']}'),
                     child: Container(
                       width: 315.w,
                       height: 150.w,
@@ -189,7 +201,8 @@ class _SwiperContainerState extends State<SwiperContainer> {
             height: _banner.length == 1 ? 150.w : 0,
             child: _banner.length == 1
                 ? VisibilityDetector(
-                    key: Key('${ReportUtils.getAdType(AdType.welfareBanner)['key']}_Banner_${_banner[0]['id']}'),
+                    key: Key(
+                        '${ReportUtils.getAdType(AdType.welfareBanner)['key']}_Banner_${_banner[0]['id']}'),
                     child: GestureDetector(
                       onTap: () {
                         adVertising(AdEventType.click, _banner[0]);
@@ -218,7 +231,15 @@ class ApplicationItem extends StatefulWidget {
   final int? clicked;
   final String? link;
   final Map? app;
-  ApplicationItem({Key? key, this.appname, this.iconurl, this.des, this.link, this.clicked, this.id, this.app})
+  ApplicationItem(
+      {Key? key,
+      this.appname,
+      this.iconurl,
+      this.des,
+      this.link,
+      this.clicked,
+      this.id,
+      this.app})
       : super(key: key);
 
   @override
@@ -243,11 +264,18 @@ class _ApplicationItemState extends State<ApplicationItem> {
   }
 
   formatNum(double number, int postion) {
-    if ((number.toString().length - number.toString().lastIndexOf(".") - 1) < postion) {
+    if ((number.toString().length - number.toString().lastIndexOf(".") - 1) <
+        postion) {
       //小数点后有几位小数
-      return number.toStringAsFixed(postion).substring(0, number.toString().lastIndexOf(".") + postion + 1).toString();
+      return number
+          .toStringAsFixed(postion)
+          .substring(0, number.toString().lastIndexOf(".") + postion + 1)
+          .toString();
     } else {
-      return number.toString().substring(0, number.toString().lastIndexOf(".") + postion + 1).toString();
+      return number
+          .toString()
+          .substring(0, number.toString().lastIndexOf(".") + postion + 1)
+          .toString();
     }
   }
 
@@ -335,11 +363,15 @@ class _ApplicationItemState extends State<ApplicationItem> {
                     width: 56.w,
                     height: 34.w,
                     decoration: BoxDecoration(
-                        gradient: DefaultStyle.defaluGrandientLine, borderRadius: BorderRadius.circular(50.w)),
+                        gradient: DefaultStyle.defaluGrandientLine,
+                        borderRadius: BorderRadius.circular(50.w)),
                     child: Center(
                       child: Text(
                         '下载',
-                        style: TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   )

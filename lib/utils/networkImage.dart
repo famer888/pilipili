@@ -196,19 +196,22 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
     if (isLoad != 0) return;
     if (widget.isVideoThumb) return;
     var thumbUrl = '';
-    if (!widget.nothumb!) {
-      int idx = widget.url.toString().lastIndexOf('.');
-      String prev = widget.url.toString().substring(0, idx);
-      String sufix = widget.url.toString().substring(idx);
-      double realWidth = (widget.width ?? 0) * (window.devicePixelRatio ?? 1);
-      if (realWidth < 180) {
-        thumbUrl = '$prev!360x0$sufix';
-      }
-      if (realWidth >= 180 && realWidth < 360) {
-        thumbUrl = '$prev!360x0$sufix';
-      }
-      if (realWidth >= 360 && realWidth < 720) {
-        thumbUrl = '$prev!720x0$sufix';
+    if (!(widget.nothumb ?? false)) {
+      final urlStr = widget.url.toString();
+      final idx = urlStr.lastIndexOf('.');
+      if (idx > 0 && idx < urlStr.length - 1) {
+        String prev = urlStr.substring(0, idx);
+        String sufix = urlStr.substring(idx);
+        double realWidth = (widget.width ?? 0) * (window.devicePixelRatio ?? 1);
+        if (realWidth < 180) {
+          thumbUrl = '$prev!360x0$sufix';
+        }
+        if (realWidth >= 180 && realWidth < 360) {
+          thumbUrl = '$prev!360x0$sufix';
+        }
+        if (realWidth >= 360 && realWidth < 720) {
+          thumbUrl = '$prev!720x0$sufix';
+        }
       }
     }
     isLoad = 1;
@@ -262,10 +265,10 @@ class _AwareNetworkImageState extends State<AwareNetworkImage> {
     if (_key == info.key) {
       var visiblePercentage = info.visibleFraction * 100;
       if (visiblePercentage == 0) {
-        delayload.cancel();
-        delayload = null!;
+        // delayload.cancel();
+        // delayload = null!;
       } else {
-        
+        setImgUrl();
       }
     }
   }

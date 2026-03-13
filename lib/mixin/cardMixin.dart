@@ -112,7 +112,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        onTap!();
+        onTap?.call();
         if (privilegeMap[contentType] != null) {
           bool _isAllowed = Privilege.isAllowed(context, privilegeMap[contentType]['privilege'], PRIVILEGE_TYPE_VIEW);
           if (!_isAllowed) {
@@ -320,17 +320,18 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
   }
 
   Widget renderTagIcon(widget) {
-    String _asset = "";
+    String? _asset = "";
     if (widget.tagIconType == 0) {
       _asset = 'assets/images/icon_free.png';
     } else if (widget.tagIconType == 1) {
-      _asset = null!; // 'assets/images/icon_vip.png';
+      // _asset = null!; // 'assets/images/icon_vip.png';
+      // _asset =  'assets/images/icon_vip.png';
     } else if (widget.tagIconType == 2) {
       _asset = 'assets/images/icon_hot.png';
     } else if (widget.tagIconType == 3) {
       _asset = 'assets/images/icon_ad.png';
     }
-    return widget.tagIconType != null
+    return widget.tagIconType != null && _asset.isNotEmpty
         ? Positioned(
             top: 0,
             right: 0,

@@ -32,8 +32,8 @@ class _ManhuaState extends State<Manhua> {
   }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig(4);
-    data.value!.asMap().forEach((index, data) {
+    ElementModel? data = await getFisrtTopNavConfig(4);
+    data?.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {

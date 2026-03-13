@@ -458,13 +458,13 @@ class AlphaState extends State<Alpha> {
     }
   }
 
-  String _getHitAlpha(offset) {
+  String? _getHitAlpha(offset) {
     int hit = offset;
     if (hit < 0) {
-      return null!;
+      return null;
     }
     if (hit >= widget.alphas!.length) {
-      return null!;
+      return null;
     }
     return widget.alphas![hit];
   }
@@ -476,7 +476,7 @@ class AlphaState extends State<Alpha> {
     }
   }
 
-  _touchStartEvent(String tag) {
+  _touchStartEvent(String? tag) {
     setState(() {
       isTouched = true;
     });
@@ -485,7 +485,7 @@ class AlphaState extends State<Alpha> {
     widget.onTouchStart!();
     }
 
-  _touchMoveEvent(String tag) {
+  _touchMoveEvent(String? tag) {
     _onAlphaChange(tag);
     widget.onTouchMove!();
     }
@@ -544,15 +544,15 @@ class AlphaState extends State<Alpha> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onVerticalDragDown: (DragDownDetails details) {
-        int touchOffset2Begin =
+        int? touchOffset2Begin =
             ((details.localPosition.dy - pyPading) / ((widget.alphaItemSize ?? 0) + (alphaPading * 2))).truncate();
-        String tag = _getHitAlpha(touchOffset2Begin);
+        String? tag = _getHitAlpha(touchOffset2Begin);
         _touchStartEvent(tag);
             },
       onVerticalDragUpdate: (DragUpdateDetails details) {
         int touchOffset2Begin =
             ((details.localPosition.dy - pyPading) / ((widget.alphaItemSize ?? 0) + (alphaPading * 2))).truncate();
-        String tag = _getHitAlpha(touchOffset2Begin);
+        String? tag = _getHitAlpha(touchOffset2Begin);
         _touchMoveEvent(tag);
             },
       onVerticalDragEnd: (DragEndDetails details) {

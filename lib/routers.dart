@@ -69,71 +69,87 @@ class GoRouterModel {
   GoRouterModel({
     this.key,
     this.builder,
-    this.pageBuilder = _defaultPageBuilder,
+    this.pageBuilder,
   });
 
   String? key;
   Widget Function(BuildContext, GoRouterState)? builder;
-  Page<void> Function(BuildContext, GoRouterState) pageBuilder;
-
-  static Page<void> _defaultPageBuilder(BuildContext context, GoRouterState state) {
-    return MaterialPage<void>(child: SizedBox.shrink());
-  }
+  Page<void> Function(BuildContext, GoRouterState)? pageBuilder;
 }
 
 extension GetGoRouter on GoRouterModel {
   GoRoute toGoRouter({List<GoRoute>? routes}) {
-    return this.pageBuilder != null
-        ? GoRoute(path: this.key!, pageBuilder: this.pageBuilder, routes: routes ?? [])
-        : GoRoute(path: this.key!, builder: this.builder, routes: routes ?? []);
+    if (pageBuilder != null) {
+      return GoRoute(
+          path: key!, pageBuilder: pageBuilder!, routes: routes ?? []);
+    }
+
+    return GoRoute(path: key!, builder: builder!, routes: routes ?? []);
   }
 }
 
 class Routes {
   //home页限免页面
-  static GoRouterModel xianmian = GoRouterModel(key: 'xianmian', builder: (context, state) => Xianmian());
+  static GoRouterModel xianmian =
+      GoRouterModel(key: 'xianmian', builder: (context, state) => Xianmian());
 
   // 网黄、cos、时间表等二级页面
   static GoRouterModel seconedPage = GoRouterModel(
       key: 'seconedPage/:sctitle/:scid',
       builder: (context, state) => SeconedPage(
-            title: state!.pathParameters['sctitle'] == null ? null : state!.pathParameters['sctitle'],
-            id: state!.pathParameters['scid'] == null ? null : int.parse(state!.pathParameters['\\'] ?? '0'),
+            title: state.pathParameters['sctitle'],
+            id: state.pathParameters['scid'] == null
+                ? null
+                : int.parse(state.pathParameters['scid'] ?? '0'),
           ));
 
   // 网黄、cos、时间表等二级页面详情
-  static GoRouterModel seconedPageDetail =
-      GoRouterModel(key: 'seconedPageDetail', builder: (context, state) => SeconedPageDetail());
+  static GoRouterModel seconedPageDetail = GoRouterModel(
+      key: 'seconedPageDetail',
+      builder: (context, state) => SeconedPageDetail());
 
   //搜索
-  static GoRouterModel search = GoRouterModel(key: 'search', builder: (context, state) => SearchPage());
+  static GoRouterModel search =
+      GoRouterModel(key: 'search', builder: (context, state) => SearchPage());
 
   //精彩活动列表
-  static GoRouterModel activityList = GoRouterModel(key: 'activityList', builder: (context, state) => ActivityList());
+  static GoRouterModel activityList = GoRouterModel(
+      key: 'activityList', builder: (context, state) => ActivityList());
 
   //精彩活动详情
   static GoRouterModel activityDetail = GoRouterModel(
       key: 'activityDetail/:acid',
       builder: (context, state) => ActivityDetail(
-            id: state!.pathParameters['acid'] == null ? null : '${state!.pathParameters['acid']}',
+            id: state!.pathParameters['acid'] == null
+                ? null
+                : '${state!.pathParameters['acid']}',
           ));
 
 //长视频详情页
   static GoRouterModel videoDetail = GoRouterModel(
       key: 'videoDetail/:vid',
       builder: (context, state) => VideoDetail(
-          id: state!.pathParameters['vid'] == null ? null : int.parse(state!.pathParameters['vid'].toString())));
+          id: state!.pathParameters['vid'] == null
+              ? null
+              : int.parse(state!.pathParameters['vid'].toString())));
 
 //更多列表
   static GoRouterModel morePage = GoRouterModel(
       key: 'morePage/:mid/:mtitle/:morePageType',
       builder: (context, state) => MorePage(
-          title: state!.pathParameters['mtitle'] == null ? '' : state!.pathParameters['mtitle'].toString(),
-          id: state!.pathParameters['mid'] == null ? null : int.parse(state!.pathParameters['mid'].toString()),
-          morePageType: state!.pathParameters['morePageType'] == null ? 1 : int.parse(state!.pathParameters['morePageType'].toString())));
+          title: state!.pathParameters['mtitle'] == null
+              ? ''
+              : state!.pathParameters['mtitle'].toString(),
+          id: state!.pathParameters['mid'] == null
+              ? null
+              : int.parse(state!.pathParameters['mid'].toString()),
+          morePageType: state!.pathParameters['morePageType'] == null
+              ? 1
+              : int.parse(state!.pathParameters['morePageType'].toString())));
 
 //登录页面
-  static GoRouterModel login = GoRouterModel(key: 'login', builder: (context, state) => LoginPage());
+  static GoRouterModel login =
+      GoRouterModel(key: 'login', builder: (context, state) => LoginPage());
 
 //注册找回密码
   static GoRouterModel register = GoRouterModel(
@@ -144,7 +160,8 @@ class Routes {
               : int.parse(state!.pathParameters['rtype'].toString())));
 
 //设置
-  static GoRouterModel setup = GoRouterModel(key: 'setup', builder: (context, state) => SetupPage());
+  static GoRouterModel setup =
+      GoRouterModel(key: 'setup', builder: (context, state) => SetupPage());
 
 //短视频
   static GoRouterModel smallVideo = GoRouterModel(
@@ -153,8 +170,11 @@ class Routes {
         final args = AppGlobal.currentDetailRouteExtra;
         return SmallVideo(
             videoData: args!['videoData'] == null ? null : args['videoData'],
-            elementId: args!['elementId'] == null ? null : int.parse(args['elementId'].toString()),
-            page: args!['page'] == null ? 1 : int.parse(args!['page'].toString()),
+            elementId: args!['elementId'] == null
+                ? null
+                : int.parse(args['elementId'].toString()),
+            page:
+                args!['page'] == null ? 1 : int.parse(args!['page'].toString()),
             id: args!['id'] == null ? null : int.parse(args!['id'].toString()));
       });
 
@@ -165,8 +185,11 @@ class Routes {
         final args = AppGlobal.currentDetailRouteExtra;
         return SmallVideo(
             videoData: args!['videoData'] == null ? null : args['videoData'],
-            elementId: args!['elementId'] == null ? null : int.parse(args!['elementId'].toString()),
-            page: args!['page'] == null ? 1 : int.parse(args!['page'].toString()),
+            elementId: args!['elementId'] == null
+                ? null
+                : int.parse(args!['elementId'].toString()),
+            page:
+                args!['page'] == null ? 1 : int.parse(args!['page'].toString()),
             id: args!['id'] == null ? null : int.parse(args!['id'].toString()));
       });
 
@@ -179,8 +202,8 @@ class Routes {
       });
 
 //消息中心
-  static GoRouterModel messagecenter =
-      GoRouterModel(key: 'messagecenter', builder: (context, state) => MessageCenter());
+  static GoRouterModel messagecenter = GoRouterModel(
+      key: 'messagecenter', builder: (context, state) => MessageCenter());
 
 //系统消息
   static GoRouterModel noticemessage = GoRouterModel(
@@ -191,15 +214,17 @@ class Routes {
       });
 
 //客服
-  static GoRouterModel customerService =
-      GoRouterModel(key: 'customerService', builder: (context, state) => CustomerService());
+  static GoRouterModel customerService = GoRouterModel(
+      key: 'customerService', builder: (context, state) => CustomerService());
 
 //图集详情
   static GoRouterModel atlasDetail = GoRouterModel(
       key: 'atlasDetail/:aid',
       builder: (context, state) {
         return AtlasDetail(
-            id: state!.pathParameters['aid'] == null ? null : int.parse(state!.pathParameters['aid'].toString()));
+            id: state!.pathParameters['aid'] == null
+                ? null
+                : int.parse(state!.pathParameters['aid'].toString()));
       });
 
 //约妹详情
@@ -207,7 +232,9 @@ class Routes {
       key: 'yuemeiDetail/:yid',
       builder: (context, state) {
         return YuemeiDetail(
-            id: state!.pathParameters['yid'] == null ? null : int.parse(state!.pathParameters['yid'].toString()));
+            id: state!.pathParameters['yid'] == null
+                ? null
+                : int.parse(state!.pathParameters['yid'].toString()));
       });
 
 //系列详情
@@ -215,7 +242,9 @@ class Routes {
       key: 'seriesDetail/:sid/:stype',
       builder: (context, state) {
         return SeriesDetail(
-            id: state!.pathParameters['sid'] == null ? null : int.parse(state.pathParameters['sid'].toString()),
+            id: state!.pathParameters['sid'] == null
+                ? null
+                : int.parse(state.pathParameters['sid'].toString()),
             type: state!.pathParameters['sid'] == null
                 ? null
                 : int.parse(state!.pathParameters['stype'].toString()));
@@ -230,12 +259,12 @@ class Routes {
       });
 
 //在线客服
-  static GoRouterModel onlineService =
-      GoRouterModel(key: 'onlineService', builder: (context, state) => OnlineService());
+  static GoRouterModel onlineService = GoRouterModel(
+      key: 'onlineService', builder: (context, state) => OnlineService());
 
 //联系官方
-  static GoRouterModel contactOfficial =
-      GoRouterModel(key: 'contactOfficial', builder: (context, state) => ContactOfficial());
+  static GoRouterModel contactOfficial = GoRouterModel(
+      key: 'contactOfficial', builder: (context, state) => ContactOfficial());
 
 //应用推荐
   static GoRouterModel walfareIndexPage = GoRouterModel(
@@ -247,21 +276,25 @@ class Routes {
       });
 
 //会员充值页面
-  static GoRouterModel vip = GoRouterModel(key: 'vip', builder: (context, state) => VipPage());
+  static GoRouterModel vip =
+      GoRouterModel(key: 'vip', builder: (context, state) => VipPage());
 
 //充值记录
-  static GoRouterModel rechargeRecord =
-      GoRouterModel(key: 'RechargeRecord/:type', builder: (context, state) => RechargeRecord(args: state!.pathParameters));
+  static GoRouterModel rechargeRecord = GoRouterModel(
+      key: 'RechargeRecord/:type',
+      builder: (context, state) => RechargeRecord(args: state!.pathParameters));
 
 //观看记录
-  static GoRouterModel watchhistory =
-      GoRouterModel(key: 'watchhistory', builder: (context, state) => WatchHistoryPage());
+  static GoRouterModel watchhistory = GoRouterModel(
+      key: 'watchhistory', builder: (context, state) => WatchHistoryPage());
 
   //漫画详情
   static GoRouterModel comicsdetail = GoRouterModel(
       key: 'comicsdetail/:cid',
       builder: (context, state) => ComicsDetatl(
-          id: state!.pathParameters['cid'] == null ? null : int.parse(state.pathParameters['cid'].toString())));
+          id: state!.pathParameters['cid'] == null
+              ? null
+              : int.parse(state.pathParameters['cid'].toString())));
 
 //漫画阅读器
   static GoRouterModel comicReader = GoRouterModel(
@@ -270,10 +303,15 @@ class Routes {
         final args = AppGlobal.currentReaderRouteExtra;
         return ComicReader(
           id: args!['id'] == null ? null : int.parse(args!['id'].toString()),
-          episode: args!['episode'] == null ? null : int.parse(args!['episode'].toString()),
-          allEpisode: args!['allEpisode'] == null ? null : int.parse(args!['allEpisode'].toString()),
+          episode: args!['episode'] == null
+              ? null
+              : int.parse(args!['episode'].toString()),
+          allEpisode: args!['allEpisode'] == null
+              ? null
+              : int.parse(args!['allEpisode'].toString()),
           title: args!['title'] == null ? null : args!['title'],
-          type: args!['type'] == null ? null : int.parse(args['type'].toString()),
+          type:
+              args!['type'] == null ? null : int.parse(args['type'].toString()),
         );
       });
 
@@ -319,56 +357,73 @@ class Routes {
       });
 
 //我的收藏
-  static GoRouterModel collect = GoRouterModel(key: 'collect', builder: (context, state) => CollectPage());
+  static GoRouterModel collect =
+      GoRouterModel(key: 'collect', builder: (context, state) => CollectPage());
 
 //我的下载
-  static GoRouterModel downPage = GoRouterModel(key: 'downPage', builder: (context, state) => DownPage());
+  static GoRouterModel downPage =
+      GoRouterModel(key: 'downPage', builder: (context, state) => DownPage());
 
 //皮哩币充值
-  static GoRouterModel coinRecharge = GoRouterModel(key: 'coinRecharge', builder: (context, state) => Coinrecharge());
+  static GoRouterModel coinRecharge = GoRouterModel(
+      key: 'coinRecharge', builder: (context, state) => Coinrecharge());
 
 //皮哩币明细
-  static GoRouterModel coinDetail = GoRouterModel(key: 'coinDetail', builder: (context, state) => CoinDetail());
+  static GoRouterModel coinDetail = GoRouterModel(
+      key: 'coinDetail', builder: (context, state) => CoinDetail());
 
 //视频包详情
   static GoRouterModel packageDetail = GoRouterModel(
       key: 'packageDetail/:pid/:contentType/:ptitle',
       builder: (context, state) => PackageDetail(
-          id: state!.pathParameters['pid'] == null ? null : int.parse(state!.pathParameters['pid'].toString()),
+          id: state!.pathParameters['pid'] == null
+              ? null
+              : int.parse(state!.pathParameters['pid'].toString()),
           contentType: state!.pathParameters['pid'] == null
               ? 1
               : int.parse(state!.pathParameters['contentType'].toString()),
-          title: state!.pathParameters['pid'] == null ? '' : state!.pathParameters['ptitle']));
+          title: state!.pathParameters['pid'] == null
+              ? ''
+              : state!.pathParameters['ptitle']));
 
 //邀请好友
-  static GoRouterModel invitefriend = GoRouterModel(key: 'invitefriend', builder: (context, state) => InviteFriend());
+  static GoRouterModel invitefriend = GoRouterModel(
+      key: 'invitefriend', builder: (context, state) => InviteFriend());
 
 //去推广
-  static GoRouterModel promote = GoRouterModel(key: 'promote', builder: (context, state) => Promote());
+  static GoRouterModel promote =
+      GoRouterModel(key: 'promote', builder: (context, state) => Promote());
 
 //邀请记录
-  static GoRouterModel inviterecored =
-      GoRouterModel(key: 'inviterecored', builder: (context, state) => InviteRecored());
+  static GoRouterModel inviterecored = GoRouterModel(
+      key: 'inviterecored', builder: (context, state) => InviteRecored());
 
 //推广方法
-  static GoRouterModel promoteActionList =
-      GoRouterModel(key: 'promoteActionList', builder: (context, state) => PromoteActionList());
+  static GoRouterModel promoteActionList = GoRouterModel(
+      key: 'promoteActionList',
+      builder: (context, state) => PromoteActionList());
 
 //我的购买记录
-  static GoRouterModel buy = GoRouterModel(key: 'buy', builder: (context, state) => BuyPage());
+  static GoRouterModel buy =
+      GoRouterModel(key: 'buy', builder: (context, state) => BuyPage());
 
 //城市选择
-  static GoRouterModel cityPicker = GoRouterModel(key: 'cityPicker', builder: (context, state) => CityPicker());
+  static GoRouterModel cityPicker = GoRouterModel(
+      key: 'cityPicker', builder: (context, state) => CityPicker());
 
   //我的关注
-  static GoRouterModel myFollow = GoRouterModel(key: 'myFollow', builder: (context, state) => MyFollowPage());
+  static GoRouterModel myFollow = GoRouterModel(
+      key: 'myFollow', builder: (context, state) => MyFollowPage());
 
   //我的帖子
-  static GoRouterModel myPost = GoRouterModel(key: 'myPost', builder: (context, state) => MyPostPage());
+  static GoRouterModel myPost =
+      GoRouterModel(key: 'myPost', builder: (context, state) => MyPostPage());
 
   //他人帖子
   static GoRouterModel othersPost = GoRouterModel(
-      key: 'othersPost/:aff', builder: (context, state) => OthersPostPage(aff: int.parse(state!.pathParameters['aff'] ?? '0')));
+      key: 'othersPost/:aff',
+      builder: (context, state) =>
+          OthersPostPage(aff: int.parse(state!.pathParameters['aff'] ?? '0')));
 
   //帖子详情
   static GoRouterModel communityDetail = GoRouterModel(
@@ -378,19 +433,22 @@ class Routes {
           ));
 
   //帖子发布/编辑
-  static GoRouterModel communityPushlish =
-      GoRouterModel(key: 'communityPushlish', builder: (context, state) => CommunityPushlish());
+  static GoRouterModel communityPushlish = GoRouterModel(
+      key: 'communityPushlish',
+      builder: (context, state) => CommunityPushlish());
 
   //收益明細
-  static GoRouterModel incomeDetail = GoRouterModel(key: 'incomeDetail', builder: (context, state) => IncomeDetail());
+  static GoRouterModel incomeDetail = GoRouterModel(
+      key: 'incomeDetail', builder: (context, state) => IncomeDetail());
 
   //提現申請
-  static GoRouterModel withdrawalsPage =
-      GoRouterModel(key: 'withdrawalsPage', builder: (context, state) => WithdrawalsPage());
+  static GoRouterModel withdrawalsPage = GoRouterModel(
+      key: 'withdrawalsPage', builder: (context, state) => WithdrawalsPage());
 
   //提現记录
-  static GoRouterModel withdrawalsRecord =
-      GoRouterModel(key: 'withdrawalsRecord', builder: (context, state) => WithdrawalsRecord());
+  static GoRouterModel withdrawalsRecord = GoRouterModel(
+      key: 'withdrawalsRecord',
+      builder: (context, state) => WithdrawalsRecord());
 
   //图片预览
   static GoRouterModel homePreviewViewPage = GoRouterModel(
@@ -403,11 +461,12 @@ class Routes {
   static GoRouterModel topicDetail = GoRouterModel(
       key: 'topicDetail/:id',
       builder: (context, state) => TopicDetail(
-            id: int.parse(state!.pathParameters['\\'] ?? '0'),
+            id: int.parse(state.pathParameters['id'] ?? '0'),
           ));
 
   //圈子详情
-  static GoRouterModel zhaomu = GoRouterModel(key: 'zhaomu', builder: (context, state) => ZhaomuPage());
+  static GoRouterModel zhaomu =
+      GoRouterModel(key: 'zhaomu', builder: (context, state) => ZhaomuPage());
 
   //视频预览
   static GoRouterModel videoPreview = GoRouterModel(
@@ -418,24 +477,25 @@ class Routes {
           ));
 
   //小说
-  static GoRouterModel novelPage = GoRouterModel(key: 'novelPage', builder: (context, state) => NovelPage());
+  static GoRouterModel novelPage =
+      GoRouterModel(key: 'novelPage', builder: (context, state) => NovelPage());
 //小说详情
   static GoRouterModel novelDetail = GoRouterModel(
       key: 'novelDetail/:nid',
       builder: (context, state) => NovelDetail(
-            id: int.parse(state!.pathParameters['\\'] ?? '0'),
+            id: int.parse(state.pathParameters['nid'] ?? '0'),
           ));
 //小说章节列表
   static GoRouterModel chapterList = GoRouterModel(
       key: 'chapterList/:cid',
       builder: (context, state) => ChapterList(
-            id: int.parse(state!.pathParameters['\\'] ?? '0'),
+            id: int.parse(state.pathParameters['cid'] ?? '0'),
           ));
   //小说阅读器
   static GoRouterModel novelReader = GoRouterModel(
       key: 'novelReader/:rid',
       builder: (context, state) => NovelReader(
-            id: int.parse(state!.pathParameters['\\'] ?? '0'),
+            id: int.parse(state.pathParameters['rid'] ?? '0'),
           ));
 
   // 客服页面
@@ -449,8 +509,8 @@ class Routes {
       });
 
   //会员兑换
-  static GoRouterModel vipExchangePage =
-      GoRouterModel(key: 'vipExchangePage', builder: (context, state) => VipExchangePage());
+  static GoRouterModel vipExchangePage = GoRouterModel(
+      key: 'vipExchangePage', builder: (context, state) => VipExchangePage());
 
   static GoRouter init() {
     List<GoRoute> pages = [
@@ -524,7 +584,10 @@ class Routes {
       // urlPathStrategy: UrlPathStrategy.path,
       initialLocation: "/",
       routerNeglect: true,
-      routes: [GoRoute(path: '/', builder: (context, state) => Welcome(), routes: pages)],
+      routes: [
+        GoRoute(
+            path: '/', builder: (context, state) => Welcome(), routes: pages)
+      ],
       observers: [BotToastNavigatorObserver(), MyNavObserver.instance],
     );
   }

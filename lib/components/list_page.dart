@@ -20,7 +20,15 @@ import 'package:pilipili/utils/networkImage.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ListPage extends StatefulWidget {
-  ListPage({Key? key, this.title, this.id, this.isShow, this.index, this.parentName, this.isDark = 0, this.pos})
+  ListPage(
+      {Key? key,
+      this.title,
+      this.id,
+      this.isShow,
+      this.index,
+      this.parentName,
+      this.isDark = 0,
+      this.pos})
       : super(key: key);
   final String? title;
   final String? id;
@@ -77,7 +85,9 @@ class _ListPageState extends State<ListPage> with CardMixin {
       getBanner();
     }
     EventBus().on('lanmu-init-view', (arg) async {
-      if (arg['parentName'] == widget.parentName && arg['currentIndex'] == widget.index && pageStatus == 0) {
+      if (arg['parentName'] == widget.parentName &&
+          arg['currentIndex'] == widget.index &&
+          pageStatus == 0) {
         pageStatus = 1;
         await getPageData();
       }
@@ -91,7 +101,8 @@ class _ListPageState extends State<ListPage> with CardMixin {
   }
 
   void getBanner() async {
-    getElementById(id: elementID, page: 1, limit: AppGlobal.smallVideoLimit).then((res) {
+    getElementById(id: elementID, page: 1, limit: AppGlobal.smallVideoLimit)
+        .then((res) {
       if (res == null) {
         networkErr = true;
         setState(() {});
@@ -116,25 +127,33 @@ class _ListPageState extends State<ListPage> with CardMixin {
         cardType = 6;
         break;
       case 'gold':
-        res = await getChangVideoList(limit: limit, page: page, isfree: 2, isDark: widget.isDark);
+        res = await getChangVideoList(
+            limit: limit, page: page, isfree: 2, isDark: widget.isDark);
         isHorizontal = true;
         isFall = true;
         cardType = 1;
         break;
       case 'vip':
-        res = await getChangVideoList(limit: limit, page: page, isfree: 1, isDark: widget.isDark);
+        res = await getChangVideoList(
+            limit: limit, page: page, isfree: 1, isDark: widget.isDark);
         isHorizontal = true;
         isFall = true;
         cardType = 1;
         break;
       case 'new':
-        res = await getChangVideoList(limit: limit, page: page, isDark: widget.isDark);
+        res = await getChangVideoList(
+            limit: limit, page: page, isDark: widget.isDark);
         isHorizontal = true;
         isFall = true;
         cardType = 1;
         break;
       case 'dongman':
-        res = await getChangVideoList(type: 1, limit: limit, page: page, category: 1, isDark: widget.isDark);
+        res = await getChangVideoList(
+            type: 1,
+            limit: limit,
+            page: page,
+            category: 1,
+            isDark: widget.isDark);
         isHorizontal = true;
         cardType = 1;
         break;
@@ -178,27 +197,34 @@ class _ListPageState extends State<ListPage> with CardMixin {
                 return isActivity
                     ? GestureDetector(
                         onTap: () {
-                          context.push(CommonUtils.getRealHash('activeDetail/' + data[index]['id'].toString()));
+                          context.push(CommonUtils.getRealHash(
+                              'activityDetail/' +
+                                  data[index]['id'].toString()));
                         },
-                        child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+                        child: LayoutBuilder(builder:
+                            (BuildContext context, BoxConstraints constraints) {
                           return Container(
                               width: constraints.minWidth,
                               height: constraints.minWidth * 0.3,
-                              margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(15)),
+                              margin: EdgeInsets.only(
+                                  bottom: ScreenUtil().setWidth(15)),
                               decoration: BoxDecoration(),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10)),
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(10)),
                                 child: Container(
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(),
                                     child: Stack(
                                       children: [
                                         PlatformAwareNetworkImage(
-                                          url: data[index]['resource'][0]['url'],
+                                          url: data[index]['resource'][0]
+                                              ['url'],
                                           fit: BoxFit.cover,
                                         ),
                                         BackdropFilter(
-                                          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 5.0, sigmaY: 5.0),
                                           child: Opacity(
                                             opacity: 0.7,
                                             child: Container(),
@@ -206,7 +232,9 @@ class _ListPageState extends State<ListPage> with CardMixin {
                                         ),
                                         Positioned(
                                             child: Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(15)),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setWidth(15)),
                                           child: Center(
                                             child: Text(
                                               data[index]['title'],
@@ -219,7 +247,9 @@ class _ListPageState extends State<ListPage> with CardMixin {
                               ));
                         }),
                       )
-                    : YouxuanCard(data: data[index], isHorizontal: data[index]['type'] == 1);
+                    : YouxuanCard(
+                        data: data[index],
+                        isHorizontal: data[index]['type'] == 1);
               },
               childCount: data.length,
               addSemanticIndexes: false,
@@ -229,11 +259,13 @@ class _ListPageState extends State<ListPage> with CardMixin {
           )
         : (isFall
             ? SliverWaterfallFlow(
-                gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: ScreenUtil().setWidth(10),
-                    crossAxisSpacing: ScreenUtil().setWidth(10)),
-                delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
+                gridDelegate:
+                    SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: ScreenUtil().setWidth(10),
+                        crossAxisSpacing: ScreenUtil().setWidth(10)),
+                delegate:
+                    SliverChildBuilderDelegate((BuildContext c, int index) {
                   return data[index]['mv_type'] == 1
                       ? Hcard(
                           width: ScreenUtil().setWidth(175),
@@ -292,7 +324,8 @@ class _ListPageState extends State<ListPage> with CardMixin {
                 ? PageStatus.loading(true)
                 : PullRefreshList(
                     color: Color.fromRGBO(130, 26, 70, 0.44),
-                    offset: DefaultStyle.navbarHegiht + ScreenUtil().statusBarHeight,
+                    offset: DefaultStyle.navbarHegiht +
+                        ScreenUtil().statusBarHeight,
                     onLoading: () {
                       if (isAll) return;
                       page++;
@@ -318,32 +351,42 @@ class _ListPageState extends State<ListPage> with CardMixin {
                             forceElevated: true,
                             expandedHeight: (1.sw / 7) * 5,
                             bottom: PreferredSize(
-                              preferredSize: Size(double.infinity, ScreenUtil().setWidth(24)),
+                              preferredSize: Size(
+                                  double.infinity, ScreenUtil().setWidth(24)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(ScreenUtil().setWidth(24)),
-                                    topLeft: Radius.circular(ScreenUtil().setWidth(24))),
+                                    topRight: Radius.circular(
+                                        ScreenUtil().setWidth(24)),
+                                    topLeft: Radius.circular(
+                                        ScreenUtil().setWidth(24))),
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: Color.fromRGBO(255, 244, 249, 1),
                                   ),
-                                  padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(12)),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: ScreenUtil().setWidth(12)),
                                 ),
                               ),
                             ),
-                            flexibleSpace: HomeTopBanner(pos: widget.pos, fixedBanner: fixedBanner)),
+                            flexibleSpace: HomeTopBanner(
+                                pos: widget.pos, fixedBanner: fixedBanner)),
                         data.length == 0
                             ? SliverToBoxAdapter(
-                                child: PageStatus.noData(text: '还没有[' + widget.title.toString() + ']的数据哦～'),
+                                child: PageStatus.noData(
+                                    text: '还没有[' +
+                                        widget.title.toString() +
+                                        ']的数据哦～'),
                               )
                             : SliverPadding(
-                                padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: DefaultStyle.pagePadding),
                                 sliver: _listView(),
                               ),
                         SliverToBoxAdapter(
                           child: SizedBox(
-                            height: MediaQuery.of(context).padding.bottom + ScreenUtil().bottomBarHeight,
+                            height: MediaQuery.of(context).padding.bottom +
+                                ScreenUtil().bottomBarHeight,
                           ),
                         )
                       ],

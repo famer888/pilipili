@@ -44,7 +44,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   PageController controller = PageController();
   late String videoUrl;
   int currentTab = 0;
-  late DetailData videoInfo;
+  late DetailData? videoInfo = null;
 
   List recommendList = [];
   List commentList = [];
@@ -105,16 +105,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
       List resdata = res['data'] == null || res['data']['resource'] == null ? [] : res['data']['resource'];
       sisAll = resdata.length < slimit;
       if (spage == 1) {
-        seriesList = res['data'];
+        if (res['data'] != null) seriesList = res['data'];
         if (resdata.length < 6) {
           firstSeriesList = resdata;
         } else {
           firstSeriesList = resdata.sublist(0, 6);
         }
       } else {
-        seriesList['resource'].addAll(res['data']['resource']);
+        if (res['data'] != null) seriesList['resource'].addAll(res['data']['resource']);
       }
-      setBottomSheetState!();
+      setBottomSheetState?.call();
     } else {
       CommonUtils.showText(res['msg']);
     }
@@ -130,7 +130,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
   Future<void> initVideoPage() async {
     await getSeriesListVideo();
     await getAdCoin();
-    AnimationDetail res = await getVideoDetail(id: widget.id);
+    AnimationDetail res = (await getVideoDetail(id: widget.id))!;
     if (res.status != 0) {
       AppEventReport.instance.initVideoInfo(
           id: res.data!.id.toString(), title: res.data!.title, typeId: '', typeName: '', tagKey: '', tagName: '');
@@ -285,7 +285,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                           height: 210.w,
                           width: double.infinity,
                           color: Colors.black45,
-                          child: videoLoading
+                          child: videoLoading || videoInfo == null
                               ? Center(
                                   child: Container(
                                     width: 90.w,
@@ -295,7 +295,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                 )
                               : YyVideo(
                                   isPreview: isPreview,
-                                  id: videoInfo.id.toString(),
+                                  id: videoInfo?.id.toString(),
                                   data: videoInfo,
                                   videoUrl: videoUrl,
                                   loop: true,
@@ -405,7 +405,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 Padding(
                                                   padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
                                                   child: Text(
-                                                    videoInfo.title!,
+                                                    videoInfo!.title!,
                                                     style: TextStyle(
                                                         color: Color(0xff404040),
                                                         fontWeight: FontWeight.bold,
@@ -428,13 +428,13 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                             children: [
                                                               Text(
                                                                 '演员：' +
-                                                                    (videoInfo.actors == "" ? "--" : videoInfo.actors)
+                                                                    (videoInfo!.actors == "" ? "--" : videoInfo!.actors)
                                                                         .toString(),
                                                                 style: TextStyle(
                                                                     color: Color(0xffFF5B8C), fontSize: 12.sp),
                                                               ),
                                                               Text(
-                                                                "${videoInfo.countPlay}人看过 - ${videoInfo.createdAt!.split(' ')[0]}更新",
+                                                                "${videoInfo!.countPlay}人看过 - ${videoInfo!.createdAt!.split(' ')[0]}更新",
                                                                 style: TextStyle(
                                                                     color: Color(0xff979797), fontSize: 11.sp),
                                                               )
@@ -452,14 +452,14 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                   CommonUtils.showText('请下载APP使用下载功能！');
                                                                 } else {
                                                                   PageStatus.showLoading();
-                                                                  getDownloadUrl(id: videoInfo.id).then((res) {
+                                                                  getDownloadUrl(id: videoInfo!.id).then((res) {
                                                                     if (res['status'] != 0) {
                                                                       Map taskInfo = {
-                                                                        "id": videoInfo.id.toString(),
+                                                                        "id": videoInfo!.id.toString(),
                                                                         "urlPath": res['data']['downloadUrl'],
-                                                                        "title": videoInfo.title,
-                                                                        "thumbCover": videoInfo.thumbCover ??
-                                                                            videoInfo.coverThumbHorizontal,
+                                                                        "title": videoInfo!.title,
+                                                                        "thumbCover": videoInfo!.thumbCover ??
+                                                                            videoInfo!.coverThumbHorizontal,
                                                                         "tags": tags.join('/'),
                                                                         "contentType": 1,
                                                                         "downloading": false,
@@ -471,7 +471,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         context,
                                                                         content: (setDialogState) {
                                                                           return Text(
-                                                                            videoInfo.isfree == 2
+                                                                            videoInfo!.isfree == 2
                                                                                 ? PPString.noBuySeeVideoHint
                                                                                 : PPString.noVipSeeVideoHint,
                                                                             style: TextStyle(
@@ -481,16 +481,16 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                           );
                                                                         },
                                                                         cancelText: '取消',
-                                                                        btnText: videoInfo.isfree == 2
+                                                                        btnText: videoInfo!.isfree == 2
                                                                             ? PPString.buyNow
                                                                             : PPString.upgradeNuw,
                                                                         callBack: () {
-                                                                          if (videoInfo.isfree == 2) {
+                                                                          if (videoInfo!.isfree == 2) {
                                                                             showBuy(videoInfo, () {
                                                                               buyVideo(
-                                                                                      id: videoInfo.id,
+                                                                                      id: videoInfo!.id,
                                                                                       coins: (money -
-                                                                                          (videoInfo.discountCoins ??
+                                                                                          (videoInfo!.discountCoins ??
                                                                                               0)),
                                                                                       context: context)
                                                                                   .then((res) {
@@ -538,7 +538,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                     color: isFavorite ? Color(0xffFF84A9) : null,
                                                                     onTap: () async {
                                                                       var res = await userFavorites(
-                                                                          type: 1, id: videoInfo.id);
+                                                                          type: 1, id: videoInfo!.id);
                                                                       if (res.status != 0) {
                                                                         if (isFavorite) {
                                                                           likeCount--;
@@ -565,11 +565,11 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                                         .config;
                                                                 ShareMovieModel.showShareMovie(backButtonBehavior,
                                                                     copyUrl: config.share!.affUrlCopy!.url!,
-                                                                    thumb: videoInfo.coverOriginalHorizontal == ''
-                                                                        ? (videoInfo.coverOriginalVertical ?? '')
-                                                                        : (videoInfo.coverOriginalHorizontal ?? ''),
-                                                                    title: videoInfo.title ?? '--',
-                                                                    subtitle: videoInfo.desc ?? '--',
+                                                                    thumb: videoInfo!.coverOriginalHorizontal == ''
+                                                                        ? (videoInfo!.coverOriginalVertical ?? '')
+                                                                        : (videoInfo!.coverOriginalHorizontal ?? ''),
+                                                                    title: videoInfo!.title ?? '--',
+                                                                    subtitle: videoInfo!.desc ?? '--',
                                                                     url: config.share!.affUrl.toString());
                                                               },
                                                             )
@@ -863,7 +863,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       itemCount: commentList.length,
                                                       itemBuilder: (BuildContext context, int index) {
                                                         return CommentItem(
-                                                          souceType: videoInfo.category == '1'
+                                                          souceType: videoInfo!.category == '1'
                                                               ? RESOURCE_TYPE_CARTOON_VIDEO
                                                               : RESOURCE_TYPE_LONG_VIDEO,
                                                           id: widget.id,
@@ -871,7 +871,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                           children: commentList[index]['child_comment']
                                                               .map<Widget>((childComment) {
                                                             return CommentItem(
-                                                                souceType: videoInfo.category == '1'
+                                                                souceType: videoInfo!.category == '1'
                                                                     ? RESOURCE_TYPE_CARTOON_VIDEO
                                                                     : RESOURCE_TYPE_LONG_VIDEO,
                                                                 id: widget.id,
@@ -888,7 +888,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                 onTap: () {
                                                   if (Privilege.isAllowed(
                                                       context,
-                                                      videoInfo.category == '1'
+                                                      videoInfo!.category == '1'
                                                           ? RESOURCE_TYPE_CARTOON_VIDEO
                                                           : RESOURCE_TYPE_LONG_VIDEO,
                                                       PRIVILEGE_TYPE_COMMENT)) {
@@ -939,7 +939,7 @@ class _VideoDetailState extends State<VideoDetail> with VideoMinxin {
                                                       Text(
                                                         Privilege.isAllowed(
                                                                 context,
-                                                                videoInfo.category == '1'
+                                                                videoInfo!.category == '1'
                                                                     ? RESOURCE_TYPE_CARTOON_VIDEO
                                                                     : RESOURCE_TYPE_LONG_VIDEO,
                                                                 PRIVILEGE_TYPE_COMMENT)

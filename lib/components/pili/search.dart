@@ -70,7 +70,8 @@ class _SearchPageState extends State<SearchPage> {
   PageController searchController = PageController();
   late Search searchProvider;
   ValueNotifier<bool> hideClearNotifier = ValueNotifier<bool>(true);
-  ValueNotifier<SearchPageType> searchPageTypeNotifier = ValueNotifier<SearchPageType>(SearchPageType.searchPage);
+  ValueNotifier<SearchPageType> searchPageTypeNotifier =
+      ValueNotifier<SearchPageType>(SearchPageType.searchPage);
 
   @override
   void initState() {
@@ -110,12 +111,15 @@ class _SearchPageState extends State<SearchPage> {
                   controller: searchController,
                   physics: NeverScrollableScrollPhysics(),
                   onPageChanged: (e) {
-                    searchPageTypeNotifier.value = e == 0 ? SearchPageType.searchPage : SearchPageType.searchResultPage;
+                    searchPageTypeNotifier.value = e == 0
+                        ? SearchPageType.searchPage
+                        : SearchPageType.searchResultPage;
                   },
                   children: [
                     NestedScrollView(
                       physics: ClampingScrollPhysics(),
-                      headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+                      headerSliverBuilder:
+                          (BuildContext context, bool boxIsScrolled) {
                         return <Widget>[
                           SliverAppBar(
                               backgroundColor: Colors.transparent,
@@ -130,14 +134,16 @@ class _SearchPageState extends State<SearchPage> {
                                   background: Container(
                                     padding: EdgeInsets.only(bottom: 114.w),
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w, vertical: 8.w),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         boxShadow: [
                                           BoxShadow(
                                             blurRadius: 10,
                                             blurStyle: BlurStyle.outer,
-                                            color: Color.fromRGBO(255, 91, 140, 0.2),
+                                            color: Color.fromRGBO(
+                                                255, 91, 140, 0.2),
                                             offset: Offset(0, 6.w),
                                           )
                                         ],
@@ -150,135 +156,184 @@ class _SearchPageState extends State<SearchPage> {
                                             )),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Selector<Search, List<dynamic>>(
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
                                                     '搜索记录',
                                                     style: TextStyle(
-                                                        color: Color(0xff6D6D6D),
+                                                        color:
+                                                            Color(0xff6D6D6D),
                                                         fontSize: 14.sp,
-                                                        fontWeight: FontWeight.bold),
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                   GestureDetector(
                                                     onTap: () {
-                                                      searchProvider.clearHistoryTag();
+                                                      searchProvider
+                                                          .clearHistoryTag();
                                                     },
-                                                    behavior: HitTestBehavior.translucent,
+                                                    behavior: HitTestBehavior
+                                                        .translucent,
                                                     child: PlatformAwareAssetImage(
-                                                        url: 'assets/images/detail/icon_clear.png',
+                                                        url:
+                                                            'assets/images/detail/icon_clear.png',
                                                         width: 20.w,
-                                                        filterQuality: FilterQuality.medium),
+                                                        filterQuality:
+                                                            FilterQuality
+                                                                .medium),
                                                   )
                                                 ],
                                               ),
-                                              selector: (_, searchSelector) => searchSelector.historyTags,
+                                              selector: (_, searchSelector) =>
+                                                  searchSelector.historyTags,
                                               shouldRebuild: (_, __) => true,
-                                              builder: (context, historyTags, historyTitle) {
+                                              builder: (context, historyTags,
+                                                  historyTitle) {
                                                 return Visibility(
-                                                  visible: historyTags.isNotEmpty,
+                                                  visible:
+                                                      historyTags.isNotEmpty,
                                                   child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       historyTitle!,
                                                       SizedBox(
-                                                        height: 36.w * historyTags.length,
+                                                        height: 36.w *
+                                                            historyTags.length,
                                                         child: ListView.builder(
-                                                            physics: NeverScrollableScrollPhysics(),
-                                                            padding: EdgeInsets.zero,
-                                                            itemCount: historyTags.length,
-                                                            itemBuilder: (context, index) => Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child: GestureDetector(
-                                                                        onTap: () {
-                                                                          myController.text = historyTags[index];
-                                                                          hideClearNotifier.value = false;
-                                                                          searchController.jumpToPage(1);
-                                                                        },
-                                                                        child: Padding(
-                                                                          padding: EdgeInsets.only(
-                                                                              left: 8.w, top: 8.w, bottom: 8.w),
-                                                                          child: Text(
-                                                                            historyTags[index],
-                                                                            style: TextStyle(
-                                                                                color: Color(0xff979797),
-                                                                                fontSize: 14.sp),
+                                                            physics:
+                                                                NeverScrollableScrollPhysics(),
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            itemCount:
+                                                                historyTags
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                        index) =>
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child:
+                                                                              GestureDetector(
+                                                                            onTap:
+                                                                                () {
+                                                                              myController.text = historyTags[index];
+                                                                              hideClearNotifier.value = false;
+                                                                              searchController.jumpToPage(1);
+                                                                            },
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: EdgeInsets.only(left: 8.w, top: 8.w, bottom: 8.w),
+                                                                              child: Text(
+                                                                                historyTags[index],
+                                                                                style: TextStyle(color: Color(0xff979797), fontSize: 14.sp),
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                    GestureDetector(
-                                                                      onTap: () {
-                                                                        searchProvider
-                                                                            .removeHistoryTag(historyTags[index]);
-                                                                      },
-                                                                      behavior: HitTestBehavior.translucent,
-                                                                      child: PlatformAwareAssetImage(
-                                                                          url: 'assets/images/detail/icon_delete.png',
-                                                                          width: 20.w,
-                                                                          filterQuality: FilterQuality.high),
-                                                                    )
-                                                                  ],
-                                                                )),
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            searchProvider.removeHistoryTag(historyTags[index]);
+                                                                          },
+                                                                          behavior:
+                                                                              HitTestBehavior.translucent,
+                                                                          child: PlatformAwareAssetImage(
+                                                                              url: 'assets/images/detail/icon_delete.png',
+                                                                              width: 20.w,
+                                                                              filterQuality: FilterQuality.high),
+                                                                        )
+                                                                      ],
+                                                                    )),
                                                       ),
                                                     ],
                                                   ),
                                                 );
                                               }),
                                           Visibility(
-                                            visible: searchProvider.hotTags.isNotEmpty,
+                                            visible: searchProvider
+                                                .hotTags.isNotEmpty,
                                             child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   '热门标签',
                                                   style: TextStyle(
                                                       color: Color(0xff6D6D6D),
                                                       fontSize: 14.sp,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Container(
-                                                  margin: EdgeInsets.only(top: 12.w),
+                                                  margin: EdgeInsets.only(
+                                                      top: 12.w),
                                                   child: Wrap(
                                                     spacing: 8.w,
                                                     runSpacing: 12.w,
-                                                    children: searchProvider.hotTags
-                                                        .map((e) => GestureDetector(
-                                                              onTap: () {
-                                                                myController.text = e;
-                                                                hideClearNotifier.value = false;
-                                                                searchController.jumpToPage(1);
-                                                              },
-                                                              child: Row(
-                                                                mainAxisSize: MainAxisSize.min,
-                                                                children: [
-                                                                  Container(
-                                                                    alignment: Alignment.center,
-                                                                    height: 28.w,
-                                                                    padding: EdgeInsets.symmetric(horizontal: 14.w),
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color(0xffFFF5F9),
-                                                                        borderRadius: BorderRadius.circular(14.w)),
-                                                                    child: Text(
-                                                                      e,
-                                                                      style: TextStyle(
-                                                                        color: Color(0xffFFADC6),
-                                                                        fontSize: 14.sp,
-                                                                      ),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ))
-                                                        .toList(),
+                                                    children:
+                                                        searchProvider.hotTags
+                                                            .map((e) =>
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    myController
+                                                                        .text = e;
+                                                                    hideClearNotifier
+                                                                            .value =
+                                                                        false;
+                                                                    searchController
+                                                                        .jumpToPage(
+                                                                            1);
+                                                                  },
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        height:
+                                                                            28.w,
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(horizontal: 14.w),
+                                                                        decoration: BoxDecoration(
+                                                                            color:
+                                                                                Color(0xffFFF5F9),
+                                                                            borderRadius: BorderRadius.circular(14.w)),
+                                                                        child:
+                                                                            Text(
+                                                                          e,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Color(0xffFFADC6),
+                                                                            fontSize:
+                                                                                14.sp,
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ))
+                                                            .toList(),
                                                   ),
                                                 ),
                                               ],
@@ -302,10 +357,12 @@ class _SearchPageState extends State<SearchPage> {
                         controller: pageController,
                         onPageChanged: (e) {
                           for (int i = 0; i < scrollChildKeys.length; i++) {
-                            GlobalKey<PrimaryScrollContainerState> key = scrollChildKeys[i];
+                            GlobalKey<PrimaryScrollContainerState> key =
+                                scrollChildKeys[i];
 
                             if (key.currentState != null) {
-                              key.currentState!.onPageChange(e == i); //控制是否当��显示
+                              key.currentState!
+                                  .onPageChange(e == i); //控制是否当��显示
                             }
                           }
                           tabIndex = e;
@@ -327,7 +384,8 @@ class _SearchPageState extends State<SearchPage> {
                                         aspectRatio: 109 / 190,
                                         data: {'order': '1'},
                                         nullText: '还没有小说哦～',
-                                        itemBuild: (context, index, data, page, limit, getListData) {
+                                        itemBuild: (context, index, data, page,
+                                            limit, getListData) {
                                           return NovelCard(data: data);
                                         })
                                     : PublicList(
@@ -345,7 +403,8 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ),
                     Visibility(
-                        visible: searchPageType == SearchPageType.searchResultPage,
+                        visible:
+                            searchPageType == SearchPageType.searchResultPage,
                         child: SearchResult(word: myController.text))
                   ],
                 ))
@@ -369,7 +428,8 @@ class _PageGridViewState extends State<PageGridView> {
     return GridView.builder(
       cacheExtent: 1.sh * 5,
       physics: ClampingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding, vertical: 20.w),
+      padding: EdgeInsets.symmetric(
+          horizontal: DefaultStyle.pagePadding, vertical: 20.w),
       itemCount: 20,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -402,7 +462,13 @@ class _SearchResultState extends State<SearchResult> {
   ValueNotifier<int> currentTabNotifier = ValueNotifier<int>(0);
 
   List tabList = [
-    {'title': '次元', 'api': '/api/mv/search', 'pramas': {}, 'isFlow': true, 'contentType': 1},
+    {
+      'title': '次元',
+      'api': '/api/mv/search',
+      'pramas': {},
+      'isFlow': true,
+      'contentType': 1
+    },
     {
       'title': '动漫',
       'api': '/api/mv/search',
@@ -411,7 +477,14 @@ class _SearchResultState extends State<SearchResult> {
       'isFlow': false,
       'contentType': 10
     },
-    {'title': '漫画', 'cardType': 'v', 'api': '/api/book/search', 'pramas': {}, 'isFlow': false, 'contentType': 2},
+    {
+      'title': '漫画',
+      'cardType': 'v',
+      'api': '/api/book/search',
+      'pramas': {},
+      'isFlow': false,
+      'contentType': 2
+    },
     // {
     //   'title': '约妹',
     //   'cardType': 'yuemei',
@@ -438,7 +511,8 @@ class _SearchResultState extends State<SearchResult> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    bool darkPrivilege = Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
+    bool darkPrivilege =
+        Provider.of<HomeConfig>(context, listen: false).darkPrivilege;
     if (darkPrivilege) {
       tabList.add({
         'title': '暗网',
@@ -504,8 +578,14 @@ class _SearchResultState extends State<SearchResult> {
                           Text(
                             tabList[index]['title'],
                             style: currentTab == index
-                                ? TextStyle(color: Color(0xffFF5B8C), fontWeight: FontWeight.w700, fontSize: 14.sp)
-                                : TextStyle(color: Color(0xffC2C2C2), fontWeight: FontWeight.w700, fontSize: 14.sp),
+                                ? TextStyle(
+                                    color: Color(0xffFF5B8C),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.sp)
+                                : TextStyle(
+                                    color: Color(0xffC2C2C2),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.sp),
                           )
                         ],
                       ),
@@ -522,7 +602,7 @@ class _SearchResultState extends State<SearchResult> {
                     'word': widget.word,
                   };
                   pramas.addAll(tab['pramas']);
-                  String _type = tab['cardType'];
+                  String _type = (tab['cardType'] as String?) ?? 'h';
                   return PageViewMixin(
                     child: _type == 'novel'
                         ? PublicBuildList(
@@ -535,8 +615,10 @@ class _SearchResultState extends State<SearchResult> {
                             aspectRatio: 109 / 190,
                             data: pramas,
                             nullText: '还没有小说哦～',
-                            itemBuild: (context, index, data, page, limit, getListData) {
-                              return NovelCard(data: data).withSearchReport(true, {
+                            itemBuild: (context, index, data, page, limit,
+                                getListData) {
+                              return NovelCard(data: data)
+                                  .withSearchReport(true, {
                                 'keyword': widget.word,
                                 'click_item_id': data['id'] ?? data['cid'],
                                 'click_item_type_key': 'search_novel',
@@ -546,20 +628,24 @@ class _SearchResultState extends State<SearchResult> {
                             })
                         : (_type == 'yuemei' || _type == 'post'
                             ? Padding(
-                                padding: EdgeInsets.symmetric(horizontal: _type == 'post' ? 8.w : 16.w, vertical: 18.w),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: _type == 'post' ? 8.w : 16.w,
+                                    vertical: 18.w),
                                 child: PublicBuildList(
                                     api: tab['api'],
                                     isShow: true,
                                     data: pramas,
                                     nullText: '还没有约炮信息哦～',
-                                    itemBuild: (context, index, data, page, limit, getListData) {
+                                    itemBuild: (context, index, data, page,
+                                        limit, getListData) {
                                       return _type == 'post'
                                           ? PostCard(
                                               data: data,
                                             ).withSearchReport(true, {
                                               'keyword': widget.word,
                                               'click_item_id': data['id'],
-                                              'click_item_type_key': 'search_post',
+                                              'click_item_type_key':
+                                                  'search_post',
                                               'click_item_type_name': '帖子',
                                               'click_position': index
                                             })
@@ -571,7 +657,8 @@ class _SearchResultState extends State<SearchResult> {
                                             ).withSearchReport(true, {
                                               'keyword': widget.word,
                                               'click_item_id': data['id'],
-                                              'click_item_type_key': 'search_yuemei',
+                                              'click_item_type_key':
+                                                  'search_yuemei',
                                               'click_item_type_name': '约妹',
                                               'click_position': index
                                             });
@@ -647,8 +734,10 @@ class _TabHeadState extends State<TabHead> {
               padding: EdgeInsets.symmetric(vertical: 16.w),
               child: Text(
                 '最近更新',
-                style:
-                    TextStyle(color: Color(0xff6d6d6d), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: Color(0xff6d6d6d),
+                    fontSize: ScreenUtil().setSp(16),
+                    fontWeight: FontWeight.w700),
               ),
             ),
           ),
@@ -662,13 +751,17 @@ class _TabHeadState extends State<TabHead> {
                   margin: EdgeInsets.only(top: 38.w),
                   decoration: BoxDecoration(
                     color: DefaultStyle.themeColor,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(12.w), topRight: Radius.circular(12.w)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.w),
+                        topRight: Radius.circular(12.w)),
                   ),
                   child: Container(
                     margin: EdgeInsets.only(top: 2.w, left: 2.w, right: 2.w),
                     decoration: BoxDecoration(
                       color: Color(0xfffff4f9),
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(8.w), topRight: Radius.circular(8.w)),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8.w),
+                          topRight: Radius.circular(8.w)),
                     ),
                   ),
                 ),
@@ -705,16 +798,22 @@ class _TabHeadState extends State<TabHead> {
                                                 ? PPAssetsPath.seachBtn
                                                 : PPAssetsPath.seachBtnActive,
                                             fit: BoxFit.fill,
-                                            filterQuality: FilterQuality.medium)),
+                                            filterQuality:
+                                                FilterQuality.medium)),
                                     Container(
                                       width: 79.w,
                                       height: 36.w,
                                       alignment: Alignment.center,
-                                      padding: currentIndex != index ? null : EdgeInsets.only(top: 2.w, right: 3.w),
+                                      padding: currentIndex != index
+                                          ? null
+                                          : EdgeInsets.only(
+                                              top: 2.w, right: 3.w),
                                       child: Text(
                                         tabList[index]['title'],
                                         style: TextStyle(
-                                            color: currentIndex != index ? Colors.white : Color(0xff6d6567),
+                                            color: currentIndex != index
+                                                ? Colors.white
+                                                : Color(0xff6d6567),
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
@@ -734,7 +833,12 @@ class _TabHeadState extends State<TabHead> {
 
 class SearchHeader extends StatefulWidget {
   const SearchHeader(
-      {Key? key, this.pageController, this.hideClearIconNotifier, this.textController, this.searchPage, this.tabIndex})
+      {Key? key,
+      this.pageController,
+      this.hideClearIconNotifier,
+      this.textController,
+      this.searchPage,
+      this.tabIndex})
       : super(key: key);
   final PageController? pageController;
   final ValueNotifier? hideClearIconNotifier;
@@ -780,7 +884,10 @@ class _SearchHeaderState extends State<SearchHeader> {
             child: Padding(
               padding: EdgeInsets.only(left: 15.w, right: 13.w),
               child: PlatformAwareAssetImage(
-                  url: PPAssetsPath.backArrow, height: 22.w, width: 12.w, filterQuality: FilterQuality.medium),
+                  url: PPAssetsPath.backArrow,
+                  height: 22.w,
+                  width: 12.w,
+                  filterQuality: FilterQuality.medium),
             ),
           ),
           Expanded(
@@ -788,7 +895,9 @@ class _SearchHeaderState extends State<SearchHeader> {
             padding: EdgeInsets.only(right: 8.w),
             child: Container(
               height: 36.w,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.w), color: Colors.white),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.w),
+                  color: Colors.white),
               child: ValueListenableBuilder(
                   valueListenable: widget.hideClearIconNotifier!,
                   builder: (context, hideClear, child) {
@@ -810,14 +919,17 @@ class _SearchHeaderState extends State<SearchHeader> {
                           CommonUtils.showText('请输入搜索关键字～');
                           return;
                         }
-                        if (prevText == widget.textController!.text && widget.tabIndex == 1) return;
+                        if (prevText == widget.textController!.text &&
+                            widget.tabIndex == 1) return;
                         widget.pageController!.jumpToPage(1);
                         prevText = widget.textController!.text;
-                        if (!searchProvider.historyTags.contains(widget.textController!.text)) {
+                        if (!searchProvider.historyTags
+                            .contains(widget.textController!.text)) {
                           if (searchProvider.historyTags.length >= 3) {
                             searchProvider.historyTags.removeAt(0);
                           }
-                          searchProvider.addHistoryTag(widget.textController!.text);
+                          searchProvider
+                              .addHistoryTag(widget.textController!.text);
                         }
 
                         // Timer(Duration(milliseconds: 200), () {
@@ -827,11 +939,15 @@ class _SearchHeaderState extends State<SearchHeader> {
                       },
                       decoration: InputDecoration(
                         hintText: '请输入搜索内容',
-                        hintStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Color(0xff6D6D6D)),
+                        hintStyle: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff6D6D6D)),
                         contentPadding: EdgeInsets.zero,
                         border: InputBorder.none,
                         prefixIcon: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.w),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.w, vertical: 6.w),
                           child: PlatformAwareAssetImage(
                             url: 'assets/images/detail/icon_search_red.png',
                             filterQuality: FilterQuality.medium,
@@ -843,12 +959,14 @@ class _SearchHeaderState extends State<SearchHeader> {
                         suffixIcon: hideClear
                             ? const SizedBox()
                             : Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.w),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 6.w),
                                 child: GestureDetector(
                                   onTap: clickSearchBoxClearIcon,
                                   behavior: HitTestBehavior.translucent,
                                   child: PlatformAwareAssetImage(
-                                    url: 'assets/images/detail/icon_input_clear.png',
+                                    url:
+                                        'assets/images/detail/icon_input_clear.png',
                                     filterQuality: FilterQuality.medium,
                                     width: 24.w,
                                     height: 24.w,
@@ -856,9 +974,12 @@ class _SearchHeaderState extends State<SearchHeader> {
                                   ),
                                 ),
                               ),
-                        disabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                        disabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                        focusedBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
+                        enabledBorder:
+                            OutlineInputBorder(borderSide: BorderSide.none),
                       ),
                       style: TextStyle(
                         color: Color(0xff000000),

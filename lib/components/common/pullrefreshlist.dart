@@ -1,6 +1,7 @@
 ﻿import 'dart:async';
 
-import 'package:flutter/material.dart' hide RefreshIndicator, RefreshIndicatorState;
+import 'package:flutter/material.dart'
+    hide RefreshIndicator, RefreshIndicatorState;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilipili/theme/default.dart';
@@ -10,7 +11,11 @@ import 'package:pilipili/utils/common.dart';
 import 'package:pilipili/utils/networkImage.dart';
 
 class GifHeader extends RefreshIndicator {
-  GifHeader() : super(height: ScreenUtil().setWidth(80), refreshStyle: RefreshStyle.Follow);
+  GifHeader()
+      : super(
+            height: ScreenUtil().setWidth(80),
+            refreshStyle: RefreshStyle.Follow);
+
   @override
   State<StatefulWidget> createState() {
     return GifHeaderState();
@@ -44,7 +49,9 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(15)),
       child: PlatformAwareAssetImage(
-          url: mode == RefreshStatus.refreshing ? PPAssetsPath.downrefreshGif : PPAssetsPath.downrefreshPng,
+          url: mode == RefreshStatus.refreshing
+              ? PPAssetsPath.downrefreshGif
+              : PPAssetsPath.downrefreshPng,
           height: ScreenUtil().setWidth(50),
           fit: BoxFit.fitHeight,
           filterQuality: FilterQuality.medium),
@@ -59,21 +66,30 @@ class GifHeaderState extends RefreshIndicatorState<GifHeader> {
 
 // ignore: must_be_immutable
 class PullRefreshList extends StatefulWidget {
-  PullRefreshList({Key? key, this.child, this.onRefresh, this.offset = 0, this.onLoading, this.color}) : super(key: key);
+  PullRefreshList(
+      {Key? key,
+      this.child,
+      this.onRefresh,
+      this.offset = 0,
+      this.onLoading,
+      this.color})
+      : super(key: key);
   Widget? child;
   double offset;
   Color? color;
   Function? onRefresh;
   Function? onLoading;
+
   @override
   _PullRefreshListState createState() => _PullRefreshListState();
 }
 
 class _PullRefreshListState extends State<PullRefreshList> {
   late RefreshController _refreshController;
-  late Timer _timerout;
-  late Timer _timer;
+  Timer? _timerout;
+  Timer? _timer;
   bool startReq = false;
+
   @override
   void initState() {
     super.initState();
@@ -84,39 +100,41 @@ class _PullRefreshListState extends State<PullRefreshList> {
   void dispose() {
     super.dispose();
     _refreshController.dispose();
-    _timer.cancel();
-      _timerout.cancel();
-    }
+    _timer?.cancel();
+    _timerout?.cancel();
+  }
 
   void _onRefresh() async {
     // 下拉刷新数据
     startReq = true;
+    _timer?.cancel();
+    _timerout?.cancel();
     _timerout = Timer.periodic(Duration(seconds: 10), (time) {
       time.cancel();
-      if (_timer.isActive) {
-        _timer.cancel();
+      if (_timer?.isActive ?? false) {
+        _timer?.cancel();
       }
       CommonUtils.showText('请求超时,请您检查网络');
       _refreshController.refreshCompleted();
     });
     _timer = Timer.periodic(Duration(milliseconds: 1500), (time) {
       if (!startReq) {
-        if (_timerout.isActive) {
-          _timerout.cancel();
+        if (_timerout?.isActive ?? false) {
+          _timerout?.cancel();
         }
         time.cancel();
         _refreshController.refreshCompleted();
       }
     });
-    await widget.onRefresh!();
+    await widget.onRefresh?.call();
     startReq = false;
-    }
+  }
 
   void _onLoading() async {
     // 加载更多数据
-    widget.onLoading!();
+    widget.onLoading?.call();
     _refreshController.loadComplete();
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +164,9 @@ class _PullRefreshListState extends State<PullRefreshList> {
             }
             return Container(
               height: 55.0,
-              child: DefaultTextStyle(style: TextStyle(color: Colors.black), child: Center(child: body)),
+              child: DefaultTextStyle(
+                  style: TextStyle(color: Colors.black),
+                  child: Center(child: body)),
             );
           },
         ),

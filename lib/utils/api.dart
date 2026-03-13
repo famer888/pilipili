@@ -32,7 +32,7 @@ import 'package:provider/provider.dart';
 import 'http.dart';
 
 //获取全局config接口
-Future<HomeData> getHomeConfig(BuildContext context) async {
+Future<HomeData?> getHomeConfig(BuildContext context) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/home/config');
     CommonUtils.debugPrint(res);
@@ -89,22 +89,22 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
     }
     return result;
   } catch (e) {
-    return null!;
+    return null;
   }
 }
 
-Future<ElementModel> getFisrtTopNavConfig(int id) async {
+Future<ElementModel?> getFisrtTopNavConfig(int id) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/element/getElementById', data: {'id': id});
     ElementModel result = ElementModel.fromJson(res.data['data']);
     return result;
   } catch (e) {
-    return null!;
+    return null;
   }
 }
 
 //获取精选某个栏目的元容元素
-Future<ConstructModel> getConstructById({int? id, int? page, int? limit}) async {
+Future<ConstructModel?> getConstructById({int? id, int? page, int? limit}) async {
   try {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/element/getConstructById', data: {'id': id, 'page': page, 'limit': limit});
@@ -115,7 +115,7 @@ Future<ConstructModel> getConstructById({int? id, int? page, int? limit}) async 
     CommonUtils.debugPrint(result.toJson());
     return result;
   } catch (e) {
-    return null!;
+    return null;
   }
 }
 
@@ -132,14 +132,14 @@ Future<dynamic> getElementById({int? id, int? page, int? limit}) async {
 }
 
 //获取视频详情
-Future<AnimationDetail> getVideoDetail({dynamic id}) async {
+Future<AnimationDetail?> getVideoDetail({dynamic id}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post('/api/mv/getDetail', data: {'id': id});
     AnimationDetail result = AnimationDetail.fromJson(res.data);
     CommonUtils.debugPrint(result.toJson());
     return result;
   } catch (e) {
-    return null!;
+    return null;
   }
 }
 

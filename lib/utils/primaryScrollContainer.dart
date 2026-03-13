@@ -103,8 +103,8 @@ class ScrollControllerWrapper implements ScrollController {
 
   int code = a++;
 
-  late ScrollPosition interceptedAttachPosition;
-  late ScrollPosition lastPosition;
+  late ScrollPosition? interceptedAttachPosition;
+  late ScrollPosition? lastPosition;
 
   bool showing = true;
 
@@ -116,11 +116,11 @@ class ScrollControllerWrapper implements ScrollController {
       inner.animateTo(offset, duration: duration!, curve: curve!);
 
   @override
-  void attach(ScrollPosition position) {
+  void attach(ScrollPosition? position) {
     if (inner.positions.contains(position)) return;
 
     if (showing) {
-      inner.attach(position);
+      inner.attach(position!);
       lastPosition = position;
     } else {
       interceptedAttachPosition = position;
@@ -128,16 +128,16 @@ class ScrollControllerWrapper implements ScrollController {
   }
 
   @override
-  void detach(ScrollPosition position, {bool fake = false}) {
+  void detach(ScrollPosition? position, {bool fake = false}) {
     if (inner.positions.contains(position)) {
-      inner.detach(position);
+      inner.detach(position!);
     }
 
     if (position == interceptedAttachPosition && !fake) {
-      interceptedAttachPosition = null!;
+      interceptedAttachPosition = null;
     }
     if (position == lastPosition && !fake) {
-      lastPosition = null!;
+      lastPosition = null;
     }
 
     if (fake) {

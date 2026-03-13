@@ -23,11 +23,11 @@ class Coinrecharge extends StatefulWidget {
 
 class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   String pageStatus = 'loading';
-  late Map spcard;
-  late List products;
-  late Map cardStatus;
+  Map? spcard;
+  List products = [];
+  Map? cardStatus;
   bool networkErr = false;
-  late Map adData;
+  Map? adData;
   @override
   void initState() {
     super.initState();
@@ -189,11 +189,11 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                 fontWeight: FontWeight.bold),
           ),
         ),
-        spcard == null
+        (spcard == null || cardStatus == null)
             ? Container()
             : GestureDetector(
                 onTap: () {
-                  showPay(spcard);
+                  showPay(spcard!);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -222,7 +222,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                             padding: EdgeInsets.only(
                                 left: DefaultStyle.pagePadding,
                                 right: DefaultStyle.pagePadding,
-                                top: cardStatus['isBuy'] == 1
+                                top: cardStatus!['isBuy'] == 1
                                     ? ScreenUtil().setWidth(14)
                                     : ScreenUtil().setWidth(14),
                                 bottom: ScreenUtil().setWidth(8)),
@@ -242,7 +242,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          spcard['pname'],
+                                          spcard!['pname'],
                                           style: TextStyle(
                                               color: Color(0xff6D3B03),
                                               fontWeight: FontWeight.bold,
@@ -253,12 +253,12 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                           height: ScreenUtil().setWidth(3),
                                         ),
                                         Text(
-                                          cardStatus['isBuy'] == 1
+                                          cardStatus!['isBuy'] == 1
                                               ? '已领取' +
-                                                  cardStatus['days']
+                                                  cardStatus!['days']
                                                       .toString() +
                                                   '天,获得' +
-                                                  cardStatus['coins']
+                                                  cardStatus!['coins']
                                                       .toString() +
                                                   '币'
                                               : "每人限购一次",
@@ -268,7 +268,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                         )
                                       ],
                                     ),
-                                    cardStatus['isBuy'] == 1
+                                    cardStatus!['isBuy'] == 1
                                         ? Container()
                                         : Column(
                                             crossAxisAlignment:
@@ -295,8 +295,9 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                                 .medium),
                                                   ),
                                                   Text(
-                                                    (spcard['valid_date'] *
-                                                                spcard['coins'])
+                                                    (spcard!['valid_date'] *
+                                                                spcard![
+                                                                    'coins'])
                                                             .toString() +
                                                         '币',
                                                     style: TextStyle(
@@ -327,7 +328,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                               ),
                                               Text(
                                                 '¥' +
-                                                    double.parse(spcard[
+                                                    double.parse(spcard![
                                                             'promo_price'])
                                                         .toStringAsFixed(0),
                                                 style: TextStyle(
@@ -343,10 +344,10 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                   ],
                                 ),
                                 Text(
-                                  cardStatus['isBuy'] == 1
+                                  cardStatus!['isBuy'] == 1
                                       ? "到期时间：" +
-                                          cardStatus['valid_date'].toString()
-                                      : spcard['description'],
+                                          cardStatus!['valid_date'].toString()
+                                      : spcard!['description'],
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xffB96A11),
@@ -355,14 +356,14 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                               ],
                             ),
                           )),
-                      cardStatus['isBuy'] == 1
+                      cardStatus!['isBuy'] == 1
                           ? Positioned(
                               top: ScreenUtil().setWidth(16),
                               right: ScreenUtil().setWidth(16),
                               bottom: ScreenUtil().setWidth(16),
                               child: GestureDetector(
                                 onTap: () {
-                                  if (cardStatus['isGet'] == 1) {
+                                  if (cardStatus!['isGet'] == 1) {
                                     return;
                                   }
                                   getCoinFromCoinCard().then((res) {
@@ -392,7 +393,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
-                                          colors: cardStatus['isGet'] == 1
+                                          colors: cardStatus!['isGet'] == 1
                                               ? [
                                                   Color.fromRGBO(
                                                       194, 194, 194, 0.5),
@@ -405,7 +406,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                                 ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter),
-                                      boxShadow: cardStatus['isGet'] == 1
+                                      boxShadow: cardStatus!['isGet'] == 1
                                           ? [
                                               BoxShadow(
                                                   color: Color.fromRGBO(
@@ -435,9 +436,9 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        cardStatus['isGet'] == 1
+                                        cardStatus!['isGet'] == 1
                                             ? "今日"
-                                            : spcard['coins'].toString() + '币',
+                                            : spcard!['coins'].toString() + '币',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: ScreenUtil().setSp(20),
@@ -448,7 +449,7 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
                                         height: ScreenUtil().setWidth(5),
                                       ),
                                       Text(
-                                        cardStatus['isGet'] == 1
+                                        cardStatus!['isGet'] == 1
                                             ? PPString.received
                                             : PPString.getNow,
                                         style: TextStyle(
@@ -577,12 +578,16 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
   }
 
   Widget footer() {
+    if (adData == null) {
+      return Container();
+    }
+
     return GestureDetector(
       onTap: () {
-        if (adData['type'] == 1) {
-          CommonUtils.launchURL(adData['url'].trim());
-        } else if (adData['type'] == 2) {
-          String linkUrl = adData['url'];
+        if (adData!['type'] == 1) {
+          CommonUtils.launchURL(adData!['url'].trim());
+        } else if (adData!['type'] == 2) {
+          String linkUrl = adData!['url'];
           List urlList = linkUrl.split('?');
           Map<String, dynamic> pramas = {};
           if (urlList.length > 1) {
@@ -593,13 +598,12 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
             });
           }
           context.push(urlList[0], extra: pramas);
-        } else if (adData['type'] == 4) {
-          var members =
-              Provider.of<HomeConfig>(context, listen: false).member;
+        } else if (adData!['type'] == 4) {
+          var members = Provider.of<HomeConfig>(context, listen: false).member;
           var aff = members.aff;
           var piliid = members.uuid;
           CommonUtils.launchURL(
-              adData['url'].trim().toString() + '?aff=$aff&piliid=$piliid');
+              adData!['url'].trim().toString() + '?aff=$aff&piliid=$piliid');
         }
       },
       child: Container(
@@ -612,12 +616,11 @@ class _CoinrechargeState extends State<Coinrecharge> with PayMixin {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
         child: PlatformAwareNetworkImage(
-          url: adData['img_url'],
+          url: adData!['img_url'],
           fit: BoxFit.cover,
         ),
       ),
     );
-      return Container();
   }
 
   @override

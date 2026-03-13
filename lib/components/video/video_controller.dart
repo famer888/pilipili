@@ -63,10 +63,11 @@ class VideoController extends StatefulWidget {
   _VideoControllerState createState() => _VideoControllerState();
 }
 
-class _VideoControllerState extends State<VideoController> with WatchRecordMixin, VideoMinxin {
+class _VideoControllerState extends State<VideoController>
+    with WatchRecordMixin, VideoMinxin {
   bool showControl = false; //控制器展示
   bool isLock = false; //锁定状态
-  late Timer timerfc; //播放暂停按钮的隐藏定时器
+  Timer? timerfc; //播放暂停按钮的隐藏定时器
   ValueNotifier<double> videoValue = ValueNotifier<double>(0.0); //当前视频播放时间
   double videoMaxTime = 0.0; //视频总播放时间
   bool changeStartIsPlay = false; //拖动进度条时视频是否处于播放状态
@@ -93,8 +94,10 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
       videoPageIsActive = false;
     });
     if (widget.videoController!.value.isInitialized) {
-      videoMaxTime = widget.videoController!.value.duration.inMilliseconds.toDouble();
-      videoValue.value = widget.videoController!.value.position.inMilliseconds.toDouble();
+      videoMaxTime =
+          widget.videoController!.value.duration.inMilliseconds.toDouble();
+      videoValue.value =
+          widget.videoController!.value.position.inMilliseconds.toDouble();
       widget.videoController!.addListener(setVideoValue);
     } else {
       initVideo();
@@ -107,23 +110,27 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
       setState(() {});
     }
     widget.videoController!.initialize().then((value) {
-      widget.uploadVideo!();
+      widget.uploadVideo?.call();
       widget.videoController!.addListener(setVideoValue);
-      widget.setController!(widget.videoController!);
-      widget.videoController!.setLooping(widget.loop!);
+      widget.setController?.call(widget.videoController!);
+      widget.videoController!.setLooping(widget.loop ?? false);
       widget.videoController!.setVolume(widget.noVolume == true ? 0 : 1);
-      if (widget.autoPlay == true && !kIsWeb && videoPageIsActive && !widget.videoController!.value.isPlaying) {
-        if (!widget.hideControl!) {
+      if (widget.autoPlay == true &&
+          !kIsWeb &&
+          videoPageIsActive &&
+          !widget.videoController!.value.isPlaying) {
+        if (!(widget.hideControl ?? false)) {
           hideControl();
         }
         widget.videoController!.play();
       }
-      if (widget.data != null && !widget.isLocal!) {
+      if (widget.data != null && !(widget.isLocal ?? false)) {
         watchRcordTimer = Timer.periodic(new Duration(seconds: 10), (timer) {
           startWatchRecordTimer(AppGlobal.videoWatchRecordBox!, widget.data.id,
               chapterId: widget.data.id,
               offset: videoValue.value,
-              thumb: widget.data.coverOriginalVertical ?? widget.data.coverOriginalHorizontal,
+              thumb: widget.data.coverOriginalVertical ??
+                  widget.data.coverOriginalHorizontal,
               isFree: widget.data.isfree,
               title: widget.data.title);
         });
@@ -155,7 +162,7 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
     }
     loading.dispose();
     videoValue.dispose();
-    timerfc.cancel();
+    timerfc?.cancel();
     super.dispose();
   }
 
@@ -188,7 +195,8 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
             context,
             PageRouteBuilder(
               transitionDuration: Duration(milliseconds: 0),
-              pageBuilder: (BuildContext context, Animation<double> animation, Animation secondaryAnimation) {
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation secondaryAnimation) {
                 return FadeTransition(
                   opacity: animation,
                   child: FullVideo(
@@ -210,7 +218,7 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
       CommonUtils.debugPrint(widget.videoController!.value.errorDescription);
     }
     if (widget.isPreview!) {
-      widget.setPreviewShow!(widget.videoController!.value.isPlaying);
+      widget.setPreviewShow?.call(widget.videoController!.value.isPlaying);
     }
     if (!widget.videoController!.value.isPlaying) {
       if (!showControl) {
@@ -218,22 +226,29 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
         setState(() {});
       }
     }
-    if (widget.data != null && widget.videoController!.value.isPlaying && !seekHistory) {
+    if (widget.data != null &&
+        widget.videoController!.value.isPlaying &&
+        !seekHistory) {
       var boxData = AppGlobal.videoWatchRecordBox!.get(widget.data.id);
       if (boxData != null) {
         seekHistory = true;
         videoValue.value = boxData[widget.data.id].toDouble();
-        widget.videoController!.seekTo(Duration(milliseconds: boxData[widget.data.id].toInt()));
+        widget.videoController!
+            .seekTo(Duration(milliseconds: boxData[widget.data.id].toInt()));
       }
     }
-    videoMaxTime = widget.videoController!.value.duration.inMilliseconds.toDouble();
+    videoMaxTime =
+        widget.videoController!.value.duration.inMilliseconds.toDouble();
     if (!usecheck) {
-      videoValue.value = widget.videoController!.value.position.inMilliseconds.toDouble();
+      videoValue.value =
+          widget.videoController!.value.position.inMilliseconds.toDouble();
     }
     if (widget.videoController!.value.buffered.isNotEmpty) {
       if (widget.videoController!.value.buffered.any((element) =>
-          element.start.inSeconds <= widget.videoController!.value.position.inSeconds &&
-          element.end.inSeconds > widget.videoController!.value.position.inSeconds)) {
+          element.start.inSeconds <=
+              widget.videoController!.value.position.inSeconds &&
+          element.end.inSeconds >
+              widget.videoController!.value.position.inSeconds)) {
         loading.value = false;
       } else {
         loading.value = true;
@@ -242,12 +257,12 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
   }
 
   hideControl() {
-    if (widget.hideControl!) return;
+    if (widget.hideControl ?? false) return;
     if (!showControl) {
       showControl = true;
       setState(() {});
     }
-    timerfc.cancel();
+    timerfc?.cancel();
     timerfc = Timer.periodic(Duration(seconds: 2), (time) {
       if (widget.videoController!.value.isPlaying) {
         showControl = false;
@@ -274,12 +289,15 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
             child: ValueListenableBuilder(
                 valueListenable: loading,
                 builder: (context, value, child) {
-                  return mounted && value && widget.videoController!.value.isPlaying
+                  return mounted &&
+                          value &&
+                          widget.videoController!.value.isPlaying
                       ? Center(
                           child: Container(
                             width: ScreenUtil().setWidth(90),
                             child: Image.asset('assets/gif/loading_pink.gif',
-                                fit: BoxFit.fitWidth, filterQuality: FilterQuality.medium),
+                                fit: BoxFit.fitWidth,
+                                filterQuality: FilterQuality.medium),
                           ),
                         )
                       : Container();
@@ -289,7 +307,9 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
           left: 0,
           bottom: 0,
           right: 0,
-          child: (widget.isCardAuto == true || !widget.videoController!.value.isInitialized || widget.previewShow!)
+          child: (widget.isCardAuto == true ||
+                  !widget.videoController!.value.isInitialized ||
+                  widget.previewShow!)
               ? Container()
               : Container(
                   color: Colors.transparent,
@@ -351,8 +371,9 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                           }
                         },
                         child: PlatformAwareAssetImage(
-                          url:
-                              widget.videoController!.value.volume > 0 ? PPAssetsPath.volumeon : PPAssetsPath.volumeOff,
+                          url: widget.videoController!.value.volume > 0
+                              ? PPAssetsPath.volumeon
+                              : PPAssetsPath.volumeOff,
                           width: ScreenUtil().setWidth(15),
                           fit: BoxFit.fitWidth,
                         ),
@@ -362,12 +383,18 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                 ))
             : animatedBox(
                 // top: null,
-                bottom: showControl && !isLock && !widget.isPreview! ? 0 : ScreenUtil().setWidth(-44),
-                opacity: showControl && !isLock && !(widget.isPreview == true) ? 1 : 0,
-                child: !widget.videoController!.value.isInitialized || widget.isPreview!
+                bottom: showControl && !isLock && !widget.isPreview!
+                    ? 0
+                    : ScreenUtil().setWidth(-44),
+                opacity: showControl && !isLock && !(widget.isPreview == true)
+                    ? 1
+                    : 0,
+                child: !widget.videoController!.value.isInitialized ||
+                        widget.isPreview!
                     ? Container()
                     : Container(
-                        padding: EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(5)),
+                        padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setWidth(5)),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                           colors: [Colors.black26, Colors.black45],
@@ -375,7 +402,8 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                           end: Alignment.bottomCenter,
                         )),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: DefaultStyle.pagePadding),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: DefaultStyle.pagePadding),
                           child: Row(
                             children: [
                               GestureDetector(
@@ -390,9 +418,12 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                                   }
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(15)),
+                                  margin: EdgeInsets.only(
+                                      right: ScreenUtil().setWidth(15)),
                                   child: Icon(
-                                    widget.videoController!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                    widget.videoController!.value.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
                                     color: Colors.white,
                                     size: ScreenUtil().setWidth(22),
                                   ),
@@ -407,21 +438,29 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                                       data: SliderTheme.of(context).copyWith(
                                           trackHeight: ScreenUtil().setWidth(2),
                                           inactiveTrackColor: Colors.white24,
-                                          activeTrackColor: DefaultStyle.themeColor,
+                                          activeTrackColor:
+                                              DefaultStyle.themeColor,
                                           overlayColor: Colors.white54,
-                                          thumbShape:
-                                              RoundSliderThumbShape(enabledThumbRadius: ScreenUtil().setWidth(5)),
+                                          thumbShape: RoundSliderThumbShape(
+                                              enabledThumbRadius:
+                                                  ScreenUtil().setWidth(5)),
                                           overlayShape: RoundSliderOverlayShape(
-                                            overlayRadius: ScreenUtil().setWidth(9),
+                                            overlayRadius:
+                                                ScreenUtil().setWidth(9),
                                           ),
                                           thumbColor: DefaultStyle.themeColor),
                                       child: Slider(
-                                          value: videoValue.value > videoMaxTime ? videoMaxTime : videoValue.value,
+                                          value: videoValue.value > videoMaxTime
+                                              ? videoMaxTime
+                                              : videoValue.value,
                                           max: videoMaxTime,
                                           min: 0,
                                           onChangeStart: (e) {
                                             usecheck = true;
-                                            changeStartIsPlay = widget.videoController!.value.isPlaying;
+                                            changeStartIsPlay = widget
+                                                .videoController!
+                                                .value
+                                                .isPlaying;
                                             widget.videoController!.pause();
                                           },
                                           onChangeEnd: (e) {
@@ -433,10 +472,14 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                                           },
                                           onChanged: (e) {
                                             try {
-                                              if (widget.videoController!.value.isInitialized) {
+                                              if (widget.videoController!.value
+                                                  .isInitialized) {
                                                 videoValue.value = e;
                                                 widget.videoController!
-                                                    .seekTo(Duration(milliseconds: videoValue.value.toInt()))
+                                                    .seekTo(Duration(
+                                                        milliseconds: videoValue
+                                                            .value
+                                                            .toInt()))
                                                     .then((value) {
                                                   usecheck = false;
                                                 });
@@ -451,16 +494,20 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  if (widget.videoController!.value.volume > 0) {
+                                  if (widget.videoController!.value.volume >
+                                      0) {
                                     widget.videoController!.setVolume(0);
                                   } else {
                                     widget.videoController!.setVolume(1);
                                   }
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
+                                  margin: EdgeInsets.only(
+                                      left: ScreenUtil().setWidth(15)),
                                   child: Icon(
-                                    widget.videoController!.value.volume > 0 ? Icons.volume_up : Icons.volume_off,
+                                    widget.videoController!.value.volume > 0
+                                        ? Icons.volume_up
+                                        : Icons.volume_off,
                                     color: Colors.white,
                                     size: ScreenUtil().setWidth(22),
                                   ),
@@ -471,9 +518,9 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                         ),
                       )),
         animatedBox(
-            right: null!,
             left: showControl ? 0 : ScreenUtil().setWidth(-100),
-            child: widget.videoController!.value.isInitialized && !widget.isPreview!
+            child: widget.videoController!.value.isInitialized &&
+                    !widget.isPreview!
                 ? Center(
                     child: Padding(
                       padding: EdgeInsets.all(DefaultStyle.pagePadding),
@@ -498,31 +545,41 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                 : Center(
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Colors.black87, borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
+                          color: Colors.black87,
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().setWidth(10))),
                       padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setWidth(15), vertical: ScreenUtil().setWidth(10)),
+                          horizontal: ScreenUtil().setWidth(15),
+                          vertical: ScreenUtil().setWidth(10)),
                       child: Text(getTimeStr(videoValue.value),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(isHorizontal() ? 50 : 18))),
+                              fontSize: ScreenUtil()
+                                  .setSp(isHorizontal() ? 50 : 18))),
                     ),
                   )),
         animatedBox(
-            top: showControl && !isLock || widget.isPreview! ? 0 : ScreenUtil().setWidth(-44),
-            bottom: null!,
+            top: showControl && !isLock || widget.isPreview!
+                ? 0
+                : ScreenUtil().setWidth(-44),
+            bottom: null,
             opacity: showControl && !isLock ? 1 : 0,
             child: widget.isCardAuto!
                 ? Container()
                 : head(
                     noBack: widget.noBack!,
-                    rightWidget: widget.videoController!.value.isInitialized && !widget.isPreview!
+                    rightWidget: widget.videoController!.value.isInitialized &&
+                            !widget.isPreview!
                         ? GestureDetector(
                             onTap: changeFull,
                             child: Container(
-                              margin: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
+                              margin: EdgeInsets.only(
+                                  left: ScreenUtil().setWidth(15)),
                               child: Icon(
-                                widget.isFull! ? Icons.fullscreen_exit : Icons.fullscreen,
+                                widget.isFull!
+                                    ? Icons.fullscreen_exit
+                                    : Icons.fullscreen,
                                 color: Colors.white,
                                 size: ScreenUtil().setWidth(22),
                               ),
@@ -546,23 +603,30 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                     children: [
                       Text(
                         '视频播放错误,请检查网络后重试',
-                        style: TextStyle(color: Color(0xff646464), fontSize: ScreenUtil().setSp(16)),
+                        style: TextStyle(
+                            color: Color(0xff646464),
+                            fontSize: ScreenUtil().setSp(16)),
                       ),
                       GestureDetector(
                         onTap: () {
                           initVideo();
                         },
                         child: Container(
-                          margin: EdgeInsets.only(top: ScreenUtil().setWidth(22)),
+                          margin:
+                              EdgeInsets.only(top: ScreenUtil().setWidth(22)),
                           height: ScreenUtil().setWidth(32),
                           width: ScreenUtil().setWidth(118.5),
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [DefaultStyle.themeColor, DefaultStyle.linerThemeColor],
+                                colors: [
+                                  DefaultStyle.themeColor,
+                                  DefaultStyle.linerThemeColor
+                                ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),
-                              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(16))),
+                              borderRadius: BorderRadius.circular(
+                                  ScreenUtil().setWidth(16))),
                           child: Center(
                             child: Text(
                               '重新加载',
@@ -582,28 +646,37 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                       return GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onPanStart: (DragStartDetails e) {
-                            if (isLock || widget.isPreview == true || !widget.videoController!.value.isInitialized)
+                            if (isLock ||
+                                widget.isPreview == true ||
+                                !widget.videoController!.value.isInitialized)
                               return;
-                            CommonUtils.debugPrint('panStart:' + e.localPosition.dx.toString());
+                            CommonUtils.debugPrint(
+                                'panStart:' + e.localPosition.dx.toString());
                             usecheck = true;
                             showControl = false;
                             showUpTime = true;
                             setState(() {});
-                            changeStartIsPlay = widget.videoController!.value.isPlaying;
+                            changeStartIsPlay =
+                                widget.videoController!.value.isPlaying;
                             widget.videoController!.pause();
                             panStart = e.localPosition.dx;
                           },
                           onPanUpdate: (DragUpdateDetails e) {
-                            if (isLock || widget.isPreview == true || !widget.videoController!.value.isInitialized)
+                            if (isLock ||
+                                widget.isPreview == true ||
+                                !widget.videoController!.value.isInitialized)
                               return;
-                            upValue = videoValue.value + (e.localPosition.dx - panStart) * 10;
+                            upValue = videoValue.value +
+                                (e.localPosition.dx - panStart) * 10;
                             if (upValue > videoMaxTime) return;
                             if (upValue > 0 && upValue < videoMaxTime) {
                               videoValue.value = upValue;
                             }
                           },
                           onPanEnd: (DragEndDetails e) {
-                            if (isLock || widget.isPreview == true || !widget.videoController!.value.isInitialized)
+                            if (isLock ||
+                                widget.isPreview == true ||
+                                !widget.videoController!.value.isInitialized)
                               return;
                             CommonUtils.debugPrint('panEnd:结束');
                             if (changeStartIsPlay) {
@@ -611,7 +684,8 @@ class _VideoControllerState extends State<VideoController> with WatchRecordMixin
                               videoPageIsActive = true;
                             }
                             widget.videoController!
-                                .seekTo(Duration(milliseconds: videoValue.value.toInt()))
+                                .seekTo(Duration(
+                                    milliseconds: videoValue.value.toInt()))
                                 .then((value) {
                               usecheck = false;
                             });

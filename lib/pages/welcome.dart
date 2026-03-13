@@ -41,7 +41,7 @@ class _WelcomeState extends State<Welcome> {
     }, onSuccess: () {
       getHomeConfig(context).then((res) {
         // toInvitation(affCode: "aqw92");
-        yyads = {'img': res.data!.ads!.imgUrl, 'url': res.data!.ads!.url};
+        yyads = {'img': res?.data?.ads?.imgUrl, 'url': res?.data?.ads?.url};
         setState(() {});
         adsCountDown();
             });

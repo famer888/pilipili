@@ -56,9 +56,16 @@ class _DownPageState extends State<DownPage> with TickerProviderStateMixin {
               .emit("EDIT_DOWNLOAD", {"isAll": false, "current": currentTab});
         }
         currentTab = _tabController.index;
+        if (!mounted) return;
         setState(() {});
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   changeIsAll(bool status) {
@@ -277,6 +284,7 @@ class _DownListState extends State<DownList> {
   List data = [];
   bool loading = true;
   int chooseNum = 0;
+  EventCallback? _editDownloadHandler;
 
   String chooseIcon = 'assets/images/icon_item_choose.png';
   String chooseNotIcon = 'assets/images/icon_item_choose_not.png';
@@ -296,26 +304,29 @@ class _DownListState extends State<DownList> {
       default:
         getVideoDownloadInfo();
     }
-    EventBus().on('EDIT_DOWNLOAD', (arg) {
+    _editDownloadHandler = (arg) {
       if (arg["current"] == widget.type! - 1) {
         if (arg["isAll"] != null && arg["isAll"]) {
           for (var i = 0; i < data.length; i++) {
             data[i]["choosed"] = true;
           }
           chooseNum = data.length;
+          if (!mounted) return;
           setState(() {});
         } else if (arg["isAll"] != null && !arg["isAll"]) {
           for (var i = 0; i < data.length; i++) {
             data[i]["choosed"] = false;
           }
           chooseNum = 0;
+          if (!mounted) return;
           setState(() {});
         }
         if (arg["isDelete"] != null && arg["isDelete"]) {
           onDelete();
         }
       }
-    });
+    };
+    EventBus().on('EDIT_DOWNLOAD', _editDownloadHandler!);
   }
 
   onDelete() async {
@@ -346,13 +357,15 @@ class _DownListState extends State<DownList> {
     } else if (widget.type == 2) {
       box.put("download_comics_tasks", data);
     }
+    if (!mounted) return;
     setState(() {});
   }
 
   @override
   void dispose() {
+    EventBus().off('EDIT_DOWNLOAD', _editDownloadHandler);
+    _editDownloadHandler = null;
     super.dispose();
-    EventBus().off('EDIT_DOWNLOAD');
   }
 
   // 获取视频下载信息
@@ -363,6 +376,7 @@ class _DownListState extends State<DownList> {
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;
     }
+    if (!mounted) return;
     setState(() {
       loading = false;
     });
@@ -371,10 +385,11 @@ class _DownListState extends State<DownList> {
   Future getComicsDownloadInfo() async {
     Box box = await Hive.openBox('HiveBox');
     data = box.get('download_comics_tasks') ?? [];
-    LogUtilS.d("漫画信息-----"+data.toString());
+    LogUtilS.d("漫画信息-----" + data.toString());
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;
     }
+    if (!mounted) return;
     setState(() {
       loading = false;
     });

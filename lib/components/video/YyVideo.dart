@@ -61,11 +61,19 @@ class YyVideo extends StatefulWidget {
 class _YyVideoState extends State<YyVideo> with VideoMinxin {
   VideoPlayerController? videoController;
   bool previewShow = false;
+
   initPageState() {
     videoController = widget.controller;
-    AppEventReport.instance.videoControllerInit(videoController!);
-    setState(() {});
+    if (videoController == null && widget.videoUrl != null && widget.videoUrl!.isNotEmpty) {
+      initVideo(widget.videoUrl);
+      return;
     }
+
+    if (videoController != null) {
+      AppEventReport.instance.videoControllerInit(videoController!);
+    }
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -99,7 +107,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
         widget.videoUrl = res.data;
         context.pop();
         widget.setVideoUrl!(res.data);
-              setState(() {});
+        setState(() {});
         initPageState();
       } else {
         CommonUtils.showText(res.msg!);
@@ -108,16 +116,19 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
   }
 
   Widget videoBuild() {
+    final bool hasController = videoController != null;
+    final bool hasVideoUrl = widget.videoUrl != null && widget.videoUrl!.isNotEmpty;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
       color: Colors.black,
       child: Stack(
         children: [
-          (widget.videoUrl == '') && widget.controller == null
+          (!hasController && !hasVideoUrl)
               ? Container()
               : Center(
-                  child: videoController!.value.isInitialized
+                  child: hasController && videoController!.value.isInitialized
                       ? Hero(
                           tag: 'yyplayr',
                           child: Stack(
@@ -127,7 +138,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                               ),
                             ],
                           ))
-                      : mounted && !widget.isLocal
+                      : mounted && !widget.isLocal && (hasVideoUrl || widget.controller != null)
                           ? Stack(
                               children: [
                                 PlatformAwareNetworkImage(
@@ -146,40 +157,42 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                             )
                           : Container(),
                 ),
-          widget.videoUrl == null && widget.controller == null
+          !hasController && !hasVideoUrl
               ? Container()
               : RepaintBoundary(
                   child: Padding(
                       padding: EdgeInsets.only(
                           top: widget.cover == null ? 0 : ScreenUtil().statusBarHeight,
                           bottom: widget.cover == null ? 0 : ScreenUtil().bottomBarHeight + 30.w),
-                      child: VideoController(
-                          setPreviewShow: (bool show) {
-                            if (show != previewShow) {
-                              previewShow = show;
-                              setState(() {});
-                            }
-                          },
-                          isPreview: widget.isPreview,
-                          videoController: videoController,
-                          isCardAuto: widget.isCardAuto,
-                          hideControl: widget.hideControl,
-                          previewShow: previewShow,
-                          initShow: widget.controller == null && widget.videoUrl == null,
-                          data: widget.data,
-                          autoPlay: widget.autoPlay,
-                          id: widget.id,
-                          loop: widget.loop,
-                          noVolume: widget.noVolume,
-                          noBack: widget.noBack,
-                          isFull: widget.isFull,
-                          setController: widget.setController,
-                          videoUrl: widget.videoUrl,
-                          setVideoUrl: widget.setVideoUrl,
-                          uploadVideo: () {
-                            setState(() {});
-                          },
-                          isLocal: widget.isLocal)),
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: VideoController(
+                              setPreviewShow: (bool show) {
+                                if (show != previewShow) {
+                                  previewShow = show;
+                                  setState(() {});
+                                }
+                              },
+                              isPreview: widget.isPreview,
+                              videoController: videoController,
+                              isCardAuto: widget.isCardAuto,
+                              hideControl: widget.hideControl,
+                              previewShow: previewShow,
+                              initShow: widget.controller == null && widget.videoUrl == null,
+                              data: widget.data,
+                              autoPlay: widget.autoPlay,
+                              id: widget.id,
+                              loop: widget.loop,
+                              noVolume: widget.noVolume,
+                              noBack: widget.noBack,
+                              isFull: widget.isFull,
+                              setController: widget.setController,
+                              videoUrl: widget.videoUrl,
+                              setVideoUrl: widget.setVideoUrl,
+                              uploadVideo: () {
+                                setState(() {});
+                              },
+                              isLocal: widget.isLocal))),
                 ),
           widget.isLocal || widget.videoUrl != null
               ? Container()
@@ -188,7 +201,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                   right: 0,
                   left: 0,
                   bottom: 0,
-                  child: (widget.videoUrl == '') && widget.controller == null
+                  child: (!hasController && widget.videoUrl == '')
                       ? Container(
                           color: Colors.black54,
                           child: Center(
@@ -254,7 +267,7 @@ class _YyVideoState extends State<YyVideo> with VideoMinxin {
                         ),
                       ),
                     )),
-          !videoController!.value.isInitialized
+          (!hasController || !videoController!.value.isInitialized)
               ? Positioned(
                   child: Padding(
                   padding: EdgeInsets.only(top: widget.cover == null ? 0 : ScreenUtil().statusBarHeight),
@@ -271,6 +284,7 @@ class HooksSet extends HookWidget {
   const HooksSet({this.pramas, this.child, Key? key}) : super(key: key);
   final Widget? child;
   final List? pramas;
+
   @override
   Widget build(BuildContext context) {
     return useMemo(() {

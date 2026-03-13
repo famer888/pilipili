@@ -9,12 +9,13 @@ class ApiTimingInterceptor extends Interceptor {
     final now = DateTime.now().millisecondsSinceEpoch;
     options.extra['startTime'] = now;
 
-    final pageKey = MyNavObserver.instance.currentPageKey;
+    var pageKey = MyNavObserver.instance.currentPageKey;
+
     final enterMs = MyNavObserver.instance.currentEnterTimeMs ?? now;
-    options.extra['pageKey'] = pageKey;
+    options.extra['pageKey'] = pageKey??"unknown";
     options.extra['pageEnterMs'] = enterMs;
 
-    PageRequestTracker.instance.onRequestStart(pageKey!, enterMs, now);
+    PageRequestTracker.instance.onRequestStart(pageKey, enterMs, now);
 
     super.onRequest(options, handler);
   }

@@ -222,11 +222,11 @@ class _ActivityDetailState extends State<ActivityDetail> {
                                   List urlList = linkUrl.split('?');
                                   if (linkUrl.indexOf('toTab') != -1) {
                                     context.go('/');
-                                    int _tab;
+                                    int? _tab;
                                     try {
                                       _tab = int.parse(linkUrl.split('?')[1]);
                                     } catch (e) {
-                                      _tab = null!;
+                                      _tab = null;
                                     }
                                     EventBus().emit('pili_ciyuan', _tab ?? 0);
                                     return;

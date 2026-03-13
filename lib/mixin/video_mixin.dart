@@ -31,7 +31,7 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
       double left = 0,
       double top = 0,
       double right = 0,
-      double bottom = 0,
+      double? bottom = 0,
       double opacity = 1}) {
     return AnimatedPositioned(
       left: left,
@@ -66,8 +66,8 @@ mixin VideoMinxin<T extends StatefulWidget> on State<T> {
                 ? Container()
                 : GestureDetector(
                     onTap: () {
-                      SystemChrome.setEnabledSystemUIMode(
-                          SystemUiMode.manual, overlays: SystemUiOverlay.values);
+                      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                          overlays: SystemUiOverlay.values);
                       SystemChrome.setPreferredOrientations(
                           [DeviceOrientation.portraitUp]);
                       context.pop();

@@ -42,7 +42,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
   }
 
   void getPageData() async {
-    ElementModel data = await getFisrtTopNavConfig(2);
+    ElementModel? data = await getFisrtTopNavConfig(2);
     loading = false;
     // data.value.insert(0, {
     //   'id': 123,
@@ -56,7 +56,7 @@ class _PiliCiyuanState extends State<PiliCiyuan> {
     //   'sort': 999
     // });
 
-    data.value!.asMap().forEach((index, data) {
+    data?.value!.asMap().forEach((index, data) {
       LinkModel item = LinkModel.fromJson(data);
       navitems.add(item);
       if (item.redirectType == 3) {

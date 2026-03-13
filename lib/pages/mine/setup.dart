@@ -37,7 +37,7 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   BackButtonBehavior backButtonBehavior = BackButtonBehavior.none;
   final ImagePicker _picker = ImagePicker();
-  late String fileUrl;
+  late String fileUrl="";
   double progress = 0.0;
   bool avatarLoadding = false;
   late html.FileUploadInputElement uploadInput;
