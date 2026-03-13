@@ -263,9 +263,7 @@ class CommonUtils {
   static String getRealHash([String? value]) {
     if (kIsWeb) {
       var currentHash = html.window.location.hash.replaceAll('#', '');
-    } else {
-      
-    }
+    } else {}
     return '/' + (value ?? '');
   }
 
@@ -279,6 +277,7 @@ class CommonUtils {
   static Map<String, int> retryCountMap = {};
   static List<List> tasks = [];
   static List<bool> wdsRuningStatuses = List.generate(AppGlobal.decryptProcessLimit, (index) => false);
+
   static void getRealImage(
       {dynamic url, dynamic imgUrl, Function? setUrl, Function? retryHandler, bool isNovel = false}) {
     if (url == null) return CommonUtils.debugPrint('无封面图');
@@ -419,19 +418,20 @@ class CommonUtils {
       alignment: Alignment.center,
       width: 40.w,
       height: 40.w,
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(8.w), color: isActive ? Color(0xffFF84A9) : Colors.white,
-              // gradient: LinearGradient(
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter,
-              //     tileMode:TileMode.repeated,
-              //     colors: [
-              //       Color(0XFDFFFFFF),
-              //       Color(0XFDFFF3F8),
-              //       Color(0xffFFD3E6),
-              //       Colors.white54
-              //     ]),
-              boxShadow: [
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.w),
+          color: isActive ? Color(0xffFF84A9) : Colors.white,
+          // gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //     tileMode:TileMode.repeated,
+          //     colors: [
+          //       Color(0XFDFFFFFF),
+          //       Color(0XFDFFF3F8),
+          //       Color(0xffFFD3E6),
+          //       Colors.white54
+          //     ]),
+          boxShadow: [
             isActive
                 ? BoxShadow(
                     color: Color(0xffA82118).withOpacity(0.26),
@@ -562,14 +562,16 @@ class CommonUtils {
           serverLines.add(l.toString());
         });
         box.put('api_lines', serverLines);
-      } catch (err) {}
+      } catch (err) {
+        String asdasd = "";
+      }
     };
 
     Function handleResult = (String line) async {
       AppGlobal.apiBaseURL = line;
       await reportErrorLines();
       onSuccess!();
-        };
+    };
 
     doCheck = ({String? line, bool? isPub}) async {
       dynamic result;
@@ -605,7 +607,8 @@ class CommonUtils {
     };
 
     List<ConnectivityResult> connectivityResults = await Connectivity().checkConnectivity();
-    ConnectivityResult connectivityResult = connectivityResults.isNotEmpty ? connectivityResults.first : ConnectivityResult.none;
+    ConnectivityResult connectivityResult =
+        connectivityResults.isNotEmpty ? connectivityResults.first : ConnectivityResult.none;
     if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
       Future.any(unChecklines.map((line) {
         return doCheck(line: line.toString(), isPub: false).then((value) {

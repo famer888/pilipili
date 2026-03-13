@@ -27,6 +27,7 @@ Dio _imageDio = new Dio(new BaseOptions(
     return (status ?? 0) < 500;
   },
 ));
+
 getToken() {
   Box box = AppGlobal.appBox!;
   return box.get('yy_token');
@@ -46,7 +47,7 @@ Dio _apiDio = new Dio(new BaseOptions(
     contentType: Headers.formUrlEncodedContentType))
   ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
     Map _data = {};
-    String yytoken = getToken();
+    String yytoken = getToken()??"";
     if (yytoken != '') {
       AppGlobal.apiToken = yytoken;
     }
