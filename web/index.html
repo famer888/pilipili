@@ -32,6 +32,9 @@
 
   <title>pilipili</title>
   <script>
+    // Guard for flutter_inappwebview_web startup on web.
+    // Some versions expect this object to exist before assigning nativeCommunication.
+    window.flutter_inappwebview = window.flutter_inappwebview || {};
     {{flutter_js}}
     {{flutter_build_config}}
     _flutter.loader.load({

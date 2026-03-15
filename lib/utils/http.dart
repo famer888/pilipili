@@ -47,7 +47,7 @@ Dio _apiDio = new Dio(new BaseOptions(
     contentType: Headers.formUrlEncodedContentType))
   ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
     Map _data = {};
-    String yytoken = getToken()??"";
+    String yytoken = getToken() ?? "";
     if (yytoken != '') {
       AppGlobal.apiToken = yytoken;
     }
@@ -57,24 +57,34 @@ Dio _apiDio = new Dio(new BaseOptions(
       _data.addAll(options.data);
     }
     CommonUtils.debugPrint(_data);
-    options.data = await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
+    options.data =
+        await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
 
     return handler.next(options);
   }, onResponse: (response, handler) async {
     if (response.requestOptions.path.contains("checkLine")) {
       return handler.next(response);
     }
-    if (response.data['data'] != null && !response.data['data'].toString().contains("<!")) {
+    if (response.data['data'] != null &&
+        !response.data['data'].toString().contains("<!")) {
       Map<dynamic, dynamic> result = Map.from(response.data);
       String sign = result.remove("sign").toString();
       if (PlatformAwareCrypto.makeSign(result, appkey) != sign && !_warnJump) {
         _warnJump = true;
-        String officeSite = Provider.of<HomeConfig>(AppGlobal.appContext!, listen: false).config.officeSite ?? "";
-        YyShowDialog.showdialog(AppGlobal.appContext!, title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
+        String officeSite =
+            Provider.of<HomeConfig>(AppGlobal.appContext!, listen: false)
+                    .config
+                    .officeSite ??
+                "";
+        YyShowDialog.showdialog(AppGlobal.appContext!,
+            title: '温馨提示', btnText: '去官网下载', cancelText: '取消', callBack: () {
           CommonUtils.launchURL(officeSite);
         }, content: (setDialogState) {
           return DefaultTextStyle(
-              style: TextStyle(color: Color(0xff646464), fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Color(0xff646464),
+                  fontSize: ScreenUtil().setSp(16),
+                  fontWeight: FontWeight.bold),
               child: Text('数据校验失败，请去官网下载最新版本！'));
         });
       }
@@ -104,23 +114,30 @@ class PlatformAwareHttp {
   static Future getImage(url) {
     if (url.contains('http')) {
       return kIsWeb
-          ? html.HttpRequest.request(url, responseType: 'arraybuffer').then((xhr) {
+          ? html.HttpRequest.request(url, responseType: 'arraybuffer')
+              .then((xhr) {
               if (xhr.response != null) {
                 return base64Encode(xhr.response.asUint8List());
               }
               return '';
             }).onError((error, stackTrace) => '')
-          : _imageDio.get(url).then((res) => base64Encode(res.data)).onError((error, stackTrace) {
+          : _imageDio
+              .get(url)
+              .then((res) => base64Encode(res.data))
+              .onError((error, stackTrace) {
               print('error---$url----$error');
               return '';
             });
     } else {
-      return url;
+      return Future.value(url);
     }
   }
 
   static Future uploadImage(
-      {dynamic imageUrl, String? id, String position = 'head', ProgressCallback? progressCallback}) async {
+      {dynamic imageUrl,
+      String? id,
+      String position = 'head',
+      ProgressCallback? progressCallback}) async {
     try {
       var imgKey = AppGlobal.uploadImgKey!.replaceFirst('head', '');
       var newKey = 'id=$id&position=$position$imgKey';
@@ -145,7 +162,9 @@ class PlatformAwareHttp {
               ),
       });
       Response response = await _uploadDio.post(AppGlobal.uploadImgUrl!,
-          data: formData, onSendProgress: progressCallback, options: Options(contentType: 'multipart/form-data'));
+          data: formData,
+          onSendProgress: progressCallback,
+          options: Options(contentType: 'multipart/form-data'));
       return response;
     } catch (e) {
       return null;
@@ -190,7 +209,10 @@ class PlatformAwareHttp {
   }
 
   static Future xfileHtmlUploadImage(
-      {XFile? file, String? id, String position = 'head', Function(html.ProgressEvent)? progressCallback}) async {
+      {XFile? file,
+      String? id,
+      String position = 'head',
+      Function(html.ProgressEvent)? progressCallback}) async {
     try {
       id ??= DateTime.now().millisecondsSinceEpoch.toString();
       var imgKey = AppGlobal.uploadImgKey!.replaceFirst('head', '');
@@ -210,8 +232,12 @@ class PlatformAwareHttp {
           blob,
         );
 
-      html.HttpRequest httpRequest = await html.HttpRequest.request(AppGlobal.uploadImgUrl!,
-          method: "POST", mimeType: "image/$ext", sendData: formData, onProgress: progressCallback);
+      html.HttpRequest httpRequest = await html.HttpRequest.request(
+          AppGlobal.uploadImgUrl!,
+          method: "POST",
+          mimeType: "image/$ext",
+          sendData: formData,
+          onProgress: progressCallback);
       html.Url.revokeObjectUrl(url);
       return jsonDecode(httpRequest.response);
     } catch (e) {
@@ -221,7 +247,10 @@ class PlatformAwareHttp {
   }
 
   static Future xfileBytesUploadMp4(
-      {XFile? file, String position = 'head', CancelToken? cancelToken, ProgressCallback? progressCallback}) async {
+      {XFile? file,
+      String position = 'head',
+      CancelToken? cancelToken,
+      ProgressCallback? progressCallback}) async {
     try {
       String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
       var videoKey = AppGlobal.uploadMp4Key!.replaceFirst('head', '');
@@ -254,7 +283,10 @@ class PlatformAwareHttp {
   }
 
   static Future xfileUploadMp4(
-      {XFile? file, String position = 'head', CancelToken? cancelToken, ProgressCallback? progressCallback}) async {
+      {XFile? file,
+      String position = 'head',
+      CancelToken? cancelToken,
+      ProgressCallback? progressCallback}) async {
     try {
       String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
       var videoKey = AppGlobal.uploadMp4Key!.replaceFirst('head', '');
@@ -285,14 +317,17 @@ class PlatformAwareHttp {
     }
   }
 
-  static Future<Response> download(String urlPath, String savePath, {ProgressCallback? onReceiveProgress}) {
+  static Future<Response> download(String urlPath, String savePath,
+      {ProgressCallback? onReceiveProgress}) {
 //    if(_dio == null) return;
-    return _uploadDio.download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
+    return _uploadDio.download(urlPath, savePath,
+        onReceiveProgress: onReceiveProgress);
   }
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求
   static Future post(String path, {Map? data, CancelToken? cancelToken}) {
     // AppGlobal.apiBaseURL = 'https://pili.yesebo.net/api.php';
-    return _apiDio.post(AppGlobal.apiBaseURL + path, data: data, cancelToken: cancelToken);
+    return _apiDio.post(AppGlobal.apiBaseURL + path,
+        data: data, cancelToken: cancelToken);
   }
 }

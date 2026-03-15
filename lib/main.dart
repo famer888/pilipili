@@ -33,12 +33,16 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   AppGlobal.imageCacheBox = await Hive.openBox('HiveBox_ImageCache'); //图片缓存
   AppGlobal.imageAssetBox = await Hive.openBox('HiveBox_ImageAsset'); //UI图片缓存
-  AppGlobal.videoWatchRecordBox = await Hive.openBox('HiveBox_VideoWatchRecord');
-  AppGlobal.manhuaWatchRecordBox = await Hive.openBox('HiveBox_ManhuaWatchRecord');
+  AppGlobal.videoWatchRecordBox =
+      await Hive.openBox('HiveBox_VideoWatchRecord');
+  AppGlobal.manhuaWatchRecordBox =
+      await Hive.openBox('HiveBox_ManhuaWatchRecord');
   AppGlobal.bookWatchRecordBox = await Hive.openBox('HiveBox_BookWatchRecord');
-  AppGlobal.smallVideoWatchRecordBox = await Hive.openBox('HiveBox_smallVideoWatchRecord');
+  AppGlobal.smallVideoWatchRecordBox =
+      await Hive.openBox('HiveBox_smallVideoWatchRecord');
   // 注册图片加载线程
-  DefaultDelegate<dynamic, dynamic> fooDelegate = DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
+  DefaultDelegate<dynamic, dynamic> fooDelegate =
+      DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
   JsDelegate fooJsDelegate = JsDelegate(callback: 'decryptImage');
   List<WorkerDelegate<dynamic, dynamic>> wds = List.generate(
       AppGlobal.decryptProcessLimit,
@@ -48,7 +52,8 @@ void main() async {
             jsDelegate: fooJsDelegate,
           ));
   WorkerDelegator().addAllDelegates(wds);
-  await WorkerDelegator().importScripts(const <String>['js/aware.js?v=2', 'js/crypto-js.min.js?v=3']);
+  await WorkerDelegator().importScripts(
+      const <String>['js/aware.js?v=2', 'js/crypto-js.min.js?v=3']);
 
   // 禁用图片缓存
   PaintingBinding.instance.imageCache.maximumSize = 0;
@@ -66,10 +71,13 @@ void main() async {
   // 初始化全局路由
   // 初始化APP基础信息
   AppGlobal.apiToken = AppGlobal.appBox!.get('apiToken') ?? "";
-  AppGlobal.firstVisitTime = AppGlobal.appBox!.get('firstVisitTime') ?? DateTime.now();
+  AppGlobal.firstVisitTime =
+      AppGlobal.appBox!.get('firstVisitTime') ?? DateTime.now();
   AppGlobal.appBox!.put('firstVisitTime', DateTime.now());
   String oauthId = AppGlobal.appBox!.get('oauth_id') ??
-      CommonUtils.randomId(16).toString() + '_' + DateTime.now().millisecondsSinceEpoch.toString().toString();
+      CommonUtils.randomId(16).toString() +
+          '_' +
+          DateTime.now().millisecondsSinceEpoch.toString().toString();
 
   String userAgent = '';
   String deviceBrand = '';
@@ -80,19 +88,25 @@ void main() async {
     if (kIsWeb) {
       Uri u = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       affCode = u.queryParameters["sq_aff"] ?? "";
-      String tId = u.queryParameters['trace_id']!;
+      String tId = u.queryParameters['trace_id'] ??
+          AppGlobal.appBox!.get('trace_id') ??
+          '';
       traceId = tId;
-      await AppGlobal.appBox!.put('trace_id', tId);
-        } else {
+      if (tId.isNotEmpty) {
+        await AppGlobal.appBox!.put('trace_id', tId);
+      }
+    } else {
       await Clipboard.getData(Clipboard.kTextPlain).then((value) async {
         try {
           if (value?.text != null) {
             final params = Uri.splitQueryString(value?.text ?? '');
-            String tId = params['trace_id']!;
+            String tId = params['trace_id'] ?? '';
             affCode = params["sq_aff"] ?? "";
             traceId = tId;
-            await AppGlobal.appBox!.put('trace_id', tId);
-                    }
+            if (tId.isNotEmpty) {
+              await AppGlobal.appBox!.put('trace_id', tId);
+            }
+          }
         } catch (e) {
           print('剪切板文本错误');
         }
@@ -192,7 +206,8 @@ class _PilipiliState extends State<Pilipili> {
           widget = botToastBuilder(context, widget);
           widget = MediaQuery(
             //设置文字大小不随系统设置改变
-            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: TextScaler.linear(1.0)),
             child: widget,
           );
           return widget.withPageClickLog();

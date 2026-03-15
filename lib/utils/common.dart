@@ -45,7 +45,8 @@ class CommonUtils {
     }
   }
 
-  static Future<bool> pngLimitSize(XFile file, {int size = 5, String? tips}) async {
+  static Future<bool> pngLimitSize(XFile file,
+      {int size = 5, String? tips}) async {
     if (kIsWeb) return true;
     int length = await file.length();
     if (length / (1024 * 1024) > size) {
@@ -88,7 +89,8 @@ class CommonUtils {
   //设置状态栏颜色
   static setStatusBar({bool isLight = false}) {
     if (kIsWeb) {
-      return SystemChrome.setSystemUIOverlayStyle(isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+      return SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
     } else if (Platform.isAndroid) {
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
@@ -100,7 +102,8 @@ class CommonUtils {
     } else if (Platform.isIOS) {
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       //导航栏状态栏文字颜色
-      SystemChrome.setSystemUIOverlayStyle(isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+      SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
     }
   }
 
@@ -111,10 +114,14 @@ class CommonUtils {
     TextStyle? style,
     TextStyle? lightStyle,
   }) {
-    style = style ?? TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp);
-    lightStyle = lightStyle ?? TextStyle(color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
+    style = style ??
+        TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontSize: 14.sp);
+    lightStyle = lightStyle ??
+        TextStyle(
+            color: const Color.fromRGBO(25, 103, 210, 1), fontSize: 14.sp);
     List<InlineSpan> _contentList = [];
-    RegExp exp = RegExp(r'(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?');
+    RegExp exp = RegExp(
+        r'(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?');
     Iterable<RegExpMatch> matches = exp.allMatches(text);
 
     int index = 0;
@@ -155,13 +162,15 @@ class CommonUtils {
     if (isCopy) {
       return SelectableText.rich(
         TextSpan(children: _contentList),
-        strutStyle: const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5),
+        strutStyle:
+            const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5),
       );
     }
     return RichText(
         textAlign: TextAlign.left,
         text: TextSpan(children: _contentList),
-        strutStyle: const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5));
+        strutStyle:
+            const StrutStyle(forceStrutHeight: true, height: 1, leading: 0.5));
   }
 
   static bool isAndroidWeb() {
@@ -174,14 +183,18 @@ class CommonUtils {
     SystemNotice sysResult = await getSystemNotice();
     CommonUtils.debugPrint('Key${sysResult.toJson()}');
     if (sysResult.status == 1) {
-      Provider.of<HomeConfig>(context, listen: false).setSystemNotice(sysResult);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setSystemNotice(sysResult);
     }
   }
 
   static showText(String text, {int? time}) {
     return BotToast.showText(
         text: text,
-        textStyle: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(15), decoration: TextDecoration.none),
+        textStyle: TextStyle(
+            color: Colors.white,
+            fontSize: ScreenUtil().setSp(15),
+            decoration: TextDecoration.none),
         align: Alignment(0, 0),
         duration: new Duration(seconds: time != null ? time : 3));
   }
@@ -244,11 +257,18 @@ class CommonUtils {
   }
 
   static formatNum(double number, int postion) {
-    if ((number.toString().length - number.toString().lastIndexOf(".") - 1) < postion) {
+    if ((number.toString().length - number.toString().lastIndexOf(".") - 1) <
+        postion) {
       //小数点后有几位小数
-      return number.toStringAsFixed(postion).substring(0, number.toString().lastIndexOf(".") + postion + 1).toString();
+      return number
+          .toStringAsFixed(postion)
+          .substring(0, number.toString().lastIndexOf(".") + postion + 1)
+          .toString();
     } else {
-      return number.toString().substring(0, number.toString().lastIndexOf(".") + postion + 1).toString();
+      return number
+          .toString()
+          .substring(0, number.toString().lastIndexOf(".") + postion + 1)
+          .toString();
     }
   }
 
@@ -276,21 +296,28 @@ class CommonUtils {
 
   static Map<String, int> retryCountMap = {};
   static List<List> tasks = [];
-  static List<bool> wdsRuningStatuses = List.generate(AppGlobal.decryptProcessLimit, (index) => false);
+  static List<bool> wdsRuningStatuses =
+      List.generate(AppGlobal.decryptProcessLimit, (index) => false);
 
   static void getRealImage(
-      {dynamic url, dynamic imgUrl, Function? setUrl, Function? retryHandler, bool isNovel = false}) {
+      {dynamic url,
+      dynamic imgUrl,
+      Function? setUrl,
+      Function? retryHandler,
+      bool isNovel = false}) {
     if (url == null) return CommonUtils.debugPrint('无封面图');
     void doWork(args, _freeIndex) async {
       if (args[0] != null || args[1] != null || args[0] != '') {
         dynamic? decrypted;
         String? data;
-        decrypted = AppGlobal.imageCacheBox!.get(args[0]) ?? AppGlobal.imageAssetBox!.get(args[0]);
+        decrypted = AppGlobal.imageCacheBox!.get(args[0]) ??
+            AppGlobal.imageAssetBox!.get(args[0]);
         if (decrypted == null) {
           try {
             data = await PlatformAwareHttp.getImage(args[0]);
             if (data != '') {
-              decrypted = await WorkerDelegator().run('decryptImage$_freeIndex', data);
+              decrypted =
+                  await WorkerDelegator().run('decryptImage$_freeIndex', data);
               if (decrypted != '' && decrypted != null) {
                 decrypted = base64Decode(decrypted);
                 if (isNovel) {
@@ -301,6 +328,8 @@ class CommonUtils {
                 } else {
                   AppGlobal.imageCacheBox!.put(args[0], decrypted);
                 }
+              } else {
+                decrypted = null;
               }
             }
           } catch (err) {
@@ -325,7 +354,8 @@ class CommonUtils {
     }
 
     var tempUrl = url.toString().indexOf('assets/images/') != -1
-        ? '${AppGlobal.bannerImgBase}new/$url'.replaceAll('images/', 'pilipili/')
+        ? '${AppGlobal.bannerImgBase}new/$url'
+            .replaceAll('images/', 'pilipili/')
         : url;
     // if(url.toString().indexOf('assets/images/') != -1){
     //   print('*****************************$tempUrl');
@@ -412,7 +442,8 @@ class CommonUtils {
     return str;
   }
 
-  static Widget shadowBtn(String icon, {String text = '', bool isActive = false, double? size}) {
+  static Widget shadowBtn(String icon,
+      {String text = '', bool isActive = false, double? size}) {
     return Container(
       margin: EdgeInsets.only(left: 4.w),
       alignment: Alignment.center,
@@ -438,16 +469,26 @@ class CommonUtils {
                     offset: Offset(0, 2.w),
                     blurRadius: 3.w,
                     spreadRadius: 0)
-                : BoxShadow(color: Color(0xffFFD3E6), offset: Offset(0, 2.w), blurRadius: 4.w, spreadRadius: 0)
+                : BoxShadow(
+                    color: Color(0xffFFD3E6),
+                    offset: Offset(0, 2.w),
+                    blurRadius: 4.w,
+                    spreadRadius: 0)
           ]),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          getImage(icon, height: size ?? 12.w, width: size ?? 12.w, fit: BoxFit.contain, isAssets: true),
+          getImage(icon,
+              height: size ?? 12.w,
+              width: size ?? 12.w,
+              fit: BoxFit.contain,
+              isAssets: true),
           Text(
             text,
             style: TextStyle(
-                color: isActive ? Colors.white : Color(0xffFF84A9), fontSize: 12.sp, fontWeight: FontWeight.w400),
+                color: isActive ? Colors.white : Color(0xffFF84A9),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400),
           )
         ],
       ),
@@ -461,19 +502,24 @@ class CommonUtils {
       alignment: Alignment.center,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9.w),
-          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
-            Color(0xffFFD875),
-            Color(0XFFFF6915),
-          ])),
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xffFFD875),
+                Color(0XFFFF6915),
+              ])),
       child: Text(
         text,
-        style: TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w700),
+        style: TextStyle(
+            color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w700),
       ),
     );
   }
 
   static String getPromotionCountDownTime(DateTime now) {
-    int seconds = 48 * 60 * 60 - now.difference(AppGlobal.firstVisitTime!).inSeconds;
+    int seconds =
+        48 * 60 * 60 - now.difference(AppGlobal.firstVisitTime!).inSeconds;
     int h = seconds ~/ 60 ~/ 60;
     int m = seconds % (60 * 60) ~/ 60;
     int s = seconds % 60;
@@ -526,15 +572,20 @@ class CommonUtils {
   static getThumb(dynamic data) {
     if (data['thumb'] != null && data['thumb'] != '') {
       return data['thumb'];
-    } else if (data['cover_thumb_vertical'] != null && data['cover_thumb_vertical'] != '') {
+    } else if (data['cover_thumb_vertical'] != null &&
+        data['cover_thumb_vertical'] != '') {
       return data['cover_thumb_vertical'];
-    } else if (data['cover_thumb_horizontal'] != null && data['cover_thumb_horizontal'] != '') {
+    } else if (data['cover_thumb_horizontal'] != null &&
+        data['cover_thumb_horizontal'] != '') {
       return data['cover_thumb_horizontal'];
-    } else if (data['cover_zip_vertical'] != null && data['cover_zip_vertical'] != '') {
+    } else if (data['cover_zip_vertical'] != null &&
+        data['cover_zip_vertical'] != '') {
       return data['cover_zip_vertical'];
-    } else if (data['cover_zip_horizontal'] != null && data['cover_zip_horizontal'] != '') {
+    } else if (data['cover_zip_horizontal'] != null &&
+        data['cover_zip_horizontal'] != '') {
       return data['cover_zip_horizontal'];
-    } else if (data['cover_original_vertical'] != null && data['cover_original_vertical'] != '') {
+    } else if (data['cover_original_vertical'] != null &&
+        data['cover_original_vertical'] != '') {
       return data['cover_original_vertical'];
     } else if (data['thumbnail'] != null && data['thumbnail'] != '') {
       return data['thumbnail'];
@@ -547,14 +598,17 @@ class CommonUtils {
     int _timeout = 30;
     Box box = AppGlobal.appBox!;
     List apiLines = box.get('api_lines') ?? [];
-    List<dynamic> unChecklines = apiLines.length > 0 ? apiLines : AppGlobal.apiLines;
+    List<dynamic> unChecklines =
+        apiLines.length > 0 ? apiLines : AppGlobal.apiLines;
     List<Map> errorLines = [];
     // int errorCount = 0;
     Function doCheck;
     Function reportErrorLines = () async {
       // 上报错误线路&保存服务端推荐线路到本地
       try {
-        Response res = await PlatformAwareHttp.post('/api/home/domainCheckReport', data: {'list': errorLines});
+        Response res = await PlatformAwareHttp.post(
+            '/api/home/domainCheckReport',
+            data: {'list': errorLines});
         CommonUtils.debugPrint("============reportErrorLines============");
         CommonUtils.debugPrint(res.data['data']);
         List<String> serverLines = [];
@@ -578,7 +632,8 @@ class CommonUtils {
       List<InternetAddress> ip4 = [];
       Uri _uri = Uri.parse(line ?? '');
       if (!kIsWeb) {
-        ip4 = await InternetAddress.lookup(_uri.host, type: InternetAddressType.IPv4);
+        ip4 = await InternetAddress.lookup(_uri.host,
+            type: InternetAddressType.IPv4);
       }
       if (ip4.toString() == "") {
         result = 'error';
@@ -606,10 +661,13 @@ class CommonUtils {
       return result;
     };
 
-    List<ConnectivityResult> connectivityResults = await Connectivity().checkConnectivity();
-    ConnectivityResult connectivityResult =
-        connectivityResults.isNotEmpty ? connectivityResults.first : ConnectivityResult.none;
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    List<ConnectivityResult> connectivityResults =
+        await Connectivity().checkConnectivity();
+    ConnectivityResult connectivityResult = connectivityResults.isNotEmpty
+        ? connectivityResults.first
+        : ConnectivityResult.none;
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       Future.any(unChecklines.map((line) {
         return doCheck(line: line.toString(), isPub: false).then((value) {
           if (value.toString() == '200') {
@@ -644,7 +702,8 @@ class RelativeDateFormat {
 
 //时间转换
   static String format(DateTime date) {
-    num delta = DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
+    num delta =
+        DateTime.now().millisecondsSinceEpoch - date.millisecondsSinceEpoch;
 
     if (delta < 1 * oneMinute) {
       num seconds = toSeconds(delta);
